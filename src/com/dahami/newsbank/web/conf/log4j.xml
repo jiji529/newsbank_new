@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- 파일로 보기(디버그) -->
+    
+    <appender class="org.apache.log4j.ConsoleAppender" name="CONSOLE">
+		<param name="target" value="System.out"/>
+		<param name="Encoding" value="UTF-8"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%d{yyyy-MM-dd hh:mm:ss aa} [ %p ] - %C{1}.%M(%L) | %m%n"/>
+		</layout>
+	</appender>
+
+	<appender class="org.apache.log4j.DailyRollingFileAppender" name="rootLog">
+		<param name="File" value="logs/rootLog.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d] %-5p - %m%n" />
+		</layout>
+	</appender>
+ 
+    <logger name="java.sql">
+    	<level value="info" />
+    </logger>
+
+    <logger name="org.apache.solr.common">
+    	<level value="WARN" />
+    </logger>
+    
+    <root>
+        <level value="info"/>
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="rootLog" />
+<!--         <appender-ref ref="ORI" /> -->
+    </root>
+</log4j:configuration>
