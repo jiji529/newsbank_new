@@ -3,6 +3,7 @@
 	<name>NewsBank_2017</name>
 	<comment></comment>
 	<projects>
+		<project>com.dahami.common.util</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
