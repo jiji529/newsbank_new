@@ -41,7 +41,7 @@ public abstract class NewsbankServletBase extends HttpServlet {
 		String reqUri = request.getRequestURI().substring(request.getContextPath().length()+1);
 		if(reqUri.indexOf("/") != -1) {
 			logger.warn("Invalid Request: " + reqUri);
-			response.sendRedirect("/invlidPage.jsp");
+			response.sendRedirect("/invalidPage.jsp");
 			closed = true;
 			return;
 		}
