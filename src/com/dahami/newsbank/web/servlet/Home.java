@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -9,6 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 @WebServlet(
 	urlPatterns = {"/home", "*.home"},
@@ -36,7 +41,11 @@ public class Home extends NewsbankServletBase {
 		if(closed) {
 			return;
 		}
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		SearchDAO searcher = new SearchDAO();
+		SearchParameterBean sParam = new SearchParameterBean();
+		List<PhotoDTO> photoList = searcher.search(sParam);
+		
+		List<PhotoDTO> photoList2 = searcher.search(sParam.nextPage());
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
 		dispatcher.forward(request, response); 
