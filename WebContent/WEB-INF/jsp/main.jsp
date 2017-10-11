@@ -14,8 +14,11 @@
 ---------------------------------------------------------------------------%>
 
 
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,6 +26,20 @@
 <title>Insert title here</title>
 </head>
 <body>
-home
+	home
+	<div>한글한글 한글한글</div>
+	<%
+		out.println(request.getParameter("test"));
+		List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
+		items = (List<Map<String,Object>>)request.getAttribute("test");
+		out.println(items.get(1).get("descriptionKr"));
+
+		//String [] arr = (String[])request.getAttribute("test");
+		//for(int i=0;i<arr.length;i++){
+		//out.println(arr[i]+"<br>");
+		//}
+	%>
+
+
 </body>
 </html>
