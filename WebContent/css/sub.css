@@ -1,0 +1,62 @@
+@charset "utf-8";
+/* CSS Document */
+
+.filters{float:left; width:100%; height:50px; border-bottom:1px #d0d0d0 solid; border-top:1px #e5e5e5 solid; background:#fafafa;}
+.filters li{float:left;}
+.filters ul{float:left;}
+.filters li.filter_title{float:left; padding:0 40px 0 20px; height:50px; border-right:1px #e5e5e5 solid; line-height:50px; position:relative; font-size:15px; cursor:pointer;}
+.filters li.filter_title:after{content: ''; position: absolute; top: 50%; right: 22px; height: 0; width: 0; margin-top: -3px; border: solid transparent; border-top-color: #555; border-width: 5px 4px; -webkit-transition: border 0.3s ease-in-out; transition: border 0.3s ease-in-out; width:auto;}
+@media (max-width: 1400px){
+	.filters li.filter_title.filter_ico{ display:none;}
+	.filters li.filter_title:nth-child(2){margin-left:30px; border-left:1px #e5e5e5 solid;}
+	.filters li.filter_title{max-width:100px;padding:0 28px 0 12px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+	.filters li.filter_title:after{right:10px;}}
+.filters li.filter_title.filter_ico{ text-indent:-9999px; background:url(../images/sub/if_filter_326641.svg) 20px 18px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid;}
+.filters li.filter_title.filter_ico:after{ content: ''; display:none;}
+.filters li .filter_list{display:none;  background:#f5f6f8; z-index:2000; position:absolute; border:1px #e5e5e5 solid; margin-left:-20px; margin-top:-2px;}
+.filters li ul{overflow:auto; max-height:600px; width:180px;}
+.filters li .filter_list li{float:left; width:100%; padding:0 20px; border-bottom:#e5e5e5 1px solid; height:45px; text-align:left; font-size:14px; line-height:45px;}
+.filters li .filter_list li.choice{height:165px;}
+
+.filters .calendar{ float:left; }
+.filters .calendar .cal_input { position:relative; width:100%; float:left; margin-bottom:2px;}
+.filters .calendar .cal_input input{width: 100%; padding: 5px 24px 5px 9px; margin-bottom: 6px; border: 1px solid #cdcdcd; color: #999;}
+.filters .calendar .cal_input a.ico_cal{position: absolute; top: 4px; right: 10px; padding: 4px; background:url(../images/sub/ico_cal.png) 0 0 no-repeat; width:16px; height:16px; text-indent:-9999px;}
+.filters .calendar .btn_cal{display: block; width: 100%; height: 35px; line-height: 35px; border:1px solid #dbdbdb; background-color: #f6f7f9; color: #333;}
+
+
+.filters .filter_rt{ float:right; margin-right:40px; height:50px; padding:13px 0; line-height:24px; font-size:14px; color:#666;}
+.filters .filter_rt .result{float:left; margin-right:10px;}
+.filters .filter_rt .result .count{ color:#f79320;}
+.filters .filter_rt .paging{float:left; margin-right:15px;}
+.filters .filter_rt .paging  a{float:left;  width:20px; height:24px; margin:0 3px;}
+.filters .filter_rt .paging .prev{ background:url(../images/sub/btn_prev.png) 0 4px no-repeat;}
+.filters .filter_rt .paging .next{ background:url(../images/sub/btn_next.png) 0 4px no-repeat;}
+.filters .filter_rt .paging input.page{ float:left; width:48px; border:1px #dbdbdb solid; padding:3px; height:24px; margin:0 5px 0 0 ;}
+.filters .filter_rt .paging span{ float:left; }
+.filters .filter_rt .viewbox{float:left; }
+.filters .filter_rt .viewbox .size{ float:left; margin-right:10px;}
+.filters .filter_rt .viewbox .size span{float:left; width:22px; height:22px; text-indent:-9999px; background:url(../images/sub/bg_imgsize.png) no-repeat; opacity:0.3;}
+.filters .filter_rt .viewbox .size span:hover, .filters .filter_rt .viewbox .size span.on{opacity:1;}
+.filters .filter_rt .viewbox .size .grid{ background-position:2px 2px; margin-right:2px;}
+.filters .filter_rt .viewbox .size .square{ background-position:-22px 2px;}
+.filters .filter_rt .viewbox select { float:left; padding:1px 4px; border-color:#999;}
+
+
+
+@media (max-width: 1200px) { #search_list1 { -moz-column-count: 4; -webkit-column-count: 4; column-count: 4; }}
+@media (max-width: 1000px) { #search_list1 { -moz-column-count: 3; -webkit-column-count: 3; column-count: 3; }}
+@media (max-width: 800px) { #search_list1 { -moz-column-count: 2; -webkit-column-count: 2; column-count: 2; }}
+@media (max-width: 400px) { #search_list1 { -moz-column-count: 1; -webkit-column-count: 1; column-count: 1; }}
+#search_list1 { /* Prevent vertical gaps */ line-height: 0;  float:left; -webkit-column-count: 5; -webkit-column-gap: 10px; -moz-column-count: 5; -moz-column-gap: 10px; column-count: 5; column-gap: 10px; padding:20px 40px;}
+#search_list1 img { /* Just in case there are inline attributes */ width: 100% !important; height: auto !important;}
+#search_list1 a{display:block;}
+#search_list1 .thumb{margin-bottom:10px;}
+.more{float:left; width:100%; height:40px; margin:40px 0 40px;} 
+.more a{width:30%; height:50px; border:1px #bbb solid; background:#efefef; line-height:50px; display:block; margin:0 auto; color:#333; font-weight:600; font-size:15px;}
+
+#search_list2{ padding:10px 30px;}
+#search_list2 ul{width:100%; float:left;}
+#search_list2 .thumb{border:1px #e6e6e6 solid; float:left; margin:5px;}
+#search_list2 .thumb a{display:table-cell;width:218px; height:218px; vertical-align:middle; padding:5px; }
+#search_list2 .thumb img{max-width:208px; max-height:208px; }

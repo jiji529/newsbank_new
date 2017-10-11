@@ -1,0 +1,51 @@
+@charset "utf-8"; /* CSS Document */  
+body { width:1240px; margin:50px; }
+
+table { font-family: 'Nanum Gothic'; clear: both; width:100%; margin-bottom:50px; }
+.aaa{margin-bottom:20px;}
+.aaa th { padding: 8px 0; border-left: 1px solid #4d4941; background: #665947; color:#fff; font-size: 13px; text-align: center; }
+.aaa td { padding: 10px 0; border-left: 1px solid #e6e6e6; border-top: 1px solid #dce0e9; font-size:13px; text-align: center; line-height: 18px; }
+.aaa tfoot td { background:#f5f4f0; font-weight:600; border-bottom: 1px solid #d7d7d7; }
+th:first-child, td:first-child { border-left:none; }
+li .btn{ padding: 10px 20px; color: #666; border: 1px solid #ccc; background:#fff; margin-left:-1px;}
+li .btn.on{ color: #fff; border: 1px solid #f58018; background:#f79320; margin-left:-1px;}
+
+h3 { float:left; margin:50px 0 15px; width:100%; text-align:left; }
+h3:before{content:""; width:5px; height:18px; background:#f79320; float:left; margin-right:8px; margin-top:1px ;}
+h4 { float:left; margin:15px 0 10px; width:100%; text-align:left;}
+p.txt{width:100%; text-align:left; margin-bottom:30px; font-size:13px; color:#999;}
+
+
+.bbb { border-top:3px #555b62 solid; border-bottom:1px #999 solid; text-align:left; }
+.bbb tfoot td{background:#f6f6f6; font-weight:bold;}
+.bbb th { padding: 10px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:60px; }
+.bbb td { padding: 10px 30px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; }
+.bbb td.phone { padding: 10px 0 0 30px;  }
+.bbb td *{float:left;}
+.bbb td input{  padding: 12px 10px;}
+.bbb td input[type=file]{ padding:8px ; border: 1px solid #d9d9d9; border-radius: 2px; width:400px;}
+.bbb td input:focus{color:#666;border:1px solid #f68b1f;outline:0;background:#fff}
+.inp_txt { padding: 10px; color: #999; border: 1px solid #d9d9d9; border-radius: 2px;}
+.ico_require { display:inline-block; overflow:hidden; width:15px; height:15px; margin-left:5px; vertical-align:-5px; color:transparent; background-position:-480px 0!important }
+.ico { text-indent:-999em; background:url(http://www.kdnavien.co.kr/images/ko/common/ico_pack.png) no-repeat }
+.bar{margin:10px 5px;}
+.btn_input1{ padding: 10px 20px; color: #666; border: 1px solid #aaa; background:#fff; border-radius: 2px; margin-left:10px; }
+.btn_input2{ padding: 10px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; border-radius: 2px; margin-left:10px; }
+.edit_phone{width:100%; margin-top:10px; border-top:1px #ddd solid;  background:#f9f9f9; padding:10px 20px;}
+.edit_phone_txt{ width:100px; color:#666; font-size:12px; line-height:40px;}
+.edit_phone div{width:100%; margin-top:10px;}
+
+.btn_area{width:100%;}
+.btn_area a{padding:14px 50px; font-size:15px; font-weight:600; border-radius:4px;}
+
+.bbb select{margin-right:5px; height:40px;}
+.bbb .check{ margin:10px 5px 10px 10px; }
+.bbb .check input{margin:3px;}
+
+.calculate_info_area{width:100%; float:left; height:50px; background:#f6f6f6; border:1px #ddd solid; color:#666; font-size:14px; line-height:50px; margin:30px 0; font-weight:600; }
+
+
+.ccc { border-top:2px #555b62 solid; border-bottom:1px #999 solid; }
+.ccc th { padding: 10px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:45px; background:#f6f6f6; }
+.ccc td { padding: 10px 30px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; }
+.ccc tfoot td { font-weight:bold; color:#f79320  }

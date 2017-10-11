@@ -1,0 +1,24 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+@font-face {
+ font-family: 'Montserrat';
+ font-style: normal;
+ font-weight: 400;
+ src: url('font/Montserrat.eot'),  url('font/Montserrat.eot?#iefix') format('embedded-opentype'),  url('font/Montserrat.woff') format('woff');
+}
+ @font-face {
+font-family: 'nsr';
+src: url('font/nanumsquarer.eot');
+src: url('font/nanumsquarer.eot?#iefix') format('embedded-opentype'), url('font/nanumsquarer.woff') format('woff'), url('font/nanumsquarer.ttf') format('truetype'), url('font/nanumsquarer.svg#nanumsquarer') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+@font-face {
+font-family: 'nsb';
+src: url('font/nanumsquareb.eot');
+src: url('font/nanumsquareb.eot?#iefix') format('embedded-opentype'), url('font/nanumsquareb.woff') format('woff'), url('font/nanumsquareb.ttf') format('truetype'), url('font/nanumsquareb.svg#nanumsquareb') format('svg');
+font-weight: normal;
+font-style: normal;
+}
