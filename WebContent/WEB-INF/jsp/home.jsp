@@ -43,11 +43,7 @@
 		List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
 		items = (List<Map<String,Object>>)request.getAttribute("test");
 		out.println(items.get(1).get("descriptionKr"));
-
-		//String [] arr = (String[])request.getAttribute("test");
-		//for(int i=0;i<arr.length;i++){
-		//out.println(arr[i]+"<br>");
-		//}
+		
 	%>
 <div class="wrap">
 	<nav class="gnb_light">
