@@ -49,7 +49,7 @@
 	<nav class="gnb_light">
 		<div class="gnb"><a href="#" class="logo"></a>
 			<ul class="gnb_left">
-				<li><a href="#">보도사진</a></li>
+				<li><a href="/picture">보도사진</a></li>
 				<li><a href="#">뮤지엄</a></li>
 				<li><a href="#">사진</a></li>
 				<li><a href="#">컬렉션</a></li>
