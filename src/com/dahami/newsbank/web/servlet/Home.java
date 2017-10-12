@@ -17,7 +17,6 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.dahami.common.mybatis.MybatisSessionFactory;
 import com.dahami.common.mybatis.impl.MybatisService;
-import com.dahami.newsbank.web.service.HomeService;
 
 @WebServlet(urlPatterns = { "/home", "*.home" }, loadOnStartup = 1)
 public class Home extends NewsbankServletBase {
@@ -29,7 +28,7 @@ public class Home extends NewsbankServletBase {
 		String confBase = "com/dahami/newsbank/web/dao/mybatis/conf";
 		MybatisService mybatis = new MybatisService(confBase);
 		mybatis.activate();
-		HomeFactory = mybatis.getMybatisServiceSessionFactory(HomeService.class, "service");
+		HomeFactory = mybatis.getMybatisServiceSessionFactory(Home.class, "service");
 	}
 
 	/**

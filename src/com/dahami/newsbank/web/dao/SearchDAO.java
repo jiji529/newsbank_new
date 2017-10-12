@@ -23,8 +23,17 @@ import com.dahami.common.util.ObjectUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
-public class SearchDAO {
+public class SearchDAO extends DAOBase {
 
+	/**
+	 * @methodName  : search
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 10. 12. 오전 11:11:31
+	 * @methodCommet: 주어진 조건으로 검색하여 결과리스트 리턴
+	 * @param param
+	 * @return 
+	 * @returnType  : List<PhotoDTO>
+	 */
 	public List<PhotoDTO> search(SearchParameterBean param) {
 		List<PhotoDTO> ret = new ArrayList<PhotoDTO>();
 		List<PhotoDTO> totalList = (List<PhotoDTO>) ObjectUtil.loadObject(PhotoDTO.class.getResourceAsStream("photoList.obj"));
@@ -49,5 +58,25 @@ public class SearchDAO {
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * @methodName  : read
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 10. 12. 오전 11:11:00
+	 * @methodCommet: UCI 코드를 사용하여 특정 이미지 정보를 읽어옴
+	 * @param uciCode
+	 * @return 
+	 * @returnType  : PhotoDTO
+	 */
+	public PhotoDTO read(String uciCode) {
+		
+		List<PhotoDTO> totalList = (List<PhotoDTO>) ObjectUtil.loadObject(PhotoDTO.class.getResourceAsStream("photoList.obj"));
+		for(PhotoDTO cur : totalList) {
+			if(cur.getUciCode().equals(uciCode)) {
+				return cur;
+			}
+		}
+		return null;
 	}
 }

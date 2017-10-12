@@ -19,7 +19,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -38,13 +38,16 @@
   </script>
 </head>
 <body>
+<c:forEach items="${test}" var="pic">
+   ${ pic.descriptionKr }
+</c:forEach>
 	<%
-		out.println(request.getParameter("test"));
-		List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
-		items = (List<Map<String,Object>>)request.getAttribute("test");
-		out.println(items.get(1).get("descriptionKr"));
+// 		out.println(request.getParameter("test"));
+// 		List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
+// 		items = (List<Map<String,Object>>)request.getAttribute("test");
+// 		out.println(items.get(1).get("descriptionKr"));
 		
-	%>
+%>~~
 <div class="wrap">
 	<nav class="gnb_light">
 		<div class="gnb"><a href="#" class="logo"></a>
