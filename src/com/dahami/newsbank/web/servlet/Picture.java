@@ -49,12 +49,6 @@ public class Picture extends NewsbankServletBase {
 		List<PhotoDTO> photoList = searchDAO.search(parameterBean);
 		
 		request.setAttribute("picture", photoList);
-		System.out.println(photoList);
-
-		/*for(int idx=0; idx<photoList.size(); idx++) {
-			String compCode = photoList.get(idx).getCompCode();
-			System.out.println(compCode);
-		}*/
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/picture.jsp");
 		dispatcher.forward(request, response);
