@@ -38,9 +38,6 @@
   </script>
 </head>
 <body>
-<c:forEach items="${test}" var="pic">
-   ${ pic.descriptionKr }
-</c:forEach>
 	<%
 // 		out.println(request.getParameter("test"));
 // 		List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
