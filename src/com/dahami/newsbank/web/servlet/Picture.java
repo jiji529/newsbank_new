@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 /**
  * Servlet implementation class Picture
@@ -38,6 +43,18 @@ public class Picture extends NewsbankServletBase {
 		if (closed) {
 			return;
 		}
+		
+		SearchParameterBean parameterBean = new SearchParameterBean();
+		SearchDAO searchDAO = new SearchDAO();
+		List<PhotoDTO> photoList = searchDAO.search(parameterBean);
+		
+		request.setAttribute("picture", photoList);
+		System.out.println(photoList);
+
+		/*for(int idx=0; idx<photoList.size(); idx++) {
+			String compCode = photoList.get(idx).getCompCode();
+			System.out.println(compCode);
+		}*/
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/picture.jsp");
 		dispatcher.forward(request, response);

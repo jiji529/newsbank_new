@@ -25,6 +25,41 @@
 <link rel="stylesheet" href="css/sub.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+<!-- <script type="text/javascript">
+	
+	$(document).on("click", ".square", function() {
+		$(".viewbox > .size > span.grid").removeClass("on");
+		$(".viewbox > .size > span.square").addClass("on");
+		$("#search_list1").css("display", "none");
+		$("#search_list2").css("display", "block");
+	});
+	
+	$(document).on("click", ".grid", function() {
+		$(".viewbox > .size > span.square").removeClass("on");
+		$(".viewbox > .size > span.grid").addClass("on");
+		$("#search_list1").css("display", "block");
+		$("#search_list2").css("display", "none");
+	});
+	
+	
+	function more() {
+		var list1 = $("#search_list1").css("display");
+		var list2 = $("#search_list2").css("display");
+		var length = ${moreList.size()};
+		var html = "";
+		
+		<c:forEach items="${moreList}" var="morelist">
+			html += '<li class="thumb"><a href="/view.picture?uciCode=${morelist.uciCode}"><img src="/images/n2/${morelist.compCode}.jpg"></a></li>';
+		</c:forEach>		
+		
+		if(list1 == "block"){
+			$(html).appendTo("#search_list1");
+		}else if(list2 == "block"){
+			$(html).appendTo("#search_list2");
+		}
+				
+	}
+</script> -->
 
 </head>
 <body class="fixed">
@@ -164,7 +199,33 @@
 			</div>
 			<!-- 필터끝 -->
 		</div>
-		
+		<section id="search_list1">
+			<ul>
+				<c:forEach items="${picture}" var="pic">
+					<li> ${ pic.uciCode } </li> 
+				</c:forEach>												
+			</ul>
+			<ul>				
+				<c:forEach items="${picture}" var="PhotoDTO">
+					<li class="thumb"><a href="/view.picture?uciCode=${PhotoDTO.uciCode}"><img src="images/n2/${PhotoDTO.compCode}.jpg"></a></li>
+				</c:forEach>				
+			</ul>			
+		</section>
+		<%-- <section id="more_list" style="display: none;">
+			<ul>
+				<c:forEach items="${moreList}" var="moreDTO">
+					<li class="thumb"><a href="/view.picture?uciCode=${moreDTO.uciCode}"><img src="images/n2/${moreDTO.compCode}.jpg"></a></li>
+				</c:forEach>
+			</ul>
+		</section> --%>
+		<section id="search_list2" style="display: none;">
+			<ul>
+				<c:forEach items="${picture}" var="PhotoDTO">
+					<li class="thumb"><a href="/view.picture?uciCode=${PhotoDTO.uciCode}"><img src="images/n2/${PhotoDTO.compCode}.jpg"></a></li>
+				</c:forEach>
+			</ul>
+		</section>
+		<!-- <div class="more"><a href="javascript:moreList()">결과 더보기</a></div> -->		
 		<div class="more"><a href="javascript:more()">결과 더보기</a></div>
 		<footer>
 			<div class="foot_wrap">
