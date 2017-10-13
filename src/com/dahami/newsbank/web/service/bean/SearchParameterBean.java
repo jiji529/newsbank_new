@@ -19,12 +19,20 @@ package com.dahami.newsbank.web.service.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dahami.newsbank.dto.PhotoDTO;
+
 public class SearchParameterBean {
+	private static final int ALL = 0;
 //	private String searchKey;
 	private String keyword;
 	
-	/** 컨텐츠 종류 */
+	/** 컨텐츠 종류 / 0전체 1보도 2뮤지엄 4개인사진 8컬렉션*/
 	private int contentType;
+	public static final int CONTENT_TYPE_ALL = ALL;
+	public static final int CONTENT_TYPE_NEWS = 1;
+	public static final int CONTENT_TYPE_MUSEUM = 2;
+	public static final int CONTENT_TYPE_PERSONAL = 4;
+	public static final int CONTENT_TYPE_COLLECTION = 8;
 	
 	/** 대상 매체(유저ID) 지정 / 없거나 공백값이면 전체 */
 	private List<String> targetUserList;
@@ -34,18 +42,39 @@ public class SearchParameterBean {
 	
 	/** 색상영역 : 0전체 / 1컬러 / 2모노 */
 	private int colorMode;
+	public static final int COLOR_ALL = ALL;
+	public static final int COLOR_YES = PhotoDTO.MONO_NO;
+	public static final int COLOR_NO = PhotoDTO.MONO_YES;
 	
 	/** 가로세로 선택 : 0전체 1가로 2세로 */
 	private int horiVertChoice;
+	public static final int HORIZONTAL_ALL = ALL;
+	public static final int HORIZONTAL_YES = 1;
+	public static final int HORIZONTAL_NO = 2;
 	
-	/** 이미지 크기 : 0:전체 1큰 2중간 3작은*/
+	/** 이미지 크기 : 0:전체 1큰 2중간 4작은*/
 	private int size;
+	public static final int SIZE_ALL = ALL;
+	public static final int SIZE_LARGE = 1;
+	public static final int SIZE_MEDIUM = 2;
+	public static final int SIZE_SMALL = 4;
 	
 	/** 초상권해결여부 0전체 1해결 2미해결 */
 	private int portRight;
+	public static final int PORTRAIT_RIGHT_ALL = ALL;
+	public static final int PORTRAIT_RIGHT_ACQUIRE  = PhotoDTO.PORTRAITRIGHTSTATE_ACQUIRE_INT;
+	public static final int PORTRAIT_RIGHT_NOT  = PhotoDTO.PORTRAITRIGHTSTATE_NOT_INT;
+	
+	/** 인물포함 여부 / 0전체 1포함 2미포함*/
+	private int includePerson;
+	public static final int INCLUDE_PERSON_ALL = ALL;
+	public static final int INCLUDE_PERSON_YES = PhotoDTO.INCLUDEPERSON_YES_INT; 
+	public static final int INCLUDE_PERSON_NO = PhotoDTO.INCLUDEPERSON_NO_INT;
 	
 	/** 그룹화 여부 0전체 1대표 ?? */
 	private int group;
+	public static final int GROUP_IMAGE_ALL = ALL;
+	public static final int GROUP_IMAGE_REP = 1;
 	
 	private int pageVol;
 	private int pageNo;
@@ -147,6 +176,14 @@ public class SearchParameterBean {
 
 	public void setPortRight(int portRight) {
 		this.portRight = portRight;
+	}
+
+	public int getIncludePerson() {
+		return includePerson;
+	}
+
+	public void setIncludePerson(int includePerson) {
+		this.includePerson = includePerson;
 	}
 
 	public int getGroup() {
