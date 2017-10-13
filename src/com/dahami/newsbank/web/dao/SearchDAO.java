@@ -17,7 +17,9 @@
 package com.dahami.newsbank.web.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dahami.common.util.ObjectUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
@@ -32,10 +34,12 @@ public class SearchDAO extends DAOBase {
 	 * @methodCommet: 주어진 조건으로 검색하여 결과리스트 리턴
 	 * @param param
 	 * @return 
-	 * @returnType  : List<PhotoDTO>
+	 * @returnType  : Map<String, Object> / count:결과 숫자(Integer) / result:결과물 리스트(List<PhotoDTO>)
 	 */
-	public List<PhotoDTO> search(SearchParameterBean param) {
-		List<PhotoDTO> ret = new ArrayList<PhotoDTO>();
+	public Map<String, Object> search(SearchParameterBean param) {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		
+		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 		List<PhotoDTO> totalList = (List<PhotoDTO>) ObjectUtil.loadObject(PhotoDTO.class.getResourceAsStream("photoList.obj"));
 		
 		int pageVol = param.getPageVol();
@@ -49,13 +53,16 @@ public class SearchDAO extends DAOBase {
 				try {
 					cur = totalList.get(start + i);
 					if(cur != null) {
-						ret.add(cur);
+						photoList.add(cur);
 					}
 				}catch(Exception e) {
 					break;
 				}
 			}
 		}
+		
+		ret.put("count", totalList.size());
+		ret.put("result", photoList);
 		
 		return ret;
 	}
