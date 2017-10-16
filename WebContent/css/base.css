@@ -12,6 +12,9 @@ body,h1,h2,h3,h4,input,button{font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotu
 a{text-decoration: none;}
 .color{ color:#f79320!important;}
 .block {display:block;}
+/*
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {    -webkit-appearance: none;}
+*/
 
 .wrap{min-height: 100%; position: relative;}
 nav.gnb_light{height: 90px; width: 100%; margin: 0 auto; -webkit-transition: 0.1s box-shadow ease-in-out; -moz-transition: 0.1s box-shadow ease-in-out; transition: 0.1s box-shadow ease-in-out; position: absolute; z-index: 1000; -webkit-transform: translate3d(0, 0, 0); -moz-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(transparent)); background: -webkit-linear-gradient(rgba(0,0,0,0.5), transparent); background: -moz-linear-gradient(rgba(0,0,0,0.5), transparent); background: linear-gradient(rgba(0,0,0,0.5), transparent); top: 0; padding-top:10px;}
@@ -25,7 +28,7 @@ nav .gnb_right{ float:right; display:block;}
 nav .gnb_right li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px;  }
 nav .gnb_right li a{ color:#bbb; font-size:15px;}
 
-nav.gnb_dark{height: 90px; width: 100%; margin: 0 auto; top: 0; padding-top:10px; background:#fff;}
+nav.gnb_dark{height: 90px; width: 100%; margin: 0 auto; top: 0; padding-top:10px; background:#fff; border-bottom:1px #e6e6e6 solid;}
 nav.gnb_dark .gnb{padding:0 50px; }
 nav.gnb_dark .gnb a.logo{height: 50px; display: block; float: left; width: 142px; margin: 10px 0; position: relative; background:url(../images/logo_b.svg) 0 0 no-repeat;} 
 nav.gnb_dark .gnb .gnb_left li a{color:#555;}
