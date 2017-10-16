@@ -11,6 +11,7 @@
   date            author         comment
   ----------      ---------      ----------------------------------------------
   2017. 10. 11.   hoyadev       picture
+  2017. 10. 16.   hoyadev       showListCount()
 ---------------------------------------------------------------------------%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -41,6 +42,36 @@
 		$("#search_list1").css("display", "block");
 		$("#search_list2").css("display", "none");
 	});
+	
+	$(document).on("click", ".filter_list li", function() {
+		var choice = $(this).text();
+		var filter_list = "<ul class=\"filter_list\">"+$(this).parents(".filter_list").html()+"</ul>";
+		$(this).parents(".filter_title").children().remove().end().html(choice+filter_list);
+	});
+	
+	function showListCount(count) {
+		
+		$("#search_list1 ul").empty();
+		$("#search_list2 ul").empty();
+		
+		var html = "";				
+		$.ajax({
+			url: "/searchJson?count="+count,		
+			type: "GET",
+			dataType: "json",
+			success: function(data) { console.log(data);
+				$(data.result).each(function(key, val) {					
+					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode="+val.uciCode+"\"><img src=\"images/n2/"+val.compCode+".jpg\"></a></li>";	
+				});	
+				
+				$(html).appendTo("#search_list1 ul");
+				$(html).appendTo("#search_list2 ul");
+			}, error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		});
+	}
+	
 </script>
 
 </head>
@@ -156,11 +187,10 @@
 							<li>미포함</li>
 						</ul>
 					</li>
-					<li class="filter_title"> 유사이미지
+					<li class="filter_title"> 대표이미지
 						<ul class="filter_list">
 							<li>전체</li>
-							<li>묶인거</li>
-							<li>안묶인거</li>
+							<li>대표만 보기</li>
 						</ul>
 					</li>
 				</ul>
@@ -171,7 +201,7 @@
 						<span>/</span><span class="total">1234</span><a href="#" class="next" title="다음페이지"></a></div>
 					<div class="viewbox">
 						<div class="size"><span class="grid on">가로맞춤보기</span><span class="square">사각형보기</span></div>
-						<select name="limit">
+						<select name="limit" onchange="showListCount(this.value)">							
 							<option value="40" selected="selected">40</option>
 							<option value="80">80</option>
 							<option value="120">120</option>
@@ -195,7 +225,7 @@
 				</c:forEach>
 			</ul>
 		</section>
-		<div class="more"><a href="#">결과 더보기</a></div>
+		<div class="more"><a href="#">다음 페이지</a></div>
 		<footer>
 			<div class="foot_wrap">
 				<div class="foot_lt">(주)다하미커뮤니케이션즈 | 대표 박용립<br />

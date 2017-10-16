@@ -1,7 +1,11 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,7 +22,7 @@ import com.dahami.newsbank.web.service.bean.SearchParameterBean;
  * Servlet implementation class Picture
  */
 @WebServlet(
-		urlPatterns = {"/picture", "*.picture"},
+		urlPatterns = {"/picture"},
 		loadOnStartup = 1
 		)
 public class Picture extends NewsbankServletBase {
@@ -45,10 +49,22 @@ public class Picture extends NewsbankServletBase {
 		}
 		
 		SearchParameterBean parameterBean = new SearchParameterBean();
+		parameterBean.setPageVol(40);
 		SearchDAO searchDAO = new SearchDAO();
-		List<PhotoDTO> photoList = searchDAO.search(parameterBean);
+		Map<String, Object> photoList = searchDAO.search(parameterBean);		
+		request.setAttribute("total", photoList.get("count"));
+		request.setAttribute("picture", photoList.get("result"));
 		
-		request.setAttribute("picture", photoList);
+		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+		List<PhotoDTO> list = (List<PhotoDTO>) photoList.get("result");
+		for(PhotoDTO dto : list){
+			try {
+				jsonList.add(dto.convertToMap());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/picture.jsp");
 		dispatcher.forward(request, response);
@@ -59,7 +75,13 @@ public class Picture extends NewsbankServletBase {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String limit = request.getParameter("limit");
+		System.out.println("limit : "+limit);
 		doGet(request, response);
+	}
+	
+	private void showListCount(String count) {
+		System.out.println("count : "+count);
 	}
 
 }
