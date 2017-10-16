@@ -46,14 +46,42 @@ public class Picture extends NewsbankServletBase {
 		request.setCharacterEncoding("UTF-8");
 		if (closed) {
 			return;
-		}
+		}		
 		
 		SearchParameterBean parameterBean = new SearchParameterBean();
 		parameterBean.setPageVol(40);
+		
 		SearchDAO searchDAO = new SearchDAO();
 		Map<String, Object> photoList = searchDAO.search(parameterBean);		
 		request.setAttribute("total", photoList.get("count"));
 		request.setAttribute("picture", photoList.get("result"));
+		request.setAttribute("CONTENT_TYPE_NEWS", SearchParameterBean.CONTENT_TYPE_NEWS);
+		request.setAttribute("CONTENT_TYPE_MUSEUM", SearchParameterBean.CONTENT_TYPE_MUSEUM);
+		request.setAttribute("CONTENT_TYPE_PERSONAL", SearchParameterBean.CONTENT_TYPE_PERSONAL);
+		
+		request.setAttribute("COLOR_ALL", SearchParameterBean.COLOR_ALL);
+		request.setAttribute("COLOR_YES", SearchParameterBean.COLOR_YES);
+		request.setAttribute("COLOR_NO", SearchParameterBean.COLOR_NO);
+		
+		request.setAttribute("HORIZONTAL_ALL", SearchParameterBean.HORIZONTAL_ALL);
+		request.setAttribute("HORIZONTAL_YES", SearchParameterBean.HORIZONTAL_YES);
+		request.setAttribute("HORIZONTAL_NO", SearchParameterBean.HORIZONTAL_NO);
+		
+		request.setAttribute("SIZE_ALL", SearchParameterBean.SIZE_ALL);
+		request.setAttribute("SIZE_LARGE", SearchParameterBean.SIZE_LARGE);
+		request.setAttribute("SIZE_MEDIUM", SearchParameterBean.SIZE_MEDIUM);
+		request.setAttribute("SIZE_SMALL", SearchParameterBean.SIZE_SMALL);
+		
+		request.setAttribute("PORTRAIT_RIGHT_ALL", SearchParameterBean.INCLUDE_PERSON_ALL);
+		request.setAttribute("PORTRAIT_RIGHT_ACQUIRE", SearchParameterBean.PORTRAIT_RIGHT_ACQUIRE);
+		request.setAttribute("PORTRAIT_RIGHT_NOT", SearchParameterBean.PORTRAIT_RIGHT_NOT);
+		
+		request.setAttribute("INCLUDE_PERSON_ALL", SearchParameterBean.INCLUDE_PERSON_ALL);
+		request.setAttribute("INCLUDE_PERSON_YES", SearchParameterBean.INCLUDE_PERSON_YES);
+		request.setAttribute("INCLUDE_PERSON_NO", SearchParameterBean.INCLUDE_PERSON_NO);
+		
+		request.setAttribute("GROUP_IMAGE_ALL", SearchParameterBean.GROUP_IMAGE_ALL);
+		request.setAttribute("GROUP_IMAGE_REP", SearchParameterBean.GROUP_IMAGE_REP);
 		
 		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
 		List<PhotoDTO> list = (List<PhotoDTO>) photoList.get("result");

@@ -11,7 +11,7 @@
   date            author         comment
   ----------      ---------      ----------------------------------------------
   2017. 10. 11.   hoyadev       picture
-  2017. 10. 16.   hoyadev       showListCount()
+  2017. 10. 16.   hoyadev       searchList()
 ---------------------------------------------------------------------------%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -45,18 +45,39 @@
 	
 	$(document).on("click", ".filter_list li", function() {
 		var choice = $(this).text();
+		$(this).attr("selected", "selected");
+		$(this).siblings().removeAttr("selected");
 		var filter_list = "<ul class=\"filter_list\">"+$(this).parents(".filter_list").html()+"</ul>";
 		$(this).parents(".filter_title").children().remove().end().html(choice+filter_list);
+		
+		searchList();
 	});
 	
-	function showListCount(count) {
-		
+	function searchList() {
 		$("#search_list1 ul").empty();
 		$("#search_list2 ul").empty();
 		
+		var count = $("select[name=limit]").val();
+		var contentType = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val();
+		var media = $(".filter_title:nth-of-type(3) .filter_list").find("[selected=selected]").val();
+		var duration = $(".filter_title:nth-of-type(4) .filter_list").find("[selected=selected]").val();
+		var colorMode = $(".filter_title:nth-of-type(5) .filter_list").find("[selected=selected]").val();
+		var horiVertChoice = $(".filter_title:nth-of-type(6) .filter_list").find("[selected=selected]").val();
+		var size = $(".filter_title:nth-of-type(7) .filter_list").find("[selected=selected]").val();
+		var portRight = $(".filter_title:nth-of-type(8) .filter_list").find("[selected=selected]").val();
+		var includePerson = $(".filter_title:nth-of-type(9) .filter_list").find("[selected=selected]").val();
+		var group = $(".filter_title:nth-of-type(10) .filter_list").find("[selected=selected]").val(); 
+		
+		var parameter = "count=" + count;
+		parameter += "&contentType="+contentType+"&media="+media;
+		parameter += "&duration="+duration+"&colorMode="+colorMode;
+		parameter += "&horiVertChoice="+horiVertChoice+"&size="+size;
+		parameter += "&portRight="+portRight+"&includePerson="+includePerson;
+		parameter += "&group="+group;
+		
 		var html = "";				
 		$.ajax({
-			url: "/searchJson?count="+count,		
+			url: "/searchJson?"+parameter,		
 			type: "GET",
 			dataType: "json",
 			success: function(data) { console.log(data);
@@ -104,10 +125,10 @@
 					<li class="filter_title filter_ico">검색필터</li>
 					<li class="filter_title"> 보도사진
 						<ul class="filter_list">
-							<li>보도사진</li>
-							<li>뮤지엄</li>
-							<li>사진</li>
-							<li>컬렉션</li>
+							<li value="<%=request.getAttribute("CONTENT_TYPE_NEWS") %>">보도사진</li>
+							<li value="<%=request.getAttribute("CONTENT_TYPE_MUSEUM") %>">뮤지엄</li>
+							<li value="<%=request.getAttribute("CONTENT_TYPE_PERSONAL") %>">사진</li>
+							<li value="<%=request.getAttribute("CONTENT_TYPE_COLLECTION") %>">컬렉션</li>
 						</ul>
 					</li>
 					<li class="filter_title"> 전체매체
@@ -153,44 +174,44 @@
 					</li>
 					<li class="filter_title"> 색상
 						<ul class="filter_list">
-							<li>전체</li>
-							<li>컬러</li>
-							<li>흑백</li>
+							<li value="<%=request.getAttribute("COLOR_ALL") %>">전체</li>
+							<li value="<%=request.getAttribute("COLOR_YES") %>">컬러</li>
+							<li value="<%=request.getAttribute("COLOR_NO") %>">흑백</li>
 						</ul>
 					</li>
 					<li class="filter_title"> 형태
 						<ul class="filter_list">
-							<li>전체</li>
-							<li>가로</li>
-							<li>세로</li>
+							<li value="<%=request.getAttribute("HORIZONTAL_ALL") %>">전체</li>
+							<li value="<%=request.getAttribute("HORIZONTAL_YES") %>">가로</li>
+							<li value="<%=request.getAttribute("HORIZONTAL_NO") %>">세로</li>
 						</ul>
 					</li>
 					<li class="filter_title"> 사이즈
 						<ul class="filter_list">
-							<li>모든크기</li>
-							<li>큰 사이즈</li>
-							<li>중간 사이즈</li>
-							<li>작은 사이즈</li>
+							<li value="<%=request.getAttribute("SIZE_ALL") %>">모든크기</li>
+							<li value="<%=request.getAttribute("SIZE_LARGE") %>">큰 사이즈</li>
+							<li value="<%=request.getAttribute("SIZE_MEDIUM") %>">중간 사이즈</li>
+							<li value="<%=request.getAttribute("SIZE_SMALL") %>">작은 사이즈</li>
 						</ul>
 					</li>
 					<li class="filter_title"> 라이선스
 						<ul class="filter_list">
-							<li>전체</li>
-							<li>초상권 해결</li>
-							<li>초상권 미해결</li>
+							<li value="<%=request.getAttribute("PORTRAIT_RIGHT_ALL") %>">전체</li>
+							<li value="<%=request.getAttribute("PORTRAIT_RIGHT_ACQUIRE") %>">초상권 해결</li>
+							<li value="<%=request.getAttribute("PORTRAIT_RIGHT_NOT") %>">초상권 미해결</li>
 						</ul>
 					</li>
 					<li class="filter_title"> 인물
 						<ul class="filter_list">
-							<li>전체</li>
-							<li>포함</li>
-							<li>미포함</li>
+							<li value="<%=request.getAttribute("INCLUDE_PERSON_ALL") %>">전체</li>
+							<li value="<%=request.getAttribute("INCLUDE_PERSON_YES") %>">포함</li>
+							<li value="<%=request.getAttribute("INCLUDE_PERSON_NO") %>">미포함</li>
 						</ul>
 					</li>
 					<li class="filter_title"> 대표이미지
 						<ul class="filter_list">
-							<li>전체</li>
-							<li>대표만 보기</li>
+							<li value="<%=request.getAttribute("GROUP_IMAGE_ALL") %>">전체</li>
+							<li value="<%=request.getAttribute("GROUP_IMAGE_REP") %>">대표만 보기</li>
 						</ul>
 					</li>
 				</ul>
@@ -201,7 +222,7 @@
 						<span>/</span><span class="total">1234</span><a href="#" class="next" title="다음페이지"></a></div>
 					<div class="viewbox">
 						<div class="size"><span class="grid on">가로맞춤보기</span><span class="square">사각형보기</span></div>
-						<select name="limit" onchange="showListCount(this.value)">							
+						<select name="limit" onchange="searchList()">							
 							<option value="40" selected="selected">40</option>
 							<option value="80">80</option>
 							<option value="120">120</option>
