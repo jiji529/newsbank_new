@@ -41,14 +41,14 @@ public class SearchJSON extends NewsbankServletBase {
 	    response.setCharacterEncoding("UTF-8");
 	    
 	    int count = Integer.parseInt(request.getParameter("count"));
-	    int contentType = 0;    if(!"undefined".equals(request.getParameter("contentType"))) contentType = Integer.parseInt(request.getParameter("contentType"));
+	    int contentType = 0;    if(request.getParameter("contentType") != null && !request.getParameter("contentType").equals("undefined")) contentType = Integer.parseInt(request.getParameter("contentType"));
 	    String duration = request.getParameter("duration");
-	    int colorMode = 0;	    if(!"undefined".equals(request.getParameter("colorMode"))) colorMode = Integer.parseInt(request.getParameter("colorMode"));
-	    int horiVertChoice = 0; if(!"undefined".equals(request.getParameter("horiVertChoice"))) colorMode = Integer.parseInt(request.getParameter("horiVertChoice"));
-	    int size = 0; if(!"undefined".equals(request.getParameter("size"))) colorMode = Integer.parseInt(request.getParameter("size"));
-	    int portRight = 0; if(!"undefined".equals(request.getParameter("portRight"))) colorMode = Integer.parseInt(request.getParameter("portRight"));
-	    int includePerson = 0; if(!"undefined".equals(request.getParameter("includePerson"))) colorMode = Integer.parseInt(request.getParameter("includePerson"));
-	    int group = 0; if(!"undefined".equals(request.getParameter("group"))) colorMode = Integer.parseInt(request.getParameter("group"));
+	    int colorMode = 0;	    if(request.getParameter("colorMode") != null && !request.getParameter("colorMode").equals("undefined")) colorMode = Integer.parseInt(request.getParameter("colorMode"));
+	    int horiVertChoice = 0; if(request.getParameter("horiVertChoice") != null && !request.getParameter("horiVertChoice").equals("undefined")) horiVertChoice = Integer.parseInt(request.getParameter("horiVertChoice"));
+	    int size = 0; if(request.getParameter("size") != null && !request.getParameter("size").equals("undefined")) size = Integer.parseInt(request.getParameter("size"));
+	    int portRight = 0; if(request.getParameter("portRight") != null && !request.getParameter("portRight").equals("undefined")) portRight = Integer.parseInt(request.getParameter("portRight"));
+	    int includePerson = 0; if(request.getParameter("includePerson") != null && !request.getParameter("includePerson").equals("undefined")) includePerson = Integer.parseInt(request.getParameter("includePerson"));
+	    int group = 0; if(request.getParameter("group") != null && !request.getParameter("group").equals("undefined")) group = Integer.parseInt(request.getParameter("group"));
 	    
 		SearchParameterBean parameterBean = new SearchParameterBean();
 		parameterBean.setPageVol(count);	

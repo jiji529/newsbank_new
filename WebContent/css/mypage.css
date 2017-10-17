@@ -1,5 +1,4 @@
 @charset "utf-8"; /* CSS Document */  
-
 .mypage{width:1240px; margin:0 auto; padding-bottom:100px;}
 .head{float:left; width:100%; padding-top:80px;}
 .head h2{width:100%; float:left; color:#333; font-size:28px; font-weight:400;}
@@ -31,7 +30,8 @@
 .mypage .mypage_ul .mp_tab2 li a{ color:#666;}
 .mypage .mypage_ul .mp_tab2 li.on a{ color:#f79320; text-decoration:underline;}
 
-.mypage table { font-family: 'Nanum Gothic'; clear: both; width:100%; margin-bottom:50px; }
+.mypage section { font-family: 'Nanum Gothic', sans-serif; }
+.mypage table { font-family: 'Nanum Gothic', sans-serif; clear: both; width:100%; margin-bottom:50px; }
 .mypage .tb02{margin-bottom:20px;}
 .mypage .tb02 th { padding: 8px 0; border-left: 1px solid #4d4941; background: #665947; color:#fff; font-size: 13px; text-align: center; }
 .mypage .tb02 td { padding: 10px 0; border-left: 1px solid #e6e6e6; border-top: 1px solid #dce0e9; font-size:13px; text-align: center; line-height: 18px; }
@@ -85,3 +85,44 @@
 
 
 .ex_txt{float:left; font-size:13px; color:#666; text-align:left; margin:-20px 0 20px; }
+
+.mypage .table_head .cms_search{float:right; position:relative; margin-top:-36px; font-size:13px;}
+.mypage .table_head .cms_search input{ margin:0 5px 0 10px; border:1px #ddd solid ; padding:3px 4px; width:240px;}
+.mypage .table_head .cms_search button {padding:4px 15px; background:#f79320; border:0; color:#fff; border-radius:2px;}
+
+.mypage .filters{border-top:3px #555b62 solid; height:53px;}
+.mypage .filters li.filter_title{float:left; padding:0 40px 0 20px; height:50px; border-right:1px #e5e5e5 solid; line-height:50px; position:relative; font-size:14px; cursor:pointer;}
+.mypage .filters li.filter_title.filter_ico{ margin-left:0; }
+@media (max-width: 1400px){
+.mypage .filters li.filter_title.filter_ico{ display:block; border-left:0;}
+.mypage .filters li.filter_title:nth-child(2){margin-left:0; border-left:0;}
+.mypage .filters li.filter_title{max-width:150px}
+.mypage .filters li.filter_title:after{right:15px;}}
+.mypage .filters .filter_rt{margin-right:10px;}
+
+.mypage .btn_sort{float:left; width:100%; margin:20px 0; font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",sans-serif; letter-spacing:-1px; }
+.mypage .btn_sort span.task_check{float:left; border:1px #e2e2e2 solid; background:#f8f8f8; width:28px; height:28px;cursor:pointer;}
+.mypage .btn_sort span.task_check input{ margin:7px 0 0 2px}
+.mypage .btn_sort .button{float:left; }
+.mypage .btn_sort .button li{float:left; border:1px #e2e2e2 solid;height:28px; margin-left:8px; font-size:13px; line-height:28px; padding:0 10px;cursor:pointer;}
+.mypage .btn_sort .button li.sort_down{ background:#f8f8f8; font-weight:600;}
+.mypage .btn_sort .button li.sort_del{ font-weight:600; padding-left:26px; margin-left:-1px; background:url(../images/mp/ico_del.png) 8px 6px no-repeat;background-color:#f8f8f8; }
+.mypage .btn_sort .button li.sort_menu{ }
+.mypage .btn_sort .button li.sort_up{ background:#f8f8f8; font-weight:600;}
+
+.mypage #cms_list2{ float:left;}
+.mypage #cms_list2 ul{width:100%; float:left;}
+.mypage #cms_list2 .thumb{border:1px #e6e6e6 solid; float:left; margin:0 10px 10px 0;width:198px;}
+.mypage #cms_list2 .thumb:nth-child(6n){ margin-right:0;}
+.mypage #cms_list2 .thumb a{display:table-cell;width:196px; height:196px; vertical-align:middle; background:#f6f6f6; }
+.mypage #cms_list2 .thumb img{max-width:196px; max-height:196px; }
+.mypage #cms_list2 .thumb .thumb_info{width:100%; float:left; border-top:1px #e6e6e6 solid; padding:8px 8px 4px 34px; font-size:13px; }
+.mypage #cms_list2 .thumb .thumb_info input {float:left; margin-left:-24px; margin-top:10px;}
+.mypage #cms_list2 .thumb .thumb_info span{ float:left; width:100%; text-align:left; margin-bottom:4px;}
+.mypage #cms_list2 .thumb .thumb_btn{ float:left; width:100%; background:#666;}
+.mypage #cms_list2 .thumb .thumb_btn li{float:left; width:25%; text-indent:-9999px; height:32px; cursor:pointer;}
+.mypage #cms_list2 .thumb .thumb_btn .btn_down{background:url(../images/mp/btn_down.png) center 6px no-repeat;}
+.mypage #cms_list2 .thumb .thumb_btn .btn_del{background:url(../images/mp/btn_del.png) center 6px no-repeat;}
+.mypage #cms_list2 .thumb .thumb_btn .btn_view{background:url(../images/mp/btn_view.png) center 6px no-repeat;}
+.mypage #cms_list2 .thumb .thumb_btn .btn_likeness{background:url(../images/mp/btn_likeness.png) center 6px no-repeat;}
+.mypage #cms_list2 .thumb .thumb_btn li:hover{background-color:#4d4d4d;}
