@@ -4,10 +4,11 @@
 .head h2{width:100%; float:left; color:#333; font-size:28px; font-weight:400;}
 .head p{float: left; width:100%; color:#999; font-size:16px; margin-top:20px;}
 
+.table_head {border-bottom:3px #555b62 solid; float:left; width:100%;}
 .table_head h3 { float:left; margin:50px 0 15px; width:100%; text-align:left; font-size:18px; }
 .table_head h3:before{content:""; width:5px; height:18px; background:#f79320; float:left; margin-right:10px; margin-top:1px ;}
-.table_head h4 { float:left; margin:15px 0 10px; width:100%; text-align:left;}
-.table_head p.txt{width:100%; text-align:left; margin-bottom:30px; font-size:13px; color:#999;}
+.mypage h4 { float:left; margin:15px 0 10px; width:100%; text-align:left;}
+.mypage  p.txt{width:100%; text-align:left; margin-bottom:30px; font-size:13px; color:#999;}
 
 .mypage .pw{ float:left; width:100%; border-top:2px #f79320 solid; background:#fbfbfb; height:250px; padding:80px 0; border-bottom:1px #ccc solid;}
 .mypage .pw .pw_box{ }
@@ -30,8 +31,8 @@
 .mypage .mypage_ul .mp_tab2 li a{ color:#666;}
 .mypage .mypage_ul .mp_tab2 li.on a{ color:#f79320; text-decoration:underline;}
 
-.mypage section { font-family: 'Nanum Gothic', sans-serif; }
-.mypage table { font-family: 'Nanum Gothic', sans-serif; clear: both; width:100%; margin-bottom:50px; }
+.mypage section *{ font-family: 'nanum', sans-serif; }
+.mypage table {clear: both; width:100%; margin-bottom:50px; }
 .mypage .tb02{margin-bottom:20px;}
 .mypage .tb02 th { padding: 8px 0; border-left: 1px solid #4d4941; background: #665947; color:#fff; font-size: 13px; text-align: center; }
 .mypage .tb02 td { padding: 10px 0; border-left: 1px solid #e6e6e6; border-top: 1px solid #dce0e9; font-size:13px; text-align: center; line-height: 18px; }
@@ -40,7 +41,7 @@
 .mypage li .btn{ padding: 10px 20px; color: #666; border: 1px solid #ccc; background:#fff; margin-left:-1px;}
 .mypage li .btn.on{ color: #fff; border: 1px solid #f58018; background:#f79320; margin-left:-1px;}
 
-.mypage .tb01 { border-top:3px #555b62 solid; border-bottom:1px #999 solid; text-align:left; }
+.mypage .tb01 {border-bottom:1px #999 solid; text-align:left; }
 .mypage .tb01 tfoot td{background:#f6f6f6; font-weight:bold;}
 .mypage .tb01 th { padding: 10px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:60px; }
 .mypage .tb01 th .ex { color:red; margin-right:5px; float:left; margin-top:2px;}
@@ -83,14 +84,12 @@
 .mypage .tb03 td { padding: 10px 30px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; }
 .mypage .tb03 tfoot td { font-weight:bold; color:#f79320  }
 
-
 .ex_txt{float:left; font-size:13px; color:#666; text-align:left; margin:-20px 0 20px; }
 
 .mypage .table_head .cms_search{float:right; position:relative; margin-top:-36px; font-size:13px;}
 .mypage .table_head .cms_search input{ margin:0 5px 0 10px; border:1px #ddd solid ; padding:3px 4px; width:240px;}
 .mypage .table_head .cms_search button {padding:4px 15px; background:#f79320; border:0; color:#fff; border-radius:2px;}
 
-.mypage .filters{border-top:3px #555b62 solid; height:53px;}
 .mypage .filters li.filter_title{float:left; padding:0 40px 0 20px; height:50px; border-right:1px #e5e5e5 solid; line-height:50px; position:relative; font-size:14px; cursor:pointer;}
 .mypage .filters li.filter_title.filter_ico{ margin-left:0; }
 @media (max-width: 1400px){
@@ -126,3 +125,39 @@
 .mypage #cms_list2 .thumb .thumb_btn .btn_view{background:url(../images/mp/btn_view.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_likeness{background:url(../images/mp/btn_likeness.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn li:hover{background-color:#4d4d4d;}
+
+.mypage .view .view_lt .btn_edit{ position:absolute; right:0; top:0; height:28px; padding:0 15px; line-height:28px; color:#f79320; border:1px #f79320 solid; border-radius:14px; font-size:13px;}
+.mypage .view .view_lt .cont_area{ padding-bottom:30px; border-bottom:1px #eee solid;}
+.mypage .view .view_lt .img_info_area.area1{ width:280px; border-right:1px #eee solid; padding-right:20px; margin-top:30px; border-top:0;}
+.mypage .view .view_lt .img_info_area.area2{width:520px; margin-left:20px; margin-top:30px; border-top:0;}
+.mypage .view .view_lt .img_info_area.area1 .info_tit, .mypage .view .view_lt .img_info_area.area2 .info_tit{margin-top:0;}
+
+.mypage .view .view_lt .img_info_area.area1 dl{grid-template-columns:28% 72%;}
+.mypage .view .view_lt .img_info_area.area2 dl{grid-template-columns:18% 30% 15% 34%;}
+
+
+.mypage .view .view_rt{ padding-top:25px; padding-left:20px; }
+.mypage .view .view_rt .cms_rt{ float:left; width:100%; }
+.mypage .view .view_rt .cms_rt .info_tit {float:left; width:100%; margin:30px 0 15px; font-size:15px; color:#f79320; }
+.mypage .view .view_rt .cms_rt .cms_table1{width:100%; border-top:1px #dfdfdf solid; font-size:13px; color:#333;}
+.mypage .view .view_rt .cms_rt .cms_table1 th { background:#fbfbfb;border-bottom:1px #eee solid; height:35px; padding:0 15px;}
+.mypage .view .view_rt .cms_rt .cms_table1 th:nth-child(2){border-left:1px #eee solid; text-align:right; }
+.mypage .view .view_rt .cms_rt .cms_table1 td {border-bottom:1px #eee solid;border-left:1px #eee solid; height:40px; padding:0 15px; text-align:right;}
+.mypage .view .view_rt .cms_rt .cms_table1 td b{color:#f79320; padding-right:5px;}
+
+.mypage .view .view_rt .cms_rt .cms_table2{width:100%; border-top:1px #808080 solid; font-size:13px; color:#333; border-bottom:1px #b3b3b3 solid;}
+.mypage .view .view_rt .cms_rt .cms_table2 th{border-bottom:1px #eee solid; height:50px; padding:0 10px;}
+.mypage .view .view_rt .cms_rt .cms_table2 td{border-bottom:1px #eee solid; height:50px; padding:0 15px;}
+.mypage .view .view_rt .cms_rt .cms_table2 td label{float:left; margin-right:20px;}
+.mypage .view .view_rt .cms_rt .cms_table2 td label input{float:left; margin-top:3px; margin-right:3px;}
+
+.mypage .view .view_rt .cms_rt .add_tag{float:left; width:100%;}
+.mypage .view .view_rt .cms_rt .add_tag input{ margin-right:5px; border:1px #ddd solid ; padding:4px 4px; width:310px; float:left;}
+.mypage .view .view_rt .cms_rt .add_tag button {padding:5px 15px; background:#b3b3b3; border:0; color:#fff; border-radius:2px; float:left;}
+.mypage .view .view_rt .cms_rt .tag_list{ float:left; width:100%; margin-top:10px;}
+.mypage .view .view_rt .cms_rt .tag_list li{ float:left; padding:8px 12px 8px 30px; border-radius:16px; font-size:13px; margin:5px; position:relative;}
+.mypage .view .view_rt .cms_rt .tag_list li .tag_remove{ float:left; left:8px; top:-1px; position:absolute;color: #999; font-size: 24px; cursor:pointer; padding:2px; }
+.mypage .view .view_rt .cms_rt .tag_list .tag_self{ background:#fff; border:1px #f79320 solid;}
+.mypage .view .view_rt .cms_rt .tag_list .tag_auto{ background:#f5f5f5; border:1px #ccc solid;}
+
+.mypage .view .view_lt .cont_area .img_tit:first-child{color:#666; margin-bottom:0; font-size:18px; }

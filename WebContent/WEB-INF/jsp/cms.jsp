@@ -215,7 +215,7 @@
 		<section id="cms_list2">
 			<ul>
 				<c:forEach items="${picture}" var="PhotoDTO">
-					<li class="thumb"> <a href="#"><img src="images/n2/${PhotoDTO.compCode}.jpg" /></a>
+					<li class="thumb"> <a href="/view.cms?uciCode=${PhotoDTO.uciCode}"><img src="images/n2/${PhotoDTO.compCode}.jpg" /></a>
 					<div class="thumb_info">
 						<input type="checkbox" />
 						<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
