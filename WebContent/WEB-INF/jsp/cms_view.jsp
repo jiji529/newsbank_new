@@ -16,6 +16,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -28,6 +30,12 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script type="text/javascript">
+	$(document).ready(function(key, val){
+		var saleState = ${photoDTO.saleState};
+		var portraitRightState = ${photoDTO.portraitRightState};
+		console.log("saleState : "+saleState + " / portraitRightState : "+portraitRightState);
+	});
+	
 	$(document).on("click", ".tag_remove", function() {
 		$(this).parent().remove();
 	});
@@ -166,31 +174,15 @@
 					</div>
 					<div class="img_info_area area2">
 						<h3 class="info_tit">EXIF (Exchangeable Image File Format)</h3>
+						<c:set var="split_exif" value="${fn:split(photoDTO.exif, '|')}" />
+						
 						<dl>
-							<dt>조리개값</dt>
-							<dd>F/4</dd>
-							<dt>감도</dt>
-							<dd>ISO-1600 </dd>
-							<dt>촬영날짜</dt>
-							<dd>2017:10:12 20:22:40 </dd>
-							<dt>너비x높이</dt>
-							<dd>2486x3945</dd>
-							<dt>해상도</dt>
-							<dd>300x300(dpi)</dd>
-							<dt>플래시</dt>
-							<dd>Flash did not fire</dd>
-							<dt>계량모드</dt>
-							<dd>Pattern</dd>
-							<dt>촬영모드</dt>
-							<dd>A directly photographed image</dd>
-							<dt>광원</dt>
-							<dd>unknown</dd>
-							<dt>노출보정</dt>
-							<dd>0/6</dd>
-							<dt>노출프로그램</dt>
-							<dd>Manual</dd>
-							<dt>만들기 소프트웨어</dt>
-							<dd>Adobe Photoshop CS Windows</dd>
+							<c:forEach items="${split_exif}" var="split_exif">
+								<c:set var="name" value="${fn:substringBefore(split_exif, ':')}" />
+								<c:set var="value" value="${fn:substringAfter(split_exif, ':')}" />
+								<dt>${name}</dt>
+								<dd>${value}</dd>
+							</c:forEach>
 						</dl>
 					</div>
 					<div class="img_info_area">
@@ -234,7 +226,7 @@
 						</tr>
 						<tr>
 							<th scope="row">상세보기</th>
-							<td><b>348</b>회</td>
+							<td><b>${photoDTO.hitCount}</b>회</td>
 						</tr>
 						<tr>
 							<th scope="row">결제</th>

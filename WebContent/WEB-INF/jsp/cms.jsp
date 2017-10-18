@@ -58,8 +58,8 @@
 			type: "GET",
 			dataType: "json",
 			success: function(data) { 
-				$(data.result).each(function(key, val) {				
-					html += "<li class=\"thumb\"> <a href=\"#\"><img src=\"images/n2/"+val.compCode+".jpg\" /></a>";
+				$(data.result).each(function(key, val) {		
+					html += "<li class=\"thumb\"> <a href=\"/view.cms?uciCode="+val.uciCode+"\"><img src=\"images/n2/"+val.compCode+".jpg\" /></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>"+val.uciCode+"</span><span>"+val.copyright+"</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\">다운로드</li>	<li class=\"btn_del\">삭제</li> <li class=\"btn_view\">다운로드</li> <li class=\"btn_likeness\"></li> </ul>";
 				});	
