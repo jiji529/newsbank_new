@@ -22,9 +22,13 @@ src: url('font/nanumsquareb.eot?#iefix') format('embedded-opentype'), url('font/
 font-weight: normal;
 font-style: normal;
 }
+
 @font-face {
 font-family: 'nanum';
 src: url('font/NanumGothic-Regular.ttf') format('truetype');
 font-weight: normal;
 font-style: normal;
 }
+
+
+
