@@ -5,6 +5,7 @@
 	<projects>
 		<project>com.dahami.common.util</project>
 		<project>NewsBank_2017_Common</project>
+		<project>Newsbank_2017_Common</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
