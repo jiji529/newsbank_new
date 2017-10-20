@@ -82,7 +82,13 @@
 			dataType: "json",
 			success: function(data) { console.log(data);
 				$(data.result).each(function(key, val) {					
-					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode="+val.uciCode+"\"><img src=\"images/n2/"+val.compCode+".jpg\"></a></li>";	
+					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode="+val.uciCode+"\"><img src=\"images/n2/"+val.compCode+".jpg\"></a>";
+					html += "<div class=\"info\">";
+					html += "<div class=\"photo_info\">"+val.copyright+"</div>";
+					html += "<div class=\"right\">";
+					html += "<a class=\"over_wish\" href=\"#\">찜</a> <a class=\"over_down\" href=\"#\">시안 다운로드</a> </div>";
+					html += "</div>";
+					html += "</li>";		
 				});	
 				
 				$(html).appendTo("#search_list1 ul");
@@ -235,14 +241,24 @@
 		<section id="search_list1">			
 			<ul>				
 				<c:forEach items="${picture}" var="PhotoDTO">
-					<li class="thumb"><a href="/view.picture?uciCode=${PhotoDTO.uciCode}"><img src="images/n2/${PhotoDTO.compCode}.jpg"></a></li>
+					<li class="thumb"><a href="/view.picture?uciCode=${PhotoDTO.uciCode}"><img src="images/n2/${PhotoDTO.compCode}.jpg"></a>
+						<div class="info">
+							<div class="photo_info">${PhotoDTO.copyright}</div>
+							<div class="right"> <a class="over_wish" href="#">찜</a> <a class="over_down" href="#">시안 다운로드</a> </div>
+						</div>
+					</li>
 				</c:forEach>				
 			</ul>			
 		</section>		
 		<section id="search_list2" style="display: none;">
 			<ul>
 				<c:forEach items="${picture}" var="PhotoDTO">
-					<li class="thumb"><a href="/view.picture?uciCode=${PhotoDTO.uciCode}"><img src="images/n2/${PhotoDTO.compCode}.jpg"></a></li>
+					<li class="thumb"><a href="/view.picture?uciCode=${PhotoDTO.uciCode}"><img src="images/n2/${PhotoDTO.compCode}.jpg"></a>
+						<div class="info">
+							<div class="photo_info">${PhotoDTO.copyright}</div>
+							<div class="right"> <a class="over_wish" href="#">찜</a> <a class="over_down" href="#">시안 다운로드</a> </div>
+						</div>
+					</li>
 				</c:forEach>
 			</ul>
 		</section>
