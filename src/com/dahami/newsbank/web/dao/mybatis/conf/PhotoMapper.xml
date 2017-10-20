@@ -5,8 +5,8 @@
 	<!-- 사진 정보 수정 -->
 	<update id="updatePhoto" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 	    UPDATE photo SET 
-	    	titleKr = #{titleKr},
-	    	descriptionKr = #{descriptionKr}
+	    	titleKr = #{titleKor},
+	    	descriptionKr = #{descriptionKor}
     	WHERE uciCode = #{uciCode}
     </update>
 </mapper>
