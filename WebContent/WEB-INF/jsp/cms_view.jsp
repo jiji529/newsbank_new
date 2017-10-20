@@ -59,13 +59,33 @@
 	
 	$(document).on("click", ".complete", function() {
 		// DB에 기사 제목, 내용을 수정 기능 필요
-		var title = $(".img_tit").last().children("textarea").text();
-		var content = $(".img_cont > textarea").text();		
+		var titleKor = $(".img_tit").last().children("textarea").text();
+		var descriptionKor = $(".img_cont > textarea").text();
+		var uciCode = "${photoDTO.uciCode}";
 		
 		$(".btn_edit").text("수정");		
 		$(".btn_edit").removeClass("complete");
-		$(".img_tit").last().html("<h3 class=\"img_tit\">"+title+"</h3>");
-		$(".img_cont").html("<p class=\"img_cont\">"+content+"</p>");
+		$(".img_tit").last().html("<h3 class=\"img_tit\">"+titleKor+"</h3>");
+		$(".img_cont").html("<p class=\"img_cont\">"+descriptionKor+"</p>");
+		
+		//var json_data = $.parseJSON('{"title" : title, "content" : content}');
+		//console.log(json_data);
+		
+		$.ajax({
+			type: "POST",
+			url: "/view.cms",
+			data: {
+				"uciCode" : uciCode,
+				"titleKor" : titleKor,
+				"descriptionKor" : descriptionKor
+			},
+			success: function(data){
+				
+			}, error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+			
+		});
 	});
 	
 	$(document).on("click", ".in_prev", function() {

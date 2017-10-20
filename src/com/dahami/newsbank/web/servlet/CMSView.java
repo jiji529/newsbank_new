@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 /**
  * Servlet implementation class CMSView
@@ -53,6 +55,20 @@ public class CMSView extends NewsbankServletBase {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+		
+		String uciCode = request.getParameter("uciCode");
+		String titleKor = request.getParameter("titleKor");
+		String descriptionKor = request.getParameter("descriptionKor");
+		//System.out.println(uciCode + " / " + titleKor + " / " + descriptionKor);
+		
+		PhotoDTO photoDTO = new PhotoDTO();
+		photoDTO.setUciCode(uciCode);
+		photoDTO.setTitleKor(titleKor);
+		photoDTO.setDescriptionKor(descriptionKor);
+		
+		PhotoDAO photoDAO = new PhotoDAO();
+		photoDAO.update(photoDTO);
 	}
 
 }
+
