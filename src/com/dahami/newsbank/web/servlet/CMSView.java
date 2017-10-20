@@ -1,6 +1,8 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.dto.PhotoTagDTO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.dao.TagDAO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 /**
@@ -44,6 +48,11 @@ public class CMSView extends NewsbankServletBase {
 		String uciCode = request.getParameter("uciCode");
 		PhotoDTO photoDTO = searchDAO.read(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
+		
+		TagDAO tagDAO = new TagDAO();
+		List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);
+		request.setAttribute("photoTagList", photoTagList);
+		//System.out.println(photoTagList.toString());
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/cms_view.jsp");
 		dispatcher.forward(request, response);

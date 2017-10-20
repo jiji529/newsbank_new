@@ -307,15 +307,23 @@
 						<button>추가</button>
 					</div>
 					<ul class="tag_list">
-						<li class="tag_auto"><span class="tag_remove">×</span>장원준</li>
-						<li class="tag_self"><span class="tag_remove">×</span>승리투수</li>
-						<li class="tag_auto"><span class="tag_remove">×</span>KBO</li>
-						<li class="tag_auto"><span class="tag_remove">×</span>두산</li>
-						<li class="tag_auto"><span class="tag_remove">×</span>KIA</li>
-						<li class="tag_auto"><span class="tag_remove">×</span>잠실야구장</li>
-						<li class="tag_auto"><span class="tag_remove">×</span>코칭스태프</li>
-						<li class="tag_auto"><span class="tag_remove">×</span>동료</li>
-						<li class="tag_self"><span class="tag_remove">×</span>2017</li>
+						<!-- <li class="tag_auto"><span class="tag_remove">×</span>장원준</li>
+						<li class="tag_self"><span class="tag_remove">×</span>승리투수</li> -->
+						
+						<c:forEach items="${photoTagList}" var="tag">
+							<li class="tag_self"><span class="tag_remove">×</span>${tag.tag_tagName}</li>
+							
+							<%-- <c:set value="${tag.tagType}" var="tagType"/>
+							<li>${tagType }</li>
+							<c:if test="${tagType == 0}" var="result">
+								<li class="tag_auto"><span class="tag_remove">×</span>${tag.tag_tagName}</li>
+							</c:if>
+							
+							<c:if test="${tagType == 1}" var="result">
+								<li class="tag_self"><span class="tag_remove">×</span>${tag.tag_tagName}</li>
+							</c:if> --%>
+							
+						</c:forEach>
 					</ul>
 				</div>
 			</div>

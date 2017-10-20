@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PhotoTag">
+    
+    <resultMap id="photoTagDTO" type="java.util.HashMap">
+        <result javaType="java.lang.Integer"  column="seq" property="seq" />
+        <result javaType="java.lang.String"  column="photo_uciCode" property="photo_uciCode" />
+        <result javaType="java.lang.Character"  column="tagType" property="tagType" />
+        <result javaType="java.util.Date"  column="regDate" property="regDate" />        
+        <result javaType="java.lang.Integer"  column="tag_seq" property="tag_seq" />
+        <result javaType="java.lang.String"  column="tag_tagName" property="tag_tagName" />
+        <result javaType="java.util.Date"  column="tag_regDate" property="tag_regDate" />
+    </resultMap>
+    
+    <!-- <resultMap id="tagDTO" type="java.util.HashMap">
+        <result javaType="java.lang.Integer"  column="tag_seq" property="tag_seq" />
+        <result javaType="java.lang.String"  column="tag_tagName" property="tag_tagName" />
+        <result javaType="java.util.Date"  column="tag_regDate" property="tag_regDate" />
+    </resultMap> -->
+    
+	<select id="selectPhotoTag" resultMap="photoTagDTO" parameterType="java.util.Map">
+	    SELECT pTag.seq, pTag.photo_uciCode, pTag.tagType, pTag.regDate, Tag.seq AS tag_seq, Tag.tagName AS tag_tagName, Tag.regDate AS tag_regDate
+		FROM photoTag pTag
+		INNER JOIN tag Tag ON pTag.tag_seq = Tag.seq
+		WHERE pTag.photo_uciCode = #{uciCode}
+		ORDER BY seq DESC
+    </select>
+    
+	<!-- <select id="selectTag" resultMap="tagDTO">
+	    SELECT seq as tag_seq, tagName as tag_tagName, regDate as tag_regDate FROM tag ORDER BY seq DESC	    
+	</select>
+	
+	<delete id="deletePhotoTag" parameterType="photoTagDTO">
+	    DELETE FROM photoTag WHERE seq = #{seq}
+	</delete> -->
+	
+</mapper>
