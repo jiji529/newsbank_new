@@ -51,25 +51,31 @@
 		var title = $(".img_tit").last().text();
 		var content = $(".img_cont").text();		
 		
-		$(".btn_edit").text("수정 완료");		
-		$(".btn_edit").addClass("complete");
-		$(".img_tit").last().html("<textarea style=\"width:100%; font-size:14px; line-height:22px; color:#666;\">"+title+"</textarea>");
-		$(".img_cont").html("<textarea style=\"height:300px; width:100%; font-size:14px; line-height:22px; color:#666;\">"+content+"</textarea>");
+		if($(".btn_edit").hasClass("complete")) {
+			console.log("수정완료 버튼 ");	
+		}else {
+			console.log("수정 버튼 ");
+			$(".btn_edit").text("수정 완료");		
+			$(".btn_edit").addClass("complete");
+			$(".img_tit").last().replaceWith("<textarea class=\"img_tit\" style=\"width:100%; font-size:14px; line-height:22px; color:#666;\">"+title+"</textarea>");
+			$(".img_cont").replaceWith("<textarea class=\"img_cont\" style=\"height:300px; width:100%; font-size:14px; line-height:22px; color:#666;\">"+content+"</textarea>");	
+		}
+		
+		
 	});
 	
 	$(document).on("click", ".complete", function() {
+		console.log("complete click");
 		// DB에 기사 제목, 내용을 수정 기능 필요
-		var titleKor = $(".img_tit").last().children("textarea").text();
-		var descriptionKor = $(".img_cont > textarea").text();
+		var titleKor = $(".img_tit").last().text();
+		var descriptionKor = $(".img_cont").text();
 		var uciCode = "${photoDTO.uciCode}";
+		console.log("제목 : "+titleKor + " / 내용 : "+descriptionKor);
 		
 		$(".btn_edit").text("수정");		
 		$(".btn_edit").removeClass("complete");
-		$(".img_tit").last().html("<h3 class=\"img_tit\">"+titleKor+"</h3>");
-		$(".img_cont").html("<p class=\"img_cont\">"+descriptionKor+"</p>");
-		
-		//var json_data = $.parseJSON('{"title" : title, "content" : content}');
-		//console.log(json_data);
+		$(".img_tit").last().replaceWith("<h3 class=\"img_tit\">"+titleKor+"</h3>");
+		$(".img_cont").replaceWith("<p class=\"img_cont\">"+descriptionKor+"</p>");
 		
 		$.ajax({
 			type: "POST",

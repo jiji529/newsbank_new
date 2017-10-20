@@ -27,11 +27,6 @@ public class PhotoDAO extends DAOBase {
 				
 		try {
 			session = sf.getSession();
-			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("titleKr", photoDTO.getTitleKor());
-			param.put("descriptionKr", photoDTO.getDescriptionKor());
-			param.put("uciCode", photoDTO.getUciCode());
-			
 			session.update("Photo.updatePhoto", photoDTO);
 			
 		} catch (Exception e) {

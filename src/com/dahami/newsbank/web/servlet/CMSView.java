@@ -59,7 +59,6 @@ public class CMSView extends NewsbankServletBase {
 		String uciCode = request.getParameter("uciCode");
 		String titleKor = request.getParameter("titleKor");
 		String descriptionKor = request.getParameter("descriptionKor");
-		//System.out.println(uciCode + " / " + titleKor + " / " + descriptionKor);
 		
 		PhotoDTO photoDTO = new PhotoDTO();
 		photoDTO.setUciCode(uciCode);
