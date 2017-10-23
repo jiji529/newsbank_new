@@ -6,7 +6,7 @@ function popup_window(url, winname, opt) {
 //패스워드 찾기 팝업창
 var password_lost = function(href) {
 	popup_window(href, "비밀번호 찾기",
-			"left=50, top=50, width=617, height=330, scrollbars=1");
+		"left=50, top=50, width=617, height=330, scrollbars=1");
 }
 //비밀번호 찾기 버튼 클릭
 $(document).ready(function() {
@@ -16,6 +16,10 @@ $(document).ready(function() {
 	});
 });
 
+
+
+
+
 $.ajax({
-	
+
 })

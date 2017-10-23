@@ -32,10 +32,10 @@ h1{height: 50px; display: block; width: 142px; margin:0 auto; position: relative
 .box_tit { height: 50px; padding-left: 18px; border-bottom: 1px solid #e6e6e6; line-height: 52px; font-size: 15px; color:#333;}
 .box_cont { overflow: auto; height: 150px; padding: 20px; font-size: 12px; line-height: 18px; color: #666; }
 
-.wrap_check { position: absolute; top: 15px; right: 20px;}
+.wrap_check { position: absolute; top: 15px; right: 20px; }
 .wrap_check input{width:0; height:0;}
-.wrap_check label{display: block;width: 20px; height: 20px; text-indent: -9999px; background:url(../images/ico_chk1.png) 0 0 no-repeat;}
-.wrap_check label.chk{background:url(../images/ico_chk2.png) 0 0 no-repeat;}
+.wrap_check label{display: block;width: 20px; height: 20px; text-indent: -9999px; background:url(../images/ico_chk1.png) 0 0 no-repeat;cursor:pointer;}
+.wrap_check input:checked+label {  background:url(../images/ico_chk2.png) 0 0 no-repeat;}
 
 .wrap_btn{ width:100%; text-align:center; margin-top:30px;}
 .wrap_btn button{ height: 60px; line-height: 60px; width: 180px; font-size: 18px; font-weight: 600;}
@@ -75,3 +75,25 @@ footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#9
 .wrap_info .box_info .item_info dd .inp select{position: absolute; top: 0; left: 0; width: 418px; height: 38px; line-height: 40px; border: 0; font-weight: bold; text-indent: 15px; -webkit-appearance: none; background:url(../images/bg_sel.jpg) 400px 15px no-repeat; color:#666;}
 .wrap_info .box_info .item_info dd .inp option{height:50px; padding:10px;}
 .wrap_info .box_info .item_info dd .inp input[type=file]{ padding:7px; text-indent:0;} 
+
+
+
+
+/* 로그인 */
+.login_form{width:400px; margin:40px 100px;}
+.login_form .lbl{font-size: 15px; line-height: 16px; position: absolute; top: 16px; left: 15px; color: #8e8e8e;}
+.login_form .inp_login { position: relative; height: 49px; margin: 0 0 14px; padding: 10px 30px 10px 15px; border: solid 1px #dadada; background: #fff;}
+.login_form .inp_login input{width: 100%; height: 28px; font-size: 15px; line-height: 16px; position: relative;padding: 6px 0; color: #000; border: none; background: #fff; -webkit-appearance: none;}
+.login_form .find_info { font-size: 13px; line-height: 14px; padding-top: 20px; text-align: center; color: #8e8e8e; border-top: 1px solid #e4e4e5;}
+.login_form .btn_login { font-size: 20px; font-weight: 700; line-height: 60px; display: block; width: 100%; height: 60px; margin: 30px 0 12px; cursor: pointer; text-align: center; color: #fff; border: none; background-color: #f79320;}
+
+.login_check { position: relative; display: block; height: 25px; padding-top:3px;}
+.login_check input { width: 0; height: 0; }
+.login_check label { font-size: 13px; line-height: 20px; display: block; background:url(../images/ico_chk1.png) 0 0 no-repeat; padding-left:28px;}
+.login_check input:checked+label {  background:url(../images/ico_chk2.png) 0 0 no-repeat;}
+
+.find_info{text-align:center; font-size:12px; width:400px; margin:0 100px; border-top:1px #ddd solid; padding-top:10px; margin-bottom:80px; }
+.find_info a{color:#666;}
+.find_info a:hover{text-decoration:underline;}
+.find_info .bar{margin:0 10px; color:#ddd;}
+

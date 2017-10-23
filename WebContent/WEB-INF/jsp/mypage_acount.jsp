@@ -12,17 +12,13 @@
   ----------      ---------      ----------------------------------------------
   2017. 10. 19.   	  tealight        file_name
 ---------------------------------------------------------------------------%>
-
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
-<script
-	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
@@ -34,20 +30,28 @@
 		<div class="gnb">
 			<a href="/home" class="logo"></a>
 			<ul class="gnb_left">
-				<li class=""><a href="/picture">보도사진</a></li>
-				<li><a href="#">뮤지엄</a></li>
-				<li><a href="#">사진</a></li>
-				<li><a href="#">컬렉션</a></li>
+				<li class="">
+					<a href="/picture">보도사진</a>
+				</li>
+				<li>
+					<a href="#">뮤지엄</a>
+				</li>
+				<li>
+					<a href="#">사진</a>
+				</li>
+				<li>
+					<a href="#">컬렉션</a>
+				</li>
 			</ul>
 			<ul class="gnb_right">
-				<li><a href="#">로그인</a></li>
-				<li><a href="#">가입하기</a></li>
+				<li><a href="/login">로그인</a></li>
+				<li><a href="/kind.join">가입하기</a></li>
 			</ul>
 		</div>
 		<div class="gnb_srch">
 			<form id="searchform">
-				<input type="text" value="검색어를 입력하세요" /> <a href="#"
-					class="btn_search">검색</a>
+				<input type="text" value="검색어를 입력하세요" />
+				<a href="#" class="btn_search">검색</a>
 			</form>
 		</div>
 		</nav>
@@ -58,12 +62,24 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<li class="on"><a href="#">정산 관리</a></li>
-				<li><a href="#">사진 관리</a></li>
-				<li><a href="#">회원정보 관리</a></li>
-				<li><a href="#">찜 관리</a></li>
-				<li><a href="#">장바구니</a></li>
-				<li><a href="#">구매내역</a></li>
+				<li class="on">
+					<a href="/acount.mypage">정산 관리</a>
+				</li>
+				<li>
+					<a href="/cms">사진 관리</a>
+				</li>
+				<li>
+					<a href="/info.mypage">회원정보 관리</a>
+				</li>
+				<li>
+					<a href="#">찜관리</a>
+				</li>
+				<li>
+					<a href="#">장바구니</a>
+				</li>
+				<li>
+					<a href="#">구매내역</a>
+				</li>
 			</ul>
 		</div>
 		<div class="table_head">
@@ -78,84 +94,181 @@
 			<tbody>
 				<tr>
 					<th>조회기간 선택</th>
-					<td><input type="text" size="12" class="inp_txt"
-						value="2017-05-01" maxlength="10"> <span class=" bar">~</span>
-							<input type="text" size="12" class="inp_txt" value="2017-05-01"
-							maxlength="10"></td>
+					<td>
+						<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
+							<span class=" bar">~</span>
+							<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
+					</td>
 				</tr>
 				<tr>
 					<th>기간별 조회</th>
-					<td><select name="" class="inp_txt" style="width: 100px;">
+					<td>
+						<select name="" class="inp_txt" style="width: 100px;">
 							<option value="010" selected="selected">2017</option>
-					</select>
+						</select>
 						<ul>
-							<li><a href="#" class="btn">1월</a></li>
-							<li><a href="#" class="btn">2월</a></li>
-							<li><a href="#" class="btn">3월</a></li>
-							<li><a href="#" class="btn">4월</a></li>
-							<li><a href="#" class="btn">5월</a></li>
-							<li><a href="#" class="btn">6월</a></li>
-							<li><a href="#" class="btn on">7월</a></li>
-							<li><a href="#" class="btn on">8월</a></li>
-							<li><a href="#" class="btn">9월</a></li>
-							<li><a href="#" class="btn">10월</a></li>
-							<li><a href="#" class="btn">11월</a></li>
-							<li><a href="#" class="btn">12월</a></li>
-						</ul></td>
+							<li>
+								<a href="#" class="btn">1월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">2월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">3월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">4월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">5월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">6월</a>
+							</li>
+							<li>
+								<a href="#" class="btn on">7월</a>
+							</li>
+							<li>
+								<a href="#" class="btn on">8월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">9월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">10월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">11월</a>
+							</li>
+							<li>
+								<a href="#" class="btn">12월</a>
+							</li>
+						</ul>
+					</td>
 				</tr>
 				<tr>
 					<th>매체</th>
-					<td><label class="per"> <span class="media_name">
-								<input type="checkbox" /> 한국경제
-						</span> <span>온라인 결제<b>20</b>%
-						</span><span>후불 결제<b>80</b>%
-						</span></label> <label class="per"> <span class="media_name"> <input
-								type="checkbox" /> 한국경제 매거진
-						</span> <span>온라인 결제<b>20</b>%
-						</span><span>후불 결제<b>80</b>%
-						</span></label> <label class="per"> <span class="media_name"> <input
-								type="checkbox" /> 한국일보
-						</span> <span>온라인 결제<b>20</b>%
-						</span><span>후불 결제<b>80</b>%
-						</span></label> <label class="per"> <span class="media_name"> <input
-								type="checkbox" /> 헤럴드경제
-						</span> <span>온라인 결제<b>20</b>%
-						</span><span>후불 결제<b>80</b>%
-						</span></label> <label class="per"> <span class="media_name"> <input
-								type="checkbox" /> C.영상미디어
-						</span> <span>온라인 결제<b>20</b>%
-						</span><span>후불 결제<b>80</b>%
-						</span></label></td>
+					<td>
+						<label class="per">
+							<span class="media_name">
+								<input type="checkbox" />
+								한국경제
+							</span>
+							<span>
+								온라인 결제
+								<b>20</b>
+								%
+							</span>
+							<span>
+								후불 결제
+								<b>80</b>
+								%
+							</span>
+						</label>
+						<label class="per">
+							<span class="media_name">
+								<input type="checkbox" />
+								한국경제 매거진
+							</span>
+							<span>
+								온라인 결제
+								<b>20</b>
+								%
+							</span>
+							<span>
+								후불 결제
+								<b>80</b>
+								%
+							</span>
+						</label>
+						<label class="per">
+							<span class="media_name">
+								<input type="checkbox" />
+								한국일보
+							</span>
+							<span>
+								온라인 결제
+								<b>20</b>
+								%
+							</span>
+							<span>
+								후불 결제
+								<b>80</b>
+								%
+							</span>
+						</label>
+						<label class="per">
+							<span class="media_name">
+								<input type="checkbox" />
+								헤럴드경제
+							</span>
+							<span>
+								온라인 결제
+								<b>20</b>
+								%
+							</span>
+							<span>
+								후불 결제
+								<b>80</b>
+								%
+							</span>
+						</label>
+						<label class="per">
+							<span class="media_name">
+								<input type="checkbox" />
+								C.영상미디어
+							</span>
+							<span>
+								온라인 결제
+								<b>20</b>
+								%
+							</span>
+							<span>
+								후불 결제
+								<b>80</b>
+								%
+							</span>
+						</label>
+					</td>
 				</tr>
 				<tr>
 					<th>결제구분</th>
-					<td><select name="" class="inp_txt" style="width: 380px;">
+					<td>
+						<select name="" class="inp_txt" style="width: 380px;">
 							<option value="010" selected="selected"></option>
-					</select></td>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>결제방법</th>
-					<td><select name="" class="inp_txt" style="width: 380px;">
+					<td>
+						<select name="" class="inp_txt" style="width: 380px;">
 							<option value="010" selected="selected"></option>
-					</select></td>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>검색어</th>
-					<td><input type="text" class="inp_txt" size="60"
-						placeholder="주문자(이름/회사명), UCI ID, 매체사 고유 사진 ID로 검색 가능합니다." /></td>
+					<td>
+						<input type="text" class="inp_txt" size="60" placeholder="주문자(이름/회사명), UCI ID, 매체사 고유 사진 ID로 검색 가능합니다." />
+					</td>
 				</tr>
 			</tbody>
 		</table>
 		<div class="btn_area" style="margin-top: 0;">
 			<a href="#" class="btn_input2">검색</a>
 		</div>
-		<a href="#"
-			style="float: right; padding: 10px 15px; font-size: 13px; border-radius: 2px; color: #666; border: 1px solid #aaa; margin-top: -20px;">엑셀
-			다운로드</a>
+		<a href="#" style="float: right; padding: 10px 15px; font-size: 13px; border-radius: 2px; color: #666; border: 1px solid #aaa; margin-top: -20px;">엑셀 다운로드</a>
 		<div class="calculate_info_area">
-			기간 : 2017-01-01 ~ 2017-10-15<span style="margin: 0 20px;">l</span> 건수
-			:<span class="color">1258</span>건<span style="margin: 0 20px;">l</span>
-			총 판매금액 : <span class="color">15,000,000</span>원
+			기간 : 2017-01-01 ~ 2017-10-15
+			<span style="margin: 0 20px;">l</span>
+			건수 :
+			<span class="color">1258</span>
+			건
+			<span style="margin: 0 20px;">l</span>
+			총 판매금액 :
+			<span class="color">15,000,000</span>
+			원
 		</div>
 		<div class="table_head">
 			<h3>온라인 판매대금 정산내역</h3>
@@ -174,12 +287,16 @@
 					<th>결제금액</th>
 					<th>빌링수수료</th>
 					<th>총매출액</th>
-					<th><p>회원사</p>
-						<p>매출액</p></th>
+					<th>
+						<p>회원사</p>
+						<p>매출액</p>
+					</th>
 					<th>공급가액</th>
 					<th>공급부가세</th>
-					<th><p>다하미</p>
-						<p>매출액</p></th>
+					<th>
+						<p>다하미</p>
+						<p>매출액</p>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -281,12 +398,16 @@
 					<th>과세부가세</th>
 					<th>결제금액</th>
 					<th>총매출액</th>
-					<th><p>회원사</p>
-						<p>매출액</p></th>
+					<th>
+						<p>회원사</p>
+						<p>매출액</p>
+					</th>
 					<th>공금가액</th>
 					<th>공급부가세</th>
-					<th><p>다하미</p>
-						<p>매출액</p></th>
+					<th>
+						<p>다하미</p>
+						<p>매출액</p>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -353,8 +474,7 @@
 				<td>21,000</td>
 				<td>99,000</td>
 		</table>
-		<table class="tb01" cellpadding="0" cellspacing="0"
-			style="float: right; width: 400px; margin-top: 60px;">
+		<table class="tb01" cellpadding="0" cellspacing="0" style="float: right; width: 400px; margin-top: 60px;">
 			<tbody>
 				<tr>
 					<td>공금가액</td>
@@ -376,4 +496,3 @@
 	</div>
 </body>
 </html>
-

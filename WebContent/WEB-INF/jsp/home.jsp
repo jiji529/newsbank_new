@@ -44,7 +44,7 @@
 // 		items = (List<Map<String,Object>>)request.getAttribute("test");
 // 		out.println(items.get(1).get("descriptionKr"));
 		
-%>~~
+%>
 <div class="wrap">
 	<nav class="gnb_light">
 		<div class="gnb"><a href="#" class="logo"></a>
@@ -55,8 +55,8 @@
 				<li><a href="#">컬렉션</a></li>
 			</ul>
 			<ul class="gnb_right">
-				<li><a href="#">로그인</a></li>
-				<li><a href="#">가입하기</a></li>
+				<li><a href="/login">로그인</a></li>
+				<li><a href="/kind.join">가입하기</a></li>
 			</ul>
 		</div>
 	</nav>

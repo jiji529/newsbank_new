@@ -28,14 +28,12 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 public class MemberDAO extends DAOBase {
 	
 
-	public MemberDTO selectMember(String ID) {
+	public MemberDTO selectMember(Map<String, Object> param) {
 		SqlSession session = null;
 		MemberDTO memberInfo = null;
 		try {
 
 			session = sf.getSession();
-			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("id", ID);
 			memberInfo = session.selectOne("Member.selectId", param);
 
 		} catch (Exception e) {

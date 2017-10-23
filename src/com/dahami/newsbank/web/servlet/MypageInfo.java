@@ -41,17 +41,20 @@ public class MypageInfo extends NewsbankServletBase {
 
 		// 임시 넣기
 		HttpSession session = request.getSession();
-		MemberDAO memberDAO = new MemberDAO();
-		MemberDTO memberDTO = memberDAO.selectMember("dev");
-
-		session.setAttribute("MemberInfo", memberDTO);
 
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		if (MemberInfo.getId() != null) {
 
 			request.setAttribute("id", MemberInfo.getId());
 			request.setAttribute("name", MemberInfo.getName());
-			request.setAttribute("phone", MemberInfo.getPhone());
+
+			if (MemberInfo.getPhone() != null) {
+				request.setAttribute("phone1", MemberInfo.getPhone().split("-")[0]);
+				request.setAttribute("phone2", MemberInfo.getPhone().split("-")[1]);
+				request.setAttribute("phone3", MemberInfo.getPhone().split("-")[2]);
+			}
+
+			
 			request.setAttribute("email", MemberInfo.getEmail());
 			request.setAttribute("compName", MemberInfo.getCompName());
 			request.setAttribute("compNum", MemberInfo.getCompNum());
