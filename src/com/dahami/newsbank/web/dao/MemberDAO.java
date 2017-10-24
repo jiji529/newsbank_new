@@ -18,7 +18,6 @@
  */
 package com.dahami.newsbank.web.dao;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
