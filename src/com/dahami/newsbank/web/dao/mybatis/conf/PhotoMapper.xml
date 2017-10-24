@@ -9,4 +9,17 @@
 	    	descriptionKr = #{descriptionKor}
     	WHERE uciCode = #{uciCode}
     </update>
+    
+    <update id="updateSaleState" parameterType="com.dahami.newsbank.dto.PhotoDTO">
+	    UPDATE photo SET
+	    	saleStat = #{saleState}
+	    WHERE uciCode = #{uciCode} 
+	</update>
+	
+	<update id="updateRightYN" parameterType="com.dahami.newsbank.dto.PhotoDTO">
+	    UPDATE photo SET
+	    	rightYN = #{portraitRightState}
+	    WHERE uciCode = #{uciCode} 
+	</update>
+	
 </mapper>

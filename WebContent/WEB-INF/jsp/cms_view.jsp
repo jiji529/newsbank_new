@@ -32,8 +32,49 @@
 <script type="text/javascript">
 	$(document).ready(function(key, val){
 		var saleState = ${photoDTO.saleState};
-		var portraitRightState = ${photoDTO.portraitRightState};		
+		var portraitRightState = ${photoDTO.portraitRightState};
+		
+		if(saleState == 1) {
+			$('input:radio[name="blind"][value="1"]').attr('checked', true);
+		}else if(saleState == 2) {
+			$('input:radio[name="blind"][value="2"]').attr('checked', true);
+		}
+		
+		if(portraitRightState == 1) {
+			$('input:radio[name="likeness"][value="1"]').attr('checked', true);
+		}else if(portraitRightState == 2) {
+			$('input:radio[name="likeness"][value="2"]').attr('checked', true);
+		}
 	});
+	
+	$(document).on("change", "input[type=radio][name=blind]", function() {
+		var saleState = $('input[type=radio][name=blind]:checked').val();
+		changeOption("saleState", saleState);
+	});
+	
+	$(document).on("change", "input[type=radio][name=likeness]", function() {
+		var portraitRightState = $('input[type=radio][name=likeness]:checked').val();
+		changeOption("portraitRightState", portraitRightState);
+	});
+	
+	function changeOption(name, value) {	
+		var uciCode = "${photoDTO.uciCode}";
+		
+		$.ajax({
+			type: "POST",
+			url: "/view.cms?action=updateOne",
+			data: {
+				"uciCode" : uciCode,
+				"columnName" : name,
+				"columnValue" : value
+			},
+			success: function(data){
+				
+			}, error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		});
+	}
 	
 	$(document).on("click", ".tag_remove", function() {
 		$(this).parent().remove();
@@ -304,7 +345,7 @@
 						</tr>
 						<tr>
 							<th scope="row">다운로드</th>
-							<td><b>15</b>회</td>
+							<td><b>${photoDTO.saleCount}</b>회</td>
 						</tr>
 						<tr>
 							<th scope="row">상세보기</th>
@@ -312,7 +353,7 @@
 						</tr>
 						<tr>
 							<th scope="row">결제</th>
-							<td><b>15</b>회</td>
+							<td><b>${photoDTO.saleCount}</b>회</td>
 						</tr>
 						<tr>
 							<th scope="row">뮤지엄</th>
@@ -339,19 +380,19 @@
 						<tr>
 							<th scope="row">블라인드</th>
 							<td><label>
-									<input type="radio" name="blind" />
+									<input type="radio" name="blind" value="1"/>
 									ON</label>
 								<label>
-									<input type="radio" name="blind"/>
+									<input type="radio" name="blind" value="2"/>
 									OFF</label></td>
 						</tr>
 						<tr>
 							<th scope="row">초상권 해결</th>
 							<td><label>
-									<input type="radio" name="likeness" />
+									<input type="radio" name="likeness" value="1"/>
 									ON</label>
 								<label>
-									<input type="radio" name="likeness"/>
+									<input type="radio" name="likeness" value="2"/>
 									OFF</label></td>
 						</tr>
 					</table>

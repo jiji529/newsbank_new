@@ -2,6 +2,7 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ public class CMSView extends NewsbankServletBase {
 		String uciCode = request.getParameter("uciCode");
 		PhotoDTO photoDTO = searchDAO.read(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
+		//System.out.println(photoDTO);
 		
 		TagDAO tagDAO = new TagDAO();
 		List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);
@@ -73,6 +75,8 @@ public class CMSView extends NewsbankServletBase {
 		String titleKor = request.getParameter("titleKor");
 		String descriptionKor = request.getParameter("descriptionKor");
 		String tagName = request.getParameter("tagName");
+		String columnName = request.getParameter("columnName");
+		String columnValue = request.getParameter("columnValue");
 		
 		if(action.equals("insertTag")){		
 			TagDAO tagDAO = new TagDAO();
@@ -97,6 +101,8 @@ public class CMSView extends NewsbankServletBase {
 			tagDAO.delete_PhotoTag(uciCode, tagName);
 		}else if(action.equals("updateCMS")){
 			this.updateCMS(uciCode, titleKor, descriptionKor);
+		}else if(action.equals("updateOne")){
+			this.updateOne(uciCode, columnName, columnValue);
 		}else{
 			System.out.println("ACTION parameter error");
 		}
@@ -122,7 +128,20 @@ public class CMSView extends NewsbankServletBase {
 		photoDAO.update(photoDTO);
 	}
 	
-	
+	private void updateOne(String uciCode, String columnName, String value){
+		// 블라인드, 초상권 해결
+		PhotoDTO photoDTO = new PhotoDTO();
+		photoDTO.setUciCode(uciCode);
+		PhotoDAO photoDAO = new PhotoDAO();
+		
+		if(columnName.equals("saleState")) {
+			photoDTO.setSaleState(Integer.parseInt(value));
+			photoDAO.update_SaleState(photoDTO);
+		}else if(columnName.equals("portraitRightState")) {
+			photoDTO.setPortraitRightState(value);
+			photoDAO.update_PortraitRightState(photoDTO);
+		} 		
+	}
 
 }
 
