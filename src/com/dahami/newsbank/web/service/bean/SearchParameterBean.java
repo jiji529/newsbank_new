@@ -43,8 +43,8 @@ public class SearchParameterBean {
 	/** 색상영역 : 0전체 / 1컬러 / 2모노 */
 	private int colorMode;
 	public static final int COLOR_ALL = ALL;
-	public static final int COLOR_YES = PhotoDTO.MONO_NO;
-	public static final int COLOR_NO = PhotoDTO.MONO_YES;
+	public static final int COLOR_YES = Integer.parseInt(PhotoDTO.MONO_NO);
+	public static final int COLOR_NO = Integer.parseInt(PhotoDTO.MONO_YES);
 	
 	/** 가로세로 선택 : 0전체 1가로 2세로 */
 	private int horiVertChoice;
