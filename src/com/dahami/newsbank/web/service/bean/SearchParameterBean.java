@@ -62,14 +62,14 @@ public class SearchParameterBean {
 	/** 초상권해결여부 0전체 1해결 2미해결 */
 	private int portRight;
 	public static final int PORTRAIT_RIGHT_ALL = ALL;
-	public static final int PORTRAIT_RIGHT_ACQUIRE  = PhotoDTO.PORTRAITRIGHTSTATE_ACQUIRE_INT;
-	public static final int PORTRAIT_RIGHT_NOT  = PhotoDTO.PORTRAITRIGHTSTATE_NOT_INT;
+	public static final int PORTRAIT_RIGHT_ACQUIRE  = Integer.parseInt(PhotoDTO.PORTRAITRIGHTSTATE_ACQUIRE);
+	public static final int PORTRAIT_RIGHT_NOT  = Integer.parseInt(PhotoDTO.PORTRAITRIGHTSTATE_NOT);
 	
 	/** 인물포함 여부 / 0전체 1포함 2미포함*/
 	private int includePerson;
 	public static final int INCLUDE_PERSON_ALL = ALL;
-	public static final int INCLUDE_PERSON_YES = PhotoDTO.INCLUDEPERSON_YES_INT; 
-	public static final int INCLUDE_PERSON_NO = PhotoDTO.INCLUDEPERSON_NO_INT;
+	public static final int INCLUDE_PERSON_YES = Integer.parseInt(PhotoDTO.INCLUDEPERSON_YES);
+	public static final int INCLUDE_PERSON_NO = Integer.parseInt(PhotoDTO.INCLUDEPERSON_NO);
 	
 	/** 그룹화 여부 0전체 1대표 ?? */
 	private int group;
