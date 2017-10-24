@@ -32,20 +32,76 @@
 <script type="text/javascript">
 	$(document).ready(function(key, val){
 		var saleState = ${photoDTO.saleState};
-		var portraitRightState = ${photoDTO.portraitRightState};
-		console.log("saleState : "+saleState + " / portraitRightState : "+portraitRightState);
+		var portraitRightState = ${photoDTO.portraitRightState};		
 	});
 	
 	$(document).on("click", ".tag_remove", function() {
 		$(this).parent().remove();
+		var uciCode = "${photoDTO.uciCode}";
+		var tagName = $(this).parent().text().replace("×", "");
+		
+		deleteTag(uciCode, tagName)
 	});
 	
+	function deleteTag(uciCode, tagName) {
+		$.ajax({
+			type: "POST",
+			url: "/view.cms?action=deleteTag",
+			data: {
+				"uciCode" : uciCode,
+				"tagName" : tagName
+			},
+			dataType: "text",
+			success: function(data){
+				
+			}, error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+			
+		});
+	}
+	
 	$(document).on("click", ".add_tag > button", function() {
-		var tagName = $(this).prev().val();		
-		var html = "<li class=\"tag_auto\"><span class=\"tag_remove\">×</span>"+tagName+"</li>";
-		$(html).appendTo(".tag_list");
-		$(this).prev().val("");
+		var uciCode = "${photoDTO.uciCode}";
+		var tagName = $(this).prev().val();
+		
+		var tag_list = $(".tag_list").children().text(); 
+		tag_list = tag_list.split("×");
+		tag_list = tag_list.filter(isNotEmpty);		
+		
+		if(tag_list.indexOf(tagName) != -1) {
+			alert("이미 존재하는 태그입니다.");
+		}else {
+			var html = "<li class=\"tag_self\"><span class=\"tag_remove\">×</span>"+tagName+"</li>";
+			$(html).appendTo(".tag_list");
+			$(this).prev().val("");
+			
+			insertTag(uciCode, tagName);
+		}
+		
 	});
+	
+	function insertTag(uciCode, tagName) {
+		$.ajax({
+			type: "POST",
+			url: "/view.cms?action=insertTag",
+			data: {
+				"uciCode" : uciCode,
+				"tagName" : tagName
+			},
+			dataType: "text",
+			success: function(data){
+				
+			}, error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+			
+		});
+	}
+	
+	function isNotEmpty(value) { // 배열 빈값 제외
+		return value != "";
+	}
 	
 	$(document).on("click", ".btn_edit", function() {
 		var title = $(".img_tit").last().text();
@@ -79,7 +135,7 @@
 		
 		$.ajax({
 			type: "POST",
-			url: "/view.cms",
+			url: "/view.cms?action=updateCMS",
 			data: {
 				"uciCode" : uciCode,
 				"titleKor" : titleKor,
@@ -311,17 +367,16 @@
 						<li class="tag_self"><span class="tag_remove">×</span>승리투수</li> -->
 						
 						<c:forEach items="${photoTagList}" var="tag">
-							<li class="tag_self"><span class="tag_remove">×</span>${tag.tag_tagName}</li>
+							<%-- <li class="tag_self"><span class="tag_remove">×</span>${tag.tag_tagName}</li> --%>
 							
-							<%-- <c:set value="${tag.tagType}" var="tagType"/>
-							<li>${tagType }</li>
+							<c:set value="${tag.tagType}" var="tagType"/>
 							<c:if test="${tagType == 0}" var="result">
 								<li class="tag_auto"><span class="tag_remove">×</span>${tag.tag_tagName}</li>
 							</c:if>
 							
 							<c:if test="${tagType == 1}" var="result">
 								<li class="tag_self"><span class="tag_remove">×</span>${tag.tag_tagName}</li>
-							</c:if> --%>
+							</c:if>
 							
 						</c:forEach>
 					</ul>

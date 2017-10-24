@@ -3,21 +3,21 @@
 
 <mapper namespace="PhotoTag">
     
-    <resultMap id="photoTagDTO" type="java.util.HashMap">
+    <resultMap id="photoTagDTO" type="com.dahami.newsbank.dto.PhotoTagDTO">
         <result javaType="java.lang.Integer"  column="seq" property="seq" />
         <result javaType="java.lang.String"  column="photo_uciCode" property="photo_uciCode" />
-        <result javaType="java.lang.Character"  column="tagType" property="tagType" />
+        <result javaType="java.lang.String"  column="tagType" property="tagType" />
         <result javaType="java.util.Date"  column="regDate" property="regDate" />        
         <result javaType="java.lang.Integer"  column="tag_seq" property="tag_seq" />
         <result javaType="java.lang.String"  column="tag_tagName" property="tag_tagName" />
         <result javaType="java.util.Date"  column="tag_regDate" property="tag_regDate" />
     </resultMap>
     
-    <!-- <resultMap id="tagDTO" type="java.util.HashMap">
+    <resultMap id="tagDTO" type="java.util.HashMap">
         <result javaType="java.lang.Integer"  column="tag_seq" property="tag_seq" />
         <result javaType="java.lang.String"  column="tag_tagName" property="tag_tagName" />
         <result javaType="java.util.Date"  column="tag_regDate" property="tag_regDate" />
-    </resultMap> -->
+    </resultMap>
     
 	<select id="selectPhotoTag" resultMap="photoTagDTO" parameterType="java.util.Map">
 	    SELECT pTag.seq, pTag.photo_uciCode, pTag.tagType, pTag.regDate, Tag.seq AS tag_seq, Tag.tagName AS tag_tagName, Tag.regDate AS tag_regDate
@@ -27,12 +27,30 @@
 		ORDER BY seq DESC
     </select>
     
+	<select id="selectTagSeq" resultType="com.dahami.newsbank.dto.PhotoTagDTO" parameterType="java.util.Map">
+	    SELECT seq FROM tag WHERE tagName = #{tagName}
+	</select>
+    
+	<insert id="insertPhotoTag" >
+	    INSERT INTO photoTag (photo_uciCode, tagType, regDate, tag_seq) VALUES (#{photo_uciCode}, '1', NOW(), #{tag_seq})
+	</insert>
+	
+	<insert id="insertTag" useGeneratedKeys="true" keyProperty="seq" keyColumn="seq">
+	    INSERT INTO tag (tagName, regDate) VALUES (#{tagName}, NOW())
+	    
+	    <selectKey keyProperty="seq" resultType="int" order="AFTER">
+	        SELECT LAST_INSERT_ID()
+	    </selectKey>
+	</insert>
+    
+	<delete id="deletePhotoTag" parameterType="java.util.Map">
+	    DELETE pTag.* FROM photoTag pTag
+		INNER JOIN tag Tag ON pTag.tag_seq = Tag.seq
+		WHERE pTag.photo_uciCode = #{photo_uciCode} AND Tag.tagName = #{tagName}
+	</delete>
+	
 	<!-- <select id="selectTag" resultMap="tagDTO">
 	    SELECT seq as tag_seq, tagName as tag_tagName, regDate as tag_regDate FROM tag ORDER BY seq DESC	    
-	</select>
-	
-	<delete id="deletePhotoTag" parameterType="photoTagDTO">
-	    DELETE FROM photoTag WHERE seq = #{seq}
-	</delete> -->
+	</select> -->
 	
 </mapper>
