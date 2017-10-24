@@ -4,11 +4,11 @@
 <mapper namespace="Photo">
 	<!-- 사진 정보 수정 -->
 	<update id="updatePhoto" parameterType="com.dahami.newsbank.dto.PhotoDTO">
-	    UPDATE photo SET 
-	    	titleKr = #{titleKor},
-	    	descriptionKr = #{descriptionKor}
-    	WHERE uciCode = #{uciCode}
-    </update>
+		UPDATE photo SET
+		titleKr = #{titleKor},
+		descriptionKr = #{descriptionKor}
+		WHERE uciCode = #{uciCode}
+	</update>
     
     <update id="updateSaleState" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 	    UPDATE photo SET

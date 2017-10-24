@@ -3,16 +3,21 @@
 
 <mapper namespace="Member">
 	<!-- 이미지 정보 출력 -->
-	<select id="selectId" parameterType="java.util.Map" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+	<select id="selectId" parameterType="java.util.Map"
+		resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		SELECT * FROM member
 		where id = #{id}
-	
+		<if test="pw != null">
+			AND pw = #{pw}
+		</if>
+
 	</select>
 
 
 
-	<select id="listMember" 	resultType="java.util.HashMap">
-		SELECT * FROM member LIMIT 100
+	<select id="listMember" resultType="java.util.HashMap">
+		SELECT * FROM member LIMIT
+		100
 
 	</select>
 

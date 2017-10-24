@@ -6,14 +6,16 @@ package com.dahami.newsbank.web.dto;
  */
 
 public class MemberDTO {
-	private String member_seq; // 시퀀스
+	private int member_seq; // 시퀀스
 	private String id; // 아이디
+	private String pw; // 패스워드
 	private String email; // 이메일
 	private String name; // 이름
 	private String phone; // 핸드폰번호
 	private String type; // 타입 ( 매체사, 개인, 기업)
 	private String permission; // 권한
 	private String compNum;// 사업자 등록 번호
+	private String compZipcode;//우편번호
 	private String comDocPath; // 등록증 경로
 	private String compName;// 회사명
 	private String compAddress;// 회사주소
@@ -25,21 +27,21 @@ public class MemberDTO {
 	private String contractStart; // 계약시작일
 	private String contractEnd;// 계약종료일
 	private String contractAuto;// 자동갱신여부
-	private String preRate; // 온라인결제요율
-	private String postRate; // 후불결제요율
+	private Double preRate; // 온라인결제요율
+	private Double postRate; // 후불결제요율
 	private String taxName; // 계산서 담당자
 	private String taxPhone; // 계산서 담당자 전화번호
 	private String taxEmail; // 계산서 담당자 메일
 	private String regDate; // 등록일
 	private String logo; // 로고
-	private String master_seq; // 마스터 시퀀스
-	private String group_seq; // 그룹 시퀀스
+	private int master_seq; // 마스터 시퀀스
+	private int group_seq; // 그룹 시퀀스
 
 	/**
 	 * @comment 시퀀스
 	 * @return
 	 */
-	public String getMember_seq() {
+	public int getMember_seq() {
 		return member_seq;
 	}
 
@@ -47,21 +49,21 @@ public class MemberDTO {
 	 * 
 	 * @param member_seq
 	 */
-	public void setMember_seq(String member_seq) {
+	public void setMember_seq(int member_seq) {
 		this.member_seq = member_seq;
 	}
 
 	/**
 	 * @return
 	 */
-	public String getMaster_seq() {
+	public int getMaster_seq() {
 		return master_seq;
 	}
 
 	/**
 	 * @param master_seq
 	 */
-	public void setMaster_seq(String master_seq) {
+	public void setMaster_seq(int master_seq) {
 		this.master_seq = master_seq;
 	}
 
@@ -321,28 +323,28 @@ public class MemberDTO {
 	/**
 	 * @return
 	 */
-	public String getPreRate() {
+	public Double getPreRate() {
 		return preRate;
 	}
 
 	/**
 	 * @param preRate
 	 */
-	public void setPreRate(String preRate) {
+	public void setPreRate(Double preRate) {
 		this.preRate = preRate;
 	}
 
 	/**
 	 * @return
 	 */
-	public String getPostRate() {
+	public Double getPostRate() {
 		return postRate;
 	}
 
 	/**
 	 * @param postRate
 	 */
-	public void setPostRate(String postRate) {
+	public void setPostRate(Double postRate) {
 		this.postRate = postRate;
 	}
 
@@ -419,15 +421,31 @@ public class MemberDTO {
 	/**
 	 * @return
 	 */
-	public String getGroup_seq() {
+	public int getGroup_seq() {
 		return group_seq;
 	}
 
 	/**
 	 * @param group_seq
 	 */
-	public void setGroup_seq(String group_seq) {
+	public void setGroup_seq(int group_seq) {
 		this.group_seq = group_seq;
+	}
+
+	public String getPw() {
+		return pw;
+	}
+
+	public void setPw(String pw) {
+		this.pw = pw;
+	}
+
+	public String getCompZipcode() {
+		return compZipcode;
+	}
+
+	public void setCompZipcode(String compZipcode) {
+		this.compZipcode = compZipcode;
 	}
 
 }
