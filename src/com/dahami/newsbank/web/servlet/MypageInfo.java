@@ -43,15 +43,13 @@ public class MypageInfo extends NewsbankServletBase {
 		HttpSession session = request.getSession();
 
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-		if (MemberInfo.getId() != null) {
+		if (MemberInfo!= null) {
 
 			request.setAttribute("id", MemberInfo.getId());
 			request.setAttribute("name", MemberInfo.getName());
 
 			if (MemberInfo.getPhone() != null) {
-				request.setAttribute("phone1", MemberInfo.getPhone().split("-")[0]);
-				request.setAttribute("phone2", MemberInfo.getPhone().split("-")[1]);
-				request.setAttribute("phone3", MemberInfo.getPhone().split("-")[2]);
+				request.setAttribute("phone", MemberInfo.getPhone().split("-"));
 			}
 
 			
@@ -60,12 +58,22 @@ public class MypageInfo extends NewsbankServletBase {
 			request.setAttribute("compNum", MemberInfo.getCompNum());
 			request.setAttribute("compTel", MemberInfo.getCompTel());
 			request.setAttribute("logo", MemberInfo.getLogo());
+			
+			request.setAttribute("compName", MemberInfo.getCompName());
+			if (MemberInfo.getCompNum() != null) {
+				request.setAttribute("compNum", MemberInfo.getCompNum().split("-"));
+			}
+			
+			if (MemberInfo.getCompTel() != null) {
+				request.setAttribute("compTel", MemberInfo.getCompTel().split("-"));
+			}
 
+			
+			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_info.jsp");
 			dispatcher.forward(request, response);
 		} else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/invalidPage.jsp");
-			dispatcher.forward(request, response);
+			 response.sendRedirect("/login");
 		}
 
 	}

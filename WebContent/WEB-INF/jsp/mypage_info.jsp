@@ -60,12 +60,29 @@
 					</li>
 				</ul>
 				<ul class="gnb_right">
+					<%
+						if (session.getAttribute("MemberInfo") == null) // 로그인이 안되었을 때
+						{
+							// 로그인 화면으로 이동
+					%>
 					<li>
 						<a href="/login">로그인</a>
 					</li>
 					<li>
 						<a href="/kind.join">가입하기</a>
 					</li>
+					<%
+						} else { // 로그인 했을 경우
+					%>
+					<li>
+						<a href="/logout">Log Out</a>
+					</li>
+					<li>
+						<a href="/info.mypage">My Page</a>
+					</li>
+					<%
+						}
+					%>
 				</ul>
 			</div>
 			<div class="gnb_srch">
@@ -96,7 +113,7 @@
 							<a href="#">장바구니</a>
 						</li>
 						<li>
-							<a href="#">구매내역</a>
+							<a href="/buy.mypage">구매내역</a>
 						</li>
 					</ul>
 					<ul class="mp_tab2">
@@ -146,11 +163,11 @@
 						<tr>
 							<th>휴대전화</th>
 							<td class="phone">
-								<input type="text" size="5" class="inp_txt" value="${phone1}" maxlength="4">
+								<input type="text" size="5" class="inp_txt" value="${phone[0]}" maxlength="4">
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="${phone2}" maxlength="4">
+								<input type="text" size="5" class="inp_txt" value="${phone[1]}" maxlength="4">
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="${phone3}" maxlength="4" />
+								<input type="text" size="5" class="inp_txt" value="${phone[2]}" maxlength="4" />
 								<a href="#" class="btn_input1">수정</a>
 								<!-- 수정 누르면 보이는 -->
 								<div class="edit_phone">
@@ -201,11 +218,11 @@
 						<tr>
 							<th>사업자등록번호</th>
 							<td>
-								<input type="text" size="3" class="inp_txt" value="111" maxlength="3">
+								<input type="text" size="3" class="inp_txt" value="${compNum[0]}" maxlength="3">
 								<span class=" bar">-</span>
-								<input type="text" size="2" class="inp_txt" value="12" maxlength="2">
+								<input type="text" size="2" class="inp_txt" value="${compNum[1]}" maxlength="2">
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="49789" maxlength="6" />
+								<input type="text" size="5" class="inp_txt" value="${compNum[2]}" maxlength="6" />
 								<a href="#" class="btn_input1">등록증 업로드</a>
 								<a href="#" class="btn_input1">다운로드</a>
 							</td>
@@ -222,9 +239,9 @@
 									<option value="019">019</option>
 								</select>
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="1234" maxlength="4">
+								<input type="text" size="5" class="inp_txt" value="${compTel[1]}" maxlength="4">
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="1234" maxlength="4" />
+								<input type="text" size="5" class="inp_txt" value="${compTel[2]}" maxlength="4" />
 							</td>
 						</tr>
 						<tr>

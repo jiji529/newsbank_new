@@ -34,6 +34,7 @@ public class MemberDTO {
 	private String taxEmail; // 계산서 담당자 메일
 	private String regDate; // 등록일
 	private String logo; // 로고
+	private int activate;
 	private int master_seq; // 마스터 시퀀스
 	private int group_seq; // 그룹 시퀀스
 
@@ -446,6 +447,14 @@ public class MemberDTO {
 
 	public void setCompZipcode(String compZipcode) {
 		this.compZipcode = compZipcode;
+	}
+
+	public int getActivate() {
+		return activate;
+	}
+
+	public void setActivate(int activate) {
+		this.activate = activate;
 	}
 
 }

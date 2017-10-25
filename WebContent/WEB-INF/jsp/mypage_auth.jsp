@@ -42,8 +42,29 @@
 				<li><a href="#">컬렉션</a></li>
 			</ul>
 			<ul class="gnb_right">
-				<li><a href="/login">로그인</a></li>
-				<li><a href="/kind.join">가입하기</a></li>
+				<%
+					if (session.getAttribute("MemberInfo") == null) // 로그인이 안되었을 때
+					{
+						// 로그인 화면으로 이동
+				%>
+				<li>
+					<a href="/login">로그인</a>
+				</li>
+				<li>
+					<a href="/kind.join">가입하기</a>
+				</li>
+				<%
+					} else { // 로그인 했을 경우
+				%>
+				<li>
+					<a href="/logout">Log Out</a>
+				</li>
+				<li>
+					<a href="/info.mypage">My Page</a>
+				</li>
+				<%
+					}
+				%>
 			</ul>
 		</div>
 		<div class="gnb_srch">
