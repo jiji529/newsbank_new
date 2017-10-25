@@ -22,4 +22,12 @@
 	    WHERE uciCode = #{uciCode} 
 	</update>
 	
+	<select id="dibsPhoto" resultType="com.dahami.newsbank.dto.PhotoDTO" parameterType="java.util.Map">
+	    SELECT A.* FROM photo A
+		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode 
+		INNER JOIN bookmark C ON B.bookmark_seq = C.seq
+		INNER JOIN member D  ON C.member_seq = D.seq
+		WHERE C.member_seq = #{member_seq}
+	</select>
+	
 </mapper>

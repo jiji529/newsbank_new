@@ -1,6 +1,8 @@
 package com.dahami.newsbank.web.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -84,6 +86,36 @@ public class PhotoDAO extends DAOBase {
 			} catch (Exception e) {
 			}
 		}
+	}
+	
+	/**
+	 * @methodName  : dibsPhotoList
+	 * @author      : HOYADEV
+	 * @date        : 2017. 10. 25. 오후 05:06:35
+	 * @methodCommet: 사용자별 찜한 목록
+	 * @param param
+	 * @return 
+	 */
+	public List<PhotoDTO> dibsPhotoList(String member_seq) {
+		SqlSession session = null;
+		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
+				
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			
+			photoList = session.selectList("Photo.dibsPhoto", param);
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return photoList;
 	}
 	
 }

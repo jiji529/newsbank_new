@@ -6,13 +6,19 @@
 .filters ul{float:left;}
 .filters li.filter_title{float:left; padding:0 40px 0 20px; height:50px; border-right:1px #e5e5e5 solid; line-height:50px; position:relative; font-size:15px; cursor:pointer;}
 .filters li.filter_title:after{content: ''; position: absolute; top: 50%; right: 22px; height: 0; width: 0; margin-top: -3px; border: solid transparent; border-top-color: #555; border-width: 5px 4px; -webkit-transition: border 0.3s ease-in-out; transition: border 0.3s ease-in-out; width:auto;}
+@media (max-width: 1500px){
+	.filters li.filter_title.filter_ico{ display:none;}
+	.filters li.filter_title:nth-child(2){margin-left:30px; border-left:1px #e5e5e5 solid;}
+	.filters li.filter_title{max-width:120px;padding:0 33px 0 15px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size:15px;}
+	.filters li.filter_title:after{right:10px;}}
 @media (max-width: 1400px){
 	.filters li.filter_title.filter_ico{ display:none;}
 	.filters li.filter_title:nth-child(2){margin-left:30px; border-left:1px #e5e5e5 solid;}
 	.filters li.filter_title{max-width:100px;padding:0 28px 0 12px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size:14px;}
 	.filters li.filter_title:after{right:10px;}}
-.filters li.filter_title.filter_ico{ text-indent:-9999px; background:url(../images/sub/if_filter_326641.svg) 20px 18px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid;}
-.filters li.filter_title.filter_ico:after{ content: ''; display:none;}
+.filters li.filter_title.filter_ico{ text-indent:-9999px; background:url(../images/sub/if_filter.svg) 20px 18px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid;}
+.filters li.filter_title.folder_ico{ text-indent:-9999px; background:url(../images/sub/if_folder.svg) 20px 14px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid; background-size:22px 20px;}
+.filters li.filter_title.filter_ico:after,.filters li.filter_title.folder_ico:after{ content: ''; display:none;}
 .filters li .filter_list{display:none;  background:#f5f6f8; z-index:2000; position:absolute; border:1px #e5e5e5 solid; margin-left:-20px; margin-top:-2px;}
 .filters li ul{overflow:auto; max-height:600px; width:180px;}
 .filters li .filter_list li{float:left; width:100%; padding:0 20px; border-bottom:#e5e5e5 1px solid; height:45px; text-align:left; font-size:14px; line-height:45px;}
@@ -24,6 +30,8 @@
 .filters .calendar .cal_input a.ico_cal{position: absolute; top: 4px; right: 10px; padding: 4px; background:url(../images/sub/ico_cal.png) 0 0 no-repeat; width:16px; height:16px; text-indent:-9999px;}
 .filters .calendar .btn_cal{display: block; width: 100%; height: 35px; line-height: 35px; border:1px solid #dbdbdb; background-color: #f6f7f9; color: #333;}
 
+.filters .folder_edit{ margin:15px auto 0; cursor:default }
+.filters .folder_edit a{display: block; height: 30px; line-height: 30px; border:1px solid #dbdbdb; background-color: #f6f7f9; color: #333; background:#fff; padding:0 20px; text-align:center;}
 
 .filters .filter_rt{ float:right; margin-right:40px; height:50px; padding:13px 0; line-height:24px; font-size:14px; color:#666;}
 .filters .filter_rt .result{float:left; margin-right:10px;}
