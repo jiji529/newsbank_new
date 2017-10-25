@@ -85,7 +85,7 @@
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
-					html += "<a class=\"over_wish\" href=\"#\">찜</a> <a class=\"over_down\" href=\"#\">시안 다운로드</a> </div>";
+					html += "<a class=\"over_wish\" href=\"#\">찜</a> <a class=\"over_down\" href=\"images/serviceImages"+val.originPath+"\" download>시안 다운로드</a> </div>";
 					html += "</div>";
 					html += "</li>";
 				});
@@ -282,7 +282,7 @@
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
 							<a class="over_wish" href="#">찜</a>
-							<a class="over_down" href="#">시안 다운로드</a>
+							<a class="over_down" href="images/serviceImages${PhotoDTO.getOriginPath()}" download>시안 다운로드</a>
 						</div>
 					</div>
 				</li>
@@ -300,7 +300,7 @@
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
 							<a class="over_wish" href="#">찜</a>
-							<a class="over_down" href="#">시안 다운로드</a>
+							<a class="over_down" href="images/serviceImages${PhotoDTO.getOriginPath()}" download>시안 다운로드</a>
 						</div>
 					</div>
 				</li>

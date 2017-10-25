@@ -54,7 +54,7 @@
 				<li>
 					<a href="/picture">보도사진</a>
 				</li>
-				<li>
+				<!-- <li>
 					<a href="#">뮤지엄</a>
 				</li>
 				<li>
@@ -62,7 +62,7 @@
 				</li>
 				<li>
 					<a href="#">컬렉션</a>
-				</li>
+				</li> -->
 			</ul>
 			<ul class="gnb_right">
 				<%
@@ -118,12 +118,12 @@
 						<li>
 							<a href="#" class="active">보도사진</a>
 						</li>
-						<li>
+						<!-- <li>
 							<a href="#">뮤지엄</a>
 						</li>
 						<li>
 							<a href="#">컬렉션</a>
-						</li>
+						</li> -->
 					</ul>
 				</div>
 				<div class="photo_cont img_ver">

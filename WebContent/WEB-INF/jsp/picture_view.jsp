@@ -10,6 +10,27 @@
 <link rel="stylesheet" href="css/sub.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+<script type="text/javascript">
+	$(document).on("click", ".btn_wish", function() {
+		var uciCode = "${photoDTO.uciCode}";
+		var bookName = "북마크 테스트";
+		var member_seq = 1002;
+		
+		var param = "action=bookmark";
+		param += "&photo_uciCode=" + uciCode + "&bookName=" + bookName + "&member_seq=" + member_seq;
+		
+		$.ajax({
+			url: "/view.picture?"+param,
+			type: "POST",
+			success: function(data) {
+				
+			},
+			error : function(request, status, error) {
+				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	});
+</script>
 </head>
 <body> 
 <div class="wrap">
@@ -40,7 +61,14 @@
 			<div class="img_area"><img src="images/serviceImages${photoDTO.getViewPath()}" style="width:50%; height:50%"/>
 				<div class="cont_area">
 					<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>
-					<a href="#" class="btn_wish">찜하기</a>
+					<%-- <c:if test="${bookmark.seq eq null || bookmark.seq eq ''}">
+						<a href="#" class="btn_wish">찜하기 X</a>	
+					</c:if>
+					<c:if test="${bookmark.seq ne null}">
+						<a href="#" class="btn_wish on">찜하기 O</a>
+					</c:if> --%>
+					
+					<a href="#" class="btn_wish">찜하기 X</a>
 					<p class="img_cont">${photoDTO.descriptionKor}</p>
 				</div>
 				<div class="img_info_area">
@@ -56,7 +84,7 @@
 		</div>
 		<div class="view_rt"></div>
 	</section>
-	<footer>
+	<footer><!--  -->
 		<div class="foot_wrap">
 			<div class="foot_lt">(주)다하미커뮤니케이션즈 | 대표 박용립<br />
 				서울시 중구 마른내로 140 5층 (쌍림동, 인쇄정보센터)<br />

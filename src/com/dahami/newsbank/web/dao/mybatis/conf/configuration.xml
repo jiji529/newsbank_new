@@ -42,5 +42,6 @@
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/MemberMapper.xml" />
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/PhotoMapper.xml" />
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/TagMapper.xml" />
+		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/BookmarkMapper.xml" />
 	</mappers>
 </configuration>

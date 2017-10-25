@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Bookmark">
+        
+    <insert id="insertBookmark">
+        INSERT INTO bookmark (member_seq, photo_uciCode, bookName, regDate) VALUES (#{member_seq}, #{photo_uciCode}, #{bookName}, NOW())
+    </insert>
+    
+    <select id="selectBookmark" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">
+        SELECT seq, member_seq, photo_uciCode, bookName, regDate FROM bookmark WHERE member_seq = #{member_seq} 
+    </select>
+    
+    <select id="selectOne_Bookmark" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">
+        SELECT seq, member_seq, photo_uciCode, bookName, regDate FROM bookmark WHERE member_seq = #{member_seq} AND photo_uciCode = #{photo_uciCode} 
+    </select>
+    
+    <delete id="deleteBookmark">
+        DELETE FROM bookmark WHERE member_seq = #{member_seq} AND photo_uciCode = #{photo_uciCode}        
+    </delete>
+</mapper>
