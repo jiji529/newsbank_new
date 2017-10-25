@@ -33,6 +33,7 @@
 	$(document).ready(function(key, val){
 		var saleState = ${photoDTO.saleState};
 		var portraitRightState = ${photoDTO.portraitRightState};
+		console.log(saleState, portraitRightState);
 		
 		if(saleState == 1) {
 			$('input:radio[name="blind"][value="1"]').attr('checked', true);
@@ -267,7 +268,7 @@
 		<section class="view">
 			<div class="view_lt">
 				<h2 class="media_logo"><img src="images/view/logo.gif" alt="뉴시스" /></h2>
-				<div class="img_area"><img src="images/n2/${photoDTO.compCode}.jpg"/>
+				<div class="img_area"><img src="images/serviceImages${photoDTO.getViewPath()}"/>
 					<div class="cont_area">
 						<h3 class="img_tit"><span class="uci">[${photoDTO.uciCode}]</span>ns696100264</h3>
 						<h3 class="img_tit">${photoDTO.titleKor}</h3>

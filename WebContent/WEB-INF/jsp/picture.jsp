@@ -81,7 +81,7 @@
 			success : function(data) {
 				console.log(data);
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode=" + val.uciCode + "\"><img src=\"images/n2/" + val.compCode + ".jpg\"></a>";
+					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode=" + val.uciCode + "\"><img src=\"images/serviceImages" + val.listPath + "\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
@@ -276,7 +276,7 @@
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
 					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
-						<img src="images/n2/${PhotoDTO.compCode}.jpg">
+						<img src="images/serviceImages${PhotoDTO.getListPath()}">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
@@ -294,7 +294,7 @@
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
 					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
-						<img src="images/n2/${PhotoDTO.compCode}.jpg">
+						<img src="images/serviceImages${PhotoDTO.getListPath()}">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>

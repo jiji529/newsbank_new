@@ -70,7 +70,7 @@ public class SearchJSON extends NewsbankServletBase {
 		List<PhotoDTO> list = (List<PhotoDTO>) photoList.get("result");
 		for(PhotoDTO dto : list){
 			try {
-				jsonList.add(dto.convertToMap());
+				jsonList.add(dto.convertToFullMap());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

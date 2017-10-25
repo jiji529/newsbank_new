@@ -37,7 +37,7 @@
 		<div class="view_lt">
 			<div class="navi"></div>
 			<h2 class="media_logo"><img src="images/view/logo.gif" alt="뉴시스" /></h2>
-			<div class="img_area"><img src="images/n2/${photoDTO.compCode}.jpg" style="width:50%; height:50%"/>
+			<div class="img_area"><img src="images/serviceImages${photoDTO.getViewPath()}" style="width:50%; height:50%"/>
 				<div class="cont_area">
 					<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>
 					<a href="#" class="btn_wish">찜하기</a>

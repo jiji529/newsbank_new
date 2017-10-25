@@ -49,6 +49,7 @@ public class CMS extends NewsbankServletBase {
 		Map<String, Object> photoList = searchDAO.search(parameterBean);		
 		request.setAttribute("total", photoList.get("count"));
 		request.setAttribute("picture", photoList.get("result"));
+		
 		request.setAttribute("CONTENT_TYPE_NEWS", SearchParameterBean.CONTENT_TYPE_NEWS);
 		request.setAttribute("CONTENT_TYPE_MUSEUM", SearchParameterBean.CONTENT_TYPE_MUSEUM);
 		request.setAttribute("CONTENT_TYPE_PERSONAL", SearchParameterBean.CONTENT_TYPE_PERSONAL);
@@ -64,6 +65,7 @@ public class CMS extends NewsbankServletBase {
 		
 		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
 		List<PhotoDTO> list = (List<PhotoDTO>) photoList.get("result");
+		
 		for(PhotoDTO dto : list){
 			try {
 				jsonList.add(dto.convertToMap());
