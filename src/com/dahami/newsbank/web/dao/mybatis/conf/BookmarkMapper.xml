@@ -8,14 +8,23 @@
     </insert>
     
     <select id="selectBookmark" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">
-        SELECT seq, member_seq, photo_uciCode, bookName, regDate FROM bookmark WHERE member_seq = #{member_seq} 
+        SELECT seq, member_seq, bookName, activate, regDate FROM bookmark WHERE member_seq = #{member_seq} 
     </select>
     
     <select id="selectOne_Bookmark" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">
-        SELECT seq, member_seq, photo_uciCode, bookName, regDate FROM bookmark WHERE member_seq = #{member_seq} AND photo_uciCode = #{photo_uciCode} 
+        SELECT A.seq, A.member_seq, A.bookName, A.activate, A.regDate, B.photo_uciCode 
+		FROM bookmark A
+		INNER JOIN bookmarkPhoto B ON A.seq = B.bookmark_seq
+		WHERE A.member_seq = #{member_seq} AND B.photo_uciCode = #{photo_uciCode} 
     </select>
     
     <delete id="deleteBookmark">
-        DELETE FROM bookmark WHERE member_seq = #{member_seq} AND photo_uciCode = #{photo_uciCode}        
+        DELETE FROM bookmark WHERE member_seq = #{member_seq} AND bookName = #{bookName}        
+    </delete>
+    
+    <delete id="deleteBookmarkPhoto">
+        DELETE A.* FROM bookmarkPhoto A
+		INNER JOIN bookmark B ON A.bookmark_seq = B.seq
+		WHERE A.photo_uciCode = #{photo_uciCode} AND B.member_seq = #{member_seq}
     </delete>
 </mapper>

@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
+import com.dahami.newsbank.web.dto.BookmarkDTO;
 
 /**
  * Servlet implementation class MypageDibs
@@ -42,20 +44,14 @@ public class MypageDibs extends NewsbankServletBase {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		String member_seq = "1002"; // 사용자 정보 쿠키나 세션에서 정보 가져오기 (현재 임시로 지정)
+		String bookmark_seq = request.getParameter("bookmark_seq");
 		PhotoDAO photoDAO = new PhotoDAO();
-		List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq);
-		//List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+		List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq);
 		request.setAttribute("dibsPhotoList", dibsPhotoList);
 		
-		for(PhotoDTO dto : dibsPhotoList){
-			try {
-				jsonList.add(dto.convertToFullMap());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block				
-				e.printStackTrace();
-			}
-		}
+		BookmarkDAO bookmarkDAO = new BookmarkDAO();
+		List<BookmarkDTO> bookmarkList = bookmarkDAO.userBookmark(Integer.parseInt(member_seq));
+		request.setAttribute("bookmarkList", bookmarkList);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_dibs.jsp");
 		dispatcher.forward(request, response);
@@ -67,6 +63,15 @@ public class MypageDibs extends NewsbankServletBase {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+		
+		BookmarkDAO bookmarkDAO = new BookmarkDAO();
+		String action = request.getParameter("action");
+		int member_seq = Integer.parseInt(request.getParameter("member_seq"));
+		String photo_uciCode = request.getParameter("photo_uciCode");
+		
+		if(action.equals("delete")) {
+			bookmarkDAO.delete(member_seq, photo_uciCode);
+		}
 	}
 
 }

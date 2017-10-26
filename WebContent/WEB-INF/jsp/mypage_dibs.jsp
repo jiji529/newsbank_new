@@ -15,6 +15,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -27,10 +28,102 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(function(key, val){
 		
 	});
+	/** 개별 다운로드 */
+	$(document).on("click", ".btn_down", function() {
+		var uciCode = $(this).parent().parent().find("div span:first").text();
+		var imgPath = $(this).parent().parent().find("a img").attr("src");
+		
+		var link = document.createElement("a");
+        link.download = uciCode;
+        link.href = imgPath;
+        link.click();
+	});
+	
+	/** 찜 카테고리 선택 */
+	$(document).on("click", ".filter_list li", function() {		
+		var choice = $(this).text();
+		$(this).attr("selected", "selected");
+		$(this).siblings().removeAttr("selected");
+		var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
+		$(this).parents(".filter_title").children().remove().end().html(choice + filter_list);
+		
+		dibsList();
+	});
+	
+	/** 찜 목록 */
+	function dibsList() {
+		var member_seq = "1002"; // 사용자 고유번호		
+		var bookmark_seq = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val();
+		
+		$.ajax({
+			url: "",
+			type: "GET",
+			dataType: "json",
+			data: {
+				"member_seq" : member_seq,
+				"bookmark_seq" : bookmark_seq
+			},
+			success: function(data){ 
+				console.log(data);
+			}, 
+			error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		});
+	} 
+	
+	/** DB 삭제함수 */
+	function dibsDelete(member_seq, uciCode) {
+		var param = "action=delete";
+		
+		$.ajax({
+			url: "/dibs.myPage?"+param,
+			type: "POST",
+			data: {
+				"member_seq" : member_seq,
+				"photo_uciCode" : uciCode
+			},
+			success: function(data){ }, 
+			error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		}); 
+	}
+	
+	/** 개별 삭제 */
+	$(document).on("click", ".btn_del", function() {
+		var member_seq = "1002"; // 사용자 고유번호
+		var uciCode = $(this).parent().parent().find("div span:first").text();
+		//var param = "action=delete";
+		$(this).closest(".thumb").remove();
+		
+		dibsDelete(member_seq, uciCode);		
+	});
+	
+	/** 다중선택 삭제 */
+	$(document).on("click", ".sort_del", function() {
+		var member_seq = "1002"; // 사용자 고유번호
+		$("#wish_list2 input:checkbox:checked").each(function(index) {
+			var uciCode = $(this).val();
+			dibsDelete(member_seq, uciCode);
+			$(this).closest(".thumb").remove();
+		});
+	});
+	
+	/** 전체선택 */
+	$(document).on("click", "input[name='checkAll']", function() {
+		if($("input[name='checkAll']").prop("checked")) {
+			$("#wish_list2 input:checkbox").prop("checked", true);
+		}else {
+			$("#wish_list2 input:checkbox").prop("checked", false);
+		}
+	});
+	
 </script>
 </head>
 <body>
@@ -83,14 +176,15 @@
 					<li class="filter_title folder_ico">찜 그룹</li>
 					<li class="filter_title"> 찜한 사진 전체
 						<ul class="filter_list" style="display:block;">
-							<li>기본 그룹</li>
-							<li>사용자 지정 그룹</li>
+							<c:forEach items="${bookmarkList}" var="bookmark">
+								<li value="${bookmark.seq}">${bookmark.bookName}</li>
+							</c:forEach>
 							<li class="folder_edit">
-										<a href="#" >그룹 관리</a>
+								<a href="#" >그룹 관리</a>
 							</li>
 						</ul>
 					</li>
-	</ul>
+				</ul>
 				<div class="filter_rt">
 					<div class="result"><b class="count">123</b>개의 결과</div>
 					<div class="paging"><a href="#" class="prev" title="이전페이지"></a>
@@ -107,7 +201,7 @@
 			</div>
 			<!-- 필터끝 -->
 			<div class="btn_sort"><span class="task_check">
-				<input type="checkbox" />
+				<input type="checkbox" name="checkAll"/>
 				</span>
 				<ul class="button">
 					<li class="sort_down">장바구니</li>
@@ -116,20 +210,11 @@
 				</ul>
 			</div>
 			<section id="wish_list2">
-				<ul>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
+				<ul>					
 					<c:forEach items="${dibsPhotoList}" var="PhotoDTO">
 						<li class="thumb"> <a href="/view.cms?uciCode=${PhotoDTO.uciCode}"><img src="images/serviceImages${PhotoDTO.getViewPath()}"/></a>
 							<div class="thumb_info">
-								<input type="checkbox" />
+								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 							<ul class="thumb_btn">
 								<li class="btn_down">다운로드</li>
