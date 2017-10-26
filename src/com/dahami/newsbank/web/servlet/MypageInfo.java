@@ -37,43 +37,50 @@ public class MypageInfo extends NewsbankServletBase {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		// 임시 넣기
 		HttpSession session = request.getSession();
 
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-		if (MemberInfo!= null) {
 
-			request.setAttribute("id", MemberInfo.getId());
-			request.setAttribute("name", MemberInfo.getName());
+		if (MemberInfo != null) {
 
-			if (MemberInfo.getPhone() != null) {
-				request.setAttribute("phone", MemberInfo.getPhone().split("-"));
+			boolean mypageAuth = false;
+			if (session.getAttribute("mypageAuth") != null) {
+				mypageAuth = (boolean) session.getAttribute("mypageAuth");
+			}
+			if (mypageAuth == false) {
+				// 이전에 my page 비밀번호 입력했는지 체크
+				response.sendRedirect("/auth.mypage");
+			} else {
+				request.setAttribute("id", MemberInfo.getId());
+				request.setAttribute("name", MemberInfo.getName());
+
+				if (MemberInfo.getPhone() != null) {
+					request.setAttribute("phone", MemberInfo.getPhone().split("-"));
+				}
+
+				request.setAttribute("email", MemberInfo.getEmail());
+				request.setAttribute("compName", MemberInfo.getCompName());
+				request.setAttribute("compNum", MemberInfo.getCompNum());
+				request.setAttribute("compTel", MemberInfo.getCompTel());
+				request.setAttribute("logo", MemberInfo.getLogo());
+
+				request.setAttribute("compName", MemberInfo.getCompName());
+				if (MemberInfo.getCompNum() != null) {
+					request.setAttribute("compNum", MemberInfo.getCompNum().split("-"));
+				}
+
+				if (MemberInfo.getCompTel() != null) {
+					request.setAttribute("compTel", MemberInfo.getCompTel().split("-"));
+				}
+
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_info.jsp");
+				dispatcher.forward(request, response);
 			}
 
-			
-			request.setAttribute("email", MemberInfo.getEmail());
-			request.setAttribute("compName", MemberInfo.getCompName());
-			request.setAttribute("compNum", MemberInfo.getCompNum());
-			request.setAttribute("compTel", MemberInfo.getCompTel());
-			request.setAttribute("logo", MemberInfo.getLogo());
-			
-			request.setAttribute("compName", MemberInfo.getCompName());
-			if (MemberInfo.getCompNum() != null) {
-				request.setAttribute("compNum", MemberInfo.getCompNum().split("-"));
-			}
-			
-			if (MemberInfo.getCompTel() != null) {
-				request.setAttribute("compTel", MemberInfo.getCompTel().split("-"));
-			}
-
-			
-			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_info.jsp");
-			dispatcher.forward(request, response);
 		} else {
-			 response.sendRedirect("/login");
+			response.sendRedirect("/login");
 		}
 
 	}

@@ -40,17 +40,19 @@ public class MypageAcount extends NewsbankServletBase {
 		HttpSession session = request.getSession();
 
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-		boolean mypageAuth = (boolean) request.getSession().getAttribute("mypageAuth");
+		
 		if (MemberInfo != null) {
-			
-			if(mypageAuth) {
-				response.sendRedirect("/info.mypage");
-			}else {
-				//request.getSession().setAttribute("mypageAuth", true);
+			boolean mypageAuth = false;
+			if (session.getAttribute("mypageAuth") != null) {
+				mypageAuth = (boolean) session.getAttribute("mypageAuth");
+			}
+			if (mypageAuth == false) {
+				// 이전에 my page 비밀번호 입력했는지 체크
+				response.sendRedirect("/auth.mypage");
+			} else {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_acount.jsp");
 				dispatcher.forward(request, response);
 			}
-			
 			
 		} else {
 			response.sendRedirect("/login");
