@@ -68,380 +68,72 @@
 			<div class="table_head">
 				<h3>장바구니</h3>
 			</div>
-			<div class="btn_sort"><span class="task_check">
-				<input type="checkbox" />
-				</span>
-				<ul class="button">
-					<li class="sort_down">장바구니</li>
-					<li class="sort_del">삭제</li>
-					<li class="sort_menu">폴더이동</li>
-				</ul>
-			</div>
-			<section id="wish_list2">
-				<ul>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"><a href="#"><img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-					<li class="thumb"> <a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a>
-						<div class="thumb_info">
-							<input type="checkbox" />
-							<span>A1242015030205790237</span><span>뉴시스</span></div>
-						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-						</ul>
-					</li>
-				</ul>
-			</section>
-			<div class="more"><a href="#">다음 페이지</a></div>
+			<section id="order_list">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top:0; margin-bottom:15px;">
+					<colgroup>
+					<col width="40">
+					<col>
+					<col width="110">
+					<col width="100">
+					<col width="110">
+					<col width="160">
+					</colgroup>
+					<tr>
+						<th scope="col"> <div class="tb_check">
+								<input id="check_all" name="check_all" type="checkbox">
+								<label for="check_all">선택</label>
+							</div>
+						</th>
+						<th scope="col">상품정보</th>
+						<th scope="col">판매가</th>
+						<th scope="col">부가세</th>
+						<th scope="col">구매금액</th>
+						<th scope="col">선택</th>
+					</tr>
+					<tr>
+						<td><div class="tb_check">
+								<input id="check1" name="check1" type="checkbox">
+								<label for="check1">선택</label>
+							</div></td>
+						<td><div class="cart_item">
+								<div class="thumb"><a href="view.html" target="_blank"><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" /></a></div>
+								<div class="cart_info"> <a href="view.html" target="_blank">
+									<div class="brand">뉴시스</div>
+									<div class="code">E006203286</div>
+									</a>
+									<div class="option_area">
+										<ul class="opt_li">
+											<li>상업용</li>
+											<li>신문광고</li>
+											<li>중앙지,스포츠지,경제지 등</li>
+											<li>1~9단</li>
+											<li>1년 이내</li>
+										</ul>
+										<ul class="opt_li">
+											<li>출판용</li>
+											<li>교육용</li>
+											<li>전집, 백과사전, 도감, 학술논문 발표자료 등</li>
+											<li>1~9단</li>
+											<li>1년 이내</li>
+										</ul>
+										<a href= "main.html" onClick="window.open('pop_opt.html','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a></div>
+								</div>
+							</div></td>
+						<td>480,000원</td>
+						<td>48,000원</td>
+						<td><strong class="color">528,000원</strong></td>
+						<td><div class="btn_group">
+								<button type="button" class="btn_o" name="btn_buy">바로구매</button>
+								<button type="button" class="btn_b" name="btn_zzim">찜 하기</button>
+								<button type="button" class="btn_g" name="btn_delete">삭제</button>
+							</div></td>
+					</tr>
+				</table>
+	<a href="#" class="mp_btn" style="float:left;">선택 삭제</a>
+			<div class="calculate_info_area">총 금액<strong>480,000</strong>원<span style="margin:0 20px;">+</span> 부가세<strong>48,000</strong>원<span style="margin:0 20px;">=</span> 총 판매금액 : <strong class="color">528,000</strong>원</div>
+			<div class="btn_area"><a href="#" class="btn_input2">결제하기</a></div>
+	
+	</section>
 		</section>
 	</div>
 </body>

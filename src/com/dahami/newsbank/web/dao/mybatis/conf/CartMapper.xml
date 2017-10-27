@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Cart">
+	
+	<select id="selectCartList" resultType="com.dahami.newsbank.web.dto.CartDTO" parameterType="java.util.Map">
+	    SELECT A.`*` FROM basket A
+		INNER JOIN photo B ON A.photo_uciCode = B.uciCode
+		INNER JOIN member C ON A.member_seq = C.seq
+		INNER JOIN usageList D ON A.usageList_seq = D.seq
+		WHERE A.member_seq = #{member_seq}
+	</select>
+	
+</mapper>

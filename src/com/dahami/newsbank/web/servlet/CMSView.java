@@ -58,19 +58,7 @@ public class CMSView extends NewsbankServletBase {
 		List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);
 		request.setAttribute("photoTagList", photoTagList);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/cms_view.jsp");
-		dispatcher.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-		
-		String action = request.getParameter("action");
-		String uciCode = request.getParameter("uciCode");
+		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
 		String titleKor = request.getParameter("titleKor");
 		String descriptionKor = request.getParameter("descriptionKor");
 		String tagName = request.getParameter("tagName");
@@ -78,8 +66,6 @@ public class CMSView extends NewsbankServletBase {
 		String columnValue = request.getParameter("columnValue");
 		
 		if(action.equals("insertTag")){		
-			TagDAO tagDAO = new TagDAO();
-			List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);
 			boolean exist = false;
 			//System.out.println("photoTagList 갯수 : "+photoTagList.size());
 			
@@ -96,16 +82,25 @@ public class CMSView extends NewsbankServletBase {
 			}			
 			
 		}else if(action.equals("deleteTag")) {
-			TagDAO tagDAO = new TagDAO();
 			tagDAO.delete_PhotoTag(uciCode, tagName);
 		}else if(action.equals("updateCMS")){
 			this.updateCMS(uciCode, titleKor, descriptionKor);
 		}else if(action.equals("updateOne")){
 			this.updateOne(uciCode, columnName, columnValue);
 		}else{
-			System.out.println("ACTION parameter error");
+			//System.out.println("ACTION parameter null or empty");
 		}
 		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/cms_view.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 	
 	private void insertTag(String uciCode, String tagName) {

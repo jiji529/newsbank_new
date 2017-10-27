@@ -1,12 +1,17 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.CartDAO;
+import com.dahami.newsbank.web.dto.CartDTO;
 
 /**
  * Servlet implementation class MypageCart
@@ -34,6 +39,12 @@ public class MypageCart extends NewsbankServletBase {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		String member_seq = "1002";		
+		CartDAO cartDAO = new CartDAO();
+		List<CartDTO> cartList = cartDAO.cartList(member_seq);
+		System.out.println(cartList);
+		System.out.println(cartList.size());
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_cart.jsp");
 		dispatcher.forward(request, response);
