@@ -7,7 +7,7 @@
 body,html{height:100%; text-align:center; background:#f6f6f6;}
 ul,ol,dl{list-style:none;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,form,fieldset,p,button{margin:0;padding:0}
-body,h1,h2,h3,h4,input,button{font-family:"nanum",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif;}
+/*body,h1,h2,h3,h4,input,button{font-family:"nanum",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif;}*/
 a{text-decoration: none;}
 fieldset, img { border: 0 none;}
 .color{ color:#f79320!important;}
@@ -25,7 +25,7 @@ h1{height: 50px; display: block; width: 142px; margin:0 auto; position: relative
 
 .wrap_tit{  width:100%; text-align:center; margin:40px 0;}
 .wrap_tit .tit_join{ font-size:24px; margin-bottom:10px;font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif;}
-.wrap_tit .txt_desc{ font-size:14px; color:#666;}
+.wrap_tit .txt_desc{ font-size:13px; color:#666; line-height:1.5}
 
 .join fieldset{}
 .join_box {position: relative; border: 1px solid #d5d5d5;float:left; margin-bottom:30px;}	
@@ -38,9 +38,15 @@ h1{height: 50px; display: block; width: 142px; margin:0 auto; position: relative
 .wrap_check input:checked+label {  background:url(../images/ico_chk2.png) 0 0 no-repeat;}
 
 .wrap_btn{ width:100%; text-align:center; margin-top:30px;}
-.wrap_btn button{ height: 60px; line-height: 60px; width: 180px; font-size: 18px; font-weight: 600;}
+.wrap_btn button{ height: 50px; line-height: 50px;  font-size: 18px; font-weight: 600; padding:0 50px;}
 .wrap_btn button.btn_cancel{ border:1px #ccc solid; color:#666; background:#fff; margin-right:10px;}
 .wrap_btn button.btn_agree{color:#fff; background:#f79320; border:0;}
+
+.wrap_btn2{ width:100%; text-align:center; margin-top:30px;}
+.wrap_btn2 button, .wrap_btn2 a{ height: 40px; line-height: 40px;  font-size: 14px; padding:0 30px; font-weight:600; display:inline-block;}
+.wrap_btn2 .btn_cancel{ border:1px #ccc solid; color:#666; background:#fff; margin-right:10px;}
+.wrap_btn2 .btn_agree{color:#fff; background:#f79320; border:0;margin-right:10px;}
+
 
 .navi {overflow:hidden; margin:20px 0;}
 .navi li {display:block;float:left;width:25%;color:#acacac;font-size:18px;font-family:"nsr";padding-bottom:10px;text-align:center;border-bottom:7px solid #d7d7d7;}
@@ -76,6 +82,9 @@ footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#9
 .wrap_info .box_info .item_info dd .inp option{height:50px; padding:10px;}
 .wrap_info .box_info .item_info dd .inp input[type=file]{ padding:7px; text-indent:0;} 
 
+.wrap_info .box_info .item_info dd .inp.addr{ border:0;}
+.wrap_info .box_info .item_info dd .inp.addr input{width: 85px; border:1px solid #d4d4d4; float:left; position:relative;}
+.wrap_info .box_info .item_info dd .inp.addr button{position:relative; width: 70px;  float:left; margin-left:5px; right:auto;}
 
 
 
@@ -97,7 +106,18 @@ footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#9
 .find_info a:hover{text-decoration:underline;}
 .find_info .bar{margin:0 10px; color:#ddd;}
 
+.find_link{ font-size:13px; color:#666; margin:20px auto; width:100%; text-align:center;}
+.find_link a{font-family: '돋움','dotum','Apple SD Gothic Neo','sans-serif';  text-decoration:underline; color:#333; position:relative;}
+.find_link a:after{content: '';  height: 0; width: 0; border: solid transparent; border-left-color: #555; border-width: 4px 4px; font-size:0; position:absolute; top:2px; margin-left:5px;}
 
+
+.id_box{position: relative; z-index: 100; padding: 40px 40px 30px; border: 1px solid #e5e5e5; text-align:center;}
+.id_box .id_list li{padding-bottom: 8px; text-align: left; display:inline-block; margin-bottom:5px;}
+.id_box .id_list li strong{display: inline-block; min-width: 200px; padding-right: 30px; font-size:15px;}
+.id_box .id_list li input{margin:5px; float:left;}
+.id_box .id_list li span{ font-size:14px;}
+
+
+/* 로그인 실패*/
 .error{text-align:center; font-size:12px;  padding-top:10px; margin-bottom:10px; }
 .error p{ color:red;}
-

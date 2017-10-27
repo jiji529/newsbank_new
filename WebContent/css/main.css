@@ -47,5 +47,3 @@ section.media .media_list li { border-right:1px #f3f4f8 solid;border-bottom:1px 
 section.media .media_list li:nth-child(9n){ border-right:0;}
 section.media .media_list li a{ display:block; }
 section.media .media_list li a img{vertical-align: bottom;}
-
-

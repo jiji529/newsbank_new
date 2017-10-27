@@ -57,19 +57,32 @@
 	
 	/** 찜 목록 */
 	function dibsList() {
+		$("#wish_list2 ul:first").empty();
+		
 		var member_seq = "1002"; // 사용자 고유번호		
 		var bookmark_seq = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val();
 		
+		var html = "";
 		$.ajax({
-			url: "/dibs.myPage",
+			url: "/DibsJSON",
 			type: "GET",
 			dataType: "json",
 			data: {
 				"member_seq" : member_seq,
 				"bookmark_seq" : bookmark_seq
 			},
-			success: function(data){ 
-				console.log(data);
+			success: function(data){ console.log(data);
+				$(data.result).each(function(key, val) {
+					html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages'+val.viewPath+'"/></a>';
+					html += '<div class="thumb_info">';
+					html += '<input type="checkbox" value="'+val.uciCode+'"/>';
+					html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
+					html += '<ul class="thumb_btn">';
+					html += '<li class="btn_down">다운로드</li>';
+					html += '<li class="btn_del">삭제</li>';
+					html += '</ul></li>';					
+				});
+				$(html).appendTo("#wish_list2 ul:first");
 			}, 
 			error:function(request,status,error){
 	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -175,7 +188,7 @@
 				<ul>
 					<li class="filter_title folder_ico">찜 그룹</li>
 					<li class="filter_title"> 찜한 사진 전체
-						<ul class="filter_list" style="display:block;">
+						<ul class="filter_list">
 							<c:forEach items="${bookmarkList}" var="bookmark">
 								<li value="${bookmark.seq}">${bookmark.bookName}</li>
 							</c:forEach>

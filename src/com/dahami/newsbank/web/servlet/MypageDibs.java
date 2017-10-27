@@ -1,7 +1,6 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,26 +47,18 @@ public class MypageDibs extends NewsbankServletBase {
 		String bookmark_seq = request.getParameter("bookmark_seq");
 		PhotoDAO photoDAO = new PhotoDAO();
 		List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq);
-		System.out.println(dibsPhotoList.size());
 		request.setAttribute("dibsPhotoList", dibsPhotoList);
 		
 		BookmarkDAO bookmarkDAO = new BookmarkDAO();
 		List<BookmarkDTO> bookmarkList = bookmarkDAO.userBookmark(Integer.parseInt(member_seq));
 		request.setAttribute("bookmarkList", bookmarkList);
 		
-		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
-		List<PhotoDTO> list = (List<PhotoDTO>) dibsPhotoList;
+		String action = (request.getParameter("action") == null) ? "" : request.getParameter("action");
+		String photo_uciCode = request.getParameter("photo_uciCode");
 		
-		for(PhotoDTO dto : list){
-			try {
-				jsonList.add(dto.convertToMap());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}		
-		request.setAttribute("jsonList", jsonList);
-		//System.out.println(jsonList);		
+		if(action.equals("delete")) {
+			bookmarkDAO.delete(Integer.parseInt(member_seq), photo_uciCode);
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_dibs.jsp");
 		dispatcher.forward(request, response);
@@ -78,16 +69,7 @@ public class MypageDibs extends NewsbankServletBase {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
-		
-		BookmarkDAO bookmarkDAO = new BookmarkDAO();
-		String action = request.getParameter("action");
-		int member_seq = Integer.parseInt(request.getParameter("member_seq"));
-		String photo_uciCode = request.getParameter("photo_uciCode");
-		
-		if(action.equals("delete")) {
-			bookmarkDAO.delete(member_seq, photo_uciCode);
-		}
+		doGet(request, response);		
 	}
 
 }

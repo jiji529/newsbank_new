@@ -46,6 +46,9 @@
 .mypage .tb01 th { padding: 10px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:60px; }
 .mypage .tb01 th .ex { color:red; margin-right:5px; float:left; margin-top:2px;}
 .mypage .tb01 td { padding: 10px 30px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; }
+.mypage .tb01 td .my_addr{float:left; width:100%; margin-bottom:10px;}
+.mypage .tb01 td .my_addr:last-child{margin-bottom:0;}
+.mypage .tb01 td .my_addr input{ margin-right:10px;}
 .mypage .tb01 td.phone { padding: 10px 0 0 30px;  }
 .mypage .tb01 td *{float:left;}
 .mypage .tb01 td input{  padding: 12px 10px;}
@@ -61,8 +64,7 @@
 .mypage .tb01 td label.per span{float:left; margin-left:15px;}
 .mypage .tb01 td label.per span b{float:none; margin:0 3px;}
 .mypage .inp_txt { padding: 10px; color: #999; border: 1px solid #d9d9d9; border-radius: 2px;}
-.mypage .ico_require { display:inline-block; overflow:hidden; width:15px; height:15px; margin-left:5px; vertical-align:-5px; color:transparent; background-position:-480px 0!important }
-.mypage .ico { text-indent:-999em; background:url(http://www.kdnavien.co.kr/images/ko/common/ico_pack.png) no-repeat }
+.mypage .ico_require { display:inline-block; overflow:hidden; width:15px; height:15px; margin-left:5px; vertical-align:-5px; background:url(../images/ico_pack.png) 0 0 no-repeat; text-indent:-9999px; }
 .mypage .bar{margin:10px 5px;}
 .mypage .btn_input1{ padding: 10px 20px; color: #666; border: 1px solid #aaa; background:#fff; border-radius: 2px; margin-left:10px; }
 .mypage .btn_input2{ padding: 10px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; border-radius: 2px; margin-left:10px; }
@@ -78,6 +80,7 @@
 .mypage .tb01 .check input{margin:3px;}
 
 .mypage .calculate_info_area{width:100%; float:left; height:50px; background:#f6f6f6; border:1px #ddd solid; color:#666; font-size:14px; line-height:50px; margin:30px 0; font-weight:600; }
+.mypage .calculate_info_area strong{ padding:0 10px; font-size:16px; color:#333;}
 
 .mypage .tb03 { border-top:2px #555b62 solid; border-bottom:1px #999 solid; }
 .mypage .tb03 th { padding: 10px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:45px; background:#f6f6f6; }
@@ -173,7 +176,7 @@
 .mypage .view .view_rt .cms_rt .cms_table2 td label input{float:left; margin-top:3px; margin-right:3px;}
 
 .mypage .view .view_rt .cms_rt .add_tag{float:left; width:100%;}
-.mypage .view .view_rt .cms_rt .add_tag input{ margin-right:5px; border:1px #ddd solid ; padding:4px 4px; width:310px; float:left;}
+.mypage .view .view_rt .cms_rt .add_tag input{ margin-right:5px; border:1px #ddd solid ; padding:4px 4px; width:300px; float:left;}
 .mypage .view .view_rt .cms_rt .add_tag button {padding:5px 15px; background:#b3b3b3; border:0; color:#fff; border-radius:2px; float:left;}
 .mypage .view .view_rt .cms_rt .tag_list{ float:left; width:100%; margin-top:10px;}
 .mypage .view .view_rt .cms_rt .tag_list li{ float:left; padding:8px 12px 8px 30px; border-radius:16px; font-size:13px; margin:5px; position:relative;}
@@ -186,5 +189,33 @@
 .mypage .mp_btn{float:right; padding:10px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa; }
 
 
+/*장바구니*/
+#order_list .tb03 th{padding:10px;}
+#order_list .tb03 td{padding:10px; font-size:14px;}
+#order_list .tb03 th:first-child, #order_list .tb03 td:first-child{padding:10px 20px;}
+#order_list .tb_check input{width:0; height:0;}
+
+#order_list .tb_check label{display: block;width: 20px; height: 20px; text-indent: -9999px; background:url(../images/ico_chk3.png) 0 0 no-repeat;cursor:pointer;}
+#order_list .tb_check input:checked+label { background:url(../images/ico_chk4.png) 0 0 no-repeat;}
+
+#order_list .cart_item{ }
+#order_list .cart_item .thumb{display: table-cell; width: 120px; vertical-align: top; position: relative; padding-top:5px;}
+#order_list .cart_item .thumb a{}
+#order_list .cart_item .thumb img{ width: 100%; vertical-align: top;}
+#order_list .cart_item .cart_info{ display: table-cell; padding-left: 20px; line-height: 22px; vertical-align: top;}
+#order_list .cart_item .cart_info a { text-align:left;}
+#order_list .cart_item .cart_info .brand{color:#000; font-weight:600;}
+#order_list .cart_item .cart_info .code{color:#666; font-size:14px;}
+#order_list .cart_item .cart_info .option_area .opt_li{ float:left; width:100%;}
+#order_list .cart_item .cart_info .option_area .opt_li li{float:left;  font-size:12px; color:#666;}
+#order_list .cart_item .cart_info .option_area .opt_li li:after{ content:'';width:1px; height:12px; background:#ccc; margin:5px 5px 0; float:left;}
+#order_list .cart_item .cart_info .option_area .opt_li li:first-child:after{ display:none;}
+#order_list .cart_item .cart_info .option_area a{padding:0 8px; background-color:#f7f9fd; color:#888; display:block; border: 1px solid #ccc; font-size:12px; margin-top:10px; float:left; text-align:center;}
+#order_list .btn_group button{margin: 6px 0 0; width: 100px; font-size: 13px; line-height: 1.8em;background-color: #fff;}
+#order_list .btn_group button.btn_o{border: 1px solid #f79320; color: #f79320;}
+#order_list .btn_group button.btn_g{border: 1px solid #999; color: #999;}
+#order_list .btn_group button.btn_b{border: 1px solid #333; color: #333;}
+
+/* 로그인 실패*/
 .error{text-align:center; font-size:12px;  padding-top:10px; margin-bottom:10px; }
 .error p{ color:red;}

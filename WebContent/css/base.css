@@ -4,7 +4,7 @@
 @import url("font.css");
 
 *{margin:0; padding:0; box-sizing: border-box;}
-body,html{height:100%; text-align:center; min-width:1240px;}
+body{height:100%; text-align:center; min-width:1240px;}
 ul,ol,dl{list-style:none;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,form,fieldset,p,button{margin:0;padding:0}
 body,h1,h2,h3,h4,input,button{font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif;}
@@ -12,14 +12,15 @@ a{text-decoration: none;}
 .color{ color:#f79320!important;}
 .block {display:block;}
 /*
-input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {    -webkit-appearance: none;}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;}
 */
 
 .wrap{min-height: 100%; position: relative;}
 nav.gnb_light{height: 90px; width: 100%; margin: 0 auto; -webkit-transition: 0.1s box-shadow ease-in-out; -moz-transition: 0.1s box-shadow ease-in-out; transition: 0.1s box-shadow ease-in-out; position: absolute; z-index: 1000; -webkit-transform: translate3d(0, 0, 0); -moz-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(transparent)); background: -webkit-linear-gradient(rgba(0,0,0,0.5), transparent); background: -moz-linear-gradient(rgba(0,0,0,0.5), transparent); background: linear-gradient(rgba(0,0,0,0.5), transparent); top: 0; padding-top:10px;}
 nav.gnb_light .gnb {padding:0 50px; }
 nav.gnb_light .gnb a.logo{height: 50px; display: block; float: left; width: 142px; margin: 10px 0; position: relative; background:url(../images/logo_w.svg) 0 0 no-repeat;}  
-nav .gnb_left{ float:left; display:block; margin-left:40px;}
+/* 1차에선 메뉴 주석처리*/
+nav .gnb_left{ float:left; display:none; margin-left:40px;}
 nav .gnb_left li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px; }
 nav.gnb_light .gnb .gnb_left li a{color:#fff;}
 nav a{display:block;font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif; font-size:17px;}

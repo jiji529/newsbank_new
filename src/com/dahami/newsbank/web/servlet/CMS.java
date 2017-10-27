@@ -63,18 +63,6 @@ public class CMS extends NewsbankServletBase {
 		request.setAttribute("INCLUDE_PERSON_YES", SearchParameterBean.INCLUDE_PERSON_YES);
 		request.setAttribute("INCLUDE_PERSON_NO", SearchParameterBean.INCLUDE_PERSON_NO);
 		
-		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
-		List<PhotoDTO> list = (List<PhotoDTO>) photoList.get("result");
-		
-		for(PhotoDTO dto : list){
-			try {
-				jsonList.add(dto.convertToMap());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/cms.jsp");
 		dispatcher.forward(request, response);
 	}

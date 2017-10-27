@@ -81,18 +81,7 @@ public class Picture extends NewsbankServletBase {
 		request.setAttribute("INCLUDE_PERSON_NO", SearchParameterBean.INCLUDE_PERSON_NO);
 		
 		request.setAttribute("GROUP_IMAGE_ALL", SearchParameterBean.GROUP_IMAGE_ALL);
-		request.setAttribute("GROUP_IMAGE_REP", SearchParameterBean.GROUP_IMAGE_REP);
-		
-		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
-		List<PhotoDTO> list = (List<PhotoDTO>) photoList.get("result");
-		for(PhotoDTO dto : list){
-			try {
-				jsonList.add(dto.convertToMap());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		request.setAttribute("GROUP_IMAGE_REP", SearchParameterBean.GROUP_IMAGE_REP);	
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/picture.jsp");
 		dispatcher.forward(request, response);
