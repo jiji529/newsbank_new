@@ -23,7 +23,11 @@
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/footer.js"></script>
+<script src="js/common.js"></script>
 </head>
+<%
+	String type = (String) request.getAttribute("type");
+%>
 <body>
 	<div class="wrap">
 		<nav class="gnb_dark">
@@ -53,7 +57,7 @@
 					<a href="/login">로그인</a>
 				</li>
 				<li>
-					<a href="/kind.join">가입하기</a>
+					<a href="/kind.join" target="_blank">가입하기</a>
 				</li>
 				<%
 					} else { // 로그인 했을 경우
@@ -83,7 +87,7 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<li class="on">
+				<li>
 					<a href="/acount.mypage">정산 관리</a>
 				</li>
 				<li>
@@ -93,427 +97,92 @@
 					<a href="/info.mypage">회원정보 관리</a>
 				</li>
 				<li>
-					<a href="#">찜관리</a>
+					<a href="/dibs.myPage">찜관리</a>
 				</li>
 				<li>
-					<a href="#">장바구니</a>
+					<a href="/cart.myPage">장바구니</a>
 				</li>
 				<li>
 					<a href="/buy.mypage">구매내역</a>
 				</li>
 			</ul>
+			<ul class="mp_tab2">
+				<li class="on">
+					<a href="#">정산정보 관리</a>
+				</li>
+				<li>
+					<a href="my07.html">정산 내역</a>
+				</li>
+			</ul>
 		</div>
 		<div class="table_head">
-			<h3>정산 내역</h3>
-			<!--<p class="txt">결제정보를 등록하시면 결제 시 자동으로 반영됩니다.</p>-->
+			<h3>정산 정보 관리</h3>
 		</div>
 		<table class="tb01" cellpadding="0" cellspacing="0">
 			<colgroup>
-				<col style="width: 240px;">
-					<col style="width:;">
+			<col style="width:240px;">
+			<col style="width:;">
 			</colgroup>
 			<tbody>
 				<tr>
-					<th>조회기간 선택</th>
-					<td>
-						<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
-							<span class=" bar">~</span>
-							<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
-					</td>
+					<th>매체명</th>
+					<td><select name="" class="inp_txt" style="width:450px;">
+							<option value="010" selected="selected">선택해주세요.</option>
+						</select></td>
 				</tr>
 				<tr>
-					<th>기간별 조회</th>
-					<td>
-						<select name="" class="inp_txt" style="width: 100px;">
-							<option value="010" selected="selected">2017</option>
+					<th>입금 계좌</th>
+					<td><select name="" class="inp_txt" style="width:120px;">
+							<option value="010" selected="selected">기업은행</option>
 						</select>
-						<ul>
-							<li>
-								<a href="#" class="btn">1월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">2월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">3월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">4월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">5월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">6월</a>
-							</li>
-							<li>
-								<a href="#" class="btn on">7월</a>
-							</li>
-							<li>
-								<a href="#" class="btn on">8월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">9월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">10월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">11월</a>
-							</li>
-							<li>
-								<a href="#" class="btn">12월</a>
-							</li>
-						</ul>
-					</td>
+						<input type="text" class="inp_txt" size="40" />
+						<a href="#" class="btn_input1">통장사본 업로드</a> <a href="#" class="btn_input1">다운로드</a></td>
 				</tr>
 				<tr>
-					<th>매체</th>
-					<td>
-						<label class="per">
-							<span class="media_name">
-								<input type="checkbox" />
-								한국경제
-							</span>
-							<span>
-								온라인 결제
-								<b>20</b>
-								%
-							</span>
-							<span>
-								후불 결제
-								<b>80</b>
-								%
-							</span>
-						</label>
-						<label class="per">
-							<span class="media_name">
-								<input type="checkbox" />
-								한국경제 매거진
-							</span>
-							<span>
-								온라인 결제
-								<b>20</b>
-								%
-							</span>
-							<span>
-								후불 결제
-								<b>80</b>
-								%
-							</span>
-						</label>
-						<label class="per">
-							<span class="media_name">
-								<input type="checkbox" />
-								한국일보
-							</span>
-							<span>
-								온라인 결제
-								<b>20</b>
-								%
-							</span>
-							<span>
-								후불 결제
-								<b>80</b>
-								%
-							</span>
-						</label>
-						<label class="per">
-							<span class="media_name">
-								<input type="checkbox" />
-								헤럴드경제
-							</span>
-							<span>
-								온라인 결제
-								<b>20</b>
-								%
-							</span>
-							<span>
-								후불 결제
-								<b>80</b>
-								%
-							</span>
-						</label>
-						<label class="per">
-							<span class="media_name">
-								<input type="checkbox" />
-								C.영상미디어
-							</span>
-							<span>
-								온라인 결제
-								<b>20</b>
-								%
-							</span>
-							<span>
-								후불 결제
-								<b>80</b>
-								%
-							</span>
-						</label>
-					</td>
+					<th>계약기간</th>
+					<td><input type="text"  size="12"  class="inp_txt" value="2017-05-01" maxlength="10">
+						<span class=" bar">~</span>
+						<input type="text"  size="12"  class="inp_txt" value="2017-05-01" maxlength="10">
+						<div class="check">
+							<input type="checkbox" />
+							자동연장</div>
+						<a href="#" class="btn_input1">계약서 업로드</a> <a href="#" class="btn_input1">다운로드</a></td>
 				</tr>
 				<tr>
-					<th>결제구분</th>
-					<td>
-						<select name="" class="inp_txt" style="width: 380px;">
-							<option value="010" selected="selected"></option>
+					<th><span class="ex">*</span>정산 요율</th>
+					<td><span class=" bar">온라인 결제</span>
+						<input type="text" size="5"  class="inp_txt" value="" maxlength="3"><span class=" bar">%</span>
+						<span class=" bar" style="margin-left:20px;">후불 결제</span>
+						<input type="text" size="5"  class="inp_txt" value="" maxlength="3"><span class=" bar">%</span></td>
+				</tr>
+				<tr>
+					<th>세금계산서 담당자</th>
+					<td><input type="text" class="inp_txt" size="60" /></td>
+				</tr>
+				<tr>
+					<th>세금계산서 담당자 연락처</th>
+					<td><select name="" class="inp_txt" style="width:70px;">
+							<option value="010" selected="selected">010</option>
+							<option value="011">011</option>
+							<option value="016">016</option>
+							<option value="017">017</option>
+							<option value="018">018</option>
+							<option value="019">019</option>
 						</select>
-					</td>
+						<span class=" bar">-</span>
+						<input type="text" id="celphone" size="5"  class="inp_txt" value="1234" maxlength="4">
+						<span class=" bar">-</span>
+						<input type="text" id="celphone2" size="5"  class="inp_txt" value="1234" maxlength="4" /></td>
 				</tr>
 				<tr>
-					<th>결제방법</th>
-					<td>
-						<select name="" class="inp_txt" style="width: 380px;">
-							<option value="010" selected="selected"></option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>검색어</th>
-					<td>
-						<input type="text" class="inp_txt" size="60" placeholder="주문자(이름/회사명), UCI ID, 매체사 고유 사진 ID로 검색 가능합니다." />
-					</td>
+					<th>세금계산서 담당자 이메일</th>
+					<td><input type="text" class="inp_txt" size="60" /></td>
 				</tr>
 			</tbody>
 		</table>
-		<div class="btn_area" style="margin-top: 0;">
-			<a href="#" class="btn_input2">검색</a>
-		</div>
-		<a href="#" style="float: right; padding: 10px 15px; font-size: 13px; border-radius: 2px; color: #666; border: 1px solid #aaa; margin-top: -20px;">엑셀 다운로드</a>
-		<div class="calculate_info_area">
-			기간 : 2017-01-01 ~ 2017-10-15
-			<span style="margin: 0 20px;">l</span>
-			건수 :
-			<span class="color">1258</span>
-			건
-			<span style="margin: 0 20px;">l</span>
-			총 판매금액 :
-			<span class="color">15,000,000</span>
-			원
-		</div>
-		<div class="table_head">
-			<h3>온라인 판매대금 정산내역</h3>
-		</div>
-		<table cellpadding="0" cellspacing="0" class="tb02">
-			<thead>
-				<tr>
-					<th>구매일자</th>
-					<th>주문자</th>
-					<th>사진ID</th>
-					<th>사용용도</th>
-					<th>판매자</th>
-					<th>결제종류</th>
-					<th>과세금액</th>
-					<th>과세부가세</th>
-					<th>결제금액</th>
-					<th>빌링수수료</th>
-					<th>총매출액</th>
-					<th>
-						<p>회원사</p>
-						<p>매출액</p>
-					</th>
-					<th>공급가액</th>
-					<th>공급부가세</th>
-					<th>
-						<p>다하미</p>
-						<p>매출액</p>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>2017-07-27</td>
-					<td>최란경</td>
-					<td>C004200107</td>
-					<td>내지</td>
-					<td>조선영상</td>
-					<td>신용카드</td>
-					<td>80,000</td>
-					<td>8,000</td>
-					<td>88,000</td>
-					<td>3,098</td>
-					<td>84,902</td>
-					<td>59,431</td>
-					<td>54,028</td>
-					<td>5,403</td>
-					<td>25,471</td>
-				</tr>
-				<tr>
-					<td>2017-07-27</td>
-					<td>최란경</td>
-					<td>E003183746</td>
-					<td>내지</td>
-					<td>조선일보</td>
-					<td>신용카드</td>
-					<td>80,000</td>
-					<td>8,000</td>
-					<td>88,000</td>
-					<td>3,098</td>
-					<td>84,902</td>
-					<td>59,431</td>
-					<td>54,028</td>
-					<td>5,403</td>
-					<td>25,471</td>
-				</tr>
-				<tr>
-					<td>2017-08-31</td>
-					<td>메디치미디어</td>
-					<td>E003181461</td>
-					<td>내지</td>
-					<td>조선일보</td>
-					<td>신용카드</td>
-					<td>80,000</td>
-					<td>8,000</td>
-					<td>88,000</td>
-					<td>3,098</td>
-					<td>84,902</td>
-					<td>59,431</td>
-					<td>54,028</td>
-					<td>5,403</td>
-					<td>25,471</td>
-				</tr>
-				<tr>
-					<td>2017-08-31</td>
-					<td>메디치미디어</td>
-					<td>E001876694</td>
-					<td>내지</td>
-					<td>조선일보</td>
-					<td>신용카드</td>
-					<td>80,000</td>
-					<td>8,000</td>
-					<td>88,000</td>
-					<td>3,098</td>
-					<td>84,902</td>
-					<td>59,431</td>
-					<td>54,028</td>
-					<td>5,403</td>
-					<td>25,471</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<td colspan="6">8월 조선일보 온라인 매출액 합계</td>
-				<td>560,000</td>
-				<td>56,000</td>
-				<td>616,000</td>
-				<td>21,686</td>
-				<td>594,314</td>
-				<td>416,017</td>
-				<td>378,197</td>
-				<td>37,820</td>
-				<td>178,297</td>
-			</tfoot>
-		</table>
-		<div class="table_head">
-			<h3>후불 판매대금 정산내역</h3>
-		</div>
-		<table cellpadding="0" cellspacing="0" class="tb02">
-			<thead>
-				<tr>
-					<th>구매일자</th>
-					<th>주문자</th>
-					<th>사진ID</th>
-					<th>사용용도</th>
-					<th>판매자</th>
-					<th colspan="2">결제종류</th>
-					<th>과세금액</th>
-					<th>과세부가세</th>
-					<th>결제금액</th>
-					<th>총매출액</th>
-					<th>
-						<p>회원사</p>
-						<p>매출액</p>
-					</th>
-					<th>공금가액</th>
-					<th>공급부가세</th>
-					<th>
-						<p>다하미</p>
-						<p>매출액</p>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>2017-08-18</td>
-					<td>북앤포토</td>
-					<td>E003183746</td>
-					<td>내지</td>
-					<td>조선일보</td>
-					<td>무통장입금</td>
-					<td>세금계산서</td>
-					<td>60,000</td>
-					<td>6,000</td>
-					<td>66,000</td>
-					<td>66,000</td>
-					<td>46,200</td>
-					<td>42,000</td>
-					<td>4,200</td>
-					<td>19,800</td>
-				</tr>
-				<tr>
-					<td>2017-08-21</td>
-					<td>북앤포토</td>
-					<td>E003181461</td>
-					<td>내지</td>
-					<td>조선일보</td>
-					<td>무통장입금</td>
-					<td>세금계산서</td>
-					<td>60,000</td>
-					<td>6,000</td>
-					<td>66,000</td>
-					<td>66,000</td>
-					<td>46,200</td>
-					<td>42,000</td>
-					<td>4,200</td>
-					<td>19,800</td>
-				</tr>
-				<tr>
-					<td>2017-08-23</td>
-					<td>북앤포토</td>
-					<td>E001876694</td>
-					<td>내지</td>
-					<td>조선일보</td>
-					<td>무통장입금</td>
-					<td>세금계산서</td>
-					<td>60,000</td>
-					<td>6,000</td>
-					<td>66,000</td>
-					<td>66,000</td>
-					<td>46,200</td>
-					<td>42,000</td>
-					<td>4,200</td>
-					<td>19,800</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<td colspan="7">8월 조선일보 오프라인 매출액 합계</td>
-				<td>300,000</td>
-				<td>30,000</td>
-				<td>330,000</td>
-				<td>330,000</td>
-				<td>231,000</td>
-				<td>21,000</td>
-				<td>21,000</td>
-				<td>99,000</td>
-		</table>
-		<table class="tb01" cellpadding="0" cellspacing="0" style="float: right; width: 400px; margin-top: 60px;">
-			<tbody>
-				<tr>
-					<td>공금가액</td>
-					<td>588,197</td>
-				</tr>
-				<tr>
-					<td>부가세</td>
-					<td>58,820</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td>합계 (부가세 포함)</td>
-					<td>647,017</td>
-				</tr>
-			</tfoot>
-		</table>
-		</section>
-	</div>
+		<p class="ex_txt">*수정이 필요한 경우, 회사(02-593-4174) 또는 뉴스뱅크 서비스 담당자에게 연락 부탁드립니다.</p>
+		<div class="btn_area"><a href="#" class="btn_input2">수정</a><a href="#" class="btn_input1">취소</a></div>
+	</section>
+</div>
 </body>
 </html>
