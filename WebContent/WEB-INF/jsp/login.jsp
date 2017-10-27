@@ -50,7 +50,6 @@
 						// 아이디, 비밀번호가 틀릴경우 화면에 메시지 표시
 						// LoginPro.jsp에서 로그인 처리 결과에 따른 메시지를 보낸다.
 						Object msg = request.getAttribute("msg");
-						System.out.println(request.getAttribute("msg"));
 
 						if (msg != null && msg.equals("0")) {
 							out.println("<div class='error'>");

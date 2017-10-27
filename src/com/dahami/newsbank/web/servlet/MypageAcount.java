@@ -50,6 +50,10 @@ public class MypageAcount extends NewsbankServletBase {
 				// 이전에 my page 비밀번호 입력했는지 체크
 				response.sendRedirect("/auth.mypage");
 			} else {
+				request.setAttribute("type", MemberInfo.getType());
+				
+				
+				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_acount.jsp");
 				dispatcher.forward(request, response);
 			}

@@ -12,9 +12,7 @@
   ----------      ---------      ----------------------------------------------
   2017. 10. 16.   hoyadev        buy.mypage
 ---------------------------------------------------------------------------%>
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -26,16 +24,29 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+<script src="js/common.js"></script>
 </head>
+<%
+	String type = (String) request.getAttribute("type");
+%>
 <body>
-<div class="wrap">
-	<nav class="gnb_dark">
-		<div class="gnb"><a href="#" class="logo"></a>
+	<div class="wrap">
+		<nav class="gnb_dark">
+		<div class="gnb">
+			<a href="#" class="logo"></a>
 			<ul class="gnb_left">
-				<li class=""><a href="#">보도사진</a></li>
-				<li><a href="#">뮤지엄</a></li>
-				<li><a href="#">사진</a></li>
-				<li><a href="#">컬렉션</a></li>
+				<li class="">
+					<a href="/picture">보도사진</a>
+				</li>
+				<li>
+					<a href="#">뮤지엄</a>
+				</li>
+				<li>
+					<a href="#">사진</a>
+				</li>
+				<li>
+					<a href="#">컬렉션</a>
+				</li>
 			</ul>
 			<ul class="gnb_right">
 				<%
@@ -47,7 +58,7 @@
 					<a href="/login">로그인</a>
 				</li>
 				<li>
-					<a href="/kind.join">가입하기</a>
+					<a href="/kind.join" target="_blank">가입하기</a>
 				</li>
 				<%
 					} else { // 로그인 했을 경우
@@ -69,30 +80,36 @@
 				<a href="#" class="btn_search">검색</a>
 			</form>
 		</div>
-	</nav>
-	<section class="mypage">
+		</nav>
+		<section class="mypage">
 		<div class="head">
 			<h2>마이페이지</h2>
 			<p>설명어쩌고저쩌고</p>
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
+				<%
+					if (!type.equals("C")) {
+				%>
 				<li>
 					<a href="/acount.mypage">정산 관리</a>
 				</li>
 				<li>
 					<a href="/cms">사진 관리</a>
 				</li>
+				<%
+					}
+				%>
 				<li>
 					<a href="/info.mypage">회원정보 관리</a>
 				</li>
 				<li>
-					<a href="#">찜관리</a>
+					<a href="/dibs.myPage">찜관리</a>
 				</li>
 				<li>
-					<a href="#">장바구니</a>
+					<a href="/cart.myPage">장바구니</a>
 				</li>
-				<li  class="on">
+				<li>
 					<a href="/buy.mypage">구매내역</a>
 				</li>
 			</ul>
@@ -101,40 +118,45 @@
 			<h3>주문 상세 정보</h3>
 		</div>
 		<section id="order_list">
-		<div class="calculate_info_area">주문번호 :  <span class="color">ADMIN_20160616142752</span></div>
-			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03">
-				<colgroup>
+		<div class="calculate_info_area">
+			주문번호 :
+			<span class="color">ADMIN_20160616142752</span>
+		</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03">
+			<colgroup>
 				<col width="200">
-				<col width="200">
-				<col width="300">
-				<col width="300">
-				</colgroup>
-				<tr>
-					<th scope="col">결제방법</th>
-					<th scope="col">결제상태</th>
-					<th scope="col">거래번호</th>
-					<th scope="col">가상계좌번호</th>
-				</tr>
-				<tr>
-					<td><a href="my14.html">무통장입금</a></td>
-					<td>입금완료</td>
-					<td>daham2016061614285098825</td>
-					<td>[신한] 63790118761202</td>
-				</tr>
-			</table>
-					<table cellpadding="0" cellspacing="0" class="tb02">				<colgroup>
+					<col width="200">
+						<col width="300">
+							<col width="300">
+			</colgroup>
+			<tr>
+				<th scope="col">결제방법</th>
+				<th scope="col">결제상태</th>
+				<th scope="col">거래번호</th>
+				<th scope="col">가상계좌번호</th>
+			</tr>
+			<tr>
+				<td>
+					<a href="my14.html">무통장입금</a>
+				</td>
+				<td>입금완료</td>
+				<td>daham2016061614285098825</td>
+				<td>[신한] 63790118761202</td>
+			</tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" class="tb02">
+			<colgroup>
 				<col width="150">
-				<col width="100">
-				<col width="120">
-				<col width="100">
-				<col width="60">
-				<col width="100">
-				<col width="100">
-				<col width="100">
-				<col width="100">
-				<col width="200">
-				</colgroup>
-
+					<col width="100">
+						<col width="120">
+							<col width="100">
+								<col width="60">
+									<col width="100">
+										<col width="100">
+											<col width="100">
+												<col width="100">
+													<col width="200">
+			</colgroup>
 			<thead>
 				<tr>
 					<th>상품이미지</th>
@@ -151,7 +173,11 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><a href="view.html"><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" /></a></td>
+					<td>
+						<a href="view.html">
+							<img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" />
+						</a>
+					</td>
 					<td>보도사진</td>
 					<td>E006203286</td>
 					<td>\88,000</td>
@@ -160,17 +186,18 @@
 					<td>인쇄매체</td>
 					<td>단행본,잡지내지</td>
 					<td>1년 이내</td>
-					<td>2016-08-04 10:29:19~<br />2016-08-05 10:29:19</td>
+					<td>
+						2016-08-04 10:29:19~
+						<br />
+						2016-08-05 10:29:19
+					</td>
 				</tr>
 			</tbody>
 			<tfoot>
-			<td colspan="10">합계 : \88,000</td>
-				</tfoot>
+				<td colspan="10">합계 : \88,000</td>
+			</tfoot>
 		</table>
-		<a href="my13.html" class="mp_btn">목록</a>
-		</section>
-	</section>
-</div>
+		<a href="my13.html" class="mp_btn">목록</a> </section> </section>
+	</div>
 </body>
 </html>
-

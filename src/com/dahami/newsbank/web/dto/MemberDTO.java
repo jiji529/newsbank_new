@@ -16,7 +16,7 @@ public class MemberDTO {
 	private String permission; // 권한
 	private String compNum;// 사업자 등록 번호
 	private String compZipcode;//우편번호
-	private String comDocPath; // 등록증 경로
+	private String compDocPath; // 등록증 경로
 	private String compName;// 회사명
 	private String compAddress;// 회사주소
 	private String compBankName;// 정산은행명
@@ -170,15 +170,15 @@ public class MemberDTO {
 	/**
 	 * @return
 	 */
-	public String getComDocPath() {
-		return comDocPath;
+	public String getCompDocPath() {
+		return compDocPath;
 	}
 
 	/**
 	 * @param comDocPath
 	 */
-	public void setComDocPath(String comDocPath) {
-		this.comDocPath = comDocPath;
+	public void setComDocPath(String compDocPath) {
+		this.compDocPath = compDocPath;
 	}
 
 	/**

@@ -55,25 +55,26 @@ public class MypageInfo extends NewsbankServletBase {
 			} else {
 				request.setAttribute("id", MemberInfo.getId());
 				request.setAttribute("name", MemberInfo.getName());
-
-				if (MemberInfo.getPhone() != null) {
-					request.setAttribute("phone", MemberInfo.getPhone().split("-"));
-				}
-
+				request.setAttribute("phone", MemberInfo.getPhone());
 				request.setAttribute("email", MemberInfo.getEmail());
+				
+				request.setAttribute("type", MemberInfo.getType());
+				/**** 사업자 및 언론사 ****/
 				request.setAttribute("compName", MemberInfo.getCompName());
 				request.setAttribute("compNum", MemberInfo.getCompNum());
 				request.setAttribute("compTel", MemberInfo.getCompTel());
 				request.setAttribute("logo", MemberInfo.getLogo());
 
 				request.setAttribute("compName", MemberInfo.getCompName());
-				if (MemberInfo.getCompNum() != null) {
-					request.setAttribute("compNum", MemberInfo.getCompNum().split("-"));
-				}
 
-				if (MemberInfo.getCompTel() != null) {
-					request.setAttribute("compTel", MemberInfo.getCompTel().split("-"));
-				}
+				request.setAttribute("compNum", MemberInfo.getCompNum());
+				request.setAttribute("compTel", MemberInfo.getCompTel());
+				request.setAttribute("compDocPath", MemberInfo.getCompDocPath());
+				request.setAttribute("compAddress", MemberInfo.getCompAddress());
+				request.setAttribute("compZipcode", MemberInfo.getCompZipcode());
+				request.setAttribute("compBankName", MemberInfo.getCompBankName());
+				request.setAttribute("compBankAcc", MemberInfo.getCompBankAcc());
+				request.setAttribute("compBankPath", MemberInfo.getCompBankPath());
 
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_info.jsp");
 				dispatcher.forward(request, response);

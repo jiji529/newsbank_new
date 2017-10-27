@@ -44,7 +44,7 @@
 			</ul>
 			<ul class="gnb_right">
 				<li><a href="/login">로그인</a></li>
-				<li><a href="/kind.join">가입하기</a></li>
+				<li><a href="/kind.join" target="_blank">가입하기</a></li>
 			</ul>
 		</div>
 		<div class="gnb_srch">

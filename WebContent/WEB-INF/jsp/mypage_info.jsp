@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+<script src="js/common.js"></script>
 <script type="text/javascript">
 	$(document).on("click", ".mp_tab2 li:nth-child(1)", function() {
 		$(".mp_tab2 li:nth-child(1)").addClass("on");
@@ -40,6 +41,9 @@
 	});
 </script>
 </head>
+<%
+	String type = (String) request.getAttribute("type");
+%>
 <body>
 	<div class="wrap">
 		<nav class="gnb_dark">
@@ -69,7 +73,7 @@
 						<a href="/login">로그인</a>
 					</li>
 					<li>
-						<a href="/kind.join">가입하기</a>
+						<a href="/kind.join" target="_blank">가입하기</a>
 					</li>
 					<%
 						} else { // 로그인 했을 경우
@@ -97,38 +101,37 @@
 				<h2>마이페이지</h2>
 				<div class="mypage_ul">
 					<ul class="mp_tab1">
+						<%
+							if (type.equals("C")) {
+								//임시
+						%>
 						<li>
 							<a href="/acount.mypage">정산 관리</a>
 						</li>
 						<li>
 							<a href="/cms">사진 관리</a>
 						</li>
-						<li class="on">
+						<%
+							}
+						%>
+						<li>
 							<a href="/info.mypage">회원정보 관리</a>
 						</li>
 						<li>
-							<a href="#">찜관리</a>
+							<a href="/dibs.myPage">찜관리</a>
 						</li>
 						<li>
-							<a href="#">장바구니</a>
+							<a href="/cart.myPage">장바구니</a>
 						</li>
 						<li>
 							<a href="/buy.mypage">구매내역</a>
 						</li>
 					</ul>
-					<ul class="mp_tab2">
-						<li class="on">
-							<a href="#">기본정보 관리</a>
-						</li>
-						<li>
-							<a href="#">정산정보 관리</a>
-						</li>
-					</ul>
 				</div>
 				<div class="table_head">
 					<h3>기본정보 관리</h3>
-					<h4>개인정보</h4>
 				</div>
+				<h4>개인정보</h4>
 				<table class="tb01" cellpadding="0" cellspacing="0">
 					<colgroup>
 						<col style="width: 240px;">
@@ -163,11 +166,11 @@
 						<tr>
 							<th>휴대전화</th>
 							<td class="phone">
-								<input type="text" size="5" class="inp_txt" value="${phone[0]}" maxlength="4">
+								<input type="text" size="5" class="inp_txt" value="${phone}" maxlength="4">
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="${phone[1]}" maxlength="4">
+								<input type="text" size="5" class="inp_txt" value="${phone}" maxlength="4">
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="${phone[2]}" maxlength="4" />
+								<input type="text" size="5" class="inp_txt" value="${phone}" maxlength="4" />
 								<a href="#" class="btn_input1">수정</a>
 								<!-- 수정 누르면 보이는 -->
 								<div class="edit_phone">
@@ -218,11 +221,11 @@
 						<tr>
 							<th>사업자등록번호</th>
 							<td>
-								<input type="text" size="3" class="inp_txt" value="${compNum[0]}" maxlength="3">
+								<input type="text" size="3" class="inp_txt" value="${compNum1}" maxlength="3">
 								<span class=" bar">-</span>
-								<input type="text" size="2" class="inp_txt" value="${compNum[1]}" maxlength="2">
+								<input type="text" size="2" class="inp_txt" value="${compNum2}" maxlength="2">
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="${compNum[2]}" maxlength="6" />
+								<input type="text" size="5" class="inp_txt" value="${compNum3}" maxlength="6" />
 								<a href="#" class="btn_input1">등록증 업로드</a>
 								<a href="#" class="btn_input1">다운로드</a>
 							</td>
@@ -231,17 +234,51 @@
 							<th>사무실 전화</th>
 							<td>
 								<select name="" class="inp_txt" style="width: 70px;">
-									<option value="010" selected="selected">010</option>
+									<option value="">선택</option>
+									<option value="010">010</option>
 									<option value="011">011</option>
 									<option value="016">016</option>
 									<option value="017">017</option>
 									<option value="018">018</option>
 									<option value="019">019</option>
+									<option value="02">02</option>
+									<option value="031">031</option>
+									<option value="032">032</option>
+									<option value="033">033</option>
+									<option value="041">041</option>
+									<option value="042">042</option>
+									<option value="043">043</option>
+									<option value="044">044</option>
+									<option value="051">051</option>
+									<option value="052">052</option>
+									<option value="053">053</option>
+									<option value="054">054</option>
+									<option value="055">055</option>
+									<option value="061">061</option>
+									<option value="062">062</option>
+									<option value="063">063</option>
+									<option value="064">064</option>
+									<option value="070">070</option>
+									<option value="080">080</option>
+									<option value="0130">0130</option>
 								</select>
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="${compTel[1]}" maxlength="4">
+								<input type="text" id="celphone" size="5" class="inp_txt" value="1234" maxlength="4">
 								<span class=" bar">-</span>
-								<input type="text" size="5" class="inp_txt" value="${compTel[2]}" maxlength="4" />
+								<input type="text" id="celphone2" size="5" class="inp_txt" value="1234" maxlength="4" />
+							</td>
+						</tr>
+						<tr>
+							<th>회사 주소</th>
+							<td>
+								<div class="my_addr">
+									<input type="text" class="inp_txt" size="6" />
+									<a href="#" class="btn_input1">수정</a>
+								</div>
+								<div class="my_addr">
+									<input type="text" class="inp_txt" size="55" />
+									<input type="text" class="inp_txt" size="55" />
+								</div>
 							</td>
 						</tr>
 						<tr>
@@ -261,134 +298,6 @@
 					<a href="#" class="btn_input2">수정</a>
 					<a href="#" class="btn_input1">취소</a>
 				</div>
-			</div>
-		</section>
-		<section class="mypage" id="account_table" style="display: none;">
-			<div class="head">
-				<h2>마이페이지</h2>
-				<p>설명어쩌고저쩌고</p>
-			</div>
-			<div class="mypage_ul">
-				<ul class="mp_tab1">
-					<li>
-						<a href="#">정산 관리</a>
-					</li>
-					<li>
-						<a href="#">사진 관리</a>
-					</li>
-					<li class="on">
-						<a href="#">회원정보 관리</a>
-					</li>
-					<li>
-						<a href="#">찜관리</a>
-					</li>
-					<li>
-						<a href="#">장바구니</a>
-					</li>
-					<li>
-						<a href="#">구매내역</a>
-					</li>
-				</ul>
-				<ul class="mp_tab2">
-					<li class="on">
-						<a href="#">기본정보 관리</a>
-					</li>
-					<li>
-						<a href="#">정산정보 관리</a>
-					</li>
-				</ul>
-			</div>
-			<div class="table_head">
-				<h3>정산 정보 관리</h3>
-			</div>
-			<table class="tb01" cellpadding="0" cellspacing="0">
-				<colgroup>
-					<col style="width: 240px;">
-					<col style="width:;">
-				</colgroup>
-				<tbody>
-					<tr>
-						<th>매체명</th>
-						<td>
-							<select name="" class="inp_txt" style="width: 450px;">
-								<option value="010" selected="selected">선택해주세요.</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th>입금 계좌</th>
-						<td>
-							<select name="" class="inp_txt" style="width: 120px;">
-								<option value="010" selected="selected">기업은행</option>
-							</select>
-							<input type="text" class="inp_txt" size="40" />
-							<a href="#" class="btn_input1">통장사본 업로드</a>
-							<a href="#" class="btn_input1">다운로드</a>
-						</td>
-					</tr>
-					<tr>
-						<th>계약기간</th>
-						<td>
-							<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
-							<span class=" bar">~</span>
-							<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
-							<div class="check">
-								<input type="checkbox" />
-								자동연장
-							</div>
-							<a href="#" class="btn_input1">계약서 업로드</a>
-							<a href="#" class="btn_input1">다운로드</a>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<span class="ex">*</span>
-							정산 요율
-						</th>
-						<td>
-							<span class=" bar">온라인 결제</span>
-							<input type="text" size="5" class="inp_txt" value="" maxlength="3">
-							<span class=" bar">%</span>
-							<span class=" bar" style="margin-left: 20px;">후불 결제</span>
-							<input type="text" size="5" class="inp_txt" value="" maxlength="3">
-							<span class=" bar">%</span>
-						</td>
-					</tr>
-					<tr>
-						<th>세금계산서 담당자</th>
-						<td>
-							<input type="text" class="inp_txt" size="60" />
-						</td>
-					</tr>
-					<tr>
-						<th>세금계산서 담당자 연락처</th>
-						<td>
-							<select name="" class="inp_txt" style="width: 70px;">
-								<option value="010" selected="selected">010</option>
-								<option value="011">011</option>
-								<option value="016">016</option>
-								<option value="017">017</option>
-								<option value="018">018</option>
-								<option value="019">019</option>
-							</select>
-							<span class=" bar">-</span>
-							<input type="text" size="5" class="inp_txt" value="1234" maxlength="4">
-							<span class=" bar">-</span>
-							<input type="text" size="5" class="inp_txt" value="1234" maxlength="4">
-						</td>
-					</tr>
-					<tr>
-						<th>세금계산서 담당자 이메일</th>
-						<td>
-							<input type="text" class="inp_txt" size="60" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<p class="ex_txt">*수정이 필요한 경우, 회사(02-593-4174) 또는 뉴스뱅크 서비스 담당자에게 연락 부탁드립니다.</p>
-			<div class="btn_area">
-				<a href="#" class="btn_input2">수정</a>
-				<a href="#" class="btn_input1">취소</a>
 			</div>
 		</section>
 	</div>

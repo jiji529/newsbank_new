@@ -17,9 +17,12 @@ $(document).ready(function() {
 });
 
 
+//현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
+$(document).ready(function() {
+    $("[href]").each(function() {
+        if (this.href == window.location.href) {
+            $(this).parent().addClass("on");
+        }
+    });
+});
 
-
-
-$.ajax({
-
-})
