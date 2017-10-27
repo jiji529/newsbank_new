@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,11 +48,26 @@ public class MypageDibs extends NewsbankServletBase {
 		String bookmark_seq = request.getParameter("bookmark_seq");
 		PhotoDAO photoDAO = new PhotoDAO();
 		List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq);
+		System.out.println(dibsPhotoList.size());
 		request.setAttribute("dibsPhotoList", dibsPhotoList);
 		
 		BookmarkDAO bookmarkDAO = new BookmarkDAO();
 		List<BookmarkDTO> bookmarkList = bookmarkDAO.userBookmark(Integer.parseInt(member_seq));
 		request.setAttribute("bookmarkList", bookmarkList);
+		
+		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+		List<PhotoDTO> list = (List<PhotoDTO>) dibsPhotoList;
+		
+		for(PhotoDTO dto : list){
+			try {
+				jsonList.add(dto.convertToMap());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+		request.setAttribute("jsonList", jsonList);
+		//System.out.println(jsonList);		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_dibs.jsp");
 		dispatcher.forward(request, response);

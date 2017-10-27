@@ -61,7 +61,7 @@
 		var bookmark_seq = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val();
 		
 		$.ajax({
-			url: "",
+			url: "/dibs.myPage",
 			type: "GET",
 			dataType: "json",
 			data: {
