@@ -31,7 +31,6 @@ public class JoinKind extends NewsbankServletBase {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/join_kind.jsp");
 		dispatcher.forward(request, response);
 	}
