@@ -93,12 +93,12 @@ public class Login extends NewsbankServletBase {
 				if (memberDTO != null) {
 					// 로그인 성공
 					session.setAttribute("MemberInfo", memberDTO); // 회원정보 세션 저장
-					session.setMaxInactiveInterval(60 * 60 * 25 * 1);// 유효기간 1일
+					session.setMaxInactiveInterval(60 * 60 * 25 * 7);// 유효기간 7일
 
 					// 자동로그인 쿠키 저장
 					if (login_chk != null && login_chk.trim().equals("on")) {
 						Cookie cookie = new Cookie("id", URLEncoder.encode(id, "UTF-8"));
-						cookie.setMaxAge(60 * 60 * 25 * 365);//세션 유효기간 1년
+						cookie.setMaxAge(60 * 60 * 25 * 7);//세션 유효기간 1주일
 						response.addCookie(cookie);
 					} else {
 						Cookie cookie = new Cookie("id", null);

@@ -19,6 +19,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
 <link rel="stylesheet" href="css/join.css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="js/join.js"></script>
 </head>
 <%
 	String type = request.getParameter("type"); // 회원 구분
@@ -41,7 +45,7 @@
 				<h3 class="tit_join">가입 정보 입력</h3>
 				<div class="txt_desc">가입 정보를 입력하세요.</div>
 			</div>
-			<form id="join1">
+			<form id="frmJoin" name="frmJoin" >
 				<fieldset class="fld_comm">
 					<legend class="blind">가입 정보</legend>
 					<div class="wrap_info">
@@ -50,43 +54,43 @@
 								<dt>아이디</dt>
 								<dd>
 									<div class="inp">
-										<input type="text" maxlength="15" placeholder="아이디" required />
+										<input type="text" id="id" name="id" maxlength="15" placeholder="아이디" pattern="[A-Za-z0-9]*" title="숫자와 영문만 입력 하세요."  required />
 									</div>
-									<p class="txt_message" style="display: none;">이미 사용된 아이디입니다. 다른 아이디를 입력하세요.</p>
+									<p class="txt_message" id="id_message" style="display: none;">이미 사용된 아이디입니다. 다른 아이디를 입력하세요.</p>
 								</dd>
 							</dl>
 							<dl class="item_info">
 								<dt>비밀번호</dt>
 								<dd>
 									<div class="inp">
-										<input type="password" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)" required />
+										<input type="password" id="pw" name="pw" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)" required />
 									</div>
-									<p class="txt_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
+									<p class="txt_message" id="pw_message"  style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
 								</dd>
 							</dl>
 							<dl class="item_info">
 								<dt>비밀번호 재확인</dt>
 								<dd>
 									<div class="inp">
-										<input type="password" class="inp_info" maxlength="15" placeholder="비밀번호 재확인" required />
+										<input type="password" id="pw_check"   class="inp_info" maxlength="15" placeholder="비밀번호 재확인" required />
 									</div>
-									<p class="txt_message" style="display: none;">비밀번호가 일치하지 않습니다.</p>
+									<p class="txt_message" id="pw_check_message" style="display: none;">비밀번호가 일치하지 않습니다.</p>
 								</dd>
 							</dl>
 							<dl class="item_info">
 								<dt>이메일</dt>
 								<dd>
 									<div class="inp">
-										<input type="text" placeholder="이메일" required />
+										<input type="email" id="email" name="email"  placeholder="이메일" required />
 									</div>
-									<p class="txt_message" style="display: none;">형식이 올바르지 않은 이메일입니다.</p>
+									<p class="txt_message"  id="email_message"  style="display: none;">형식이 올바르지 않은 이메일입니다.</p>
 								</dd>
 							</dl>
 							<dl class="item_info">
 								<dt>이름</dt>
 								<dd>
 									<div class="inp">
-										<input type="text" placeholder="이름" required />
+										<input type="text" placeholder="이름" maxlength="40" required />
 									</div>
 								</dd>
 							</dl>
@@ -94,15 +98,17 @@
 								<dt>휴대폰 번호</dt>
 								<dd class="btn_inp">
 									<div class="inp">
-										<input type="number" placeholder="휴대폰 번호" required />
-										<button>인증</button>
+										<input type="tel" id="phone" name="phone" maxlength="16" placeholder="휴대폰 번호" pattern="[0-9]*" title="숫자만 입력 하세요." required />
+										<button type="button" id="phone_certify">인증</button>
 									</div>
+									<p class="txt_message"  id="phone_message"  style="display: none;">형식이 올바르지 않은 휴대폰 번호입니다.</p>
 								</dd>
 								<dd class="btn_inp">
 									<div class="inp">
-										<input type="text" placeholder="인증번호" required />
-										<button>확인</button>
+										<input type="number" id="certify_number" placeholder="인증번호" required />
+										<button type="button" id="certify_submit">확인</button>
 									</div>
+									<p class="txt_message"  id="certify_message"  style="display: none;">인증번호를 다시 확인해주세요.</p>
 								</dd>
 							</dl>
 						</div>
@@ -146,7 +152,7 @@
 						</div>
 						<%
 							}
-							if (type.equals('M')) {
+							if (type.equalsIgnoreCase("M")) {
 						%>
 						<!--여기부턴 언론사회원-->
 						<div class="box_info">
@@ -175,7 +181,7 @@
 					</div>
 				</fieldset>
 				<div class="wrap_btn">
-					<button type="button" class="btn_agree" onClick="top.location.href='/success.join'">가입하기</button>
+					<button type="submit" class="btn_agree" >가입하기</button>
 				</div>
 			</form>
 		</section>

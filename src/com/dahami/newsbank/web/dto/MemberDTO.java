@@ -15,7 +15,7 @@ public class MemberDTO {
 	private String type; // 타입 ( 매체사, 개인, 기업)
 	private String permission; // 권한
 	private String compNum;// 사업자 등록 번호
-	private String compZipcode;//우편번호
+	private String compZipcode;// 우편번호
 	private String compDocPath; // 등록증 경로
 	private String compName;// 회사명
 	private String compAddress;// 회사주소
@@ -455,6 +455,13 @@ public class MemberDTO {
 
 	public void setActivate(int activate) {
 		this.activate = activate;
+	}
+
+	public boolean isMember() {
+		if (this.getId()==null)
+			return false;
+		else
+			return true;
 	}
 
 }
