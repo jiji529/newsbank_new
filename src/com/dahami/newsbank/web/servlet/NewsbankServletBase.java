@@ -43,6 +43,7 @@ public abstract class NewsbankServletBase extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		cmd1 = cmd2 = cmd3 = "";
 		this.request = request;
 		this.response = response;
 		params = request.getParameterMap();
