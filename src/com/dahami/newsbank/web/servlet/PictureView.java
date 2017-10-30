@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BookmarkDAO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.SearchDAO;
 import com.dahami.newsbank.web.dto.BookmarkDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
@@ -47,9 +48,9 @@ public class PictureView extends NewsbankServletBase {
 		//SearchParameterBean parameterBean = new SearchParameterBean();
 		//List<PhotoDTO> photoList = searchDAO.search(parameterBean);
 		
-		SearchDAO searchDAO = new SearchDAO();
+		PhotoDAO photoDAO = new PhotoDAO();
 		String uciCode = request.getParameter("uciCode");
-		PhotoDTO photoDTO = searchDAO.read(uciCode);
+		PhotoDTO photoDTO = photoDAO.read(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
 		
 		int member_seq = 1002;
