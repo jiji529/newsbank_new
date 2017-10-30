@@ -3,9 +3,10 @@
 	<name>NewsBank_2017</name>
 	<comment></comment>
 	<projects>
-		<project>com.dahami.common.util</project>
 		<project>NewsBank_2017_Common</project>
 		<project>Newsbank_2017_Common</project>
+		<project>com.dahami.common.util</project>
+		<project>API_SolrCommon</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

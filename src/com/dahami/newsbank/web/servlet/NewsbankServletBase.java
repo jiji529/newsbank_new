@@ -14,6 +14,8 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dahami.newsbank.web.dao.SearchDAO;
+
 
 public abstract class NewsbankServletBase extends HttpServlet {
 	private static final long serialVersionUID = 4745659834372195390L;

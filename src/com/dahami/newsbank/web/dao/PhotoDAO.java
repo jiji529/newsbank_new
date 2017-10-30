@@ -10,6 +10,15 @@ import com.dahami.newsbank.dto.PhotoDTO;
 
 public class PhotoDAO extends DAOBase {
 	
+	/**
+	 * @methodName  : read
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 10. 30. 오후 4:19:56
+	 * @methodCommet: UCI 코드를 사용하여 특정 이미지 정보를 읽어옴
+	 * @param uciCode
+	 * @return 
+	 * @returnType  : PhotoDTO
+	 */
 	public PhotoDTO read(String uciCode) {
 		SqlSession session = null;
 		

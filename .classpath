@@ -19,7 +19,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.dahami.common.util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Newsbank_2017_Common"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.dahami.common.util"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/API_SolrCommon"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

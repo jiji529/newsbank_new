@@ -9,6 +9,9 @@
         <dependent-module archiveName="com.dahami.common.util.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.common.util/com.dahami.common.util">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="API_SolrCommon.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon/API_SolrCommon">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/NewsBank_2017/build/classes"/>
         <property name="context-root" value="NewsBank_2017"/>
     </wb-module>
