@@ -49,9 +49,10 @@ public class CMSView extends NewsbankServletBase {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.getWriter().write("Success Data");
 		
-		SearchDAO searchDAO = new SearchDAO();
+		//SearchDAO searchDAO = new SearchDAO();
+		PhotoDAO photoDAO = new PhotoDAO();
 		String uciCode = request.getParameter("uciCode");
-		PhotoDTO photoDTO = searchDAO.read(uciCode);
+		PhotoDTO photoDTO = photoDAO.read(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
 		
 		TagDAO tagDAO = new TagDAO();

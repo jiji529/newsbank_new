@@ -114,7 +114,7 @@
 												<li>${UsageDTO.division4}</li>
 											</ul>
 										</c:forEach>
-										<a href= "main.html" onClick="window.open('pop_opt.html','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a></div>
+										<a href= "main.html" onClick="window.open('/cart.popOption','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a></div>
 								</div>
 							</div></td>
 						<td><fmt:formatNumber value="${CartDTO.price * 10 / 11}" type="number"/>원</td>
