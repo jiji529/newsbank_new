@@ -60,6 +60,7 @@ public class DownloadService extends ServiceBase {
 			}
 			else {
 				// TODO 판매중이지 않은 경우에 대한 대응
+				System.out.println();
 			}
 		}
 		// 구매한 이미지 다운로드
@@ -84,6 +85,7 @@ public class DownloadService extends ServiceBase {
 				// 원본이 있는경우
 				else {
 					// TODO 리사이즈 이미지 생성
+					System.out.println();
 				}
 			}
 			
@@ -96,10 +98,11 @@ public class DownloadService extends ServiceBase {
 			}
 			else {
 				// 보낼 이미지 없음
+				System.out.println();
 			}
 		}
 		else {
-			
+			System.out.println();
 		}
 	}
 	

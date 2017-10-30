@@ -18,6 +18,7 @@ package com.dahami.newsbank.web.dao;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +30,14 @@ import javax.servlet.ServletConfig;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrRequest.METHOD;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.json.simple.JSONObject;
 
 import com.dahami.common.util.ObjectUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
@@ -165,6 +171,26 @@ public class SearchDAO extends DAOBase {
 		}
 	}
 	
+	private SolrClient getClient() {
+		while(true) {
+			synchronized(solrClients) {
+				if(solrClients.size() > 0) {
+					return solrClients.remove(0);
+				}
+				try{solrClients.wait(50);}catch(Exception e){}
+			}
+		}
+	}
+	private void releaseClient(SolrClient client) {
+		if(client == null) {
+			return;
+		}
+		synchronized(solrClients) {
+			solrClients.add(client);
+			solrClients.notifyAll();
+		}
+	}
+	
 	/**
 	 * @methodName  : search
 	 * @author      : JEON,HYUNGGUK
@@ -175,6 +201,20 @@ public class SearchDAO extends DAOBase {
 	 * @returnType  : Map<String, Object> / count:결과 숫자(Integer) / result:결과물 리스트(List<PhotoDTO>)
 	 */
 	public Map<String, Object> search(SearchParameterBean param) {
+		SolrClient client = null;
+		QueryResponse res = null;
+		try {
+			SolrQuery query = makeSolrQuery(param);
+			client = getClient();
+			res = client.query(query, METHOD.POST);
+			System.out.println();
+		} catch (Exception e) {
+			logger.warn("", e);
+		}finally {
+			releaseClient(client);
+		}
+		
+		
 		Map<String, Object> ret = new HashMap<String, Object>();
 		
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
@@ -203,5 +243,12 @@ public class SearchDAO extends DAOBase {
 		ret.put("result", photoList);
 		
 		return ret;
+	}
+	
+	private SolrQuery makeSolrQuery(SearchParameterBean params) {
+		SolrQuery qry = new SolrQuery();
+		String keyword = params.getKeyword();
+		qry.setQuery(keyword);
+		return qry;
 	}
 }

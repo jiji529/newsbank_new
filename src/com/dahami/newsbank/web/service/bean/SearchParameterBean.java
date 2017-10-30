@@ -90,6 +90,9 @@ public class SearchParameterBean {
 	}
 	
 	public String getKeyword() {
+		if(keyword == null || keyword.trim().length() == 0) {
+			return "*:*";
+		}
 		return keyword;
 	}
 	public void setKeyword(String keyword) {
