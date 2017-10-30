@@ -2,6 +2,7 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -25,6 +26,10 @@ public abstract class NewsbankServletBase extends HttpServlet {
 	protected String cmd2;
 	protected String cmd3;
 	
+	protected HttpServletRequest request;
+	protected HttpServletResponse response;
+	protected Map<String, String[]> params;
+	
     public NewsbankServletBase() {
         super();
     }
@@ -38,6 +43,10 @@ public abstract class NewsbankServletBase extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.request = request;
+		this.response = response;
+		params = request.getParameterMap();
+		
 		String reqUri = request.getRequestURI().substring(request.getContextPath().length()+1);
 		if(reqUri.indexOf("/") != -1) {
 			logger.warn("Invalid Request: " + reqUri);
@@ -70,6 +79,23 @@ public abstract class NewsbankServletBase extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	/**
+	 * @methodName  : getParam
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 10. 30. 오후 2:49:33
+	 * @methodCommet: 특정 파라메터 읽어오기 (값이 1개인 경우만 가능 / 여러개인 경우 첫번째것만) / 없으면 공백 리턴
+	 * @param pName
+	 * @return 
+	 * @returnType  : String
+	 */
+	protected String getParam(String pName) {
+		try {
+			return this.params.get(pName)[0];
+		}catch(Exception e) {
+			return "";
+		}
 	}
 	
 }

@@ -33,4 +33,18 @@
 		</if>
 	</select>
 	
+	<select id="selPhoto" parameterType="string" resultType="com.dahami.newsbank.dto.PhotoDTO">
+		<![CDATA[
+			select
+				uciCode, uciStat uciState, saleStat saleState, ownerType, rightYn portraitRightState, monochrome mono, person includePerson, 
+				titleKr titleKor, titleEn titleEng, keywordKr keywordKor, keywordEn keywordEng, descriptionKr descriptionKor, descriptionEn descriptionEng,
+				copyright, shotPerson, 
+				publishDate, shotDate, regDate, updDate, 
+				widthPixel widthPx, heightPixel heightPx, widthCm, heightCm, dpi, mb fileSizeMB, exif,
+				member_seq ownerNo, compCode
+			from photo 
+			where uciCode = #{uciCode}
+		]]>
+	</select>
+	
 </mapper>

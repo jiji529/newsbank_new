@@ -10,6 +10,21 @@ import com.dahami.newsbank.dto.PhotoDTO;
 
 public class PhotoDAO extends DAOBase {
 	
+	public PhotoDTO read(String uciCode) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			return session.selectOne("Photo.selPhoto", uciCode);
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return null;
+	}
+	
 	/**
 	 * @methodName  : update
 	 * @author      : HOYADEV
@@ -28,11 +43,8 @@ public class PhotoDAO extends DAOBase {
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
-			try {
-				session.commit();
-				session.close();
-			} catch (Exception e) {
-			}
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
 		}
 	}
 	
