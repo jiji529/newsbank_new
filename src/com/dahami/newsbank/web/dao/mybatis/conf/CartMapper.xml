@@ -2,13 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Cart">
-	
 	<select id="selectCartList" resultType="com.dahami.newsbank.web.dto.CartDTO" parameterType="java.util.Map">
-	    SELECT A.seq, A.regDate, A.usageList_seq, A.photo_uciCode AS uciCode, D.`usage`, D.division1, D.division2, D.division3, D.division4, D.price FROM basket A
+      	SELECT A.photo_uciCode as uciCode, B.copyright, SUM(price) as price FROM basket A 
 		INNER JOIN photo B ON A.photo_uciCode = B.uciCode
-		INNER JOIN member C ON A.member_seq = C.seq
-		INNER JOIN usageList D ON A.usageList_seq = D.seq
 		WHERE A.member_seq = #{member_seq}
+		GROUP BY A.photo_uciCode
 	</select>
 	
+	<select id="selectUsageList" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
+	    SELECT A.usage, A.division1, A.division2, A.division3, A.division4, A.usageDate FROM usageList A
+		INNER JOIN basket B ON A.seq = B.usageList_seq
+		WHERE B.photo_uciCode = #{uciCode}
+	</select>
 </mapper>

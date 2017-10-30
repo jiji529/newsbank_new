@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.dahami.newsbank.web.dto.CartDTO;
+import com.dahami.newsbank.web.dto.UsageDTO;
 
 public class CartDAO extends DAOBase {
 
@@ -29,6 +31,12 @@ public class CartDAO extends DAOBase {
 			param.put("member_seq", member_seq);
 			
 			cartList = session.selectList("Cart.selectCartList", param);
+			for(CartDTO cartDTO : cartList) {
+				String uciCode = cartDTO.getUciCode();
+				param.put("uciCode", uciCode);
+				List<UsageDTO> usageList = session.selectList("Cart.selectUsageList", param);
+				cartDTO.setUsageList(usageList);
+			}			
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {

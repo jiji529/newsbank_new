@@ -16,6 +16,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -91,45 +92,6 @@
 						<th scope="col">구매금액</th>
 						<th scope="col">선택</th>
 					</tr>
-					<tr>
-						<td><div class="tb_check">
-								<input id="check1" name="check1" type="checkbox">
-								<label for="check1">선택</label>
-							</div></td>
-						<td><div class="cart_item">
-								<div class="thumb"><a href="view.html" target="_blank"><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" /></a></div>
-								<div class="cart_info"> <a href="view.html" target="_blank">
-									<div class="brand">뉴시스</div>
-									<div class="code">E006203286</div>
-									</a>
-									<div class="option_area">
-										<ul class="opt_li">
-											<li>상업용</li>
-											<li>신문광고</li>
-											<li>중앙지,스포츠지,경제지 등</li>
-											<li>1~9단</li>
-											<li>1년 이내</li>
-										</ul>
-										<ul class="opt_li">
-											<li>출판용</li>
-											<li>교육용</li>
-											<li>전집, 백과사전, 도감, 학술논문 발표자료 등</li>
-											<li>1~9단</li>
-											<li>1년 이내</li>
-										</ul>
-										<a href= "main.html" onClick="window.open('pop_opt.html','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a></div>
-								</div>
-							</div></td>
-						<td>480,000원</td>
-						<td>48,000원</td>
-						<td><strong class="color">528,000원</strong></td>
-						<td><div class="btn_group">
-								<button type="button" class="btn_o" name="btn_buy">바로구매</button>
-								<button type="button" class="btn_b" name="btn_zzim">찜 하기</button>
-								<button type="button" class="btn_g" name="btn_delete">삭제</button>
-							</div></td>
-					</tr>
-					
 					<c:forEach items="${cartList}" var="CartDTO">
 						<tr>
 						<td><div class="tb_check">
@@ -139,22 +101,24 @@
 						<td><div class="cart_item">
 								<div class="thumb"><a href="view.html" target="_blank"><img src="images/serviceImages${CartDTO.getViewPath()}" /></a></div>
 								<div class="cart_info"> <a href="view.html" target="_blank">
-									<div class="brand">뉴시스</div>
+									<div class="brand">${CartDTO.copyright}</div>
 									<div class="code">${CartDTO.uciCode}</div>
 									</a>
 									<div class="option_area">
-										<ul class="opt_li">
-											<li>${CartDTO.usage}</li>
-											<li>${CartDTO.division1}</li>
-											<li>${CartDTO.division2}</li>
-											<li>${CartDTO.division3}</li>
-											<li>${CartDTO.division4}</li>
-										</ul>										
+										<c:forEach items="${CartDTO.getUsageList()}" var="UsageDTO">
+											<ul class="opt_li">
+												<li>${UsageDTO.usage}</li>
+												<li>${UsageDTO.division1}</li>
+												<li>${UsageDTO.division2}</li>
+												<li>${UsageDTO.division3}</li>
+												<li>${UsageDTO.division4}</li>
+											</ul>
+										</c:forEach>
 										<a href= "main.html" onClick="window.open('pop_opt.html','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a></div>
 								</div>
 							</div></td>
-						<td>480,000원</td>
-						<td>48,000원</td>
+						<td><fmt:formatNumber value="${CartDTO.price * 10 / 11}" type="number"/>원</td>
+						<td><fmt:formatNumber value="${CartDTO.price * 10 / 11 / 10}" type="number"/>원</td>
 						<td><strong class="color">${CartDTO.price}원</strong></td>
 						<td><div class="btn_group">
 								<button type="button" class="btn_o" name="btn_buy">바로구매</button>

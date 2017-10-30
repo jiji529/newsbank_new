@@ -1,17 +1,14 @@
 package com.dahami.newsbank.web.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class CartDTO {
 
 	private String uciCode; // UCI 코드
-	private int price; // 가격
-	private Date regDate; // 등록일시
-	private String usage; // 용도
-	private String division1; // 구분1
-	private String division2; // 구분2
-	private String division3; // 구분3
-	private String division4; // 구분4
+	private int price; // 가격	
+	private String copyright; // 저작권자
+	private List<UsageDTO> usageList; // 사용용도 구분옵션
 	
 	public String getUciCode() {
 		return uciCode;
@@ -29,53 +26,21 @@ public class CartDTO {
 		this.price = price;
 	}
 
-	public Date getRegDate() {
-		return regDate;
+	public String getCopyright() {
+		return copyright;
 	}
 
-	public void setRegDate(Date regDate) {
-		this.regDate = regDate;
+	public void setCopyright(String copyright) {
+		this.copyright = copyright;
 	}
 
-	public String getUsage() {
-		return usage;
+	public List<UsageDTO> getUsageList() {
+		return usageList;
 	}
 
-	public void setUsage(String usage) {
-		this.usage = usage;
-	}
-
-	public String getDivision1() {
-		return division1;
-	}
-
-	public void setDivision1(String division1) {
-		this.division1 = division1;
-	}
-
-	public String getDivision2() {
-		return division2;
-	}
-
-	public void setDivision2(String division2) {
-		this.division2 = division2;
-	}
-
-	public String getDivision3() {
-		return division3;
-	}
-
-	public void setDivision3(String division3) {
-		this.division3 = division3;
-	}
-
-	public String getDivision4() {
-		return division4;
-	}
-
-	public void setDivision4(String division4) {
-		this.division4 = division4;
-	}
+	public void setUsageList(List<UsageDTO> usageList) {
+		this.usageList = usageList;
+	}	
 
 	public String getOriginPath() {
 		return getPathBase() + ".jpg";

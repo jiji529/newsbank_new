@@ -45,7 +45,6 @@ public class MypageCart extends NewsbankServletBase {
 		List<CartDTO> cartList = cartDAO.cartList(member_seq);
 		request.setAttribute("cartList", cartList);
 		
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_cart.jsp");
 		dispatcher.forward(request, response);
 	}
