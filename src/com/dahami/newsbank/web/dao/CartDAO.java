@@ -14,7 +14,7 @@ import com.dahami.newsbank.web.dto.UsageDTO;
 public class CartDAO extends DAOBase {
 
 	/**
-	 * @methodName  : select
+	 * @methodName  : cartList
 	 * @author      : HOYADEV
 	 * @date        : 2017. 10. 27. 오후 02:18:35
 	 * @methodCommet: 장바구니 목록
@@ -48,5 +48,4 @@ public class CartDAO extends DAOBase {
 		}
 		return cartList;
 	}
-
 }

@@ -276,7 +276,7 @@
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
 					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
-						<img src="images/serviceImages${PhotoDTO.getListPath()}">
+						<img src="/list.down.picture?uciCode=${PhotoDTO.uciCode}">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
@@ -294,7 +294,7 @@
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
 					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
-						<img src="images/serviceImages${PhotoDTO.getListPath()}">
+						<img src="/list.down.picture?uciCode=${PhotoDTO.uciCode}">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>

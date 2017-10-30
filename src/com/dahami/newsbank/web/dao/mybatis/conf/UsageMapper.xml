@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Usage">
+	<select id="selectList" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
+	    SELECT `usage`, division1, division2 FROM usageList GROUP BY `usage`, division1, division2
+	</select>
+	
+	<select id="usageOption" resultType="java.util.Map" parameterType="java.util.Map">
+	    SELECT `usage` FROM usageList GROUP BY `usage`
+	</select>
+</mapper>

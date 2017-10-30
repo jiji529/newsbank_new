@@ -44,5 +44,6 @@
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/TagMapper.xml" />
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/BookmarkMapper.xml" />
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/CartMapper.xml" />
+		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/UsageMapper.xml" />
 	</mappers>
 </configuration>
