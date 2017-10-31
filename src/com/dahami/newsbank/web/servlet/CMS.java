@@ -46,7 +46,7 @@ public class CMS extends NewsbankServletBase {
 		parameterBean.setPageVol(40);
 		
 		SearchDAO searchDAO = new SearchDAO();
-		Map<String, Object> photoList = searchDAO.search(parameterBean);		
+		Map<String, Object> photoList = searchDAO.search(parameterBean);
 		request.setAttribute("total", photoList.get("count"));
 		request.setAttribute("picture", photoList.get("result"));
 		

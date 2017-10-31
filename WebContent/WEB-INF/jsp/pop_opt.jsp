@@ -29,125 +29,273 @@
 		body { width:420px; min-width:inherit}
 	</style>
 	<script type="text/javascript">
-		$(document).on("change", ".usage", function() {
-			console.log("usage changed");
-		});
+		usageList();
 		
-		var f_selbox = new Array("상업용", "출판용");
-		
-		var s_selbox = new Array();
-		s_selbox[0] = new Array("광고", "홍보판촉상품");
-		s_selbox[1] = new Array("교육용", "기타", "언론보도용", "전시,디스플레이", "출판,간행물");
-		
-		var t_selbox = new Array();
-		t_selbox[0] = new Array("TV광고", "극장광고", "신문광고", "옥외 및 매장내", "온라인광고");
-		t_selbox[1] = new Array("기타", "보도자료", "캘린더용", "");
-		
-		function init(f) {
-			var f_sel = f.first;
-			var s_sel = f.second;
-			var t_sel = f.third;
+		function usageList() {
+			var result = new Array();
+			var html = "<option>선택</option>";
 			
-			f_sel.options[0] = new Option("선택", "");
-			s_sel.options[0] = new Option("선택", "");
-			t_sel.options[0] = new Option("선택", "");
-			
-			for(var i=0; i<f_selbox.length; i++) {
-				f_sel.options[i+1] = new Option(f_selbox[i], f_selbox[i]);		
-			}
-		}
-		
-		function itemChange(f) {
-			var f_sel = f.first;
-			var s_sel = f.second;
-			
-			var sel = f_sel.selectedIndex;
-			for(var i=sel.length; i>=0; i--) {
-				s_sel.options[i] = null;
-			}
-			
-			s_sel.options[0] = new Option("선택", "");
-			
-			if(sel != 0) {
-				for(var i=0; i<s_selbox[sel-1].length; i++) {
-					s_sel.options[i+1] = new Option(s_selbox[sel-1][i], s_selbox[sel-1][i]);
+			$.ajax({
+				url: "/UsageJSON",
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					$.each(data.result, function(key, val) {
+						
+						if($.inArray(val.usage, result) == -1) {
+							result.push(val.usage);
+							html += "<option>"+val.usage+"</option>";
+						}							
+						
+					});
+					$(html).appendTo("#usage");
 				}
-			}
+			});
 		}
 		
-		function secondChange(f) {
-			var s_sel = f.second;
-			var t_sel = f.third;
+		function usageChange(choice) {
+			var value = $(choice).val();
+			var id = $(choice).attr("id");
+			var nextId = $("#"+id).parent("li").next().children("select").attr("id");
+			var result = new Array();
+			var html = "<option>선택</option>";
+			$("#"+id).parent("li").nextAll().children("select").empty();
 			
-			var sel = s_sel.selectedIndex;
-			for(var i=sel.length; i>=0; i--) {
-				t_sel.options[i] = null;
-			}
+			$("#division4").parent("li").css("display", "none");
+			$("#division1").empty();
 			
-			t_sel.options[0] = new Option("선택", "");
-			
-			if(sel != 0) {
-				for(var i=0; i<s_selbox[sel-1].length; i++) {
-					t_sel.options[i+1] = new Option(t_selbox[sel-1][i], t_selbox[sel-1][i]);
+			$.ajax({
+				url: "/UsageJSON",
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					$.each(data.result, function(key, val) {
+						
+						if(val.usage == value) {
+							if($.inArray(val.division1, result) == -1) {
+								result.push(val.division1);
+								html += "<option>"+val.division1+"</option>";
+							}
+						}
+						
+					});
+					$(html).appendTo("#division1");
 				}
-			}
+			});
 		}
+		
+		function division1Change(choice) {
+			var value = $(choice).val();
+			var id = $(choice).attr("id");
+			var usage = $("#usage").val();
+			var nextId = $("#"+id).parent("li").next().children("select").attr("id");
+			var result = new Array();
+			var html = "<option>선택</option>";
+			$("#"+id).parent("li").nextAll().children("select").empty();
+			
+			$("#division4").parent("li").css("display", "none");
+			$("#division2").empty();
+			
+			$.ajax({
+				url: "/UsageJSON",
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					$.each(data.result, function(key, val) {
+						
+						if(val.usage == usage && val.division1 == value) {
+							if($.inArray(val.division2, result) == -1) {
+								result.push(val.division2);
+								html += "<option>"+val.division2+"</option>";
+							}
+						}
+					});
+					$(html).appendTo("#division2");
+				}
+			});
+		}
+		
+		function division2Change(choice) {
+			var value = $(choice).val();
+			var id = $(choice).attr("id");
+			var usage = $("#usage").val();
+			var division1 = $("#division1").val(); 
+			var nextId = $("#"+id).parent("li").next().children("select").attr("id");
+			var result = new Array();
+			var html = "<option>선택</option>";
+			$("#"+id).parent("li").nextAll().children("select").empty();
+			
+			$("#division4").parent("li").css("display", "none");
+			$("#division3").empty();
+			
+			$.ajax({
+				url: "/UsageJSON",
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					$.each(data.result, function(key, val) {
+						
+						if(val.usage == usage && val.division1 == division1 && val.division2 == value ) {
+							if($.inArray(val.division3, result) == -1) {
+								result.push(val.division3);
+								html += "<option>"+val.division3+"</option>";
+							}
+						}
+					});
+					$(html).appendTo("#division3");
+				}
+			});
+		}
+		
+		function division3Change(choice) {
+			var value = $(choice).val();
+			var id = $(choice).attr("id");
+			var usage = $("#usage").val();
+			var division1 = $("#division1").val();
+			var division2 = $("#division2").val();
+			var nextId = $("#"+id).parent("li").next().children("select").attr("id");
+			var result = new Array();
+			var addOptions = new Array();
+			var html = "<option>선택</option>";
+			var addHtml = "<option>선택</option>";
+		
+			$("#"+id).parent("li").nextAll().children("select").empty();
+			
+			$("#usageDate").empty();
+			$("#division4").empty();
+			addOptions = [];
+			
+			$.ajax({
+				url: "/UsageJSON",
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					$.each(data.result, function(key, val) {
+						
+						if(val.usage == usage && val.division1 == division1 && val.division2 == division2 && val.division3 == value) {
+							if($.inArray(val.usageDate, result) == -1) {
+								result.push(val.usageDate);
+								html += "<option>"+val.usageDate+"</option>";
+							}
+							
+							if(val.division4 != "") {
+								if($.inArray(val.division4, addOptions) == -1) {
+									addHtml += "<option>"+val.division4+"</option>";
+									addOptions.push(val.division4);	
+								}
+							}	
+						}
+					});
+					
+					if(addOptions.length > 0) {
+						$("#division4").parent("li").css("display", "block");
+						$(addHtml).appendTo("#division4");
+					}else {
+						$("#division4").parent("li").css("display", "none");
+					}
+					$(html).appendTo("#usageDate");
+				}
+			});
+		}
+		
+		function division4Change(choice) {
+			var value = $(choice).val();
+			var id = $(choice).attr("id");
+			var nextId = $("#"+id).parent("li").next().children("select").attr("id");
+			var result = new Array();
+			var html = "<option>선택</option>";
+			$("#"+id).parent("li").nextAll().children("select").empty();
+			
+			$("#usageDate").empty();
+			
+			$.ajax({
+				url: "/UsageJSON",
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					$.each(data.result, function(key, val) {
+						
+						if(val.division4 == value) {
+							if($.inArray(val.usageDate, result) == -1) {
+								result.push(val.usageDate);
+								html += "<option>"+val.usageDate+"</option>";
+							}
+						}
+					});
+					$(html).appendTo("#usageDate");
+				}
+			});
+		}
+		
+		function usageDateChange(choice) {
+			var value = $(choice).val();
+			var usage = $("#usage").val();
+			var division1 = $("#division1").val();
+			var division2 = $("#division2").val();
+			var division3 = $("#division3").val(); 
+			var division4 = $("#division4").val(); if(!division4) division4 = "";
+			var usageDate = $("#usageDate").val();
+			var price;
+			
+			$.ajax({
+				url: "/UsageJSON",
+				type: "GET",
+				dataType: "json",
+				success: function(data) { console.log(data.result);
+					$.each(data.result, function(key, val) {
+						if(val.usage == usage && val.division1 == division1 && val.division2 == division2 && val.division3 == division3 && val.division4 == division4 && val.usageDate == value) {							
+							price = val.price;
+						}
+					});
+					
+					var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + division4 + " / " + usageDate;
+					var html = '<li><span class="op_cont">' + options + '</span><span class="op_price" value="'+price+'">'+price+'원</span><span class="op_del">x</span></li>';
+					
+					$(html).appendTo($(".option_result > ul"));
+				}
+			});
+		}		
+		
 	</script>
 </head>
-<body onload="init(this.form)">
+<body>
 	<div class="wrap_pop">
 		<div class="view_rt_top">
 			<h3>장바구니 옵션변경</h3>
 			</div>
-		<form name="form">
-			<div class="option_choice">
-				<ul>
-					<li><span>구분</span>
-						<select id="first" onchange="itemChange(this.form);">
-						</select>
-					</li>
-					<li><span>상세</span>
-						<select id="second" onchange="secondChange(this.form);">
-						</select>
-					</li>
-					<li><span>용도</span>
-						<select id="third">
-						</select>
-				</li>
-				</ul>
-			</div>
-		</form>
-		<%-- <div class="option_choice">
+		<div class="option_choice">
 			<ul>
-				<li><span>구분</span>
-					<select class="usage">
-						<option>선택</option>
-						<c:forEach items="${usageOption}" var="option">
-							<option>${option.usage}</option>
-						</c:forEach>
-					</select>
-				</li>
-				<li><span>상세</span>
-					<select>
-						<option>선택선택</option>
-					</select>
-				</li>
 				<li><span>용도</span>
-					<select>
-						<option>선택선택</option>
+					<select id="usage" onchange="usageChange(this)">
+					</select>
+				</li>
+				<li><span>옵션1</span>
+					<select id="division1" onchange="division1Change(this)">
+					</select>
+				</li>
+				<li><span>옵션2</span>
+					<select id="division2" onchange="division2Change(this)">
+					</select>
+				</li>
+				<li><span>옵션3</span>
+					<select id="division3" onchange="division3Change(this)">
+					</select>
+				</li>
+				<li style="display: none;"><span>옵션4</span>
+					<select id="division4" onchange="division4Change(this)">
 					</select>
 				</li>
 				<li><span>기간</span>
-					<select>
-						<option>선택선택</option>
+					<select id="usageDate" onchange="usageDateChange(this)">
 					</select>
 				</li>
 			</ul>
-		</div> --%>
+		</div>
 		<div class="option_result">
 			<ul>
-				<li><span class="op_cont">상업용 / 신문광고 / 중앙지, 스포츠지, 경제지 등 / 1~9단 / 1년 이내</span><span class="op_price">440,000원</span><span class="op_del">x</span></li>
-				<li><span class="op_cont">출판용 / 교육용 / 전집, 백과사전, 도감, 학술논문 발표자료 등 / 1년 이내</span><span class="op_price">88,000원</span><span class="op_del">x</span></li>
+				<c:forEach items="${usageOptions}" var="UsageDTO">
+					<li><span class="op_cont">${UsageDTO.usage} / ${UsageDTO.division1} / ${UsageDTO.division2} / ${UsageDTO.division3} / ${UsageDTO.division4} / ${UsageDTO.usageDate} </span><span class="op_price" value="${UsageDTO.price}">${UsageDTO.price}원</span><span class="op_del">x</span></li>
+				</c:forEach>
 			</ul>
 		</div>
 		<div class="sum_sec">

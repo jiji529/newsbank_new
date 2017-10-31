@@ -2,29 +2,31 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
+import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.UsageDTO;
 
 /**
- * Servlet implementation class MypageCartPopOption
+ * Servlet implementation class UsageJSON
  */
-@WebServlet("/cart.popOption")
-public class MypageCartPopOption extends NewsbankServletBase {
+@WebServlet("/UsageJSON")
+public class UsageJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see NewsbankServletBase#NewsbankServletBase()
      */
-    public MypageCartPopOption() {
+    public UsageJSON() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,29 +36,28 @@ public class MypageCartPopOption extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
 		
-		String uciCode = request.getParameter("uciCode");
 		UsageDAO usageDAO = new UsageDAO();
-		List<UsageDTO> usageOptions = usageDAO.uciCodeOfUsage(uciCode);
+		List<UsageDTO> usageOption = usageDAO.usageList();
 		
-		request.setAttribute("usageOptions", usageOptions);
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pop_opt.jsp");
-		dispatcher.forward(request, response);
-	}	
-	
-	private List<String> makeSelectOption(String select, List<UsageDTO> usageList) {
-		// 옵션 선택값에 따른 추가 옵션리스트 불러오기
-		List<String> options = new ArrayList<String>();
-		for(UsageDTO usageDTO : usageList) {
-			if(usageDTO.getDivision1().equals(select)) {
-				options.add(usageDTO.getDivision2());				
+		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+		List<UsageDTO> list = (List<UsageDTO>) usageOption;
+		for(UsageDTO dto : list){
+			try {
+				jsonList.add(dto.convertToMap());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		return options;
+		JSONObject json = new JSONObject();
+		json.put("result", jsonList);		
+		
+		response.getWriter().print(json);		
+	
+ 		request.setAttribute("jsonList", jsonList);
 	}
 
 	/**

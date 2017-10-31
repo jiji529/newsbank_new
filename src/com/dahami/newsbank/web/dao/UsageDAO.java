@@ -26,8 +26,40 @@ public class UsageDAO extends DAOBase {
 		try {
 			session = sf.getSession();
 			
-			//usageList = session.selectList("Usage.selectList");
-			usageList = session.selectList("Usage.usageOption");
+			usageList = session.selectList("Usage.selectList");
+			//usageList = session.selectList("Usage.usageOption");
+					
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return usageList;
+	}
+	
+	/**
+	 * @methodName  : uciCodeOfUsage
+	 * @author      : HOYADEV
+	 * @date        : 2017. 10. 31. 오후 04:12:32
+	 * @methodCommet: uciCode별 사용용도 
+	 * @param param
+	 * @return 
+	 */
+	public List<UsageDTO> uciCodeOfUsage(String uciCode) {
+		SqlSession session = null;
+		List<UsageDTO> usageList = new ArrayList<UsageDTO>();
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("member_seq", 1002);
+		param.put("uciCode", uciCode);
+		
+		try {
+			session = sf.getSession();
+			
+			usageList = session.selectList("Usage.uciCodeOfUsage", param);
 					
 		} catch (Exception e) {
 			logger.warn("", e);
