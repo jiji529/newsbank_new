@@ -12,6 +12,51 @@
         <dependent-module archiveName="API_SolrCommon.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon/API_SolrCommon">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="util.crypt-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/util.crypt-1.0.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpmime-4.4.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/httpmime-4.4.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="noggit-0.6.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/noggit-0.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-codec-1.10.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/commons-codec-1.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="gson-2.3.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/gson-2.3.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="json-simple-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/json-simple-1.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpcore-4.4.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/httpcore-4.4.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="solr-core-6.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/solr-core-6.0.0-SNAPSHOT.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zookeeper-3.4.6.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/zookeeper-3.4.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ra.api-1.3.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/ra.api-1.3.0-RELEASE.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpclient-4.5.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/httpclient-4.5.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="solr-solrj-6.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/solr-solrj-6.0.0-SNAPSHOT.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-logging-1.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/commons-logging-1.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sqljdbc4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/sqljdbc4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-io-2.4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/commons-io-2.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/NewsBank_2017/build/classes"/>
         <property name="context-root" value="NewsBank_2017"/>
     </wb-module>

@@ -37,6 +37,8 @@ import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.json.simple.JSONObject;
 
 import com.dahami.common.util.ObjectUtil;
@@ -51,10 +53,6 @@ public class SearchDAO extends DAOBase {
 	private static List<String> solrHostList;
 	
 	private static String collectionNameNewsbank;
-	private static String collectionNamePaper;
-	private static String collectionNameOnline;
-	private static String collectionNameBroad;
-	private static String collectionNamePaperQueue;
 	
 	private static String solrId;
 	private static String solrPw;
@@ -113,10 +111,6 @@ public class SearchDAO extends DAOBase {
 				}
 				
 				collectionNameNewsbank = (String) conf.get("COLLECTION_NAME_NEWSBANK");
-				collectionNamePaper = (String) conf.get("COLLECTION_NAME_PAPER");
-				collectionNameOnline = (String) conf.get("COLLECTION_NAME_ONLINE");
-				collectionNameBroad = (String) conf.get("COLLECTION_NAME_BROAD");
-				collectionNamePaperQueue = (String) conf.get("COLLECTION_NAME_PAPER_INDEXQ");
 				
 				solrClients = new ArrayList<SolrClient>();
 				int poolSize = Integer.parseInt(conf.getProperty("SOLR_POOL"));
@@ -201,12 +195,21 @@ public class SearchDAO extends DAOBase {
 	 * @returnType  : Map<String, Object> / count:결과 숫자(Integer) / result:결과물 리스트(List<PhotoDTO>)
 	 */
 	public Map<String, Object> search(SearchParameterBean param) {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		
 		SolrClient client = null;
 		QueryResponse res = null;
 		try {
 			SolrQuery query = makeSolrQuery(param);
 			client = getClient();
 			res = client.query(query, METHOD.POST);
+			SolrDocumentList docList = res.getResults();
+			ret.put("count", (int)docList.getNumFound());
+			List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
+			for(SolrDocument doc : docList) {
+				photoList.add(new PhotoDTO(doc));
+			}
+			ret.put("result", photoList);
 			System.out.println();
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -215,38 +218,39 @@ public class SearchDAO extends DAOBase {
 		}
 		
 		
-		Map<String, Object> ret = new HashMap<String, Object>();
 		
-		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-		List<PhotoDTO> totalList = (List<PhotoDTO>) ObjectUtil.loadObject(PhotoDTO.class.getResourceAsStream("photoList.obj"));
 		
-		int pageVol = param.getPageVol();
-		int pageNo = param.getPageNo();
-		
-		int start = (pageNo-1) * pageVol;
-		
-		if(start >= 0 && start < totalList.size()) {
-			for(int i = 0; i < pageVol; i++) {
-				PhotoDTO cur = null;
-				try {
-					cur = totalList.get(start + i);
-					if(cur != null) {
-						photoList.add(cur);
-					}
-				}catch(Exception e) {
-					break;
-				}
-			}
-		}
-		
-		ret.put("count", totalList.size());
-		ret.put("result", photoList);
+//		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
+//		List<PhotoDTO> totalList = (List<PhotoDTO>) ObjectUtil.loadObject(PhotoDTO.class.getResourceAsStream("photoList.obj"));
+//		
+//		int pageVol = param.getPageVol();
+//		int pageNo = param.getPageNo();
+//		
+//		int start = (pageNo-1) * pageVol;
+//		
+//		if(start >= 0 && start < totalList.size()) {
+//			for(int i = 0; i < pageVol; i++) {
+//				PhotoDTO cur = null;
+//				try {
+//					cur = totalList.get(start + i);
+//					if(cur != null) {
+//						photoList.add(cur);
+//					}
+//				}catch(Exception e) {
+//					break;
+//				}
+//			}
+//		}
+//		
+//		ret.put("count", totalList.size());
+//		ret.put("result", photoList);
 		
 		return ret;
 	}
 	
 	private SolrQuery makeSolrQuery(SearchParameterBean params) {
 		SolrQuery qry = new SolrQuery();
+		qry.set("collection", collectionNameNewsbank);
 		String keyword = params.getKeyword();
 		qry.setQuery(keyword);
 		return qry;
