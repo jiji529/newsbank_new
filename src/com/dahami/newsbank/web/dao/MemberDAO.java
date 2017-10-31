@@ -33,7 +33,7 @@ public class MemberDAO extends DAOBase {
 		try {
 
 			session = sf.getSession();
-			memberInfo = session.selectOne("Member.selectId", param);
+			memberInfo = session.selectOne("Member.selectLogin", param);
 
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -46,5 +46,27 @@ public class MemberDAO extends DAOBase {
 
 		return memberInfo;
 
+	}
+	
+	public boolean selectId(Map<String, Object> param) {
+		SqlSession session = null;
+		MemberDTO memberInfo = null;
+		boolean result = false;
+		try {
+
+			session = sf.getSession();
+			memberInfo = session.selectOne("Member.selectId", param);
+			result = memberInfo.isMember();
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return result;
 	}
 }
