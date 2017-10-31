@@ -111,10 +111,10 @@
 												<li>${UsageDTO.division1}</li>
 												<li>${UsageDTO.division2}</li>
 												<li>${UsageDTO.division3}</li>
-												<li>${UsageDTO.division4}</li>
+												<li>${UsageDTO.usageDate}</li>
 											</ul>
 										</c:forEach>
-										<a href= "main.html" onClick="window.open('/cart.popOption','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a></div>
+										<a href= "main.html" onClick="window.open('/cart.popOption?uciCode=${CartDTO.uciCode}','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a></div>
 								</div>
 							</div></td>
 						<td><fmt:formatNumber value="${CartDTO.price * 10 / 11}" type="number"/>원</td>

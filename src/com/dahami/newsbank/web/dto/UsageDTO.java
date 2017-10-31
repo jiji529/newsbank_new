@@ -1,5 +1,10 @@
 package com.dahami.newsbank.web.dto;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
+
 public class UsageDTO {
 
 	private String usage; // 사용 용도
@@ -52,4 +57,29 @@ public class UsageDTO {
 	public void setPrice(int price) {
 		this.price = price;
 	}	
+	
+	/**
+	 * @methodName  : convertToMap
+	 * @author      : LEE, GWAGNHO
+	 * @date        : 2017. 10. 31. 오전 11:28:03
+	 * @methodCommet: 
+	 * @return
+	 * @throws Exception 
+	 * @returnType  : Map<String,Object>
+	 */
+	public Map<String, Object> convertToMap() throws Exception {
+		Field[] fields = this.getClass().getDeclaredFields();
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		for(Field cur : fields) {
+			int modifier = cur.getModifiers();
+			if((modifier & Modifier.STATIC) == Modifier.STATIC) {
+				continue;
+			}	
+			
+			result.put(cur.getName(), cur.get(this));
+			
+		}
+		return result;
+	}
 }

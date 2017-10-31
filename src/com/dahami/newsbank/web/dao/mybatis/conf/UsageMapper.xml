@@ -3,10 +3,16 @@
 
 <mapper namespace="Usage">
 	<select id="selectList" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
-	    SELECT `usage`, division1, division2 FROM usageList GROUP BY `usage`, division1, division2
+	    SELECT `usage`, division1, division2, division3, division4, usageDate, price FROM usageList GROUP BY `usage`, division1, division2, division3, division4, usageDate, price
 	</select>
 	
 	<select id="usageOption" resultType="java.util.Map" parameterType="java.util.Map">
 	    SELECT `usage` FROM usageList GROUP BY `usage`
+	</select>
+	
+	<select id="uciCodeOfUsage" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
+	    SELECT A.usage, A.division1, A.division2, A.division3, A.division4, A.usageDate, A.price FROM usageList A
+		INNER JOIN basket B ON A.seq = B.usageList_seq
+		WHERE B.member_seq = #{member_seq} AND B.photo_uciCode = #{uciCode}
 	</select>
 </mapper>
