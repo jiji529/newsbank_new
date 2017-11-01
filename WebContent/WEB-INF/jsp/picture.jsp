@@ -105,51 +105,29 @@
 	<div class="wrap">
 		<div class="fixed_layer">
 			<nav class="gnb_dark">
-			<div class="gnb">
-				<a href="/home" class="logo"></a>
-				<ul class="gnb_left">
-					<li class="on">
-						<a href="#">보도사진</a>
-					</li>
-					<li>
-						<a href="#">뮤지엄</a>
-					</li>
-					<li>
-						<a href="#">사진</a>
-					</li>
-					<li>
-						<a href="#">컬렉션</a>
-					</li>
-				</ul>
-				<ul class="gnb_right">
-					<li>
-						<a href="/login">로그인</a>
-					</li>
-					<li>
-						<a href="/kind.join" target="_blank">가입하기</a>
-					</li>
-				</ul>
-			</div>
-			<div class="gnb_srch">
-				<form id="searchform">
-					<input type="text" value="검색어를 입력하세요" />
-					<a href="#" class="btn_search">검색</a>
-				</form>
-			</div>
+				<div class="gnb"><a href="#" class="logo"></a>
+					<ul class="gnb_left">
+						<li class="on"><a href="/picture">보도사진</a></li>
+						<li><a href="#">뮤지엄</a></li>
+						<li><a href="#">사진</a></li>
+						<li><a href="#">컬렉션</a></li>
+					</ul>
+					<ul class="gnb_right">
+						<li><a href="#">로그인</a></li>
+						<li><a href="#">가입하기</a></li>
+					</ul>
+				</div>
+				<div class="gnb_srch">
+					<form id="searchform">
+						<input type="text" value="검색어를 입력하세요" />
+						<a href="#" class="btn_search">검색</a>
+					</form>
+				</div>
 			</nav>
 			<!-- 필터시작 -->
 			<div class="filters">
 				<ul>
 					<li class="filter_title filter_ico">검색필터</li>
-					<li class="filter_title">
-						보도사진
-						<ul class="filter_list">
-							<li value="<%=request.getAttribute("CONTENT_TYPE_NEWS")%>">보도사진</li>
-							<li value="<%=request.getAttribute("CONTENT_TYPE_MUSEUM")%>">뮤지엄</li>
-							<li value="<%=request.getAttribute("CONTENT_TYPE_PERSONAL")%>">사진</li>
-							<li value="<%=request.getAttribute("CONTENT_TYPE_COLLECTION")%>">컬렉션</li>
-						</ul>
-					</li>
 					<li class="filter_title">
 						전체매체
 						<ul class="filter_list">
@@ -212,38 +190,14 @@
 							<li value="<%=request.getAttribute("HORIZONTAL_NO")%>">세로</li>
 						</ul>
 					</li>
-					<li class="filter_title">
-						사이즈
+					<li class="filter_title"> 사진크기
 						<ul class="filter_list">
 							<li value="<%=request.getAttribute("SIZE_ALL")%>">모든크기</li>
-							<li value="<%=request.getAttribute("SIZE_LARGE")%>">큰 사이즈</li>
-							<li value="<%=request.getAttribute("SIZE_MEDIUM")%>">중간 사이즈</li>
-							<li value="<%=request.getAttribute("SIZE_SMALL")%>">작은 사이즈</li>
+							<li value="<%=request.getAttribute("SIZE_LARGE")%>">3,000 px 이상</li>
+							<li value="<%=request.getAttribute("SIZE_MEDIUM")%>">1,000~3,000 px</li>
+							<li value="<%=request.getAttribute("SIZE_SMALL")%>">1,000 px 이하</li>
 						</ul>
-					</li>
-					<li class="filter_title">
-						라이선스
-						<ul class="filter_list">
-							<li value="<%=request.getAttribute("PORTRAIT_RIGHT_ALL")%>">전체</li>
-							<li value="<%=request.getAttribute("PORTRAIT_RIGHT_ACQUIRE")%>">초상권 해결</li>
-							<li value="<%=request.getAttribute("PORTRAIT_RIGHT_NOT")%>">초상권 미해결</li>
-						</ul>
-					</li>
-					<li class="filter_title">
-						인물
-						<ul class="filter_list">
-							<li value="<%=request.getAttribute("INCLUDE_PERSON_ALL")%>">전체</li>
-							<li value="<%=request.getAttribute("INCLUDE_PERSON_YES")%>">포함</li>
-							<li value="<%=request.getAttribute("INCLUDE_PERSON_NO")%>">미포함</li>
-						</ul>
-					</li>
-					<li class="filter_title">
-						대표이미지
-						<ul class="filter_list">
-							<li value="<%=request.getAttribute("GROUP_IMAGE_ALL")%>">전체</li>
-							<li value="<%=request.getAttribute("GROUP_IMAGE_REP")%>">대표만 보기</li>
-						</ul>
-					</li>
+					</li>	
 				</ul>
 				<div class="filter_rt">
 					<div class="result">

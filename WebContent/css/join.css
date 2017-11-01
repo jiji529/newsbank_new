@@ -71,6 +71,7 @@ footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#9
 .wrap_info .box_info .item_info{position: relative; padding: 7px 0; float:left;}
 .wrap_info .box_info .item_info dt{float: left; width: 140px;  line-height: 40px; font-size:14px; margin-bottom:10px;}
 .wrap_info .box_info .item_info dd{overflow: hidden; font-weight: bold; text-indent: 15px; line-height: 40px; float:right; margin-bottom:10px;}
+.wrap_info .box_info .item_info dd.inp_num{overflow: hidden; font-weight: bold;  line-height: 40px; float:left; margin-bottom:10px;}
 
 .wrap_info *{font-family: '돋움','dotum','Apple SD Gothic Neo','sans-serif'; }
 .txt_message {font-size: 12px; color: #dc321e; font-weight: normal; margin-top:3px; line-height: 1.5; text-indent: 0;}
@@ -86,6 +87,13 @@ footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#9
 .wrap_info .box_info .item_info dd .inp.addr input{width: 85px; border:1px solid #d4d4d4; float:left; position:relative;}
 .wrap_info .box_info .item_info dd .inp.addr button{position:relative; width: 70px;  float:left; margin-left:5px; right:auto;}
 
+.wrap_info .box_info .item_info dd.inp_num{position: relative;}
+.wrap_info .box_info .item_info dd.inp_num input{ -webkit-appearance: none;}
+.wrap_info .box_info .item_info dd.inp_num input, .wrap_info .box_info .item_info dd.inp_num select{ float:left; position:relative; border: 1px #d4d4d4 solid; background: 0; font-weight: bold;  z-index: 99; height: 40px; padding:0 15px;}
+.wrap_info .box_info .item_info dd.inp_num a{width: 60px; height: 28px; background: #aaa; border:0; color: #fff; text-align: center; line-height: 30px; font-size:12px; float:left; display:block; margin:5px 10px; text-indent:0;}
+.wrap_info .box_info .item_info dd .bar{margin:10px 5px; float:left; text-indent:0; line-height:normal}
+.wrap_info .box_info .item_info dd .inp.num2{border:0;}
+.wrap_info .box_info .item_info dd .inp.num2 input{position: relative; float:left;  height: 38px; border: 1px solid #d4d4d4;  font-weight: bold; text-indent: 15px; -webkit-appearance: none; z-index: 99;}
 
 
 /* 로그인 */

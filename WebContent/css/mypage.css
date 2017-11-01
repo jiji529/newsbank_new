@@ -7,10 +7,10 @@
 .table_head {border-bottom:3px #555b62 solid; float:left; width:100%;}
 .table_head h3 { float:left; margin:50px 0 15px; width:100%; text-align:left; font-size:18px; }
 .table_head h3:before{content:""; width:5px; height:18px; background:#f79320; float:left; margin-right:10px; margin-top:1px ;}
-.mypage h4 { float:left; margin:15px 0 10px; width:100%; text-align:left;}
+.mypage h4 { float:left; margin:30px 0 10px; width:100%; text-align:left;}
 .mypage  p.txt{width:100%; text-align:left; margin-bottom:30px; font-size:13px; color:#999;}
 
-.mypage .pw{ float:left; width:100%; border-top:2px #f79320 solid; background:#fbfbfb; height:250px; padding:80px 0; border-bottom:1px #ccc solid;}
+.mypage .pw{ float:left; width:100%; border-top:3px #f79320 solid; background:#fbfbfb; height:250px; padding:80px 0; border-bottom:1px #ccc solid;}
 .mypage .pw .pw_box{ }
 .mypage .pw .pw_box input{width:400px; border:1px #ccc solid; padding:10px 15px; border-radius:4px; font-size:16px; }
 .mypage .pw .pw_box button{margin-left:5px; padding:10px 30px; color:#fff; background:#f79320; font-size:16px; border-radius:4px; border:0;}
@@ -19,8 +19,8 @@
 .mypage .pw .guide a:after{content: ''; position:absolute; height: 0; width: 0; margin:3px 0 0 5px; border: solid transparent; border-left-color: #000; border-width: 4px 4px; -webkit-transition: border 0.2s ease-in-out; transition: border 0.2s ease-in-out; font-size:0;}
 
 .mypage .mypage_ul{width:100%; float:left; margin-top:40px;}
-.mypage .mypage_ul .mp_tab1{ }
 .mypage .mypage_ul .mp_tab1 li {float: left; width:16.66%; height: 45px; font-size: 14px; color: #666; line-height: 43px; text-align: center; border: 1px solid #dbdbdb; position: relative; margin-left:-1px;}
+.mypage .mypage_ul .mp_tab1.cs li {width:50%;}
 .mypage .mypage_ul .mp_tab1 li a{color:#666}
 .mypage .mypage_ul li a{display:block;}
 .mypage .mypage_ul .mp_tab1 li:first-child{margin-left:0;}
@@ -35,7 +35,7 @@
 .mypage table {clear: both; width:100%; margin-bottom:50px; }
 .mypage .tb02{margin-bottom:20px;}
 .mypage .tb02 th { padding: 8px 0; border-left: 1px solid #4d4941; background: #665947; color:#fff; font-size: 13px; text-align: center; }
-.mypage .tb02 td { padding: 10px 0; border-left: 1px solid #e6e6e6; border-top: 1px solid #dce0e9; font-size:13px; text-align: center; line-height: 18px; }
+.mypage .tb02 td { padding: 10px; border-left: 1px solid #e6e6e6; border-top: 1px solid #dce0e9; font-size:13px; text-align: center; line-height: 18px; }
 .mypage .tb02 tfoot td { background:#f5f4f0; font-weight:600; border-bottom: 1px solid #d7d7d7; }
 .mypage th:first-child, .mypage td:first-child { border-left:none; }
 .mypage li .btn{ padding: 10px 20px; color: #666; border: 1px solid #ccc; background:#fff; margin-left:-1px;}
@@ -143,7 +143,7 @@
 .mypage #cms_list2 .thumb .thumb_info input {float:left; margin-left:-24px; margin-top:10px;}
 .mypage #cms_list2 .thumb .thumb_info span{ float:left; width:100%; text-align:left; margin-bottom:4px;}
 .mypage #cms_list2 .thumb .thumb_btn{ float:left; width:100%; background:#666;}
-.mypage #cms_list2 .thumb .thumb_btn li{float:left; width:25%; text-indent:-9999px; height:32px; cursor:pointer;}
+.mypage #cms_list2 .thumb .thumb_btn li{float:left; width:33.3%; /* width:25%; */text-indent:-9999px; height:32px; cursor:pointer;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_down{background:url(../images/mp/btn_down.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_del{background:url(../images/mp/btn_del.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_view{background:url(../images/mp/btn_view.png) center 6px no-repeat;}
@@ -208,14 +208,29 @@
 #order_list .cart_item .cart_info .code{color:#666; font-size:14px;}
 #order_list .cart_item .cart_info .option_area .opt_li{ float:left; width:100%;}
 #order_list .cart_item .cart_info .option_area .opt_li li{float:left;  font-size:12px; color:#666;}
-#order_list .cart_item .cart_info .option_area .opt_li li:after{ content:'';width:1px; height:12px; background:#ccc; margin:5px 5px 0; float:left;}
-#order_list .cart_item .cart_info .option_area .opt_li li:first-child:after{ display:none;}
+#order_list .cart_item .cart_info .option_area .opt_li li:after{ content:'';width:1px; height:12px; background:#ccc; margin:5px 5px 0; float:right;}
+#order_list .cart_item .cart_info .option_area .opt_li li:last-child:after{ display:none;}
 #order_list .cart_item .cart_info .option_area a{padding:0 8px; background-color:#f7f9fd; color:#888; display:block; border: 1px solid #ccc; font-size:12px; margin-top:10px; float:left; text-align:center;}
 #order_list .btn_group button{margin: 6px 0 0; width: 100px; font-size: 13px; line-height: 1.8em;background-color: #fff;}
 #order_list .btn_group button.btn_o{border: 1px solid #f79320; color: #f79320;}
 #order_list .btn_group button.btn_g{border: 1px solid #999; color: #999;}
 #order_list .btn_group button.btn_b{border: 1px solid #333; color: #333;}
+#order_list .cart_item .message{ float:left; width:100%; border-top:1px #ccc solid; margin-top:5px; text-align:left; font-size:12px; color:#666; padding:10px 0;}
 
 /* 로그인 실패*/
 .error{text-align:center; font-size:12px;  padding-top:10px; margin-bottom:10px; }
 .error p{ color:red;}
+
+/*고객센터*/
+.rules{ }
+.rules .rule_list{ float:left; margin:40px 0 ; width:100%;  border:1px #ccc solid; background:#f6f6f6; padding:40px;}
+.rules .rule_list li{ float:left;  width:33.3%; height:45px; line-height:45px; margin-top:-1px; text-align:left; }
+.rules .rule_list li a{ display:block; color:#666; font-size:14px;}
+.rules .rule_cont{ float:left; width:100%; text-align:left;}
+.rules .rule_cont p{    position: relative; font-size:14px; color:#333; line-height:1.8}
+.rules .rule_cont h3{ color: #333; margin: 20px 0 10px 0; font-size:16px;}
+.rules .rule_cont ol{float:left; padding-left:20px;}
+.rules .rule_cont li{ position: relative; font-size:14px; color:#333; line-height:1.8; list-style-type:circle }
+
+https://www.naver.com/policy/service.html#a1
+http://www.kdnavien.co.kr/footer/agreement

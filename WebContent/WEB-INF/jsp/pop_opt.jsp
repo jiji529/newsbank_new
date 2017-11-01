@@ -31,6 +31,17 @@
 	<script type="text/javascript">
 		usageList();
 		
+		// #장바구니 옵션변경 - 선택항목 개별삭제
+		$(document).on("click", ".op_del", function() {
+			$(this).parent("li").remove();
+		});
+		
+		// #장바구니 옵션변경 - 선택항목 변경
+		$(document).on("click", "btn_cart", function() {
+			updateUsageOption();
+		});
+		
+		// #선택옵션 용도옵션 불러오기
 		function usageList() {
 			var result = new Array();
 			var html = "<option>선택</option>";
@@ -53,6 +64,7 @@
 			});
 		}
 		
+		// #선택옵션 변경(용도)
 		function usageChange(choice) {
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
@@ -84,6 +96,7 @@
 			});
 		}
 		
+		// #선택옵션 변경(옵션1)
 		function division1Change(choice) {
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
@@ -115,6 +128,7 @@
 			});
 		}
 		
+		// #선택옵션 변경(옵션2)
 		function division2Change(choice) {
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
@@ -147,6 +161,7 @@
 			});
 		}
 		
+		// #선택옵션 변경(옵션3)
 		function division3Change(choice) {
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
@@ -198,6 +213,7 @@
 			});
 		}
 		
+		// #선택옵션 변경(옵션4)
 		function division4Change(choice) {
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
@@ -227,6 +243,7 @@
 			});
 		}
 		
+		// #선택옵션 변경(기간)
 		function usageDateChange(choice) {
 			var value = $(choice).val();
 			var usage = $("#usage").val();
@@ -255,6 +272,11 @@
 				}
 			});
 		}		
+		
+		// 장바구니 옵션 변경하기
+		function updateUsageOption() {
+			
+		}
 		
 	</script>
 </head>

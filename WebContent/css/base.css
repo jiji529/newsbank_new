@@ -20,8 +20,9 @@ nav.gnb_light{height: 90px; width: 100%; margin: 0 auto; -webkit-transition: 0.1
 nav.gnb_light .gnb {padding:0 50px; }
 nav.gnb_light .gnb a.logo{height: 50px; display: block; float: left; width: 142px; margin: 10px 0; position: relative; background:url(../images/logo_w.svg) 0 0 no-repeat;}  
 /* 1차에선 메뉴 주석처리*/
-nav .gnb_left{ float:left; display:none; margin-left:40px;}
-nav .gnb_left li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px; }
+nav .gnb_left{ float:left; display:block; margin-left:40px;}
+nav .gnb_left li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px; display:none }
+nav .gnb_left li:first-child{ display:block;}
 nav.gnb_light .gnb .gnb_left li a{color:#fff;}
 nav a{display:block;font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif; font-size:17px;}
 nav .gnb_right{ float:right; display:block;}
@@ -49,9 +50,10 @@ footer {width:100%; background-color:#fff; border-top:1px #f0f0f0 solid; bottom:
 footer .foot_wrap {width:1240px;margin:0 auto;  display:inline-block; padding-top:50px;}
 footer .foot_lt {float:left; font-size:13px; line-height:24px; color:#808080;  font-weight:100; text-align:left; width:400px; }
 footer .foot_ct {float:left; margin-left:115px;  text-align:left; }
-footer .foot_ct dl{ float:left; margin-right:20px; width:155px; font-size:14px; }
+footer .foot_ct dl{ float:left; margin-right:20px; width:150px; font-size:14px; }
 footer .foot_ct dt {color:#333; font-weight:600; margin-bottom:20px;}
 footer .foot_ct dd{color:#666; font-weight:400; margin-bottom:10px;}
+footer .foot_ct dd a{color:#666; display:block;}
 
 footer .foot_rt {float:right; font-weight:100; line-height:25px; width:200px;}
 footer .foot_rt #family_site { float:left; font-size:13px; width:200px; height:30px; border:1px #ccc solid; color:#808080; background:url(../images/ico_family.png) 180px 10px no-repeat; }
@@ -67,7 +69,7 @@ footer a.clean{ float:right; margin:-2px 0 0 20px; }
 #select-layer ul.site-list li a:hover {   color: #222; background:#f5f5f5 }
 
 .foot_banner{ float:left; margin-top:30px; }
-.foot_banner li{ float:left; margin-bottom:20px; width:200px; padding-left:80px; font-size:11px; text-align:left; line-height:16px; color:#777;}
-.foot_banner li a{ display:block;}
-.foot_banner li.uci{ background:url(../images/foot_uci.jpg) 0 2px no-repeat; }
-.foot_banner li.cleansite{background:url(../images/foot_clean.jpg) 0 0 no-repeat; }
+.foot_banner li{ float:left; margin-bottom:20px; width:200px;font-size:11px; text-align:left; line-height:16px; color:#777;}
+.foot_banner li a{ display:block; padding-left:80px; }
+.foot_banner li.uci a{ background:url(../images/foot_uci.jpg) 0 2px no-repeat; }
+.foot_banner li.cleansite a{background:url(../images/foot_clean.jpg) 0 0 no-repeat; }

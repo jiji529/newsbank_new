@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class UsageDTO {
 
+	private int usageList_seq; // 고유번호
 	private String usage; // 사용 용도
 	private String division1; // 구분1
 	private String division2; // 구분2
@@ -15,6 +16,13 @@ public class UsageDTO {
 	private String usageDate; // 사용기한
 	private int price; // 가격
 	
+	
+	public int getUsageList_seq() {
+		return usageList_seq;
+	}
+	public void setUsageList_seq(int usageList_seq) {
+		this.usageList_seq = usageList_seq;
+	}
 	public String getUsage() {
 		return usage;
 	}
