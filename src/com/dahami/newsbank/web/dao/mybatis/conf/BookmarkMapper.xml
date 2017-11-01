@@ -3,8 +3,15 @@
 
 <mapper namespace="Bookmark">
         
-    <insert id="insertBookmark">
-        INSERT INTO bookmark (member_seq, photo_uciCode, bookName, regDate) VALUES (#{member_seq}, #{photo_uciCode}, #{bookName}, NOW())
+    <insert id="insertBookmark" keyProperty="seq">
+        INSERT INTO bookmark (member_seq, bookName, activate, regDate) VALUES (#{member_seq}, #{bookName}, 1, NOW())
+    </insert>
+    
+    <insert id="insertBookmarkPhoto">
+        <selectKey resultType="integer" keyProperty="seq" order="BEFORE">
+            SELECT seq FROM bookmark WHERE member_seq = #{member_seq} AND bookName = #{bookName}
+        </selectKey>
+        INSERT INTO bookmarkPhoto (bookmark_seq, photo_uciCode, regDate) VALUES (#{seq}, #{photo_uciCode}, NOW())
     </insert>
     
     <select id="selectBookmark" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">

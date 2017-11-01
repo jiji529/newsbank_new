@@ -30,7 +30,7 @@ public class BookmarkDAO extends DAOBase {
 			bookmark.put("photo_uciCode", photo_uciCode);
 			bookmark.put("bookName", bookName);
 			
-			session.insert("Bookmark.insertBookmark", bookmark);
+			session.insert("Bookmark.insertBookmarkPhoto", bookmark);
 			
 		} catch (Exception e) {
 			logger.warn("", e);

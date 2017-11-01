@@ -22,8 +22,88 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
-<script
-	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript">
+	
+	/** 찜하기 */
+	$(document).on("click", ".btn_b", function() {
+		var member_seq = "1002"; // 사용자 고유번호
+		var uciCode = $(this).closest("tr").find(".code").text();		
+		
+		var param = "action=bookmark";
+		
+		$.ajax({
+			url: "/cart.myPage?"+param,
+			type: "POST",
+			data: {
+				"member_seq" : member_seq,
+				"uciCode" : uciCode
+			},
+			success: function(data){ 
+				alert("찜목록에 추가되었습니다.");
+			}, 
+			error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		});
+		
+	});
+
+	/** 개별 삭제 */
+	$(document).on("click", ".btn_g", function() {
+		var member_seq = "1002"; // 사용자 고유번호
+		var uciCode = $(this).closest("tr").find(".code").text();
+		
+		var chk = confirm("정말로 삭제하시겠습니까?");
+		if(chk == true) {
+			cartDelete(member_seq, uciCode);
+			$(this).closest("tr").remove();
+		} 				
+	});
+
+	/** 다중선택 삭제 */
+	$(document).on("click", ".mp_btn", function() {
+		var member_seq = "1002"; // 사용자 고유번호
+		var chk = confirm("정말로 삭제하시겠습니까?");
+		
+		if(chk == true) {
+			$("#order_list input:checkbox:checked").each(function(index) {
+				var uciCode = $(this).val();
+				cartDelete(member_seq, uciCode);
+				$(this).closest("tr").remove();
+			});
+		}
+	});
+	
+	/** 전체선택 */
+	$(document).on("click", "input[name='check_all']", function() {
+		if($("input[name='check_all']").prop("checked")) {
+			$("#order_list input:checkbox").prop("checked", true);
+		}else {
+			$("#order_list input:checkbox").prop("checked", false);
+		}
+	});
+	
+	/** DB 삭제함수 */
+	function cartDelete(member_seq, uciCode) {
+		var param = "action=delete";
+		
+		$.ajax({
+			url: "/cart.myPage?"+param,
+			type: "POST",
+			data: {
+				"member_seq" : member_seq,
+				"uciCode" : uciCode
+			},
+			success: function(data){ }, 
+			error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		});
+	}
+	
+</script>
+
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
@@ -62,7 +142,7 @@
 					<li><a href="#">정산 관리</a></li>
 					<li><a href="#">사진 관리</a></li>
 					<li><a href="#">회원정보 관리</a></li>
-					<li><a href="#">찜관리</a></li>
+					<li><a href="/dibs.myPage">찜관리</a></li>
 					<li class="on"><a href="#">장바구니</a></li>
 					<li><a href="#">구매내역</a></li>
 				</ul>
@@ -92,14 +172,16 @@
 						<th scope="col">구매금액</th>
 						<th scope="col">선택</th>
 					</tr>
-					<c:forEach items="${cartList}" var="CartDTO">
+					<c:set var="total" value="0"/>
+					<c:forEach items="${cartList}" var="CartDTO" varStatus="status">
+					<c:set var="total" value="${total + CartDTO.price}"></c:set>
 						<tr>
 						<td><div class="tb_check">
-								<input id="check1" name="check1" type="checkbox">
-								<label for="check1">선택</label>
+								<input id="check${status.index}" name="check${status.index}" type="checkbox" value="${CartDTO.uciCode}">
+								<label for="check${status.index}">선택</label>
 							</div></td>
 						<td><div class="cart_item">
-								<div class="thumb"><a href="view.html" target="_blank"><img src="images/serviceImages${CartDTO.getViewPath()}" /></a></div>
+								<div class="thumb"><a href="view.html" target="_blank"><img src="/list.down.picture?uciCode=${CartDTO.uciCode}" /></a></div>
 								<div class="cart_info"> <a href="view.html" target="_blank">
 									<div class="brand">${CartDTO.copyright}</div>
 									<div class="code">${CartDTO.uciCode}</div>
@@ -119,7 +201,7 @@
 							</div></td>
 						<td><fmt:formatNumber value="${CartDTO.price * 10 / 11}" type="number"/>원</td>
 						<td><fmt:formatNumber value="${CartDTO.price * 10 / 11 / 10}" type="number"/>원</td>
-						<td><strong class="color">${CartDTO.price}원</strong></td>
+						<td><strong class="color"><fmt:formatNumber value="${CartDTO.price}" type="number"/>원</strong></td>
 						<td><div class="btn_group">
 								<button type="button" class="btn_o" name="btn_buy">바로구매</button>
 								<button type="button" class="btn_b" name="btn_zzim">찜 하기</button>
@@ -129,7 +211,7 @@
 					</c:forEach>
 				</table>
 	<a href="#" class="mp_btn" style="float:left;">선택 삭제</a>
-			<div class="calculate_info_area">총 금액<strong>480,000</strong>원<span style="margin:0 20px;">+</span> 부가세<strong>48,000</strong>원<span style="margin:0 20px;">=</span> 총 판매금액 : <strong class="color">528,000</strong>원</div>
+			<div class="calculate_info_area">총 금액<strong><fmt:formatNumber value="${total * 10 / 11}" type="number"/></strong>원<span style="margin:0 20px;">+</span> 부가세<strong><fmt:formatNumber value="${total * 10 / 11 / 10}" type="number"/></strong>원<span style="margin:0 20px;">=</span> 총 판매금액 : <strong class="color"><fmt:formatNumber value="${total}" type="number"/></strong>원</div>
 			<div class="btn_area"><a href="#" class="btn_input2">결제하기</a></div>
 	
 	</section>

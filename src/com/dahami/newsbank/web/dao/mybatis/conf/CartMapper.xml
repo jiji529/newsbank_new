@@ -14,4 +14,12 @@
 		INNER JOIN basket B ON A.seq = B.usageList_seq
 		WHERE B.photo_uciCode = #{uciCode}
 	</select>
+	
+	<delete id="delete">
+	    DELETE FROM basket WHERE member_seq = #{member_seq} AND photo_uciCode = #{uciCode}	    
+	</delete>
+	
+	<insert id="insert">
+	    INSERT INTO basket (price, regDate, member_seq, usageList_seq, photo_uciCode) VALUES (#{price}, NOW(), #{member_seq}, #{usageList_seq}, #{uciCode})	    
+	</insert>
 </mapper>

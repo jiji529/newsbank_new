@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.CartDAO;
 import com.dahami.newsbank.web.dto.CartDTO;
 
@@ -40,10 +41,20 @@ public class MypageCart extends NewsbankServletBase {
 		request.setCharacterEncoding("UTF-8");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
+		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
 		String member_seq = "1002";		
+		String uciCode = request.getParameter("uciCode");
 		CartDAO cartDAO = new CartDAO();
 		List<CartDTO> cartList = cartDAO.cartList(member_seq);
 		request.setAttribute("cartList", cartList);
+		
+		if(action.equals("delete")) {
+			cartDAO.deleteCart(member_seq, uciCode);
+		}else if(action.equals("bookmark")) {
+			String bookName = "기본그룹"; // 기본값
+			BookmarkDAO bookmarkDAO = new BookmarkDAO();
+			bookmarkDAO.insert(member_seq, uciCode, bookName);
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_cart.jsp");
 		dispatcher.forward(request, response);

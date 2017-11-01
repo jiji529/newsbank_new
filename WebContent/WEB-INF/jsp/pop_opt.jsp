@@ -17,6 +17,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -33,11 +34,21 @@
 		
 		// #장바구니 옵션변경 - 선택항목 개별삭제
 		$(document).on("click", ".op_del", function() {
-			$(this).parent("li").remove();
+			// 최소한 옵션은 존재해야만 함.
+			var optionCnt = $(".option_result li").length;
+			//console.log("optionCnt : " + optionCnt);
+			
+			if(optionCnt > 1) {
+				$(this).parent("li").remove();
+				setTotalCount();	
+			}else {
+				alert("최소한 1개의 옵션은 선택해야 합니다.")
+			}
+			
 		});
 		
 		// #장바구니 옵션변경 - 선택항목 변경
-		$(document).on("click", "btn_cart", function() {
+		$(document).on("click", ".btn_cart", function() {
 			updateUsageOption();
 		});
 		
@@ -247,6 +258,7 @@
 		function usageDateChange(choice) {
 			var value = $(choice).val();
 			var usage = $("#usage").val();
+			var usageList_seq;
 			var division1 = $("#division1").val();
 			var division2 = $("#division2").val();
 			var division3 = $("#division3").val(); 
@@ -262,20 +274,78 @@
 					$.each(data.result, function(key, val) {
 						if(val.usage == usage && val.division1 == division1 && val.division2 == division2 && val.division3 == division3 && val.division4 == division4 && val.usageDate == value) {							
 							price = val.price;
+							usageList_seq = val.usageList_seq;
 						}
 					});
 					
 					var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + division4 + " / " + usageDate;
-					var html = '<li><span class="op_cont">' + options + '</span><span class="op_price" value="'+price+'">'+price+'원</span><span class="op_del">x</span></li>';
+					var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+price+'원</span><span class="op_del">x</span></li>';
 					
 					$(html).appendTo($(".option_result > ul"));
+					setTotalCount();
 				}
 			});
 		}		
 		
-		// 장바구니 옵션 변경하기
+		// #장바구니 옵션 변경하기
 		function updateUsageOption() {
+			var member_seq = 1002;
+			var uciCode = "${uciCode}";
 			
+			// 기존의 옵션 모두 삭제
+			$.ajax({
+				url: "/cart.popOption?action=deleteUsage",
+				type: "POST",
+				data: {
+					"member_seq" : member_seq,
+					"uciCode" : uciCode
+				},
+				success: function(data) {
+					insertUsageOption();
+				}
+				
+			});
+		}
+		
+		// #장바구니 옵션 추가하기
+		function insertUsageOption() {
+			var member_seq = 1002;
+			var uciCode = "${uciCode}";
+			
+			$(".op_cont").each(function(index){
+				var usageList_seq = $(".op_cont").eq(index).attr("value");
+				var price = $(".op_price").eq(index).attr("value");
+				
+				// 선택옵션 새롭게 추가
+				$.ajax({
+					url: "/cart.popOption?action=insertUsage",
+					type: "POST",
+					data: {
+						"member_seq" : member_seq,
+						"uciCode" : uciCode,
+						"usageList_seq" : usageList_seq,
+						"price" : price						
+					},
+					success: function(data) {
+						window.close();
+					}
+				});
+			});
+		}
+		
+		// #옵션 추가/삭제에 따른 총 금액(수량) 후처리
+		function setTotalCount() {
+			var total = 0;
+			var count = $(".op_cont").length; // 총 갯수
+			
+			$(".op_cont").each(function(index){
+				var price = $(".op_price").eq(index).attr("value");
+				total += Number(price);				
+			});
+			var priceTxt = total + '<span class="price_txt">원(<span class="price_count">'+count+'</span>개)</span>';
+			
+			$(".price").html(priceTxt);
+			//$(".price_count").text(count);
 		}
 		
 	</script>
@@ -315,16 +385,18 @@
 		</div>
 		<div class="option_result">
 			<ul>
+				<c:set var="total" value="0"/>
 				<c:forEach items="${usageOptions}" var="UsageDTO">
-					<li><span class="op_cont">${UsageDTO.usage} / ${UsageDTO.division1} / ${UsageDTO.division2} / ${UsageDTO.division3} / ${UsageDTO.division4} / ${UsageDTO.usageDate} </span><span class="op_price" value="${UsageDTO.price}">${UsageDTO.price}원</span><span class="op_del">x</span></li>
+					<li><span class="op_cont" value="${UsageDTO.usageList_seq}">${UsageDTO.usage} / ${UsageDTO.division1} / ${UsageDTO.division2} / ${UsageDTO.division3} / ${UsageDTO.division4} / ${UsageDTO.usageDate} </span><span class="op_price" value="${UsageDTO.price}">${UsageDTO.price}원</span><span class="op_del">x</span></li>
+					<c:set var="total" value="${total + UsageDTO.price}"></c:set>
 				</c:forEach>
 			</ul>
 		</div>
 		<div class="sum_sec">
-			<div class="total"><span class="tit">총 금액 (수량)</span><span class="price">528,000<span class="price_txt">원(<span class="price_count">2</span>개)</span></span></div>
+			<div class="total"><span class="tit">총 금액 (수량)</span><span class="price"><c:out value="${total}"/><span class="price_txt">원(<span class="price_count"><c:out value="${fn:length(usageOptions)}"/></span>개)</span></span></div>
 			<div class="btn_wrap">
 				<div class="btn_cart"><a href="#">변경하기</a></div>
-				<div class="btn_down"><a href="#">취소</a></div>
+				<div class="btn_down"><a href="#" onclick="javascript:self.close()">취소</a></div>
 			</div>
 			</div>
 	</div>

@@ -48,4 +48,31 @@ public class CartDAO extends DAOBase {
 		}
 		return cartList;
 	}
+	
+	/**
+	 * @methodName  : deleteCart
+	 * @author      : HOYADEV
+	 * @date        : 2017. 11. 01. 오후 03:38:35
+	 * @methodCommet: 장바구니 항목 삭제
+	 * @param param
+	 * @return 
+	 */
+	public void deleteCart(String member_seq, String uciCode) {
+		SqlSession session = null;
+				
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			param.put("uciCode", uciCode);		
+			
+			session.delete("Cart.delete", param);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			session.commit();
+			session.close();
+		}
+	}
 }

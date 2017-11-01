@@ -38,11 +38,22 @@ public class MypageCartPopOption extends NewsbankServletBase {
 		request.setCharacterEncoding("UTF-8");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
+		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
 		String uciCode = request.getParameter("uciCode");
+		String member_seq = request.getParameter("member_seq");
+		String usageList_seq = request.getParameter("usageList_seq");
+		String price = request.getParameter("price");
 		UsageDAO usageDAO = new UsageDAO();
 		List<UsageDTO> usageOptions = usageDAO.uciCodeOfUsage(uciCode);
 		
 		request.setAttribute("usageOptions", usageOptions);
+		request.setAttribute("uciCode", uciCode);
+		
+		if(action.equals("deleteUsage")) {
+			usageDAO.deleteOfUsage(member_seq, uciCode);
+		}else if(action.equals("insertUsage")) {
+			usageDAO.insertOfUsage(member_seq, uciCode, usageList_seq, price);
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pop_opt.jsp");
 		dispatcher.forward(request, response);

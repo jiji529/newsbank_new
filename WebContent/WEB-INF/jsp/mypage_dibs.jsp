@@ -112,7 +112,6 @@
 	$(document).on("click", ".btn_del", function() {
 		var member_seq = "1002"; // 사용자 고유번호
 		var uciCode = $(this).parent().parent().find("div span:first").text();
-		//var param = "action=delete";
 		$(this).closest(".thumb").remove();
 		
 		dibsDelete(member_seq, uciCode);		
@@ -172,7 +171,7 @@
 					<li><a href="#">사진 관리</a></li>
 					<li><a href="#">회원정보 관리</a></li>
 					<li class="on"><a href="#">찜관리</a></li>
-					<li><a href="#">장바구니</a></li>
+					<li><a href="/cart.myPage">장바구니</a></li>
 					<li><a href="#">구매내역</a></li>
 				</ul>
 				<!-- 컬렉션 생기면 추가 <ul class="mp_tab2">
