@@ -135,7 +135,7 @@
 				$("#search_list1 ul").empty();
 				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode=" + val.uciCode + "\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "\"></a>";
+					html += "<li class=\"thumb\"><a href=\"/view.photo?uciCode=" + val.uciCode + "\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
@@ -146,8 +146,8 @@
 				$(html).appendTo("#search_list1 ul");
 				$(html).appendTo("#search_list2 ul");
 				var totalCount = $(data.count)[0];
-				var totalPage = Integer.parseInt(totalCount / pageVol) + 1;
-				alert(totalPage);
+				var totalPage = parseInt(totalCount / pageVol) + 1;
+				//alert(totalPage);
 				$("div .result b").html(totalCount);
 				$("div .paging span .total").html(totalPage);
 			},
@@ -276,7 +276,7 @@
 		<ul>
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
-					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
+					<a href="/view.photo?uciCode=${PhotoDTO.uciCode}">
 						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}">
 					</a>
 					<div class="info">
@@ -294,7 +294,7 @@
 		<ul>
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
-					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
+					<a href="/view.photo?uciCode=${PhotoDTO.uciCode}">
 						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}">
 					</a>
 					<div class="info">
