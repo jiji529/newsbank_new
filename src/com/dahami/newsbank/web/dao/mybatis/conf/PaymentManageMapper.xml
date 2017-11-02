@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="paymentmanage">
+	<!-- 결제 정보 호출 -->
+	<select id="selectPaymentMaange" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO" resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
+		SELECT * FROM paymentManage
+		where member_seq = #{member_seq}
+	
+	</select>
+
+<!-- 결제정보 입력 -->
+	<insert id="insertPaymentMaange" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
+		useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO paymentManage (
+		member_seq
+		<if test="LGD_BUYER != null">, LGD_BUYER</if>
+		<if test="LGD_BUYERID != null">,LGD_BUYERID</if>
+		<if test="LGD_BUYERPHONE != null">, LGD_BUYERPHONE</if>
+		<if test="LGD_RESPCODE != null">, LGD_RESPCODE</if>
+		<if test="LGD_RESPMSG != null">, LGD_RESPMSG</if>
+		<if test="LGD_OID != null">, LGD_OID</if>
+		<if test="LGD_AMOUNT != null">, LGD_AMOUNT</if>
+		<if test="LGD_TID != null">, LGD_TID</if>
+		<if test="LGD_PAYTYPE != null">, LGD_PAYTYPE</if>
+		<if test="LGD_PAYDATE != null">, LGD_PAYDATE</if>
+		<if test="LGD_PRODUCTINFO != null">, LGD_PRODUCTINFO</if>
+		<if test="LGD_ACCOUNTNUM != null">, LGD_ACCOUNTNUM</if>
+		) values (
+		#{member_seq}
+		<if test="LGD_BUYER != null">, #{LGD_BUYER}</if>
+		<if test="LGD_BUYERID != null">, #{LGD_BUYERID}</if>
+		<if test="LGD_BUYERPHONE != null">, #{LGD_BUYERPHONE}</if>
+		<if test="LGD_RESPCODE != null">, #{LGD_RESPCODE}</if>
+		<if test="LGD_RESPMSG != null">, #{LGD_RESPMSG}</if>
+		<if test="LGD_OID != null">, #{LGD_OID}</if>
+		<if test="LGD_AMOUNT != null">, #{LGD_AMOUNT}</if>
+		<if test="LGD_TID != null">, #{LGD_TID}</if>
+		<if test="LGD_PAYTYPE != null">, #{LGD_PAYTYPE}</if>
+		<if test="LGD_PAYDATE != null">, #{LGD_PAYDATE}</if>
+		<if test="LGD_PRODUCTINFO != null">, #{LGD_PRODUCTINFO}</if>
+		<if test="LGD_ACCOUNTNUM != null">, #{LGD_ACCOUNTNUM}</if>
+		)
+	</insert>
+</mapper>

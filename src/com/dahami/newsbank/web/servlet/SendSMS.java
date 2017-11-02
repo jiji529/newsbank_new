@@ -100,7 +100,7 @@ public class SendSMS extends NewsbankServletBase {
 				param.put("send_title", "[뉴스뱅크]");
 				param.put("send_memo", sendMemo);
 				System.out.println(param);
-				//String result = URLPost(URL, param);
+				//String result = URLPost(URL, param); // 주석해제하면 문자로 전송됨
 				String result ="success";
 				if (result.equalsIgnoreCase("success")) {
 					success = true;

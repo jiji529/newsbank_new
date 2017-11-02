@@ -11,13 +11,19 @@
 		order by name asc
 	</select>
 
-	<!-- 로그인 체크 -->
+	<!-- 로그인 체크 및 비밀번호 찾기 -->
 	<select id="selectLogin" parameterType="com.dahami.newsbank.web.dto.MemberDTO"
 		resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		SELECT * FROM member
 		where id = #{id}
 		<if test="pw != null">
 			AND pw = #{pw}
+		</if>
+		<if test="name != null">
+			AND name = #{name}
+		</if>
+		<if test="phone != null">
+			AND phone = #{phone}
 		</if>
 
 	</select>
@@ -79,6 +85,14 @@
 	</update>
 
 
+	<!-- 아이디 찾기  -->
+	<select id="selectFindId" parameterType="com.dahami.newsbank.web.dto.MemberDTO"
+		resultType="com.dahami.newsbank.web.dto.MemberDTO">
+		SELECT * FROM member
+		WHERE name = #{name} 
+		AND phone= #{phone}
+	</select>
+	
 
 	<select id="listMember" resultType="java.util.HashMap">
 		SELECT * FROM member LIMIT
