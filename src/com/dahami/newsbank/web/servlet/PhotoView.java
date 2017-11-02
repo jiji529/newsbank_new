@@ -71,7 +71,7 @@ public class PhotoView extends NewsbankServletBase {
 			request.setAttribute("bookmark", bookmark);
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/picture_view.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/photo_view.jsp");
 		dispatcher.forward(request, response);
 	}
 
