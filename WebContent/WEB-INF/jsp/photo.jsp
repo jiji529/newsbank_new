@@ -59,12 +59,33 @@
 		search();
 	});
 
+	$(document).on("click", "div .paging a.prev", function() {
+		var prev = $("input[name=pageNo]").val() - 1;
+		goPage(prev);
+	});
+	$(document).on("click", "div .paging a.next", function() {
+		var next = $("input[name=pageNo]").val() - (-1);
+		goPage(next);
+	});
+	
+	$(document).on("click", "a[name=nextPage]", function() {
+		var next = $("input[name=pageNo]").val() - (-1);
+		goPage(next);
+	});
+	
+	function goPage(pageNo) {
+		if(pageNo < 1) {
+			pageNo = 1;
+		}
+		else if(pageNo > $("div .paging span.total").html()) {
+			pageNo = $("div .paging span.total").html();
+		}
+		$("input[name=pageNo]").val(pageNo);
+		search();
+	}
 	
 	$(document).on("keypress", "#keyword", function(e) {
 		if(e.keyCode == 13) {	// 엔터
-			if($("#keyword").val().length == 0) {
-				return;
-			}
 			$("#keyword_current").val($("#keyword").val());
 
 			// 키워드 바꾸면 페이지 번호 초기화
@@ -96,6 +117,11 @@
 		var keyword = $("#keyword_current").val();
 
 		var pageNo = $("input[name=pageNo]").val();
+		var transPageNo = pageNo.match(/[0-9]/g).join("");
+		if(pageNo != transPageNo) {
+			pageNo = transPageNo;
+			$("input[name=pageNo]").val(pageNo);
+		}
 		var pageVol = $("select[name=pageVol]").val();
 		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
@@ -135,7 +161,7 @@
 				$("#search_list1 ul").empty();
 				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode=" + val.uciCode + "\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "\"></a>";
+					html += "<li class=\"thumb\"><a href=\"/view.photo?uciCode=" + val.uciCode + "\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
@@ -146,10 +172,9 @@
 				$(html).appendTo("#search_list1 ul");
 				$(html).appendTo("#search_list2 ul");
 				var totalCount = $(data.count)[0];
-				var totalPage = Integer.parseInt(totalCount / pageVol) + 1;
-				alert(totalPage);
+				var totalPage = $(data.totalPage)[0];
 				$("div .result b").html(totalCount);
-				$("div .paging span .total").html(totalPage);
+				$("div .paging span.total").html(totalPage);
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -276,7 +301,7 @@
 		<ul>
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
-					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
+					<a href="/view.photo?uciCode=${PhotoDTO.uciCode}">
 						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}">
 					</a>
 					<div class="info">
@@ -294,7 +319,7 @@
 		<ul>
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
-					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
+					<a href="/view.photo?uciCode=${PhotoDTO.uciCode}">
 						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}">
 					</a>
 					<div class="info">
@@ -309,7 +334,7 @@
 		</ul>
 		</section>
 		<div class="more">
-			<a href="#">다음 페이지</a>
+			<a href="#" name="nextPage">다음 페이지</a>
 		</div>
 		<footer>
 		<div class="foot_wrap">

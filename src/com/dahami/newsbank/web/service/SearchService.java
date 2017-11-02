@@ -58,6 +58,7 @@ public class SearchService extends ServiceBase {
 		}
 		
 		json.put("count", photoList.get("count"));
+		json.put("totalPage", photoList.get("totalPage"));
 		json.put("result", jsonList);
 		
 		request.setAttribute("JSON", json.toJSONString());

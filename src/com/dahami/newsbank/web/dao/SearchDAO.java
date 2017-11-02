@@ -204,45 +204,20 @@ public class SearchDAO extends DAOBase {
 			client = getClient();
 			res = client.query(query, METHOD.POST);
 			SolrDocumentList docList = res.getResults();
-			ret.put("count", (int)docList.getNumFound());
 			List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 			for(SolrDocument doc : docList) {
 				photoList.add(new PhotoDTO(doc));
 			}
 			ret.put("result", photoList);
+			int resultCount = (int)docList.getNumFound();
+			int pageVol = query.getRows();
+			ret.put("count", resultCount);
+			ret.put("totalPage", ((resultCount / pageVol) + 1));
 		} catch (Exception e) {
 			logger.warn("", e);
 		}finally {
 			releaseClient(client);
 		}
-		
-		
-		
-		
-//		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-//		List<PhotoDTO> totalList = (List<PhotoDTO>) ObjectUtil.loadObject(PhotoDTO.class.getResourceAsStream("photoList.obj"));
-//		
-//		int pageVol = param.getPageVol();
-//		int pageNo = param.getPageNo();
-//		
-//		int start = (pageNo-1) * pageVol;
-//		
-//		if(start >= 0 && start < totalList.size()) {
-//			for(int i = 0; i < pageVol; i++) {
-//				PhotoDTO cur = null;
-//				try {
-//					cur = totalList.get(start + i);
-//					if(cur != null) {
-//						photoList.add(cur);
-//					}
-//				}catch(Exception e) {
-//					break;
-//				}
-//			}
-//		}
-//		
-//		ret.put("count", totalList.size());
-//		ret.put("result", photoList);
 		
 		return ret;
 	}

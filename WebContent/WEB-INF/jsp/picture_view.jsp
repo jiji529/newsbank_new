@@ -20,7 +20,7 @@
 		param += "&photo_uciCode=" + uciCode + "&bookName=" + bookName + "&member_seq=" + member_seq;
 		
 		$.ajax({
-			url: "/view.picture?"+param,
+			url: "/view.photo?"+param,
 			type: "POST",
 			success: function(data) {
 				
