@@ -12,6 +12,12 @@ public class MemberDTO {
 	private String email; // 이메일
 	private String name; // 이름
 	private String phone; // 핸드폰번호
+	/** 회원타입: 매체 */
+	public static final String TYPE_MEDIA = "M";
+	/** 회원타입: 개인 */
+	public static final String TYPE_PERSON = "P";
+	/** 회원타입: 기업 */
+	public static final String TYPE_COOP = "C";
 	private String type; // 타입 ( 매체사, 개인, 기업)
 	private String permission; // 권한
 	private String compNum;// 사업자 등록 번호
@@ -34,6 +40,9 @@ public class MemberDTO {
 	private String taxEmail; // 계산서 담당자 메일
 	private String regDate; // 등록일
 	private String logo; // 로고
+	
+	public static final int ACTIVATE_TRUE = 1;
+	public static final int ACTIVATE_FALSE = 2;
 	private int activate;
 	private int master_seq; // 마스터 시퀀스
 	private int group_seq; // 그룹 시퀀스

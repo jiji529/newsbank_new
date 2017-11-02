@@ -264,6 +264,7 @@ public class SearchDAO extends DAOBase {
 				buf.append(targetUser);
 			}
 			query.addFilterQuery("ownerNo:(" + buf.toString() + ")");
+			logger.debug("ownerNo: (" + buf.toString() + ")");
 		}
 		
 		String duration = params.getDuration();

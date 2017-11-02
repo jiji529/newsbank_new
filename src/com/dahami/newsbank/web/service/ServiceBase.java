@@ -16,6 +16,9 @@
 
 package com.dahami.newsbank.web.service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,4 +34,6 @@ public abstract class ServiceBase {
 		}
 		logger = LoggerFactory.getLogger(this.getClass());
 	}
+	
+	public abstract void execute(HttpServletRequest request, HttpServletResponse response);
 }

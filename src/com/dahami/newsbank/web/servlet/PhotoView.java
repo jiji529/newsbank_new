@@ -24,13 +24,13 @@ import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 		urlPatterns = {"/view.picture"},
 		loadOnStartup = 1
 		)
-public class PictureView extends NewsbankServletBase {
+public class PhotoView extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see NewsbankServletBase#NewsbankServletBase()
      */
-    public PictureView() {
+    public PhotoView() {
         super();
         // TODO Auto-generated constructor stub
     }
