@@ -21,7 +21,7 @@ import com.dahami.newsbank.web.service.bean.SearchParameterBean;
  * Servlet implementation class PictureView
  */
 @WebServlet(
-		urlPatterns = {"/view.picture"},
+		urlPatterns = {"/view.photo"},
 		loadOnStartup = 1
 		)
 public class PhotoView extends NewsbankServletBase {
@@ -35,7 +35,7 @@ public class PhotoView extends NewsbankServletBase {
         // TODO Auto-generated constructor stub
     }
 
-	/**
+    /**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,20 +52,24 @@ public class PhotoView extends NewsbankServletBase {
 		String uciCode = request.getParameter("uciCode");
 		PhotoDTO photoDTO = photoDAO.read(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
-		
-		int member_seq = 1002;
-		
+		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
+		String member_seq = request.getParameter("member_seq") == null ? "1002" : request.getParameter("member_seq");
+		String photo_uciCode = request.getParameter("photo_uciCode");
+		String bookName = request.getParameter("bookName");
 		BookmarkDAO bookmarkDAO = new BookmarkDAO();
-		BookmarkDTO bookmark = bookmarkDAO.select(member_seq, uciCode);
-		if(bookmark == null) {
-			System.out.println("북마크 없음");
-			request.setAttribute("bookmark", null);
-		}else {
-			request.setAttribute("bookmark", bookmark);
-			System.out.println("북마크 존재");
+		
+		if(action.equals("insertBookmark")) {
+			bookmarkDAO.insert(member_seq, photo_uciCode, bookName);
+		}else if(action.equals("deleteBookmark")) {
+			bookmarkDAO.delete(Integer.parseInt(member_seq), photo_uciCode);
 		}
 		
-		//System.out.println("bookmark seq : "+bookmark.getSeq());
+		BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
+		if(bookmark == null) {
+			request.setAttribute("bookmark", bookmark);		
+		}else {
+			request.setAttribute("bookmark", bookmark);
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/picture_view.jsp");
 		dispatcher.forward(request, response);
@@ -77,18 +81,6 @@ public class PhotoView extends NewsbankServletBase {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		
-		String action = request.getParameter("action");
-		String member_seq = request.getParameter("member_seq");
-		String photo_uciCode = request.getParameter("photo_uciCode");
-		String bookName = request.getParameter("bookName");
-		
-		if(action.equals("bookmark")) {
-			BookmarkDAO bookmarkDAO = new BookmarkDAO();
-			bookmarkDAO.insert(member_seq, photo_uciCode, bookName);
-		}else {
-			System.out.println("ACTION parameter error");
-		}
 	}
 
 }

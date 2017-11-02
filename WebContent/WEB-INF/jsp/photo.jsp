@@ -53,24 +53,49 @@
 		var titleStr = titleTag.html();
 		titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
 		titleTag.html(titleStr);
+		
+		// 필터 바꾸면 페이지 번호 초기화
+		$("input[name=pageNo]").val("1");
 		search();
 	});
 
+	
 	$(document).on("keypress", "#keyword", function(e) {
 		if(e.keyCode == 13) {	// 엔터
 			if($("#keyword").val().length == 0) {
 				return;
 			}
-			search($("#keyword").val());
+			$("#keyword_current").val($("#keyword").val());
+
+			// 키워드 바꾸면 페이지 번호 초기화
+			$("input[name=pageNo]").val("1");
+			
+			search();
 		}
 	});
 	
-	function search(keyword) {
-		if(keyword == undefined || keyword.length == 0) {
-			keyword = "";
+	function checkNumber(event) {
+		event = event || window.event;
+		var keyID = (event.which) ? event.which : event.keyCode;
+		if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 ) 
+			|| (keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 || keyID == 16 || keyID == 35 || keyID == 36)		
+		)
+		{
+			return;
 		}
+		else if(keyID == 13) {
+			search();
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function search() {
+		var keyword = $("#keyword_current").val();
 
-		var pageNo = $("select[name=pageNo]").val();
+		var pageNo = $("input[name=pageNo]").val();
 		var pageVol = $("select[name=pageVol]").val();
 		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
@@ -96,6 +121,7 @@
 				, "includePerson":includePerson
 				, "group":group
 		};
+		$("#keyword").val($("#keyword_current").val());
 		
 		var html = "";
 		$.ajax({
@@ -119,6 +145,11 @@
 				});
 				$(html).appendTo("#search_list1 ul");
 				$(html).appendTo("#search_list2 ul");
+				var totalCount = $(data.count)[0];
+				var totalPage = Integer.parseInt(totalCount / pageVol) + 1;
+				alert(totalPage);
+				$("div .result b").html(totalCount);
+				$("div .paging span .total").html(totalPage);
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -146,7 +177,7 @@
 				<div class="gnb_srch">
 					<form id="searchform">
 						<input type="text" id="keyword" placeholder="검색어를 입력해주세요." />
-						<input type="text" id=keyword_current" style="display:none;"/>
+						<input type="text" id="keyword_current" style="display:none;"/>
 						<a href="#" class="btn_search">검색</a>
 					</form>
 				</div>
@@ -216,14 +247,14 @@
 				</ul>
 				<div class="filter_rt">
 					<div class="result">
-						<b class="count">123</b>
+						<b class="count">0</b>
 						개의 결과
 					</div>
 					<div class="paging">
 						<a href="#" class="prev" title="이전페이지"></a>
-						<input type="text" name="pageNo" class="page" value="1" />
+						<input type="text" name="pageNo" class="page" value="1"  onkeydown="return checkNumber(event);" onblur="search()"/>
 						<span>/</span>
-						<span class="total">1234</span>
+						<span class="total">0</span>
 						<a href="#" class="next" title="다음페이지"></a>
 					</div>
 					<div class="viewbox">

@@ -52,7 +52,7 @@
 			<a href="#" class="logo"></a>
 			<ul class="gnb_left">
 				<li>
-					<a href="/picture">보도사진</a>
+					<a href="/photo">보도사진</a>
 				</li>
 				<!-- <li>
 					<a href="#">뮤지엄</a>
@@ -116,7 +116,7 @@
 				<div class="tab">
 					<ul class="tabs">
 						<li>
-							<a href="/picture" class="active">보도사진</a>
+							<a href="/photo" class="active">보도사진</a>
 						</li>
 						<!-- <li>
 							<a href="#">뮤지엄</a>

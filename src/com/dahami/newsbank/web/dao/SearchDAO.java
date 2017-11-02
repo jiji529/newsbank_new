@@ -210,7 +210,6 @@ public class SearchDAO extends DAOBase {
 				photoList.add(new PhotoDTO(doc));
 			}
 			ret.put("result", photoList);
-			System.out.println();
 		} catch (Exception e) {
 			logger.warn("", e);
 		}finally {
@@ -252,6 +251,7 @@ public class SearchDAO extends DAOBase {
 		SolrQuery query = new SolrQuery();
 		query.set("collection", collectionNameNewsbank);
 		String keyword = params.getKeyword();
+		logger.debug("keyword: " + keyword);
 		query.setQuery(keyword);
 		
 		List<String> targetUserList = params.getTargetUserList();

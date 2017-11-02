@@ -47,11 +47,13 @@ public class SearchService extends ServiceBase {
 		
 		List<PhotoDTO> list = (List<PhotoDTO>) photoList.get("result");
 		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
-		for(PhotoDTO dto : list){
-			try {
-				jsonList.add(dto.convertToFullMap());
-			} catch (Exception e) {
-				logger.warn("", e);
+		if(list != null && list.size() > 0) {
+			for(PhotoDTO dto : list){
+				try {
+					jsonList.add(dto.convertToFullMap());
+				} catch (Exception e) {
+					logger.warn("", e);
+				}
 			}
 		}
 		
