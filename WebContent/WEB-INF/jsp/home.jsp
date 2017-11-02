@@ -101,7 +101,7 @@
 				<div class="search main_search">
 					<form class="search_form">
 						<div class="search_area">
-							<input type="text" class="search_bar" placeholder="검색어를 입력해주세요." />
+							<input type="text" class="search_bar"  id="keyword" placeholder="검색어를 입력해주세요." />
 							<a href="#" class="btn_search">검색</a>
 						</div>
 					</form>
@@ -116,7 +116,7 @@
 				<div class="tab">
 					<ul class="tabs">
 						<li>
-							<a href="#" class="active">보도사진</a>
+							<a href="/picture" class="active">보도사진</a>
 						</li>
 						<!-- <li>
 							<a href="#">뮤지엄</a>

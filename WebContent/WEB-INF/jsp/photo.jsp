@@ -14,6 +14,7 @@
   2017. 10. 16.   hoyadev       searchList()
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -26,7 +27,9 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script type="text/javascript">
-
+	$(document).ready(function() {
+		search();
+	});
 	$(document).on("click", ".square", function() {
 		$(".viewbox > .size > span.grid").removeClass("on");
 		$(".viewbox > .size > span.square").addClass("on");
@@ -43,59 +46,82 @@
 
 	$(document).on("click", ".filter_list li", function() {
 		var choice = $(this).text();
-		$(this).attr("selected", "selected");
 		$(this).siblings().removeAttr("selected");
+		$(this).attr("selected", "selected");
 		var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
-		$(this).parents(".filter_title").children().remove().end().html(choice + filter_list);
-
-		searchList();
+		var titleTag = $(this).parents(".filter_title").find("span");
+		var titleStr = titleTag.html();
+		titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+		titleTag.html(titleStr);
+		search();
 	});
 
-	function searchList() {
-		$("#search_list1 ul").empty();
-		$("#search_list2 ul").empty();
+	$(document).on("keypress", "#keyword", function(e) {
+		if(e.keyCode == 13) {	// 엔터
+			if($("#keyword").val().length == 0) {
+				return;
+			}
+			search($("#keyword").val());
+		}
+	});
+	
+	function search(keyword) {
+		if(keyword == undefined || keyword.length == 0) {
+			keyword = "";
+		}
 
-		var count = $("select[name=limit]").val();
-		var contentType = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val();
-		var media = $(".filter_title:nth-of-type(3) .filter_list").find("[selected=selected]").val();
-		var duration = $(".filter_title:nth-of-type(4) .filter_list").find("[selected=selected]").val();
-		var colorMode = $(".filter_title:nth-of-type(5) .filter_list").find("[selected=selected]").val();
-		var horiVertChoice = $(".filter_title:nth-of-type(6) .filter_list").find("[selected=selected]").val();
-		var size = $(".filter_title:nth-of-type(7) .filter_list").find("[selected=selected]").val();
-		var portRight = $(".filter_title:nth-of-type(8) .filter_list").find("[selected=selected]").val();
-		var includePerson = $(".filter_title:nth-of-type(9) .filter_list").find("[selected=selected]").val();
-		var group = $(".filter_title:nth-of-type(10) .filter_list").find("[selected=selected]").val();
+		var pageNo = $("select[name=pageNo]").val();
+		var pageVol = $("select[name=pageVol]").val();
+		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
+		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
+		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value");
+		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
+		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
+		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
+		var portRight = $(".filter_portRight .filter_list").find("[selected=selected]").attr("value");
+		var includePerson = $(".filter_incPerson .filter_list").find("[selected=selected]").attr("value");
+		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
 
-		var parameter = "count=" + count;
-		parameter += "&contentType=" + contentType + "&media=" + media;
-		parameter += "&duration=" + duration + "&colorMode=" + colorMode;
-		parameter += "&horiVertChoice=" + horiVertChoice + "&size=" + size;
-		parameter += "&portRight=" + portRight + "&includePerson=" + includePerson;
-		parameter += "&group=" + group;
+		var searchParam = {
+				"keyword":keyword
+				, "pageNo":pageNo
+				, "pageVol":pageVol
+				, "contentType":contentType
+				, "media":media
+				, "duration":duration
+				, "colorMode":colorMode
+				, "horiVertChoice":horiVertChoice
+				, "size":size
+				, "portRight":portRight
+				, "includePerson":includePerson
+				, "group":group
+		};
 		
-		console.log(parameter);
 		var html = "";
 		$.ajax({
-			url : "/searchJson?" + parameter,
-			type : "GET",
-			dataType : "json",
+			type: "POST",
+			async: false,
+			dataType: "json",
+			data: searchParam,
+			timeout: 1000000,
+			url: "search",
 			success : function(data) {
-				console.log(data);
+				$("#search_list1 ul").empty();
+				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode=" + val.uciCode + "\"><img src=\"/list.down.picture?uciCode=" + val.uciCode + "\"></a>";
+					html += "<li class=\"thumb\"><a href=\"/view.picture?uciCode=" + val.uciCode + "\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
-					html += "<a class=\"over_wish\" href=\"#\">찜</a> <a class=\"over_down\" href=\"/list.down.picture?uciCode=" + val.uciCode + "\" download>시안 다운로드</a> </div>";
+					html += "<a class=\"over_wish\" href=\"#\">찜</a> <a class=\"over_down\" href=\"/list.down.photo?uciCode=" + val.uciCode + "\" download>시안 다운로드</a> </div>";
 					html += "</div>";
 					html += "</li>";
 				});
-
 				$(html).appendTo("#search_list1 ul");
 				$(html).appendTo("#search_list2 ul");
 			},
 			error : function(request, status, error) {
-				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 			}
 		});
 	}
@@ -107,7 +133,7 @@
 			<nav class="gnb_dark">
 				<div class="gnb"><a href="#" class="logo"></a>
 					<ul class="gnb_left">
-						<li class="on"><a href="/picture">보도사진</a></li>
+						<li class="on"><a href="/photo">보도사진</a></li>
 						<li><a href="#">뮤지엄</a></li>
 						<li><a href="#">사진</a></li>
 						<li><a href="#">컬렉션</a></li>
@@ -119,7 +145,8 @@
 				</div>
 				<div class="gnb_srch">
 					<form id="searchform">
-						<input type="text" value="검색어를 입력하세요" />
+						<input type="text" id="keyword" placeholder="검색어를 입력해주세요." />
+						<input type="text" id=keyword_current" style="display:none;"/>
 						<a href="#" class="btn_search">검색</a>
 					</form>
 				</div>
@@ -128,37 +155,24 @@
 			<div class="filters">
 				<ul>
 					<li class="filter_title filter_ico">검색필터</li>
-					<li class="filter_title">
-						전체매체
+					<li class="filter_title filter_media">
+						<span>매체 :전체</span>
 						<ul class="filter_list">
-							<li>전체</li>
-							<li>노컷뉴스</li>
-							<li>뉴데일리</li>
-							<li>뉴시스</li>
-							<li>동아일보</li>
-							<li>마이데일리</li>
-							<li>문화일보</li>
-							<li>세계일보</li>
-							<li>스포츠동아</li>
-							<li>스포츠조선</li>
-							<li>영상미디어</li>
-							<li>아시아경제</li>
-							<li>이데일리</li>
-							<li>전자신문</li>
-							<li>조선일보</li>
-							<li>텐아시아</li>
-							<li>평화신문</li>
+							<li value="0" selected="selected">전체</li>
+<c:forEach items="${mediaList}" var="media">
+							<li value="${media.id }">${media.name }</li>								
+</c:forEach>
 						</ul>
 					</li>
-					<li class="filter_title">
-						검색기간
+					<li class="filter_title filter_duration">
+						<span>기간 : 전체</span>
 						<ul class="filter_list">
-							<li>전체</li>
-							<li>1일</li>
-							<li>1주</li>
-							<li>1달</li>
-							<li>1년</li>
-							<li class="choice">
+							<li value="" selected="selected">전체</li>
+							<li value="1d">1일</li>
+							<li value="1w">1주</li>
+							<li value="1m">1달</li>
+							<li value="1y">1년</li>
+							<li value="choice" class="choice">
 								직접 입력
 								<div class="calendar">
 									<div class="cal_input">
@@ -174,28 +188,29 @@
 							</li>
 						</ul>
 					</li>
-					<li class="filter_title">
-						색상
+					<li class="filter_title filter_color">
+						<span>컬러/흑백 :전체</span>
 						<ul class="filter_list">
-							<li value="<%=request.getAttribute("COLOR_ALL")%>">전체</li>
-							<li value="<%=request.getAttribute("COLOR_YES")%>">컬러</li>
-							<li value="<%=request.getAttribute("COLOR_NO")%>">흑백</li>
+							<li value="<%=SearchParameterBean.COLOR_ALL%>" selected="selected">전체</li>
+							<li value="<%=SearchParameterBean.COLOR_YES%>">컬러</li>
+							<li value="<%=SearchParameterBean.COLOR_NO%>">흑백</li>
 						</ul>
 					</li>
-					<li class="filter_title">
-						형태
+					<li class="filter_title filter_horizontal">
+						<span>가로/세로 : 전체</span>
 						<ul class="filter_list">
-							<li value="<%=request.getAttribute("HORIZONTAL_ALL")%>">전체</li>
-							<li value="<%=request.getAttribute("HORIZONTAL_YES")%>">가로</li>
-							<li value="<%=request.getAttribute("HORIZONTAL_NO")%>">세로</li>
+							<li value="<%=SearchParameterBean.HORIZONTAL_ALL%>" selected="selected">전체</li>
+							<li value="<%=SearchParameterBean.HORIZONTAL_YES%>">가로</li>
+							<li value="<%=SearchParameterBean.HORIZONTAL_NO%>">세로</li>
 						</ul>
 					</li>
-					<li class="filter_title"> 사진크기
+					<li class="filter_title filter_size">
+						<span>크기 : 전체</span>
 						<ul class="filter_list">
-							<li value="<%=request.getAttribute("SIZE_ALL")%>">모든크기</li>
-							<li value="<%=request.getAttribute("SIZE_LARGE")%>">3,000 px 이상</li>
-							<li value="<%=request.getAttribute("SIZE_MEDIUM")%>">1,000~3,000 px</li>
-							<li value="<%=request.getAttribute("SIZE_SMALL")%>">1,000 px 이하</li>
+							<li value="<%=SearchParameterBean.SIZE_ALL%>" selected="selected">전체</li>
+							<li value="<%=SearchParameterBean.SIZE_LARGE%>">3,000 px 이상</li>
+							<li value="<%=SearchParameterBean.SIZE_MEDIUM%>">1,000~3,000 px</li>
+							<li value="<%=SearchParameterBean.SIZE_SMALL%>">1,000 px 이하</li>
 						</ul>
 					</li>	
 				</ul>
@@ -206,7 +221,7 @@
 					</div>
 					<div class="paging">
 						<a href="#" class="prev" title="이전페이지"></a>
-						<input type="text" class="page" value="1" />
+						<input type="text" name="pageNo" class="page" value="1" />
 						<span>/</span>
 						<span class="total">1234</span>
 						<a href="#" class="next" title="다음페이지"></a>
@@ -216,7 +231,7 @@
 							<span class="grid on">가로맞춤보기</span>
 							<span class="square">사각형보기</span>
 						</div>
-						<select name="limit" onchange="searchList()">
+						<select name="pageVol" onchange="search()">
 							<option value="40" selected="selected">40</option>
 							<option value="80">80</option>
 							<option value="120">120</option>
@@ -231,13 +246,13 @@
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
 					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
-						<img src="/list.down.picture?uciCode=${PhotoDTO.uciCode}">
+						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
 							<a class="over_wish" href="#">찜</a>
-							<a class="over_down" href="/list.down.picture?uciCode=${PhotoDTO.uciCode}" download>시안 다운로드</a>
+							<a class="over_down" href="/list.down.photo?uciCode=${PhotoDTO.uciCode}" download>시안 다운로드</a>
 						</div>
 					</div>
 				</li>
@@ -249,13 +264,13 @@
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
 					<a href="/view.picture?uciCode=${PhotoDTO.uciCode}">
-						<img src="/list.down.picture?uciCode=${PhotoDTO.uciCode}">
+						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
 							<a class="over_wish" href="#">찜</a>
-							<a class="over_down" href="/list.down.picture?uciCode=${PhotoDTO.uciCode}" download>시안 다운로드</a>
+							<a class="over_down" href="/list.down.photo?uciCode=${PhotoDTO.uciCode}" download>시안 다운로드</a>
 						</div>
 					</div>
 				</li>

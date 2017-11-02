@@ -18,8 +18,10 @@ package com.dahami.newsbank.web.service.bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.servlet.NewsbankServletBase;
 
 public class SearchParameterBean {
 	private static final int ALL = 0;
@@ -82,6 +84,28 @@ public class SearchParameterBean {
 	public SearchParameterBean() {
 		pageVol = 20;
 		pageNo = 1;
+	}
+	
+	public SearchParameterBean(Map<String, String[]> params) {
+		this();
+		try{this.keyword = params.get("keyword")[0];}catch(Exception e){}
+		try{this.pageNo = Integer.parseInt(params.get("pageNo")[0]);}catch(Exception e){this.pageNo = 1;}
+		try{this.pageVol = Integer.parseInt(params.get("pageVol")[0]);}catch(Exception e){this.pageVol = 40;}
+		try{this.contentType = Integer.parseInt(params.get("contentType")[0]);}catch(Exception e){}
+		try{
+			String[] mediaArry = params.get("media");
+			for(String cur : mediaArry) {
+				if(cur.trim().length() > 0 && !cur.trim().equals("0"))
+				this.addTargetUser(cur);
+			}
+		}catch(Exception e){}
+		try{this.duration = params.get("duration")[0];}catch(Exception e){}
+		try{this.colorMode = Integer.parseInt(params.get("colorMode")[0]);}catch(Exception e){}
+		try{this.horiVertChoice = Integer.parseInt(params.get("horiVertChoice")[0]);}catch(Exception e){}
+		try{this.size = Integer.parseInt(params.get("size")[0]);}catch(Exception e){}
+		try{this.portRight = Integer.parseInt(params.get("portRight")[0]);}catch(Exception e){}
+		try{this.includePerson = Integer.parseInt(params.get("includePerson")[0]);}catch(Exception e){}
+		try{this.group = Integer.parseInt(params.get("group")[0]);}catch(Exception e){}
 	}
 	
 	public SearchParameterBean nextPage() {

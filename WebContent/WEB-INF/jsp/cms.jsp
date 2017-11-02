@@ -59,7 +59,7 @@
 			dataType: "json",
 			success: function(data) { console.log(data);
 				$(data.result).each(function(key, val) {		
-					html += "<li class=\"thumb\"> <a href=\"/view.cms?uciCode="+val.uciCode+"\"><img src=\"/list.down.picture?uciCode="+val.uciCode+"\" /></a>";
+					html += "<li class=\"thumb\"> <a href=\"/view.cms?uciCode="+val.uciCode+"\"><img src=\"/list.down.photo?uciCode="+val.uciCode+"\" /></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>"+val.uciCode+"</span><span>"+val.copyright+"</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\">다운로드</li>	<li class=\"btn_del\">삭제</li> <li class=\"btn_view\">다운로드</li> <li class=\"btn_likeness\"></li> </ul>";
 				});	
@@ -217,7 +217,7 @@
 		<section id="cms_list2">
 			<ul>
 				<c:forEach items="${picture}" var="PhotoDTO">
-					<li class="thumb"> <a href="/view.cms?uciCode=${PhotoDTO.uciCode}"><img src="/list.down.picture?uciCode=${PhotoDTO.uciCode}"/></a>
+					<li class="thumb"> <a href="/view.cms?uciCode=${PhotoDTO.uciCode}"><img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}"/></a>
 					<div class="thumb_info">
 						<input type="checkbox" />
 						<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>

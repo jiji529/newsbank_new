@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.common.util.FileUtil;
@@ -41,7 +42,7 @@ public class DownloadService extends ServiceBase {
 		this.uciCode = uciCode;
 	}
 	
-	public void execute(HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		photoDao = new PhotoDAO();
 		PhotoDTO photo = photoDao.read(this.uciCode);
 		
