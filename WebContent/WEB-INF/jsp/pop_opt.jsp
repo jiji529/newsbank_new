@@ -52,6 +52,11 @@
 			updateUsageOption();
 		});
 		
+		// #금액 천단위 콤마
+		function numberWithCommas(x) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		
 		// #선택옵션 용도옵션 불러오기
 		function usageList() {
 			var result = new Array();
@@ -278,8 +283,13 @@
 						}
 					});
 					
-					var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + division4 + " / " + usageDate;
-					var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+price+'원</span><span class="op_del">x</span></li>';
+					if(division4 != "") {
+						var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + division4 + " / " + usageDate;	
+					}else {
+						var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + usageDate;
+					}
+					
+					var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+numberWithCommas(price)+'원</span><span class="op_del">x</span></li>';
 					
 					$(html).appendTo($(".option_result > ul"));
 					setTotalCount();
@@ -342,7 +352,7 @@
 				var price = $(".op_price").eq(index).attr("value");
 				total += Number(price);				
 			});
-			var priceTxt = total + '<span class="price_txt">원(<span class="price_count">'+count+'</span>개)</span>';
+			var priceTxt = numberWithCommas(total) + '<span class="price_txt">원(<span class="price_count">'+count+'</span>개)</span>';
 			
 			$(".price").html(priceTxt);
 			//$(".price_count").text(count);
@@ -387,13 +397,13 @@
 			<ul>
 				<c:set var="total" value="0"/>
 				<c:forEach items="${usageOptions}" var="UsageDTO">
-					<li><span class="op_cont" value="${UsageDTO.usageList_seq}">${UsageDTO.usage} / ${UsageDTO.division1} / ${UsageDTO.division2} / ${UsageDTO.division3} / ${UsageDTO.division4} / ${UsageDTO.usageDate} </span><span class="op_price" value="${UsageDTO.price}">${UsageDTO.price}원</span><span class="op_del">x</span></li>
+					<li><span class="op_cont" value="${UsageDTO.usageList_seq}">${UsageDTO.usage} / ${UsageDTO.division1} / ${UsageDTO.division2} / ${UsageDTO.division3} / ${UsageDTO.division4} / ${UsageDTO.usageDate} </span><span class="op_price" value="${UsageDTO.price}"><fmt:formatNumber value="${UsageDTO.price}" type="number"/>원</span><span class="op_del">x</span></li>
 					<c:set var="total" value="${total + UsageDTO.price}"></c:set>
 				</c:forEach>
 			</ul>
 		</div>
 		<div class="sum_sec">
-			<div class="total"><span class="tit">총 금액 (수량)</span><span class="price"><c:out value="${total}"/><span class="price_txt">원(<span class="price_count"><c:out value="${fn:length(usageOptions)}"/></span>개)</span></span></div>
+			<div class="total"><span class="tit">총 금액 (수량)</span><span class="price"><fmt:formatNumber value="${total}" type="number"/><span class="price_txt">원(<span class="price_count"><c:out value="${fn:length(usageOptions)}"/></span>개)</span></span></div>
 			<div class="btn_wrap">
 				<div class="btn_cart"><a href="#">변경하기</a></div>
 				<div class="btn_down"><a href="#" onclick="javascript:self.close()">취소</a></div>
