@@ -30,9 +30,9 @@
 <body>
 	<div class="wrap">
 		<header>
-			<h1>
-				<a href="/home" class="logo">뉴스뱅크</a>
-			</h1>
+			<a href="/home" class="logo"><h1>
+				뉴스뱅크
+			</h1></a>
 		</header>
 		<section class="join">
 			<form method="post" id="frmLogin" name="frmLogin">
@@ -66,11 +66,11 @@
 				</fieldset>
 			</form>
 			<div class="find_info">
-				<a target="_blank" href="find_id.html">아이디 찾기</a>
+				<a target="_blank" href="/id.find">아이디 찾기</a>
 				<span class="bar">|</span>
-				<a target="_blank" href="find_pw.html">비밀번호 찾기</a>
+				<a target="_blank" href="/pw.find">비밀번호 찾기</a>
 				<span class="bar">|</span>
-				<a target="_blank" href="join1.html">회원가입</a>
+				<a target="_blank" href="/join">회원가입</a>
 			</div>
 		</section>
 		<footer>

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -41,19 +42,53 @@ public class SendSMS extends NewsbankServletBase {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
-		String tel = request.getParameter("tel"); // 전화번호
-		String token = request.getParameter("token"); // 인증번호
+		String tel = request.getParameter("tel"); // 전화번호 request
+		String token = request.getParameter("token"); // 인증번호 request
+		int certifyCount = 1;
 		boolean success = false;
 		String success_msg = "인증번호 오류";
-		if (!tel.isEmpty()) {
-			success_msg = "인증번호를 입력하신 휴대폰번호에 전송했습니다.";
-			int certifyNumber = generateNumber(6); // 랜덤 생성
+		
+		if (token != null && tel != null) {
+			// 인증번호 확인 요청
+			success_msg = "인증번호를 확인할 수 없습니다.";
+			String getCertiNum = null;
+			String getCertiphone = null;
 
-			if (certifyNumber > 0) {
-				// 랜덤 생성
-				session.setAttribute("certifyNumber", certifyNumber); // 랜덤 5자리
-																		// 세션저장
+			if (session.getAttribute("sCertifyNumber") != null) {
+				//세션 내 인증번호 체크
+				getCertiNum = (String) session.getAttribute("sCertifyNumber");
+			}
+			
+			if (session.getAttribute("sCertifyPhone") != null) {
+				//세션 내 인증번호 체크
+				getCertiphone = (String) session.getAttribute("sCertifyPhone");
+			}
+			
+			if (getCertiNum != null && getCertiNum.equals(token) && getCertiphone != null && getCertiphone.equals(tel)) {
+				success = true;
+				success_msg = "인증번호가 확인되었습니다.";
+			}
+
+		}
+		
+		if (tel != null && token == null ) {
+			// 전화번호 인증 요청
+			success_msg = "인증번호를 입력하신 휴대폰번호에 전송했습니다.";
+			String certifyNumber = Integer.toString(generateNumber(6)); // 랜덤 생성
+
+			if (session.getAttribute("sCertifyCount") != null) {
+				//세션에 인증 횟수 누적
+				certifyCount = (int) session.getAttribute("sCertifyCount") + 1;
+			}
+
+			if (certifyCount < 10) {
+				// 같은 세션에서 10회 이상 번호 인증 요청시 차단
+				session.setAttribute("sCertifyPhone", tel); // 핸드폰번호
+				session.setAttribute("sCertifyNumber", certifyNumber); // 랜덤 6자리
+				session.setAttribute("sCertifyCount", certifyCount); // 횟수
 				// session.removeAttribute("preDate");
 
 				String sendMemo = "고객님의 인증번호는 [ " + certifyNumber + " ] 입니다.";
@@ -64,26 +99,24 @@ public class SendSMS extends NewsbankServletBase {
 				param.put("receive_num", tel);
 				param.put("send_title", "[뉴스뱅크]");
 				param.put("send_memo", sendMemo);
-				String result = URLPost(URL, param);
+				System.out.println(param);
+				//String result = URLPost(URL, param);
+				String result ="success";
 				if (result.equalsIgnoreCase("success")) {
 					success = true;
 				}
-			}
-		}
-		if (!token.isEmpty()) {
-			success_msg = "인증번호를 확인할 수 없습니다.";
-			if (session.getAttribute("certifyNumber").equals(token)) {
-				success = true;
-				success_msg = "인증번호가 확인되었습니다.";
+			} else {
+				success_msg = "더이상 인증번호를 요청할수 없습니다.";
 			}
 
 		}
+		
 
-		JSONObject json = new JSONObject();
+		JSONObject json = new JSONObject();//json 정의
 		json.put("success", success);
 		json.put("message", success_msg);
 
-		response.getWriter().print(json);
+		response.getWriter().print(json); // json 생성
 	}
 
 	/**
@@ -122,6 +155,7 @@ public class SendSMS extends NewsbankServletBase {
 	}
 
 	public static String URLPost(String url, final Map<String, Object> param) {
+		//post 전송 url , param
 		StringBuffer response = new StringBuffer();
 
 		try {

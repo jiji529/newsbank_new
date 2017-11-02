@@ -20,7 +20,7 @@
 <title>뉴스뱅크</title>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <link rel="stylesheet" href="css/join.css" />
-<script src="js/common.js"></script>
+<script src="js/join.js"></script>
 </head>
 <body>
 	<div class="wrap">

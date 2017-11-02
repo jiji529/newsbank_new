@@ -6,13 +6,13 @@
 	<!-- 활성 매체사 리스트 읽기 -->
 	<select id="listActiveMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
-			where type = 'M'
-				and activate = 1
-			order by name asc
+		where type = 'M'
+		and activate = 1
+		order by name asc
 	</select>
 
 	<!-- 로그인 체크 -->
-	<select id="selectLogin" parameterType="java.util.Map"
+	<select id="selectLogin" parameterType="com.dahami.newsbank.web.dto.MemberDTO"
 		resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		SELECT * FROM member
 		where id = #{id}
@@ -23,14 +23,60 @@
 	</select>
 
 	<!-- 회원가입 아이디 체크 -->
-	<select id="selectId" parameterType="java.util.Map"
-		resultType="com.dahami.newsbank.web.dto.MemberDTO">
-		SELECT `id` FROM member
+	<select id="selectId" parameterType="java.util.Map" resultType="int">
+		SELECT count(seq) FROM member
 		where id = #{id}
-	
+
 
 	</select>
 
+	<!-- 회원가입 -->
+	<insert id="insertMember" parameterType="com.dahami.newsbank.web.dto.MemberDTO"
+		useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO member (
+		id, pw, email ,name, phone, type
+		<if test="compNum != null">, compNum</if>
+		<if test="compDocPath != null">, compDocPath</if>
+		<if test="compName != null">, compName</if>
+		<if test="compAddress != null">, compAddress</if>
+		<if test="compAddDetail != null">, compAddDetail</if>
+		<if test="compZipcode != null">, compZipcode</if>
+		<if test="compTel != null">, compTel</if>
+		<if test="logo != null">, logo</if>
+		) values (
+		#{id},#{pw},#{email},#{name},#{phone},#{type}
+		<if test="compNum != null">, #{compNum}</if>
+		<if test="compDocPath != null">, #{compDocPath}</if>
+		<if test="compName != null">, #{compName}</if>
+		<if test="compAddress != null">, #{compAddress}</if>
+		<if test="compAddDetail != null">, #{compAddDetail}</if>
+		<if test="compZipcode != null">, #{compZipcode}</if>
+		<if test="compTel != null">, #{compTel}</if>
+		<if test="logo != null">, #{logo}</if>
+		)
+
+	</insert>
+
+	<!-- 회원정보 업데이트 -->
+	<update id="updateMember" parameterType="com.dahami.newsbank.web.dto.MemberDTO">
+		update member
+		<set>
+			name = #{name}
+			<if test="email != null">, email = #{email}</if>
+			<if test="pw != null">, pw = #{pw}</if>
+			<if test="phone != null">, phone = #{phone}</if>
+			<if test="type != null">, type = #{type}</if>
+			<if test="compNum != null">, compNum = #{compNum}</if>
+			<if test="compDocPath != null">, compDocPath = #{compDocPath}</if>
+			<if test="compName != null">, compName = #{compName}</if>
+			<if test="compAddress != null">, compAddress = #{compAddress}</if>
+			<if test="compAddDetail != null">, compAddDetail = #{compAddDetail}</if>
+			<if test="compZipcode != null">, compZipcode = #{compZipcode}</if>
+			<if test="compTel != null">, compTel = #{compTel}</if>
+			<if test="logo != null">, logo = #{logo}</if>
+		</set>
+		where seq = #{seq}
+	</update>
 
 
 

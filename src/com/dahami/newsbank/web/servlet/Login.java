@@ -84,12 +84,15 @@ public class Login extends NewsbankServletBase {
 			String login_chk = request.getParameter("login_chk"); // 아이디 저장 request
 			if (id != null || pw != null) {
 				// 로그인 정보 요청
-				Map<String, Object> param = new HashMap<String, Object>();
+				MemberDTO memberDTO = new MemberDTO(); // 객체 생성
+				memberDTO.setId(id);
+				memberDTO.setPw(pw);
+				/*Map<String, Object> param = new HashMap<String, Object>();
 				param.put("id", id);
-				param.put("pw", pw);
+				param.put("pw", pw);*/
 
 				MemberDAO memberDAO  = new MemberDAO(); // 회원정보 연결
-				MemberDTO memberDTO = memberDAO.selectMember(param); // 회원정보 요청
+				memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
 				if (memberDTO != null) {
 					// 로그인 성공
 					session.setAttribute("MemberInfo", memberDTO); // 회원정보 세션 저장

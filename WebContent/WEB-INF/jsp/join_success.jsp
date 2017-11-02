@@ -22,6 +22,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
 <link rel="stylesheet" href="css/join.css" />
+<script type="text/javascript" src="js/join.js"></script>
 </head>
 <body>
 <div class="wrap">

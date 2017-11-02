@@ -16,50 +16,5 @@ $(document).ready(function() {
 	});
 });
 
-// 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
-$(document).ready(function() {
-	$("[href]").each(function() {
-		if (this.href == window.location.href) {
-			$(this).parent().addClass("on");
-		}
-	});
-});
 
-// mypage 메뉴 개수에 따라 길이 조절
-$(document).ready(function() {
-	var len = $(".mypage .mypage_ul .mp_tab1 li").length;
-	var liWidth = 100 / len;
-	$(".mypage .mypage_ul .mp_tab1 li").css('width', liWidth + '%');
 
-})
-
-// kink.join 회원종류에 따른 약관동의 페이지 이동
-$(document).ready(
-		function() {
-			$('.join_choice a').click(
-					function() {
-						$(this).parent().attr('action', '/terms.join').attr(
-								'method', 'post').submit();
-
-					});
-
-		})
-
-// terms.join 약관 동의 체크 및 페이지 이동
-$(document).ready(function() {
-	$("#frmJoinTerms").submit(function() {
-		if($("#copyAgree").is(":checked")==false){
-			alert($("#copyAgree").attr("title"));
-			return false;
-		}
-		
-		if($("#policyAgree").is(":checked")==false){
-			alert($("#policyAgree").attr("title"));
-			return false;
-		}
-		
-
-		 $(this).attr('action', '/form.join').attr('method', 'post').submit();
-		return false;
-	});
-})

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
  * Servlet implementation class CheckId
@@ -33,15 +34,18 @@ public class CheckId extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    
 		boolean isMember = false;
 		String id = request.getParameter("id"); // 아이디 request
 		if(!id.isEmpty()) {
-			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("id", id);
+			
+			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
+			memberDTO.setId(id);
 			
 			MemberDAO memberDAO  = new MemberDAO(); // 회원정보 연결
-			isMember = memberDAO.selectId(param); // 아이디 정보 요청
+			isMember = memberDAO.selectId(memberDTO); // 아이디 정보 요청
 		}
 		JSONObject json = new JSONObject();
 		json.put("success", isMember);

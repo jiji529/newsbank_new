@@ -48,13 +48,13 @@ public class MemberDAO extends DAOBase {
 		}
 	}
 
-	public MemberDTO selectMember(Map<String, Object> param) {
+	public MemberDTO selectMember(MemberDTO memberDTO) {
 		SqlSession session = null;
 		MemberDTO memberInfo = null;
 		try {
 
 			session = sf.getSession();
-			memberInfo = session.selectOne("Member.selectLogin", param);
+			memberInfo = session.selectOne("Member.selectLogin", memberDTO);
 
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -69,15 +69,15 @@ public class MemberDAO extends DAOBase {
 
 	}
 	
-	public boolean selectId(Map<String, Object> param) {
+	public boolean selectId(MemberDTO memberDTO) {
 		SqlSession session = null;
-		MemberDTO memberInfo = null;
 		boolean result = false;
 		try {
 
 			session = sf.getSession();
-			memberInfo = session.selectOne("Member.selectId", param);
-			result = memberInfo.isMember();
+			if((int)session.selectOne("Member.selectId", memberDTO) > 0) {
+				result =  true;
+			}
 
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -87,6 +87,59 @@ public class MemberDAO extends DAOBase {
 			} catch (Exception e) {
 			}
 		}
+
+		return result;
+	}
+	
+	public boolean insertMember(MemberDTO memberDTO ) {
+		boolean result = false;
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			if((int)session.selectOne("Member.selectId", memberDTO) > 0) {
+				result =  false;
+			}else {
+				session.insert("Member.insertMember", memberDTO);
+				result =  true;
+			}
+			System.out.println(session);
+			session.commit();
+			//result = memberDTO.isMember();
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		System.out.println("insert("+memberDTO+") --> "+memberDTO.getEmail()); 
+		System.out.println(memberDTO.getName());
+
+		return result;
+	}
+	
+	public boolean updateMember(MemberDTO memberDTO) {
+		boolean result = false;
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			session.update("Member.updateMember", memberDTO);
+			result =  true;
+			session.commit();
+			//result = memberDTO.isMember();
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		System.out.println("insert("+memberDTO+") --> "+memberDTO.getEmail()); 
+		System.out.println(memberDTO.getName());
 
 		return result;
 	}

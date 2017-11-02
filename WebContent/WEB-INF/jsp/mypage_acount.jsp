@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/footer.js"></script>
-<script src="js/common.js"></script>
+<script src="js/mypage.js"></script>
 </head>
 <%
 	String type = (String) request.getAttribute("type");
@@ -87,12 +87,19 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
+				<%
+					if (type.equals("M")) {
+						//임시
+				%>
 				<li>
 					<a href="/acount.mypage">정산 관리</a>
 				</li>
 				<li>
 					<a href="/cms">사진 관리</a>
 				</li>
+				<%
+					}
+				%>
 				<li>
 					<a href="/info.mypage">회원정보 관리</a>
 				</li>
@@ -103,7 +110,7 @@
 					<a href="/cart.myPage">장바구니</a>
 				</li>
 				<li>
-					<a href="/buy.mypage">구매내역</a>
+					<a href="/buylist.mypage">구매내역</a>
 				</li>
 			</ul>
 			<ul class="mp_tab2">
@@ -120,48 +127,67 @@
 		</div>
 		<table class="tb01" cellpadding="0" cellspacing="0">
 			<colgroup>
-			<col style="width:240px;">
-			<col style="width:;">
+				<col style="width: 240px;">
+					<col style="width:;">
 			</colgroup>
 			<tbody>
 				<tr>
 					<th>매체명</th>
-					<td><select name="" class="inp_txt" style="width:450px;">
+					<td>
+						<select name="" class="inp_txt" style="width: 450px;">
 							<option value="010" selected="selected">선택해주세요.</option>
-						</select></td>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>입금 계좌</th>
-					<td><select name="" class="inp_txt" style="width:120px;">
+					<td>
+						<select name="" class="inp_txt" style="width: 120px;">
 							<option value="010" selected="selected">기업은행</option>
 						</select>
 						<input type="text" class="inp_txt" size="40" />
-						<a href="#" class="btn_input1">통장사본 업로드</a> <a href="#" class="btn_input1">다운로드</a></td>
+						<a href="#" class="btn_input1">통장사본 업로드</a>
+						<a href="#" class="btn_input1">다운로드</a>
+					</td>
 				</tr>
 				<tr>
 					<th>계약기간</th>
-					<td><input type="text"  size="12"  class="inp_txt" value="2017-05-01" maxlength="10">
-						<span class=" bar">~</span>
-						<input type="text"  size="12"  class="inp_txt" value="2017-05-01" maxlength="10">
-						<div class="check">
-							<input type="checkbox" />
-							자동연장</div>
-						<a href="#" class="btn_input1">계약서 업로드</a> <a href="#" class="btn_input1">다운로드</a></td>
+					<td>
+						<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
+							<span class=" bar">~</span>
+							<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
+								<div class="check">
+									<input type="checkbox" />
+									자동연장
+								</div>
+								<a href="#" class="btn_input1">계약서 업로드</a>
+								<a href="#" class="btn_input1">다운로드</a>
+					</td>
 				</tr>
 				<tr>
-					<th><span class="ex">*</span>정산 요율</th>
-					<td><span class=" bar">온라인 결제</span>
-						<input type="text" size="5"  class="inp_txt" value="" maxlength="3"><span class=" bar">%</span>
-						<span class=" bar" style="margin-left:20px;">후불 결제</span>
-						<input type="text" size="5"  class="inp_txt" value="" maxlength="3"><span class=" bar">%</span></td>
+					<th>
+						<span class="ex">*</span>
+						정산 요율
+					</th>
+					<td>
+						<span class=" bar">온라인 결제</span>
+						<input type="text" size="5" class="inp_txt" value="" maxlength="3">
+							<span class=" bar">%</span>
+							<span class=" bar" style="margin-left: 20px;">후불 결제</span>
+							<input type="text" size="5" class="inp_txt" value="" maxlength="3">
+								<span class=" bar">%</span>
+					</td>
 				</tr>
 				<tr>
 					<th>세금계산서 담당자</th>
-					<td><input type="text" class="inp_txt" size="60" /></td>
+					<td>
+						<input type="text" class="inp_txt" size="60" />
+					</td>
 				</tr>
 				<tr>
 					<th>세금계산서 담당자 연락처</th>
-					<td><select name="" class="inp_txt" style="width:70px;">
+					<td>
+						<select name="" class="inp_txt" style="width: 70px;">
 							<option value="010" selected="selected">010</option>
 							<option value="011">011</option>
 							<option value="016">016</option>
@@ -170,19 +196,25 @@
 							<option value="019">019</option>
 						</select>
 						<span class=" bar">-</span>
-						<input type="text" id="celphone" size="5"  class="inp_txt" value="1234" maxlength="4">
-						<span class=" bar">-</span>
-						<input type="text" id="celphone2" size="5"  class="inp_txt" value="1234" maxlength="4" /></td>
+						<input type="text" id="celphone" size="5" class="inp_txt" value="1234" maxlength="4">
+							<span class=" bar">-</span>
+							<input type="text" id="celphone2" size="5" class="inp_txt" value="1234" maxlength="4" />
+					</td>
 				</tr>
 				<tr>
 					<th>세금계산서 담당자 이메일</th>
-					<td><input type="text" class="inp_txt" size="60" /></td>
+					<td>
+						<input type="text" class="inp_txt" size="60" />
+					</td>
 				</tr>
 			</tbody>
 		</table>
 		<p class="ex_txt">*수정이 필요한 경우, 회사(02-593-4174) 또는 뉴스뱅크 서비스 담당자에게 연락 부탁드립니다.</p>
-		<div class="btn_area"><a href="#" class="btn_input2">수정</a><a href="#" class="btn_input1">취소</a></div>
-	</section>
-</div>
+		<div class="btn_area">
+			<a href="#" class="btn_input2">수정</a>
+			<a href="#" class="btn_input1">취소</a>
+		</div>
+		</section>
+	</div>
 </body>
 </html>

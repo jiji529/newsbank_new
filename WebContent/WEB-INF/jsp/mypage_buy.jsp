@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/common.js"></script>
+<script src="js/mypage.js"></script>
 </head>
 <%
 	String type = (String) request.getAttribute("type");
@@ -110,7 +110,7 @@
 					<a href="/cart.myPage">장바구니</a>
 				</li>
 				<li>
-					<a href="/buy.mypage">구매내역</a>
+					<a href="/buylist.mypage">구매내역</a>
 				</li>
 			</ul>
 		</div>

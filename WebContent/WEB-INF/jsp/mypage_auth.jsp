@@ -22,7 +22,6 @@
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
-<script src="js/common.js"></script>
 <script src="js/footer.js"></script>
 </head>
 <body>

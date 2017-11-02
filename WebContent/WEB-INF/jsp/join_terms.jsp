@@ -20,7 +20,7 @@
 <title>뉴스뱅크</title>
 <link rel="stylesheet" href="css/join.css" />
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script type="text/javascript" src="js/common.js"></script> 
+<script type="text/javascript" src="js/join.js"></script> 
 </head>
 <%
 String type = request.getParameter("type"); // 회원 구분

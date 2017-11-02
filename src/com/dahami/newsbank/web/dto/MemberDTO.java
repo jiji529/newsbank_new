@@ -1,12 +1,14 @@
 package com.dahami.newsbank.web.dto;
 
+import java.io.Serializable;
+
 /**
  * @author p153-1706
  *
  */
 
-public class MemberDTO {
-	private int member_seq; // 시퀀스
+public class MemberDTO implements Serializable {
+	private int seq; // 시퀀스
 	private String id; // 아이디
 	private String pw; // 패스워드
 	private String email; // 이메일
@@ -25,6 +27,7 @@ public class MemberDTO {
 	private String compDocPath; // 등록증 경로
 	private String compName;// 회사명
 	private String compAddress;// 회사주소
+	private String compAddDetail;//회사 주소 상세
 	private String compBankName;// 정산은행명
 	private String compBankAcc;// 정산계좌
 	private String compBankPath;// 정산통장 사본 경
@@ -51,16 +54,16 @@ public class MemberDTO {
 	 * @comment 시퀀스
 	 * @return
 	 */
-	public int getMember_seq() {
-		return member_seq;
+	public int getSeq() {
+		return seq;
 	}
 
 	/**
 	 * 
 	 * @param member_seq
 	 */
-	public void setMember_seq(int member_seq) {
-		this.member_seq = member_seq;
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 
 	/**
@@ -471,6 +474,14 @@ public class MemberDTO {
 			return false;
 		else
 			return true;
+	}
+
+	public String getCompAddDetail() {
+		return compAddDetail;
+	}
+
+	public void setCompAddDetail(String compAddDetail) {
+		this.compAddDetail = compAddDetail;
 	}
 
 }

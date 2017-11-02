@@ -68,9 +68,15 @@ public class MypageAuth extends NewsbankServletBase {
 					Map<String, Object> param = new HashMap<String, Object>();
 					param.put("id", MemberInfo.getId());
 					param.put("pw", pw);
+					
+					MemberDTO memberDTO = new MemberDTO(); // 객체 생성
+					memberDTO.setId(MemberInfo.getId());
+					memberDTO.setPw(pw);
+					
+					
 
 					MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
-					MemberDTO memberDTO = memberDAO.selectMember(param); // 회원정보 요청
+					memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
 					if (memberDTO != null) {
 						// 로그인 성공
 						session.setAttribute("mypageAuth", true);
