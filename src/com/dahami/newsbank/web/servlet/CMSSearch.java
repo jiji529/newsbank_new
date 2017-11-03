@@ -40,10 +40,6 @@ public class CMSSearch extends NewsbankServletBase {
 		SearchCMSService ss = new SearchCMSService();
 		ss.execute(request, response);
 		
-		Map<String, String[]> params = request.getParameterMap();
-		SearchParameterBean sParam = new SearchParameterBean(params);
-		//System.out.println(sParam.getTargetUserList());
-		
 		String jsonStr = (String) request.getAttribute("JSON");
 		response.getWriter().print(jsonStr);
 		response.flushBuffer();

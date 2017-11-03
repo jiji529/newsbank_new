@@ -224,12 +224,12 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<li><a href="#">정산 관리</a></li>
-				<li class="on"><a href="#">사진 관리</a></li>
-				<li><a href="#">회원정보 관리</a></li>
-				<li><a href="#">찜관리</a></li>
-				<li><a href="#">장바구니</a></li>
-				<li><a href="#">구매내역</a></li>
+				<li><a href="/acount.mypage">정산 관리</a></li>
+				<li class="on"><a href="/cms">사진 관리</a></li>
+				<li><a href="/info.mypage">회원정보 관리</a></li>
+				<li><a href="/dibs.myPage">찜관리</a></li>
+				<li><a href="/cart.myPage">장바구니</a></li>
+				<li><a href="/buy.mypage">구매내역</a></li>
 			</ul>
 		</div>
 		<div class="table_head">
@@ -247,7 +247,7 @@
 					<ul class="filter_list">
 						<li value="0" selected="selected">전체</li>
 						<c:forEach items="${mediaList}" var="media">
-							<li value="${media.id }">${media.name }</li>								
+							<li value="${media.seq }">${media.name }</li>								
 						</c:forEach>
 					</ul>
 				</li>

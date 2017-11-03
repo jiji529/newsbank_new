@@ -167,12 +167,12 @@
 			</div>
 			<div class="mypage_ul">
 				<ul class="mp_tab1">
-					<li><a href="#">정산 관리</a></li>
-					<li><a href="#">사진 관리</a></li>
-					<li><a href="#">회원정보 관리</a></li>
-					<li class="on"><a href="#">찜관리</a></li>
+					<li><a href="/acount.mypage">정산 관리</a></li>
+					<li><a href="/cms">사진 관리</a></li>
+					<li><a href="/info.mypage">회원정보 관리</a></li>
+					<li class="on"><a href="/dibs.myPage">찜관리</a></li>
 					<li><a href="/cart.myPage">장바구니</a></li>
-					<li><a href="#">구매내역</a></li>
+					<li><a href="/buy.mypage">구매내역</a></li>
 				</ul>
 				<!-- 컬렉션 생기면 추가 <ul class="mp_tab2">
 					<li class="on"><a href="#">사진 찜 관리</a></li>

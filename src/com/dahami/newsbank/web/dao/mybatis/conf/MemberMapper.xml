@@ -105,5 +105,16 @@
 		100
 
 	</select>
+	
+	<!-- 활성 매체사 리스트 읽기 -->
+	<select id="listAdjustMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+		select * from member
+		where type = 'M'
+		and activate = 1
+		<if test="seq != 0">
+		    and seq = #{seq}
+		</if>
+		order by name asc
+	</select>
 
 </mapper>

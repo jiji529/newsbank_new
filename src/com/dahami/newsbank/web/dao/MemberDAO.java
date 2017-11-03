@@ -186,4 +186,25 @@ public class MemberDAO extends DAOBase {
 
 		return memberList;
 	}
+	
+	/**
+	 * @methodName  : listAdjustMedia
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 11. 1. 오전 10:01:43
+	 * @methodCommet: 정산 매체사 리스트
+	 * @return 
+	 * @returnType  : List<MemberDTO>
+	 */
+	public List<MemberDTO> listAdjustMedia(MemberDTO memberDTO) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Member.listAdjustMedia", memberDTO);
+		}catch(Exception e) {
+			logger.warn("", e);
+			return null;
+		}finally{
+			try{session.close();}catch(Exception e){}
+		}
+	}
 }
