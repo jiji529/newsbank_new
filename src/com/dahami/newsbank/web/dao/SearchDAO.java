@@ -19,6 +19,7 @@ package com.dahami.newsbank.web.dao;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -47,6 +48,8 @@ import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 public class SearchDAO extends DAOBase {
+	
+	private static final SimpleDateFormat fullDf = new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	private static Properties conf;
 	private static List<SolrClient> solrClients;
@@ -280,21 +283,32 @@ public class SearchDAO extends DAOBase {
 		
 		String duration = params.getDuration();
 		if(duration != null && duration.trim().length() > 0) {
-			Calendar sCal = Calendar.getInstance();
-			sCal.set(Calendar.HOUR_OF_DAY, 0);
-			sCal.set(Calendar.MINUTE, 0);
-			sCal.set(Calendar.SECOND, 0);
-			Calendar eCal = (Calendar) sCal.clone();
-			if(duration.equals("1d")) {
-			}
-			else if(duration.equals("1w")) {
+			if(duration.indexOf("~") == -1) {
+				Calendar sCal = Calendar.getInstance();
+				if(duration.equals("1d")) {
+					sCal.add(Calendar.DAY_OF_MONTH, -1);
+				}
+				else if(duration.equals("1w")) {
+					sCal.add(Calendar.DAY_OF_MONTH, -7);
+				}
+				else if(duration.equals("1m")) {
+					sCal.add(Calendar.MONTH, -1);
+				}
+				else if(duration.equals("1y")) {
+					sCal.add(Calendar.YEAR, -1);
+				}
+				else {
+					logger.warn("잘못된 기간 형식: " + duration);
+					sCal = null;
+				}
 				
+				if(sCal != null) {
+					query.addFilterQuery("shotDate:[" + fullDf.format(sCal.getTime()) + " TO *]");
+				}
 			}
-			else if(duration.equals("1m")) {
-				
-			}
-			else if(duration.equals("1y")) {
-				
+			else {
+				String[] durationArry = duration.split("~");
+				query.addFilterQuery("shotDate:[" + durationArry[0] + " TO " + durationArry[1] + "]");
 			}
 			logger.debug("Duration: " + duration);
 		}
@@ -321,7 +335,32 @@ public class SearchDAO extends DAOBase {
 			logger.debug("portraitRightState: " + params.getPortRight());
 		}
 		if(params.getSize() != SearchParameterBean.SIZE_ALL) {
-			
+			int size = params.getSize();
+			if(size == (SearchParameterBean.SIZE_SMALL | SearchParameterBean.SIZE_MEDIUM | SearchParameterBean.SIZE_LARGE)) {
+				// 전체
+			}
+			else {
+				StringBuffer buf = new StringBuffer();
+				if((size & SearchParameterBean.SIZE_LARGE) == SearchParameterBean.SIZE_LARGE) {
+					buf.append("(widthPx:[3000 TO *] AND heightPx:[3000 TO *])");
+				}
+				if((size & SearchParameterBean.SIZE_MEDIUM) == SearchParameterBean.SIZE_MEDIUM) {
+					if(buf.length() > 0) {
+						buf.append(" OR ");
+					}
+					buf.append("((NOT (widthPx:[3000 TO *] AND heightPx:[3000 TO *])) AND (NOT (widthPx:[* TO 1000] AND heightPx:[* TO 1000])))");
+				}
+				if((size & SearchParameterBean.SIZE_SMALL) == SearchParameterBean.SIZE_SMALL) {
+					if(buf.length() > 0) {
+						buf.append(" OR ");
+					}
+					buf.append("(widthPx:[* TO 1000] AND heightPx:[* TO 1000])");
+				}
+				
+				if(buf.length() > 0) {
+					query.addFilterQuery("(" + buf.toString() + ")");
+				}
+			}
 		}
 		
 		int pageNo = params.getPageNo();

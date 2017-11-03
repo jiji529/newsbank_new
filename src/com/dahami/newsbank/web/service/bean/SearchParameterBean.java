@@ -64,9 +64,9 @@ public class SearchParameterBean {
 	/** 이미지 크기 : 0:전체 1큰 2중간 4작은*/
 	private int size;
 	public static final int SIZE_ALL = ALL;
-	public static final int SIZE_LARGE = 1;
-	public static final int SIZE_MEDIUM = 2;
-	public static final int SIZE_SMALL = 4;
+	public static final int SIZE_LARGE = 1;	// 3000 이상(가로세로 모두)
+	public static final int SIZE_SMALL = 4;	// 1000 이하(가로세로 모두)
+	public static final int SIZE_MEDIUM = 2;	// 위 두가지 이외
 	
 	/** 초상권해결여부 0전체 1해결 2미해결 */
 	private int portRight;
