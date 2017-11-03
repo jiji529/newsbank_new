@@ -21,12 +21,19 @@ import java.util.List;
 import java.util.Map;
 
 import com.dahami.newsbank.dto.PhotoDTO;
-import com.dahami.newsbank.web.servlet.NewsbankServletBase;
 
 public class SearchParameterBean {
 	private static final int ALL = 0;
 //	private String searchKey;
 	private String keyword;
+	
+	/** 판매 상태 1:미판매 / 2:판매중 / 4:판매중지 / 8:삭제(플래그,판매건) */
+	private int saleState;
+	public static final int SALE_STATE_NOT = 1;
+	public static final int SALE_STATE_OK = 2;
+	public static final int SALE_STATE_STOP = 4;
+	public static final int SALE_STATE_DEL_SOLD = 8;
+	
 	
 	/** 컨텐츠 종류 / 0전체 1보도 2뮤지엄 4개인사진 8컬렉션*/
 	private int contentType;
@@ -122,6 +129,14 @@ public class SearchParameterBean {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	public int getSaleState() {
+		return saleState;
+	}
+
+	public void setSaleState(int saleState) {
+		this.saleState = saleState;
+	}
+
 	public int getPageVol() {
 		return pageVol;
 	}

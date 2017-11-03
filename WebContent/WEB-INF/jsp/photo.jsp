@@ -216,7 +216,7 @@
 						<ul class="filter_list">
 							<li value="0" selected="selected">전체</li>
 <c:forEach items="${mediaList}" var="media">
-							<li value="${media.id }">${media.name }</li>								
+							<li value="${media.seq }">${media.name }</li>								
 </c:forEach>
 						</ul>
 					</li>

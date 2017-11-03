@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,6 +230,40 @@ public class SearchDAO extends DAOBase {
 		logger.debug("keyword: " + keyword);
 		query.setQuery(keyword);
 		
+		// 기본적으로 판매건만 보기
+		int saleState = params.getSaleState();
+		if(saleState == 0) {
+			query.addFilterQuery("saleState:" + PhotoDTO.SALE_STATE_OK);
+		}
+		else {
+			StringBuffer buf = new StringBuffer();
+			if((saleState & SearchParameterBean.SALE_STATE_NOT) == SearchParameterBean.SALE_STATE_NOT) {
+				if(buf.length() > 0) {
+					buf.append(" OR ");
+				}
+				buf.append(PhotoDTO.SALE_STATE_NOT);
+			}
+			if((saleState & SearchParameterBean.SALE_STATE_OK) == SearchParameterBean.SALE_STATE_OK) {
+				if(buf.length() > 0) {
+					buf.append(" OR ");
+				}
+				buf.append(PhotoDTO.SALE_STATE_OK);
+			}
+			if((saleState & SearchParameterBean.SALE_STATE_STOP) == SearchParameterBean.SALE_STATE_STOP) {
+				if(buf.length() > 0) {
+					buf.append(" OR ");
+				}
+				buf.append(PhotoDTO.SALE_STATE_STOP);
+			}
+			if((saleState & SearchParameterBean.SALE_STATE_DEL_SOLD) == SearchParameterBean.SALE_STATE_DEL_SOLD) {
+				if(buf.length() > 0) {
+					buf.append(" OR ");
+				}
+				buf.append(PhotoDTO.SALE_STATE_DEL_SOLD);
+			}
+			query.addFilterQuery("saleState:(" + buf.toString() + ")");
+		}
+		
 		List<String> targetUserList = params.getTargetUserList();
 		if(targetUserList != null && targetUserList.size() > 0) {
 			StringBuffer buf = new StringBuffer();
@@ -242,8 +277,25 @@ public class SearchDAO extends DAOBase {
 			logger.debug("ownerNo: (" + buf.toString() + ")");
 		}
 		
+		
 		String duration = params.getDuration();
 		if(duration != null && duration.trim().length() > 0) {
+			Calendar sCal = Calendar.getInstance();
+			sCal.set(Calendar.HOUR_OF_DAY, 0);
+			sCal.set(Calendar.MINUTE, 0);
+			sCal.set(Calendar.SECOND, 0);
+			Calendar eCal = (Calendar) sCal.clone();
+			if(duration.equals("1d")) {
+			}
+			else if(duration.equals("1w")) {
+				
+			}
+			else if(duration.equals("1m")) {
+				
+			}
+			else if(duration.equals("1y")) {
+				
+			}
 			logger.debug("Duration: " + duration);
 		}
 		
