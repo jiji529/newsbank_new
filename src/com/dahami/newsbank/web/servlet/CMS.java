@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.service.PhotoService;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 /**
@@ -62,6 +63,9 @@ public class CMS extends NewsbankServletBase {
 		request.setAttribute("INCLUDE_PERSON_ALL", SearchParameterBean.INCLUDE_PERSON_ALL);
 		request.setAttribute("INCLUDE_PERSON_YES", SearchParameterBean.INCLUDE_PERSON_YES);
 		request.setAttribute("INCLUDE_PERSON_NO", SearchParameterBean.INCLUDE_PERSON_NO);
+		
+		PhotoService ps = new PhotoService();
+		ps.execute(request, response);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/cms.jsp");
 		dispatcher.forward(request, response);
