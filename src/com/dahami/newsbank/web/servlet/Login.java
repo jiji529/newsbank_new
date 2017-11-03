@@ -48,7 +48,7 @@ public class Login extends NewsbankServletBase {
 
 		String prevPage = (String) session.getAttribute("prevPage");
 		String refererUrl = request.getHeader("referer");
-		if (refererUrl == null || !refererUrl.equals("/login")) {
+		if (refererUrl == null || refererUrl.equals("/login")) {
 			refererUrl = "/home";
 		} else {
 			URL aURL = new URL(refererUrl);
@@ -78,7 +78,7 @@ public class Login extends NewsbankServletBase {
 					}
 				}
 			}
-
+/*
 			String id = request.getParameter("id"); // 아이디 request
 			String pw = request.getParameter("pw"); // 패스워드 request
 			String login_chk = request.getParameter("login_chk"); // 아이디 저장 request
@@ -87,9 +87,7 @@ public class Login extends NewsbankServletBase {
 				MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 				memberDTO.setId(id);
 				memberDTO.setPw(pw);
-				/*Map<String, Object> param = new HashMap<String, Object>();
-				param.put("id", id);
-				param.put("pw", pw);*/
+				
 
 				MemberDAO memberDAO  = new MemberDAO(); // 회원정보 연결
 				memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
@@ -127,7 +125,10 @@ public class Login extends NewsbankServletBase {
 				dispatcher.forward(request, response);
 
 
-			}
+			}*/
+			// 초기화면 또는 아이디 패스워드 누락
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
+			dispatcher.forward(request, response);
 
 		} else {
 			// 로그인 정보 있음

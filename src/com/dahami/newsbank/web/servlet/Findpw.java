@@ -28,6 +28,9 @@ public class Findpw extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_pw.jsp");
 		dispatcher.forward(request, response);
 	}

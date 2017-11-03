@@ -13,24 +13,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
- * Servlet implementation class FindIdList
+ * Servlet implementation class Findpw
  */
-@WebServlet("/list.find")
-public class FindIdList extends NewsbankServletBase {
+@WebServlet("/change.find")
+public class FindChange extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 	private static HttpSession session = null;
 
 	/**
 	 * @see NewsbankServletBase#NewsbankServletBase()
 	 */
-	public FindIdList() {
+	public FindChange() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -43,20 +40,21 @@ public class FindIdList extends NewsbankServletBase {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
+
 		session = request.getSession();
 
 		boolean check = true;
 		boolean result = false;
 		String message = null;
 
-		String name = null;
+		String id = null;
 		String phone = null;
 
-		name = request.getParameter("name"); // 이름 request
-		check = check && isValidNull(name);
-		System.out.println("name => " + name + " : " + check);
+		id = request.getParameter("id"); // 이름 request
+		check = check && isValidNull(id);
+		System.out.println("id => " + id + " : " + check);
 		if (!check) {
-			message = "이름을 입력해 주세요.";
+			message = "아이디를 입력해 주세요.";
 		}
 		phone = request.getParameter("phone"); // 전화번호 request
 		check = check && isValidPhone(phone);
@@ -69,22 +67,24 @@ public class FindIdList extends NewsbankServletBase {
 			message = "인증번호가 올바르지 않습니다.";
 		}
 
+		
 		if (check) {
 			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 			MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
-			List<MemberDTO> listMember = new ArrayList<MemberDTO>();
-			memberDTO.setName(name);
+			memberDTO.setName(id);
 			memberDTO.setPhone(phone);
-			listMember = memberDAO.listMember(memberDTO); // 회원정보 요청
-			session.setAttribute("listMember", listMember);
+			memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
+			session.setAttribute("memberDTO", memberDTO);
 
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_id_list.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_pw_change.jsp");
 			dispatcher.forward(request, response);
 		} else {
 			response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');location='/id.find';</script>").append(request.getContextPath());
 
 		}
-
+		
+		
+		
 	}
 
 	/**
@@ -141,4 +141,5 @@ public class FindIdList extends NewsbankServletBase {
 
 		return err;
 	}
+
 }

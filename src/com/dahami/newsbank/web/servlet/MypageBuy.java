@@ -59,7 +59,7 @@ public class MypageBuy extends NewsbankServletBase {
 		} else {
 			response.sendRedirect("/login");
 		}
-		}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

@@ -102,7 +102,7 @@ $(document).ready(function() {
 	$("#id").change(function() {
 		if (validId()) {
 			$.ajax({
-				url : "/checkId",
+				url : "/findMember.api",
 				data : ({
 					id : $("#id").val()
 				}),
@@ -453,4 +453,26 @@ $(document).ready(function() {
 
 	// form.join 로그인 최종 체크
 
+});
+
+
+
+//login 로그인
+$(document).ready(function() {
+	
+	$("#frmLogin").on("submit",function(){
+		$.post("/login.api", $(this).serialize(), function(data) {
+			console.log(data);
+			if (data.success) {
+				location.href = "/login";
+			} else {
+				alert(data.message);
+
+			}
+		}, "json");
+		
+		return false;
+	});
+
+	
 });

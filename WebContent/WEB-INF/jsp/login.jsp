@@ -14,8 +14,14 @@
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	String id = "";
+	/*String id = "";
 	if (request.getAttribute("id") != null) {
+		id = (String) request.getAttribute("id");
+	}*/
+	String id = "";
+	if (request.getParameter("id") != null) {
+		id = request.getParameter("id");
+	} else if (request.getAttribute("id") != null) {
 		id = (String) request.getAttribute("id");
 	}
 %>
@@ -26,6 +32,7 @@
 <title>뉴스뱅크 로그인</title>
 <link rel="stylesheet" href="css/join.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/join.js"></script>
 </head>
 <body>
 	<div class="wrap">

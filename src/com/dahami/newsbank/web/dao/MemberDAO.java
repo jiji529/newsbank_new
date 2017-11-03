@@ -18,11 +18,14 @@
  */
 package com.dahami.newsbank.web.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.dahami.newsbank.web.dto.BookmarkDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 public class MemberDAO extends DAOBase {
@@ -60,6 +63,7 @@ public class MemberDAO extends DAOBase {
 			logger.warn("", e);
 		} finally {
 			try {
+				session.commit();
 				session.close();
 			} catch (Exception e) {
 			}
@@ -83,6 +87,7 @@ public class MemberDAO extends DAOBase {
 			logger.warn("", e);
 		} finally {
 			try {
+				session.commit();
 				session.close();
 			} catch (Exception e) {
 			}
@@ -100,6 +105,13 @@ public class MemberDAO extends DAOBase {
 				result =  false;
 			}else {
 				session.insert("Member.insertMember", memberDTO);
+				
+				//회원가입시 기본 북마크 그룹 생성
+				Map<String, Object> bookmark = new HashMap<String, Object>();
+				bookmark.put("member_seq", memberDTO.getSeq());
+				bookmark.put("bookName", "기본그룹");
+				session.insert("Bookmark.insertBookmark", bookmark);
+				
 				result =  true;
 			}
 			System.out.println(session);
@@ -110,6 +122,7 @@ public class MemberDAO extends DAOBase {
 			logger.warn("", e);
 		} finally {
 			try {
+				session.commit();
 				session.close();
 			} catch (Exception e) {
 			}
@@ -134,6 +147,7 @@ public class MemberDAO extends DAOBase {
 			logger.warn("", e);
 		} finally {
 			try {
+				session.commit();
 				session.close();
 			} catch (Exception e) {
 			}
@@ -142,5 +156,34 @@ public class MemberDAO extends DAOBase {
 		System.out.println(memberDTO.getName());
 
 		return result;
+	}
+	
+	/**
+	 * @methodName  : listMember
+	 * @author      : Choi, SeongHyeon
+	 * @date        : 2017. 11. 3. 오전 10:01:43
+	 * @methodCommet: 검색된 사용자 정보
+	 * @return 
+	 * @returnType  : List<MemberDTO>
+	 */
+	public List<MemberDTO> listMember (MemberDTO memberDTO) {
+		SqlSession session = null;
+		List<MemberDTO> memberList = new ArrayList<MemberDTO>();
+		try {
+
+			session = sf.getSession();
+			memberList = session.selectList("Member.selectLogin", memberDTO);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		}  finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return memberList;
 	}
 }
