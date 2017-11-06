@@ -200,7 +200,7 @@
 	<nav class="gnb_dark">
 		<div class="gnb"><a href="#" class="logo"></a>
 			<ul class="gnb_left">
-				<li class=""><a href="/picture">보도사진</a></li>
+				<li class=""><a href="/photo">보도사진</a></li>
 				<li><a href="#">뮤지엄</a></li>
 				<li><a href="#">사진</a></li>
 				<li><a href="#">컬렉션</a></li>

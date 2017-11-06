@@ -97,6 +97,40 @@
 		}
 	});
 	
+	// #찜하기
+	$(document).on("click", ".over_wish", function() {
+		var uciCode = $(this).attr("value");		
+		var bookName = "기본그룹";
+		var member_seq = 1002;
+		var state = $(this).hasClass("on");
+		
+		if(state) {
+			// 찜 해제
+			$(this).removeClass("on");
+			var param = "action=deleteBookmark";
+		}else {
+			// 찜 하기
+			$(this).addClass("on");
+			var param = "action=insertBookmark";
+		}
+		
+		$.ajax({
+			url: "/view.photo?"+param,
+			type: "POST",
+			data: {
+				"photo_uciCode" : uciCode,
+				"bookName" : bookName,
+				"member_seq" : member_seq
+			},
+			success: function(data) {
+				
+			},
+			error : function(request, status, error) {
+				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});		
+	});	
+	
 	function checkNumber(event) {
 		event = event || window.event;
 		var keyID = (event.which) ? event.which : event.keyCode;
@@ -168,7 +202,7 @@
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
-					html += "<a class=\"over_wish\" href=\"#\">찜</a> <a class=\"over_down\" href=\"/list.down.photo?uciCode=" + val.uciCode + "\" download>시안 다운로드</a> </div>";
+					html += "<a class=\"over_wish\" href=\"#\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"/list.down.photo?uciCode=" + val.uciCode + "\" download>시안 다운로드</a> </div>";
 					html += "</div>";
 					html += "</li>";
 				});
@@ -310,7 +344,7 @@
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
-							<a class="over_wish" href="#">찜</a>
+							<a class="over_wish" href="#" value="${PhotoDTO.uciCode}">찜</a>
 							<a class="over_down" href="/list.down.photo?uciCode=${PhotoDTO.uciCode}" download>시안 다운로드</a>
 						</div>
 					</div>
@@ -328,7 +362,7 @@
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
-							<a class="over_wish" href="#">찜</a>
+							<a class="over_wish" href="#" value="${PhotoDTO.uciCode}">찜</a>
 							<a class="over_down" href="/list.down.photo?uciCode=${PhotoDTO.uciCode}" download>시안 다운로드</a>
 						</div>
 					</div>

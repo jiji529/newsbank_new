@@ -397,7 +397,7 @@
 						<dt>출력사이즈</dt>
 						<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
 						<dt>파일용량</dt>
-						<dd>${photoDTO.fileSize}MB</dd>
+						<dd>${photoDTO.fileSizeMB}MB</dd>
 						<dt>파일포맷</dt>
 						<dd>JPEG</dd>
 						<dt>해상도</dt>
@@ -480,7 +480,7 @@
 				<div class="total"><span class="tit">총 금액 (수량)</span><span class="price">0<span class="price_txt">원(<span class="price_count">0</span>개)</span></span></div>
 				<div class="btn_wrap">
 					<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
-					<div class="btn_down"><a href="#">시안 다운로드</a></div>
+					<div class="btn_down"><a href="/list.down.photo?uciCode=${photoDTO.uciCode}">시안 다운로드</a></div>
 					<div class="btn_buy"><a href="#">구매하기</a></div>
 				</div>
 			</div>
