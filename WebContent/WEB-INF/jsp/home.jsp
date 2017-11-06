@@ -36,7 +36,32 @@
 			maxMargin : 25,
 			firstItemClass : "first-item"
 		});
+		
+		$("#keyword").focus();
 	});
+	
+	$(document).on("click", ".btn_search", function() {
+		search();
+	});
+	
+	$(document).on("keypress", "#keyword", function(e) {
+		if(e.keyCode == 13) {	// 엔터
+			search();
+		}
+	});
+	
+	function search() {
+		var keyword = $.trim($("#keyword").val());
+		if(keyword.length == 0) {
+			alert("검색어를 입력하세요.");
+			$("#keyword").val("");
+			$("#keyword").focus();
+		}
+		else {
+			$("#keyword").val(keyword);
+			search_form.submit();
+		}
+	}
 </script>
 </head>
 <body>
@@ -49,7 +74,7 @@
 	<div class="wrap">
 		<nav class="gnb_light">
 		<div class="gnb">
-			<a href="#" class="logo"></a>
+			<a href="/home" class="logo"></a>
 			<ul class="gnb_left">
 				<li>
 					<a href="/photo">보도사진</a>
@@ -99,9 +124,9 @@
 				<h2>보도사진 박물관 뉴스뱅크</h2>
 				<p>대한민국의 근현대사를 담은 26개 언론사의 보도사진을 만나보세요.</p>
 				<div class="search main_search">
-					<form class="search_form">
+					<form class="search_form" method="post" action="/photo" name="search_form" >
 						<div class="search_area">
-							<input type="text" class="search_bar"  id="keyword" placeholder="검색어를 입력해주세요." />
+							<input type="text" class="search_bar"  id="keyword" name="keyword" placeholder="검색어를 입력해주세요." />
 							<a href="#" class="btn_search">검색</a>
 						</div>
 					</form>

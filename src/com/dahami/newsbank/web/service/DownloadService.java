@@ -107,7 +107,7 @@ public class DownloadService extends ServiceBase {
 		}
 	}
 	
-	private static void sendImageFile(HttpServletResponse response, String sendPath, String headerFileName) throws IOException {
+	private void sendImageFile(HttpServletResponse response, String sendPath, String headerFileName) throws IOException {
 		// 디스크 읽기
 		long rStart = System.currentTimeMillis();
 		byte[] data = FileUtil.readFile(sendPath);
@@ -123,7 +123,14 @@ public class DownloadService extends ServiceBase {
 		response.addHeader("Content-Transfer-Encoding", "binary");
 		
 		ServletOutputStream sos = response.getOutputStream();
-		sos.write(data);
-		response.getOutputStream().flush();
+		try {
+			sos.write(data);
+			response.getOutputStream().flush();
+		}catch(IOException e) {
+			String errMsg = e.getLocalizedMessage();
+			if(errMsg.indexOf("현재 연결은 사용자의 호스트 시스템의 소프트웨어의 의해 중단되었습니다") == -1) {
+				logger.warn("", e);
+			}
+		}
 	}
 }

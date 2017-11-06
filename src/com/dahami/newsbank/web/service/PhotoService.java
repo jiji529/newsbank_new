@@ -31,5 +31,13 @@ public class PhotoService extends ServiceBase {
 		List<MemberDTO> mediaList = mDao.listActiveMedia();
 		
 		request.setAttribute("mediaList", mediaList);
+	
+		String keyword = request.getParameter("keyword");
+		if(keyword != null && keyword.trim().length() > 0) {
+			request.setAttribute("keyword", keyword.trim());
+		}
+		else {
+			request.setAttribute("keyword", "");
+		}
 	}
 }
