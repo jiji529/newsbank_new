@@ -47,4 +47,10 @@
 		]]>
 	</select>
 	
+	<update id="hitPhoto" parameterType="string">
+	    UPDATE 
+	    	photo SET hitCount = hitCount + 1 
+	    WHERE uciCode = #{uciCode} 
+	</update>
+	
 </mapper>

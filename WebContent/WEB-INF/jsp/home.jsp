@@ -62,6 +62,33 @@
 			search_form.submit();
 		}
 	}
+	
+	function tabControl(index) {
+		$(".popular .center .tab .tabs li a").removeClass("active");
+		$(".popular_cont").css("display", "none");
+		$(".zzim_cont").css("display", "none");
+		$(".hit_cont").css("display", "none");
+		
+		switch(index) {
+		
+			case 0:
+				$(".popular_cont").css("display", "block");	
+				$(".popular .center .tab .tabs li a:eq("+index+")").addClass("active");
+				break;
+				
+			case 1:
+				$(".zzim_cont").css("display", "block");
+				$(".popular .center .tab .tabs li a:eq("+index+")").addClass("active");
+				break;
+				
+			case 2:
+				$(".hit_cont").css("display", "block");
+				$(".popular .center .tab .tabs li a:eq("+index+")").addClass("active");
+				break;
+		
+		}
+	}
+	
 </script>
 </head>
 <body>
@@ -151,7 +178,7 @@
 						</li> -->
 					</ul>
 				</div>
-				<div class="photo_cont img_ver">
+				<div id="photo_ver" class="photo_cont img_ver">
 					<div class="img_list">
 						<a href="#">
 							<img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" />
@@ -168,7 +195,7 @@
 						</a>
 					</div>
 				</div>
-				<div class="photo_cont img_hor">
+				<div id="photo_hor" class="photo_cont img_hor">
 					<div class="img_list">
 						<a href="#">
 							<img src="http://www.newsbank.co.kr/datafolder/N0/2010/08/30/E003394463_P.jpg" />
@@ -224,13 +251,13 @@
 				<div class="tab">
 					<ul class="tabs">
 						<li>
-							<a href="#" class="active">다운로드</a>
+							<a href="javascript:tabControl(0)" class="active">다운로드</a>
 						</li>
 						<li>
-							<a href="#">찜</a>
+							<a href="javascript:tabControl(1)">찜</a>
 						</li>
 						<li>
-							<a href="#">상세보기</a>
+							<a href="javascript:tabControl(2)">상세보기</a>
 						</li>
 					</ul>
 				</div>
@@ -268,6 +295,66 @@
 								<img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" />
 							</a>
 						</div>
+					</div>
+				</div>
+				
+				<div class="zzim_cont" style="display:none;">
+					<div class="photo_cont img_ver">
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" />
+							</a>
+						</div>
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" />
+							</a>
+						</div>
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" />
+							</a>
+						</div>
+					</div>
+					<div class="photo_cont img_ver">
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/N0/2010/08/30/E003394463_P.jpg" />
+							</a>
+						</div>
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/06/22/E003319517_P.jpg" />
+							</a>
+						</div>
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" />
+							</a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="hit_cont" style="display:none;">
+					<div class="photo_cont img_ver">
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/N0/2010/08/30/E003394463_P.jpg" />
+							</a>
+						</div>
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/06/22/E003319517_P.jpg" />
+							</a>
+						</div>
+						<div class="img_list">
+							<a href="#">
+								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" />
+							</a>
+						</div>
+					</div>
+					<div class="photo_cont img_ver">
+						
 					</div>
 				</div>
 			</div>

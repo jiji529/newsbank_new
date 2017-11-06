@@ -140,4 +140,27 @@ public class PhotoDAO extends DAOBase {
 		return photoList;
 	}
 	
+	/**
+	 * @methodName  : hit
+	 * @author      : HOYADEV
+	 * @date        : 2017. 10. 19. 오전 08:54:35
+	 * @methodCommet: 사진 조회수
+	 * @param param
+	 * @return 
+	 */
+	public void hit(String uciCode) {
+		SqlSession session = null;
+				
+		try {
+			session = sf.getSession();
+			session.update("Photo.hitPhoto", uciCode);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+	}
+	
 }

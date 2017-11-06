@@ -51,6 +51,7 @@ public class PhotoView extends NewsbankServletBase {
 		PhotoDAO photoDAO = new PhotoDAO();
 		String uciCode = request.getParameter("uciCode");
 		PhotoDTO photoDTO = photoDAO.read(uciCode);
+		photoDAO.hit(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
 		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
 		String member_seq = request.getParameter("member_seq") == null ? "1002" : request.getParameter("member_seq");
