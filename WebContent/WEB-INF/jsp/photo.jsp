@@ -84,19 +84,6 @@
 		search();
 	}
 	
-	$(document).on("keypress", "#keyword", function(e) {
-		if(e.keyCode == 13) {	// 엔터
-			var keyword = $("#keyword").val();
-			keyword = $.trim(keyword);
-			$("#keyword_current").val(keyword);
-
-			// 키워드 바꾸면 페이지 번호 초기화
-			$("input[name=pageNo]").val("1");
-			
-			search();
-		}
-	});
-	
 	// #찜하기
 	$(document).on("click", ".over_wish", function() {
 		var uciCode = $(this).attr("value");		
@@ -223,27 +210,7 @@
 <body class="fixed">
 	<div class="wrap">
 		<div class="fixed_layer">
-			<nav class="gnb_dark">
-				<div class="gnb"><a href="/home" class="logo"></a>
-					<ul class="gnb_left">
-						<li class="on"><a href="/photo">보도사진</a></li>
-						<li><a href="#">뮤지엄</a></li>
-						<li><a href="#">사진</a></li>
-						<li><a href="#">컬렉션</a></li>
-					</ul>
-					<ul class="gnb_right">
-						<li><a href="#">로그인</a></li>
-						<li><a href="#">가입하기</a></li>
-					</ul>
-				</div>
-				<div class="gnb_srch">
-					<form id="searchform">
-						<input type="text" id="keyword" value="${keyword}" placeholder="검색어를 입력해주세요." />
-						<input type="text" id="keyword_current" value="${keyword}" style="display:none;"/>
-						<a href="#" class="btn_search">검색</a>
-					</form>
-				</div>
-			</nav>
+			<%@include file="header.jsp" %>
 			<!-- 필터시작 -->
 			<div class="filters">
 				<ul>
@@ -252,9 +219,9 @@
 						<span>매체 :전체</span>
 						<ul class="filter_list">
 							<li value="0" selected="selected">전체</li>
-<c:forEach items="${mediaList}" var="media">
-							<li value="${media.seq }">${media.name }</li>								
-</c:forEach>
+							<c:forEach items="${mediaList}" var="media">
+								<li value="${media.seq }">${media.name }</li>								
+							</c:forEach>
 						</ul>
 					</li>
 					<li class="filter_title filter_duration">

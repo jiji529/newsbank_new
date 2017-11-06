@@ -112,26 +112,7 @@
 </head>
 <body>
 	<div class="wrap">
-		<nav class="gnb_dark">
-			<div class="gnb"><a href="#" class="logo"></a>
-				<ul class="gnb_left">
-					<li class=""><a href="#">보도사진</a></li>
-					<li><a href="#">뮤지엄</a></li>
-					<li><a href="#">사진</a></li>
-					<li><a href="#">컬렉션</a></li>
-				</ul>
-				<ul class="gnb_right">
-					<li><a href="#">로그인</a></li>
-					<li><a href="#">가입하기</a></li>
-				</ul>
-			</div>
-			<div class="gnb_srch">
-				<form id="searchform">
-					<input type="text" value="검색어를 입력하세요" />
-					<a href="#" class="btn_search">검색</a>
-				</form>
-			</div>
-		</nav>
+		<%@include file="header.jsp" %>
 		<section class="mypage">
 			<div class="head">
 				<h2>마이페이지</h2>
