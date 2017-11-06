@@ -48,12 +48,12 @@ public class Home extends NewsbankServletBase {
 			return;
 		}
 		
-		/*HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		if (MemberInfo != null) {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
-*/
+
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
 		dispatcher.forward(request, response);

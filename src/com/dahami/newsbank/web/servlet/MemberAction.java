@@ -70,79 +70,119 @@ public class MemberAction extends NewsbankServletBase {
 		System.out.println("cmd => " + cmd + " : " + check);
 		type = request.getParameter("type"); // 회원 구분
 		System.out.println("type => " + type + " : " + check);
-		id = request.getParameter("id"); // 아이디 request
-		check = check && isValidId(id);
-		System.out.println("id => " + id + " : " + check);
-		if (!check) {
-			message = "아이디 형식이 올바르지 않습니다.s";
+		if (request.getParameter("id") != null) {
+			id = request.getParameter("id"); // 아이디 request
+			check = check && isValidId(id);
+			System.out.println("id => " + id + " : " + check);
+			if (!check) {
+				message = "아이디 형식이 올바르지 않습니다.s";
+			}
 		}
-		pw = request.getParameter("pw"); // 비밀번호 request
-		check = check && isValidPw(pw);
-		System.out.println("pw => " + pw + " : " + check);
-		if (!check) {
-			message = "패스워드 형식이 올바르지 않습니다.";
+		if (request.getParameter("pw") != null) {
+			pw = request.getParameter("pw"); // 비밀번호 request
+			check = check && isValidPw(pw);
+			System.out.println("pw => " + pw + " : " + check);
+			if (!check) {
+				message = "패스워드 형식이 올바르지 않습니다.";
+			}
 		}
 
-		email = request.getParameter("email"); // 이메일 request
-		check = check && isValidEmail(email);
-		System.out.println("email => " + email + " : " + check);
-		if (!check) {
-			message = "이메일 형식이 올바르지 않습니다.";
+		if (request.getParameter("email") != null) {
+			email = request.getParameter("email"); // 이메일 request
+			check = check && isValidEmail(email);
+			System.out.println("email => " + email + " : " + check);
+			if (!check) {
+				message = "이메일 형식이 올바르지 않습니다.";
+			}
 		}
-		name = request.getParameter("name"); // 이름 request
-		check = check && isValidNull(name);
-		System.out.println("name => " + name + " : " + check);
-		if (!check) {
-			message = "이름을 입력해 주세요.";
+ 
+		if (request.getParameter("name") != null) {
+			name = request.getParameter("name"); // 이름 request
+			check = check && isValidNull(name);
+			System.out.println("name => " + name + " : " + check);
+			if (!check ) {
+				message = "이름을 입력해 주세요.";
+			}
 		}
-		phone = request.getParameter("phone"); // 전화번호 request
-		check = check && isValidPhone(phone);
-		System.out.println("phone => " + phone + " : " + check);
-		if (!check) {
-			message = "휴대폰 번호 형식이 올바르지 않습니다.";
-		}
-		check = check && isValidCertiNum(request);
 
-		if (!check) {
-			message = "인증번호가 올바르지 않습니다.";
+		if (request.getParameter("phone") != null) {
+			phone = request.getParameter("phone"); // 전화번호 request
+			check = check && isValidPhone(phone);
+			System.out.println("phone => " + phone + " : " + check);
+			if (!check) {
+				message = "휴대폰 번호 형식이 올바르지 않습니다.";
+			}
+			check = check && isValidCertiNum(request);
+			if (!check) {
+				message = "인증번호가 올바르지 않습니다.";
+			}
+
 		}
 
 		if (!type.equalsIgnoreCase("P")) {
-			compNum = request.getParameter("compNum"); // 사업자등록번호
-			check = check && isValidCompNum(compNum);
-			System.out.println("compNum => " + compNum + " : " + check);
-			if (!check) {
-				message = "사업자 등록번호 형식이 올바르지 않습니다.";
+			if (request.getParameter("compNum") != null) {
+				compNum = request.getParameter("compNum"); // 사업자등록번호
+				check = check && isValidCompNum(compNum);
+				System.out.println("compNum => " + compNum + " : " + check);
+				if (!check) {
+					message = "사업자 등록번호 형식이 올바르지 않습니다.";
+				}
 			}
-			compDocPath = request.getParameter("compDocPath"); // 사업자등록증
-			compName = request.getParameter("compName"); // 회사 이름
-			check = check && isValidNull(compName);
-			System.out.println("compName => " + compName + " : " + check);
-			if (!check) {
-				message = "회사 이름을 입력해 주세요.";
+			
+			if (request.getParameter("compDocPath") != null) {
+				compDocPath = request.getParameter("compDocPath"); // 사업자등록증
 			}
-			compTel = request.getParameter("compTel"); // 회사전화번호
-			check = check && isValidPhone(compTel);
-			System.out.println("compTel => " + compTel + " : " + check);
-			if (!check) {
-				message = "회사 전화 번호 형식이 올바르지 않습니다.";
+			
+			if (request.getParameter("compName") != null) {
+				compName = request.getParameter("compName"); // 회사 이름
+				check = check && isValidNull(compName);
+				System.out.println("compName => " + compName + " : " + check);
+				if (!check) {
+					message = "회사 이름을 입력해 주세요.";
+				}
 			}
-			compAddress = request.getParameter("compAddress"); // 회사주소
-			check = check && isValidNull(compAddress);
-			System.out.println("compAddress => " + compAddress + " : " + check);
-			if (!check) {
-				message = "회사 주소를 입력해 주세요.";
+
+			
+			if (request.getParameter("compTel") != null) {
+				compTel = request.getParameter("compTel"); // 회사전화번호
+				check = check && isValidPhone(compTel);
+				System.out.println("compTel => " + compTel + " : " + check);
+				if (!check) {
+					message = "회사 전화 번호 형식이 올바르지 않습니다.";
+				}
 			}
-			compAddDetail = request.getParameter("compAddDetail"); // 회사상세주소
-			System.out.println("compAddDetail => " + compAddDetail);
-			compZipcode = request.getParameter("compZipcode"); // 회사우편번호
-			check = check && isValidNull(compZipcode);
-			System.out.println("compZipcode => " + compZipcode + " : " + check);
-			if (!check) {
-				message = "회사 우편번호를 입력해 주세요.";
+			
+			if (request.getParameter("compAddress") != null) {
+				compAddress = request.getParameter("compAddress"); // 회사주소
+				check = check && isValidNull(compAddress);
+				System.out.println("compAddress => " + compAddress + " : " + check);
+				if (!check) {
+					message = "회사 주소를 입력해 주세요.";
+				}
 			}
+			
+			if (request.getParameter("compAddDetail") != null) {
+				compAddDetail = request.getParameter("compAddDetail"); // 회사상세주소
+				System.out.println("compAddDetail => " + compAddDetail);
+			}
+			
+			
+			if (request.getParameter("compZipcode") != null) {
+				compZipcode = request.getParameter("compZipcode"); // 회사우편번호
+				check = check && isValidNull(compZipcode);
+				System.out.println("compZipcode => " + compZipcode + " : " + check);
+				if (!check) {
+					message = "회사 우편번호를 입력해 주세요.";
+				}
+			}
+			
+			
+			
 			if (type.equalsIgnoreCase("M")) {
-				logo = request.getParameter("logo"); // 로고 경로 request
+				if (request.getParameter("logo") != null) {
+					logo = request.getParameter("logo"); // 로고 경로 request
+				}
+				
 			}
 
 		}
@@ -234,9 +274,7 @@ public class MemberAction extends NewsbankServletBase {
 				err = true;
 			}
 		}
-		if (cmd.equalsIgnoreCase("U")) {
-			err = true;
-		}
+		
 		return err;
 
 		/*
@@ -263,9 +301,7 @@ public class MemberAction extends NewsbankServletBase {
 				err = true;
 			}
 
-		} else if (cmd.equalsIgnoreCase("U")) {
-			err = true;
-		}
+		} 
 		return err;
 	}
 
@@ -278,9 +314,7 @@ public class MemberAction extends NewsbankServletBase {
 			if (m.matches()) {
 				err = true;
 			}
-		} else if (cmd.equalsIgnoreCase("U")) {
-			err = true;
-		}
+		} 
 
 		return err;
 	}
@@ -317,9 +351,9 @@ public class MemberAction extends NewsbankServletBase {
 		phone = request.getParameter("phone");
 		if (CertiNum != null && phone != null && !CertiNum.isEmpty() && !phone.isEmpty() && CertiNum.equalsIgnoreCase(getCertiNum) && phone.equalsIgnoreCase(getCertiphone)) {
 			err = true;
-		} else if (cmd.equalsIgnoreCase("U")) {
-			err = true;
-		}
+		} 
+		session.removeAttribute("sCertifyNumber");
+		session.removeAttribute("sCertifyPhone");
 
 		return err;
 	}

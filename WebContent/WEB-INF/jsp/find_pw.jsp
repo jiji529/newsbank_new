@@ -90,7 +90,7 @@
 					</div>
 				</fieldset>
 				<div class="wrap_btn2">
-					<button type="submit" class="btn_agree"">다음</button>
+					<button type="submit" class="btn_agree">다음</button>
 				</div>
 				<p class="find_link">
 					아이디를 모르시나요?

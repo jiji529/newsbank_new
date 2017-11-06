@@ -28,16 +28,15 @@ $(document).ready(function() {
 	function validPhone() {
 		var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
 		var phone = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
-		if ($('#frmFindId').find("[name=phone]").length > 0) {
-			$('#frmFindId').find("[name=phone]").val(phone);
+		if ($('form').find("[name=phone]").length > 0) {
+			$('form').find("[name=phone]").val(phone);
 		} else {
 			$('<input>').attr({
 				type : 'hidden',
 				name : 'phone',
 				value : phone
-			}).appendTo('#frmFindId');
+			}).appendTo('form');
 		}
-		console.log($("#phone2").val().length);
 		if ($("#phone2").val().length == 0) {
 			$("#phone2").focus();
 			return false;
@@ -132,6 +131,43 @@ $(document).ready(function() {
 		}
 
 	});
+	
+	
+	// form.join 패스워드 체크
+
+	function validPw() {
+		// password 입력을 받기 위한 정규식 6-16자리 영문, 숫자, 특수문자 조합
+		var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}/;
+		var pw = $("#pw").val();
+		var pw_check = $("#pw_check").val();
+		if (regex.test(pw) && pw.length > 0) {
+			$("#pw_message").css("display", "none");
+			if (pw != pw_check) {
+				$("#pw_check_message").css("display", "block");
+				$("#pw_check").focus();
+				return false;
+			} else {
+				$("#pw_check_message").css("display", "none");
+				return true;
+			}
+		} else {
+			$("#pw_message").css("display", "block");
+			$("#pw").focus();
+			return false;
+		}
+	}
+	// 비밀번호 입력 정규표현식 체크
+	$("#pw").change(function() {
+		return validPw();
+	});
+
+	// 비밀번호 입력 재확인 체크
+	$("#pw_check").change(function() {
+		return validPw()
+
+	});
+	
+	
 
 	$("#frmFindId").on("submit", function() {
 		var check = true;
@@ -156,6 +192,35 @@ $(document).ready(function() {
 		}
 		return false;
 	});
+	
+	$("#frmChangePw").on("submit", function() {
+		var check = true;
+
+		if (check) {
+			
+			$.ajax({
+				type : "post",
+				url : "/change.find",
+				data : $(this).serialize(),
+				dataType : "json",
+				success : function(data) {
+					if (data.success) {
+						alert(data.message);location.replace('/login');
+					}else{
+						alert(data.message);history.back(-1);
+					}
+					// alert(data);
+				},
+				error : function() {
+				}
+			});
+			
+			return false;
+		}
+		return false;
+	});
+	
+	
 });
 
 // list.find

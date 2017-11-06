@@ -84,8 +84,8 @@ public class SendSMS extends NewsbankServletBase {
 				certifyCount = (int) session.getAttribute("sCertifyCount") + 1;
 			}
 
-			if (certifyCount < 10) {
-				// 같은 세션에서 10회 이상 번호 인증 요청시 차단
+			if (certifyCount < 100) {
+				// 같은 세션에서 100회 이상 번호 인증 요청시 차단
 				session.setAttribute("sCertifyPhone", tel); // 핸드폰번호
 				session.setAttribute("sCertifyNumber", certifyNumber); // 랜덤 6자리
 				session.setAttribute("sCertifyCount", certifyCount); // 횟수

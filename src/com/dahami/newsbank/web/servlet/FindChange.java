@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
@@ -49,16 +51,53 @@ public class FindChange extends NewsbankServletBase {
 
 		String id = null;
 		String phone = null;
+		String pw = null;
+		
+		MemberDTO memberDTO = new MemberDTO(); // 객체 생성
+		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 
 		id = request.getParameter("id"); // 이름 request
+		phone = request.getParameter("phone"); // 전화번호 request
+		pw = request.getParameter("pw"); // 비밀번호 request
+
+		if (pw != null) {
+			response.setContentType("application/json;charset=UTF-8");
+			if (isValidPw(pw)) {
+				if (session.getAttribute("findMemberDTO") != null) {
+					
+					memberDTO = (MemberDTO) session.getAttribute("findMemberDTO");
+					memberDTO.setPw(pw);
+					result = memberDAO.updateMember(memberDTO); // 회원정보 요청
+					if(result) {
+						message = "수정되었습니다.";
+						//response.getWriter().append("<script type=\"text/javascript\">alert('수정되었습니다.');location.replace('/login');</script>").append(request.getContextPath());
+					}else {
+						message = "서버 오류\n고객센터에 문의해주시기 바랍니다.";
+						//response.getWriter().append("<script type=\"text/javascript\">alert('서버 오류\n고객센터에 문의해주시기 바랍니다.');history.back(-1);</script>").append(request.getContextPath());
+					}
+					session.removeAttribute("findMemberDTO");
+				}
+			} else {
+				message = "비밀번호 형식이 올바르지 않습니다.";
+			}
+			//response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');history.back(-1);</script>").append(request.getContextPath());
+			
+			
+			JSONObject json = new JSONObject();
+			json.put("success", result);
+			json.put("message", message);
+
+			response.getWriter().print(json);
+			
+			return;
+
+		}
+
 		check = check && isValidNull(id);
-		System.out.println("id => " + id + " : " + check);
 		if (!check) {
 			message = "아이디를 입력해 주세요.";
 		}
-		phone = request.getParameter("phone"); // 전화번호 request
 		check = check && isValidPhone(phone);
-		System.out.println("phone => " + phone + " : " + check);
 		if (!check) {
 			message = "휴대폰 번호 형식이 올바르지 않습니다.";
 		}
@@ -67,24 +106,27 @@ public class FindChange extends NewsbankServletBase {
 			message = "인증번호가 올바르지 않습니다.";
 		}
 
-		
+		System.out.println("id => " + id + " : " + check);
+		System.out.println("phone => " + phone + " : " + check);
+
 		if (check) {
-			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
-			MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
-			memberDTO.setName(id);
+			memberDTO.setId(id);
 			memberDTO.setPhone(phone);
 			memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
-			session.setAttribute("memberDTO", memberDTO);
-
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_pw_change.jsp");
-			dispatcher.forward(request, response);
+			if(memberDTO!=null) {
+				session.setAttribute("findMemberDTO", memberDTO);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_pw_change.jsp");
+				dispatcher.forward(request, response);
+			}else {
+				message = id+"의 회원정보를 찾을 수 없습니다.";
+				response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');history.back(-1);</script>").append(request.getContextPath());
+			}
+			
 		} else {
-			response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');location='/id.find';</script>").append(request.getContextPath());
+			response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');history.back(-1);</script>").append(request.getContextPath());
 
 		}
-		
-		
-		
+
 	}
 
 	/**
@@ -116,6 +158,8 @@ public class FindChange extends NewsbankServletBase {
 		if (CertiNum != null && phone != null && !CertiNum.isEmpty() && !phone.isEmpty() && CertiNum.equalsIgnoreCase(getCertiNum) && phone.equalsIgnoreCase(getCertiphone)) {
 			err = true;
 		}
+		session.removeAttribute("sCertifyNumber");
+		session.removeAttribute("sCertifyPhone");
 
 		return err;
 	}
@@ -139,6 +183,20 @@ public class FindChange extends NewsbankServletBase {
 			}
 		}
 
+		return err;
+	}
+
+	public static boolean isValidPw(String pw) {
+		boolean err = false;
+		String regex = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}";
+		if (pw != null && !pw.isEmpty()) {
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(pw);
+			if (m.matches()) {
+				err = true;
+			}
+
+		}
 		return err;
 	}
 

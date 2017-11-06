@@ -76,7 +76,7 @@ public class FindIdList extends NewsbankServletBase {
 			memberDTO.setName(name);
 			memberDTO.setPhone(phone);
 			listMember = memberDAO.listMember(memberDTO); // 회원정보 요청
-			session.setAttribute("listMember", listMember);
+			request.setAttribute("listMember", listMember);
 
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_id_list.jsp");
 			dispatcher.forward(request, response);
@@ -116,6 +116,8 @@ public class FindIdList extends NewsbankServletBase {
 		if (CertiNum != null && phone != null && !CertiNum.isEmpty() && !phone.isEmpty() && CertiNum.equalsIgnoreCase(getCertiNum) && phone.equalsIgnoreCase(getCertiphone)) {
 			err = true;
 		}
+		session.removeAttribute("sCertifyNumber");
+		session.removeAttribute("sCertifyPhone");
 
 		return err;
 	}
