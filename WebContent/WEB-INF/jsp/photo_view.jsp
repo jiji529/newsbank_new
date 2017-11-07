@@ -397,7 +397,7 @@
 						<dt>출력사이즈</dt>
 						<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
 						<dt>파일용량</dt>
-						<dd>${photoDTO.fileSizeMB}MB</dd>
+						<dd>${photoDTO.fileSize}MB</dd>
 						<dt>파일포맷</dt>
 						<dd>JPEG</dd>
 						<dt>해상도</dt>

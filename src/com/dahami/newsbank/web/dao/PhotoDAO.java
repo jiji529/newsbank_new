@@ -163,4 +163,114 @@ public class PhotoDAO extends DAOBase {
 		}
 	}
 	
+	/**
+	 * @methodName  : editorPhotoList
+	 * @author      : HOYADEV
+	 * @date        : 2017. 11. 07. 오전 08:46:35
+	 * @methodCommet: 에디터가 선정한 사진
+	 * @param param
+	 * @return 
+	 */
+	public List<PhotoDTO> editorPhotoList() {
+		SqlSession session = null;
+		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
+				
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("exhName", "에디터");
+			photoList = session.selectList("Photo.selectPhotoExh", param);
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return photoList;
+	}
+	
+	/**
+	 * @methodName  : downloadPhotoList
+	 * @author      : HOYADEV
+	 * @date        : 2017. 11. 07. 오전 08:46:35
+	 * @methodCommet: 다운로드별 인기사진
+	 * @param param
+	 * @return 
+	 */
+	public List<PhotoDTO> downloadPhotoList() {
+		SqlSession session = null;
+		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
+				
+		try {
+			session = sf.getSession();
+			photoList = session.selectList("Photo.selectDownloadRank");
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return photoList;
+	}
+	
+	/**
+	 * @methodName  : basketPhotoList
+	 * @author      : HOYADEV
+	 * @date        : 2017. 11. 07. 오전 08:46:35
+	 * @methodCommet: 찜별 인기사진
+	 * @param param
+	 * @return 
+	 */
+	public List<PhotoDTO> basketPhotoList() {
+		SqlSession session = null;
+		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
+				
+		try {
+			session = sf.getSession();
+			photoList = session.selectList("Photo.selectBasketRank");
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return photoList;
+	}
+	
+	/**
+	 * @methodName  : hitsPhotoList
+	 * @author      : HOYADEV
+	 * @date        : 2017. 11. 07. 오전 08:46:35
+	 * @methodCommet: 상세보기별 인기사진
+	 * @param param
+	 * @return 
+	 */
+	public List<PhotoDTO> hitsPhotoList() {
+		SqlSession session = null;
+		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
+				
+		try {
+			session = sf.getSession();
+			photoList = session.selectList("Photo.selectHitsRank");
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return photoList;
+	}
+	
 }

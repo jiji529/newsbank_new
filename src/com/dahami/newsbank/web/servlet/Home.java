@@ -18,6 +18,8 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.dahami.common.mybatis.MybatisSessionFactory;
 import com.dahami.common.mybatis.impl.MybatisService;
+import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 @WebServlet(urlPatterns = { "/home", "*.home" }, loadOnStartup = 1)
@@ -53,7 +55,10 @@ public class Home extends NewsbankServletBase {
 		if (MemberInfo != null) {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
-
+		
+		PhotoDAO photoDAO = new PhotoDAO();
+		List<PhotoDTO> photoList = photoDAO.editorPhotoList(); 
+		request.setAttribute("photoList", photoList);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
 		dispatcher.forward(request, response);

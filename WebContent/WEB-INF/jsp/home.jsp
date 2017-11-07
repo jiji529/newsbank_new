@@ -178,7 +178,33 @@
 						</li> -->
 					</ul>
 				</div>
+				
 				<div id="photo_ver" class="photo_cont img_ver">
+					<c:forEach items="${photoList}" var="photo">
+						<c:if test="${photo.widthCm < photo.heightCm}">
+							<div class="img_list">
+								<a href="#">
+									<img src="/list.down.photo?uciCode=${photo.uciCode}">
+								</a>
+							</div>
+						</c:if>					
+					</c:forEach>
+				</div>
+				
+				<div id="photo_hor" class="photo_cont img_hor">
+					<c:forEach items="${photoList}" var="photo">
+						<c:if test="${photo.widthCm > photo.heightCm}">
+							<div class="img_list">
+								<a href="#">
+									<img src="/list.down.photo?uciCode=${photo.uciCode}">
+								</a>
+							</div>
+						</c:if>
+					</c:forEach>
+				</div>
+				
+				
+				<!-- <div id="photo_ver" class="photo_cont img_ver">
 					<div class="img_list">
 						<a href="#">
 							<img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" />
@@ -216,7 +242,7 @@
 							<img src="http://www.newsbank.co.kr/datafolder/N0/2012/04/09/E004316655_P.jpg" />
 						</a>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			</section>
 			<!--엄선한사진-->
