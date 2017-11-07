@@ -70,95 +70,116 @@
 		<div class="table_head">
 			<h3>정산 정보 관리</h3>
 		</div>
-		<table class="tb01" cellpadding="0" cellspacing="0">
-			<colgroup>
-				<col style="width: 240px;">
-					<col style="width:;">
-			</colgroup>
-			<tbody>
-				<tr>
-					<th>매체명</th>
-					<td>
-						<select name="" class="inp_txt" style="width: 450px;">
-							<option value="010" selected="selected">선택해주세요.</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>입금 계좌</th>
-					<td>
-						<select name="" class="inp_txt" style="width: 120px;">
-							<option value="010" selected="selected">기업은행</option>
-						</select>
-						<input type="text" class="inp_txt" size="40" />
-						<a href="#" class="btn_input1">통장사본 업로드</a>
-						<a href="#" class="btn_input1">다운로드</a>
-					</td>
-				</tr>
-				<tr>
-					<th>계약기간</th>
-					<td>
-						<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
-							<span class=" bar">~</span>
-							<input type="text" size="12" class="inp_txt" value="2017-05-01" maxlength="10">
-								<div class="check">
-									<input type="checkbox" />
-									자동연장
-								</div>
-								<a href="#" class="btn_input1">계약서 업로드</a>
-								<a href="#" class="btn_input1">다운로드</a>
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<span class="ex">*</span>
-						정산 요율
-					</th>
-					<td>
-						<span class=" bar">온라인 결제</span>
-						<input type="text" size="5" class="inp_txt" value="" maxlength="3">
-							<span class=" bar">%</span>
-							<span class=" bar" style="margin-left: 20px;">후불 결제</span>
-							<input type="text" size="5" class="inp_txt" value="" maxlength="3">
+		<form id="frmMypage" action="/member.api" method="post">
+			<input type="hidden" name="cmd" value="U" />
+			<input type="hidden" id="type" name="type" value="${type}" />
+			<table class="tb01" cellpadding="0" cellspacing="0">
+				<colgroup>
+					<col style="width: 240px;">
+						<col style="width:;">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>매체명</th>
+						<td>
+							<select id="media" class="inp_txt" style="width: 450px;">
+								<option value="" selected="selected">선택해주세요.</option>
+								<option value="5">동아일보</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>입금 계좌</th>
+						<td>
+							<select name="" class="inp_txt" style="width: 120px;">
+								<option value="기업" >기업</option>
+								<option value="농협" >농협</option>
+								<option value="국민" >국민</option>
+								<option value="우리" >우리</option>
+								<option value="신한" >신한</option>
+								<option value="경남" >경남</option>
+								<option value="광주" >광주</option>
+								<option value="대구" >대구</option>
+								<option value="부산" >부산</option>
+								<option value="수협" >수협</option>
+								<option value="신협" >신협</option>
+								<option value="우체국" >우체국</option>
+								<option value="전북" >전북</option>
+								<option value="제주" >제주</option>
+								<option value="KEB하나" >KEB하나</option>
+								<option value="한국씨티" >한국씨티</option>
+								<option value="SC제일" >SC제일</option>
+							</select>
+							<input type="text" class="inp_txt" size="40" value="${MemberInfo.compBankAcc}" />
+							<a href="#" class="btn_input1">통장사본 업로드</a>
+							<a href="#" class="btn_input1">다운로드</a>
+						</td>
+					</tr>
+					<tr>
+						<th>계약기간</th>
+						<td>
+							<input type="text" size="12" class="inp_txt" value="${MemberInfo.contractStart}" maxlength="10">
+								<span class=" bar">~</span>
+								<input type="text" size="12" class="inp_txt" value="${MemberInfo.contractEnd}" maxlength="10">
+									<div class="check">
+										<input type="checkbox" />
+										자동연장
+									</div>
+									<a href="#" class="btn_input1">계약서 업로드</a>
+									<a href="#" class="btn_input1">다운로드</a>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<span class="ex">*</span>
+							정산 요율
+						</th>
+						<td>
+							<span class=" bar">온라인 결제</span>
+							<input type="text" size="5" class="inp_txt" value="${MemberInfo.preRate}" maxlength="3">
 								<span class=" bar">%</span>
-					</td>
-				</tr>
-				<tr>
-					<th>세금계산서 담당자</th>
-					<td>
-						<input type="text" class="inp_txt" size="60" />
-					</td>
-				</tr>
-				<tr>
-					<th>세금계산서 담당자 연락처</th>
-					<td>
-						<select name="" class="inp_txt" style="width: 70px;">
-							<option value="010" selected="selected">010</option>
-							<option value="011">011</option>
-							<option value="016">016</option>
-							<option value="017">017</option>
-							<option value="018">018</option>
-							<option value="019">019</option>
-						</select>
-						<span class=" bar">-</span>
-						<input type="text" id="celphone" size="5" class="inp_txt" value="1234" maxlength="4">
+								<span class=" bar" style="margin-left: 20px;">후불 결제</span>
+								<input type="text" size="5" class="inp_txt" value="${MemberInfo.postRate}" maxlength="3">
+									<span class=" bar">%</span>
+						</td>
+					</tr>
+					<tr>
+						<th>세금계산서 담당자</th>
+						<td>
+							<input type="text" class="inp_txt" size="60" value="${MemberInfo.taxName}" />
+						</td>
+					</tr>
+					<tr>
+						<th>세금계산서 담당자 연락처</th>
+						<td>
+							<select id="phone1" class="inp_txt" style="width: 70px;">
+								<option value="010" <c:if test="${phone1 eq '010'}">selected</c:if>>010</option>
+								<option value="011" <c:if test="${phone1 eq '011'}">selected</c:if>>011</option>
+								<option value="016" <c:if test="${phone1 eq '016'}">selected</c:if>>016</option>
+								<option value="017" <c:if test="${phone1 eq '017'}">selected</c:if>>017</option>
+								<option value="018" <c:if test="${phone1 eq '018'}">selected</c:if>>018</option>
+								<option value="019" <c:if test="${phone1 eq '019'}">selected</c:if>>019</option>
+							</select>
 							<span class=" bar">-</span>
-							<input type="text" id="celphone2" size="5" class="inp_txt" value="1234" maxlength="4" />
-					</td>
-				</tr>
-				<tr>
-					<th>세금계산서 담당자 이메일</th>
-					<td>
-						<input type="text" class="inp_txt" size="60" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<p class="ex_txt">*수정이 필요한 경우, 회사(02-593-4174) 또는 뉴스뱅크 서비스 담당자에게 연락 부탁드립니다.</p>
-		<div class="btn_area">
-			<a href="#" class="btn_input2">수정</a>
-			<a href="#" class="btn_input1">취소</a>
-		</div>
+							<input type="text" id="phone2" size="5" class="inp_txt" value="${phone2 }" maxlength="4">
+								<span class=" bar">-</span>
+							<input type="text" id="phone3" size="5" class="inp_txt" value="${phone3 }" maxlength="4" />
+						</td>
+					</tr>
+					<tr>
+						<th>세금계산서 담당자 이메일</th>
+						<td>
+							<input type="text" class="inp_txt" size="60" value="${MemberInfo.taxEmail}" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="ex_txt">*수정이 필요한 경우, 회사(02-593-4174) 또는 뉴스뱅크 서비스 담당자에게 연락 부탁드립니다.</p>
+			<div class="btn_area">
+				<a href="javascript:;" id="btnSubmit" class="btn_input2">수정</a>
+				<a href="javascript:location.reload();" class="btn_input1">취소</a>
+			</div>
+		</form>
 		</section>
 	</div>
 </body>

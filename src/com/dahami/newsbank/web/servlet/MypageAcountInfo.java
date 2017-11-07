@@ -53,6 +53,17 @@ public class MypageAcountInfo extends NewsbankServletBase {
 				request.setAttribute("type", MemberInfo.getType());
 				
 				request.setAttribute("MemberInfo", MemberInfo);
+				if (MemberInfo.getPhone() != null && MemberInfo.getPhone().length() >= 10) {
+					MemberInfo.setPhone(MemberInfo.getPhone().replaceAll("-", ""));
+					request.setAttribute("phone1", MemberInfo.getPhone().substring(0, 3));
+					if (MemberInfo.getPhone().length() == 11) {
+						request.setAttribute("phone2", MemberInfo.getPhone().substring(3, 7));
+					} else {
+						request.setAttribute("phone2", MemberInfo.getPhone().substring(3, 6));
+					}
+					request.setAttribute("phone3", MemberInfo.getPhone().substring(MemberInfo.getPhone().length() - 4, MemberInfo.getPhone().length()));
+
+				}
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_acount_info.jsp");
 				dispatcher.forward(request, response);

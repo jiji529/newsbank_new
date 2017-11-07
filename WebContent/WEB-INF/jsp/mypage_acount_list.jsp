@@ -41,7 +41,7 @@
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
 				<c:if test="${type eq 'M'}">
-					<li >
+					<li class="on">
 						<a href="/acount.mypage">정산 관리</a>
 					</li>
 					<li>
