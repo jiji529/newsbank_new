@@ -183,7 +183,7 @@
 					<c:forEach items="${photoList}" var="photo">
 						<c:if test="${photo.widthCm < photo.heightCm}">
 							<div class="img_list">
-								<a href="#">
+								<a href="/view.photo?uciCode=${photo.uciCode}">
 									<img src="/list.down.photo?uciCode=${photo.uciCode}">
 								</a>
 							</div>
@@ -195,54 +195,13 @@
 					<c:forEach items="${photoList}" var="photo">
 						<c:if test="${photo.widthCm > photo.heightCm}">
 							<div class="img_list">
-								<a href="#">
+								<a href="/view.photo?uciCode=${photo.uciCode}">
 									<img src="/list.down.photo?uciCode=${photo.uciCode}">
 								</a>
 							</div>
 						</c:if>
 					</c:forEach>
 				</div>
-				
-				
-				<!-- <div id="photo_ver" class="photo_cont img_ver">
-					<div class="img_list">
-						<a href="#">
-							<img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" />
-						</a>
-					</div>
-					<div class="img_list">
-						<a href="#">
-							<img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" />
-						</a>
-					</div>
-					<div class="img_list">
-						<a href="#">
-							<img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" />
-						</a>
-					</div>
-				</div>
-				<div id="photo_hor" class="photo_cont img_hor">
-					<div class="img_list">
-						<a href="#">
-							<img src="http://www.newsbank.co.kr/datafolder/N0/2010/08/30/E003394463_P.jpg" />
-						</a>
-					</div>
-					<div class="img_list">
-						<a href="#">
-							<img src="http://www.newsbank.co.kr/datafolder/A0/2009/06/22/E003319517_P.jpg" />
-						</a>
-					</div>
-					<div class="img_list">
-						<a href="#">
-							<img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" />
-						</a>
-					</div>
-					<div class="img_list">
-						<a href="#">
-							<img src="http://www.newsbank.co.kr/datafolder/N0/2012/04/09/E004316655_P.jpg" />
-						</a>
-					</div>
-				</div> -->
 			</div>
 			</section>
 			<!--엄선한사진-->
@@ -288,101 +247,83 @@
 					</ul>
 				</div>
 				<div class="popular_cont">
-					<div class="photo_cont img_ver">
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/N0/2010/08/30/E003394463_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/06/22/E003319517_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" />
-							</a>
-						</div>
+					<div id="photo_ver" class="photo_cont img_ver">
+						<c:forEach items="${downloadList}" var="down">
+							<c:if test="${down.widthCm < down.heightCm}">
+								<div class="img_list">
+									<a href="/view.photo?uciCode=${down.uciCode}">
+										<img src="/list.down.photo?uciCode=${down.uciCode}">
+									</a>
+								</div>
+							</c:if>					
+						</c:forEach>
 					</div>
-					<div class="photo_cont img_ver">
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" />
-							</a>
-						</div>
-					</div>
+					
+					<div id="photo_hor" class="photo_cont img_hor">
+						<c:forEach items="${downloadList}" var="down">
+							<c:if test="${down.widthCm > down.heightCm}">
+								<div class="img_list">
+									<a href="/view.photo?uciCode=${down.uciCode}">
+										<img src="/list.down.photo?uciCode=${down.uciCode}">
+									</a>
+								</div>
+							</c:if>
+						</c:forEach>
+					</div>			
 				</div>
 				
 				<div class="zzim_cont" style="display:none;">
-					<div class="photo_cont img_ver">
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/01/2007/07/27/E001523343_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/01/1987/06/09/E001879920_P.jpg" />
-							</a>
-						</div>
+					<div id="photo_ver" class="photo_cont img_ver">
+						<c:forEach items="${basketList}" var="basket">
+							<c:if test="${basket.widthCm < basket.heightCm}">
+								<div class="img_list">
+									<a href="/view.photo?uciCode=${basket.uciCode}">
+										<img src="/list.down.photo?uciCode=${basket.uciCode}">
+									</a>
+								</div>
+							</c:if>					
+						</c:forEach>
 					</div>
-					<div class="photo_cont img_ver">
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/N0/2010/08/30/E003394463_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/06/22/E003319517_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" />
-							</a>
-						</div>
+					
+					<div id="photo_hor" class="photo_cont img_hor">
+						<c:forEach items="${basketList}" var="basket">
+							<c:if test="${basket.widthCm > basket.heightCm}">
+								<div class="img_list">
+									<a href="/view.photo?uciCode=${basket.uciCode}">
+										<img src="/list.down.photo?uciCode=${basket.uciCode }" />
+									</a>
+								</div>
+							</c:if>
+						</c:forEach>
 					</div>
 				</div>
 				
 				<div class="hit_cont" style="display:none;">
-					<div class="photo_cont img_ver">
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/N0/2010/08/30/E003394463_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/06/22/E003319517_P.jpg" />
-							</a>
-						</div>
-						<div class="img_list">
-							<a href="#">
-								<img src="http://www.newsbank.co.kr/datafolder/A0/2009/04/30/E003307027_P.jpg" />
-							</a>
-						</div>
+					<div id="photo_ver" class="photo_cont img_ver">
+						<c:forEach items="${hitsList}" var="hit">
+							<c:if test="${hit.widthCm < hit.heightCm}">
+								<div class="img_list">
+									<a href="/view.photo?uciCode=${hit.uciCode}">
+										<img src="/list.down.photo?uciCode=${hit.uciCode}">
+									</a>
+								</div>
+							</c:if>					
+						</c:forEach>
 					</div>
-					<div class="photo_cont img_ver">
-						
+					
+					<div id="photo_hor" class="photo_cont img_hor">
+						<c:forEach items="${hitsList}" var="hit">
+							<c:if test="${hit.widthCm > hit.heightCm}">
+								<div class="img_list">
+									<a href="/view.photo?uciCode=${hit.uciCode}">
+										<img src="/list.down.photo?uciCode=${hit.uciCode}">
+									</a>
+								</div>
+							</c:if>
+						</c:forEach>
 					</div>
 				</div>
+				
 			</div>
 			</section>
 			<!--인기사진-->

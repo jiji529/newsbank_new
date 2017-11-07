@@ -57,8 +57,15 @@ public class Home extends NewsbankServletBase {
 		}
 		
 		PhotoDAO photoDAO = new PhotoDAO();
-		List<PhotoDTO> photoList = photoDAO.editorPhotoList(); 
+		List<PhotoDTO> photoList = photoDAO.editorPhotoList();
+		List<PhotoDTO> downloadList = photoDAO.downloadPhotoList();
+		List<PhotoDTO> basketList = photoDAO.basketPhotoList();
+		List<PhotoDTO> hitsList = photoDAO.hitsPhotoList();
+		
 		request.setAttribute("photoList", photoList);
+		request.setAttribute("downloadList", downloadList);
+		request.setAttribute("basketList", basketList);
+		request.setAttribute("hitsList", hitsList);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
 		dispatcher.forward(request, response);
