@@ -353,14 +353,33 @@ $(document).ready(function() {
 	$("#tbBuyList a").each(function() {
 		var a = $(this);
 		a.on("click",function(){
+			console.log(a);
 			var form = $('<form></form>');
 		     form.attr('action', '/buy.mypage');
 		     form.attr('method', 'post');
 		     form.appendTo(a);
-		     var idx = $('<input type="hidden" value="'+a.text()+'" name="order">');
+		     var idx = $('<input type="hidden" value="'+a.text()+'" name="LGD_OID">');
 		     form.append(idx);
 		     form.submit();
 
 		});
 	});
 });
+
+
+//buy.mypage
+$(document).ready(function() {
+	/** 개별 다운로드 */
+	$(".btn_group [name=btn_down]").on("click", function() {
+		var uciCode = $(this).parent().parent().find("div span:first").text();
+		var imgPath = $(this).parent().parent().find("a img").attr("src");
+		
+		var link = document.createElement("a");
+	   /* link.download = uciCode;
+	    link.href = imgPath;
+	    link.click();*/
+	});
+
+});
+
+

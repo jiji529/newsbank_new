@@ -13,6 +13,8 @@
   2017. 10. 16.   hoyadev        info.mypage
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -55,30 +57,23 @@
 	});
 </script>
 </head>
-<%
-	String type = (String) request.getAttribute("type");
-%>
+
 <body>
 	<div class="wrap">
-		<%@include file="header.jsp" %>
+		<%@include file="header.jsp"%>
 		<section class="mypage" id="info_table">
 			<div class="head">
 				<h2>마이페이지</h2>
 				<div class="mypage_ul">
 					<ul class="mp_tab1">
-						<%
-							if (type.equals("M")) {
-								//임시
-						%>
-						<li>
-							<a href="/acount.mypage">정산 관리</a>
-						</li>
-						<li>
-							<a href="/cms">사진 관리</a>
-						</li>
-						<%
-							}
-						%>
+						<c:if test="${type eq 'M'}">
+							<li>
+								<a href="/acount.mypage">정산 관리</a>
+							</li>
+							<li>
+								<a href="/cms">사진 관리</a>
+							</li>
+						</c:if>
 						<li>
 							<a href="/info.mypage">회원정보 관리</a>
 						</li>
@@ -114,14 +109,14 @@
 							<tr>
 								<th>비밀번호 변경</th>
 								<td>
-									<input type="password" id="pw"  class="inp_txt" size="40" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)">
+									<input type="password" id="pw" class="inp_txt" size="40" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)">
 									<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
 								</td>
 							</tr>
 							<tr>
 								<th>비밀번호 재확인</th>
 								<td>
-									<input type="password" id="pw_check" class="inp_txt"  size="40" maxlength="16" placeholder="비밀번호 재확인">
+									<input type="password" id="pw_check" class="inp_txt" size="40" maxlength="16" placeholder="비밀번호 재확인">
 									<p class="txt_message" id="pw_check_message" style="display: none;">비밀번호가 일치하지 않습니다.</p>
 								</td>
 							</tr>
@@ -158,7 +153,7 @@
 										<a href="javascrpit:;" id="phone_certify" class="btn_input2">인증번호 요청</a>
 										<div class="">
 											<span class="edit_phone_txt">인증번호 입력</span>
-											<input type="text" size="40" id="certify_number" name="CertiNum"  class="inp_txt" value="" maxlength="6" />
+											<input type="text" size="40" id="certify_number" name="CertiNum" class="inp_txt" value="" maxlength="6" />
 											<a href="javascrpit:;" id="certify_submit" class="btn_input1">확인</a>
 										</div>
 										<p class="txt_message" id="phone_message" style="display: none;">형식이 올바르지 않은 휴대폰 번호입니다.</p>
@@ -170,14 +165,12 @@
 							<tr>
 								<th>이메일</th>
 								<td>
-									<input type="text" id="email" name="email" class="inp_txt" size="80" value="${email}" required/>
+									<input type="text" id="email" name="email" class="inp_txt" size="80" value="${email}" required />
 								</td>
 							</tr>
 						</tbody>
 					</table>
-					<%
-						if (!type.equalsIgnoreCase("P")) {
-					%>
+					<c:if test="${type ne 'P'}">
 					<h4>법인 정보</h4>
 					<table class="tb01" cellpadding="0" cellspacing="0">
 						<colgroup>
@@ -188,7 +181,7 @@
 							<tr>
 								<th>회사/기관명</th>
 								<td>
-									<input type="text" id="compName" name="compName" class="inp_txt" size="60" value="${compName}" required/>
+									<input type="text" id="compName" name="compName" class="inp_txt" size="60" value="${compName}" required />
 								</td>
 							</tr>
 							<tr>
@@ -249,14 +242,12 @@
 										<a href="javascript:;" id="findAddress" class="btn_input1">수정</a>
 									</div>
 									<div class="my_addr">
-										<input type="text" id="compAddress" name="compAddress" class="inp_txt" size="55" value="${compAddress}" readonly  required />
+										<input type="text" id="compAddress" name="compAddress" class="inp_txt" size="55" value="${compAddress}" readonly required />
 										<input type="text" id="compAddDetail" name="compAddDetail" class="inp_txt" size="55" value="${compAddDetail}" />
 									</div>
 								</td>
 							</tr>
-							<%
-								if (type.equalsIgnoreCase("M")) {
-							%>
+							<c:if test="${type eq 'M'}">
 							<tr>
 								<th>정산 매체</th>
 								<td>
@@ -268,20 +259,16 @@
 									<a class="file_del">파일 삭제</a>
 								</td>
 							</tr>
-							<%
-								}
-							%>
+							</c:if>
 						</tbody>
 					</table>
-					<%
-						}
-					%>
+					</c:if>
 					<div class="btn_area">
 						<a href="javascript:;" id="btnSubmit" class="btn_input2">수정</a>
 						<a href="javascript:location.reload();" class="btn_input1">취소</a>
 					</div>
 					<input type="hidden" name="cmd" value="U" />
-					<input type="hidden" id="type" name="type" value="<%=type%>" />
+					<input type="hidden" id="type" name="type" value="${type}" />
 				</form>
 			</div>
 		</section>

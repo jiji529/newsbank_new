@@ -13,6 +13,8 @@
   2017. 10. 16.   hoyadev        buy.mypage
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -109,7 +111,7 @@
 				<li>
 					<a href="/cart.myPage">장바구니</a>
 				</li>
-				<li>
+				<li class="on">
 					<a href="/buylist.mypage">구매내역</a>
 				</li>
 			</ul>
@@ -120,7 +122,7 @@
 		<section id="order_list">
 		<div class="calculate_info_area">
 			주문번호 :
-			<span class="color">ADMIN_20160616142752</span>
+			<span class="color">${paymentManageDTO.LGD_OID }</span>
 		</div>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03">
 			<colgroup>
@@ -136,68 +138,104 @@
 				<th scope="col">가상계좌번호</th>
 			</tr>
 			<tr>
-				<td>
-					<a href="my14.html">무통장입금</a>
-				</td>
-				<td>입금완료</td>
-				<td>daham2016061614285098825</td>
-				<td>[신한] 63790118761202</td>
+				<td>${paymentManageDTO.LGD_PAYTYPE }</td>
+				<td>${paymentManageDTO.LGD_RESPMSG }</td>
+				<td>${paymentManageDTO.LGD_TID }</td>
+				<td>[${paymentManageDTO.LGD_FINANCENAME }] ${paymentManageDTO.LGD_ACCOUNTNUM }</td>
 			</tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" class="tb02">
 			<colgroup>
-				<col width="150">
-					<col width="100">
+				<col width="100">
+					<col>
 						<col width="120">
-							<col width="100">
-								<col width="60">
+							<col width="60">
+								<col width="200">
 									<col width="100">
-										<col width="100">
-											<col width="100">
-												<col width="100">
-													<col width="200">
 			</colgroup>
 			<thead>
 				<tr>
-					<th>상품이미지</th>
 					<th>카테고리</th>
-					<th>상품코드</th>
+					<th>구매 이미지 정보</th>
 					<th>콘텐츠가격</th>
 					<th>파일</th>
-					<th>구분</th>
-					<th>상세</th>
-					<th>용도</th>
-					<th>기간</th>
 					<th>다운로드 기간</th>
+					<th>다운로드 횟수</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>
-						<a href="view.html">
-							<img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" />
-						</a>
-					</td>
-					<td>보도사진</td>
-					<td>E006203286</td>
-					<td>\88,000</td>
-					<td>jpg</td>
-					<td>기록사진</td>
-					<td>인쇄매체</td>
-					<td>단행본,잡지내지</td>
-					<td>1년 이내</td>
-					<td>
-						2016-08-04 10:29:19~
-						<br />
-						2016-08-05 10:29:19
-					</td>
-				</tr>
+				<c:forEach items="${paymentManageDTO.paymentDetailList}" var="paymentDetailList">
+					<tr>
+						<c:choose>
+							<c:when test="${paymentDetailList.photoDTO.ownerType eq 'M'}">
+								<td>보도사진</td>
+							</c:when>
+							<c:when test="${paymentDetailList.photoDTO.ownerType eq 'P'}">
+								<td>개인</td>
+							</c:when>
+							<c:when test="${paymentDetailList.photoDTO.ownerType eq 'C'}">
+								<td>제휴업체</td>
+							</c:when>
+							<c:when test="${paymentDetailList.photoDTO.ownerType eq 'S'}">
+								<td>다하미</td>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
+						<td>
+							<div class="cart_item">
+								<div class="thumb">
+									<a href="/view.cms?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
+										<img src="/list.down.photo?uciCode=${paymentDetailList.photo_uciCode }">
+									</a>
+								</div>
+								<div class="cart_info">
+									<a href="/view.cms?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
+										<div class="brand">${paymentDetailList.photoDTO.copyright }</div>
+										<div class="code">${paymentDetailList.photo_uciCode }</div>
+									</a>
+									<div class="option_area">
+										<ul class="opt_li">
+											<li>${paymentDetailList.usageDTO.usage }</li>
+											<li>${paymentDetailList.usageDTO.division1 }</li>
+											<li>${paymentDetailList.usageDTO.division2 }</li>
+											<li>${paymentDetailList.usageDTO.division3 }</li>
+											<c:if test="${!empty paymentDetailList.usageDTO.division4}">
+												<li>${paymentDetailList.usageDTO.division4 }</li>
+											</c:if>
+											<li>${paymentDetailList.usageDTO.usageDate }</li>
+										</ul>
+									</div>
+								</div>
+								<div class="message">상세용도 : 상세용도 표시되는 영역인데 이번에는 빼고 간대요. 영역 잡아만 놓을게요.</div>
+							</div>
+							</a>
+						</td>
+						<td>${paymentDetailList.price }</td>
+						<td>jpg</td>
+						<td>
+							${paymentDetailList.downStart }~
+							<br />
+							${paymentDetailList.downEnd }
+						</td>
+						<td>
+							${paymentDetailList.downCount }회
+							<br />
+							<div class="btn_group">
+								<button type="button" class="btn_o" name="btn_down">다운로드</button>
+								<button type="button" class="btn_g" name="btn_cancle">결제취소</button>
+								<!-- 다운로드 0일때만 가능-->
+							</div>
+						</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 			<tfoot>
-				<td colspan="10">합계 : \88,000</td>
+				<td colspan="10">합계 : ${paymentManageDTO.LGD_AMOUNT }</td>
 			</tfoot>
 		</table>
-		<a href="my13.html" class="mp_btn">목록</a> </section> </section>
+		<a href="buylist.mypage" class="mp_btn">목록</a> </section> </section>
 	</div>
 </body>
 </html>

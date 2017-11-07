@@ -13,6 +13,8 @@
   2017. 11. 1.   	  tealight        file_name
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -86,38 +88,38 @@
 			</div>
 			<div class="mypage_ul">
 				<ul class="mp_tab1">
-						<%
-							if (type.equals("M")) {
-								//임시
-						%>
-						<li>
-							<a href="/acount.mypage">정산 관리</a>
-						</li>
-						<li>
-							<a href="/cms">사진 관리</a>
-						</li>
-						<%
-							}
-						%>
-						<li>
-							<a href="/info.mypage">회원정보 관리</a>
-						</li>
-						<li>
-							<a href="/dibs.myPage">찜관리</a>
-						</li>
-						<li>
-							<a href="/cart.myPage">장바구니</a>
-						</li>
-						<li>
-							<a href="/buylist.mypage">구매내역</a>
-						</li>
-					</ul>
+					<%
+						if (type.equals("M")) {
+							//임시
+					%>
+					<li>
+						<a href="/acount.mypage">정산 관리</a>
+					</li>
+					<li>
+						<a href="/cms">사진 관리</a>
+					</li>
+					<%
+						}
+					%>
+					<li>
+						<a href="/info.mypage">회원정보 관리</a>
+					</li>
+					<li>
+						<a href="/dibs.myPage">찜관리</a>
+					</li>
+					<li>
+						<a href="/cart.myPage">장바구니</a>
+					</li>
+					<li>
+						<a href="/buylist.mypage">구매내역</a>
+					</li>
+				</ul>
 			</div>
 			<div class="table_head">
 				<h3>구매내역</h3>
 			</div>
 			<section id="order_list">
-				<table width="100%" id="" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top: 0;">
+				<table id="tbBuyList" width="100%" id="" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top: 0;">
 					<colgroup>
 						<col width="40">
 						<col>
@@ -132,15 +134,23 @@
 						<th scope="col">결제금액</th>
 						<th scope="col">결제상태</th>
 					</tr>
-					<tr>
-						<td>1</td>
-						<td>
-							<a href="/buy.mypage">admin_20160616142752</a>
-						</td>
-						<td>무통장입금</td>
-						<td>\88,000</td>
-						<td>입금완료</td>
-					</tr>
+					<c:forEach items="${listPaymentManage}" var="paymentManage" varStatus="loop">
+						<tr>
+							<td>${loop.index+1}</td>
+							<td>
+								<a href="javascript:;">${paymentManage.LGD_OID }</a>
+							</td>
+							<td>${paymentManage.LGD_PAYTYPE}</td>
+							<td>${paymentManage.LGD_AMOUNT}</td>
+							<td>${paymentManage.LGD_RESPMSG}</td>
+						</tr>
+					</c:forEach>
+					<c:if test="${fn:length(listPaymentManage) == 0}">
+						<tr>
+							<td colspan="5">구매 내역이 없습니다.</td>
+							
+						</tr>
+					</c:if>
 				</table>
 			</section>
 		</section>

@@ -45,6 +45,6 @@
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/BookmarkMapper.xml" />
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/CartMapper.xml" />
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/UsageMapper.xml" />
-		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/PaymentManageMapper.xml" />
+		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/PaymentMapper.xml" />
 	</mappers>
 </configuration>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="payment">
+	<!-- 결제 정보 목록 호출 -->
+	<select id="selectPaymentManage" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
+		resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
+		SELECT `seq`, `member_seq`, `LGD_BUYER`, `LGD_BUYERID`,
+		`LGD_BUYERPHONE`, `LGD_RESPCODE`, `LGD_RESPMSG`, `LGD_OID`,
+		`LGD_AMOUNT`, `LGD_TID`, `LGD_PAYTYPE`, `LGD_PAYDATE`,
+		`LGD_PRODUCTINFO`, `LGD_ACCOUNTNUM`, `regDate` FROM `paymentManage`
+		where `member_seq` = #{member_seq}
+		<if test="LGD_OID !=null">
+			AND LGD_OID = #{LGD_OID}
+		</if>
+
+	</select>
+
+
+
+	<!-- 결제 정보 상세 호출 -->
+	<select id="selectPaymentDetail" resultMap="paymentManageResult">
+		SELECT M.`seq` as `paymentManage_seq`,
+		M.`member_seq`, M.`LGD_BUYER`,
+		M.`LGD_BUYERID`,
+		M.`LGD_BUYERPHONE`, M.`LGD_RESPCODE`,
+		M.`LGD_RESPMSG`,
+		M.`LGD_OID`,
+		M.`LGD_AMOUNT`, M.`LGD_TID`,
+		M.`LGD_PAYTYPE`,
+		M.`LGD_PAYDATE`,
+		M.`LGD_PRODUCTINFO`, M.`LGD_FINANCENAME`,
+		M.`LGD_ACCOUNTNUM`,
+		M.`regDate`,
+		D.`seq` as `paymentDetail_seq`,
+		D.`usageList_seq`,
+		D.`photo_uciCode`, D.`price`,
+		D.`downStart`,
+		D.`downEnd`, D.`downCount`,
+		U.`seq` as `usageList_seq`,
+		U.`usage`,
+		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
+		U.`usageDate`, U.`price`,
+		P.`uciCode`, P.`copyright`, P.`ownerType`
+		FROM
+		`paymentManage`
+		AS M
+		LEFT JOIN
+		paymentDetail D ON M.seq =
+		D.paymentManage_seq
+		LEFT JOIN
+		usageList U ON
+		U.seq = D.usageList_seq
+		LEFT
+		JOIN photo P ON P.uciCode =
+		D.photo_uciCode
+		where
+		M.`member_seq` =
+		#{member_seq}
+		<if test="LGD_OID !=null"> AND M.LGD_OID
+			= #{LGD_OID}
+		</if>
+	</select>
+	<!-- 결제 정보 호출 Result -->
+	<resultMap id="paymentManageResult" type="com.dahami.newsbank.web.dto.PaymentManageDTO">
+		<id property="paymentManage_seq" column="paymentManage_seq" />
+		<result property="member_seq" column="member_seq" />
+		<result property="LGD_BUYER" column="LGD_BUYER" />
+		<result property="LGD_BUYERID" column="LGD_BUYERID" />
+		<result property="LGD_BUYERPHONE" column="LGD_BUYERPHONE" />
+		<result property="LGD_RESPCODE" column="LGD_RESPCODE" />
+		<result property="LGD_RESPMSG" column="LGD_RESPMSG" />
+		<result property="LGD_OID" column="LGD_OID" />
+		<result property="LGD_AMOUNT" column="LGD_AMOUNT" />
+		<result property="LGD_TID" column="LGD_TID" />
+		<result property="LGD_PAYTYPE" column="LGD_PAYTYPE" />
+		<result property="LGD_PAYDATE" column="LGD_PAYDATE" />
+		<result property="LGD_PRODUCTINFO" column="LGD_PRODUCTINFO" />
+		<result property="LGD_FINANCENAME" column="LGD_FINANCENAME" />
+		<result property="LGD_ACCOUNTNUM" column="LGD_ACCOUNTNUM" />
+		<result property="regDate" column="regDate" />
+		<collection property="paymentDetailList"
+			ofType="com.dahami.newsbank.web.dto.PaymentDetailDTO" resultMap="paymentDetailResult" />
+	</resultMap>
+
+	<!-- 결제 상세 정보 호출 Result -->
+	<resultMap id="paymentDetailResult" type="com.dahami.newsbank.web.dto.PaymentDetailDTO">
+		<id property="paymentDetail_seq" column="paymentDetail_seq" />
+		<result property="paymentManage_seq" column="paymentManage_seq" />
+		<result property="usageList_seq" column="usageList_seq" />
+		<result property="photo_uciCode" column="photo_uciCode" />
+		<result property="price" column="price" />
+		<result property="downStart" column="downStart" />
+		<result property="downEnd" column="downEnd" />
+		<result property="downCount" column="downCount" />
+		<association property="usageDTO" column="usageList_seq"
+			javaType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageListResult" />
+		<association property="photoDTO" column="photo_uciCode"
+			javaType="com.dahami.newsbank.dto.PhotoDTO" resultMap="photoResult" />
+	</resultMap>
+
+	<resultMap id="usageListResult" type="com.dahami.newsbank.web.dto.UsageDTO">
+		<id property="usageList_seq" column="usageList_seq" />
+		<result property="usage" column="usage" />
+		<result property="division1" column="division1" />
+		<result property="division2" column="division2" />
+		<result property="division3" column="division3" />
+		<result property="division4" column="division4" />
+		<result property="usageDate" column="usageDate" />
+		<result property="price" column="price" />
+
+	</resultMap>
+
+
+	<resultMap id="photoResult" type="com.dahami.newsbank.dto.PhotoDTO">
+		<id property="uciCode" column="uciCode" />
+		<result property="copyright" column="copyright" />
+		<result property="ownerType" column="ownerType" />
+	</resultMap>
+
+
+	<!-- 결제정보 입력 -->
+	<insert id="insertPaymentMaange" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
+		useGeneratedKeys="true" keyProperty="seq">
+		INSERT INTO `paymentManage` (
+		member_seq
+		<if test="LGD_BUYER != null">, LGD_BUYER</if>
+		<if test="LGD_BUYERID != null">,LGD_BUYERID</if>
+		<if test="LGD_BUYERPHONE != null">, LGD_BUYERPHONE</if>
+		<if test="LGD_RESPCODE != null">, LGD_RESPCODE</if>
+		<if test="LGD_RESPMSG != null">, LGD_RESPMSG</if>
+		<if test="LGD_OID != null">, LGD_OID</if>
+		<if test="LGD_AMOUNT != null">, LGD_AMOUNT</if>
+		<if test="LGD_TID != null">, LGD_TID</if>
+		<if test="LGD_PAYTYPE != null">, LGD_PAYTYPE</if>
+		<if test="LGD_PAYDATE != null">, LGD_PAYDATE</if>
+		<if test="LGD_PRODUCTINFO != null">, LGD_PRODUCTINFO</if>
+		<if test="LGD_ACCOUNTNUM != null">, LGD_ACCOUNTNUM</if>
+		) values (
+		#{member_seq}
+		<if test="LGD_BUYER != null">, #{LGD_BUYER}</if>
+		<if test="LGD_BUYERID != null">, #{LGD_BUYERID}</if>
+		<if test="LGD_BUYERPHONE != null">, #{LGD_BUYERPHONE}</if>
+		<if test="LGD_RESPCODE != null">, #{LGD_RESPCODE}</if>
+		<if test="LGD_RESPMSG != null">, #{LGD_RESPMSG}</if>
+		<if test="LGD_OID != null">, #{LGD_OID}</if>
+		<if test="LGD_AMOUNT != null">, #{LGD_AMOUNT}</if>
+		<if test="LGD_TID != null">, #{LGD_TID}</if>
+		<if test="LGD_PAYTYPE != null">, #{LGD_PAYTYPE}</if>
+		<if test="LGD_PAYDATE != null">, #{LGD_PAYDATE}</if>
+		<if test="LGD_PRODUCTINFO != null">, #{LGD_PRODUCTINFO}</if>
+		<if test="LGD_ACCOUNTNUM != null">, #{LGD_ACCOUNTNUM}</if>
+		)
+	</insert>
+</mapper>

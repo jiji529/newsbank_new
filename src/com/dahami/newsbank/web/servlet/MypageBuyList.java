@@ -1,15 +1,20 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.dto.PaymentManageDTO;
 
 /**
  * Servlet implementation class MypageBuyList
@@ -51,6 +56,19 @@ public class MypageBuyList extends NewsbankServletBase {
 			} else {
 
 				request.setAttribute("type", MemberInfo.getType());
+				
+				
+				//selectPaymentManage
+				PaymentManageDTO paymentManageDTO = new PaymentManageDTO(); // 객체 생성
+				paymentManageDTO.setMember_seq(MemberInfo.getSeq());
+				
+				PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
+				List<PaymentManageDTO> listPaymentManage = new ArrayList<PaymentManageDTO>();
+				listPaymentManage = paymentDAO.listPaymentManage(paymentManageDTO); // 회원정보 요청
+				
+				request.setAttribute("listPaymentManage", listPaymentManage);
+				
+				
 
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_buy_list.jsp");
 				dispatcher.forward(request, response);

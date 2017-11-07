@@ -13,6 +13,8 @@
   2017. 10. 19.   	  tealight        file_name
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,12 +27,9 @@
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
 </head>
-<%
-	String type = (String) request.getAttribute("type");
-%>
 <body>
 	<div class="wrap">
-		<%@include file="header.jsp" %>
+		<%@include file="header.jsp"%>
 		<section class="mypage">
 		<div class="head">
 			<h2>마이페이지</h2>
@@ -38,19 +37,14 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<%
-					if (type.equals("M")) {
-						//임시
-				%>
-				<li>
-					<a href="/acount.mypage">정산 관리</a>
-				</li>
-				<li>
-					<a href="/cms">사진 관리</a>
-				</li>
-				<%
-					}
-				%>
+				<c:if test="${type eq 'M'}">
+					<li class="on">
+						<a href="/acount.mypage">정산 관리</a>
+					</li>
+					<li>
+						<a href="/cms">사진 관리</a>
+					</li>
+				</c:if>
 				<li>
 					<a href="/info.mypage">회원정보 관리</a>
 				</li>
@@ -65,11 +59,11 @@
 				</li>
 			</ul>
 			<ul class="mp_tab2">
-				<li class="on">
-					<a href="#">정산정보 관리</a>
+				<li>
+					<a href="/acount.mypage">정산정보 관리</a>
 				</li>
 				<li>
-					<a href="my07.html">정산 내역</a>
+					<a href="/acountlist.mypage">정산 내역</a>
 				</li>
 			</ul>
 		</div>

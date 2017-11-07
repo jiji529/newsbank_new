@@ -15,13 +15,13 @@ import com.dahami.newsbank.web.dto.MemberDTO;
  * Servlet implementation class MypageAuth
  */
 @WebServlet("/acount.mypage")
-public class MypageAcount extends NewsbankServletBase {
+public class MypageAcountInfo extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see NewsbankServletBase#NewsbankServletBase()
 	 */
-	public MypageAcount() {
+	public MypageAcountInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -52,9 +52,9 @@ public class MypageAcount extends NewsbankServletBase {
 			} else {
 				request.setAttribute("type", MemberInfo.getType());
 				
+				request.setAttribute("MemberInfo", MemberInfo);
 				
-				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_acount.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_acount_info.jsp");
 				dispatcher.forward(request, response);
 			}
 			
