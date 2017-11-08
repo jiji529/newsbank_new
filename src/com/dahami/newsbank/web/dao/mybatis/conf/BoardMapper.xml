@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Notice">
+	<select id="selectNoticeList" resultType="com.dahami.newsbank.web.dto.BoardDTO" parameterType="string">
+      	SELECT * FROM notice
+		<where>
+		    <if test = "value != null">
+				AND title LIKE '%${value}%' OR description LIKE '%${value}%'
+			</if>
+		</where>
+      	ORDER BY seq DESC
+	</select>
+	
+	<update id="hitNotice" parameterType="int">
+	    UPDATE 
+	    	notice SET hitCount = hitCount + 1 
+	    WHERE seq = #{seq} 
+	</update>
+</mapper>

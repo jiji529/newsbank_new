@@ -1,28 +1,33 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
+import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BoardDAO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.BoardDTO;
 
 /**
- * Servlet implementation class Board
+ * Servlet implementation class BoardJSON
  */
-@WebServlet("/board")
-public class Board extends NewsbankServletBase {
+@WebServlet("/boardJson")
+public class BoardJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see NewsbankServletBase#NewsbankServletBase()
      */
-    public Board() {
+    public BoardJSON() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,29 +37,29 @@ public class Board extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
-		String keyword = request.getParameter("keyword");
-		//String keyword = request.getParameter("keyword") == null ? "" : request.getParameter("keyword");
-		
-		BoardDAO boardDAO = new BoardDAO();
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    
+	    String keyword = request.getParameter("keyword");
+	    BoardDAO boardDAO = new BoardDAO();
 		List<BoardDTO> boardList = boardDAO.noticeList(keyword);
-		request.setAttribute("boardList", boardList);
 		
-		if(action.equals("hit")) {
-			int board_seq = Integer.parseInt(request.getParameter("board_seq"));
-			boardDAO.hitNotice(board_seq);
-			
-		}/*else if(action.equals("search")) {
-			String keyword = request.getParameter("keyword");
-			
-		}*/
+		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+		List<BoardDTO> list = (List<BoardDTO>) boardList;
+		for(BoardDTO dto : list){
+			try {
+				jsonList.add(dto.convertToMap());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		JSONObject json = new JSONObject();
+		json.put("result", jsonList);		
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/board.jsp");
-		dispatcher.forward(request, response);
+		response.getWriter().print(json);		
+	
+ 		request.setAttribute("jsonList", jsonList);
 	}
 
 	/**
