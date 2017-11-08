@@ -30,6 +30,7 @@ import com.dahami.newsbank.web.dao.PhotoDAO;
 public class DownloadService extends ServiceBase {
 
 	private static final String PATH_PHOTO_BASE = "/data/newsbank/serviceImages";
+	private static final String PATH_LOGO_BASE = "/data/newsbank/logo";
 	private static final String PATH_PHOTO_TEMP = "/data/newsbank/serviceTemp";
 	
 	private static final String URL_PHOTO_ERROR_LIST = "/images/error/list_image_processError.jpg";
@@ -48,56 +49,79 @@ public class DownloadService extends ServiceBase {
 	}
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		photoDao = new PhotoDAO();
-		PhotoDTO photo = photoDao.read(this.uciCode);
-		// 사진 정보가 없는 경우
-		if(photo == null) {
-			// 파일 부재(이미지 부재 / 오류) 이미지 전송
-			if(targetSize.equals("list")) {
-				response.sendRedirect(URL_PHOTO_ERROR_LIST);
-			}
-			else {
-				response.sendRedirect(URL_PHOTO_ERROR_VIEW);
-			}
-			return;
-		}
-		
-		String orgPath = null;
 		String downPath = null;
-		// 썸네일 / 뷰 이미지의 경우 서비스중인 이미지에 대해 모두 다운로드 가능함
-		if(targetSize.equals("list") || targetSize.equals("view")) {
-			if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {
-				orgPath = photo.getOriginPath();
-				if(targetSize.equals("list")) {
-					downPath = photo.getListPath();
+		
+		if(uciCode == null || uciCode.trim().length() == 0) {
+			if(targetSize.equals("logo")) {
+				String seq = request.getParameter("seq");
+				File fd = new File(PATH_LOGO_BASE + "/" + seq + ".jpg");
+				if(!fd.exists()) {
+					fd = new File(PATH_LOGO_BASE + "/" + seq + ".png");
+				}
+				
+				if(fd.exists()) {
+					downPath = fd.getAbsolutePath();
 				}
 				else {
-					downPath = photo.getViewPath();
+					// TODO 로고 만들어서 전송
+					logger.warn("구현필요");
+					downPath = PATH_LOGO_BASE + "/0.jpg";
 				}
 			}
-			else {
-				// 판매중이지 않은 경우에 대한 이미지 전송
+		}
+		else {
+			photoDao = new PhotoDAO();
+			PhotoDTO photo = photoDao.read(this.uciCode);
+			// 사진 정보가 없는 경우
+			if(photo == null) {
+				// 파일 부재(이미지 부재 / 오류) 이미지 전송
 				if(targetSize.equals("list")) {
-					response.sendRedirect(URL_PHOTO_STOP_LIST);
+					response.sendRedirect(URL_PHOTO_ERROR_LIST);
 				}
 				else {
-					response.sendRedirect(URL_PHOTO_STOP_VIEW);
+					response.sendRedirect(URL_PHOTO_ERROR_VIEW);
 				}
 				return;
 			}
-		}
-		// 구매한 이미지 다운로드
-		else if(targetSize.startsWith("service.")) {
-			// 보낼 이미지 동적으로 생성해서 downPath에 지정
-			System.out.println();
-		}
-		// 기타 다운로드?? 
-		else {
-			// 현재 대상이 되는 케이스 없음  / 향후 확장성을 위해
+			
+			String orgPath = null;
+			// 썸네일 / 뷰 이미지의 경우 서비스중인 이미지에 대해 모두 다운로드 가능함
+			if(targetSize.equals("list") || targetSize.equals("view")) {
+				if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {
+					orgPath = photo.getOriginPath();
+					if(targetSize.equals("list")) {
+						downPath = photo.getListPath();
+					}
+					else {
+						downPath = photo.getViewPath();
+					}
+				}
+				else {
+					// 판매중이지 않은 경우에 대한 이미지 전송
+					if(targetSize.equals("list")) {
+						response.sendRedirect(URL_PHOTO_STOP_LIST);
+					}
+					else {
+						response.sendRedirect(URL_PHOTO_STOP_VIEW);
+					}
+					return;
+				}
+			}
+			// 구매한 이미지 다운로드
+			else if(targetSize.startsWith("service.")) {
+				// 보낼 이미지 동적으로 생성해서 downPath에 지정
+				System.out.println();
+			}
+			// 기타 다운로드?? 
+			else {
+				// 현재 대상이 되는 케이스 없음  / 향후 확장성을 위해
+			}
+			if(downPath != null) {
+				downPath = PATH_PHOTO_BASE + downPath;
+			}
 		}
 		
 		if(downPath != null) {
-			downPath = PATH_PHOTO_BASE + downPath;
 			// 대상 파일이 없는경우 (썸네일/뷰 다운로드 요청에 대해서만) / 원본이 있으면 동적 생성 후 전송
 			if(!new File(downPath).exists() && (targetSize.equals("list") || targetSize.equals("view"))) {
 				// 파일 부재(이미지 부재 / 오류) 이미지 전송
@@ -129,7 +153,17 @@ public class DownloadService extends ServiceBase {
 			
 			if(new File(downPath).exists()) {
 				try {
-					sendImageFile(response, downPath, this.uciCode + "_" + targetSize + ".jpg");
+					if(targetSize.equals("logo")) {
+						sendImageFile(response, downPath);
+					}
+					else {
+						if(targetSize.equals("service")) {
+							sendImageFile(response, downPath, this.uciCode + ".jpg");
+						}
+						else {
+							sendImageFile(response, downPath);
+						}
+					}
 				}catch(Exception e) {
 					logger.warn("", e);
 				}
@@ -144,6 +178,10 @@ public class DownloadService extends ServiceBase {
 		}
 	}
 	
+	private void sendImageFile(HttpServletResponse response, String sendPath) throws IOException {
+		sendImageFile(response, sendPath, null);
+	}
+	
 	private void sendImageFile(HttpServletResponse response, String sendPath, String headerFileName) throws IOException {
 		// 디스크 읽기
 		long rStart = System.currentTimeMillis();
@@ -155,8 +193,10 @@ public class DownloadService extends ServiceBase {
 		response.addHeader("Expires", "0");
 		response.addHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.addHeader("Cache-Control", "private");
-		response.addHeader("Content-Type", "image/jpg");
-		response.addHeader("Content-Disposition", "attachment; filename=\""+headerFileName+"\";");
+		response.addHeader("Content-Type", "image/jpeg");
+		if(headerFileName != null) {
+			response.addHeader("Content-Disposition", "attachment; filename=\""+headerFileName+"\";");
+		}
 		response.addHeader("Content-Transfer-Encoding", "binary");
 		
 		ServletOutputStream sos = response.getOutputStream();
