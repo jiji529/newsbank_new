@@ -90,6 +90,10 @@
 		}
 	}
 	
+	function media_submit(media_form) {
+		$("#"+media_form).submit();
+	}
+	
 </script>
 </head>
 <body>
@@ -328,146 +332,16 @@
 				<h2>회원사 소개</h2>
 				<p>문구 수정.</p>
 				<ul class="media_list">
-					<li>
-						<a href="#">
-							<img src="images/media/p01.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p02.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p03.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p04.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p05.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p06.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p07.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p08.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p09.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p10.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p11.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p12.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p13.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p14.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p15.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p16.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p17.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p18.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p19.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p20.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p21.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p22.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p23.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p27.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p28.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p29.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p30.jpg" />
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<img src="images/media/p31.jpg" />
-						</a>
-					</li>
+					<c:forEach items="${mediaList}" var="member">
+						<form id="media_form_${member.seq}" name="media_form_${member.seq}" action="/photo" method="post">
+							<li>
+								<input type="hidden" name="seq" value="${member.seq}"/>
+								<a href="javascript:media_submit('media_form_${member.seq}')">
+									<img src="/logo.down.photo?seq=${member.seq}" />
+								</a>
+							</li>
+						</form>
+					</c:forEach>
 				</ul>
 			</div>
 			</section>

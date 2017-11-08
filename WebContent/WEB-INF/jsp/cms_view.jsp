@@ -267,7 +267,7 @@
 		</div>
 		<section class="view">
 			<div class="view_lt">
-				<h2 class="media_logo"><img src="images/view/logo.gif" alt="뉴시스" /></h2>
+				<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
 				<div class="img_area"><img src="/view.down.photo?uciCode=${photoDTO.uciCode}"/>
 					<div class="cont_area">
 						<h3 class="img_tit"><span class="uci">[${photoDTO.uciCode}]</span>ns696100264</h3>

@@ -353,7 +353,7 @@
 <body> 
 <div class="wrap">
 	<nav class="gnb_dark">
-		<div class="gnb"><a href="#" class="logo"></a>
+		<div class="gnb"><a href="/home" class="logo"></a>
 			<ul class="gnb_left">
 				<li class="on"><a href="/photo">보도사진</a></li>
 				<li><a href="#">뮤지엄</a></li>
@@ -375,7 +375,7 @@
 	<section class="view">
 		<div class="view_lt">
 			<div class="navi"></div>
-			<h2 class="media_logo"><img src="images/view/logo.gif" alt="뉴시스" /></h2>
+			<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
 			<div class="img_area"><img src="/view.down.photo?uciCode=${photoDTO.uciCode}" style="width:50%; height:50%"/>
 				<div class="cont_area">
 					<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>

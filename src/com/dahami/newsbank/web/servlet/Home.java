@@ -19,6 +19,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.dahami.common.mybatis.MybatisSessionFactory;
 import com.dahami.common.mybatis.impl.MybatisService;
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
@@ -57,15 +58,19 @@ public class Home extends NewsbankServletBase {
 		}
 		
 		PhotoDAO photoDAO = new PhotoDAO();
-		List<PhotoDTO> photoList = photoDAO.editorPhotoList();
-		List<PhotoDTO> downloadList = photoDAO.downloadPhotoList();
-		List<PhotoDTO> basketList = photoDAO.basketPhotoList();
-		List<PhotoDTO> hitsList = photoDAO.hitsPhotoList();
+		List<PhotoDTO> photoList = photoDAO.editorPhotoList(); // 보도사진
+		List<PhotoDTO> downloadList = photoDAO.downloadPhotoList(); // 다운로드
+		List<PhotoDTO> basketList = photoDAO.basketPhotoList(); // 찜
+		List<PhotoDTO> hitsList = photoDAO.hitsPhotoList(); // 상세보기
+		
+		MemberDAO memberDAO = new MemberDAO();
+		List<MemberDTO> mediaList = memberDAO.listActiveMedia();
 		
 		request.setAttribute("photoList", photoList);
 		request.setAttribute("downloadList", downloadList);
 		request.setAttribute("basketList", basketList);
 		request.setAttribute("hitsList", hitsList);
+		request.setAttribute("mediaList", mediaList);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
 		dispatcher.forward(request, response);

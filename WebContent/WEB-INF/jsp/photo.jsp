@@ -139,7 +139,6 @@
 	function search() {
 		var keyword = $("#keyword_current").val();
 		keyword = $.trim(keyword);
-
 		var pageNo = $("input[name=pageNo]").val();
 		var transPageNo = pageNo.match(/[0-9]/g).join("");
 		if(pageNo != transPageNo) {
@@ -216,11 +215,35 @@
 				<ul>
 					<li class="filter_title filter_ico">검색필터</li>
 					<li class="filter_title filter_media">
-						<span>매체 :전체</span>
-						<ul class="filter_list">
-							<li value="0" selected="selected">전체</li>
+						<c:if test="${seq eq '0'}">
+							<span>매체 :전체</span>
+						</c:if>
+						<c:if test="${seq ne '0'}">
+							<%-- <span>매체 :${seq}</span> --%>
 							<c:forEach items="${mediaList}" var="media">
-								<li value="${media.seq }">${media.name }</li>								
+								<c:if test="${seq eq media.seq}">
+									<span>매체 :${media.name}</span>
+								</c:if>
+							</c:forEach>
+						</c:if>
+						<ul class="filter_list">
+							<c:if test="${seq eq '0'}">
+								<li value="0" selected="selected">전체</li>
+							</c:if>
+							<c:if test="${seq ne '0'}">
+								<li value="0">전체</li>
+							</c:if>
+							
+							<c:forEach items="${mediaList}" var="media">
+							
+								<c:if test="${seq eq media.seq}">
+									<li value="${media.seq }" selected="selected">${media.name }</li>
+								</c:if>
+								
+								<c:if test="${seq ne media.seq}">
+									<li value="${media.seq }">${media.name }</li>
+								</c:if>
+																
 							</c:forEach>
 						</ul>
 					</li>
