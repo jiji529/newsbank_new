@@ -32,6 +32,11 @@ public class DownloadService extends ServiceBase {
 	private static final String PATH_PHOTO_BASE = "/data/newsbank/serviceImages";
 	private static final String PATH_PHOTO_TEMP = "/data/newsbank/serviceTemp";
 	
+	private static final String URL_PHOTO_ERROR_LIST = "/images/error/list_image_processError.jpg";
+	private static final String URL_PHOTO_ERROR_VIEW = "/images/error/view_image_processError.jpg";
+	private static final String URL_PHOTO_STOP_LIST = "/images/error/list_image_stopSale.jpg";
+	private static final String URL_PHOTO_STOP_VIEW = "/images/error/view_image_stopSale.jpg";
+	
 	private String targetSize;
 	private String uciCode;
 	
@@ -42,9 +47,20 @@ public class DownloadService extends ServiceBase {
 		this.uciCode = uciCode;
 	}
 	
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		photoDao = new PhotoDAO();
 		PhotoDTO photo = photoDao.read(this.uciCode);
+		// 사진 정보가 없는 경우
+		if(photo == null) {
+			// 파일 부재(이미지 부재 / 오류) 이미지 전송
+			if(targetSize.equals("list")) {
+				response.sendRedirect(URL_PHOTO_ERROR_LIST);
+			}
+			else {
+				response.sendRedirect(URL_PHOTO_ERROR_VIEW);
+			}
+			return;
+		}
 		
 		String orgPath = null;
 		String downPath = null;
@@ -60,34 +76,55 @@ public class DownloadService extends ServiceBase {
 				}
 			}
 			else {
-				// TODO 판매중이지 않은 경우에 대한 대응
-				System.out.println();
+				// 판매중이지 않은 경우에 대한 이미지 전송
+				if(targetSize.equals("list")) {
+					response.sendRedirect(URL_PHOTO_STOP_LIST);
+				}
+				else {
+					response.sendRedirect(URL_PHOTO_STOP_VIEW);
+				}
+				return;
 			}
 		}
 		// 구매한 이미지 다운로드
 		else if(targetSize.startsWith("service.")) {
 			// 보낼 이미지 동적으로 생성해서 downPath에 지정
+			System.out.println();
 		}
-		// 기타 다운로드?? / 현재 대상 없음
+		// 기타 다운로드?? 
 		else {
-			
+			// 현재 대상이 되는 케이스 없음  / 향후 확장성을 위해
 		}
 		
 		if(downPath != null) {
 			downPath = PATH_PHOTO_BASE + downPath;
 			// 대상 파일이 없는경우 (썸네일/뷰 다운로드 요청에 대해서만) / 원본이 있으면 동적 생성 후 전송
 			if(!new File(downPath).exists() && (targetSize.equals("list") || targetSize.equals("view"))) {
-				// 원본도 없는경우
-				if(!new File(orgPath).exists()) {
-					// TODO 파일 부재(이미지 부재 / 오류) 이미지 전송 후 종료
-					
-					return;
+				// 파일 부재(이미지 부재 / 오류) 이미지 전송
+				if(targetSize.equals("list")) {
+					response.sendRedirect(URL_PHOTO_ERROR_LIST);
 				}
-				// 원본이 있는경우
 				else {
-					// TODO 리사이즈 이미지 생성
-					System.out.println();
+					response.sendRedirect(URL_PHOTO_ERROR_VIEW);
 				}
+				return;
+				
+//				// 원본도 없는경우
+//				if(!new File(orgPath).exists()) {
+//					// 파일 부재(이미지 부재 / 오류) 이미지 전송
+//					if(targetSize.equals("list")) {
+//						response.sendRedirect(URL_PHOTO_ERROR_LIST);
+//					}
+//					else {
+//						response.sendRedirect(URL_PHOTO_ERROR_VIEW);
+//					}
+//					return;
+//				}
+//				// 원본이 있는경우
+//				else {
+//					// 리사이즈 이미지 생성
+//					System.out.println();
+//				}
 			}
 			
 			if(new File(downPath).exists()) {
@@ -99,7 +136,7 @@ public class DownloadService extends ServiceBase {
 			}
 			else {
 				// 보낼 이미지 없음
-				System.out.println();
+				System.out.print("");
 			}
 		}
 		else {
