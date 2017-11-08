@@ -90,8 +90,10 @@
 		}
 	}
 	
-	function media_submit(media_form) {
-		$("#"+media_form).submit();
+	function media_submit(member_seq) {
+		$("#seq").val(member_seq);
+		$("#keyword").val("");
+		search_form.submit();
 	}
 	
 </script>
@@ -152,6 +154,7 @@
 				<p>대한민국의 근현대사를 담은 26개 언론사의 보도사진을 만나보세요.</p>
 				<div class="search main_search">
 					<form class="search_form" method="post" action="/photo" name="search_form" >
+						<input type="hidden" id="seq" name="seq"/>
 						<div class="search_area">
 							<input type="text" class="search_bar"  id="keyword" name="keyword" placeholder="검색어를 입력해주세요." />
 							<a href="#" class="btn_search">검색</a>
@@ -333,14 +336,11 @@
 				<p>문구 수정.</p>
 				<ul class="media_list">
 					<c:forEach items="${mediaList}" var="member">
-						<form id="media_form_${member.seq}" name="media_form_${member.seq}" action="/photo" method="post">
-							<li>
-								<input type="hidden" name="seq" value="${member.seq}"/>
-								<a href="javascript:media_submit('media_form_${member.seq}')">
-									<img src="/logo.down.photo?seq=${member.seq}" />
-								</a>
-							</li>
-						</form>
+						<li>
+							<a href="#" onclick="media_submit('${member.seq}')">
+								<img src="/logo.down.photo?seq=${member.seq}" />
+							</a>
+						</li>
 					</c:forEach>
 				</ul>
 			</div>
