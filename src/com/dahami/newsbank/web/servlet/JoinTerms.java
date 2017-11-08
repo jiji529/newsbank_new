@@ -34,6 +34,7 @@ public class JoinTerms extends NewsbankServletBase {
 		request.setCharacterEncoding("UTF-8");
 
 		String type = request.getParameter("type"); // 회원 구분
+		request.setAttribute("type", type);
 
 		if (type == null) {
 			response.sendRedirect("/kind.join");

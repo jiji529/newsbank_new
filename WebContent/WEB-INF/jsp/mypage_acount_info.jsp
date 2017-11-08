@@ -82,9 +82,11 @@
 					<tr>
 						<th>매체명</th>
 						<td>
-							<select id="media" class="inp_txt" style="width: 450px;">
+							<select id="media" name="media" class="inp_txt" style="width: 450px;">
 								<option value="" selected="selected">선택해주세요.</option>
-								<option value="5">동아일보</option>
+								<c:forEach var="media" items="${mediaList}" >.
+									<option value="${media.seq}">${media.compName}</option>
+								</c:forEach>
 							</select>
 						</td>
 					</tr>
@@ -92,23 +94,23 @@
 						<th>입금 계좌</th>
 						<td>
 							<select name="" class="inp_txt" style="width: 120px;">
-								<option value="기업" >기업</option>
-								<option value="농협" >농협</option>
-								<option value="국민" >국민</option>
-								<option value="우리" >우리</option>
-								<option value="신한" >신한</option>
-								<option value="경남" >경남</option>
-								<option value="광주" >광주</option>
-								<option value="대구" >대구</option>
-								<option value="부산" >부산</option>
-								<option value="수협" >수협</option>
-								<option value="신협" >신협</option>
-								<option value="우체국" >우체국</option>
-								<option value="전북" >전북</option>
-								<option value="제주" >제주</option>
-								<option value="KEB하나" >KEB하나</option>
-								<option value="한국씨티" >한국씨티</option>
-								<option value="SC제일" >SC제일</option>
+								<option value="기업">기업</option>
+								<option value="농협">농협</option>
+								<option value="국민">국민</option>
+								<option value="우리">우리</option>
+								<option value="신한">신한</option>
+								<option value="경남">경남</option>
+								<option value="광주">광주</option>
+								<option value="대구">대구</option>
+								<option value="부산">부산</option>
+								<option value="수협">수협</option>
+								<option value="신협">신협</option>
+								<option value="우체국">우체국</option>
+								<option value="전북">전북</option>
+								<option value="제주">제주</option>
+								<option value="KEB하나">KEB하나</option>
+								<option value="한국씨티">한국씨티</option>
+								<option value="SC제일">SC제일</option>
 							</select>
 							<input type="text" class="inp_txt" size="40" value="${MemberInfo.compBankAcc}" />
 							<a href="#" class="btn_input1">통장사본 업로드</a>
@@ -163,7 +165,7 @@
 							<span class=" bar">-</span>
 							<input type="text" id="phone2" size="5" class="inp_txt" value="${phone2 }" maxlength="4">
 								<span class=" bar">-</span>
-							<input type="text" id="phone3" size="5" class="inp_txt" value="${phone3 }" maxlength="4" />
+								<input type="text" id="phone3" size="5" class="inp_txt" value="${phone3 }" maxlength="4" />
 						</td>
 					</tr>
 					<tr>

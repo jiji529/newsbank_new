@@ -317,9 +317,16 @@ $(document).ready(function() {
 	});
 
 	$("#btnSubmit").on("click", function() {
+		$('#frmMypage').submit();
+	});
+	
+	$('#frmMypage').on('submit',function(){
 		var type = $("#type").val();
 		var check = true;
-		check = check && validPw();
+		if ($('#frmMypage').find('[name=media]').size() > 0) {
+			check = check && validPw();
+		}
+
 		check = check && validName();
 		check = check && validPhone();
 		if (type != "P") {
@@ -352,34 +359,31 @@ $(document).ready(function() {
 $(document).ready(function() {
 	$("#tbBuyList a").each(function() {
 		var a = $(this);
-		a.on("click",function(){
+		a.on("click", function() {
 			console.log(a);
 			var form = $('<form></form>');
-		     form.attr('action', '/buy.mypage');
-		     form.attr('method', 'post');
-		     form.appendTo(a);
-		     var idx = $('<input type="hidden" value="'+a.text()+'" name="LGD_OID">');
-		     form.append(idx);
-		     form.submit();
+			form.attr('action', '/buy.mypage');
+			form.attr('method', 'post');
+			form.appendTo(a);
+			var idx = $('<input type="hidden" value="' + a.text() + '" name="LGD_OID">');
+			form.append(idx);
+			form.submit();
 
 		});
 	});
 });
 
-
-//buy.mypage
+// buy.mypage
 $(document).ready(function() {
 	/** 개별 다운로드 */
 	$(".btn_group [name=btn_down]").on("click", function() {
 		var uciCode = $(this).parent().parent().find("div span:first").text();
 		var imgPath = $(this).parent().parent().find("a img").attr("src");
-		
+
 		var link = document.createElement("a");
-	   /* link.download = uciCode;
-	    link.href = imgPath;
-	    link.click();*/
+		/*
+		 * link.download = uciCode; link.href = imgPath; link.click();
+		 */
 	});
 
 });
-
-

@@ -16,6 +16,7 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 //import com.oreilly.servlet.MultipartRequest;
 //import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.dahami.newsbank.web.service.CMSService;
 
 /**
  * Servlet implementation class MypageAuth
@@ -40,9 +41,14 @@ public class JoinForm extends NewsbankServletBase {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
-		session.invalidate(); //세션 삭제
 		String type = request.getParameter("type"); // 회원 구분
+		
+		request.setAttribute("type", type);
+		
+
+		CMSService cs = new CMSService(); //매체목록
+		cs.execute(request, response);
+		
 		if (type == null) {
 			response.sendRedirect("/kind.join");
 		} else {

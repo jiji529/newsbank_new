@@ -27,27 +27,31 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.dahami.newsbank.web.dto.BookmarkDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 public class MemberDAO extends DAOBase {
 
 	/**
-	 * @methodName  : listActiveMedia
-	 * @author      : JEON,HYUNGGUK
-	 * @date        : 2017. 11. 1. 오전 10:01:43
+	 * @methodName : listActiveMedia
+	 * @author : JEON,HYUNGGUK
+	 * @date : 2017. 11. 1. 오전 10:01:43
 	 * @methodCommet: 활성 매체사 리스트
-	 * @return 
-	 * @returnType  : List<MemberDTO>
+	 * @return
+	 * @returnType : List<MemberDTO>
 	 */
 	public List<MemberDTO> listActiveMedia() {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
 			return session.selectList("Member.listActiveMedia");
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.warn("", e);
 			return null;
-		}finally{
-			try{session.close();}catch(Exception e){}
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
 		}
 	}
 
@@ -72,15 +76,15 @@ public class MemberDAO extends DAOBase {
 		return memberInfo;
 
 	}
-	
+
 	public boolean selectId(MemberDTO memberDTO) {
 		SqlSession session = null;
 		boolean result = false;
 		try {
 
 			session = sf.getSession();
-			if((int)session.selectOne("Member.selectId", memberDTO) > 0) {
-				result =  true;
+			if ((int) session.selectOne("Member.selectId", memberDTO) > 0) {
+				result = true;
 			}
 
 		} catch (Exception e) {
@@ -95,28 +99,28 @@ public class MemberDAO extends DAOBase {
 
 		return result;
 	}
-	
-	public boolean insertMember(MemberDTO memberDTO ) {
+
+	public boolean insertMember(MemberDTO memberDTO) {
 		boolean result = false;
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-			if((int)session.selectOne("Member.selectId", memberDTO) > 0) {
-				result =  false;
-			}else {
+			if ((int) session.selectOne("Member.selectId", memberDTO) > 0) {
+				result = false;
+			} else {
 				session.insert("Member.insertMember", memberDTO);
-				
-				//회원가입시 기본 북마크 그룹 생성
+
+				// 회원가입시 기본 북마크 그룹 생성
 				Map<String, Object> bookmark = new HashMap<String, Object>();
 				bookmark.put("member_seq", memberDTO.getSeq());
 				bookmark.put("bookName", "기본그룹");
 				session.insert("Bookmark.insertBookmark", bookmark);
-				
-				result =  true;
+
+				result = true;
 			}
 			System.out.println(session);
 			session.commit();
-			//result = memberDTO.isMember();
+			// result = memberDTO.isMember();
 
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -127,21 +131,21 @@ public class MemberDAO extends DAOBase {
 			} catch (Exception e) {
 			}
 		}
-		System.out.println("insert("+memberDTO+") --> "+memberDTO.getEmail()); 
+		System.out.println("insert(" + memberDTO + ") --> " + memberDTO.getEmail());
 		System.out.println(memberDTO.getName());
 
 		return result;
 	}
-	
+
 	public boolean updateMember(MemberDTO memberDTO) {
 		boolean result = false;
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
 			session.update("Member.updateMember", memberDTO);
-			result =  true;
+			result = true;
 			session.commit();
-			//result = memberDTO.isMember();
+			// result = memberDTO.isMember();
 
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -152,21 +156,21 @@ public class MemberDAO extends DAOBase {
 			} catch (Exception e) {
 			}
 		}
-		System.out.println("insert("+memberDTO+") --> "+memberDTO.getEmail()); 
+		System.out.println("insert(" + memberDTO + ") --> " + memberDTO.getEmail());
 		System.out.println(memberDTO.getName());
 
 		return result;
 	}
-	
+
 	/**
-	 * @methodName  : listMember
-	 * @author      : Choi, SeongHyeon
-	 * @date        : 2017. 11. 3. 오전 10:01:43
+	 * @methodName : listMember
+	 * @author : Choi, SeongHyeon
+	 * @date : 2017. 11. 3. 오전 10:01:43
 	 * @methodCommet: 검색된 사용자 정보
-	 * @return 
-	 * @returnType  : List<MemberDTO>
+	 * @return
+	 * @returnType : List<MemberDTO>
 	 */
-	public List<MemberDTO> listMember (MemberDTO memberDTO) {
+	public List<MemberDTO> listMember(MemberDTO memberDTO) {
 		SqlSession session = null;
 		List<MemberDTO> memberList = new ArrayList<MemberDTO>();
 		try {
@@ -176,7 +180,7 @@ public class MemberDAO extends DAOBase {
 
 		} catch (Exception e) {
 			logger.warn("", e);
-		}  finally {
+		} finally {
 			try {
 				session.commit();
 				session.close();
@@ -186,25 +190,29 @@ public class MemberDAO extends DAOBase {
 
 		return memberList;
 	}
-	
+
 	/**
-	 * @methodName  : listAdjustMedia
-	 * @author      : JEON,HYUNGGUK
-	 * @date        : 2017. 11. 1. 오전 10:01:43
+	 * @methodName : listAdjustMedia
+	 * @author : JEON,HYUNGGUK
+	 * @date : 2017. 11. 1. 오전 10:01:43
 	 * @methodCommet: 정산 매체사 리스트
-	 * @return 
-	 * @returnType  : List<MemberDTO>
+	 * @return
+	 * @returnType : List<MemberDTO>
 	 */
 	public List<MemberDTO> listAdjustMedia(MemberDTO memberDTO) {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
 			return session.selectList("Member.listAdjustMedia", memberDTO);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.warn("", e);
 			return null;
-		}finally{
-			try{session.close();}catch(Exception e){}
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
 		}
 	}
+
 }

@@ -13,6 +13,8 @@
   2017. 10. 19.   	  tealight        file_name
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,9 +27,6 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript" src="js/join.js"></script>
 </head>
-<%
-	String type = request.getParameter("type"); // 회원 구분
-%>
 <body>
 	<div class="wrap">
 		<header>
@@ -48,7 +47,7 @@
 			</div>
 			<form id="frmJoin" name="frmJoin" action="/member.api" method="post">
 				<input type="hidden" name="cmd" value="C" />
-				<input type="hidden" name="type" value="<%=type%>" />
+				<input type="hidden" name="type" value="${type }" />
 				<fieldset class="fld_comm">
 					<legend class="blind">가입 정보</legend>
 					<div class="wrap_info">
@@ -134,108 +133,105 @@
 								</dd>
 							</dl>
 						</div>
-						<%
-							if (!type.equals("P")) {
-						%>
-						<!--여기부턴 기업회원-->
-						<div class="box_info">
-							<dl class="item_info">
-								<dt>소속/기관명</dt>
-								<dd>
-									<div class="inp">
-										<input type="text" id="compName" name="compName" placeholder="소속/기관명" required />
-									</div>
-								</dd>
-							</dl>
-							<dl class="item_info">
-								<dt>사업자등록번호</dt>
-								<dd>
-									<div class="inp num2">
-										<input type="text" id="compNum1" placeholder="" maxlength="3" style="width: 60px;" pattern="[0-9]*" title="숫자만 입력 하세요." required />
-										<span class=" bar">-</span>
-										<input type="text" id="compNum2" placeholder="" maxlength="2" style="width: 45px;" pattern="[0-9]*" title="숫자만 입력 하세요." required />
-										<span class=" bar">-</span>
-										<input type="text" id="compNum3" placeholder="" maxlength="5" style="width: 75px;" pattern="[0-9]*" title="숫자만 입력 하세요." required />
-									</div>
-									<p class="txt_message" id="compNum_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
-								</dd>
-								<!--언론사 회원한테만 파일첨부 창 보여주기-->
-								<dt>사업자등록증</dt>
-								<dd>
-									<div class="inp">
-										<input type="file" id="compDoc" name="compDoc" />
-									</div>
-								</dd>
-								<!--언론사 회원한테만 파일첨부 창 보여주기 여기까지-->
-							</dl>
-							<dl class="item_info">
-								<dt>회사 전화 번호</dt>
-								<dd class="inp_num">
-									<select id="compTel1" class="inp_txt" style="width: 85px;">
-										<option value="010" selected="selected">010</option>
-										<option value="011">011</option>
-										<option value="016">016</option>
-										<option value="017">017</option>
-										<option value="018">018</option>
-										<option value="019">019</option>
-									</select>
-									<span class=" bar">-</span>
-									<input type="text" id="compTel2" size="5" class="inp_txt" value="" maxlength="4" pattern="[0-9]*" title="숫자만 입력 하세요." required />
-									<span class=" bar">-</span>
-									<input type="text" id="compTel3" size="5" class="inp_txt" value="" maxlength="4" pattern="[0-9]*" title="숫자만 입력 하세요." required />
-								</dd>
-								<dd>
-									<p class="txt_message" id="compTel_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
-								</dd>
-							</dl>
-							<dl class="item_info">
-								<dt>회사 주소</dt>
-								<dd class="inp">
-									<div class="inp addr">
-										<input type="text" id="compZipcode" name="compZipcode" readonly required>
-										<button type="button" id="findAddress">주소찾기</button>
-									</div>
-								</dd>
-								<dd class="inp">
-									<div class="inp">
-										<input type="text" id="compAddress" name="compAddress" readonly required>
-									</div>
-								</dd>
-								<dd class="inp">
-									<div class="inp">
-										<input type="text" id="compAddDetail" name="compAddDetail" placeholder="상세주소를 입력하세요">
-									</div>
-								</dd>
-							</dl>
-						</div>
-						<%
-							}
-							if (type.equalsIgnoreCase("M")) {
-						%>
-						<!--여기부턴 언론사회원-->
-						<div class="box_info">
-							<dl class="item_info">
-								<dt>정산할 매체</dt>
-								<dd>
-									<div class="inp">
-										<select>
-											<option>서비스 중인 매체 중에서 선택</option>
+						<c:if test="${type ne 'P'}">
+							<!--여기부턴 기업회원-->
+							<div class="box_info">
+								<dl class="item_info">
+									<dt>소속/기관명</dt>
+									<dd>
+										<div class="inp">
+											<input type="text" id="compName" name="compName" placeholder="소속/기관명" required />
+										</div>
+									</dd>
+								</dl>
+								<dl class="item_info">
+									<dt>사업자등록번호</dt>
+									<dd>
+										<div class="inp num2">
+											<input type="text" id="compNum1" placeholder="" maxlength="3" style="width: 60px;" pattern="[0-9]*" title="숫자만 입력 하세요." required />
+											<span class=" bar">-</span>
+											<input type="text" id="compNum2" placeholder="" maxlength="2" style="width: 45px;" pattern="[0-9]*" title="숫자만 입력 하세요." required />
+											<span class=" bar">-</span>
+											<input type="text" id="compNum3" placeholder="" maxlength="5" style="width: 75px;" pattern="[0-9]*" title="숫자만 입력 하세요." required />
+										</div>
+										<p class="txt_message" id="compNum_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
+									</dd>
+									<!--언론사 회원한테만 파일첨부 창 보여주기-->
+									<dt>사업자등록증</dt>
+									<dd>
+										<div class="inp">
+											<input type="file" id="compDoc" name="compDoc" />
+										</div>
+									</dd>
+									<!--언론사 회원한테만 파일첨부 창 보여주기 여기까지-->
+								</dl>
+								<dl class="item_info">
+									<dt>회사 전화 번호</dt>
+									<dd class="inp_num">
+										<select id="compTel1" class="inp_txt" style="width: 85px;">
+											<option value="010" selected="selected">010</option>
+											<option value="011">011</option>
+											<option value="016">016</option>
+											<option value="017">017</option>
+											<option value="018">018</option>
+											<option value="019">019</option>
 										</select>
-									</div>
-								</dd>
-							</dl>
-							<dl class="item_info">
-								<dt>매체사 로고</dt>
-								<dd>
-									<div class="inp">
-										<input type="file" />
-									</div>
-								</dd>
-							</dl>
-						</div>
-						<%
-							}
-						%>
+										<span class=" bar">-</span>
+										<input type="text" id="compTel2" size="5" class="inp_txt" value="" maxlength="4" pattern="[0-9]*" title="숫자만 입력 하세요." required />
+										<span class=" bar">-</span>
+										<input type="text" id="compTel3" size="5" class="inp_txt" value="" maxlength="4" pattern="[0-9]*" title="숫자만 입력 하세요." required />
+									</dd>
+									<dd>
+										<p class="txt_message" id="compTel_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
+									</dd>
+								</dl>
+								<dl class="item_info">
+									<dt>회사 주소</dt>
+									<dd class="inp">
+										<div class="inp addr">
+											<input type="text" id="compZipcode" name="compZipcode" readonly required>
+											<button type="button" id="findAddress">주소찾기</button>
+										</div>
+									</dd>
+									<dd class="inp">
+										<div class="inp">
+											<input type="text" id="compAddress" name="compAddress" readonly required>
+										</div>
+									</dd>
+									<dd class="inp">
+										<div class="inp">
+											<input type="text" id="compAddDetail" name="compAddDetail" placeholder="상세주소를 입력하세요">
+										</div>
+									</dd>
+								</dl>
+							</div>
+						</c:if>
+						<c:if test="${type eq 'M'}">
+							<!--여기부턴 언론사회원-->
+							<div class="box_info">
+								<dl class="item_info">
+									<dt>정산할 매체</dt>
+									<dd>
+										<div class="inp">
+											<select id='meida' name='media'>
+												<option>서비스 중인 매체 중에서 선택</option>
+												<c:forEach var="media" items="${mediaList}">.
+									<option value="${media.seq}">${media.compName}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</dd>
+								</dl>
+								<dl class="item_info">
+									<dt>매체사 로고</dt>
+									<dd>
+										<div class="inp">
+											<input type="file" />
+										</div>
+									</dd>
+								</dl>
+							</div>
+						</c:if>
 					</div>
 				</fieldset>
 				<div class="wrap_btn">

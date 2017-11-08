@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.service.CMSService;
 
 /**
  * Servlet implementation class MypageAuth
@@ -64,6 +65,9 @@ public class MypageAcountInfo extends NewsbankServletBase {
 					request.setAttribute("phone3", MemberInfo.getPhone().substring(MemberInfo.getPhone().length() - 4, MemberInfo.getPhone().length()));
 
 				}
+				
+				CMSService cs = new CMSService(); //매체목록
+				cs.execute(request, response);
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_acount_info.jsp");
 				dispatcher.forward(request, response);

@@ -13,6 +13,8 @@
   2017. 10. 19.   	  tealight        file_name
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -22,9 +24,7 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script type="text/javascript" src="js/join.js"></script> 
 </head>
-<%
-String type = request.getParameter("type"); // 회원 구분
-%>
+
 <body>
 	<div class="wrap">
 		<header>
@@ -48,7 +48,7 @@ String type = request.getParameter("type"); // 회원 구분
 			</div>
 		</div>
 		<form id="frmJoinTerms" name="frmJoinTerms">
-		<input type="hidden" name="type" value="<%=type%>" />
+		<input type="hidden" name="type" value="${type }" />
 			<fieldset>
 				<legend class="blind">저작물 이용 약관 및 개인정보 처리방침에 대한 동의</legend>
 				<div class="join_box">
