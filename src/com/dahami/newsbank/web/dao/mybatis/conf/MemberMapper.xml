@@ -11,6 +11,11 @@
 		order by name asc
 	</select>
 
+	<select id="selMamberBySeq" parameterType="integer" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+		select * from member
+			where seq = #{seq}
+	</select>
+
 	<!-- 로그인 체크 및 비밀번호 찾기 -->
 	<select id="selectLogin" parameterType="com.dahami.newsbank.web.dto.MemberDTO"
 		resultType="com.dahami.newsbank.web.dto.MemberDTO">
