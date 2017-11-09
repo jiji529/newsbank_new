@@ -436,7 +436,8 @@
 </head>
 <body> 
 <div class="wrap">
-	<nav class="gnb_dark">
+	<%@include file="header.jsp" %>
+	<!-- <nav class="gnb_dark">
 		<div class="gnb"><a href="/home" class="logo"></a>
 			<ul class="gnb_left">
 				<li class="on"><a href="/photo">보도사진</a></li>
@@ -455,7 +456,7 @@
 				<a href="#" class="btn_search">검색</a>
 			</form>
 		</div>
-	</nav>
+	</nav> -->
 	<section class="view">
 		<div class="view_lt">
 			<div class="navi"></div>
@@ -507,14 +508,6 @@
 					<h3 class="info_tit">연관 사진</h3>
 					<div class="conn">
 						<ul class="cfix">
-							<!-- <li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a></li>
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001879920_P.jpg" /></a></li>
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E003307027_P.jpg" /></a></li>
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li> -->
 						</ul>
 						<div class="btn_conn">
 							<button class="in_prev">이전</button>
