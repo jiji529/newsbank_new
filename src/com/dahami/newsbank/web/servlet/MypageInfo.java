@@ -52,9 +52,8 @@ public class MypageInfo extends NewsbankServletBase {
 				// 이전에 my page 비밀번호 입력했는지 체크
 				response.sendRedirect("/auth.mypage");
 			} else {
-				request.setAttribute("id", MemberInfo.getId());
-				request.setAttribute("name", MemberInfo.getName());
-				request.setAttribute("phone", MemberInfo.getPhone());
+				request.setAttribute("MemberInfo", MemberInfo);
+				
 				if (MemberInfo.getPhone() != null && MemberInfo.getPhone().length() >= 10) {
 					MemberInfo.setPhone(MemberInfo.getPhone().replaceAll("-", ""));
 					request.setAttribute("phone1", MemberInfo.getPhone().substring(0, 3));
@@ -67,12 +66,7 @@ public class MypageInfo extends NewsbankServletBase {
 
 				}
 
-				request.setAttribute("email", MemberInfo.getEmail());
-
-				request.setAttribute("type", MemberInfo.getType());
 				/**** 사업자 및 언론사 ****/
-				request.setAttribute("compName", MemberInfo.getCompName());
-				request.setAttribute("compNum", MemberInfo.getCompNum());
 				if (MemberInfo.getCompNum() != null && MemberInfo.getCompNum().length() == 10) {
 					MemberInfo.setCompNum(MemberInfo.getCompNum().replaceAll("-", ""));
 					request.setAttribute("compNum1", MemberInfo.getCompNum().substring(0, 3));
@@ -80,7 +74,6 @@ public class MypageInfo extends NewsbankServletBase {
 					request.setAttribute("compNum3", MemberInfo.getCompNum().substring(MemberInfo.getCompNum().length() - 5, MemberInfo.getCompNum().length()));
 
 				}
-				request.setAttribute("compTel", MemberInfo.getCompTel());
 				if (MemberInfo.getCompTel() != null && MemberInfo.getCompTel().length() >= 9) {
 					MemberInfo.setCompTel(MemberInfo.getCompTel().replaceAll("-", ""));
 
@@ -110,20 +103,6 @@ public class MypageInfo extends NewsbankServletBase {
 					request.setAttribute("compTel3", MemberInfo.getCompTel().substring(MemberInfo.getCompTel().length() - 4, MemberInfo.getCompTel().length()));
 
 				}
-				request.setAttribute("logo", MemberInfo.getLogo());
-
-				request.setAttribute("compName", MemberInfo.getCompName());
-
-				request.setAttribute("compNum", MemberInfo.getCompNum());
-				request.setAttribute("compTel", MemberInfo.getCompTel());
-				request.setAttribute("compDocPath", MemberInfo.getCompDocPath());
-				request.setAttribute("compAddress", MemberInfo.getCompAddress());
-				request.setAttribute("compAddDetail", MemberInfo.getCompAddDetail());
-				request.setAttribute("compZipcode", MemberInfo.getCompZipcode());
-
-				request.setAttribute("compBankName", MemberInfo.getCompBankName());
-				request.setAttribute("compBankAcc", MemberInfo.getCompBankAcc());
-				request.setAttribute("compBankPath", MemberInfo.getCompBankPath());
 
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_info.jsp");
 				dispatcher.forward(request, response);

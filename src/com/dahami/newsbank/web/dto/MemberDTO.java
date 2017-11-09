@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author p153-1706
@@ -22,6 +23,7 @@ public class MemberDTO implements Serializable {
 	public static final String TYPE_COOP = "C";
 	private String type; // 타입 ( 매체사, 개인, 기업)
 	private String permission; // 권한
+	private String deferred; // 후불승인여부
 	private String compNum;// 사업자 등록 번호
 	private String compZipcode;// 우편번호
 	private String compDocPath; // 등록증 경로
@@ -46,9 +48,10 @@ public class MemberDTO implements Serializable {
 	
 	public static final int ACTIVATE_TRUE = 1;
 	public static final int ACTIVATE_FALSE = 2;
-	private int activate;
+	private String activate;
 	private int master_seq; // 마스터 시퀀스
 	private int group_seq; // 그룹 시퀀스
+	
 
 	/**
 	 * @comment 시퀀스
@@ -461,19 +464,19 @@ public class MemberDTO implements Serializable {
 		this.compZipcode = compZipcode;
 	}
 
-	public int getActivate() {
+	public String getActivate() {
 		return activate;
 	}
 
-	public void setActivate(int activate) {
+	public void setActivate(String activate) {
 		this.activate = activate;
 	}
 
 	public boolean isMember() {
-		if (this.getId()==null)
-			return false;
-		else
+		if (this.getSeq()>0)
 			return true;
+		else
+			return false;
 	}
 
 	public String getCompAddDetail() {
@@ -483,5 +486,14 @@ public class MemberDTO implements Serializable {
 	public void setCompAddDetail(String compAddDetail) {
 		this.compAddDetail = compAddDetail;
 	}
+
+	public String getDeferred() {
+		return deferred;
+	}
+
+	public void setDeferred(String deferred) {
+		this.deferred = deferred;
+	}
+
 
 }

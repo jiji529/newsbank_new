@@ -20,7 +20,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
@@ -33,13 +35,12 @@
 		<section class="mypage">
 		<div class="head">
 			<h2>마이페이지</h2>
-			<p>설명어쩌고저쩌고</p>
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<c:if test="${type eq 'M'}">
+				<c:if test="${MemberInfo.type eq 'M'}">
 					<li class="on">
-						<a href="/acount.mypage">정산 관리</a>
+						<a href="/account.mypage">정산 관리</a>
 					</li>
 					<li>
 						<a href="/cms">사진 관리</a>
@@ -60,10 +61,10 @@
 			</ul>
 			<ul class="mp_tab2">
 				<li>
-					<a href="/acount.mypage">정산정보 관리</a>
+					<a href="/account.mypage">정산정보 관리</a>
 				</li>
 				<li>
-					<a href="/acountlist.mypage">정산 내역</a>
+					<a href="/accountlist.mypage">정산 내역</a>
 				</li>
 			</ul>
 		</div>
@@ -72,7 +73,7 @@
 		</div>
 		<form id="frmMypage" action="/member.api" method="post">
 			<input type="hidden" name="cmd" value="U" />
-			<input type="hidden" id="type" name="type" value="${type}" />
+			<input type="hidden" id="type" name="type" value="M" />
 			<table class="tb01" cellpadding="0" cellspacing="0">
 				<colgroup>
 					<col style="width: 240px;">
@@ -82,9 +83,9 @@
 					<tr>
 						<th>매체명</th>
 						<td>
-							<select id="media" name="media" class="inp_txt" style="width: 450px;">
-								<option value="" selected="selected">선택해주세요.</option>
-								<c:forEach var="media" items="${mediaList}" >.
+							<select id="media" name="media_code" class="inp_txt" style="width: 450px;">
+								<option value="">선택해주세요.</option>
+								<c:forEach var="media" items="${mediaList}">.
 									<option value="${media.seq}">${media.compName}</option>
 								</c:forEach>
 							</select>
@@ -93,7 +94,8 @@
 					<tr>
 						<th>입금 계좌</th>
 						<td>
-							<select name="" class="inp_txt" style="width: 120px;">
+							<select name="compBankName" class="inp_txt" style="width: 120px;">
+								<option value="">선택</option>
 								<option value="기업">기업</option>
 								<option value="농협">농협</option>
 								<option value="국민">국민</option>
@@ -112,7 +114,7 @@
 								<option value="한국씨티">한국씨티</option>
 								<option value="SC제일">SC제일</option>
 							</select>
-							<input type="text" class="inp_txt" size="40" value="${MemberInfo.compBankAcc}" />
+							<input type="text" class="inp_txt" size="40" name='compBankAcc' value="" />
 							<a href="#" class="btn_input1">통장사본 업로드</a>
 							<a href="#" class="btn_input1">다운로드</a>
 						</td>
@@ -120,11 +122,12 @@
 					<tr>
 						<th>계약기간</th>
 						<td>
-							<input type="text" size="12" class="inp_txt" value="${MemberInfo.contractStart}" maxlength="10">
+							<input id="contractStart" name="contractStart" type="text" size="12" class="inp_txt" value="" maxlength="10">
 								<span class=" bar">~</span>
-								<input type="text" size="12" class="inp_txt" value="${MemberInfo.contractEnd}" maxlength="10">
+								<input id="contractEnd" name="contractEnd" type="text" size="12" class="inp_txt" value="" maxlength="10">
 									<div class="check">
-										<input type="checkbox" />
+										<input type="checkbox" id="contractAuto" />
+										<input type="hidden" name="contractAuto" value='' />
 										자동연장
 									</div>
 									<a href="#" class="btn_input1">계약서 업로드</a>
@@ -138,40 +141,40 @@
 						</th>
 						<td>
 							<span class=" bar">온라인 결제</span>
-							<input type="text" size="5" class="inp_txt" value="${MemberInfo.preRate}" maxlength="3">
+							<input type="text" size="5" class="inp_txt" name='preRate' value="" maxlength="3">
 								<span class=" bar">%</span>
 								<span class=" bar" style="margin-left: 20px;">후불 결제</span>
-								<input type="text" size="5" class="inp_txt" value="${MemberInfo.postRate}" maxlength="3">
+								<input type="text" size="5" class="inp_txt" name='postRate' value="" maxlength="3">
 									<span class=" bar">%</span>
 						</td>
 					</tr>
 					<tr>
 						<th>세금계산서 담당자</th>
 						<td>
-							<input type="text" class="inp_txt" size="60" value="${MemberInfo.taxName}" />
+							<input type="text" class="inp_txt" name='taxName' size="60" value="" />
 						</td>
 					</tr>
 					<tr>
 						<th>세금계산서 담당자 연락처</th>
 						<td>
-							<select id="phone1" class="inp_txt" style="width: 70px;">
-								<option value="010" <c:if test="${phone1 eq '010'}">selected</c:if>>010</option>
-								<option value="011" <c:if test="${phone1 eq '011'}">selected</c:if>>011</option>
-								<option value="016" <c:if test="${phone1 eq '016'}">selected</c:if>>016</option>
-								<option value="017" <c:if test="${phone1 eq '017'}">selected</c:if>>017</option>
-								<option value="018" <c:if test="${phone1 eq '018'}">selected</c:if>>018</option>
-								<option value="019" <c:if test="${phone1 eq '019'}">selected</c:if>>019</option>
+							<select id="taxPhone1" class="inp_txt" style="width: 70px;">
+								<option value="010">010</option>
+								<option value="011">011</option>
+								<option value="016">016</option>
+								<option value="017">017</option>
+								<option value="018">018</option>
+								<option value="019">019</option>
 							</select>
 							<span class=" bar">-</span>
-							<input type="text" id="phone2" size="5" class="inp_txt" value="${phone2 }" maxlength="4">
+							<input type="text" id="taxPhone2" size="5" class="inp_txt" value="" maxlength="4">
 								<span class=" bar">-</span>
-								<input type="text" id="phone3" size="5" class="inp_txt" value="${phone3 }" maxlength="4" />
+								<input type="text" id="taxPhone3" size="5" class="inp_txt" value="" maxlength="4" />
 						</td>
 					</tr>
 					<tr>
 						<th>세금계산서 담당자 이메일</th>
 						<td>
-							<input type="text" class="inp_txt" size="60" value="${MemberInfo.taxEmail}" />
+							<input type="text" class="inp_txt" size="60" name="taxEmail" value="" />
 						</td>
 					</tr>
 				</tbody>

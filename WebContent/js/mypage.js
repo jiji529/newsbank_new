@@ -143,6 +143,36 @@ $(document).ready(function() {
 
 	}
 
+	// 핸드폰 번호 인증 체크
+	function validTaxPhone() {
+		var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+		var phone = $("#taxPhone1").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
+		if ($("#taxPhone2").val().length > 0 || $("#taxPhone3").val().length > 0) {
+
+			if ($('#frmMypage').find("[name=taxPhone]").length > 0) {
+				$('#frmMypage').find("[name=taxPhone]").val(phone);
+			} else {
+				$('<input>').attr({
+					type : 'hidden',
+					name : 'taxPhone',
+					value : phone
+				}).appendTo('#frmMypage');
+			}
+
+			if (regex.test(phone) && phone.length > 0) {
+				$("#phone_message").css("display", "none");
+				return true;
+			} else {
+				$("#phone_message").css("display", "block");
+				$("#phone3").focus();
+				return false;
+			}
+		} else {
+			return true;
+		}
+
+	}
+
 	// 인증번호 요청 버튼
 	$("#phone_certify").on("click", function() {
 		if (validPhone()) {
@@ -317,32 +347,40 @@ $(document).ready(function() {
 	});
 
 	$("#btnSubmit").on("click", function() {
-		$('#frmMypage').submit();
+		$('#frmMypage').submit(); // 수정 버튼 클릭
 	});
-	
-	$('#frmMypage').on('submit',function(){
+
+	$('#frmMypage').on('submit', function() {
 		var type = $("#type").val();
 		var check = true;
-		if ($('#frmMypage').find('[name=media]').size() > 0) {
+		if ($('#frmMypage').find('[name=pw]').size() > 0) {
 			check = check && validPw();
 		}
-
-		check = check && validName();
-		check = check && validPhone();
-		if (type != "P") {
-			check = check && validCompNum();
-			check = check && validCompName();
-			check = check && validCompTel();
-			if (type == "M") {
-
-			}
+		if ($('#frmMypage').find('[name=name]').size() > 0) {
+			check = check && validName();
 		}
+		if ($('#phone3').size() > 0) {
+			check = check && validPhone();
+		}
+		if ($('#frmMypage').find('[name=compNum]').size() > 0) {
+			check = check && validCompNum();
+		}
+		if ($('#frmMypage').find('[name=compName]').size() > 0) {
+			check = check && validCompName();
+		}
+		if ($('#compTel3').size() > 0) {
+			check = check && validCompTel();
+		}
+		if ($('#taxPhone3').size() > 0) {
+			check = check && validTaxPhone();
+		}
+
 		if (check) {
 			if (confirm("회원정보를 수정하시겠습니까?")) {
 				$.post($("#frmMypage").attr("action"), $("#frmMypage").serialize(), function(data) {
 					if (data.success) {
 						alert("수정되었습니다.");
-						location.reload()
+						// location.reload()
 					} else {
 						alert(data.message);
 
@@ -371,6 +409,94 @@ $(document).ready(function() {
 
 		});
 	});
+
+});
+
+// account.mypage
+$(document).ready(function() {
+	/** 날짜 선택 */
+	if ($("#contractStart, #contractEnd").length > 0) {
+		$.datepicker.setDefaults({
+			dateFormat : 'yy-mm-dd',
+			prevText : '이전 달',
+			nextText : '다음 달',
+			monthNames : [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월' ],
+			monthNamesShort : [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월' ],
+			dayNames : [ '일', '월', '화', '수', '목', '금', '토' ],
+			dayNamesShort : [ '일', '월', '화', '수', '목', '금', '토' ],
+			dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
+			showMonthAfterYear : true,
+			yearSuffix : '년'
+		});
+
+		$("#contractStart, #contractEnd").datepicker();
+	}
+
+	$("#contractAuto").on('change', function() {
+		if ($(this).is(":checked")) {
+			$('input[name=contractAuto]').val('Y');
+		} else {
+			$('input[name=contractAuto]').val('N');
+		}
+	});
+
+	$("#media").change(function() {
+		if ($("#media").val().length > 0) {
+			$.ajax({
+				url : "/member.api",
+				type : "post",
+				data : ({
+					cmd : "R",
+					media_code : $("#media").val()
+				}),
+				dataType : "json",
+				success : function(data) {
+					if (data.success) {
+
+						var reuslt = data.data;
+						console.log(reuslt);
+						$('select[name=compBankName]').val(reuslt.compBankName);
+						$('input[name=compBankAcc]').val(reuslt.compBankAcc);
+						$('input[name=contractStart]').val(reuslt.contractStart);
+						$('input[name=contractEnd]').val(reuslt.contractEnd);
+						$('input[name=contractAuto]').val(reuslt.contractAuto);
+						if (reuslt.contractAuto == 'Y') {
+							$("#contractAuto").prop('checked', true);
+						} else {
+							$("#contractAuto").prop('checked', false);
+						}
+
+						$('input[name=preRate]').val(reuslt.preRate);
+						$('input[name=postRate]').val(reuslt.postRate);
+						$('input[name=taxName]').val(reuslt.taxName);
+						if (reuslt.taxPhone != null) {
+							$('#taxPhone1').val(reuslt.taxPhone.substr(0, 3));
+							if (reuslt.taxPhone.length == 11) {
+								$('#taxPhone2').val(reuslt.taxPhone.substr(3, 4));
+								$('#taxPhone3').val(reuslt.taxPhone.substr(8, 4));
+							} else {
+								$('#taxPhone2').val(reuslt.taxPhone.substr(3, 3));
+								$('#taxPhone3').val(reuslt.taxPhone.substr(7, 4));
+							}
+						} else {
+							$('#taxPhone1').val("010");
+							$('#taxPhone2').val("");
+							$('#taxPhone3').val("");
+						}
+
+						$('input[name=taxName]').val(reuslt.taxName);
+						$('input[name=taxEmail]').val(reuslt.taxEmail);
+					} else {
+						alert(data.message);
+					}
+
+				}
+
+			});
+		}
+
+	});
+
 });
 
 // buy.mypage
@@ -384,6 +510,53 @@ $(document).ready(function() {
 		/*
 		 * link.download = uciCode; link.href = imgPath; link.click();
 		 */
+	});
+
+});
+
+// accountlist.mypage
+$(document).ready(function() {
+
+	$('#customYear').on('change', function() {
+		$('#customDay a.btn').removeClass('on'); // 날짜 초기화
+	});
+
+	$('#customDay a.btn').on('click', function(i) {
+		var year = $('#customYear').val();
+		var mon = $(this).parent().index();
+		var lastDay = (new Date($('#customYear').val(), mon + 1, 0)).getDate();
+		var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
+		var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
+
+		$("#contractStart").val(startDate);
+		$("#contractEnd").val(endDate)
+		$('#customDay a.btn').removeClass('on'); // 날짜 초기화
+		$(this).addClass('on');
+
+	});
+
+	$("#btnAccountSearch").on('click', function() {
+		var startDate = $("#contractStart").val(); //시작일
+		if (startDate == null || startDate.length == 0) {
+			return;
+		}
+		var endDate = $("#contractEnd").val(); //종료일
+		if (endDate == null || endDate.length == 0) {
+			return;
+		}
+		var media_code = new Array(); //선택 매체 코드
+		$("input[name=media_code]").each(function() {
+			if ($(this).is(":checked")) {
+				media_code.push($(this).val());
+			}
+		});
+		if (media_code.length == 0) {
+			return;
+		}
+		var name = $("input[name=name]").val(); //아이디/이름/회사명
+		var rate = $("input[name=rate]").val(); //결제구분
+		var pay = $("input[name=pay]").val(); //결제구분
+
 	});
 
 });
