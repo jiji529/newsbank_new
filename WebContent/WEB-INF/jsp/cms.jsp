@@ -30,7 +30,14 @@
 <script src="js/footer.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		search();
+		var cms_keyword = '${cms_keyword}';
+		
+		if(cms_keyword) { // 사진관리 상세페이지에서 이미지 검색 시
+			$("#cms_keyword").val(cms_keyword);
+			cms_search();
+		}else { // 최초 사진 관리 페이지 접근 시
+			search();
+		}		
 	});
 	
 	$(document).on("click", "div .paging a.prev", function() {
@@ -56,6 +63,21 @@
 			
 			search();
 		}
+	});
+	
+	$(document).on("keypress", "#cms_keyword", function(e) {
+		if(e.keyCode == 13) {	// 엔터
+			//$("#keyword_current").val($("#keyword").val());
+
+			// 키워드 바꾸면 페이지 번호 초기화
+			$("input[name=pageNo]").val("1");
+			cms_search();
+		}
+	});
+	
+	$(document).on("click", "#cms_searchBtn", function() {
+		$("input[name=pageNo]").val("1");
+		cms_search();
 	});
 	
 	function checkNumber(event) {
@@ -97,7 +119,6 @@
 		// 필터 바꾸면 페이지 번호 초기화
 		$("input[name=pageNo]").val("1");
 		search();
-		//searchList();
 	});
 	
 	function search() {
@@ -130,8 +151,6 @@
 				//, "id":id
 		};
 		
-		console.log(searchParam);
-		
 		$("#keyword").val(keyword);
 		
 		var html = "";
@@ -161,37 +180,62 @@
 		});
 	}
 	
-	function searchList() {		
-		$("#cms_list2 ul").empty();
+	function cms_search() {
+		var keyword = $("#cms_keyword").val();
 		
-		var count = $("select[name=pageVol]").val();
-		var contentType = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val(); 
-		var media = $(".filter_title:nth-of-type(3) .filter_list").find("[selected=selected]").val();
-		var duration = $(".filter_title:nth-of-type(4) .filter_list").find("[selected=selected]").val();
-		var portRight = $(".filter_title:nth-of-type(5) .filter_list").find("[selected=selected]").val();
-		var includePerson = $(".filter_title:nth-of-type(6) .filter_list").find("[selected=selected]").val();
+		var pageNo = $("input[name=pageNo]").val();
+		var transPageNo = pageNo.match(/[0-9]/g).join("");
+		if(pageNo != transPageNo) {
+			pageNo = transPageNo;
+			$("input[name=pageNo]").val(pageNo);
+		}
 		
-		var parameter = "count=" + count;
-		parameter += "&contentType="+contentType+"&media="+media;
-		parameter += "&duration="+duration+"&portRight="+portRight;
-		parameter += "&includePerson="+includePerson;
+		//var id = "N0";
+		var pageVol = $("select[name=pageVol]").val();
+		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
+		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value");
+		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
+		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
+		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
 		
-		var html = "";				
+		var searchParam = {
+				"keyword":keyword
+				, "pageNo":pageNo
+				, "pageVol":pageVol
+				, "media":media
+				, "duration":duration
+				, "colorMode":colorMode
+				, "horiVertChoice":horiVertChoice
+				, "size":size
+				//, "id":id
+		};
+		
+		$("#keyword_current").val(keyword);
+		
+		var html = "";
 		$.ajax({
-			url: "/search?"+parameter,		
-			type: "GET",
+			type: "POST",
+			async: false,
 			dataType: "json",
-			success: function(data) { console.log(data);
-				$(data.result).each(function(key, val) {		
+			data: searchParam,
+			timeout: 1000000,
+			url: "cms.search",
+			success : function(data) {
+				$("#cms_list2 ul").empty();
+				$(data.result).each(function(key, val) {				
 					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\" /></a>";
-					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>"+val.uciCode+"</span><span>"+val.copyright+"</span></div>";
+					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\">다운로드</li>	<li class=\"btn_del\">삭제</li> <li class=\"btn_view\">다운로드</li> </ul>";
-				});	
-				
+				});
 				$(html).appendTo("#cms_list2 ul");
-			}, error:function(request,status,error){
-	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       	}
+				var totalCount = $(data.count)[0];
+				var totalPage = $(data.totalPage)[0];
+				$("div .result b").html(totalCount);
+				$("div .paging span.total").html(totalPage);
+			},
+			error : function(request, status, error) {
+				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
 		});
 	}
 	
@@ -211,19 +255,19 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<li><a href="/account.mypage">정산 관리</a></li>
+				<li><a href="/acount.mypage">정산 관리</a></li>
 				<li class="on"><a href="/cms">사진 관리</a></li>
 				<li><a href="/info.mypage">회원정보 관리</a></li>
 				<li><a href="/dibs.myPage">찜관리</a></li>
 				<li><a href="/cart.myPage">장바구니</a></li>
-				<li><a href="/buylist.mypage">구매내역</a></li>
+				<li><a href="/buy.mypage">구매내역</a></li>
 			</ul>
 		</div>
 		<div class="table_head">
 			<h3>사진 관리</h3>
 			<div class="cms_search">이미지 검색
 				<input id="cms_keyword" type="text" />
-				<button>검색</button>
+				<button id="cms_searchBtn">검색</button>
 			</div>
 		</div>
 		<!-- 필터시작 -->
