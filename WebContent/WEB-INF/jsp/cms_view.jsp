@@ -45,6 +45,8 @@
 		}else if(portraitRightState == 2) {
 			$('input:radio[name="likeness"][value="2"]').attr('checked', true);
 		}
+		
+		relation_photo();
 	});
 	
 	$(document).on("change", "input[type=radio][name=blind]", function() {
@@ -215,30 +217,80 @@
             $('.cfix').css('left', '');
         });
 	});
+	
+	$(document).on("keypress", "#cms_keyword", function(e) {
+		if(e.keyCode == 13) {	// 엔터
+			go_cms();
+		}
+	});
+	
+	$(document).on("click", "#cms_searchBtn", function() {
+		go_cms();
+	});
+	
+	function go_cms() {
+		var keyword = $("#cms_keyword").val();
+		$("#cms_keyword_current").val(keyword);
+		view_form.submit();
+	}
+	
+	// #연관사진
+	function relation_photo() {
+		var keyword = "";
+		keyword = $.trim(keyword);
+		var pageNo = "1";
+		var pageVol = "10";
+		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
+		var media = 0;
+		var duration = "";
+		var colorMode = "0";
+		var horiVertChoice = "0";
+		var size = "0";
+		var portRight = $(".filter_portRight .filter_list").find("[selected=selected]").attr("value");
+		var includePerson = $(".filter_incPerson .filter_list").find("[selected=selected]").attr("value");
+		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
+
+		var searchParam = {
+				"keyword":keyword
+				, "pageNo":pageNo
+				, "pageVol":pageVol
+				, "contentType":contentType
+				, "media":media
+				, "duration":duration
+				, "colorMode":colorMode
+				, "horiVertChoice":horiVertChoice
+				, "size":size
+				, "portRight":portRight
+				, "includePerson":includePerson
+				, "group":group
+		};
+		
+		$("#keyword").val($("#keyword_current").val());
+		
+		var html = "";
+		$.ajax({
+			type: "POST",
+			async: false,
+			dataType: "json",
+			data: searchParam,
+			timeout: 1000000,
+			url: "search",
+			success : function(data) {
+				$(data.result).each(function(key, val) {
+					html += '<li><a href="#"><img src="/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+				});
+				$(html).appendTo(".cfix");
+			},
+			error : function(request, status, error) {
+				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
 </script>
 </head>
 <body> 
 <div class="wrap">
-	<nav class="gnb_dark">
-		<div class="gnb"><a href="/home" class="logo"></a>
-			<ul class="gnb_left">
-				<li class=""><a href="/photo">보도사진</a></li>
-				<li><a href="#">뮤지엄</a></li>
-				<li><a href="#">사진</a></li>
-				<li><a href="#">컬렉션</a></li>
-			</ul>
-			<ul class="gnb_right">
-				<li><a href="/login">로그인</a></li>
-				<li><a href="/kind.join" target="_blank">가입하기</a></li>
-			</ul>
-		</div>
-		<div class="gnb_srch">
-			<form id="searchform">
-				<input type="text" value="검색어를 입력하세요" />
-				<a href="#" class="btn_search">검색</a>
-			</form>
-		</div>
-	</nav>
+	<%@include file="header.jsp" %>
 	<section class="mypage">
 		<div class="head">
 			<h2>마이페이지</h2>
@@ -246,19 +298,22 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<li><a href="#">정산 관리</a></li>
+				<li><a href="/acount.mypage">정산 관리</a></li>
 				<li class="on"><a href="/cms">사진 관리</a></li>
-				<li><a href="#">회원정보 관리</a></li>
-				<li><a href="#">찜관리</a></li>
-				<li><a href="#">장바구니</a></li>
-				<li><a href="#">구매내역</a></li>
+				<li><a href="/info.mypage">회원정보 관리</a></li>
+				<li><a href="/dibs.myPage">찜관리</a></li>
+				<li><a href="/cart.myPage">장바구니</a></li>
+				<li><a href="/buy.mypage">구매내역</a></li>
 			</ul>
 		</div>
+		<form class="view_form" method="post" action="/cms" name="view_form" >
+			<input type="hidden" id="cms_keyword_current" name="cms_keyword_current" />
+		</form>
 		<div class="table_head">
 			<h3>사진 관리</h3>
 			<div class="cms_search">이미지 검색
-				<input type="text" />
-				<button>검색</button>
+				<input id="cms_keyword" type="text" />
+				<button id="cms_searchBtn">검색</button>
 			</div>
 		</div>
 		<section class="view">
@@ -309,16 +364,6 @@
 						<h3 class="info_tit">연관 사진</h3>
 						<div class="conn">
 							<ul class="cfix">
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151871_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151871_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151871_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151871_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151872_P.jpg" /></a></li>
-								<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151872_P.jpg" /></a></li>
 							</ul>
 							<div class="btn_conn">
 								<button class="in_prev">이전</button>

@@ -53,6 +53,7 @@ public class CMSView extends NewsbankServletBase {
 		PhotoDAO photoDAO = new PhotoDAO();
 		String uciCode = request.getParameter("uciCode");
 		PhotoDTO photoDTO = photoDAO.read(uciCode);
+		photoDAO.hit(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
 		
 		TagDAO tagDAO = new TagDAO();

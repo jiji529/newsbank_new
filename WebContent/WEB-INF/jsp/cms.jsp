@@ -211,12 +211,12 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<li><a href="/acount.mypage">정산 관리</a></li>
+				<li><a href="/account.mypage">정산 관리</a></li>
 				<li class="on"><a href="/cms">사진 관리</a></li>
 				<li><a href="/info.mypage">회원정보 관리</a></li>
 				<li><a href="/dibs.myPage">찜관리</a></li>
 				<li><a href="/cart.myPage">장바구니</a></li>
-				<li><a href="/buy.mypage">구매내역</a></li>
+				<li><a href="/buylist.mypage">구매내역</a></li>
 			</ul>
 		</div>
 		<div class="table_head">

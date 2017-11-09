@@ -45,8 +45,10 @@ public class CMS extends NewsbankServletBase {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		SearchParameterBean parameterBean = new SearchParameterBean();
+		String cms_keyword = request.getParameter("cms_keyword_current") == null ? "" : request.getParameter("cms_keyword_current");
 		parameterBean.setPageVol(40);
-		
+		request.setAttribute("cms_keyword", cms_keyword);
+				
 		SearchDAO searchDAO = new SearchDAO();
 		Map<String, Object> photoList = searchDAO.search(parameterBean);
 		request.setAttribute("total", photoList.get("count"));
