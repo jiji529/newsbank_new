@@ -33,7 +33,6 @@
 	$(document).ready(function(key, val){
 		var saleState = ${photoDTO.saleState};
 		var portraitRightState = ${photoDTO.portraitRightState};
-		console.log(saleState, portraitRightState);
 		
 		if(saleState == 1) {
 			$('input:radio[name="blind"][value="1"]').attr('checked', true);
@@ -150,9 +149,8 @@
 		var content = $(".img_cont").text();		
 		
 		if($(".btn_edit").hasClass("complete")) {
-			console.log("수정완료 버튼 ");	
+			
 		}else {
-			console.log("수정 버튼 ");
 			$(".btn_edit").text("수정 완료");		
 			$(".btn_edit").addClass("complete");
 			$(".img_tit").last().replaceWith("<textarea class=\"img_tit\" style=\"width:100%; font-size:14px; line-height:22px; color:#666;\">"+title+"</textarea>");
@@ -163,12 +161,10 @@
 	});
 	
 	$(document).on("click", ".complete", function() {
-		console.log("complete click");
 		// DB에 기사 제목, 내용을 수정 기능 필요
 		var titleKor = $(".img_tit").last().text();
 		var descriptionKor = $(".img_cont").text();
 		var uciCode = "${photoDTO.uciCode}";
-		console.log("제목 : "+titleKor + " / 내용 : "+descriptionKor);
 		
 		$(".btn_edit").text("수정");		
 		$(".btn_edit").removeClass("complete");

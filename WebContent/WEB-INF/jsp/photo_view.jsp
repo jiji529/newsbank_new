@@ -14,7 +14,10 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script type="text/javascript">
-
+	$(document).ready(function(key, val){
+		relation_photo();
+	});
+	
 	// #찜하기 버튼 on/off
 	$(document).on("click", ".btn_wish", function() {
 		var uciCode = "${photoDTO.uciCode}";
@@ -47,6 +50,34 @@
 				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 			}
 		});
+	});
+	
+	$(document).on("click", ".in_prev", function() {
+	    var slide_width = $(".cfix").width();
+	    var li_width = $(".cfix li:nth-child(1)").width();
+	    var view_count = slide_width / li_width;
+	    var slide_count = $(".cfix li").size();
+	    
+	    $(".cfix").animate({
+	    	left: + li_width 
+	    }, 200, function() {
+	    	$(".cfix li:last-child").prependTo(".cfix");
+	    	$(".cfix").css("left", "");
+	    });
+	});
+	
+	$(document).on("click", ".in_next", function() {
+		var slide_width = $(".cfix").width();
+	    var li_width = $(".cfix li:nth-child(1)").width();
+	    var view_count = slide_width / li_width;
+	    var slide_count = $(".cfix li").size();	    
+	    
+	    $('.cfix').animate({
+            left: - li_width
+        }, 200, function () {
+            $('.cfix li:first-child').appendTo('.cfix');
+            $('.cfix').css('left', '');
+        });
 	});
 	
 	// #금액 천단위 콤마
@@ -280,7 +311,7 @@
 			url: "/UsageJSON",
 			type: "GET",
 			dataType: "json",
-			success: function(data) { console.log(data.result);
+			success: function(data) { 
 				$.each(data.result, function(key, val) {
 					if(val.usage == usage && val.division1 == division1 && val.division2 == division2 && val.division3 == division3 && val.division4 == division4 && val.usageDate == value) {							
 						price = val.price;
@@ -347,6 +378,59 @@
 		}else {
 			alert("최소한 1개의 구매옵션은 선택해야 합니다.");
 		}
+	}
+	
+	// #연관사진
+	function relation_photo() {
+		var keyword = "";
+		keyword = $.trim(keyword);
+		var pageNo = "1";
+		var pageVol = "10";
+		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
+		var media = 0;
+		var duration = "";
+		var colorMode = "0";
+		var horiVertChoice = "0";
+		var size = "0";
+		var portRight = $(".filter_portRight .filter_list").find("[selected=selected]").attr("value");
+		var includePerson = $(".filter_incPerson .filter_list").find("[selected=selected]").attr("value");
+		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
+
+		var searchParam = {
+				"keyword":keyword
+				, "pageNo":pageNo
+				, "pageVol":pageVol
+				, "contentType":contentType
+				, "media":media
+				, "duration":duration
+				, "colorMode":colorMode
+				, "horiVertChoice":horiVertChoice
+				, "size":size
+				, "portRight":portRight
+				, "includePerson":includePerson
+				, "group":group
+		};
+		
+		$("#keyword").val($("#keyword_current").val());
+		
+		var html = "";
+		$.ajax({
+			type: "POST",
+			async: false,
+			dataType: "json",
+			data: searchParam,
+			timeout: 1000000,
+			url: "search",
+			success : function(data) {
+				$(data.result).each(function(key, val) {
+					html += '<li><a href="#"><img src="/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+				});
+				$(html).appendTo(".cfix");
+			},
+			error : function(request, status, error) {
+				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
 	}
 </script>
 </head>
@@ -423,14 +507,14 @@
 					<h3 class="info_tit">연관 사진</h3>
 					<div class="conn">
 						<ul class="cfix">
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a></li>
+							<!-- <li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001151870_P.jpg" /></a></li>
 							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
 							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001879920_P.jpg" /></a></li>
 							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E003307027_P.jpg" /></a></li>
 							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
 							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
 							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
-							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li>
+							<li><a href="#"><img src="http://www.newsbank.co.kr/datafolder/21/2007/05/22/E001523343_P.jpg" /></a></li> -->
 						</ul>
 						<div class="btn_conn">
 							<button class="in_prev">이전</button>

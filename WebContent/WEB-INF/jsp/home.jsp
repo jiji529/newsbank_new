@@ -13,19 +13,13 @@
   2017. 10. 10.   tealight       home
   2017. 11. 09.   hoyadev        인기사진, 보도사진 수정 
 ---------------------------------------------------------------------------%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Date"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%
-	Date date = new Date();
-	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
-	String currentTimeMills = simpleDate.format(date);
-%>
+<% long currentTimeMills = System.currentTimeMillis(); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

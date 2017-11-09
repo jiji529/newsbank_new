@@ -16,13 +16,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Date"%>
-<%
-	Date date = new Date();
-	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
-	String currentTimeMills = simpleDate.format(date);
-%>
+<% long currentTimeMills = System.currentTimeMillis(); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -184,7 +178,7 @@
 		
 		var html = "";				
 		$.ajax({
-			url: "/searchJson?"+parameter,		
+			url: "/search?"+parameter,		
 			type: "GET",
 			dataType: "json",
 			success: function(data) { console.log(data);
