@@ -26,81 +26,24 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
-<%
-	String type = (String) request.getAttribute("type");
-%>
 </head>
 <body>
 	<div class="wrap">
-		<nav class="gnb_dark">
-			<div class="gnb">
-				<a href="/home" class="logo"></a>
-				<ul class="gnb_left">
-					<li class="">
-						<a href="/picture">보도사진</a>
-					</li>
-					<li>
-						<a href="#">뮤지엄</a>
-					</li>
-					<li>
-						<a href="#">사진</a>
-					</li>
-					<li>
-						<a href="#">컬렉션</a>
-					</li>
-				</ul>
-				<ul class="gnb_right">
-					<%
-						if (session.getAttribute("MemberInfo") == null) // 로그인이 안되었을 때
-						{
-							// 로그인 화면으로 이동
-					%>
-					<li>
-						<a href="/login">로그인</a>
-					</li>
-					<li>
-						<a href="/kind.join" target="_blank">가입하기</a>
-					</li>
-					<%
-						} else { // 로그인 했을 경우
-					%>
-					<li>
-						<a href="/logout">Log Out</a>
-					</li>
-					<li>
-						<a href="/info.mypage">My Page</a>
-					</li>
-					<%
-						}
-					%>
-				</ul>
-			</div>
-			<div class="gnb_srch">
-				<form id="searchform">
-					<input type="text" value="검색어를 입력하세요" />
-					<a href="#" class="btn_search">검색</a>
-				</form>
-			</div>
-		</nav>
+		<%@include file="header.jsp"%>
 		<section class="mypage">
 			<div class="head">
 				<h2>마이페이지</h2>
 			</div>
 			<div class="mypage_ul">
 				<ul class="mp_tab1">
-					<%
-						if (type.equals("M")) {
-							//임시
-					%>
-					<li>
-						<a href="/acount.mypage">정산 관리</a>
-					</li>
-					<li>
-						<a href="/cms">사진 관리</a>
-					</li>
-					<%
-						}
-					%>
+					<c:if test="${MemberInfo.type eq 'M'}">
+							<li>
+								<a href="/account.mypage">정산 관리</a>
+							</li>
+							<li>
+								<a href="/cms">사진 관리</a>
+							</li>
+						</c:if>
 					<li>
 						<a href="/info.mypage">회원정보 관리</a>
 					</li>
@@ -148,7 +91,6 @@
 					<c:if test="${fn:length(listPaymentManage) == 0}">
 						<tr>
 							<td colspan="5">구매 내역이 없습니다.</td>
-							
 						</tr>
 					</c:if>
 				</table>

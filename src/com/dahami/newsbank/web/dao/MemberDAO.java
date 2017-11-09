@@ -57,14 +57,13 @@ public class MemberDAO extends DAOBase {
 
 	public MemberDTO selectMember(MemberDTO memberDTO) {
 		SqlSession session = null;
-		MemberDTO memberInfo = null;
 		try {
 
 			session = sf.getSession();
-			memberInfo = session.selectOne("Member.selectLogin", memberDTO);
-
+			return session.selectOne("Member.selectLogin", memberDTO);
 		} catch (Exception e) {
 			logger.warn("", e);
+			return null;
 		} finally {
 			try {
 				session.commit();
@@ -73,7 +72,6 @@ public class MemberDAO extends DAOBase {
 			}
 		}
 
-		return memberInfo;
 
 	}
 

@@ -22,12 +22,15 @@
 		`compAddDetail`, `compZipcode`, `compBankName`,
 		`compBankAcc`,
 		`compBankPath`, `compTel`, `contractPath`,
-		`contractStart`,
-		`contractEnd`, `contractAuto`, `preRate`, `postRate`,
+		DATE_FORMAT(`contractStart`,'%Y-%m-%d') AS `contractStart`,
+		DATE_FORMAT(`contractEnd`,'%Y-%m-%d') AS `contractEnd`,
+		`contractAuto`, `preRate`, `postRate`,
 		`taxName`,
-		`taxPhone`, `taxEmail`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
+		`taxPhone`,
+		`taxEmail`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
-		`logo`, `activate`, `master_seq`, `group_seq` FROM member
+		`logo`,
+		`activate`, `master_seq`, `group_seq` FROM member
 		where
 		1
 		<if test="id != null">
@@ -41,6 +44,9 @@
 		</if>
 		<if test="phone != null">
 			AND phone = #{phone}
+		</if>
+		<if test="seq >0">
+			AND seq = #{seq}
 		</if>
 
 	</select>
@@ -88,19 +94,35 @@
 	<update id="updateMember" parameterType="com.dahami.newsbank.web.dto.MemberDTO">
 		update member
 		<set>
-			name = #{name}
-			<if test="email != null">, email = #{email}</if>
+			type = #{type}
 			<if test="pw != null">, pw = #{pw}</if>
-			<if test="phone != null">, phone = #{phone}</if>
-			<if test="type != null">, type = #{type}</if>
+			<if test="email != null">, email = #{email}</if>
+			<if test="name != null">, name = #{name}</if>
+			<if test="permission != null">, permission = #{permission}</if>
+			<if test="deferred != null">, deferred = #{deferred}</if>
 			<if test="compNum != null">, compNum = #{compNum}</if>
 			<if test="compDocPath != null">, compDocPath = #{compDocPath}</if>
 			<if test="compName != null">, compName = #{compName}</if>
 			<if test="compAddress != null">, compAddress = #{compAddress}</if>
 			<if test="compAddDetail != null">, compAddDetail = #{compAddDetail}</if>
 			<if test="compZipcode != null">, compZipcode = #{compZipcode}</if>
+			<if test="compBankName != null">, compBankName = #{compBankName}</if>
+			<if test="compBankAcc != null">, compBankAcc = #{compBankAcc}</if>
+			<if test="compBankPath != null">, compBankPath = #{compBankPath}</if>
 			<if test="compTel != null">, compTel = #{compTel}</if>
+			<if test="contractPath != null">, contractPath = #{contractPath}</if>
+			<if test="contractStart != null">, contractStart = #{contractStart}</if>
+			<if test="contractEnd != null">, contractEnd = #{contractEnd}</if>
+			<if test="contractAuto != null">, contractAuto = #{contractAuto}</if>
+			<if test="preRate != null">, preRate = #{preRate}</if>
+			<if test="postRate != null">, postRate = #{postRate}</if>
+			<if test="taxName != null">, taxName = #{taxName}</if>
+			<if test="taxPhone != null">, taxPhone = #{taxPhone}</if>
+			<if test="taxEmail != null">, taxEmail = #{taxEmail}</if>
 			<if test="logo != null">, logo = #{logo}</if>
+			<if test="activate >0">, activate = #{activate}</if>
+			<if test="master_seq >0">, master_seq = #{master_seq}</if>
+			<if test="group_seq >0">, group_seq = #{group_seq}</if>
 		</set>
 		where seq = #{seq}
 	</update>
@@ -131,8 +153,9 @@
 		`compAddDetail`, `compZipcode`, `compBankName`,
 		`compBankAcc`,
 		`compBankPath`, `compTel`, `contractPath`,
-		`contractStart`,
-		`contractEnd`, `contractAuto`, `preRate`, `postRate`,
+		DATE_FORMAT(`contractStart`,'%Y-%m-%d') AS `contractStart`,
+		DATE_FORMAT(`contractEnd`,'%Y-%m-%d') AS `contractEnd`,
+		`contractAuto`, `preRate`, `postRate`,
 		`taxName`,
 		`taxPhone`, `taxEmail`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,

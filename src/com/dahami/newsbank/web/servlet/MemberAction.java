@@ -2,12 +2,14 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,7 +25,6 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 @WebServlet("/member.api")
 public class MemberAction extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
-	private static String cmd = null;
 	private static HttpSession session = null;
 
 	/**
@@ -43,6 +44,7 @@ public class MemberAction extends NewsbankServletBase {
 		response.setContentType("application/json;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		session = request.getSession();
+		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 		MemberDTO MemberInfo = null;
 		if (session.getAttribute("MemberInfo") != null) {
 			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
@@ -51,13 +53,17 @@ public class MemberAction extends NewsbankServletBase {
 		boolean check = true;
 		boolean result = false;
 		String message = null;
+		String cmd = null;
 
+		/** 공통 **/
+		int seq = 0;
 		String type = null;
 		String id = null;
 		String pw = null;
 		String email = null;
 		String name = null;
 		String phone = null;
+
 		String compNum = null;
 		String compDocPath = null;
 		String compName = null;
@@ -66,9 +72,33 @@ public class MemberAction extends NewsbankServletBase {
 		String compAddDetail = null;
 		String compZipcode = null;
 		String logo = null;
-		cmd = request.getParameter("cmd"); // api 구분 crud
-		System.out.println("cmd => " + cmd + " : " + check);
-		type = request.getParameter("type"); // 회원 구분
+		/** 정산 **/
+		String compBankName = null;
+		String compBankAcc = null;
+		String compBankPath = null;
+		String contractPath = null;
+		String contractStart = null;
+		String contractEnd = null;
+		String contractAuto = null;
+		Double preRate = null;
+		Double postRate = null;
+		String taxName = null;
+		String taxPhone = null;
+		String taxEmail = null;
+
+		/** 관리자 기능 **/
+		String permission = null;
+		String deferred = null;
+		String activate = null;
+		int master_seq = 0;
+		int group_seq = 0;
+
+		if (request.getParameter("cmd") != null) {
+			cmd = request.getParameter("cmd"); // api 구분 crud
+		}
+		if (request.getParameter("type") != null) {
+			type = request.getParameter("type"); // 회원 구분
+		}
 		System.out.println("type => " + type + " : " + check);
 		if (request.getParameter("id") != null) {
 			id = request.getParameter("id"); // 아이디 request
@@ -95,14 +125,10 @@ public class MemberAction extends NewsbankServletBase {
 				message = "이메일 형식이 올바르지 않습니다.";
 			}
 		}
- 
+
 		if (request.getParameter("name") != null) {
 			name = request.getParameter("name"); // 이름 request
-			check = check && isValidNull(name);
-			System.out.println("name => " + name + " : " + check);
-			if (!check ) {
-				message = "이름을 입력해 주세요.";
-			}
+
 		}
 
 		if (request.getParameter("phone") != null) {
@@ -119,82 +145,149 @@ public class MemberAction extends NewsbankServletBase {
 
 		}
 
-		if (!type.equalsIgnoreCase("P")) {
-			if (request.getParameter("compNum") != null) {
-				compNum = request.getParameter("compNum"); // 사업자등록번호
-				check = check && isValidCompNum(compNum);
-				System.out.println("compNum => " + compNum + " : " + check);
-				if (!check) {
-					message = "사업자 등록번호 형식이 올바르지 않습니다.";
-				}
+		if (request.getParameter("compNum") != null) {
+			compNum = request.getParameter("compNum"); // 사업자등록번호
+			check = check && isValidCompNum(compNum);
+			System.out.println("compNum => " + compNum + " : " + check);
+			if (!check) {
+				message = "사업자 등록번호 형식이 올바르지 않습니다.";
 			}
-			
-			if (request.getParameter("compDocPath") != null) {
-				compDocPath = request.getParameter("compDocPath"); // 사업자등록증
-			}
-			
-			if (request.getParameter("compName") != null) {
-				compName = request.getParameter("compName"); // 회사 이름
-				check = check && isValidNull(compName);
-				System.out.println("compName => " + compName + " : " + check);
-				if (!check) {
-					message = "회사 이름을 입력해 주세요.";
-				}
-			}
+		}
 
-			
-			if (request.getParameter("compTel") != null) {
-				compTel = request.getParameter("compTel"); // 회사전화번호
-				check = check && isValidPhone(compTel);
-				System.out.println("compTel => " + compTel + " : " + check);
-				if (!check) {
-					message = "회사 전화 번호 형식이 올바르지 않습니다.";
-				}
-			}
-			
-			if (request.getParameter("compAddress") != null) {
-				compAddress = request.getParameter("compAddress"); // 회사주소
-				check = check && isValidNull(compAddress);
-				System.out.println("compAddress => " + compAddress + " : " + check);
-				if (!check) {
-					message = "회사 주소를 입력해 주세요.";
-				}
-			}
-			
-			if (request.getParameter("compAddDetail") != null) {
-				compAddDetail = request.getParameter("compAddDetail"); // 회사상세주소
-				System.out.println("compAddDetail => " + compAddDetail);
-			}
-			
-			
-			if (request.getParameter("compZipcode") != null) {
-				compZipcode = request.getParameter("compZipcode"); // 회사우편번호
-				check = check && isValidNull(compZipcode);
-				System.out.println("compZipcode => " + compZipcode + " : " + check);
-				if (!check) {
-					message = "회사 우편번호를 입력해 주세요.";
-				}
-			}
-			
-			
-			
-			if (type.equalsIgnoreCase("M")) {
-				if (request.getParameter("logo") != null) {
-					logo = request.getParameter("logo"); // 로고 경로 request
-				}
-				
-			}
+		if (request.getParameter("compDocPath") != null) {
+			compDocPath = request.getParameter("compDocPath"); // 사업자등록증
+		}
 
+		if (request.getParameter("compName") != null) {
+			compName = request.getParameter("compName"); // 회사 이름
+
+		}
+
+		if (request.getParameter("compTel") != null) {
+			compTel = request.getParameter("compTel"); // 회사전화번호
+			check = check && isValidPhone(compTel);
+			System.out.println("compTel => " + compTel + " : " + check);
+			if (!check) {
+				message = "회사 전화 번호 형식이 올바르지 않습니다.";
+			}
+		}
+
+		if (request.getParameter("compAddress") != null) {
+			compAddress = request.getParameter("compAddress"); // 회사주소
+		}
+
+		if (request.getParameter("compAddDetail") != null) {
+			compAddDetail = request.getParameter("compAddDetail"); // 회사상세주소
+		}
+
+		if (request.getParameter("compZipcode") != null) {
+			compZipcode = request.getParameter("compZipcode"); // 회사우편번호
+
+		}
+
+		if (request.getParameter("logo") != null) {
+			logo = request.getParameter("logo"); // 로고 경로 request
 		}
 
 		// process(request, response);
 
-		if (check) {
+		if (request.getParameter("compBankName") != null) {
+			compBankName = request.getParameter("compBankName"); // 로고 경로 request
+		}
+
+		if (request.getParameter("compBankAcc") != null) {
+			compBankAcc = request.getParameter("compBankAcc"); // 로고 경로 request
+		}
+
+		if (request.getParameter("compBankPath") != null) {
+			compBankPath = request.getParameter("compBankPath"); // 로고 경로 request
+		}
+
+		if (request.getParameter("contractPath") != null) {
+			contractPath = request.getParameter("contractPath"); // 로고 경로 request
+		}
+
+		if (request.getParameter("contractStart") != null) {
+			contractStart = request.getParameter("contractStart"); // 로고 경로 request
+		}
+
+		if (request.getParameter("contractEnd") != null) {
+			contractEnd = request.getParameter("contractEnd"); // 로고 경로 request
+		}
+
+		if (request.getParameter("contractAuto") != null) {
+			contractAuto = request.getParameter("contractAuto"); // 로고 경로 request
+		}
+
+		if (request.getParameter("preRate") != null) {
+			preRate = Double.parseDouble(request.getParameter("preRate"));
+		}
+
+		if (request.getParameter("postRate") != null) {
+			postRate = Double.parseDouble(request.getParameter("postRate"));
+		}
+
+		if (request.getParameter("taxName") != null) {
+			taxName = request.getParameter("taxName"); // 로고 경로 request
+		}
+
+		if (request.getParameter("taxPhone") != null) {
+			taxPhone = request.getParameter("taxPhone"); // 로고 경로 request
+		}
+		if (request.getParameter("taxEmail") != null) {
+			taxEmail = request.getParameter("taxEmail"); // 로고 경로 request
+		}
+
+		if (request.getParameter("permission") != null) {
+			permission = request.getParameter("permission"); // 로고 경로 request
+		}
+
+		if (request.getParameter("deferred") != null) {
+			deferred = request.getParameter("deferred"); // 로고 경로 request
+		}
+
+		if (request.getParameter("activate") != null) {
+			activate = request.getParameter("activate"); // 로고 경로 request
+		}
+
+		if (request.getParameter("master_seq") != null) {
+			master_seq = Integer.parseInt(request.getParameter("master_seq"));
+		}
+
+		if (request.getParameter("group_seq") != null) {
+			group_seq = Integer.parseInt(request.getParameter("group_seq"));
+		}
+
+		if (MemberInfo != null && MemberInfo.getSeq() > 0) {
+
+			seq = MemberInfo.getSeq();
+		}
+
+		if (request.getParameter("media_code") != null) {
+			int adjSlave = Integer.parseInt(request.getParameter("media_code"));
 			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
-			if (MemberInfo != null && MemberInfo.getSeq() > 0) {
-				memberDTO.setSeq(MemberInfo.getSeq());
+			memberDTO.setSeq(adjSlave);
+			List<MemberDTO> mediaList = memberDAO.listAdjustMedia(memberDTO);
+			boolean slave_match = false;
+			for (MemberDTO adj : mediaList) {
+				if (adj.getSeq() == adjSlave) {
+					System.out.println(adjSlave);
+					slave_match = true;
+				}
+
+			}
+			if (slave_match) {
+				seq = adjSlave;
+			} else {
+				check = false;
 			}
 
+		}
+		MemberDTO memberDTO = new MemberDTO(); // 객체 생성
+		if (check) {
+			
+
+			memberDTO.setSeq(seq);
 			memberDTO.setId(id);
 			memberDTO.setPw(pw);
 			memberDTO.setEmail(email);
@@ -210,21 +303,43 @@ public class MemberAction extends NewsbankServletBase {
 			memberDTO.setCompZipcode(compZipcode);
 			memberDTO.setLogo(logo);
 
-			MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
+			memberDTO.setCompBankName(compBankName);
+			memberDTO.setCompBankAcc(compBankAcc);
+			memberDTO.setCompBankPath(compBankPath);
+			memberDTO.setContractPath(contractPath);
+			memberDTO.setContractStart(contractStart);
+			memberDTO.setContractEnd(contractEnd);
+			memberDTO.setContractAuto(contractAuto);
+			memberDTO.setPreRate(preRate);
+			memberDTO.setPostRate(postRate);
+			memberDTO.setTaxEmail(taxEmail);
+			memberDTO.setTaxName(taxName);
+			memberDTO.setTaxPhone(taxPhone);
+
+			memberDTO.setPermission(permission);
+			memberDTO.setDeferred(deferred);
+			memberDTO.setActivate(activate);
+			memberDTO.setMaster_seq(master_seq);
+			memberDTO.setGroup_seq(group_seq);
+
 			switch (cmd) {
 			case "C":
 				result = memberDAO.insertMember(memberDTO); // 회원정보 요청
 				break;
 			case "R":
+				memberDTO = memberDAO.selectMember(memberDTO);
+				// 로그인 정보 요청
 				break;
 			case "U":
-				if (MemberInfo != null && MemberInfo.getId() != null) {
-					memberDTO.setId(MemberInfo.getId());
+				if (seq > 0) {
+					result = memberDAO.updateMember(memberDTO); // 회원정보 요청
+				} else {
+					message = "세션정보가 없습니다. 다시 로그인 해주세요.";
 				}
-				result = memberDAO.updateMember(memberDTO); // 회원정보 요청
+
 				if (result) {
 					// 로그인 성공
-					session.setAttribute("MemberInfo", memberDAO.selectMember(memberDTO)); // 회원정보 세션 저장
+					session.setAttribute("MemberInfo", memberDAO.selectMember(MemberInfo)); // 회원정보 세션 저장
 				}
 
 				break;
@@ -235,6 +350,30 @@ public class MemberAction extends NewsbankServletBase {
 		}
 
 		JSONObject json = new JSONObject();
+		
+		if (cmd.equalsIgnoreCase("R")) {
+			if (memberDTO!=null && memberDTO.isMember()) {
+				result = true;
+				Map<String, Object> data = new HashMap<String, Object>();
+				data.put("compBankName", memberDTO.getCompBankName());
+				data.put("compBankAcc", memberDTO.getCompBankAcc());
+				data.put("compBankPath", memberDTO.getCompBankPath());
+				data.put("contractPath", memberDTO.getContractPath());
+				data.put("contractStart", memberDTO.getContractStart());
+				data.put("contractEnd", memberDTO.getContractEnd());
+				data.put("contractAuto", memberDTO.getContractAuto());
+				data.put("preRate", memberDTO.getPreRate());
+				data.put("postRate", memberDTO.getPostRate());
+				data.put("taxEmail", memberDTO.getTaxEmail());
+				data.put("taxName", memberDTO.getTaxName());
+				data.put("taxPhone", memberDTO.getTaxPhone());
+
+				json.put("data", data);
+			}else {
+				message ="매체 정보를 찾을 수 없습니다.";
+			}
+			
+		}
 		json.put("success", result);
 		json.put("message", message);
 
@@ -274,7 +413,7 @@ public class MemberAction extends NewsbankServletBase {
 				err = true;
 			}
 		}
-		
+
 		return err;
 
 		/*
@@ -301,7 +440,7 @@ public class MemberAction extends NewsbankServletBase {
 				err = true;
 			}
 
-		} 
+		}
 		return err;
 	}
 
@@ -314,7 +453,7 @@ public class MemberAction extends NewsbankServletBase {
 			if (m.matches()) {
 				err = true;
 			}
-		} 
+		}
 
 		return err;
 	}
@@ -351,7 +490,7 @@ public class MemberAction extends NewsbankServletBase {
 		phone = request.getParameter("phone");
 		if (CertiNum != null && phone != null && !CertiNum.isEmpty() && !phone.isEmpty() && CertiNum.equalsIgnoreCase(getCertiNum) && phone.equalsIgnoreCase(getCertiphone)) {
 			err = true;
-		} 
+		}
 		session.removeAttribute("sCertifyNumber");
 		session.removeAttribute("sCertifyPhone");
 

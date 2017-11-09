@@ -10,18 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.service.CMSService;
 
 /**
  * Servlet implementation class MypageAuth
  */
-@WebServlet("/acountlist.mypage")
-public class MypageAcountList extends NewsbankServletBase {
+@WebServlet("/accountlist.mypage")
+public class MypageAccountList extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see NewsbankServletBase#NewsbankServletBase()
 	 */
-	public MypageAcountList() {
+	public MypageAccountList() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -52,9 +53,10 @@ public class MypageAcountList extends NewsbankServletBase {
 			} else {
 				request.setAttribute("type", MemberInfo.getType());
 				
+				CMSService cs = new CMSService(); //매체목록
+				cs.execute(request, response);
 				
-				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_acount_list.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_account_list.jsp");
 				dispatcher.forward(request, response);
 			}
 			

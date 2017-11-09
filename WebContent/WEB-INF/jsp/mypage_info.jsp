@@ -42,19 +42,7 @@
 		$("#info_table").css("display", "none");
 		$("#account_table").css("display", "block");
 	});
-	$(document).ready(function() {
-
-		$("#compTel1 option").each(function() {
-
-			if ($(this).val() == "${compTel1}") {
-
-				$(this).attr("selected", "selected"); // attr적용안될경우 prop으로
-
-			}
-
-		});
-
-	});
+	
 </script>
 </head>
 
@@ -66,9 +54,9 @@
 				<h2>마이페이지</h2>
 				<div class="mypage_ul">
 					<ul class="mp_tab1">
-						<c:if test="${type eq 'M'}">
+						<c:if test="${MemberInfo.type eq 'M'}">
 							<li>
-								<a href="/acount.mypage">정산 관리</a>
+								<a href="/account.mypage">정산 관리</a>
 							</li>
 							<li>
 								<a href="/cms">사진 관리</a>
@@ -104,7 +92,7 @@
 									아이디
 									<em class="ico ico_require">필수항목</em>
 								</th>
-								<td>${id}</td>
+								<td>${MemberInfo.id}</td>
 							</tr>
 							<tr>
 								<th>비밀번호 변경</th>
@@ -123,7 +111,7 @@
 							<tr>
 								<th>이름</th>
 								<td>
-									<input type="text" id="name" name="name" class="inp_txt" value="${name}" size="40" required>
+									<input type="text" id="name" name="name" class="inp_txt" value="${MemberInfo.name}" size="40" required>
 								</td>
 							</tr>
 							<tr>
@@ -165,12 +153,12 @@
 							<tr>
 								<th>이메일</th>
 								<td>
-									<input type="text" id="email" name="email" class="inp_txt" size="80" value="${email}" required />
+									<input type="text" id="email" name="email" class="inp_txt" size="80" value="${MemberInfo.email}" required />
 								</td>
 							</tr>
 						</tbody>
 					</table>
-					<c:if test="${type ne 'P'}">
+					<c:if test="${MemberInfo.type ne 'P'}">
 					<h4>법인 정보</h4>
 					<table class="tb01" cellpadding="0" cellspacing="0">
 						<colgroup>
@@ -181,7 +169,7 @@
 							<tr>
 								<th>회사/기관명</th>
 								<td>
-									<input type="text" id="compName" name="compName" class="inp_txt" size="60" value="${compName}" required />
+									<input type="text" id="compName" name="compName" class="inp_txt" size="60" value="${MemberInfo.compName}" required />
 								</td>
 							</tr>
 							<tr>
@@ -201,32 +189,32 @@
 								<td>
 									<select id="compTel1" class="inp_txt" style="width: 70px;">
 										<option value="">선택</option>
-										<option value="010">010</option>
-										<option value="011">011</option>
-										<option value="016">016</option>
-										<option value="017">017</option>
-										<option value="018">018</option>
-										<option value="019">019</option>
-										<option value="02">02</option>
-										<option value="031">031</option>
-										<option value="032">032</option>
-										<option value="033">033</option>
-										<option value="041">041</option>
-										<option value="042">042</option>
-										<option value="043">043</option>
-										<option value="044">044</option>
-										<option value="051">051</option>
-										<option value="052">052</option>
-										<option value="053">053</option>
-										<option value="054">054</option>
-										<option value="055">055</option>
-										<option value="061">061</option>
-										<option value="062">062</option>
-										<option value="063">063</option>
-										<option value="064">064</option>
-										<option value="070">070</option>
-										<option value="080">080</option>
-										<option value="0130">0130</option>
+										<option value="010" <c:if test="${compTel1 eq '010'}">selected</c:if>>010</option>
+										<option value="011" <c:if test="${compTel1 eq '011'}">selected</c:if>>011</option>
+										<option value="016" <c:if test="${compTel1 eq '016'}">selected</c:if>>016</option>
+										<option value="017" <c:if test="${compTel1 eq '017'}">selected</c:if>>017</option>
+										<option value="018" <c:if test="${compTel1 eq '018'}">selected</c:if>>018</option>
+										<option value="019" <c:if test="${compTel1 eq '019'}">selected</c:if>>019</option>
+										<option value="02" <c:if test="${compTel1 eq '02'}">selected</c:if>>02</option>
+										<option value="031" <c:if test="${compTel1 eq '031'}">selected</c:if>>031</option>
+										<option value="032" <c:if test="${compTel1 eq '032'}">selected</c:if>>032</option>
+										<option value="033" <c:if test="${compTel1 eq '033'}">selected</c:if>>033</option>
+										<option value="041" <c:if test="${compTel1 eq '041'}">selected</c:if>>041</option>
+										<option value="042" <c:if test="${compTel1 eq '042'}">selected</c:if>>042</option>
+										<option value="043" <c:if test="${compTel1 eq '043'}">selected</c:if>>043</option>
+										<option value="044" <c:if test="${compTel1 eq '044'}">selected</c:if>>044</option>
+										<option value="051" <c:if test="${compTel1 eq '051'}">selected</c:if>>051</option>
+										<option value="052" <c:if test="${compTel1 eq '052'}">selected</c:if>>052</option>
+										<option value="053" <c:if test="${compTel1 eq '053'}">selected</c:if>>053</option>
+										<option value="054" <c:if test="${compTel1 eq '054'}">selected</c:if>>054</option>
+										<option value="055" <c:if test="${compTel1 eq '055'}">selected</c:if>>055</option>
+										<option value="061" <c:if test="${compTel1 eq '061'}">selected</c:if>>061</option>
+										<option value="062" <c:if test="${compTel1 eq '062'}">selected</c:if>>062</option>
+										<option value="063" <c:if test="${compTel1 eq '063'}">selected</c:if>>063</option>
+										<option value="064" <c:if test="${compTel1 eq '064'}">selected</c:if>>064</option>
+										<option value="070" <c:if test="${compTel1 eq '070'}">selected</c:if>>070</option>
+										<option value="080" <c:if test="${compTel1 eq '080'}">selected</c:if>>080</option>
+										<option value="0130" <c:if test="${compTel1 eq '0130'}">selected</c:if>>0130</option>
 									</select>
 									<span class=" bar">-</span>
 									<input type="text" id="compTel2" size="5" class="inp_txt" value="${compTel2}" maxlength="4" required />
@@ -238,16 +226,16 @@
 								<th>회사 주소</th>
 								<td>
 									<div class="my_addr">
-										<input type="text" id="compZipcode" name="compZipcode" class="inp_txt" size="6" value="${compZipcode}" readonly required />
+										<input type="text" id="compZipcode" name="compZipcode" class="inp_txt" size="6" value="${MemberInfo.compZipcode}" readonly required />
 										<a href="javascript:;" id="findAddress" class="btn_input1">수정</a>
 									</div>
 									<div class="my_addr">
-										<input type="text" id="compAddress" name="compAddress" class="inp_txt" size="55" value="${compAddress}" readonly required />
-										<input type="text" id="compAddDetail" name="compAddDetail" class="inp_txt" size="55" value="${compAddDetail}" />
+										<input type="text" id="compAddress" name="compAddress" class="inp_txt" size="55" value="${MemberInfo.compAddress}" readonly required />
+										<input type="text" id="compAddDetail" name="compAddDetail" class="inp_txt" size="55" value="${MemberInfo.compAddDetail}" />
 									</div>
 								</td>
 							</tr>
-							<c:if test="${type eq 'M'}">
+							<c:if test="${MemberInfo.type eq 'M'}">
 							<tr>
 								<th>정산 매체</th>
 								<td>
@@ -268,7 +256,7 @@
 						<a href="javascript:location.reload();" class="btn_input1">취소</a>
 					</div>
 					<input type="hidden" name="cmd" value="U" />
-					<input type="hidden" id="type" name="type" value="${type}" />
+					<input type="hidden" id="type" name="type" value="${MemberInfo.type}" />
 				</form>
 			</div>
 		</section>

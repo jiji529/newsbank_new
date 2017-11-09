@@ -15,14 +15,14 @@ import com.dahami.newsbank.web.service.CMSService;
 /**
  * Servlet implementation class MypageAuth
  */
-@WebServlet("/acount.mypage")
-public class MypageAcountInfo extends NewsbankServletBase {
+@WebServlet("/account.mypage")
+public class MypageAccountInfo extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see NewsbankServletBase#NewsbankServletBase()
 	 */
-	public MypageAcountInfo() {
+	public MypageAccountInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -51,7 +51,7 @@ public class MypageAcountInfo extends NewsbankServletBase {
 				// 이전에 my page 비밀번호 입력했는지 체크
 				response.sendRedirect("/auth.mypage");
 			} else {
-				request.setAttribute("type", MemberInfo.getType());
+				//request.setAttribute("type", MemberInfo.getType());
 				
 				request.setAttribute("MemberInfo", MemberInfo);
 				if (MemberInfo.getPhone() != null && MemberInfo.getPhone().length() >= 10) {
@@ -69,7 +69,7 @@ public class MypageAcountInfo extends NewsbankServletBase {
 				CMSService cs = new CMSService(); //매체목록
 				cs.execute(request, response);
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_acount_info.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_account_info.jsp");
 				dispatcher.forward(request, response);
 			}
 			
