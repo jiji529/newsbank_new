@@ -111,7 +111,7 @@
 							<tr>
 								<th>이름</th>
 								<td>
-									<input type="text" id="name" name="name" class="inp_txt" value="${MemberInfo.name}" size="40" required>
+								${MemberInfo.name}
 								</td>
 							</tr>
 							<tr>

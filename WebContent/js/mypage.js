@@ -553,9 +553,8 @@ $(document).ready(function() {
 		if (media_code.length == 0) {
 			return;
 		}
-		var name = $("input[name=name]").val(); //아이디/이름/회사명
-		var rate = $("input[name=rate]").val(); //결제구분
-		var pay = $("input[name=pay]").val(); //결제구분
+		var name = $("input[name=keyword]").val(); //아이디/이름/회사명
+		var pay = $("input[name=payType]").val(); //결제구분
 
 	});
 

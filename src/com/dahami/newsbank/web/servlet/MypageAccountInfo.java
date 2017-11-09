@@ -52,6 +52,10 @@ public class MypageAccountInfo extends NewsbankServletBase {
 				response.sendRedirect("/auth.mypage");
 			} else {
 				//request.setAttribute("type", MemberInfo.getType());
+				if(!MemberInfo.getType().equalsIgnoreCase("M")) {
+					response.sendRedirect("/info.mypage");
+					return;
+				}
 				
 				request.setAttribute("MemberInfo", MemberInfo);
 				if (MemberInfo.getPhone() != null && MemberInfo.getPhone().length() >= 10) {

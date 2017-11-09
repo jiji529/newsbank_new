@@ -2,6 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="payment">
+
+
+	<!--기간별 온라인/오프라인 결제 합계 -->
+	<select id="selectTotalPrice" resultType="java.util.HashMap">
+		SELECT 		CASE M.LGD_PAYTYPE		WHEN '000000' THEN 'onLine'		ELSE 'offline' END as TYPE, YEAR(M.LGD_PAYDATE) as Y, MONTH(M.LGD_PAYDATE) as M, SUM(D.price) AS totalPrice
+		FROM
+		`paymentManage`
+		AS M
+		LEFT JOIN `paymentDetail` D ON M.seq = D.`paymentManage_seq`
+		LEFT JOIN `photo` P ON P.`uciCode` =	D.`photo_uciCode`
+		where
+		M.LGD_RESPCODE='0000' 	AND M.`member_seq` = #{member_seq}	
+		AND (P.`member_seq` = #{member_seq}	OR  P.`member_seq` IN (SELECT `adjSlave` FROM	`adjustment` WHERE `admission`='Y'	AND `adjMaster` =#{member_seq}))
+		AND  M.LGD_PAYDATE BETWEEN '${start_date}' AND '${end_date}'
+		GROUP BY TYPE,Y,M ORDER BY TYPE,Y,M ASC
+
+	</select>
+	
+	<!--검색 기간별 온라인/오프라인 결제 내역 -->
+	<select id="selectToTalAccountList" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+			SELECT 	M.`LGD_BUYER`,
+			M.`LGD_OID`,
+			M.`LGD_PAYTYPE`,
+			M.`LGD_PAYDATE`,
+			D.`photo_uciCode`, D.`price`,
+			U.`usage`,
+			U.`division1`, U.`division2`,
+			U.`division3`, U.`division4`,
+			U.`usageDate`,
+			P.`copyright`
+			FROM
+			`paymentManage`
+			AS M
+			LEFT JOIN
+			paymentDetail D ON M.seq =
+			D.paymentManage_seq
+			LEFT JOIN
+			usageList U ON
+			U.seq = D.usageList_seq
+			LEFT
+			JOIN photo P ON P.uciCode = D.photo_uciCode
+			where
+			M.LGD_RESPCODE='0000'
+			AND M.`member_seq` = #{member_seq} AND (P.`member_seq` = #{member_seq} OR
+			P.`member_seq` IN (SELECT `adjSlave` FROM `adjustment` WHERE
+			`admission`='Y' AND `adjMaster` =#{member_seq}))
+			AND  M.LGD_PAYDATE BETWEEN '${start_date}' AND '${end_date}'
+
+	</select>
+
+
+
 	<!-- 결제 정보 목록 호출 -->
 	<select id="selectPaymentManage" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
 		resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
@@ -57,9 +110,11 @@
 		where
 		M.`member_seq` =
 		#{member_seq}
-		<if test="LGD_OID !=null"> AND M.LGD_OID
-			= #{LGD_OID}
+		<if test="LGD_OID !=null">
+			AND M.LGD_OID = #{LGD_OID}
 		</if>
+
+		ORDER BY M.`regDate` DESC
 	</select>
 	<!-- 결제 정보 호출 Result -->
 	<resultMap id="paymentManageResult" type="com.dahami.newsbank.web.dto.PaymentManageDTO">

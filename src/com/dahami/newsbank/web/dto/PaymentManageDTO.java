@@ -18,8 +18,13 @@
 package com.dahami.newsbank.web.dto;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author p153-1706
@@ -155,6 +160,9 @@ public class PaymentManageDTO implements Serializable {
 		case "SC0220":
 			LGD_PAYTYPE = "모바일T머니";
 			break;
+		case "000000":
+			LGD_PAYTYPE = "후불";
+			break;
 		}
 		return LGD_PAYTYPE;
 	}
@@ -218,5 +226,7 @@ public class PaymentManageDTO implements Serializable {
 	public void setPaymentManage_seq(int paymentManage_seq) {
 		this.paymentManage_seq = paymentManage_seq;
 	}
+	
+	
 
 }

@@ -51,7 +51,13 @@ public class MypageAccountList extends NewsbankServletBase {
 				// 이전에 my page 비밀번호 입력했는지 체크
 				response.sendRedirect("/auth.mypage");
 			} else {
-				request.setAttribute("type", MemberInfo.getType());
+				if(!MemberInfo.getType().equalsIgnoreCase("M")) {
+					response.sendRedirect("/info.mypage");
+					return;
+				}
+				
+				request.setAttribute("MemberInfo", MemberInfo);
+				
 				
 				CMSService cs = new CMSService(); //매체목록
 				cs.execute(request, response);

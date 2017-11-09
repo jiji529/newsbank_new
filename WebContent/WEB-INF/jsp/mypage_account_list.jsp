@@ -40,11 +40,10 @@
 		<section class="mypage">
 		<div class="head">
 			<h2>마이페이지</h2>
-			<p>설명어쩌고저쩌고</p>
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<c:if test="${type eq 'M'}">
+				<c:if test="${MemberInfo.type eq 'M'}">
 					<li class="on">
 						<a href="/account.mypage">정산 관리</a>
 					</li>
@@ -166,27 +165,18 @@
 				<tr>
 					<th>아이디/이름/회사명</th>
 					<td>
-						<input name="name" type="text" class="inp_txt" size="50" />
-					</td>
-				</tr>
-				<tr>
-					<th>결제구분</th>
-					<td>
-						<select name="rate" class="inp_txt" style="width: 380px;">
-							<option value="">- 선택 -</option>
-							<option value="preRate">온라인</option>
-							<option value="postRate">오프라인</option>
-						</select>
+						<input name="keyword" type="text" class="inp_txt" size="50" />
 					</td>
 				</tr>
 				<tr>
 					<th>결제방법</th>
 					<td>
-						<select name="pay" class="inp_txt" style="width: 380px;">
+						<select name="payType" class="inp_txt" style="width: 380px;">
 							<option value="">- 선택 -</option>
-							<option value="SC0010">신용카드</option>
-							<option value="SC0030">계좌이체</option>
-							<option value="SC0040">가상계좌</option>
+							<option value="SC0010">카드결제</option>
+							<option value="SC0040">무통장입금</option>
+							<option value="SC0030">실시간 계좌이체</option>
+							<option value="000000">오프라인 세금계산서 발행</option>
 						</select>
 					</td>
 				</tr>

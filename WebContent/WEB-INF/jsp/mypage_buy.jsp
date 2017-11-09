@@ -85,7 +85,12 @@
 				<td>${paymentManageDTO.LGD_PAYTYPE }</td>
 				<td>${paymentManageDTO.LGD_RESPMSG }</td>
 				<td>${paymentManageDTO.LGD_TID }</td>
-				<td>[${paymentManageDTO.LGD_FINANCENAME }] ${paymentManageDTO.LGD_ACCOUNTNUM }</td>
+				<td>
+					<c:if test="${!empty paymentManageDTO.LGD_FINANCENAME}">
+					[${paymentManageDTO.LGD_FINANCENAME }] 
+				</c:if>
+					${paymentManageDTO.LGD_ACCOUNTNUM }
+				</td>
 			</tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" class="tb02">

@@ -18,12 +18,15 @@
 package com.dahami.newsbank.web.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
+import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 /**
  * @author p153-1706
@@ -108,6 +111,29 @@ public class PaymentDAO extends DAOBase {
 		}
 
 		return result;
+	}
+
+	public List<PaymentManageDTO> searchAccountList(Map<String, Object> param) {
+
+		// Map<String, Object> ret = new HashMap<String, Object>();
+		SqlSession session = null;
+		//PaymentManageDTO paymentInfo = null;
+		try {
+
+			session = sf.getSession();
+			return session.selectList("payment.selectToTalAccountList", param);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
 	}
 
 }
