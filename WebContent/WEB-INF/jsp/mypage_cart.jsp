@@ -17,6 +17,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%
+	Date date = new Date();
+	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+	String currentTimeMills = simpleDate.format(date);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -162,8 +169,8 @@
 								<label for="check${status.index}">선택</label>
 							</div></td>
 						<td><div class="cart_item">
-								<div class="thumb"><a href="view.html" target="_blank"><img src="/list.down.picture?uciCode=${CartDTO.uciCode}" /></a></div>
-								<div class="cart_info"> <a href="view.html" target="_blank">
+								<div class="thumb"><a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank"><img src="/list.down.photo?uciCode=${CartDTO.uciCode}&dummy=<%= currentTimeMills%>" /></a></div>
+								<div class="cart_info"> <a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank">
 									<div class="brand">${CartDTO.copyright}</div>
 									<div class="code">${CartDTO.uciCode}</div>
 									</a>

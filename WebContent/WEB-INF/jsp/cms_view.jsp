@@ -226,7 +226,7 @@
 	<nav class="gnb_dark">
 		<div class="gnb"><a href="/home" class="logo"></a>
 			<ul class="gnb_left">
-				<li class=""><a href="/picture">보도사진</a></li>
+				<li class=""><a href="/photo">보도사진</a></li>
 				<li><a href="#">뮤지엄</a></li>
 				<li><a href="#">사진</a></li>
 				<li><a href="#">컬렉션</a></li>
@@ -287,7 +287,7 @@
 							<dt>출력사이즈</dt>
 							<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
 							<dt>파일용량</dt>
-							<dd>${photoDTO.fileSizeMB}MB</dd>
+							<dd>${photoDTO.fileSize}MB</dd>
 							<dt>파일포멧</dt>
 							<dd>JPEG</dd>
 							<dt>해상도</dt>

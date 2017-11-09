@@ -16,6 +16,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%
+	Date date = new Date();
+	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+	String currentTimeMills = simpleDate.format(date);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -73,7 +80,7 @@
 			},
 			success: function(data){ console.log(data);
 				$(data.result).each(function(key, val) {
-					html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages'+val.viewPath+'"/></a>';
+					html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages' + val.viewPath + '&dummy=<%= currentTimeMills%>"/></a>';
 					html += '<div class="thumb_info">';
 					html += '<input type="checkbox" value="'+val.uciCode+'"/>';
 					html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
@@ -136,6 +143,10 @@
 		}
 	});
 	
+	function go_photoView(uciCode) {
+		$("#uciCode").val(uciCode);
+		view_form.submit();
+	}
 </script>
 </head>
 <body>
@@ -193,6 +204,9 @@
 				</div>
 			</div>
 			<!-- 필터끝 -->
+			<form class="view_form" method="post" action="/view.photo" name="view_form" >
+				<input type="hidden" name="uciCode" id="uciCode"/>
+			</form>
 			<div class="btn_sort"><span class="task_check">
 				<input type="checkbox" name="checkAll"/>
 				</span>
@@ -205,7 +219,7 @@
 			<section id="wish_list2">
 				<ul>					
 					<c:forEach items="${dibsPhotoList}" var="PhotoDTO">
-						<li class="thumb"> <a href="/view.cms?uciCode=${PhotoDTO.uciCode}"><img src="images/serviceImages${PhotoDTO.getViewPath()}"/></a>
+						<li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="images/serviceImages${PhotoDTO.getViewPath()}&dummy=<%= currentTimeMills%>"/></a>
 							<div class="thumb_info">
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>

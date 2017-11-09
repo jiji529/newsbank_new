@@ -11,13 +11,21 @@
   date            author         comment
   ----------      ---------      ----------------------------------------------
   2017. 10. 10.   tealight       home
+  2017. 11. 09.   hoyadev        인기사진, 보도사진 수정 
 ---------------------------------------------------------------------------%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%
+	Date date = new Date();
+	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+	String currentTimeMills = simpleDate.format(date);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -96,15 +104,14 @@
 		search_form.submit();
 	}
 	
+	function go_photoView(uciCode) {
+		$("#uciCode").val(uciCode);
+		view_form.submit();
+	}
+	
 </script>
 </head>
-<body>
-	<%
-		// 		out.println(request.getParameter("test"));
-		// 		List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
-		// 		items = (List<Map<String,Object>>)request.getAttribute("test");
-		// 		out.println(items.get(1).get("descriptionKr"));
-	%>
+<body>	
 	<div class="wrap">
 		<nav class="gnb_light">
 		<div class="gnb">
@@ -160,6 +167,9 @@
 							<a href="#" class="btn_search">검색</a>
 						</div>
 					</form>
+					<form class="view_form" method="post" action="/view.photo" name="view_form" >
+						<input type="hidden" name="uciCode" id="uciCode"/>
+					</form>
 					<!--상세검색    <a href="#" class="search_detail">상세검색</a>   -->
 				</div>
 			</div>
@@ -186,8 +196,9 @@
 					<c:forEach items="${photoList}" var="photo">
 						<c:if test="${photo.widthCm < photo.heightCm}">
 							<div class="img_list">
-								<a href="/view.photo?uciCode=${photo.uciCode}">
-									<img src="/list.down.photo?uciCode=${photo.uciCode}">
+								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
+								<a href="#" onclick="go_photoView('${photo.uciCode}')">
+									<img src="/list.down.photo?uciCode=${photo.uciCode}&dummy=<%= currentTimeMills%>">
 								</a>
 							</div>
 						</c:if>					
@@ -198,8 +209,9 @@
 					<c:forEach items="${photoList}" var="photo">
 						<c:if test="${photo.widthCm > photo.heightCm}">
 							<div class="img_list">
-								<a href="/view.photo?uciCode=${photo.uciCode}">
-									<img src="/list.down.photo?uciCode=${photo.uciCode}">
+								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
+								<a href="#" onclick="go_photoView('${photo.uciCode}')">
+									<img src="/list.down.photo?uciCode=${photo.uciCode}&dummy=<%= currentTimeMills%>">
 								</a>
 							</div>
 						</c:if>
@@ -254,8 +266,8 @@
 						<c:forEach items="${downloadList}" var="down">
 							<c:if test="${down.widthCm < down.heightCm}">
 								<div class="img_list">
-									<a href="/view.photo?uciCode=${down.uciCode}">
-										<img src="/list.down.photo?uciCode=${down.uciCode}">
+									<a href="#" onclick="go_photoView('${down.uciCode}')">
+										<img src="/list.down.photo?uciCode=${down.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>					
@@ -266,8 +278,8 @@
 						<c:forEach items="${downloadList}" var="down">
 							<c:if test="${down.widthCm > down.heightCm}">
 								<div class="img_list">
-									<a href="/view.photo?uciCode=${down.uciCode}">
-										<img src="/list.down.photo?uciCode=${down.uciCode}">
+									<a href="#" onclick="go_photoView('${down.uciCode}')">
+										<img src="/list.down.photo?uciCode=${down.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>
@@ -280,8 +292,9 @@
 						<c:forEach items="${basketList}" var="basket">
 							<c:if test="${basket.widthCm < basket.heightCm}">
 								<div class="img_list">
-									<a href="/view.photo?uciCode=${basket.uciCode}">
-										<img src="/list.down.photo?uciCode=${basket.uciCode}">
+									<%-- <a href="/view.photo?uciCode=${basket.uciCode}"> --%>
+									<a href="#" onclick="go_photoView('${basket.uciCode}')">
+										<img src="/list.down.photo?uciCode=${basket.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>					
@@ -292,8 +305,8 @@
 						<c:forEach items="${basketList}" var="basket">
 							<c:if test="${basket.widthCm > basket.heightCm}">
 								<div class="img_list">
-									<a href="/view.photo?uciCode=${basket.uciCode}">
-										<img src="/list.down.photo?uciCode=${basket.uciCode }" />
+									<a href="#" onclick="go_photoView('${basket.uciCode}')">
+										<img src="/list.down.photo?uciCode=${basket.uciCode}&dummy=<%= currentTimeMills%>" />
 									</a>
 								</div>
 							</c:if>
@@ -306,8 +319,8 @@
 						<c:forEach items="${hitsList}" var="hit">
 							<c:if test="${hit.widthCm < hit.heightCm}">
 								<div class="img_list">
-									<a href="/view.photo?uciCode=${hit.uciCode}">
-										<img src="/list.down.photo?uciCode=${hit.uciCode}">
+									<a href="#" onclick="go_photoView('${hit.uciCode}')">
+										<img src="/list.down.photo?uciCode=${hit.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>					
@@ -318,8 +331,8 @@
 						<c:forEach items="${hitsList}" var="hit">
 							<c:if test="${hit.widthCm > hit.heightCm}">
 								<div class="img_list">
-									<a href="/view.photo?uciCode=${hit.uciCode}">
-										<img src="/list.down.photo?uciCode=${hit.uciCode}">
+									<a href="#" onclick="go_photoView('${hit.uciCode}')">
+										<img src="/list.down.photo?uciCode=${hit.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>
@@ -338,7 +351,7 @@
 					<c:forEach items="${mediaList}" var="member">
 						<li>
 							<a href="#" onclick="media_submit('${member.seq}')">
-								<img src="/logo.down.photo?seq=${member.seq}" />
+								<img src="/logo.down.photo?seq=${member.seq}&dummy=<%= currentTimeMills%>" />
 							</a>
 						</li>
 					</c:forEach>

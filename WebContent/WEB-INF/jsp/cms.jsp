@@ -16,6 +16,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%
+	Date date = new Date();
+	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+	String currentTimeMills = simpleDate.format(date);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -144,7 +151,7 @@
 			success : function(data) {
 				$("#cms_list2 ul").empty();
 				$(data.result).each(function(key, val) {				
-					html += "<li class=\"thumb\"> <a href=\"/view.cms?uciCode=" + val.uciCode + "\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "\" /></a>";
+					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\" /></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\">다운로드</li>	<li class=\"btn_del\">삭제</li> <li class=\"btn_view\">다운로드</li> </ul>";
 				});
@@ -182,7 +189,7 @@
 			dataType: "json",
 			success: function(data) { console.log(data);
 				$(data.result).each(function(key, val) {		
-					html += "<li class=\"thumb\"> <a href=\"/view.cms?uciCode="+val.uciCode+"\"><img src=\"/list.down.photo?uciCode="+val.uciCode+"\" /></a>";
+					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\" /></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>"+val.uciCode+"</span><span>"+val.copyright+"</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\">다운로드</li>	<li class=\"btn_del\">삭제</li> <li class=\"btn_view\">다운로드</li> </ul>";
 				});	
@@ -192,6 +199,11 @@
 	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	       	}
 		});
+	}
+	
+	function go_cmsView(uciCode) {
+		$("#uciCode").val(uciCode);
+		view_form.submit();
 	}
 </script>
 </head>
@@ -299,6 +311,9 @@
 			</div>
 		</div>
 		<!-- 필터끝 -->
+		<form class="view_form" method="post" action="/view.cms" name="view_form" >
+			<input type="hidden" name="uciCode" id="uciCode"/>
+		</form>
 		<div class="btn_sort"><span class="task_check">
 			<input type="checkbox" />
 			</span>
@@ -316,7 +331,8 @@
 				<c:forEach items="${picture}" var="PhotoDTO">
 					<li class="thumb"> 
 						<a href="/view.cms?uciCode=${PhotoDTO.uciCode}">
-							<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}"/>
+							<%-- <img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}"/> --%>
+							<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%= currentTimeMills%>">
 						</a>
 						<div class="thumb_info">
 							<input type="checkbox" />

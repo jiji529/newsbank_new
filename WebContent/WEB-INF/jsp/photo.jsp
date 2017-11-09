@@ -12,10 +12,18 @@
   ----------      ---------      ----------------------------------------------
   2017. 10. 11.   hoyadev       picture
   2017. 10. 16.   hoyadev       searchList()
+  2017. 11. 09.   hoyadev       go_photoView()
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%
+	Date date = new Date();
+	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+	String currentTimeMills = simpleDate.format(date);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -184,7 +192,7 @@
 				$("#search_list1 ul").empty();
 				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"/view.photo?uciCode=" + val.uciCode + "\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "\"></a>";
+					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
@@ -203,6 +211,11 @@
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 			}
 		});
+	}
+	
+	function go_photoView(uciCode) {
+		$("#uciCode").val(uciCode);
+		view_form.submit();
 	}
 </script>
 </head>
@@ -324,12 +337,16 @@
 			</div>
 			<!-- 필터끝 -->
 		</div>
+		<form class="view_form" method="post" action="/view.photo" name="view_form" >
+			<input type="hidden" name="uciCode" id="uciCode"/>
+		</form>
 		<section id="search_list1">
 		<ul>
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
-					<a href="/view.photo?uciCode=${PhotoDTO.uciCode}">
-						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}">
+					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
+					<a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')">
+						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%= currentTimeMills%>">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
@@ -346,8 +363,9 @@
 		<ul>
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
-					<a href="/view.photo?uciCode=${PhotoDTO.uciCode}">
-						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}">
+					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
+					<a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')">
+						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%= currentTimeMills%>">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
