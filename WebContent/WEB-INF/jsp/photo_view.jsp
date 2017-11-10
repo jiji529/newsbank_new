@@ -432,31 +432,48 @@
 			}
 		});
 	}
+	
+	// #구매 페이지 이동
+	function go_pay() {
+		var uciCode = "${photoDTO.uciCode}";
+		var usageList_seq = new Array();
+		$(".option_result ul li").each(function(index) {
+			var usage_seq = $(this).children(".op_cont").attr("value");
+			usageList_seq.push(usage_seq);
+		});
+		
+		var param = {
+			"uciCode" : uciCode,
+			"usageList_seq" : usageList_seq
+		};
+		
+		console.log(param);
+		$.ajax({
+			url: "pay",
+			type: "POST",
+			async: false,
+			dataType: "json",
+			data: param,
+			timeout: 1000000,
+			success: function(data) {
+				
+			}
+		});
+		
+		//$("#uciCode").val(uciCode);
+		//$("#usageList_seq").val(usageList_seq);
+		
+		//view_form.submit();
+	}
 </script>
 </head>
 <body> 
 <div class="wrap">
 	<%@include file="header.jsp" %>
-	<!-- <nav class="gnb_dark">
-		<div class="gnb"><a href="/home" class="logo"></a>
-			<ul class="gnb_left">
-				<li class="on"><a href="/photo">보도사진</a></li>
-				<li><a href="#">뮤지엄</a></li>
-				<li><a href="#">사진</a></li>
-				<li><a href="#">컬렉션</a></li>
-			</ul>
-			<ul class="gnb_right">
-				<li><a href="/login">로그인</a></li>
-				<li><a href="/kind.join" target="_blank">가입하기</a></li>
-			</ul>
-		</div>
-		<div class="gnb_srch">
-			<form id="searchform">
-				<input type="text" value="검색어를 입력하세요" />
-				<a href="#" class="btn_search">검색</a>
-			</form>
-		</div>
-	</nav> -->
+	<!-- <form class="view_form" method="post" action="/pay" name="view_form" >
+		<input type="hidden" name="uciCode" id="uciCode"/>
+		<input type="hidden" name="usageList_seq" id="usageList_seq"/>
+	</form> -->
 	<section class="view">
 		<div class="view_lt">
 			<div class="navi"></div>
@@ -558,7 +575,7 @@
 				<div class="btn_wrap">
 					<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
 					<div class="btn_down"><a href="/list.down.photo?uciCode=${photoDTO.uciCode}">시안 다운로드</a></div>
-					<div class="btn_buy"><a href="#">구매하기</a></div>
+					<div class="btn_buy"><a href="#" onclick="go_pay()">구매하기</a></div>
 				</div>
 			</div>
 		</div>

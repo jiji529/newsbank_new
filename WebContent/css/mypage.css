@@ -100,7 +100,7 @@
 .mypage .filters li.filter_title.filter_ico,.mypage .filters li.filter_title.folder_ico{ margin-left:0; }
 
 @media (max-width: 1400px){
-.mypage .filters li.filter_title.filter_ico{ display:block; border-left:0;}
+.mypage .filters li.filter_title.filter_ico, .mypage .filters li.filter_title.folder_ico{ display:block; border-left:0;}
 .mypage .filters li.filter_title:nth-child(2){margin-left:0; border-left:0;}
 .mypage .filters li.filter_title{max-width:150px}
 .mypage .filters li.filter_title:after{right:15px;}}
@@ -112,11 +112,29 @@
 .mypage .btn_sort span.task_check{float:left; border:1px #e2e2e2 solid; background:#f8f8f8; width:28px; height:28px;cursor:pointer;}
 .mypage .btn_sort span.task_check input{ margin:7px 0 0 2px}
 .mypage .btn_sort .button{float:left; }
-.mypage .btn_sort .button li{float:left; border:1px #e2e2e2 solid;height:28px; margin-left:8px; font-size:13px; line-height:28px; padding:0 10px;cursor:pointer;}
+.mypage .btn_sort .button li{float:left; border:1px #e2e2e2 solid;height:28px; margin-left:8px; font-size:13px; line-height:28px; padding:0 10px;cursor:pointer; position:relative;}
 .mypage .btn_sort .button li.sort_down{ background:#f8f8f8; font-weight:600;}
 .mypage .btn_sort .button li.sort_del{ font-weight:600; padding-left:26px; margin-left:-1px; background:url(../images/mp/ico_del.png) 8px 6px no-repeat;background-color:#f8f8f8; }
-.mypage .btn_sort .button li.sort_menu{ }
 .mypage .btn_sort .button li.sort_up{ background:#f8f8f8; font-weight:600;}
+.mypage .btn_sort .button li.sort_folder{ padding-right:25px;}
+.mypage .btn_sort .button li.sort_folder:after { content: ''; position: absolute; top: 50%; right: 10px; height: 0; width: 0; margin-top: -3px; border: solid transparent; border-top-color: #555; border-width: 5px 4px; -webkit-transition: border 0.3s ease-in-out; transition: border 0.3s ease-in-out; width: auto;}
+.mypage .btn_sort .button li.sort_folder .folder_item{border: 1px  solid  #d9d9d9; background: #fff; position:absolute; top:26px; left:-1px; min-width:190px;}
+.mypage .btn_sort .button li.sort_folder .folder_item .list_layer{max-height: 350px; overflow: auto; overflow-x: hidden;}
+.mypage .btn_sort .button li.sort_folder .folder_item .list_layer li{white-space: nowrap; border:0; padding:0 0 0 25px; margin-left:0; float: left; width: 100%; text-align: left; min-width: 170px; height:35px; line-height:35px;}
+.mypage .btn_sort .button li.sort_folder .folder_item .list_layer li.select { background:url(../images/layer_chk.png) 8px 12px no-repeat;}
+.mypage .btn_sort .button li.sort_folder .folder_item .box_add{border-top: 1px solid #f4f4f4; height:44px; background:#fff; }
+.mypage .btn_sort .button li.sort_folder .folder_item .box_add a{ display:block;  background:url(../images/ico_add_folder.png) 8px 12px no-repeat; padding:7px 10px 8px 32px; text-align:left;}
+.mypage .btn_sort .button li.sort_folder .folder_item .box_add form{display: none; position: relative; height: 23px; margin-top:-44px; background:#fff; }
+.mypage .btn_sort .button li.sort_folder .folder_item .box_add fieldset{ border:0;margin: 11px 8px; }
+.mypage .btn_sort .button li.sort_folder .folder_item .box_add fieldset *{font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",sans-serif; letter-spacing:-1px;}
+.mypage .btn_sort .button li.sort_folder .folder_item .box_add legend{display:none;}
+.mypage .btn_sort .button li.sort_folder .folder_item .box_add input{ color: #999; border: 1px solid #c5c5c5; vertical-align: middle; height: 22px; float:left;}
+.mypage .btn_sort .button li.sort_folder .folder_item .box_add button{ height: 22px; border: 1px solid #c3c3c3; color: #333; padding: 0 8px; background:#fff; float:left; margin-left:5px; font-size:11px;}
+
+
+
+
+
 
 .mypage #wish_list2{ float:left;}
 .mypage #wish_list2 ul{width:100%; float:left;}
@@ -276,18 +294,42 @@
 .faq dl dd img { float:left; text-align:center;}
 
 
-/* paging */
-.paging {width:100%; float:left; text-align:center;}
-.paging ul { margin:40px auto;}
-.paging li {overflow: hidden;display: inline-block;vertical-align: top; font-size:14px; font-weight:100;}
-.paging ul li a { color:#808080; display:block; width:30px; height:30px; border:1px #fff solid; line-height:26px;}
-.paging ul li a:hover { border:1px #efefef solid; }
-.paging ul li.active a { color:#f79320; font-weight:500;}
-.paging li.first a{  text-indent:-9999px; background: url(../images/page/btn_first.png) 0 0 no-repeat;} 
-.paging li.prev a{  text-indent:-9999px; background: url(../images/page/btn_prev.png) 0 0 no-repeat; margin-right:5px;} 
-.paging li.next a{  text-indent:-9999px; background: url(../images/page/btn_next.png) 0 0 no-repeat; margin-left:5px;} 
-.paging li.last a{  text-indent:-9999px; background: url(../images/page/btn_end.png) 0 0 no-repeat;} 
-.paging li.first a:hover{ background: url(../images/page/btn_first_over.png) 0 0 no-repeat;} 
-.paging li.prev a:hover{ background: url(../images/page/btn_prev_over.png) 0 0 no-repeat;} 
-.paging li.next a:hover{ background: url(../images/page/btn_next_over.png) 0 0 no-repeat;} 
-.paging li.last a:hover{ background: url(../images/page/btn_end_over.png) 0 0 no-repeat;} 
+/* page */
+.page {width:100%; float:left; text-align:center;}
+.page ul { margin:40px auto;}
+.page li {overflow: hidden;display: inline-block;vertical-align: top; font-size:14px; font-weight:100;}
+.page ul li a { color:#808080; display:block; width:30px; height:30px; border:1px #fff solid; line-height:26px;}
+.page ul li a:hover { border:1px #efefef solid; }
+.page ul li.active a { color:#f79320; font-weight:500;}
+.page li.first a{  text-indent:-9999px; background: url(../images/page/btn_first.png) 0 0 no-repeat;} 
+.page li.prev a{  text-indent:-9999px; background: url(../images/page/btn_prev.png) 0 0 no-repeat; margin-right:5px;} 
+.page li.next a{  text-indent:-9999px; background: url(../images/page/btn_next.png) 0 0 no-repeat; margin-left:5px;} 
+.page li.last a{  text-indent:-9999px; background: url(../images/page/btn_end.png) 0 0 no-repeat;} 
+.page li.first a:hover{ background: url(../images/page/btn_first_over.png) 0 0 no-repeat;} 
+.page li.prev a:hover{ background: url(../images/page/btn_prev_over.png) 0 0 no-repeat;} 
+.page li.next a:hover{ background: url(../images/page/btn_next_over.png) 0 0 no-repeat;} 
+.page li.last a:hover{ background: url(../images/page/btn_end_over.png) 0 0 no-repeat;} 
+
+/* pay */
+.pay{width:1000px;}
+.pay .pay_lt{float:left; width:520px;}
+.pay .pay_lt ul {float:left; width:100%;}
+.pay .pay_lt ul li{display :block; float:left; width:100%; border-bottom:1px #ddd solid;}
+.pay .pay_lt ul li label{display: block;background:url(../images/ico_chk5.png) 15px 20px no-repeat;cursor:pointer; width:100%; height:70px; line-height:70px; text-align:left; padding:0 70px; font-size:18px; font-weight:bold; }
+.pay .pay_lt ul li input{width:0; height:0;}
+.pay .pay_lt ul li input:checked+label {background-color:#f9f4ef; background-image:url(../images/ico_chk6.png); background-position:15px 20px; background-repeat: no-repeat; }
+
+.pay .pay_rt{float:right; width:440px;}
+.pay .pay_rt .table_head{border:0;}
+.pay .pay_rt .pay_rt_box{border:3px #f79320 solid; float:left; width:100%; padding:10px 20px;}
+.pay .pay_rt .pay_rt_box ul{float:left; width:100%;}
+.pay .pay_rt .pay_rt_box li {float:left; width:100%; height:32px; padding:0 30px; line-height:32px; background:url(../images/page/ico_tit.png) 24px 20px no-repeat;}
+.pay .pay_rt .pay_rt_box li strong{float: left; color: #444; font-size: 14px; margin-top: 3px; padding-left: 7px;}
+.pay .pay_rt .pay_rt_box li p{float: right; text-align: left; color: #222; font-weight: bold; font-size: 16px; font-family: Tahoma; letter-spacing: -1px;}
+.pay .pay_rt .pay_rt_box li p em{float: right; width: 32px; font-size: 12px; font-family: dotum, 돋움;  white-space: nowrap;  padding: 0px 3px; font-style:normal; font-weight:normal;}
+
+.pay .pay_rt .pay_rt_box	.result_list{ border-top:1px #ddd solid; width:100%; float:left; margin-top:10px; padding-top:10px;}
+.pay .pay_rt .pay_rt_box	.result_list li strong{ font-size:18px;}
+.pay .pay_rt .pay_rt_box	.result_list li p{ color:#f79320; font-size:28px;}
+.pay .pay_rt .pay_rt_box	.result_list li p em{line-height:46px;}
+.pay .pay_rt .pay_rt_box	.result_list .btn_area a{ width:100%;  font-size: 24px;    font-weight: 600;}
