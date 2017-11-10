@@ -535,27 +535,286 @@ $(document).ready(function() {
 
 	});
 
-	$("#btnAccountSearch").on('click', function() {
-		var startDate = $("#contractStart").val(); //시작일
+	$('#btnaccountSearch').on('click', function() {
+		$("#frmAccountList").submit();
+
+	});
+
+	if ($(".tb_total_account").length > 0) {
+		var now = new Date();
+		$.ajax({
+			url : "/account.api",
+			type : "post",
+			data : ({
+				cmd : 'total',
+				start_date : now.getFullYear() + "0101",
+				end_date : now.getFullYear() + "1231"
+			}),
+			dataType : "json",
+			success : function(data) {
+				var offline_list = new Array();
+				var online_list = new Array();
+				if (data.success) {
+					var onlieTotalPay = 0;
+					var offlieTotalPay = 0;
+					$.each(data.data, function(key, value) {
+						if (value.TYPE == "offline") {
+							$('.tb_total_account tbody tr:eq(1) td:eq(' + value.M + ')').text(value.totalPrice.toLocaleString());
+							onlieTotalPay += value.totalPrice;
+						} else {
+							$('.tb_total_account tbody tr:eq(0) td:eq(' + value.M + ')').text(value.totalPrice.toLocaleString());
+							offlieTotalPay += value.totalPrice;
+						}
+
+					});
+					$('.tb_total_account tbody tr:eq(0) td:eq(13)').text(onlieTotalPay.toLocaleString());
+					$('.tb_total_account tbody tr:eq(1) td:eq(13)').text(offlieTotalPay.toLocaleString());
+					$('.calculate_info_area span:eq(1)').text(data.data.length);
+					$('.calculate_info_area span:eq(3)').text((onlieTotalPay+offlieTotalPay).toLocaleString())
+					
+					$('.tb_total_account tfoot td:not(:eq(0))').each(function(i) {
+						var onPay = $('.tb_total_account tbody tr:eq(0) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
+						var offPay = $('.tb_total_account tbody tr:eq(1) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
+
+						if (!Number.isInteger(Number.parseInt(onPay)))
+							onPay = 0;
+						if (!Number.isInteger(Number.parseInt(offPay)))
+							offPay = 0;
+						var totalPay = Number.parseInt(onPay) + Number.parseInt(offPay);
+						if (totalPay > 0) {
+							$(this).text(totalPay.toLocaleString());
+						}
+
+					});
+
+				}
+			}
+		});
+	}
+
+	$("#frmAccountList").on("submit", function() {
+		var startDate = $("#contractStart").val(); // 시작일
 		if (startDate == null || startDate.length == 0) {
-			return;
+			alert("선택한 시작 날짜가 없습니다.");
+			return false;
 		}
-		var endDate = $("#contractEnd").val(); //종료일
+		var endDate = $("#contractEnd").val(); // 종료일
 		if (endDate == null || endDate.length == 0) {
-			return;
+			alert("선택한 시작 날짜가 없습니다.");
+			return false;
 		}
-		var media_code = new Array(); //선택 매체 코드
+		var media_code = new Array(); // 선택 매체 코드
 		$("input[name=media_code]").each(function() {
 			if ($(this).is(":checked")) {
 				media_code.push($(this).val());
 			}
 		});
 		if (media_code.length == 0) {
-			return;
+			alert("선택된 매체가 없습니다.");
+			return false;
 		}
-		var name = $("input[name=keyword]").val(); //아이디/이름/회사명
-		var pay = $("input[name=payType]").val(); //결제구분
+		var name = $("input[name=keyword]").val(); // 아이디/이름/회사명
+		var pay = $("select[name=payType]").val(); // 결제구분
+		$.ajax({
+			url : "/account.api",
+			type : "post",
+			data : $(this).serialize(),
+			dataType : "json",
+			success : function(data) {
+				console.log(data);
+				// $('.account_list').empty();
+				if (data.success) {
+					var totalPay = 0;
+					var totalCount = data.data.length;
+					var tb_online_account = "";
+					var tb_offline_account = "";
 
+					var tb_online_total_ba = 0;
+					var tb_online_total_at = 0;
+					var tb_online_total_cv = 0;
+					var tb_online_total_bt = 0;
+					var tb_online_total_tsc = 0;
+					var tb_online_total_sa = 0;
+					var tb_online_total_vos = 0;
+					var tb_online_total_atos = 0;
+					var tb_online_total_dc = 0;
+
+					var tb_offline_total_ba = 0;
+					var tb_offline_total_at = 0;
+					var tb_offline_total_cv = 0;
+					var tb_offline_total_tsc = 0;
+					var tb_offline_total_sa = 0;
+					var tb_offline_total_vos = 0;
+					var tb_offline_total_atos = 0;
+					var tb_offline_total_dc = 0;
+
+					$.each(data.data, function(key, value) {
+						totalPay += value.price;
+
+						var billing_amount = value.price; // 결제금액
+						var added_tax = Math.round(billing_amount * 0.1); // 과세부가세
+						var customs_value = Math.round(billing_amount * 0.9); // 과세금액
+						var billing_tax = 0; // 빌링수수료
+
+						var rate = value.preRate;
+						var PAYTYPE = "";
+						switch (value.LGD_PAYTYPE) {
+						case "SC0010":
+							PAYTYPE = "카드결제";
+							billing_tax = billing_amount * 0.00363;
+							break;
+						case "SC0040":
+							PAYTYPE = "무통장입금";
+							billing_tax = 440;
+							break;
+						case "SC0030":
+							PAYTYPE = "계좌이체";
+							billing_tax = billing_amount * 0.0022;
+							break;
+						case "000000":
+							PAYTYPE = "세금계산서";
+							rate = value.postRate;
+							break;
+						}
+						billing_tax = Math.round(billing_tax);
+						rate = 1 - rate / 100;
+						var total_sales_account = billing_amount - billing_tax; // 총매출액
+						var sales_account = Math.round(total_sales_account * rate);// 회원사
+						// 매출액
+						var value_of_supply = Math.round(sales_account * 0.9); // 공급가액
+						var added_tax_of_supply = Math.round(sales_account * 0.1); // 공급부가액
+						var dahami_account = total_sales_account - sales_account;
+
+						if (value.LGD_PAYTYPE == "000000") {
+							tb_offline_account += "<tr>";
+							tb_offline_account += "<td>" + value.LGD_PAYDATE.substr(0, 4) + '-' + value.LGD_PAYDATE.substr(4, 2) + '-' + value.LGD_PAYDATE.substr(6, 2) + "</td>";
+							tb_offline_account += "<td>" + value.LGD_BUYER + "</td>";
+							tb_offline_account += "<td>" + value.photo_uciCode + "</td>";
+							tb_offline_account += "<td>" + value.usage + "</td>";
+							tb_offline_account += "<td>" + value.copyright + "</td>";
+							tb_offline_account += "<td>무통장입금</td>";
+							tb_offline_account += "<td>" + PAYTYPE.toLocaleString() + "</td>";
+							tb_offline_account += "<td>" + customs_value.toLocaleString() + "</td>";
+							tb_offline_account += "<td>" + added_tax.toLocaleString() + "</td>";
+							tb_offline_account += "<td>" + billing_amount.toLocaleString() + "</td>";
+							tb_offline_account += "<td>" + total_sales_account.toLocaleString() + "</td>";
+							tb_offline_account += "<td>" + sales_account.toLocaleString() + "</td>";
+							tb_offline_account += "<td>" + value_of_supply.toLocaleString() + "</td>";
+							tb_offline_account += "<td>" + added_tax_of_supply.toLocaleString() + "</td>";
+							tb_offline_account += "<td>" + dahami_account.toLocaleString() + "</td>";
+							tb_offline_account += "</tr>";
+							tb_offline_total_ba += billing_amount;
+							tb_offline_total_at += added_tax;
+							tb_offline_total_cv += customs_value;
+							tb_offline_total_tsc += total_sales_account;
+							tb_offline_total_sa += sales_account;
+							tb_offline_total_vos += value_of_supply;
+							tb_offline_total_atos += added_tax_of_supply;
+							tb_offline_total_dc += dahami_account;
+
+						} else {
+							tb_online_account += "<tr>";
+							tb_online_account += "<td>" + value.LGD_PAYDATE.substr(0, 4) + '-' + value.LGD_PAYDATE.substr(4, 2) + '-' + value.LGD_PAYDATE.substr(6, 2) + "</td>";
+							tb_online_account += "<td>" + value.LGD_BUYER + "</td>";
+							tb_online_account += "<td>" + value.photo_uciCode + "</td>";
+							tb_online_account += "<td>" + value.usage + "</td>";
+							tb_online_account += "<td>" + value.copyright + "</td>";
+							tb_online_account += "<td>" + PAYTYPE.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + customs_value.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + added_tax.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + billing_amount.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + billing_tax.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + total_sales_account.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + sales_account.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + value_of_supply.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + added_tax_of_supply.toLocaleString() + "</td>";
+							tb_online_account += "<td>" + dahami_account.toLocaleString() + "</td>";
+							tb_online_account += "</tr>";
+							tb_online_total_ba += billing_amount;
+							tb_online_total_at += added_tax;
+							tb_online_total_cv += customs_value;
+							tb_online_total_bt += billing_tax;
+							tb_online_total_tsc += total_sales_account;
+							tb_online_total_sa += sales_account;
+							tb_online_total_vos += value_of_supply;
+							tb_online_total_atos += added_tax_of_supply;
+							tb_online_total_dc += dahami_account;
+
+						}
+
+					});
+					$(".tb_offline_account table tbody").empty();
+					$(".tb_online_account table tbody").empty();
+					$(".tb_offline_account table tbody").append(tb_offline_account);
+					$(".tb_online_account table tbody").append(tb_online_account);
+
+					var calculate_info_area = "기간 : " + startDate + " ~ " + endDate;
+					calculate_info_area += "<span style=\"margin: 0 20px;\">l</span>";
+					calculate_info_area += "건수 :<span class=\"color\"> " + totalCount + "</span> 건";
+					calculate_info_area += "<span style=\"margin: 0 20px;\">l</span>";
+					calculate_info_area += "총 판매금액 :<span class=\"color\"> " + totalPay.toLocaleString() + "</span> 원";
+					$('.calculate_info_area').html(calculate_info_area);
+
+					var total_online_area = "<tr>";
+					total_online_area += "<td colspan=\"6\">온라인 매출액 합계</td>";
+					total_online_area += "<td>" + tb_online_total_cv.toLocaleString() + "</td>";
+					total_online_area += "<td>" + tb_online_total_at.toLocaleString() + "</td>";
+					total_online_area += "<td>" + tb_online_total_ba.toLocaleString() + "</td>";
+					total_online_area += "<td>" + tb_online_total_bt.toLocaleString() + "</td>";
+					total_online_area += "<td>" + tb_online_total_tsc.toLocaleString() + "</td>";
+					total_online_area += "<td>" + tb_online_total_sa.toLocaleString() + "</td>";
+					total_online_area += "<td>" + tb_online_total_vos.toLocaleString() + "</td>";
+					total_online_area += "<td>" + tb_online_total_atos.toLocaleString() + "</td>";
+					total_online_area += "<td>" + tb_online_total_dc.toLocaleString() + "</td>";
+					total_online_area += "</tr>";
+					$('.tb_online_account tfoot ').empty();
+					$('.tb_online_account tfoot ').html(total_online_area);
+					var total_offline_area = "<tr>";
+					total_offline_area += "<td colspan=\"7\">오프라인 매출액 합계</td>";
+					total_offline_area += "<td>" + tb_offline_total_cv.toLocaleString() + "</td>";
+					total_offline_area += "<td>" + tb_offline_total_at.toLocaleString() + "</td>";
+					total_offline_area += "<td>" + tb_offline_total_ba.toLocaleString() + "</td>";
+					total_offline_area += "<td>" + tb_offline_total_tsc.toLocaleString() + "</td>";
+					total_offline_area += "<td>" + tb_offline_total_sa.toLocaleString() + "</td>";
+					total_offline_area += "<td>" + tb_offline_total_vos.toLocaleString() + "</td>";
+					total_offline_area += "<td>" + tb_offline_total_atos.toLocaleString() + "</td>";
+					total_offline_area += "<td>" + tb_offline_total_dc.toLocaleString() + "</td>";
+					total_offline_area += "</tr>";
+					$('.tb_offline_account tfoot ').empty();
+					$('.tb_offline_account tfoot ').html(total_offline_area);
+
+					var rs_vos = tb_online_total_vos + tb_offline_total_vos;
+					var rs_atos = tb_online_total_atos + tb_offline_total_atos;
+					console.log(rs_vos, rs_atos)
+					var rs_total = rs_vos + rs_atos;
+					var tb_result_account = "<tbody>";
+					tb_result_account += "<tr>";
+					tb_result_account += "<td>공금가액</td>";
+					tb_result_account += "<td>" + rs_vos.toLocaleString() + "</td>";
+					tb_result_account += "</tr>";
+					tb_result_account += "<tr>";
+					tb_result_account += "<td>부가세</td>";
+					tb_result_account += "<td>" + rs_atos.toLocaleString() + "</td>";
+					tb_result_account += "</tr>";
+					tb_result_account += "</tbody>";
+					tb_result_account += "<tfoot>";
+					tb_result_account += "<tr>";
+					tb_result_account += "<td>합계 (부가세 포함)</td>";
+					tb_result_account += "<td>" + rs_total.toLocaleString() + "</td>";
+					tb_result_account += "</tr>";
+					tb_result_account += "</tfoot>";
+					$(".tb_result_account table").empty();
+					$(".tb_result_account table").html(tb_result_account);
+
+					$(".tb_total_account").css('display', 'none');
+					$(".tb_online_account").css('display', 'block');
+					$(".tb_offline_account").css('display', 'block');
+					$(".tb_result_account").css('display', 'block');
+				}
+			}
+		});
+
+		return false;
 	});
 
 });

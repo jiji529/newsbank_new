@@ -113,7 +113,7 @@ public class PaymentDAO extends DAOBase {
 		return result;
 	}
 
-	public List<PaymentManageDTO> searchAccountList(Map<String, Object> param) {
+	public List<Map<String, Object>> searchAccountList(Map<String, Object> param) {
 
 		// Map<String, Object> ret = new HashMap<String, Object>();
 		SqlSession session = null;
@@ -121,7 +121,30 @@ public class PaymentDAO extends DAOBase {
 		try {
 
 			session = sf.getSession();
+			//System.out.println(session.getConfiguration().getMappedStatement("payment.selectToTalAccountList").getSqlSource().getBoundSql(param).getSql());
 			return session.selectList("payment.selectToTalAccountList", param);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+	}
+	
+	public List<Map<String, Object>> selectTotalPrice(Map<String, Object> param) {
+
+		SqlSession session = null;
+		try {
+
+			session = sf.getSession();
+			//System.out.println(session.getConfiguration().getMappedStatement("payment.selectTotalPrice").getSqlSource().getBoundSql(param).getSql());
+			return session.selectList("payment.selectTotalPrice", param);
 
 		} catch (Exception e) {
 			logger.warn("", e);
