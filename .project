@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>NewsBank_2017_Common</project>
-		<project>com.dahami.common.util</project>
 		<project>API_SolrCommon</project>
 		<project>Newsbank_2017_Common</project>
 	</projects>

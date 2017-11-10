@@ -9,9 +9,6 @@
         <dependent-module archiveName="API_SolrCommon.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon/API_SolrCommon">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.dahami.common.util.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.common.util/com.dahami.common.util">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="util.crypt-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/util.crypt-1.0.0.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
