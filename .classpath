@@ -20,7 +20,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Newsbank_2017_Common"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.dahami.common.util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/API_SolrCommon"/>
 	<classpathentry kind="lib" path="/Newsbank_2017_Common/lib/commons-codec-1.10.jar"/>
 	<classpathentry kind="lib" path="/Newsbank_2017_Common/lib/commons-io-2.4.jar"/>
