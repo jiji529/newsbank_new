@@ -23,11 +23,31 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.imaging.ImageReadException;
+import org.apache.commons.imaging.ImageWriteException;
+import org.apache.commons.imaging.Imaging;
+import org.apache.commons.imaging.common.ImageMetadata;
+import org.apache.commons.imaging.common.ImageMetadata.ImageMetadataItem;
+import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
+import org.apache.commons.imaging.formats.jpeg.exif.ExifRewriter;
+import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
+import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
+import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
+import org.apache.commons.imaging.formats.tiff.fieldtypes.FieldType;
+import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
+import org.apache.commons.imaging.formats.tiff.write.TiffOutputField;
+import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 
 import com.dahami.common.util.FileUtil;
 import com.dahami.common.util.ImageUtil;
@@ -36,16 +56,20 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
-public class DownloadService extends ServiceBase {
+import kr.or.uci.dist.api.APIHandler;
 
+public class DownloadService extends ServiceBase {
+	private static final SimpleDateFormat ymDf = new SimpleDateFormat("yyyyMM");
+	
 	private static final String PATH_PHOTO_BASE = "/data/newsbank/serviceImages";
 	private static final String PATH_LOGO_BASE = "/data/newsbank/logo";
 	/** 임시생성 로고 저장폴더 */
 	private static final String PATH_LOGO_TEMP = "/data/newsbank/logo/temp";
-	private static final String PATH_PHOTO_TEMP = "/data/newsbank/serviceTemp";
+	private static final String PATH_PHOTO_DOWN = "/data/newsbank/serviceDown";
 	
 	private static final String URL_PHOTO_ERROR_LIST = "/images/error/list_image_processError.jpg";
 	private static final String URL_PHOTO_ERROR_VIEW = "/images/error/view_image_processError.jpg";
+	private static final String URL_PHOTO_ERROR_SERVICE = "/downloadError.jsp";
 	private static final String URL_PHOTO_STOP_LIST = "/images/error/list_image_stopSale.jpg";
 	private static final String URL_PHOTO_STOP_VIEW = "/images/error/view_image_stopSale.jpg";
 	
@@ -88,6 +112,9 @@ public class DownloadService extends ServiceBase {
 						if(logoFd.exists()) {
 							if(!mDto.getCompName().equals(FileUtil.readFileToString(infoFd, "UTF-8"))) {
 								makeF = true;	
+							}
+							else {
+								downPath = tmpLogoPath;
 							}
 						}
 						else {
@@ -149,9 +176,48 @@ public class DownloadService extends ServiceBase {
 				}
 			}
 			// 구매한 이미지 다운로드
-			else if(targetSize.startsWith("service.")) {
-				// 보낼 이미지 동적으로 생성해서 downPath에 지정
-				System.out.println();
+			else if(targetSize.equals("service")) {
+				// 다운로드 로그 ID
+				String downloadId = "123456";
+				String serviceName = "뉴스뱅크"; // 게티 / 디지털저작권거래소
+				String serviceCode = "nb";	// gt / dt
+				
+				try {
+					// 원본 이미지를 실시간으로 카피 / UCI 임베드 / 다운로드 정보 임베드(메타태그) 하여 전송
+					orgPath = PATH_PHOTO_BASE + "/" + photo.getOriginPath();
+					if(!new File(orgPath).exists()) {
+						logger.warn("원본이미지 없음: " + orgPath);
+						request.setAttribute("ErrorMSG", "다운로드 대상("+photo.getUciCode()+") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
+						response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
+						return;
+					}
+					String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
+					FileUtil.makeDirectory(tmpDir);
+					String uciEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downloadId + ".jpg";
+					try {
+						APIHandler.attach(new File(orgPath), new File(uciEmbedTmp), "I011-E001982934");
+					}catch(Exception e) {
+						logger.warn("UCI 임베드 실패", e);
+						request.setAttribute("ErrorMSG", "원본("+photo.getUciCode()+")  다운로드 중 오류(1)가 발생했습니다.\n관리자에게 문의해 주세요");
+						response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
+						return;
+					}
+					
+					if(!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downloadId)) {
+						// 생성 실패
+						logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downloadId);
+						request.setAttribute("ErrorMSG", "원본("+photo.getUciCode()+")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
+						response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
+						return;
+					}
+					
+					// 원본파일 전송
+					sendImageFile(response, uciEmbedTmp, this.uciCode + ".jpg");
+				}finally {
+					// TODO 로그테이블 기록
+					System.out.println();
+				}
+				
 			}
 			// 기타 다운로드?? 
 			else {
@@ -217,6 +283,107 @@ public class DownloadService extends ServiceBase {
 		else {
 			System.out.println();
 		}
+	}
+	
+	private static final String DAHAMI_HEADER_DELIMITER_STRING = "$$";
+	private static final String DAHAMI_DIST_HEADER_STRING = DAHAMI_HEADER_DELIMITER_STRING + "배포(http://www.newsbank.co.kr) : ";
+	private static final String DAHAMI_ID_HEADER_STRING = DAHAMI_HEADER_DELIMITER_STRING + "I011-";
+	
+	private boolean embedMetaTags(String orgPath, String uciCode, String serviceName, String serviceCode, String downloadId) {
+		File fd = new File(orgPath);
+		if(!fd.exists()) {
+			return false;
+		}
+		File orgFd = new File(orgPath + ".jpg");
+		fd.renameTo(orgFd);
+		fd = orgFd;
+		
+		
+		TiffOutputSet outputSet = null;
+		TiffOutputDirectory rootDir = null;
+        TiffOutputDirectory exifDir = null;
+		try {
+			ImageMetadata meta = Imaging.getMetadata(fd);
+			TiffImageMetadata tMeta = ((JpegImageMetadata)meta).getExif();
+			outputSet = tMeta.getOutputSet();
+			rootDir = outputSet.getRootDirectory();
+			exifDir = outputSet.getExifDirectory();
+			
+			TiffOutputField copyright = null;
+			TiffOutputField uniqueId = null;
+			for(TiffOutputField curField : rootDir.getFields()) {
+				if(curField.tag == TiffTagConstants.TIFF_TAG_COPYRIGHT.tag) {
+					copyright = curField;
+				}
+			}
+			
+			for(TiffOutputField curField : exifDir.getFields()) {
+				if(curField.tag == ExifTagConstants.EXIF_TAG_IMAGE_UNIQUE_ID.tag) {
+					uniqueId = curField;
+				}
+			}
+			
+			String id = uciCode + "." + serviceCode + "." + downloadId;
+			if(uniqueId != null) {
+				String currentValue = "";
+				try {
+					currentValue = (String) tMeta.getFieldValue(uniqueId.tagInfo);
+					currentValue = currentValue.trim();
+					if(currentValue.indexOf(DAHAMI_ID_HEADER_STRING) != -1) {
+						currentValue = currentValue.substring(0, currentValue.indexOf(DAHAMI_ID_HEADER_STRING)).trim();
+					}
+				}catch(Exception e){}
+				if(currentValue == null || currentValue.trim().length() == 0) {
+					currentValue = "";
+				}
+				id = currentValue + DAHAMI_HEADER_DELIMITER_STRING + id;
+						
+				exifDir.removeField(uniqueId.tagInfo);
+			}
+			byte[] idByte = id.getBytes("UTF-8");
+			uniqueId = new TiffOutputField(ExifTagConstants.EXIF_TAG_IMAGE_UNIQUE_ID, FieldType.ASCII, idByte.length, idByte);
+			exifDir.add(uniqueId);
+			
+			String msg = DAHAMI_DIST_HEADER_STRING + serviceName + "("+id+")";
+			if(copyright != null) {
+				String currentValue = "";
+				try {
+					currentValue = (String) tMeta.getFieldValue(copyright.tagInfo);
+					currentValue = currentValue.trim();
+					if(currentValue.indexOf(DAHAMI_DIST_HEADER_STRING) != -1) {
+						currentValue = currentValue.substring(0, currentValue.indexOf(DAHAMI_DIST_HEADER_STRING)).trim();
+					}
+				}catch(Exception e){}
+				
+				if(currentValue != null && currentValue.trim().length() > 0) {
+					currentValue += "\n";
+				}
+				else {
+					currentValue = "";
+				}
+				msg = currentValue + msg;
+				rootDir.removeField(copyright.tagInfo);
+			}
+			byte[] msgByte = msg.getBytes("UTF-8");
+			copyright = new TiffOutputField(TiffTagConstants.TIFF_TAG_COPYRIGHT , FieldType.ASCII, msgByte.length, msgByte);
+			rootDir.add(copyright);	
+			FileInputStream fis = null;
+			FileOutputStream fos = null;
+			
+			try {
+				fis = new FileInputStream(fd);
+				fos = new FileOutputStream(new File(orgPath));
+				new ExifRewriter().updateExifMetadataLossy(fis, fos, outputSet);
+			}finally {
+				try{fis.close();}catch(Exception e){}
+				try{fos.close();}catch(Exception e){}
+			}
+			FileUtil.delete(fd);
+			return true;
+		} catch (ImageWriteException | ImageReadException | IOException e) {
+			logger.warn("", e);
+		}
+		return false;
 	}
 	
 	private void sendImageFile(HttpServletResponse response, String sendPath) throws IOException {
