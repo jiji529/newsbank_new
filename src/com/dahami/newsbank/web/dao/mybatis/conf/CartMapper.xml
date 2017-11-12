@@ -10,7 +10,7 @@
 	</select>
 	
 	<select id="selectUsageList" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
-	    SELECT A.usage, A.division1, A.division2, A.division3, A.usageDate FROM usageList A
+	    SELECT A.seq AS usageList_seq, A.usage, A.division1, A.division2, A.division3, A.usageDate FROM usageList A
 		INNER JOIN basket B ON A.seq = B.usageList_seq
 		WHERE B.photo_uciCode = #{uciCode}
 	</select>

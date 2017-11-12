@@ -435,45 +435,31 @@
 	
 	// #구매 페이지 이동
 	function go_pay() {
+		var cartArry = new Array();
 		var uciCode = "${photoDTO.uciCode}";
-		var usageList_seq = new Array();
+		var cart = uciCode;
 		$(".option_result ul li").each(function(index) {
 			var usage_seq = $(this).children(".op_cont").attr("value");
-			usageList_seq.push(usage_seq);
-		});
+			cart = cart + "|" + usage_seq;
+		});		
+		cartArry.push(cart);
 		
 		var param = {
-			"uciCode" : uciCode,
-			"usageList_seq" : usageList_seq
+			"cart" : cartArry
 		};
 		
-		console.log(param);
-		$.ajax({
-			url: "pay",
-			type: "POST",
-			async: false,
-			dataType: "json",
-			data: param,
-			timeout: 1000000,
-			success: function(data) {
-				
-			}
-		});
+		$("#cartArry").val(cartArry);
 		
-		//$("#uciCode").val(uciCode);
-		//$("#usageList_seq").val(usageList_seq);
-		
-		//view_form.submit();
+		view_form.submit();
 	}
 </script>
 </head>
 <body> 
 <div class="wrap">
 	<%@include file="header.jsp" %>
-	<!-- <form class="view_form" method="post" action="/pay" name="view_form" >
-		<input type="hidden" name="uciCode" id="uciCode"/>
-		<input type="hidden" name="usageList_seq" id="usageList_seq"/>
-	</form> -->
+	<form class="view_form" method="post" action="/pay" name="view_form" >
+		<input type="hidden" name="cartArry" id="cartArry" />
+	</form>
 	<section class="view">
 		<div class="view_lt">
 			<div class="navi"></div>

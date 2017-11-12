@@ -16,6 +16,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <% long currentTimeMills = System.currentTimeMillis(); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -57,35 +58,35 @@
 					<th scope="col">부가세</th>
 					<th scope="col">구매금액</th>
 				</tr>
-				<tr>
-					<td><div class="cart_item">
-							<div class="thumb"><a href="view.html" target="_blank"><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" /></a></div>
+				<c:set var="sum" value="0" />
+				<c:forEach items="${payList}" var="pay">
+					<tr>
+						<td>
+							<div class="cart_item">
+							<div class="thumb"><a href="view.html" target="_blank"><img src="/list.down.photo?uciCode=${pay.uciCode}" /></a></div>
 							<div class="cart_info"> <a href="view.html" target="_blank">
-								<div class="brand">뉴시스</div>
-								<div class="code">E006203286</div>
+								<div class="brand">${pay.copyright}</div>
+								<div class="code">${pay.uciCode}</div>
 								</a>
 								<div class="option_area">
-									<ul class="opt_li">
-										<li>상업용</li>
-										<li>신문광고</li>
-										<li>중앙지,스포츠지,경제지 등</li>
-										<li>1~9단</li>
-										<li>1년 이내</li>
-									</ul>
-									<ul class="opt_li">
-										<li>출판용</li>
-										<li>교육용</li>
-										<li>전집, 백과사전, 도감, 학술논문 발표자료 등</li>
-										<li>1~9단</li>
-										<li>1년 이내</li>
-									</ul>
+									<c:forEach items="${pay.getUsageList()}" var="UsageDTO">
+										<ul class="opt_li">
+											<li>${UsageDTO.usage}</li>
+											<li>${UsageDTO.division1}</li>
+											<li>${UsageDTO.division2}</li>
+											<li>${UsageDTO.division3}</li>
+											<li>${UsageDTO.usageDate}</li>
+										</ul>
+									</c:forEach>
 								</div>
 							</div>
 						</div></td>
-					<td>480,000원</td>
-					<td>48,000원</td>
-					<td><strong class="color">528,000원</strong></td>
-				</tr>
+						<td><fmt:formatNumber value="${pay.price * 10 / 11}" type="number"/>원</td>
+						<td><fmt:formatNumber value="${pay.price * 10 / 11 / 10}" type="number"/>원</td>
+						<td><strong class="color"><fmt:formatNumber value="${pay.price}" type="number"/>원</strong></td>
+						<c:set var="sum" value="${sum + pay.price}" />
+					</tr>
+				</c:forEach>
 			</table>
 			<div class="pay_lt">
 				<div class="table_head">
@@ -113,16 +114,16 @@
 				<div class="pay_rt_box">
 				<ul>
 					<li><strong>판매가</strong>
-						<p>480,000<em>원</em></p>
+						<p><fmt:formatNumber value="${sum * 10 / 11}" type="number"/><em>원</em></p>
 					</li>
 					<li><strong>부가세</strong>
-						<p>48,000<em>원</em></p>
+						<p><fmt:formatNumber value="${sum * 10 / 11 / 10}" type="number"/><em>원</em></p>
 					</li>
 				</ul>
 				<div class="result_list">
 					<ul>
 						<li><strong>결제금액</strong>
-							<p>528,000<em>원</em></p>
+							<p><fmt:formatNumber value="${sum}" type="number"/><em>원</em></p>
 						</li>
 					</ul>
 					<div class="btn_area"><a href="http://ecredit.uplus.co.kr/" class="btn_input2">결제하기</a></div>

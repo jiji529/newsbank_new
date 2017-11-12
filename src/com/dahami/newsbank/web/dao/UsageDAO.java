@@ -1,12 +1,14 @@
 package com.dahami.newsbank.web.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.dahami.newsbank.web.dto.CartDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
 
 public class UsageDAO extends DAOBase {
@@ -125,5 +127,61 @@ public class UsageDAO extends DAOBase {
 			session.commit();
 			session.close();
 		}
+	}
+	
+	/**
+	 * @methodName  : selectOptions
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2017. 11. 10. 오후 11:204:32
+	 * @methodCommet: 사용용도 개별항목 
+	 * @param param
+	 * @return 
+	 */
+	public List<UsageDTO> selectOptions(String[] seqArry) {
+		SqlSession session = null;
+		List<UsageDTO> usageList = new ArrayList<UsageDTO>();
+		
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("seqArry", seqArry);
+			
+			System.out.println(Arrays.toString(seqArry));
+			usageList = session.selectList("Usage.selectOptions", param);
+			return usageList;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			session.commit();
+			session.close();
+		}
+		return null;
+	}
+	
+	/**
+	 * @methodName  : totalPrice
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2017. 11. 10. 오후 11:204:32
+	 * @methodCommet: 사용용도 총 가격 
+	 * @param param
+	 * @return 
+	 */
+	public UsageDTO totalPrice(String[] seqArry) {
+		SqlSession session = null;
+		UsageDTO usageDTO = new UsageDTO();
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("seqArry", seqArry);
+			
+			usageDTO = session.selectOne("Usage.selectPrice", param);
+			return usageDTO;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			session.commit();
+			session.close();
+		}
+		return null;
 	}
 }

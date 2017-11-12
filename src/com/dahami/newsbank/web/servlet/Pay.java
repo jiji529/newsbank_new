@@ -1,6 +1,10 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
+import com.dahami.newsbank.web.dao.PayDAO;
+import com.dahami.newsbank.web.dto.CartDTO;
+import com.dahami.newsbank.web.dto.UsageDTO;
 
 
 /**
@@ -38,16 +46,28 @@ public class Pay extends NewsbankServletBase {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		
-		String data = request.getParameter("data");
-		JSONObject retJson = (JSONObject) JSONValue.parse(data);
-		System.out.println(data);
-		System.out.println(retJson.toJSONString());
+		List<CartDTO> payList = new ArrayList<CartDTO>();
+		String cartArry = request.getParameter("cartArry");
 		
-		/*String uciCode = request.getParameter("uciCode");
-		String usageList_seq = request.getParameter("usageList_seq");
+		String[] splitCart = cartArry.split(",");
 		
-		System.out.println("uciCode : " + uciCode);
-		System.out.println("usageList_seq : " + usageList_seq);*/
+		for(int num=0; num<splitCart.length; num++) {
+			String[] items = splitCart[num].split("\\|");
+			String[] usageList = new String[items.length-1];
+			String uciCode = "";
+			
+			for(int idx = 0; idx < items.length; idx++) {
+				if(idx == 0) {
+					uciCode = items[idx];
+				}else {
+					String usageList_seq = items[idx];
+					usageList[idx-1] = usageList_seq;
+				}
+			}
+			PayDAO payDAO = new PayDAO();
+			payList.add(payDAO.payList(uciCode, usageList));
+		}
+		request.setAttribute("payList", payList);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pay.jsp");
 		dispatcher.forward(request, response);
