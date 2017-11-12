@@ -59,7 +59,7 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-			return session.selectOne("Member.selMamberBySeq");
+			return session.selectOne("Member.selMamberBySeq", memberSeq);
 		}catch(Exception e) {
 			logger.warn("", e);
 			return null;
