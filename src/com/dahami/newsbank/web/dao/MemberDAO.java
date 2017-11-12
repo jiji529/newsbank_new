@@ -54,16 +54,30 @@ public class MemberDAO extends DAOBase {
 			}
 		}
 	}
+	
+	public MemberDTO getMember(int memberSeq) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectOne("Member.selMamberBySeq");
+		}catch(Exception e) {
+			logger.warn("", e);
+			return null;
+		}finally{
+			try {session.close();}catch(Exception e){}
+		}
+	}
 
 	public MemberDTO selectMember(MemberDTO memberDTO) {
 		SqlSession session = null;
+		MemberDTO memberInfo = null;
 		try {
 
 			session = sf.getSession();
-			return session.selectOne("Member.selectLogin", memberDTO);
+			memberInfo = session.selectOne("Member.selectLogin", memberDTO);
+
 		} catch (Exception e) {
 			logger.warn("", e);
-			return null;
 		} finally {
 			try {
 				session.commit();
@@ -72,6 +86,7 @@ public class MemberDAO extends DAOBase {
 			}
 		}
 
+		return memberInfo;
 
 	}
 

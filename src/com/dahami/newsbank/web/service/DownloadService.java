@@ -16,6 +16,12 @@
 
 package com.dahami.newsbank.web.service;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -24,19 +30,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.common.util.FileUtil;
+import com.dahami.common.util.ImageUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 
 public class DownloadService extends ServiceBase {
 
 	private static final String PATH_PHOTO_BASE = "/data/newsbank/serviceImages";
 	private static final String PATH_LOGO_BASE = "/data/newsbank/logo";
+	/** 임시생성 로고 저장폴더 */
+	private static final String PATH_LOGO_TEMP = "/data/newsbank/logo/temp";
 	private static final String PATH_PHOTO_TEMP = "/data/newsbank/serviceTemp";
 	
 	private static final String URL_PHOTO_ERROR_LIST = "/images/error/list_image_processError.jpg";
 	private static final String URL_PHOTO_ERROR_VIEW = "/images/error/view_image_processError.jpg";
 	private static final String URL_PHOTO_STOP_LIST = "/images/error/list_image_stopSale.jpg";
 	private static final String URL_PHOTO_STOP_VIEW = "/images/error/view_image_stopSale.jpg";
+	
+	private static final int LOGO_MAX_WIDTH = 122;
+	private static final int LOGO_MAX_HEIGHT = 122;
 	
 	private String targetSize;
 	private String uciCode;
@@ -63,9 +77,36 @@ public class DownloadService extends ServiceBase {
 					downPath = fd.getAbsolutePath();
 				}
 				else {
-					// TODO 로고 만들어서 전송
-					logger.warn("구현필요");
-					downPath = PATH_LOGO_BASE + "/0.jpg";
+					String tmpLogoPath = PATH_LOGO_TEMP + "/" + seq + ".jpg";
+					String tmpLogoInfoPath = PATH_LOGO_TEMP + "/" + seq + ".logoInfo";
+					MemberDAO mDao = new MemberDAO();
+					MemberDTO mDto = mDao.getMember(Integer.parseInt(seq));
+					boolean makeF = false;
+					File infoFd = new File(tmpLogoInfoPath);
+					if(infoFd.exists()) {
+						File logoFd = new File(tmpLogoPath);
+						if(logoFd.exists()) {
+							if(!mDto.getCompName().equals(FileUtil.readFileToString(infoFd, "UTF-8"))) {
+								makeF = true;	
+							}
+						}
+						else {
+							makeF = true;
+						}
+					}
+					else {
+						makeF = true;
+					}
+					if(makeF) {
+						if(makeLogoFile(mDto.getCompName(), tmpLogoPath)) {
+							FileUtil.makeFile(mDto.getCompName().getBytes("UTF-8"), tmpLogoInfoPath);
+							downPath = tmpLogoPath;
+						}
+						else {
+							logger.warn("로고생성 실패");
+							downPath = PATH_LOGO_BASE + "/error.jpg";
+						}
+					}
 				}
 			}
 		}
@@ -209,5 +250,53 @@ public class DownloadService extends ServiceBase {
 				logger.warn("", e);
 			}
 		}
+	}
+	
+	private boolean makeLogoFile(String mdName, String tgtPath) {
+		Font font = new Font("나눔고딕", Font.BOLD, 47);
+		FontRenderContext frc = new FontRenderContext(null,  true, true);
+		Rectangle2D r2D = font.getStringBounds(mdName, frc);
+		int orgLogoImgW = (int) Math.round(r2D.getWidth());
+	    int orgLogoImgH = (int) Math.round(r2D.getHeight())+10;
+	    
+	    BufferedImage logoImg = new BufferedImage(orgLogoImgW, orgLogoImgH, BufferedImage.TYPE_3BYTE_BGR);
+	    for(int i = 0; i < logoImg.getWidth(); i++) {
+			for(int j = 0; j < logoImg.getHeight(); j++) {
+				logoImg.setRGB(i, j, Color.white.getRGB());
+			}
+		}
+	    Graphics g = logoImg.getGraphics();
+	    g.setColor(Color.black);
+	    g.setFont(font);
+	    g.drawString(mdName, 0, orgLogoImgH-10);
+
+	    int imgFullW = orgLogoImgW;
+	    int imgFullH = orgLogoImgH;
+	    if(imgFullW > imgFullH) {
+	    	imgFullH = imgFullW;
+	    }
+	    else {
+	    	imgFullW = imgFullH;
+	    }
+	    BufferedImage fullImg = new BufferedImage(imgFullW, imgFullH, BufferedImage.TYPE_3BYTE_BGR);
+	    for(int i = 0; i < fullImg.getWidth(); i++) {
+			for(int j = 0; j < fullImg.getHeight(); j++) {
+				fullImg.setRGB(i, j, Color.white.getRGB());
+			}
+		}
+	    g = fullImg.getGraphics();
+	    g.drawImage(logoImg, 0, (imgFullH/2)-(orgLogoImgH/2), null);
+	    
+	    float widthRatio = (float)LOGO_MAX_WIDTH / orgLogoImgW;
+	    float heightRatio = (float)LOGO_MAX_HEIGHT / orgLogoImgH;
+	    
+	    float ratio = widthRatio;
+	    if(ratio > heightRatio) {
+	    	ratio = heightRatio;
+	    }
+
+	    fullImg = ImageUtil.resize(fullImg, LOGO_MAX_WIDTH, LOGO_MAX_HEIGHT, true);
+	    
+	    return ImageUtil.saveImage(fullImg, tgtPath, ImageUtil.IMAGE_FORMAT_JPEG);
 	}
 }
