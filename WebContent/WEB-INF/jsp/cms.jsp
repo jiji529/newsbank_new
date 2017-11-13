@@ -22,7 +22,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
@@ -37,7 +39,36 @@
 			cms_search();
 		}else { // 최초 사진 관리 페이지 접근 시
 			search();
-		}		
+		}
+		
+		setDatepicker();
+	});
+	
+	function setDatepicker() {
+		$( ".datepicker" ).datepicker({
+         changeMonth: true, 
+         dayNames: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
+         dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], 
+         monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+         monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+         showButtonPanel: true, 
+         currentText: '오늘 날짜', 
+         closeText: '닫기', 
+         dateFormat: "yymmdd"
+	  });
+	}
+	
+	$(document).on("click", ".btn_cal", function() {
+		// 기간 : 직접선택
+		var startDate = $("#startDate").val();
+		var endDate = $("#endDate").val();
+		var choice = startDate + "~" + endDate;
+		$(".choice").attr("value", choice);
+		$(this).closest(".filter_list").stop().slideUp("fast");
+		
+		// 필터 바꾸면 페이지 번호 초기화
+		$("input[name=pageNo]").val("1");
+		search();
 	});
 	
 	$(document).on("click", "div .paging a.prev", function() {
@@ -110,15 +141,26 @@
 	}
 	
 	$(document).on("click", ".filter_list li", function() {
-		var choice = $(this).text();
-		$(this).attr("selected", "selected");
-		$(this).siblings().removeAttr("selected");
-		var filter_list = "<ul class=\"filter_list\">"+$(this).parents(".filter_list").html()+"</ul>";
-		$(this).parents(".filter_title").children().remove().end().html(choice+filter_list);
+		if(!$(this).hasClass("choice")){
+			var choice = $(this).text();
+			$(this).attr("selected", "selected");
+			$(this).siblings().removeAttr("selected");
+			var filter_list = "<ul class=\"filter_list\">"+$(this).parents(".filter_list").html()+"</ul>";
+			$(this).parents(".filter_title").children().remove().end().html(choice+filter_list);
+			
+			// 필터 바꾸면 페이지 번호 초기화
+			$("input[name=pageNo]").val("1");
+			search();
+		}else {
+			var startDate = $("#startDate").val();
+			var endDate = $("#endDate").val();
+			var choice = startDate + "~" + endDate;
+			var titleTag = $(this).parents(".filter_title").find("span");
+			var titleStr = titleTag.html();
+			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+			titleTag.html(titleStr);
+		}
 		
-		// 필터 바꾸면 페이지 번호 초기화
-		$("input[name=pageNo]").val("1");
-		search();
 	});
 	
 	function search() {
@@ -292,10 +334,10 @@
 						<li class="choice">직접 입력
 							<div class="calendar">
 								<div class="cal_input">
-									<input type="text" title="검색기간 시작일" />
+									<input type="text" class="datepicker" id="startDate" title="검색기간 시작일" />
 									<a href="#" class="ico_cal">달력</a> </div>
 								<div class="cal_input">
-									<input type="text" title="검색기간 시작일" />
+									<input type="text" class="datepicker" id="endDate" title="검색기간 마지막일" />
 									<a href="#" class="ico_cal">달력</a> </div>
 								<button class="btn_cal" type="button">적용</button>
 							</div>

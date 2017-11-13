@@ -19,6 +19,7 @@ import com.dahami.newsbank.dto.PhotoTagDTO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.SearchDAO;
 import com.dahami.newsbank.web.dao.TagDAO;
+import com.dahami.newsbank.web.dto.StatsDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 /**
@@ -53,8 +54,14 @@ public class CMSView extends NewsbankServletBase {
 		PhotoDAO photoDAO = new PhotoDAO();
 		String uciCode = request.getParameter("uciCode");
 		PhotoDTO photoDTO = photoDAO.read(uciCode);
+		
+		StatsDTO statsDTO = new StatsDTO();
+		statsDTO = photoDAO.getStats(uciCode);
+		//System.out.println("찜 : " + statsDTO.getBookmarkCount() + " / 다운로드 : " + statsDTO.getDownCount() + " / 상세보기 : " + statsDTO.getHitCount() + " / 결제 : " + statsDTO.getSaleCount() + " / 뮤지엄 : " + statsDTO.getMuseumCount() + " / 컬렉션 : " + statsDTO.getCollectionCount());
+		
 		photoDAO.hit(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
+		request.setAttribute("statsDTO", statsDTO);
 		
 		TagDAO tagDAO = new TagDAO();
 		List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);

@@ -3,6 +3,12 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="Newsbank_2017_Common.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Newsbank_2017_Common/Newsbank_2017_Common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="API_SolrCommon.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon/API_SolrCommon">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="c3p0-0.9.2.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/API_SolrCommon/lib/c3p0-0.9.2.1.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -42,9 +48,6 @@
         <dependent-module archiveName="stax2-api-3.1.4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/API_SolrCommon/lib/stax2-api-3.1.4.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="Newsbank_2017_Common.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Newsbank_2017_Common/Newsbank_2017_Common">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="com.dahami.solr.analyzer.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/API_SolrCommon/lib/com.dahami.solr.analyzer.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -52,9 +55,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="solr-core-6.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/API_SolrCommon/lib/solr-core-6.0.0-SNAPSHOT.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="API_SolrCommon.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon/API_SolrCommon">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="arirang.lucene-analyzer-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/API_SolrCommon/lib/arirang.lucene-analyzer-0.0.1-SNAPSHOT.jar">
