@@ -17,11 +17,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-long currentTimeMills = System.currentTimeMillis(); 
-String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-// String IMG_SERVER_URL_PREFIX = "";
-%>
+<% long currentTimeMills = System.currentTimeMillis(); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -238,7 +234,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 				$("#search_list1 ul").empty();
 				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\"></a>";
+					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
