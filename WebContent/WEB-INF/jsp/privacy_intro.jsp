@@ -37,7 +37,7 @@
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1 cs">
-				<li><a href="/accessTerms.intro">이용약관</a></li>
+				<li><a href="/policy.intro">이용약관</a></li>
 				<li class="on"><a href="/privacy.intro">개인정보처리방침</a></li>
 			</ul>
 		</div>

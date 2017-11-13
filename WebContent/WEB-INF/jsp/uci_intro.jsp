@@ -20,15 +20,30 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크-UCI 소개</title>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
+<link rel="stylesheet" href="css/jquery.bxslider.css" />
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/jquery.bxslider.js"></script>
 <script src="js/footer.js"></script>
+<script> 
+	$(document).ready(function() {
+		set_bxSlider();
+		function set_bxSlider() { //
+			slider = $('.bxslider').bxSlider({
+				pagerCustom : '#bx-controls',
+				controls : false,
+				auto : true
+			});
+		}
+
+	});
+</script>
 </head>
 <body>
 	<div class="wrap">
-		<%@include file="header.jsp" %>
+		<%@include file="header.jsp"%>
 		<section class="mypage">
 			<div class="head">
 				<h2>서비스 소개</h2>
@@ -67,34 +82,34 @@
 			</section>
 			<section class="uci_sec2">
 				<h4>UCI 활용 예시</h4>
-				<div class="tab">
+				<div class="tab" id="bx-controls" class="bx-controls">
 					<ul class="tabs">
 						<li>
-							<a href="javascript:;" class="active">사진 ID</a>
+							<a data-slide-index="0" href="javascript:;" class="active">사진 ID</a>
 						</li>
 						<li>
-							<a href="javascript:;">검색</a>
+							<a data-slide-index="1" href="javascript:;">검색</a>
 						</li>
 						<li>
-							<a href="javascript:;">개인화</a>
+							<a data-slide-index="2" href="javascript:;">개인화</a>
 						</li>
 						<li>
-							<a href="javascript:;">구매</a>
+							<a data-slide-index="3" href="javascript:;">구매</a>
 						</li>
 					</ul>
 				</div>
 				<div class="uci_pc">
-					<ul>
-						<li class="uci_img1" style="display: block;">
+					<ul class="bxslider">
+						<li class="uci_img1">
 							<img src="images/uci/uci_img1.png" alt="사진ID" />
 						</li>
-						<li class="uci_img2" style="display: none;">
+						<li class="uci_img2">
 							<img src="images/uci/uci_img2.png" alt="검색" />
 						</li>
-						<li class="uci_img3" style="display: none;">
+						<li class="uci_img3">
 							<img src="images/uci/uci_img3.png" alt="개인화" />
 						</li>
-						<li class="uci_img4" style="display: none;">
+						<li class="uci_img4">
 							<img src="images/uci/uci_img4.png" alt="구매" />
 						</li>
 					</ul>

@@ -55,7 +55,7 @@
 				%>
 				<div class="guide">
 					비밀번호 찾기를 원하시나요?
-					<a href="invalidPage.jsp" id="mypage_password_lost">바로가기</a>
+					<a href="/pw.find" id="mypage_password_lost" target="_block">바로가기</a>
 				</div>
 			</form>
 		</div>

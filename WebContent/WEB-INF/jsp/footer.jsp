@@ -15,38 +15,38 @@
 		<div class="foot_ct">
 			<dl>
 				<dt>서비스 소개</dt>
-				<dd>
+				<!-- <dd>
 					<a href="/newsbank.intro">뉴스뱅크 소개</a>
-				</dd>
+				</dd> -->
 				<dd>
 					<a href="/uci.intro">UCI 소개</a>
 				</dd>
-				<dd>
+				<!-- <dd>
 					<a href="/copyright.intro">저작권 안내</a>
-				</dd>
+				</dd> -->
 			</dl>
 			<dl>
 				<dt>이용안내</dt>
 				<dd>
-					<a href="javascript:;">구매안내</a>
+					<a href="/price.info">구매안내</a>
 				</dd>
 				<dd>
-					<a href="/notice">공지사항</a>
+					<a href="/board">공지사항</a>
 				</dd>
 				<dd>
-					<a href="/faq">FAQ</a>
+					<a href="/FAQ">FAQ</a>
 				</dd>
 				<dd>
-					<a href="/call">직접 문의하기</a>
+					<a href="/contact">직접 문의하기</a>
 				</dd>
-				<dd>
+				<!-- <dd>
 					<a href="javascript:;">사이트맵</a>
-				</dd>
+				</dd> -->
 			</dl>
 			<dl>
 				<dt>법적고지</dt>
 				<dd>
-					<a href="/accessTerms.intro">이용약관</a>
+					<a href="/policy.intro">이용약관</a>
 				</dd>
 				<dd>
 					<b>

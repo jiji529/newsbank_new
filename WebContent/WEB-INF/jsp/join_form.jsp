@@ -242,15 +242,15 @@
 		<footer>
 			<ul>
 				<li>
-					<a href="#">뉴스뱅크 소개</a>
+					<a href="/newsbank.intro">뉴스뱅크 소개</a>
 				</li>
 				<li class="bar"></li>
 				<li>
-					<a href="#">이용약관</a>
+					<a href="/policy.intro">이용약관</a>
 				</li>
 				<li class="bar"></li>
 				<li>
-					<a href="#">개인정보처리방침</a>
+					<a href="/privacy.intro">개인정보처리방침</a>
 				</li>
 			</ul>
 			<div class="foot_bt">Copyright © NewsBank. All Rights Reserved.</div>

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,16 +13,16 @@ import javax.servlet.http.HttpSession;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
- * Servlet implementation class UciIntro
+ * Servlet implementation class Contact
  */
-@WebServlet("/copyright.intro")
-public class CopyrightIntro extends NewsbankServletBase {
+@WebServlet("/contact")
+public class Contact extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
-     * @see NewsbankServletBase#NewsbankServletBase()
+     * @see HttpServlet#HttpServlet()
      */
-    public CopyrightIntro() {
+    public Contact() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,7 +40,7 @@ public class CopyrightIntro extends NewsbankServletBase {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/copyright_intro.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/contact.jsp");
 		dispatcher.forward(request, response);
 	}
 

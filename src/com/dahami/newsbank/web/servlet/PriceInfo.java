@@ -12,16 +12,16 @@ import javax.servlet.http.HttpSession;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
- * Servlet implementation class UciIntro
+ * Servlet implementation class LicenseInfo
  */
-@WebServlet("/copyright.intro")
-public class CopyrightIntro extends NewsbankServletBase {
+@WebServlet("/price.info")
+public class PriceInfo extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see NewsbankServletBase#NewsbankServletBase()
      */
-    public CopyrightIntro() {
+    public PriceInfo() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,7 +39,7 @@ public class CopyrightIntro extends NewsbankServletBase {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/copyright_intro.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/price_info.jsp");
 		dispatcher.forward(request, response);
 	}
 

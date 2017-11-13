@@ -128,26 +128,7 @@
 </head>
 <body>
 	<div class="wrap">
-		<nav class="gnb_dark">
-			<div class="gnb"><a href="/home" class="logo"></a>
-				<ul class="gnb_left">
-					<li class=""><a href="/photo">보도사진</a></li>
-					<li><a href="#">뮤지엄</a></li>
-					<li><a href="#">사진</a></li>
-					<li><a href="#">컬렉션</a></li>
-				</ul>
-				<ul class="gnb_right">
-					<li><a href="/login">로그인</a></li>
-					<li><a href="/kind.join">가입하기</a></li>
-				</ul>
-			</div>
-			<div class="gnb_srch">
-				<form id="searchform">
-					<input type="text" value="검색어를 입력하세요" />
-					<a href="#" class="btn_search">검색</a>
-				</form>
-			</div>
-		</nav>
+			<%@include file="header.jsp"%>
 		<section class="mypage">
 			<div class="head">
 				<h2>이용안내</h2>
@@ -155,11 +136,11 @@
 			</div>
 			<div class="mypage_ul">
 				<ul class="mp_tab1 use">
-					<li><a href="#">구매안내</a></li>
+					<li><a href="/price.info">구매안내</a></li>
 					<li class="on"><a href="/board">공지사항</a></li>
-					<li><a href="#">FAQ</a></li>
-					<li><a href="#">직접 문의하기</a></li>
-					<li><a href="#">사이트맵</a></li>
+					<li><a href="/FAQ">FAQ</a></li>
+					<li><a href="/contact">직접 문의하기</a></li>
+					<!-- <li><a href="#">사이트맵</a></li> -->
 				</ul>
 			</div>
 			<div class="table_head">

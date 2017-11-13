@@ -22,7 +22,7 @@
 .mypage .mypage_ul .mp_tab1 li {float: left; width:16.66%; height: 45px; font-size: 14px; color: #666; line-height: 43px; text-align: center; border: 1px solid #dbdbdb; position: relative; margin-left:-1px;}
 .mypage .mypage_ul .mp_tab1.cs li {width:50%;}
 .mypage .mypage_ul .mp_tab1.si li {width:33.3%;}
-.mypage .mypage_ul .mp_tab1.use li {width:20%;}
+.mypage .mypage_ul .mp_tab1.use li {width:25% /*20%*/;}
 .mypage .mypage_ul .mp_tab1 li a{color:#666}
 .mypage .mypage_ul li a{display:block;}
 .mypage .mypage_ul .mp_tab1 li:first-child{margin-left:0;}
@@ -229,14 +229,15 @@
 
 /*고객센터*/
 .rules{ }
-.rules .rule_list{ float:left; margin:40px 0 ; width:100%;  border:1px #ccc solid; background:#f6f6f6; padding:40px;}
-.rules .rule_list li{ float:left;  width:33.3%; height:45px; line-height:45px; margin-top:-1px; text-align:left; }
-.rules .rule_list li a{ display:block; color:#666; font-size:14px;}
+.rules .rule_list{ float:left; margin:40px 0 ; width:100%; padding:30px 50px; background:#f8f8f8; border:1px #ddd solid; }
+.rules .rule_list li{ float:left;  width:33.3%; height:45px; line-height:45px;}
+.rules .rule_list li a{ display:block; color:#666; font-size:16px;text-align:left;}
+.rules .rule_list li a:hover{ color:#f79320;}
 .rules .rule_cont{ float:left; width:100%; text-align:left;}
-.rules .rule_cont p{    position: relative; font-size:14px; color:#333; line-height:1.8}
-.rules .rule_cont h3{ color: #333; margin: 20px 0 10px 0; font-size:16px;}
-.rules .rule_cont ol{float:left; padding-left:20px;}
-.rules .rule_cont li{ position: relative; font-size:14px; color:#333; line-height:1.8; list-style-type:circle }
+.rules .rule_cont p{    position: relative; font-size:15px; color:#333; line-height:1.8}
+.rules .rule_cont h3{ color: #333; margin: 20px 0 10px 0; font-size:17px;}
+.rules .rule_cont ol{float:left; padding-left:20px; width:100%;}
+.rules .rule_cont li{ position: relative; font-size:15px; color:#333; line-height:1.8; list-style-type:decimal-leading-zero; float:left; width:100%; }
 
 /* 직접 문의하기 */
 .call th{background:#f6f6f6; height:45px; border-bottom:1px #ddd solid; border-left:1px #ddd solid; font-size:14px; color:#333;}
@@ -342,8 +343,8 @@
 .uci_info section .tab .tabs li{display: inline; margin: 0 30px; font-family:"nsb"; font-size:17px;}
 .uci_info section .tab .tabs li a{color:#999; padding:0 3px 7px; text-decoration:}
 .uci_info section .tab .tabs li a.active{color:#f79320; border-bottom:2px #f79320 solid;}
-.uci_info section .uci_pc{background:url(../images/uci/uci_pc.png) center 0 no-repeat; padding-top:47px;}
-
+.uci_info section .uci_pc{background:url(../images/uci/uci_pc.png) center 0 no-repeat; padding-top:47px; position:relative; height:510px;}
+.uci_info section .uci_pc ul{width:854px; height:453px; position:absolute; left:50%; margin-left:-427px;}
 .uci_info section.uci_sec3 *{text-align:left; position:relative;}
 .uci_info section.uci_sec3 h4:after{left:0; margin-left:0;}
 .uci_info section.uci_sec3 .uci_list{  width:100%;}
@@ -354,11 +355,20 @@
 .uci_info section.uci_sec4 *{color:#fff;}
 
 
+/*가격*/
+.tab1{float:left; width:100%; margin:30px 0 10px;}
+.tab1 span{  width:240px;font-size:14px;display:inline-block;}
+.tab1 span a{display:block; color:#333; height:50px; line-height:50px; border:1px #ccc solid;}
+.tab1 span.tapOn a {font-weight:bold; color:#f79320; border:1px #f79320 solid;}
+.popupTap1 a:hover , .popupTap2 a:hover {color:#f79320;}
+#paytable .tb01{border-bottom:1px #ccc solid; margin-top:-1px;}
+#paytable .tb01 td, #paytable .tb01 th{border-right:1px #dce0e9 solid;}
+#paytable .tb01 td:last-child, #paytable .tb01 th:last-child{border-right:0;}
 
 /*admin*/
-.wide{width:100%; padding:60px 60px 0 260px;}
+.wide{width:100%; padding:60px 60px 0 280px;}
 
-.lnb{width:220px; float:left; border-right:1px #eee solid; height:100%; position:fixed; left:0; padding:0 30px;}
+.lnb{width:240px; float:left; border-right:1px #eee solid; height:100%; position:fixed; left:0; padding:0 30px;}
 .lnb ul li{margin-top:18px;padding-top:18px;border-top:1px solid #efefef; text-align:left;}
 .lnb ul li:first-child{margin-top:15px;border:0 none}
 .lnb ul li strong{display:block;overflow:hidden;height:27px;font-size:18px;line-height:20px;color:#333; padding-left:5px;}
@@ -419,3 +429,4 @@
 #popup_wrap .pop_foot .pop_btn{width:100%; margin-top:15px; float:left;}
 #popup_wrap .pop_foot .pop_btn button{background:#fff; border:1px #f79320 solid; padding:8px 15px; color:#f79320; font-weight:bold; border-radius:2px;}
 #popup_wrap .pop_foot .pop_btn button.popup_close{border:1px #ccc solid; color:#666;}
+
