@@ -93,6 +93,9 @@
         <dependent-module archiveName="mybatis-guice-3.3.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/API_SolrCommon/lib/mybatis-guice-3.3.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="com.dahami.common.util.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.common.util/com.dahami.common.util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/NewsBank_2017/build/classes"/>
         <property name="context-root" value="NewsBank_2017"/>
     </wb-module>

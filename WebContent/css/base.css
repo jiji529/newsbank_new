@@ -11,9 +11,11 @@ body,h1,h2,h3,h4,input,button{font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotu
 a{text-decoration: none;}
 .color{ color:#f79320!important;}
 .block {display:block;}
+button{cursor:pointer;}
 /*
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;}
 */
+#mask {width:100%; height:100%; position:fixed; background:rgba(0,0,0,0.7) repeat; top:0; left:0; z-index:2000; display:none;} 
 
 .wrap{min-height: 100%; position: relative;}
 nav.gnb_light{height: 90px; width: 100%; margin: 0 auto; -webkit-transition: 0.1s box-shadow ease-in-out; -moz-transition: 0.1s box-shadow ease-in-out; transition: 0.1s box-shadow ease-in-out; position: absolute; z-index: 1000; -webkit-transform: translate3d(0, 0, 0); -moz-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(transparent)); background: -webkit-linear-gradient(rgba(0,0,0,0.5), transparent); background: -moz-linear-gradient(rgba(0,0,0,0.5), transparent); background: linear-gradient(rgba(0,0,0,0.5), transparent); top: 0; padding-top:10px;}
@@ -35,6 +37,12 @@ nav.gnb_dark .gnb a.logo{height: 50px; display: block; float: left; width: 142px
 nav.gnb_dark .gnb .gnb_left li a{color:#555;}
 nav.gnb_dark .gnb .gnb_left li.on a{color:#f79320;}
 
+.admin nav.gnb_dark .gnb a.logo{width:260px; color:#f79320; text-indent:108px; font-size:18px; text-align:left; line-height:40px; font-weight:bold;
+height: 30px; background-size:100px; margin:5px 0;}
+.admin nav.gnb_dark{position:fixed; top:0; z-index:50; float:left; height:60px;}
+.admin nav .gnb_right li{ float:left; padding:0 10px; height:30px; line-height:30px; margin-top:8px; border:1px #ddd solid; border-radius:4px; }
+.admin nav .gnb_right li a{font-size:13px;}
+	
 .fixed .wrap{ padding-top: 140px; }
 .fixed_layer{position:fixed; top:0; z-index:50; float:left; width:100%; min-width:1240px}
 

@@ -36,5 +36,6 @@
 	<classpathentry kind="lib" path="/Newsbank_2017_Common/lib/sqljdbc4.jar"/>
 	<classpathentry kind="lib" path="/Newsbank_2017_Common/lib/util.crypt-1.0.0.jar"/>
 	<classpathentry kind="lib" path="/Newsbank_2017_Common/lib/zookeeper-3.4.6.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.dahami.common.util"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
