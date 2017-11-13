@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+<script src="js/mypage.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(key, val){
@@ -153,12 +154,26 @@
 			</div>
 			<div class="mypage_ul">
 				<ul class="mp_tab1">
-					<li><a href="/account.mypage">정산 관리</a></li>
-					<li><a href="/cms">사진 관리</a></li>
-					<li><a href="/info.mypage">회원정보 관리</a></li>
-					<li class="on"><a href="/dibs.myPage">찜관리</a></li>
-					<li><a href="/cart.myPage">장바구니</a></li>
-					<li><a href="/buylist.mypage">구매내역</a></li>
+					<c:if test="${MemberInfo.type eq 'M'}">
+						<li>
+							<a href="/account.mypage">정산 관리</a>
+						</li>
+						<li>
+							<a href="/cms">사진 관리</a>
+						</li>
+					</c:if>
+					<li>
+						<a href="/info.mypage">회원정보 관리</a>
+					</li>
+					<li class="on">
+						<a href="/dibs.myPage">찜관리</a>
+					</li>
+					<li>
+						<a href="/cart.myPage">장바구니</a>
+					</li>
+					<li>
+						<a href="/buylist.mypage">구매내역</a>
+					</li>
 				</ul>
 				<!-- 컬렉션 생기면 추가 <ul class="mp_tab2">
 					<li class="on"><a href="#">사진 찜 관리</a></li>

@@ -24,6 +24,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
 <script	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/sub.css" />
+<link rel="stylesheet" href="css/mypage.css" />
+<script src="js/filter.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/mypage.js"></script>
 <script type="text/javascript">
 	
 	/** 찜하기 */
@@ -144,12 +150,26 @@
 			</div>
 			<div class="mypage_ul">
 				<ul class="mp_tab1">
-					<li><a href="/account.mypage">정산 관리</a></li>
-					<li><a href="/cms">사진 관리</a></li>
-					<li><a href="/info.mypage">회원정보 관리</a></li>
-					<li><a href="/dibs.myPage">찜관리</a></li>
-					<li class="on"><a href="/cart.myPage">장바구니</a></li>
-					<li><a href="/buylist.mypage">구매내역</a></li>
+					<c:if test="${MemberInfo.type eq 'M'}">
+						<li>
+							<a href="/account.mypage">정산 관리</a>
+						</li>
+						<li>
+							<a href="/cms">사진 관리</a>
+						</li>
+					</c:if>
+					<li>
+						<a href="/info.mypage">회원정보 관리</a>
+					</li>
+					<li>
+						<a href="/dibs.myPage">찜관리</a>
+					</li>
+					<li class="on">
+						<a href="/cart.myPage">장바구니</a>
+					</li>
+					<li>
+						<a href="/buylist.mypage">구매내역</a>
+					</li>
 				</ul>
 			</div>
 			<div class="table_head">
