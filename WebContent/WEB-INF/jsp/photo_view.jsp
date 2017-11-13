@@ -2,7 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%
+String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+//String IMG_SERVER_URL_PREFIX = "";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -423,7 +426,7 @@
 			url: "search",
 			success : function(data) {
 				$(data.result).each(function(key, val) {
-					html += '<li><a href="#"><img src="/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+					html += '<li><a href="#"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
 				});
 				$(html).appendTo(".cfix");
 			},
@@ -463,8 +466,8 @@
 	<section class="view">
 		<div class="view_lt">
 			<div class="navi"></div>
-			<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
-			<div class="img_area"><img src="/view.down.photo?uciCode=${photoDTO.uciCode}" style="width:50%; height:50%"/>
+			<h2 class="media_logo"><img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
+			<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}" style="width:50%; height:50%"/>
 				<div class="cont_area">
 					<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>
 					<c:if test="${bookmark.seq eq null || bookmark.seq eq ''}">
