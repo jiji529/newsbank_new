@@ -135,8 +135,8 @@
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
-									<a href="/view.cms?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
-										<img src="/list.down.photo?uciCode=${paymentDetailList.photo_uciCode }">
+									<a href="/view.photo?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
+										<img src="http://www.dev.newsbank.co.kr/list.down.photo?uciCode=${paymentDetailList.photo_uciCode }">
 									</a>
 								</div>
 								<div class="cart_info">
