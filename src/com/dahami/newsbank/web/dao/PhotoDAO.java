@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dto.StatsDTO;
 
 public class PhotoDAO extends DAOBase {
 	
@@ -273,4 +274,27 @@ public class PhotoDAO extends DAOBase {
 		return photoList;
 	}
 	
+	/**
+	 * @methodName  : getStats
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 11. 13. 오전 8:33:56
+	 * @methodCommet: UCI 코드를 사용하여 이미지 통계정보 확인(찜, 다운로드, 결제, 조회수, 뮤지엄, 컬렉션)
+	 * @param uciCode
+	 * @return 
+	 * @returnType  : StatsDTO
+	 */
+	public StatsDTO getStats(String uciCode) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			return session.selectOne("Photo.selectStats", uciCode);
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return null;
+	}
 }

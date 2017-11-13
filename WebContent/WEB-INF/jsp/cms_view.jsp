@@ -383,27 +383,27 @@
 						</tr>
 						<tr>
 							<th scope="row">찜</th>
-							<td><b>250</b>회</td>
+							<td><b>${statsDTO.bookmarkCount}</b>회</td>
 						</tr>
 						<tr>
 							<th scope="row">다운로드</th>
-							<td><b>${photoDTO.saleCount}</b>회</td>
+							<td><b>${statsDTO.downCount}</b>회</td>
 						</tr>
 						<tr>
 							<th scope="row">상세보기</th>
-							<td><b>${photoDTO.hitCount}</b>회</td>
+							<td><b>${statsDTO.hitCount}</b>회</td>
 						</tr>
 						<tr>
 							<th scope="row">결제</th>
-							<td><b>${photoDTO.saleCount}</b>회</td>
+							<td><b>${statsDTO.saleCount}</b>회</td>
 						</tr>
 						<tr>
 							<th scope="row">뮤지엄</th>
-							<td><b>20</b>회</td>
+							<td><b>${statsDTO.museumCount}</b>회</td>
 						</tr>
 						<tr>
 							<th scope="row">컬렉션</th>
-							<td><b>22</b>회</td>
+							<td><b>${statsDTO.collectionCount}</b>회</td>
 						</tr>
 					</table>
 				</div>

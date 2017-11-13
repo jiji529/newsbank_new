@@ -6,7 +6,7 @@
 .filters ul{float:left;}
 .filters li.filter_title{float:left; padding:0 40px 0 20px; height:50px; border-right:1px #e5e5e5 solid; line-height:50px; position:relative; font-size:15px; cursor:pointer;}
 .filters li.filter_title:after{content: ''; position: absolute; top: 50%; right: 22px; height: 0; width: 0; margin-top: -3px; border: solid transparent; border-top-color: #555; border-width: 5px 4px; -webkit-transition: border 0.3s ease-in-out; transition: border 0.3s ease-in-out; width:auto;}
-@media (max-width: 1500px){
+/*@media (max-width: 1500px){
 	.filters li.filter_title.filter_ico{ display:none;}
 	.filters li.filter_title:nth-child(2){margin-left:30px; border-left:1px #e5e5e5 solid;}
 	.filters li.filter_title{max-width:120px;padding:0 33px 0 15px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size:15px;}
@@ -15,7 +15,7 @@
 	.filters li.filter_title.filter_ico{ display:none;}
 	.filters li.filter_title:nth-child(2){margin-left:30px; border-left:1px #e5e5e5 solid;}
 	.filters li.filter_title{max-width:100px;padding:0 28px 0 12px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size:14px;}
-	.filters li.filter_title:after{right:10px;}}
+	.filters li.filter_title:after{right:10px;}}*/
 .filters li.filter_title.filter_ico{ text-indent:-9999px; background:url(../images/sub/if_filter.svg) 20px 18px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid;}
 .filters li.filter_title.folder_ico{ text-indent:-9999px; background:url(../images/sub/if_folder.svg) 20px 14px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid; background-size:22px 20px;}
 .filters li.filter_title.filter_ico:after,.filters li.filter_title.folder_ico:after{ content: ''; display:none;}
@@ -49,8 +49,6 @@
 .filters .filter_rt .viewbox .size .grid{ background-position:2px 2px; margin-right:2px;}
 .filters .filter_rt .viewbox .size .square{ background-position:-22px 2px;}
 .filters .filter_rt .viewbox select { float:left; padding:1px 4px; border-color:#999;}
-
-
 
 @media (max-width: 1200px) { #search_list1 { -moz-column-count: 4; -webkit-column-count: 4; column-count: 4; }}
 @media (max-width: 1000px) { #search_list1 { -moz-column-count: 3; -webkit-column-count: 3; column-count: 3; }}
