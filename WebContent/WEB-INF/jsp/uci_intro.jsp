@@ -33,8 +33,8 @@
 		function set_bxSlider() { //
 			slider = $('.bxslider').bxSlider({
 				pagerCustom : '#bx-controls',
-				controls : false,
-				auto : true
+				controls : false,				
+				slideWidth: 860
 			});
 		}
 
