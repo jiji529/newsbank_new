@@ -12,7 +12,9 @@ import com.dahami.newsbank.web.service.SearchService;
 /**
  * Servlet implementation class Search
  */
-@WebServlet("/search")
+@WebServlet(
+		urlPatterns = {"/search", "*.search"}
+		)
 public class Search extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
@@ -25,17 +27,33 @@ public class Search extends NewsbankServletBase {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
-		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		if (closed) {
 			return;
+		}
+		
+		try {
+			if(cmd2.equals("xml")) {
+				request.setAttribute("exportType", SearchService.EXPORT_TYPE_XML);
+			}
+		}catch(Exception e){
+			request.setAttribute("exportType", SearchService.EXPORT_TYPE_JSON);
 		}
 		
 		SearchService ss = new SearchService();
 		ss.execute(request, response);
 		
 		String jsonStr = (String) request.getAttribute("JSON");
-		response.getWriter().print(jsonStr);
+		String xmlStr = (String) request.getAttribute("XML");
+		if(jsonStr != null) {
+			response.setContentType("text/json; charset=UTF-8");
+			response.getWriter().print(jsonStr);
+		}
+		else if(xmlStr != null) {
+			response.setContentType("text/xml; charset=UTF-8");
+			response.getWriter().print(xmlStr);
+		}
+		
 		response.flushBuffer();
 	}
 

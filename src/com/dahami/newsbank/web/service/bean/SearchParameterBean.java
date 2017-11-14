@@ -97,7 +97,15 @@ public class SearchParameterBean {
 		this();
 		try{this.keyword = params.get("keyword")[0];}catch(Exception e){}
 		try{this.pageNo = Integer.parseInt(params.get("pageNo")[0]);}catch(Exception e){this.pageNo = 1;}
-		try{this.pageVol = Integer.parseInt(params.get("pageVol")[0]);}catch(Exception e){this.pageVol = 40;}
+		try{
+			this.pageVol = Integer.parseInt(params.get("pageVol")[0]);
+		}catch(Exception e){
+			try {
+				this.pageVol = Integer.parseInt(params.get("pageSize")[0]);	
+			}catch(Exception e2) {
+				this.pageVol = 40;
+			}
+		}
 		try{this.contentType = Integer.parseInt(params.get("contentType")[0]);}catch(Exception e){}
 		try{
 			String[] mediaArry = params.get("media");
