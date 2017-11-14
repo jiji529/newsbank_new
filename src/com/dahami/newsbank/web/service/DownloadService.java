@@ -37,6 +37,7 @@ import java.util.Set;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.ImageWriteException;
@@ -215,6 +216,23 @@ public class DownloadService extends ServiceBase {
 				}
 				
 				if(!downConfirm) {
+					// 연계 이외에는 로그인한 경우만 다운로드 가능
+					HttpSession session = request.getSession();
+					MemberDTO memberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+					if(memberInfo != null) {
+						// 후불 체크
+						int memberSeq = memberInfo.getSeq();
+						MemberDAO mDao = new MemberDAO();
+						memberInfo = mDao.getMember(memberSeq);
+						if(memberInfo.getDeferred() != null && memberInfo.getDeferred().equals("Y")) {
+							downConfirm = true;
+						}
+						// 구매여부 체크
+						else {
+							
+						}
+					}
+					
 					// 다운로드 가능 여부 확인(구매 / 후불 등)
 				}
 				

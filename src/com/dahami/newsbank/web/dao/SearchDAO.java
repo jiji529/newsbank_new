@@ -285,6 +285,12 @@ public class SearchDAO extends DAOBase {
 		if(duration != null && duration.trim().length() > 0) {
 			if(duration.indexOf("~") == -1) {
 				Calendar sCal = Calendar.getInstance();
+				Calendar eCal = Calendar.getInstance();
+				eCal.set(Calendar.HOUR_OF_DAY, 0);
+				eCal.set(Calendar.MINUTE, 0);
+				eCal.set(Calendar.SECOND, 0);
+				eCal.set(Calendar.MILLISECOND, 0);
+				eCal.add(Calendar.DAY_OF_YEAR, 1);
 				if(duration.equals("1d")) {
 					sCal.add(Calendar.DAY_OF_MONTH, -1);
 				}
@@ -303,12 +309,12 @@ public class SearchDAO extends DAOBase {
 				}
 				
 				if(sCal != null) {
-					query.addFilterQuery("shotDate:[" + fullDf.format(sCal.getTime()) + " TO *]");
+					query.addFilterQuery("searchDate:[" + fullDf.format(sCal.getTime()) + " TO "+ fullDf.format(eCal.getTime()) +"}");
 				}
 			}
 			else {
 				String[] durationArry = duration.split("~");
-				query.addFilterQuery("shotDate:[" + durationArry[0] + " TO " + durationArry[1] + "]");
+				query.addFilterQuery("searchDate:[" + durationArry[0] + " TO " + durationArry[1] + "]");
 			}
 			logger.debug("Duration: " + duration);
 		}
