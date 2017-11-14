@@ -3,8 +3,12 @@
 
 <mapper namespace="Bookmark">
         
-    <insert id="insertBookmark" keyProperty="seq">
+    <insert id="insertBookmark" useGeneratedKeys="true" keyProperty="seq" keyColumn="seq">
         INSERT INTO bookmark (member_seq, bookName, activate, regDate) VALUES (#{member_seq}, #{bookName}, 1, NOW())
+        
+        <selectKey keyProperty="seq" resultType="int" order="AFTER">
+	        SELECT LAST_INSERT_ID()
+	    </selectKey>
     </insert>
     
     <insert id="insertBookmarkPhoto">
@@ -25,8 +29,8 @@
 		WHERE A.member_seq = #{member_seq} AND B.photo_uciCode = #{photo_uciCode} 
     </select>
     
-    <delete id="deleteBookmark">
-        DELETE FROM bookmark WHERE member_seq = #{member_seq} AND bookName = #{bookName}        
+    <delete id="deleteBookmark" parameterType="java.util.Map">
+        DELETE FROM bookmark WHERE member_seq = #{member_seq} AND seq = #{bookmark_seq}        
     </delete>
     
     <delete id="deleteBookmarkPhoto">
@@ -34,4 +38,16 @@
 		INNER JOIN bookmark B ON A.bookmark_seq = B.seq
 		WHERE A.photo_uciCode = #{photo_uciCode} AND B.member_seq = #{member_seq}
     </delete>
+    
+    <update id="updateBookmark" parameterType="java.util.Map">
+        UPDATE bookmark SET
+        	bookName = #{bookName} 
+       	WHERE member_seq = #{member_seq} AND seq = #{bookmark_seq}     
+    </update>
+    
+    <update id="updateBookmarkPhoto" parameterType="java.util.Map">
+        UPDATE bookmarkPhoto SET
+        	bookmark_seq = #{bookmark_seq} 
+       	WHERE photo_uciCode = #{photo_uciCode}        
+    </update>
 </mapper>

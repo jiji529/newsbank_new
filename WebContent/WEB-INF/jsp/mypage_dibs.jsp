@@ -73,7 +73,7 @@
 				"member_seq" : member_seq,
 				"bookmark_seq" : bookmark_seq
 			},
-			success: function(data){ console.log(data);
+			success: function(data){ 
 				$(data.result).each(function(key, val) {
 					html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages' + val.viewPath + '&dummy=<%= currentTimeMills%>"/></a>';
 					html += '<div class="thumb_info">';
@@ -193,7 +193,7 @@
 								<li value="${bookmark.seq}">${bookmark.bookName}</li>
 							</c:forEach>
 							<li class="folder_edit">
-								<a href="#" >그룹 관리</a>
+								<a href="/dibs.popOption" onclick="window.open('/dibs.popOption','new','resizable=no width=420 height=600');return false">폴더 관리</a>
 							</li>
 						</ul>
 					</li>
@@ -222,7 +222,32 @@
 				<ul class="button">
 					<li class="sort_down">장바구니</li>
 					<li class="sort_del">삭제</li>
-					<li class="sort_menu">폴더이동</li>
+					<li class="sort_folder">폴더이동
+						<div class="folder_item">
+							<ul class="list_layer">
+								<!-- <li class="select">기본폴더</li>
+								<li>사용자 폴더</li> -->
+								<c:forEach items="${bookmarkList}" var="bookmark">
+									<c:if test="${bookmark.bookName eq '기본그룹'}">
+										<li class="select" value="${bookmark.seq}">${bookmark.bookName}</li>
+									</c:if>
+									<c:if test="${bookmark.bookName ne '기본그룹'}">
+										<li value="${bookmark.seq}">${bookmark.bookName}</li>
+									</c:if>
+									
+								</c:forEach>
+							</ul>
+							<div class="box_add"><a>새 폴더 추가</a>
+								<form style="display: ;"><!-- 바로윗줄 추가버튼 눌렀을때 display block-->
+									<fieldset>
+										<legend>폴더 추가 폼</legend>
+										<input type="text" maxlength="20">
+										<button>추가</button>
+									</fieldset>
+								</form>
+							</div>
+						</div>
+					</li>
 				</ul>
 			</div>
 			<section id="wish_list2">

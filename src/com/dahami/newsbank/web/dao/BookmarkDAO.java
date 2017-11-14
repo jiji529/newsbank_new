@@ -120,7 +120,7 @@ public class BookmarkDAO extends DAOBase {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("member_seq", member_seq);
 			
-			bookmarkList = session.selectList("Bookmark.selectBookmark", param);		
+			bookmarkList = session.selectList("Bookmark.selectBookmark", param);
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
@@ -131,6 +131,100 @@ public class BookmarkDAO extends DAOBase {
 			}
 		}
 		return bookmarkList;
+	}
+	
+	/**
+	 * @methodName  : insertFolder
+	 * @author      : LEE, GWANGHO
+	 * @date        : 2017. 11. 14. 오흐 03:02:12
+	 * @methodCommet: 찜 폴더 추가
+	 * @param param
+	 * @return 
+	 */
+	public int insertFolder(int member_seq, String bookName) {
+		SqlSession session = null;
+		int bookmark_seq = 0;
+				
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			param.put("bookName", bookName);
+			
+			session.insert("Bookmark.insertBookmark", param);
+			bookmark_seq = (int) param.get("seq");
+			//System.out.println("bookmark_seq : " + bookmark_seq);
+			//int last_insert_seq = (int) param.get("seq");
+			//param.put("bookmark_seq", last_insert_seq);
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return bookmark_seq;
+	}
+	
+	/**
+	 * @methodName  : updateFolder
+	 * @author      : LEE, GWANGHO
+	 * @date        : 2017. 10. 26. 오후 2:40:10
+	 * @methodCommet: 찜 폴더 수정
+	 * @param param
+	 * @return 
+	 */
+	public void updateFolder(int member_seq, String bookName, int bookmark_seq) {
+		SqlSession session = null;
+				
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			param.put("bookName", bookName);
+			param.put("bookmark_seq", bookmark_seq);
+			
+			session.update("Bookmark.updateBookmark", param);		
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	/**
+	 * @methodName  : deleteFolder
+	 * @author      : LEE, GWANGHO
+	 * @date        : 2017. 10. 26. 오후 2:40:10
+	 * @methodCommet: 찜 폴더 삭제
+	 * @param param
+	 * @return 
+	 */
+	public void deleteFolder(int member_seq, int bookmark_seq) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			param.put("bookmark_seq", bookmark_seq);
+			
+			session.delete("Bookmark.deleteBookmark", param);		
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
 	}
 
 }
