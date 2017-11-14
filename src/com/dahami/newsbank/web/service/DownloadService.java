@@ -28,7 +28,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +54,7 @@ import org.apache.commons.imaging.formats.tiff.write.TiffOutputField;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 
 import com.dahami.common.util.FileUtil;
+import com.dahami.common.util.HttpUtil;
 import com.dahami.common.util.ImageUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.MemberDAO;
@@ -75,6 +80,21 @@ public class DownloadService extends ServiceBase {
 	
 	private static final int LOGO_MAX_WIDTH = 122;
 	private static final int LOGO_MAX_HEIGHT = 122;
+	
+	private static final Map<String, Set<String>> ACCESS_IP_MAP;
+	private static final Map<String, String> CORP_NAME_MAP;
+	
+	static {
+		ACCESS_IP_MAP = new HashMap<String, Set<String>>();
+		final Set<String> ipSet = new HashSet<String>();
+		ACCESS_IP_MAP.put("gt", ipSet);
+		ipSet.add("59.27.23.3");
+		ipSet.add("127.0.0.1");
+		
+		CORP_NAME_MAP = new HashMap<String, String>();
+		CORP_NAME_MAP.put("nb", "뉴스뱅크");
+		CORP_NAME_MAP.put("gt", "게티이미지코리아");
+	}
 	
 	private String targetSize;
 	private String uciCode;
@@ -177,10 +197,38 @@ public class DownloadService extends ServiceBase {
 			}
 			// 구매한 이미지 다운로드
 			else if(targetSize.equals("service")) {
+				boolean downConfirm = false;
+				String ip = HttpUtil.getRequestIpAddr(request);
+				
+				String corp = request.getParameter("corp");
+				// 다운로드 가능 여부 확인(연계 / IP 제한)
+				if(corp != null && corp.trim().length() > 0) {
+					Set<String> ipSet = ACCESS_IP_MAP.get(corp);
+					if(ipSet != null && ipSet.size() > 0) {
+						if(ipSet.contains(ip)) {
+							downConfirm = true;
+						}
+					}
+				}
+				else {
+					corp = "nb";
+				}
+				
+				if(!downConfirm) {
+					// 다운로드 가능 여부 확인(구매 / 후불 등)
+				}
+				
+				if(!downConfirm) {
+					response.sendRedirect(URL_PHOTO_ERROR_VIEW);
+					return;
+				}
+				
 				// 다운로드 로그 ID
 				String downloadId = "123456";
-				String serviceName = "뉴스뱅크"; // 게티 / 디지털저작권거래소
-				String serviceCode = "nb";	// gt / dt
+				String serviceCode = corp;	// nb / gt / dt
+				String serviceName = CORP_NAME_MAP.get(corp); // 뉴스뱅크 / 게티이미지코리아 / 디지털저작권거래소
+				
+				
 				
 				try {
 					// 원본 이미지를 실시간으로 카피 / UCI 임베드 / 다운로드 정보 임베드(메타태그) 하여 전송
@@ -221,6 +269,7 @@ public class DownloadService extends ServiceBase {
 			}
 			// 기타 다운로드?? 
 			else {
+				logger.warn("잘못된 접근: " + targetSize + " / " + uciCode);
 				// 현재 대상이 되는 케이스 없음  / 향후 확장성을 위해
 			}
 			if(downPath != null) {
