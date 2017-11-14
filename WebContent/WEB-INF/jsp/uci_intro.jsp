@@ -49,7 +49,7 @@
 				<h2>서비스 소개</h2>
 				<p>뉴스뱅크 서비스에 대하여 알려드립니다.</p>
 			</div>
-			<div class="mypage_ul">
+			<div class="mypage_ul" style="display:none;">
 				<ul class="mp_tab1 si">
 					<li>
 						<a href="/newsbank.intro">뉴스뱅크 소개</a>

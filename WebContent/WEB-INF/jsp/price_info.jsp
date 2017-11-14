@@ -299,13 +299,14 @@
 			</section>
 			<section id="tblCommercial" style="display: none;">
 				<!-- 가격테이블 -->
-				<table class="tb01" cellpadding="0" cellspacing="0">
+				<table class="tb01"  cellpadding="0" cellspacing="0">
 					<colgroup>
-						<col width="100px">
-						<col width="112px">
-						<col width="280px">
-						<col width="80px">
-						<col width="80px">
+					<col width="140px">
+					<col width="170px">
+					<col width="430px">
+					<col width="160px">
+					<col width="170px">
+					<col width="170px">
 					</colgroup>
 					<thead>
 						<tr>
@@ -313,7 +314,8 @@
 							<th scope="col">용도</th>
 							<th scope="col">사용조건</th>
 							<th scope="col">사용기간</th>
-							<th scope="col">가격 (VAT포함)</th>
+							<th scope="col">가격
+								(VAT포함)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -449,7 +451,8 @@
 						</tr>
 						<tr id="r71">
 							<td>보도자료</td>
-							<td>신문, 온라인 배포용 (2차이상 배포불가)</td>
+							<td>신문, 온라인 배포용
+								(2차이상 배포불가)</td>
 							<td>-</td>
 							<td>1년 이내</td>
 							<td>550,000</td>
