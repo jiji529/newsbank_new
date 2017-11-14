@@ -9,12 +9,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 
 
 public abstract class NewsbankServletBase extends HttpServlet {
@@ -32,6 +34,8 @@ public abstract class NewsbankServletBase extends HttpServlet {
 	protected HttpServletResponse response;
 	protected Map<String, String[]> params;
 	
+	protected MemberDTO loginInfo;
+	
     public NewsbankServletBase() {
         super();
     }
@@ -45,6 +49,10 @@ public abstract class NewsbankServletBase extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		this.loginInfo = (MemberDTO) session.getAttribute("MemberInfo");
+		request.setAttribute("loginInfo", loginInfo);
+		
 		request.setCharacterEncoding("UTF-8");
 		closed = false;
 		cmd1 = cmd2 = cmd3 = "";

@@ -455,6 +455,14 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 		
 		view_form.submit();
 	}
+	
+	function down() {
+		if(!confirm("원본을 다운로드 하시겠습니까?")) {
+			return;
+		}
+		var url = "<%=IMG_SERVER_URL_PREFIX%>/service.down.photo?uciCode=${photoDTO.uciCode}&type=file";
+		$("#downFrame").attr("src", url);
+	}
 </script>
 </head>
 <body> 
@@ -525,8 +533,15 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 		</div>
 		<div class="view_rt">
 			<div class="view_rt_top">
+<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
 				<h3>이미지 구매하기</h3>
-				<a href="#" class="price_info">가격확인</a></div>
+				<a href="#" class="price_info">가격확인</a>
+</c:if>
+<c:if test="${loginInfo != null && loginInfo.deferred == 'Y'}">
+				<h3>후불 회원 다운로드</h3>
+</c:if>
+				</div>
+<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
 			<div class="option_choice">
 				<ul>
 					<li><span>용도</span>
@@ -559,17 +574,28 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 				<ul>
 				</ul>
 			</div>
+</c:if>
 			<div class="sum_sec">
+<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
 				<div class="total"><span class="tit">총 금액 (수량)</span><span class="price">0<span class="price_txt">원(<span class="price_count">0</span>개)</span></span></div>
 				<div class="btn_wrap">
 					<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
-					<div class="btn_down"><a href="/list.down.photo?uciCode=${photoDTO.uciCode}">시안 다운로드</a></div>
+					<div class="btn_down" id="btnDownTentative"><a href="/list.down.photo?uciCode=${photoDTO.uciCode}">시안 다운로드</a></div>
 					<div class="btn_buy"><a href="#" onclick="go_pay()">구매하기</a></div>
 				</div>
+</c:if>
+<c:if test="${loginInfo != null && loginInfo.deferred == 'Y'}">
+				<div class="btn_wrap">
+					<div class="btn_cart" id="btnDown"><a href="#" onclick="down()">다운로드</a></div>
+					<div class="btn_down" id="btnDownTentative"><a href="#" onclick="downSian()">시안 다운로드</a></div>
+				</div>
+</c:if>
 			</div>
 		</div>
 	</section>
 	<%@include file="footer.jsp"%>
 </div>
+<iframe id="downFrame" style="display:none" >
+</iframe>
 </body>
 </html>

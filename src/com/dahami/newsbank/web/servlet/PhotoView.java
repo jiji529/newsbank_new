@@ -15,6 +15,7 @@ import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.SearchDAO;
 import com.dahami.newsbank.web.dto.BookmarkDTO;
+import com.dahami.newsbank.web.service.PhotoViewService;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 /**
@@ -32,55 +33,21 @@ public class PhotoView extends NewsbankServletBase {
      */
     public PhotoView() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-    /**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		super.doGet(request, response);
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		//SearchParameterBean parameterBean = new SearchParameterBean();
-		//List<PhotoDTO> photoList = searchDAO.search(parameterBean);
-		
-		PhotoDAO photoDAO = new PhotoDAO();
-		String uciCode = request.getParameter("uciCode");
-		PhotoDTO photoDTO = photoDAO.read(uciCode);
-		photoDAO.hit(uciCode);
-		request.setAttribute("photoDTO", photoDTO);
-		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
-		String member_seq = request.getParameter("member_seq") == null ? "1002" : request.getParameter("member_seq");
-		String photo_uciCode = request.getParameter("photo_uciCode");
-		String bookName = request.getParameter("bookName");
-		BookmarkDAO bookmarkDAO = new BookmarkDAO();
-		
-		if(action.equals("insertBookmark")) {
-			bookmarkDAO.insert(member_seq, photo_uciCode, bookName);
-		}else if(action.equals("deleteBookmark")) {
-			bookmarkDAO.delete(Integer.parseInt(member_seq), photo_uciCode);
-		}
-		
-		BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
-		if(bookmark == null) {
-			request.setAttribute("bookmark", bookmark);		
-		}else {
-			request.setAttribute("bookmark", bookmark);
-		}
+		PhotoViewService pvs = new PhotoViewService();
+		pvs.execute(request, response);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/photo_view.jsp");
 		dispatcher.forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

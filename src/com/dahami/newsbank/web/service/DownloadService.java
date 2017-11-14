@@ -109,6 +109,10 @@ public class DownloadService extends ServiceBase {
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String downPath = null;
+		String sendType = request.getParameter("type");
+		if(sendType == null) {
+			sendType = "view";
+		}
 		
 		if(uciCode == null || uciCode.trim().length() == 0) {
 			if(targetSize.equals("logo")) {
@@ -159,6 +163,10 @@ public class DownloadService extends ServiceBase {
 			}
 		}
 		else {
+			// 로그인 정보
+			HttpSession session = request.getSession();
+			MemberDTO memberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+			
 			photoDao = new PhotoDAO();
 			PhotoDTO photo = photoDao.read(this.uciCode);
 			// 사진 정보가 없는 경우
@@ -176,7 +184,11 @@ public class DownloadService extends ServiceBase {
 			String orgPath = null;
 			// 썸네일 / 뷰 이미지의 경우 서비스중인 이미지에 대해 모두 다운로드 가능함
 			if(targetSize.equals("list") || targetSize.equals("view")) {
-				if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {
+				// 서비스중이거나
+				if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK
+						// 소유자일 때 이미지 전송
+					|| (memberInfo != null && photo.getOwnerNo() == memberInfo.getSeq())
+				) {
 					orgPath = photo.getOriginPath();
 					if(targetSize.equals("list")) {
 						downPath = photo.getListPath();
@@ -217,8 +229,6 @@ public class DownloadService extends ServiceBase {
 				
 				if(!downConfirm) {
 					// 연계 이외에는 로그인한 경우만 다운로드 가능
-					HttpSession session = request.getSession();
-					MemberDTO memberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 					if(memberInfo != null) {
 						// 후불 체크
 						int memberSeq = memberInfo.getSeq();
@@ -335,7 +345,13 @@ public class DownloadService extends ServiceBase {
 							sendImageFile(response, downPath, this.uciCode + ".jpg");
 						}
 						else {
-							sendImageFile(response, downPath);
+							if(sendType.equals("file")) {
+								String fileName = this.uciCode + "_" + targetSize + ".jpg";
+								sendImageFile(response, downPath, fileName) ;
+							}
+							else {
+								sendImageFile(response, downPath);
+							}
 						}
 					}
 				}catch(Exception e) {
@@ -366,15 +382,23 @@ public class DownloadService extends ServiceBase {
 		fd = orgFd;
 		
 		
+		TiffImageMetadata tMeta = null;
 		TiffOutputSet outputSet = null;
 		TiffOutputDirectory rootDir = null;
         TiffOutputDirectory exifDir = null;
 		try {
+			
 			ImageMetadata meta = Imaging.getMetadata(fd);
-			TiffImageMetadata tMeta = ((JpegImageMetadata)meta).getExif();
-			outputSet = tMeta.getOutputSet();
-			rootDir = outputSet.getRootDirectory();
-			exifDir = outputSet.getExifDirectory();
+			if(meta == null) {
+				outputSet = new TiffOutputSet();
+			}
+			else {
+				tMeta = ((JpegImageMetadata)meta).getExif();
+				outputSet = tMeta.getOutputSet();	
+			}
+			
+			rootDir = outputSet.getOrCreateRootDirectory();
+			exifDir = outputSet.getOrCreateExifDirectory();
 			
 			TiffOutputField copyright = null;
 			TiffOutputField uniqueId = null;
@@ -394,7 +418,9 @@ public class DownloadService extends ServiceBase {
 			if(uniqueId != null) {
 				String currentValue = "";
 				try {
-					currentValue = (String) tMeta.getFieldValue(uniqueId.tagInfo);
+					if(tMeta != null) {
+						currentValue = (String) tMeta.getFieldValue(uniqueId.tagInfo);
+					}
 					currentValue = currentValue.trim();
 					if(currentValue.indexOf(DAHAMI_ID_HEADER_STRING) != -1) {
 						currentValue = currentValue.substring(0, currentValue.indexOf(DAHAMI_ID_HEADER_STRING)).trim();
@@ -415,7 +441,9 @@ public class DownloadService extends ServiceBase {
 			if(copyright != null) {
 				String currentValue = "";
 				try {
-					currentValue = (String) tMeta.getFieldValue(copyright.tagInfo);
+					if(tMeta != null) {
+						currentValue = (String) tMeta.getFieldValue(copyright.tagInfo);
+					}
 					currentValue = currentValue.trim();
 					if(currentValue.indexOf(DAHAMI_DIST_HEADER_STRING) != -1) {
 						currentValue = currentValue.substring(0, currentValue.indexOf(DAHAMI_DIST_HEADER_STRING)).trim();
