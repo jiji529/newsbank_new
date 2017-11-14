@@ -425,10 +425,10 @@
 						<tr>
 							<th scope="row">블라인드</th>
 							<td><label>
-									<input type="radio" name="blind" value="1"/>
+									<input type="radio" name="blind" value="2"/>
 									ON</label>
 								<label>
-									<input type="radio" name="blind" value="2"/>
+									<input type="radio" name="blind" value="1"/>
 									OFF</label></td>
 						</tr>
 						<tr>

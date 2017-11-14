@@ -210,8 +210,8 @@
 			url: "cms.search",
 			success : function(data) { 
 				$("#cms_list2 ul").empty();
-				$(data.result).each(function(key, val) {	
-					var blind = (val.portraitRightState == true) ? "blind" : "";  
+				$(data.result).each(function(key, val) {	//console.log(data);
+					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";  
 					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\"></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";
@@ -271,7 +271,7 @@
 			success : function(data) {
 				$("#cms_list2 ul").empty();
 				$(data.result).each(function(key, val) {	
-					var blind = (val.portraitRightState == false) ? "blind" : "";
+					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";
 					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\" /></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";					
