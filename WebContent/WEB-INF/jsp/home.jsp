@@ -19,7 +19,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<% long currentTimeMills = System.currentTimeMillis(); %>
+<%
+long currentTimeMills = System.currentTimeMillis(); 
+String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+// String IMG_SERVER_URL_PREFIX = "";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -192,7 +196,7 @@
 							<div class="img_list">
 								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
 								<a href="#" onclick="go_photoView('${photo.uciCode}')">
-									<img src="/list.down.photo?uciCode=${photo.uciCode}&dummy=<%= currentTimeMills%>">
+									<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%= currentTimeMills%>">
 								</a>
 							</div>
 						</c:if>					
@@ -205,7 +209,7 @@
 							<div class="img_list">
 								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
 								<a href="#" onclick="go_photoView('${photo.uciCode}')">
-									<img src="/list.down.photo?uciCode=${photo.uciCode}&dummy=<%= currentTimeMills%>">
+									<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%= currentTimeMills%>">
 								</a>
 							</div>
 						</c:if>
@@ -261,7 +265,7 @@
 							<c:if test="${down.widthCm < down.heightCm}">
 								<div class="img_list">
 									<a href="#" onclick="go_photoView('${down.uciCode}')">
-										<img src="/list.down.photo?uciCode=${down.uciCode}&dummy=<%= currentTimeMills%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>					
@@ -273,7 +277,7 @@
 							<c:if test="${down.widthCm > down.heightCm}">
 								<div class="img_list">
 									<a href="#" onclick="go_photoView('${down.uciCode}')">
-										<img src="/list.down.photo?uciCode=${down.uciCode}&dummy=<%= currentTimeMills%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>
@@ -288,7 +292,7 @@
 								<div class="img_list">
 									<%-- <a href="/view.photo?uciCode=${basket.uciCode}"> --%>
 									<a href="#" onclick="go_photoView('${basket.uciCode}')">
-										<img src="/list.down.photo?uciCode=${basket.uciCode}&dummy=<%= currentTimeMills%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>					
@@ -300,7 +304,7 @@
 							<c:if test="${basket.widthCm > basket.heightCm}">
 								<div class="img_list">
 									<a href="#" onclick="go_photoView('${basket.uciCode}')">
-										<img src="/list.down.photo?uciCode=${basket.uciCode}&dummy=<%= currentTimeMills%>" />
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%= currentTimeMills%>" />
 									</a>
 								</div>
 							</c:if>
@@ -314,7 +318,7 @@
 							<c:if test="${hit.widthCm < hit.heightCm}">
 								<div class="img_list">
 									<a href="#" onclick="go_photoView('${hit.uciCode}')">
-										<img src="/list.down.photo?uciCode=${hit.uciCode}&dummy=<%= currentTimeMills%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>					
@@ -326,7 +330,7 @@
 							<c:if test="${hit.widthCm > hit.heightCm}">
 								<div class="img_list">
 									<a href="#" onclick="go_photoView('${hit.uciCode}')">
-										<img src="/list.down.photo?uciCode=${hit.uciCode}&dummy=<%= currentTimeMills%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%= currentTimeMills%>">
 									</a>
 								</div>
 							</c:if>

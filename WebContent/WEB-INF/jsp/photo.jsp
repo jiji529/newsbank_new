@@ -224,7 +224,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 		
 		$("#keyword").val($("#keyword_current").val());
 		
-		console.log("func search() - duration : " + duration);
+		//console.log("func search() - duration : " + duration);
 		
 		var html = "";
 		$.ajax({
@@ -242,7 +242,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
-					html += "<a class=\"over_wish\" href=\"#\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"/list.down.photo?uciCode=" + val.uciCode + "\" download>시안 다운로드</a> </div>";
+					html += "<a class=\"over_wish\" href=\"#\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>시안 다운로드</a> </div>";
 					html += "</div>";
 					html += "</li>";
 				});

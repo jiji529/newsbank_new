@@ -179,7 +179,6 @@
 			$("input[name=pageNo]").val(pageNo);
 		}
 		
-		//var id = "N0";
 		var pageVol = $("select[name=pageVol]").val();
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
 		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value");
@@ -209,12 +208,13 @@
 			data: searchParam,
 			timeout: 1000000,
 			url: "cms.search",
-			success : function(data) {
+			success : function(data) { 
 				$("#cms_list2 ul").empty();
-				$(data.result).each(function(key, val) {		
+				$(data.result).each(function(key, val) {	
+					var blind = (val.portraitRightState == true) ? "blind" : "";  
 					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\"></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\" href=\"/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</li>	<li class=\"btn_del\">삭제</li> <li class=\"btn_view\">다운로드</li> </ul>";
+					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";
 				});
 				$(html).appendTo("#cms_list2 ul");
 				var totalCount = $(data.count)[0];
@@ -270,10 +270,11 @@
 			url: "cms.search",
 			success : function(data) {
 				$("#cms_list2 ul").empty();
-				$(data.result).each(function(key, val) {				
-					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\" /></a>";
+				$(data.result).each(function(key, val) {	
+					var blind = (val.portraitRightState == false) ? "blind" : "";
+					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\" /></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\">다운로드</li>	<li class=\"btn_del\">삭제</li> <li class=\"btn_view\">다운로드</li> </ul>";
+					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";					
 				});
 				$(html).appendTo("#cms_list2 ul");
 				var totalCount = $(data.count)[0];
@@ -292,11 +293,53 @@
 		view_form.submit();
 	}
 	
-	// #사진관리 다운로드
-	$(document).on("click", ".btn_down", function() {
-		var href = $(this).attr("href");
-		console.log(href);
+	// #사진관리 삭제
+	$(document).on("click", ".btn_del", function() {
+		var uciCode = $(this).attr("value");		
+		var param = "action=deletePhoto";
 		
+		$.ajax({
+			url: "/cms?"+param,
+			type: "POST",
+			data: {
+				"uciCode" : uciCode
+			},
+			success: function(data) {					
+				
+			},
+			error : function(request, status, error) {
+				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	});
+	
+	// #사진관리 블라인드 처리
+	$(document).on("click", ".btn_view", function() {
+		var uciCode = $(this).attr("value");		
+		var param = "action=blindPhoto";
+		
+		$.ajax({
+			url: "/cms?"+param,
+			type: "POST",
+			data: {
+				"uciCode" : uciCode
+			},
+			success: function(data) {					
+				
+			},
+			error : function(request, status, error) {
+				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	});
+	
+	/** 전체선택 */
+	$(document).on("click", "input[name='check_all']", function() {
+		if($("input[name='check_all']").prop("checked")) {
+			$("#cms_list2 input:checkbox").prop("checked", true);
+		}else {
+			$("#cms_list2 input:checkbox").prop("checked", false);
+		}
 	});
 	
 </script>
@@ -422,18 +465,19 @@
 		<form class="view_form" method="post" action="/view.cms" name="view_form" >
 			<input type="hidden" name="uciCode" id="uciCode"/>
 		</form>
-		<div class="btn_sort"><span class="task_check">
-			<input type="checkbox" />
+		<!-- <div class="btn_sort"><span class="task_check">
+			<input type="checkbox" name="check_all" />
 			</span>
 			<ul class="button">
 				<li class="sort_down">다운로드</li>
 				<li class="sort_del">삭제</li>
+				1차 제외
 				<li class="sort_menu">블라인드</li>
 				<li class="sort_menu">초상권 해결</li>
 				<li class="sort_menu">관련사진 묶기</li>
 				<li class="sort_up">수동 업로드</li>
 			</ul>
-		</div>
+		</div> -->
 		<section id="cms_list2">
 			<ul>
 				<c:forEach items="${picture}" var="PhotoDTO">
@@ -446,9 +490,9 @@
 							<input type="checkbox" />
 							<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 						<ul class="thumb_btn">
-							<li class="btn_down">다운로드</li>
-							<li class="btn_del">삭제</li>
-							<li class="btn_view">다운로드</li>
+							<li class="btn_down"><a>다운로드</a></li>
+							<li class="btn_del"><a>삭제</a></li>
+							<li class="btn_view blind"><a>블라인드</a></li>
 						</ul>
 					</li>
 				</c:forEach>

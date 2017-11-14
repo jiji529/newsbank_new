@@ -107,5 +107,18 @@
 		FROM photo AS PH
 		WHERE PH.uciCode = #{uciCode}		
     </select>
+    
+	<update id="deletePhoto" parameterType="com.dahami.newsbank.dto.PhotoDTO">
+		UPDATE photo SET
+		uciStat = '-1',
+		saleStat = '3'
+		WHERE uciCode = #{uciCode}
+	</update>
+	
+	<update id="blindPhoto" parameterType="com.dahami.newsbank.dto.PhotoDTO">
+		UPDATE photo SET		
+		saleStat = '2'
+		WHERE uciCode = #{uciCode}
+	</update>
 	
 </mapper>

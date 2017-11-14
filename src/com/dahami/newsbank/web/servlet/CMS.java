@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.SearchDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.CMSService;
@@ -81,6 +82,21 @@ public class CMS extends NewsbankServletBase {
 				request.setAttribute("INCLUDE_PERSON_ALL", SearchParameterBean.INCLUDE_PERSON_ALL);
 				request.setAttribute("INCLUDE_PERSON_YES", SearchParameterBean.INCLUDE_PERSON_YES);
 				request.setAttribute("INCLUDE_PERSON_NO", SearchParameterBean.INCLUDE_PERSON_NO);
+				
+				String action = (request.getParameter("action") == null) ? "" : request.getParameter("action");
+				String uciCode = request.getParameter("uciCode");
+				
+				PhotoDAO photoDAO = new PhotoDAO();
+				
+				if(action.equals("deletePhoto")) {
+					PhotoDTO photoDTO = new PhotoDTO();
+					photoDTO.setUciCode(uciCode);
+					photoDAO.delete(photoDTO);
+				}else if(action.equals("blindPhoto")) {
+					PhotoDTO photoDTO = new PhotoDTO();
+					photoDTO.setUciCode(uciCode);
+					photoDAO.blind(photoDTO);
+				}
 				
 				//PhotoService ps = new PhotoService();
 				//ps.execute(request, response);
