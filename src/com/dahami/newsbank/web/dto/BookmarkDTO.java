@@ -3,6 +3,7 @@ package com.dahami.newsbank.web.dto;
 public class BookmarkDTO {
 	private int seq; // 북마크 고유번호
 	private int member_seq; // 회원고유번호
+	private int activate; // 노출여부
 	private String photo_uciCode; // UCI 코드
 	private String bookName; // 찜 폴더 이름
 	
@@ -17,6 +18,12 @@ public class BookmarkDTO {
 	}
 	public void setMember_seq(int member_seq) {
 		this.member_seq = member_seq;
+	}
+	public int getActivate() {
+		return activate;
+	}
+	public void setActivate(int activate) {
+		this.activate = activate;
 	}
 	public String getPhoto_uciCode() {
 		return photo_uciCode;

@@ -86,16 +86,16 @@
     
 	<!-- 사진관리 : 통계정보 (찜, 다운로드, 상세보기, 결제, 뮤지엄, 컬렉션) -->
 	<select id="selectStats" resultType="com.dahami.newsbank.web.dto.StatsDTO" parameterType="string">
-	    SELECT PH.hitCount AS hitCount, (
+	    SELECT (
 		SELECT COUNT(BP.photo_uciCode)
 		FROM bookmarkPhoto AS BP
 		WHERE BP.photo_uciCode = #{uciCode}) AS bookmarkCount, (
+		SELECT IFNULL(SUM(downCount), 0)
+		FROM paymentDetail
+		WHERE photo_uciCode = #{uciCode}) AS downCount, PH.hitCount AS hitCount, (
 		SELECT COUNT(PD.seq)
 		FROM paymentDetail AS PD
 		WHERE PD.photo_uciCode = #{uciCode}) AS saleCount, (
-		SELECT SUM(downCount)
-		FROM paymentDetail
-		WHERE photo_uciCode = #{uciCode}) AS downCount, (
 		SELECT COUNT(CASE WHEN EL.exhType='M' THEN 1 END)
 		FROM photoExhibition AS PE
 		LEFT JOIN exhibitionList AS EL ON PE.exhibitionList_seq = EL.seq
@@ -105,7 +105,7 @@
 		LEFT JOIN exhibitionList AS EL ON PE.exhibitionList_seq = EL.seq
 		WHERE PE.photo_uciCode = #{uciCode}) AS collectionCount
 		FROM photo AS PH
-		WHERE PH.uciCode = #{uciCode}
+		WHERE PH.uciCode = #{uciCode}		
     </select>
 	
 </mapper>
