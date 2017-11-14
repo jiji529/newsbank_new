@@ -113,7 +113,7 @@
 	function multi_pay() {
 		var cartArry = new Array();
 		
-		$("#order_list input:checkbox:checked").each(function(index) {
+		$("#order_list input:checkbox:checked:not(#check_all)").each(function(index) {
 			var uciCode = $(this).val();
 			var cart = uciCode;
 			

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="java.util.*" %>
 <%
-request.setCharacterEncoding("euc-kr");
+request.setCharacterEncoding("EUC-KR");
 
 String LGD_RESPCODE = request.getParameter("LGD_RESPCODE");
 String LGD_RESPMSG 	= request.getParameter("LGD_RESPMSG");

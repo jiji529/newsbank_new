@@ -12,7 +12,7 @@
 		totalPrice		FROM		`paymentManage`
 		AS M		LEFT JOIN `paymentDetail` D ON M.seq		= D.`paymentManage_seq`		LEFT JOIN `photo` P ON P.`uciCode` =		D.`photo_uciCode`
 		where
-		M.LGD_RESPCODE='0000' AND M.`member_seq` =		#{member_seq}
+		M.LGD_RESPCODE='0000' 
 		AND (P.`member_seq` = #{member_seq} OR P.`member_seq` IN		(SELECT		`adjSlave` FROM `adjustment` WHERE `admission`='Y' AND
 		`adjMaster`= #{member_seq} ))
 		AND M.LGD_PAYDATE BETWEEN #{start_date}
@@ -48,8 +48,7 @@
 		LEFT JOIN member mp ON	P.member_seq = mp.seq
 		where
 		M.LGD_RESPCODE='0000'
-		AND M.`member_seq` =
-		#{member_seq} AND (P.`member_seq` = #{member_seq} OR
+		AND (P.`member_seq` = #{member_seq} OR
 		P.`member_seq` IN
 		(SELECT `adjSlave` FROM `adjustment` WHERE `admission`='Y' AND
 		`adjMaster` =#{member_seq}))
