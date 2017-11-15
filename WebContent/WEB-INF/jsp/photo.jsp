@@ -139,7 +139,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 	$(document).on("click", ".over_wish", function() {
 		var uciCode = $(this).attr("value");		
 		var bookName = "기본그룹";
-		var member_seq = 1002;
+		var member_seq = ${member_seq};
 		var state = $(this).hasClass("on");
 		
 		if(state) {
@@ -234,7 +234,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 			data: searchParam,
 			timeout: 1000000,
 			url: "search",
-			success : function(data) {
+			success : function(data) { console.log(data);
 				$("#search_list1 ul").empty();
 				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {

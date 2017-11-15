@@ -213,7 +213,7 @@
 			data: searchParam,
 			timeout: 1000000,
 			url: "cms.search",
-			success : function(data) { //console.log(data);
+			success : function(data) { console.log(data);
 				$("#cms_list2 ul").empty();
 				$(data.result).each(function(key, val) {	
 					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";  
@@ -274,7 +274,7 @@
 			data: searchParam,
 			timeout: 1000000,
 			url: "cms.search",
-			success : function(data) {
+			success : function(data) { 
 				$("#cms_list2 ul").empty();
 				$(data.result).each(function(key, val) {	
 					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";
@@ -321,20 +321,32 @@
 	
 	// #사진관리 블라인드 처리
 	$(document).on("click", ".btn_view", function() {
-		var uciCode = $(this).attr("value");		
+		var uciCode = $(this).attr("value");
+		var saleState;
+		if($(this).hasClass("blind")) {
+			$(this).removeClass("blind");
+			saleState = 1;
+		}else {
+			$(this).addClass("blind");
+			saleState = 2;
+		}
 		var param = "action=blindPhoto";
 		
 		$.ajax({
 			url: "/cms?"+param,
 			type: "POST",
 			data: {
-				"uciCode" : uciCode
+				"uciCode" : uciCode,
+				"saleState" : saleState
 			},
 			success: function(data) {					
 				
 			},
 			error : function(request, status, error) {
 				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}, 
+			complete: function() {
+				//search();
 			}
 		});
 	});

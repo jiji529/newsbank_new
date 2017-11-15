@@ -8,8 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.DownloadService;
 import com.dahami.newsbank.web.service.PhotoService;
 
@@ -36,6 +38,12 @@ public class Photo extends NewsbankServletBase {
 		super.doGet(request, response);
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
+		
+		HttpSession session = request.getSession();
+		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+		String member_seq = String.valueOf(MemberInfo.getSeq());
+		request.setAttribute("member_seq", member_seq);
+		
 		if (closed) {
 			return;
 		}

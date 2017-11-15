@@ -120,7 +120,7 @@
 	
 	<update id="blindPhoto" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 		UPDATE photo SET		
-		saleStat = '2',
+		saleStat = #{saleState},
 		uciStat = '-1'
 		WHERE uciCode = #{uciCode}
 	</update>

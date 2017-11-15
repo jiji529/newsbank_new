@@ -86,6 +86,8 @@ public class CMS extends NewsbankServletBase {
 				String action = (request.getParameter("action") == null) ? "" : request.getParameter("action");
 				String uciCode = request.getParameter("uciCode");
 				
+				int saleState = (request.getParameter("saleState") == null ) ? 1 : Integer.parseInt(request.getParameter("saleState")); 
+				
 				PhotoDAO photoDAO = new PhotoDAO();
 				
 				if(action.equals("deletePhoto")) {
@@ -95,6 +97,7 @@ public class CMS extends NewsbankServletBase {
 				}else if(action.equals("blindPhoto")) {
 					PhotoDTO photoDTO = new PhotoDTO();
 					photoDTO.setUciCode(uciCode);
+					photoDTO.setSaleState(saleState);
 					photoDAO.blind(photoDTO);
 				}
 				

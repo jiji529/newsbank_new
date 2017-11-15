@@ -16,7 +16,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<% long currentTimeMills = System.currentTimeMillis(); %>
+<% 
+	long currentTimeMills = System.currentTimeMillis();
+	String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -75,7 +78,8 @@
 			},
 			success: function(data){ 
 				$(data.result).each(function(key, val) {
-					html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages' + val.viewPath + '&dummy=<%= currentTimeMills%>"/></a>';
+					//html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages' + val.viewPath + '&dummy=<%= currentTimeMills%>"/></a>';
+					html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%= currentTimeMills%>"/></a>';
 					html += '<div class="thumb_info">';
 					html += '<input type="checkbox" value="'+val.uciCode+'"/>';
 					html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
@@ -93,14 +97,13 @@
 	} 
 	
 	/** DB 삭제함수 */
-	function dibsDelete(member_seq, uciCode) {
+	function dibsDelete(uciCode) {
 		var param = "action=delete";
 		
 		$.ajax({
 			url: "/dibs.myPage?"+param,
 			type: "POST",
 			data: {
-				"member_seq" : member_seq,
 				"photo_uciCode" : uciCode
 			},
 			success: function(data){ }, 
@@ -112,19 +115,17 @@
 	
 	/** 개별 삭제 */
 	$(document).on("click", ".btn_del", function() {
-		var member_seq = "1002"; // 사용자 고유번호
 		var uciCode = $(this).parent().parent().find("div span:first").text();
 		$(this).closest(".thumb").remove();
 		
-		dibsDelete(member_seq, uciCode);		
+		dibsDelete(uciCode);		
 	});
 	
 	/** 다중선택 삭제 */
 	$(document).on("click", ".sort_del", function() {
-		var member_seq = "1002"; // 사용자 고유번호
 		$("#wish_list2 input:checkbox:checked").each(function(index) {
 			var uciCode = $(this).val();
-			dibsDelete(member_seq, uciCode);
+			dibsDelete(uciCode);
 			$(this).closest(".thumb").remove();
 		});
 	});
@@ -253,7 +254,8 @@
 			<section id="wish_list2">
 				<ul>					
 					<c:forEach items="${dibsPhotoList}" var="PhotoDTO">
-						<li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="images/serviceImages${PhotoDTO.getViewPath()}&dummy=<%= currentTimeMills%>"/></a>
+						<%-- <li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="images/serviceImages${PhotoDTO.getViewPath()}&dummy=<%= currentTimeMills%>"/></a> --%>
+						<li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%= currentTimeMills%>"/></a>
 							<div class="thumb_info">
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>

@@ -37,9 +37,9 @@
 		var saleState = ${photoDTO.saleState};
 		var portraitRightState = ${photoDTO.portraitRightState};
 		
-		if(saleState == 1) {
+		if(saleState == 1) { // 판매중
 			$('input:radio[name="blind"][value="1"]').attr('checked', true);
-		}else if(saleState == 2) {
+		}else if(saleState == 2) { // 판매중지
 			$('input:radio[name="blind"][value="2"]').attr('checked', true);
 		}
 		
