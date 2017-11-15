@@ -2,7 +2,7 @@
 .mypage{width:1240px; margin:0 auto; padding-bottom:100px;}
 .head{float:left; width:100%; padding-top:80px;}
 .head h2{width:100%; float:left; color:#333; font-size:28px; font-weight:400;}
-.head p{float: left; width:100%; color:#999; font-size:16px; margin-top:20px;}
+.head p{float: left; width:100%; color:#999; font-size:16px; margin-top:20px; display:none;}
 
 .table_head {border-bottom:3px #555b62 solid; float:left; width:100%;}
 .table_head h3 { float:left; margin:50px 0 15px; width:100%; text-align:left; font-size:18px; }
@@ -118,7 +118,7 @@
 .mypage .btn_sort .button li.sort_up{ background:#f8f8f8; font-weight:600;}
 .mypage .btn_sort .button li.sort_folder{ padding-right:25px;}
 .mypage .btn_sort .button li.sort_folder:after { content: ''; position: absolute; top: 50%; right: 10px; height: 0; width: 0; margin-top: -3px; border: solid transparent; border-top-color: #555; border-width: 5px 4px; -webkit-transition: border 0.3s ease-in-out; transition: border 0.3s ease-in-out; width: auto;}
-.mypage .btn_sort .button li.sort_folder .folder_item{border: 1px  solid  #d9d9d9; background: #fff; position:absolute; top:26px; left:-1px; min-width:190px;}
+.mypage .btn_sort .button li.sort_folder .folder_item{border: 1px  solid  #d9d9d9; background: #fff; position:absolute; top:26px; left:-1px; min-width:190px; display:none;}
 .mypage .btn_sort .button li.sort_folder .folder_item .list_layer{max-height: 350px; overflow: auto; overflow-x: hidden;}
 .mypage .btn_sort .button li.sort_folder .folder_item .list_layer li{white-space: nowrap; border:0; padding:0 0 0 25px; margin-left:0; float: left; width: 100%; text-align: left; min-width: 170px; height:35px; line-height:35px;}
 .mypage .btn_sort .button li.sort_folder .folder_item .list_layer li.select { background:url(../images/layer_chk.png) 8px 12px no-repeat;}
@@ -161,7 +161,7 @@
 .mypage #cms_list2 .thumb .thumb_btn .btn_down{background:url(../images/mp/btn_down.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_del{background:url(../images/mp/btn_del.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_view{background:url(../images/mp/btn_view.png) center 6px no-repeat;}
-.mypage #cms_list2 .thumb .thumb_btn .btn_view.blind{background:url(../images/mp/btn_blind.png) center 6px no-repeat;}
+.mypage #cms_list2 .thumb .thumb_btn .blind{background:url(../images/mp/btn_blind.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_likeness{background:url(../images/mp/btn_likeness.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn li:hover{background-color:#4d4d4d;}
 
