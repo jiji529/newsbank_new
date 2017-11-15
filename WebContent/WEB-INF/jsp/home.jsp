@@ -344,7 +344,6 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 			<section class="media">
 			<div class="center">
 				<h2>회원사 소개</h2>
-				<p>문구 수정.</p>
 				<ul class="media_list">
 					<c:forEach items="${mediaList}" var="member">
 						<li>
