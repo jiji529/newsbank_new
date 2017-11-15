@@ -1,25 +1,25 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="lgdacom.XPayClient.XPayClient"%>
 
 <%
-	//String configPath 	= "C:/lgdacom";  //LGÀ¯ÇÃ·¯½º¿¡¼­ Á¦°øÇÑ È¯°æÆÄÀÏ("/conf/lgdacom.conf") À§Ä¡ ÁöÁ¤.	
+	//String configPath 	= "C:/lgdacom";  //LGìœ í”ŒëŸ¬ìŠ¤ì—ì„œ ì œê³µí•œ í™˜ê²½íŒŒì¼("/conf/lgdacom.conf") ìœ„ì¹˜ ì§€ì •.	
 	String realPath=request.getRealPath("/");
-	String configPath 	= realPath+"lgdacom";  //LGÅÚ·¹ÄŞ¿¡¼­ Á¦°øÇÑ È¯°æÆÄÀÏ("/conf/lgdacom.conf") À§Ä¡ ÁöÁ¤.
+	String configPath 	= realPath+"lgdacom";  //LGí…”ë ˆì½¤ì—ì„œ ì œê³µí•œ í™˜ê²½íŒŒì¼("/conf/lgdacom.conf") ìœ„ì¹˜ ì§€ì •.
 	
     /*
-     * [LGÀ¯ÇÃ·¯½º È¯°æÆÄÀÏ UPDATE]
+     * [LGìœ í”ŒëŸ¬ìŠ¤ í™˜ê²½íŒŒì¼ UPDATE]
      *
-     * ÀÌ ÆäÀÌÁö´Â LGÀ¯ÇÃ·¯½º È¯°æÆÄÀÏÀ» UPDATE ÇÕ´Ï´Ù.(¼öÁ¤ÇÏÁö ¸¶¼¼¿ä.)
+     * ì´ í˜ì´ì§€ëŠ” LGìœ í”ŒëŸ¬ìŠ¤ í™˜ê²½íŒŒì¼ì„ UPDATE í•©ë‹ˆë‹¤.(ìˆ˜ì •í•˜ì§€ ë§ˆì„¸ìš”.)
      */
     String CST_PLATFORM = request.getParameter("CST_PLATFORM");
     String CST_MID      = request.getParameter("CST_MID");
 
     if( CST_PLATFORM == null || "".equals(CST_PLATFORM.trim()) ) {
-        out.println("[TX_PING error] CST_PLATFORM ÆÄ¶ó¹ÌÅÍ ´©¶ô<br>");
+        out.println("[TX_PING error] CST_PLATFORM íŒŒë¼ë¯¸í„° ëˆ„ë½<br>");
         return;
     }
     if( CST_MID == null || "".equals(CST_MID.trim()) ) {
-        out.println("[TX_PING error] CST_MID ÆÄ¶ó¹ÌÅÍ ´©¶ô<br>");
+        out.println("[TX_PING error] CST_MID íŒŒë¼ë¯¸í„° ëˆ„ë½<br>");
         return;
     }
     String LGD_MID      = ("test".equals(CST_PLATFORM.trim())?"t":"")+CST_MID;    

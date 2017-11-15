@@ -45,11 +45,12 @@ function doPay() {
 </head>
 <body>
 <form method="post" id="LGD_PAYINFO" action="/PayTEST.action">
+
     <div>
         <table>
             <tr>
                 <td>상점아이디(t를 제외한 아이디) </td>
-                <td><input type="text" name="CST_MID" id="CST_MID" value="lgdacomxpay"/></td>
+                <td><input type="text" name="CST_MID" id="CST_MID" value="dahaminewsbank"/></td>
             </tr>
             <tr>
                 <td>서비스,테스트 </td>

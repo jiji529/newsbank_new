@@ -32,7 +32,7 @@
 <title>뉴스뱅크 로그인</title>
 <link rel="stylesheet" href="css/join.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/join.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
 </head>
 <body>
 	<div class="wrap">

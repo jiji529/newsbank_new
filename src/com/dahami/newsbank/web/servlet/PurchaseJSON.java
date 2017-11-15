@@ -1,11 +1,13 @@
 package com.dahami.newsbank.web.servlet;
 
+import java.text.ParseException;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 @WebServlet("/purchase.api")
 public class PurchaseJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
+	public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	/**
 	 * @see NewsbankServletBase#NewsbankServletBase()
@@ -50,24 +53,33 @@ public class PurchaseJSON extends NewsbankServletBase {
 
 		JSONObject json = new JSONObject();
 		boolean result = false;
+		boolean check = true;
 		String message = null;
+
+		String LGD_AMOUNT = request.getParameter("LGD_AMOUNT"); //
+		String LGD_CUSTOM_USABLEPAY = request.getParameter("LGD_CUSTOM_USABLEPAY");// 상점정의 결제 가능 수단
 		Map<String, Object> LGD_DATA = new HashMap<String, Object>();
 
-		if (session.getAttribute("MemberInfo") != null) {
-			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+		if (LGD_AMOUNT == null || LGD_AMOUNT.isEmpty()) {
+			check = false;
+			message = "필요한 요청변수가 없습니다.";
+		}
+		if (LGD_CUSTOM_USABLEPAY == null || LGD_CUSTOM_USABLEPAY.isEmpty()) {
+			check = false;
+			message = "필요한 요청변수가 없습니다.";
 		}
 
-		if (MemberInfo != null) {
-			// 로그인중 처리
-			String LGD_AMOUNT = request.getParameter("LGD_AMOUNT"); //
-			String LGD_CUSTOM_USABLEPAY = request.getParameter("LGD_CUSTOM_USABLEPAY");// 상점정의 결제 가능 수단
+		if (session.getAttribute("MemberInfo") == null) {
+			check = false;
+			message = "로그인이 필요합니다.";
+		}
 
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
-			Calendar cal = Calendar.getInstance();
-			String today = null;
-			today = formatter.format(cal.getTime());
-			Timestamp LGD_TIMESTAMP = Timestamp.valueOf(today); // 타임스탬프
-			String LGD_BUYERIP = request.getRemoteAddr(); //구매자 아이피
+		if (check) {
+			// 로그인중 처리
+			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+			Date today = new Date();
+			String LGD_TIMESTAMP = DATE_TIME_FORMAT.format(today);// 타임스탬프
+			String LGD_BUYERIP = request.getRemoteAddr(); // 구매자 아이피
 
 			String LGD_BUYERID = MemberInfo.getId(); // 구매자 아이디
 			String LGD_BUYER = MemberInfo.getName(); // 구매자 명
@@ -95,17 +107,16 @@ public class PurchaseJSON extends NewsbankServletBase {
 			 */
 
 			String LGD_HASHDATA = md5(LGD_MID + LGD_OID + LGD_AMOUNT + LGD_TIMESTAMP + LGD_MERTKEY);
-			  /*
-		     * 가상계좌(무통장) 결제 연동을 하시는 경우 아래 LGD_CASNOTEURL 을 설정하여 주시기 바랍니다.
-		     */
-		    String LGD_CASNOTEURL		= "http://www.newsbank.co.kr/Noteurl.Xpay";
+			/*
+			 * 가상계좌(무통장) 결제 연동을 하시는 경우 아래 LGD_CASNOTEURL 을 설정하여 주시기 바랍니다.
+			 */
+			String LGD_CASNOTEURL = "http://www.newsbank.co.kr/Noteurl.Xpay";
 
-		    /*
-		     * LGD_RETURNURL 을 설정하여 주시기 바랍니다. 반드시 현재 페이지와 동일한 프로트콜 및  호스트이어야 합니다. 아래 부분을 반드시 수정하십시요.
-		     */
-		    String LGD_RETURNURL		= "http://www.newsbank.co.kr/Returnurl.Xpay";// FOR MANUAL
-			
-			
+			/*
+			 * LGD_RETURNURL 을 설정하여 주시기 바랍니다. 반드시 현재 페이지와 동일한 프로트콜 및 호스트이어야 합니다. 아래 부분을 반드시
+			 * 수정하십시요.
+			 */
+			String LGD_RETURNURL = "http://www.newsbank.co.kr/Returnurl.Xpay";// FOR MANUAL
 
 			LGD_DATA.put("CST_MID", CST_MID); // *LG U+와 계약시 설정한 상점아이디
 			LGD_DATA.put("LGD_VERSION", "JSP_Non-ActiveX_Standard"); // 사용 모듈 정보
@@ -116,7 +127,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 			LGD_DATA.put("LGD_WINDOW_TYPE", "iframe"); // 결제창 호출 방식
 			LGD_DATA.put("LGD_TIMESTAMP", LGD_TIMESTAMP); // * 타임 스탬프 거래 위변조 방지용
 			LGD_DATA.put("LGD_RETURNURL", LGD_RETURNURL); // *인증결과 응답수신페이지 URL
-			//LGD_DATA.put("LGD_RESPMSG", ""); // 응답 메시지
+			// LGD_DATA.put("LGD_RESPMSG", ""); // 응답 메시지
 			LGD_DATA.put("LGD_BUYER", LGD_BUYER); // * 구매자명
 			LGD_DATA.put("LGD_CUSTOM_SWITCHINGTYPE", "IFRAME"); //
 			LGD_DATA.put("LGD_PRODUCTINFO", LGD_PRODUCTINFO); // * 제품정보
@@ -124,15 +135,13 @@ public class PurchaseJSON extends NewsbankServletBase {
 			LGD_DATA.put("LGD_OID", LGD_OID); // * 상점 거래번호
 			LGD_DATA.put("LGD_HASHDATA", LGD_HASHDATA); // *해쉬데이터 거래 위변조 방지
 			LGD_DATA.put("LGD_OSTYPE_CHECK", "P"); // LGD_OSTYPE_CHECK
-			//LGD_DATA.put("LGD_RESPCODE", "0000"); // 응답코드
+			// LGD_DATA.put("LGD_RESPCODE", "0000"); // 응답코드
 			LGD_DATA.put("LGD_AMOUNT", LGD_AMOUNT); // *결제금액
 			LGD_DATA.put("LGD_MID", LGD_MID); // *회사 코드
 
 			LGD_DATA.put("LGD_BUYERID", LGD_BUYERID); // *구매자 아이디
 			LGD_DATA.put("LGD_BUYERIP", LGD_BUYERIP); // *구매자 아이피
 
-		} else {
-			message = "로그인이 필요합니다.";
 		}
 
 		json.put("success", result);
@@ -152,6 +161,11 @@ public class PurchaseJSON extends NewsbankServletBase {
 		doGet(request, response);
 	}
 
+	/*
+	 * 
+	 * MD5 암호화
+	 * 
+	 */
 	public static final String md5(final String s) {
 		try {
 			// Create MD5 Hash
@@ -173,6 +187,14 @@ public class PurchaseJSON extends NewsbankServletBase {
 			e.printStackTrace();
 		}
 		return "";
+	}
+
+	public static Date parseDateTime(String dateStr) {
+		try {
+			return DATE_TIME_FORMAT.parse(dateStr);
+		} catch (ParseException e) {
+			return null;
+		}
 	}
 
 }

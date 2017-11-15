@@ -23,13 +23,14 @@
                                                                                         //상점아이디(자동생성)
     String LGD_OID              = request.getParameter("LGD_OID");                      //주문번호(상점정의 유니크한 주문번호를 입력하세요)
     String LGD_AMOUNT           = request.getParameter("LGD_AMOUNT");                   //결제금액("," 를 제외한 결제금액을 입력하세요)
-    String LGD_MERTKEY          = "95160cce09854ef44d2edb2bfb05f9f3";                  						//상점MertKey(mertkey는 상점관리자 -> 계약정보 -> 상점정보관리에서 확인하실수 있습니다)
+    String LGD_MERTKEY          = "49bd4da3b4414d8396a591a1c9565bbd";                  						//상점MertKey(mertkey는 상점관리자 -> 계약정보 -> 상점정보관리에서 확인하실수 있습니다)
     String LGD_BUYER            = request.getParameter("LGD_BUYER");                    //구매자명
     String LGD_PRODUCTINFO      = request.getParameter("LGD_PRODUCTINFO");              //상품명
     String LGD_BUYEREMAIL       = request.getParameter("LGD_BUYEREMAIL");               //구매자 이메일
     String LGD_TIMESTAMP        = request.getParameter("LGD_TIMESTAMP");                //타임스탬프
     String LGD_CUSTOM_USABLEPAY = request.getParameter("LGD_CUSTOM_USABLEPAY");        	//상점정의 초기결제수단
     String LGD_CUSTOM_SKIN      = "red";                                                //상점정의 결제창 스킨(red)
+    String LGD_ENCODING      = "UTF-8";   
 
 
     String LGD_CUSTOM_SWITCHINGTYPE = request.getParameter("LGD_CUSTOM_SWITCHINGTYPE"); //신용카드 카드사 인증 페이지 연동 방식 (수정불가)
@@ -133,6 +134,12 @@
 	 payReqMap.put("LGD_RESPCODE"  		 , "" );
 	 payReqMap.put("LGD_RESPMSG"  		 , "" );
 	 payReqMap.put("LGD_PAYKEY"  		 , "" );
+	 
+	 payReqMap.put("LGD_ENCODING"  		 , LGD_ENCODING );
+		payReqMap.put("LGD_ENCODING_NOTEURL", LGD_ENCODING);
+		payReqMap.put("LGD_ENCODING_RETURNURL", LGD_ENCODING);
+	 
+	 
 
 	 session.setAttribute("PAYREQ_MAP", payReqMap);
 

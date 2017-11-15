@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%
-request.setCharacterEncoding("EUC-KR");
+request.setCharacterEncoding("UTF-8");
 
 String LGD_RESPCODE = request.getParameter("LGD_RESPCODE");
 String LGD_RESPMSG 	= request.getParameter("LGD_RESPMSG");
@@ -9,7 +9,7 @@ String LGD_RESPMSG 	= request.getParameter("LGD_RESPMSG");
 Map payReqMap = request.getParameterMap();
 %>
 <html>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <head>
 	<script type="text/javascript">
 
@@ -24,10 +24,10 @@ Map payReqMap = request.getParameterMap();
 	</script>
 </head>
 <body onload="setLGDResult()">
-<p><h1>RETURN_URL (ÀÎÁõ°á°ú)</h1></p>
+<p><h1>RETURN_URL (ì¸ì¦ê²°ê³¼)</h1></p>
 <div>
-<p>LGD_RESPCODE (°á°úÄÚµå) : <%= LGD_RESPCODE %></p>
-<p>LGD_RESPMSG (°á°ú¸Þ½ÃÁö): <%= LGD_RESPMSG %></p>
+<p>LGD_RESPCODE (ê²°ê³¼ì½”ë“œ) : <%= LGD_RESPCODE %></p>
+<p>LGD_RESPMSG (ê²°ê³¼ë©”ì‹œì§€): <%= LGD_RESPMSG %></p>
 	<form method="post" name="LGD_RETURNINFO" id="LGD_RETURNINFO">
 	<%
 	for (Iterator i = payReqMap.keySet().iterator(); i.hasNext();) {
