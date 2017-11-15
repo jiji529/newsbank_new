@@ -125,7 +125,7 @@
 			return;
 		}
 		else if(keyID == 13) {
-			search();
+			cms_search();
 		}
 		else
 		{
@@ -141,10 +141,14 @@
 			pageNo = $("div .paging span.total").html();
 		}
 		$("input[name=pageNo]").val(pageNo);
-		search();
+		cms_search();
 	}
 	
 	$(document).on("click", ".filter_list li", function() {
+		var choice = $(this).text();
+		$(this).siblings().removeAttr("selected");
+		$(this).attr("selected", "selected");
+		
 		if(!$(this).hasClass("choice")){
 			var choice = $(this).text();
 			$(this).attr("selected", "selected");
@@ -154,17 +158,18 @@
 			
 			// 필터 바꾸면 페이지 번호 초기화
 			$("input[name=pageNo]").val("1");
-			search();
+			cms_search();
 		}else {
 			var startDate = $("#startDate").val();
 			var endDate = $("#endDate").val();
 			var choice = startDate + "~" + endDate;
-			console.log(choice);
-			var titleTag = $(this).parents(".filter_title").find("span");
+			var duration = $(".filter_duration").text();
+			//console.log(duration);
+			/* var titleTag = $(this).parents(".filter_title").find("span");
 			var titleStr = titleTag.html();
 			console.log(titleStr);
 			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
-			titleTag.html(titleStr);
+			titleTag.html(titleStr); */
 		}
 		
 	});
@@ -208,9 +213,9 @@
 			data: searchParam,
 			timeout: 1000000,
 			url: "cms.search",
-			success : function(data) { 
+			success : function(data) { //console.log(data);
 				$("#cms_list2 ul").empty();
-				$(data.result).each(function(key, val) {	//console.log(data);
+				$(data.result).each(function(key, val) {	
 					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";  
 					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\"></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
@@ -238,7 +243,6 @@
 			$("input[name=pageNo]").val(pageNo);
 		}
 		
-		//var id = "N0";
 		var pageVol = $("select[name=pageVol]").val();
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
 		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value");
@@ -257,6 +261,8 @@
 				, "size":size
 				//, "id":id
 		};
+		
+		console.log(searchParam);
 		
 		$("#keyword_current").val(keyword);
 		
@@ -397,11 +403,11 @@
 				</li>
 				<li class="filter_title filter_duration"> 검색기간
 					<ul class="filter_list">
-						<li>전체</li>
-						<li>1일</li>
-						<li>1주</li>
-						<li>1달</li>
-						<li>1년</li>
+						<li value="" selected="selected">전체</li>
+						<li value="1d">1일</li>
+						<li value="1w">1주</li>
+						<li value="1m">1달</li>
+						<li value="1y">1년</li>
 						<li class="choice">직접 입력
 							<div class="calendar">
 								<div class="cal_input">
@@ -444,7 +450,7 @@
 				<div class="result"><b class="count">0</b>개의 결과</div>
 				<div class="paging">
 					<a href="#" class="prev" title="이전페이지"></a>
-					<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="search()"/>
+					<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="cms_search()"/>
 					<span>/</span>
 					<span class="total">0</span>
 					<a href="#" class="next" title="다음페이지"></a>
@@ -453,7 +459,7 @@
 					<div class="size">
 						<span class="square on">사각형보기</span>
 					</div>
-					<select name="pageVol" onchange="search()">
+					<select name="pageVol" onchange="cms_search()">
 						<option value="40" selected="selected">40</option>
 						<option value="80">80</option>
 						<option value="120">120</option>
@@ -498,7 +504,7 @@
 				</c:forEach>
 			</ul>
 		</section>
-	<div class="more"><a href="#">다음 페이지</a></div>
+	<div class="more"><a href="#" name="nextPage">다음 페이지</a></div>
 	</section>
 </div>
 </body>

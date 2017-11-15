@@ -6,19 +6,22 @@
 	<update id="updatePhoto" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 		UPDATE photo SET
 		titleKr = #{titleKor},
-		descriptionKr = #{descriptionKor}
+		descriptionKr = #{descriptionKor},
+		uciStat = '-1'
 		WHERE uciCode = #{uciCode}
 	</update>
     
     <update id="updateSaleState" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 	    UPDATE photo SET
-	    	saleStat = #{saleState}
+	    	saleStat = #{saleState},
+	    	uciStat = '-1'
 	    WHERE uciCode = #{uciCode} 
 	</update>
 	
 	<update id="updateRightYN" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 	    UPDATE photo SET
-	    	rightYN = #{portraitRightState}
+	    	rightYN = #{portraitRightState},
+	    	uciStat = '-1'
 	    WHERE uciCode = #{uciCode} 
 	</update>
 	
@@ -117,7 +120,8 @@
 	
 	<update id="blindPhoto" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 		UPDATE photo SET		
-		saleStat = '2'
+		saleStat = '2',
+		uciStat = '-1'
 		WHERE uciCode = #{uciCode}
 	</update>
 	
