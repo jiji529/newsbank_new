@@ -139,7 +139,6 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 	$(document).on("click", ".over_wish", function() {
 		var uciCode = $(this).attr("value");		
 		var bookName = "기본그룹";
-		var member_seq = ${member_seq};
 		var state = $(this).hasClass("on");
 		
 		if(state) {
@@ -157,8 +156,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 			type: "POST",
 			data: {
 				"photo_uciCode" : uciCode,
-				"bookName" : bookName,
-				"member_seq" : member_seq
+				"bookName" : bookName
 			},
 			success: function(data) {
 				
