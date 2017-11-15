@@ -25,7 +25,6 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 	$(document).on("click", ".btn_wish", function() {
 		var uciCode = "${photoDTO.uciCode}";
 		var bookName = "기본그룹";
-		var member_seq = ${member_seq};
 		var state = $(".btn_wish").hasClass("on");
 		
 		if(state) {
@@ -44,7 +43,6 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 			data: {
 				"photo_uciCode" : uciCode,
 				"bookName" : bookName,
-				"member_seq" : member_seq
 			},
 			success: function(data) {
 				
@@ -353,7 +351,6 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 	
 	// #장바구니에 추가하기
 	function insertUsageOption() {
-		var member_seq = ${member_seq};
 		var uciCode = "${photoDTO.uciCode}";
 		var count = $(".op_cont").length;
 		
@@ -367,7 +364,6 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 					url: "/cart.popOption?action=insertUsage",
 					type: "POST",
 					data: {
-						"member_seq" : member_seq,
 						"uciCode" : uciCode,
 						"usageList_seq" : usageList_seq,
 						"price" : price						

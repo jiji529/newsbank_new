@@ -20,11 +20,13 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.BookmarkDTO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 
 public class PhotoViewService extends ServiceBase {
 
@@ -33,13 +35,17 @@ public class PhotoViewService extends ServiceBase {
 	 */
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+		String member_seq = (MemberInfo != null) ? String.valueOf(MemberInfo.getSeq()) : "1002";
+		// 찜 추가, 삭제에서 로그인 여부를 체크이후 기능 동작필요
+		
 		PhotoDAO photoDAO = new PhotoDAO();
 		String uciCode = request.getParameter("uciCode");
 		PhotoDTO photoDTO = photoDAO.read(uciCode);
 		photoDAO.hit(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
 		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
-		String member_seq = request.getParameter("member_seq") == null ? "1002" : request.getParameter("member_seq");
 		String photo_uciCode = request.getParameter("photo_uciCode");
 		String bookName = request.getParameter("bookName");
 		BookmarkDAO bookmarkDAO = new BookmarkDAO();

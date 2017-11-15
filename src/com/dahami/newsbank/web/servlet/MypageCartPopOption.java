@@ -10,8 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dao.UsageDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
 
 /**
@@ -38,9 +40,13 @@ public class MypageCartPopOption extends NewsbankServletBase {
 		request.setCharacterEncoding("UTF-8");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
+		HttpSession session = request.getSession();
+		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+		// 장바구니에 담기 이전에 로그인 체크가 필요
+		
+		String member_seq = (MemberInfo != null) ? String.valueOf(MemberInfo.getSeq()) : "1002";
 		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
 		String uciCode = request.getParameter("uciCode");
-		String member_seq = request.getParameter("member_seq");
 		String usageList_seq = request.getParameter("usageList_seq");
 		String price = request.getParameter("price");
 		UsageDAO usageDAO = new UsageDAO();

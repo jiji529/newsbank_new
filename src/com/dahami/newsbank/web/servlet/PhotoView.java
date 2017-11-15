@@ -42,11 +42,6 @@ public class PhotoView extends NewsbankServletBase {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		
-		HttpSession session = request.getSession();
-		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-		String member_seq = String.valueOf(MemberInfo.getSeq());
-		request.setAttribute("member_seq", member_seq);
-		
 		PhotoViewService pvs = new PhotoViewService();
 		pvs.execute(request, response);
 		
