@@ -35,6 +35,7 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -205,6 +206,7 @@ public class SearchDAO extends DAOBase {
 		QueryResponse res = null;
 		try {
 			SolrQuery query = makeSolrQuery(param);
+			query.addSort("uciCode", ORDER.desc);
 			client = getClient();
 			res = client.query(query, METHOD.POST);
 			SolrDocumentList docList = res.getResults();

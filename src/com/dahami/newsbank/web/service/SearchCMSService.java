@@ -25,6 +25,8 @@ public class SearchCMSService extends ServiceBase{
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String[]> params = request.getParameterMap();
 		SearchParameterBean sParam = new SearchParameterBean(params);
+		// 모든 판매상태(삭제/완전삭제 제외) 보기
+		sParam.setSaleState(SearchParameterBean.SALE_STATE_NOT | SearchParameterBean.SALE_STATE_OK | SearchParameterBean.SALE_STATE_STOP | SearchParameterBean.SALE_STATE_DEL_SOLD);
 		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
