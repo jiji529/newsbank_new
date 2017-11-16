@@ -26,11 +26,11 @@ section .tab .tabs li a.active{color:#f79320; border-bottom:2px #f79320 solid;}
 .photo_cont:before,.photo_cont:after { content: ""; display: table;}
 .photo_cont:after { clear: both;}
 .photo_cont a{display:block;}
-.img_hor .img_list {  float: left;  margin-bottom: 10px;  overflow:hidden ; max-height: 350px;max-width: 530px; }
+.img_hor .img_list {  float: left;  margin-bottom: 10px;  overflow:hidden ;max-height: 270px;max-width: 406px; }
 .img_hor .img_list img {max-width: 100%; height:auto; vertical-align: bottom;min-height:269px;}
 .img_ver{height:370px; overflow:hidden;}
-.img_ver .img_list {  float: left;  margin-bottom: 10px;  overflow:hidden ;max-height: auto;max-width: 380px;}
-.img_ver .img_list img {width:auto; max-height:100%; vertical-align: bottom;}
+.img_ver .img_list {  float: left;  margin-bottom: 10px;  overflow:hidden ;max-height: 420px;max-width: 302px;}
+.img_ver .img_list img {max-height:100%; vertical-align: bottom;}
 .first-item {  clear: both;}/* remove margin bottom on last row */
 .last-row, .last-row ~ .item {  margin-bottom: 0;}
 
