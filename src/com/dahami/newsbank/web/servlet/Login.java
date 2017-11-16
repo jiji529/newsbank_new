@@ -133,7 +133,7 @@ public class Login extends NewsbankServletBase {
 			//session.removeAttribute("prevPage");
 			//RequestDispatcher dispatcher = request.getRequestDispatcher(prevPage);
 			//dispatcher.forward(request, response);
-			response.sendRedirect(refererUrl);
+			response.sendRedirect("/home");
 			//response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');history.back(-1);</script>").append(request.getContextPath());
 
 		}
