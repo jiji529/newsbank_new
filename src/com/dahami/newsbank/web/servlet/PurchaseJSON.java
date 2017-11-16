@@ -1,14 +1,13 @@
 package com.dahami.newsbank.web.servlet;
 
-import java.text.ParseException;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -18,9 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.dto.UsageDTO;
 
 /**
  * Servlet implementation class PurchaseJSON 결제 정보 호출
@@ -52,29 +55,54 @@ public class PurchaseJSON extends NewsbankServletBase {
 		MemberDTO MemberInfo = null;
 
 		JSONObject json = new JSONObject();
-		boolean result = false;
-		boolean check = true;
+		boolean result = true;
 		String message = null;
 
-		String LGD_AMOUNT = request.getParameter("LGD_AMOUNT"); //
-		String LGD_CUSTOM_USABLEPAY = request.getParameter("LGD_CUSTOM_USABLEPAY");// 상점정의 결제 가능 수단
-		Map<String, Object> LGD_DATA = new HashMap<String, Object>();
-
-		if (LGD_AMOUNT == null || LGD_AMOUNT.isEmpty()) {
-			check = false;
-			message = "필요한 요청변수가 없습니다.";
-		}
-		if (LGD_CUSTOM_USABLEPAY == null || LGD_CUSTOM_USABLEPAY.isEmpty()) {
-			check = false;
-			message = "필요한 요청변수가 없습니다.";
-		}
-
 		if (session.getAttribute("MemberInfo") == null) {
-			check = false;
+			result = false;
 			message = "로그인이 필요합니다.";
 		}
 
-		if (check) {
+		Map<String, Object> LGD_DATA = new HashMap<String, Object>();
+
+		int LGD_AMOUNT = 0;
+		String LGD_CUSTOM_USABLEPAY = "";
+
+		if (request.getParameter("orderJson") != null) {
+			String orderJson = request.getParameter("orderJson"); // json
+			try {
+				JSONParser jsonParser = new JSONParser();
+				JSONObject jsonObj = (JSONObject) jsonParser.parse(orderJson);
+				JSONArray orderArray = (JSONArray) jsonObj.get("order");
+
+				String[] seqArry = new String[orderArray.size()];
+				LGD_CUSTOM_USABLEPAY = jsonObj.get("LGD_CUSTOM_USABLEPAY").toString();
+				System.out.println("LGD_CUSTOM_USABLEPAY : " + jsonObj.get("LGD_CUSTOM_USABLEPAY"));
+				System.out.println("=====ORDER=====");
+
+				for (int i = 0; i < orderArray.size(); i++) {
+					JSONObject tempObj = (JSONObject) orderArray.get(i);
+					seqArry[i] = tempObj.get("usage").toString();
+					LGD_AMOUNT += Integer.parseInt(tempObj.get("price").toString()) ;
+					System.out.println("" + (i + 1) + "uciCode : " + tempObj.get("uciCode"));
+					System.out.println("" + (i + 1) + "price : " + tempObj.get("price"));
+					System.out.println("" + (i + 1) + "copyright : " + tempObj.get("copyright"));
+					System.out.println("" + (i + 1) + "usage : " + tempObj.get("usage"));
+					System.out.println("----------------------------");
+				}
+				UsageDAO usageDAO = new UsageDAO();
+				List<UsageDTO> usageList = usageDAO.selectOptions(seqArry);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			result = false;
+			message = "필요한 요청변수가 없습니다.";
+		}
+
+		if (result) {
 			// 로그인중 처리
 			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 			Date today = new Date();
@@ -195,6 +223,43 @@ public class PurchaseJSON extends NewsbankServletBase {
 		} catch (ParseException e) {
 			return null;
 		}
+	}
+
+	public static boolean isValidUsage(String orderJson) {
+		boolean err = false;
+
+		if (orderJson == null || orderJson.isEmpty()) {
+			err = false;
+
+		} else {
+			try {
+				JSONParser jsonParser = new JSONParser();
+				JSONObject jsonObj = (JSONObject) jsonParser.parse(orderJson);
+				JSONArray orderArray = (JSONArray) jsonObj.get("order");
+
+				String[] seqArry = new String[orderArray.size() - 1];
+				System.out.println("LGD_CUSTOM_USABLEPAY : " + jsonObj.get("LGD_CUSTOM_USABLEPAY"));
+				System.out.println("=====ORDER=====");
+
+				for (int i = 0; i < orderArray.size(); i++) {
+					JSONObject tempObj = (JSONObject) orderArray.get(i);
+					seqArry[i] = tempObj.get("usage").toString();
+
+					System.out.println("" + (i + 1) + "uciCode : " + tempObj.get("uciCode"));
+					System.out.println("" + (i + 1) + "price : " + tempObj.get("price"));
+					System.out.println("" + (i + 1) + "copyright : " + tempObj.get("copyright"));
+					System.out.println("" + (i + 1) + "usage : " + tempObj.get("usage"));
+					System.out.println("----------------------------");
+				}
+				UsageDAO usageDAO = new UsageDAO();
+				List<UsageDTO> usageList = usageDAO.selectOptions(seqArry);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return err;
 	}
 
 }

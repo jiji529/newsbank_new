@@ -59,9 +59,7 @@ public class Login extends NewsbankServletBase {
 			// 이전 페이지 정보 없음
 			session.setAttribute("prevPage", refererUrl);
 			prevPage = refererUrl;
-		} else {
-			prevPage = "/home";
-		}
+		} 
 		
 		
 
@@ -136,6 +134,7 @@ public class Login extends NewsbankServletBase {
 			//RequestDispatcher dispatcher = request.getRequestDispatcher(prevPage);
 			//dispatcher.forward(request, response);
 			response.sendRedirect(prevPage);
+			//response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');history.back(-1);</script>").append(request.getContextPath());
 
 		}
 

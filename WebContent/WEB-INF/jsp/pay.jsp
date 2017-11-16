@@ -24,10 +24,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/jquery.serialize-object.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script language="javascript" src="http://xpay.uplus.co.kr/xpay/js/xpay_crossplatform.js" type="text/javascript"></script>
@@ -62,7 +64,10 @@
 					<th scope="col">구매금액</th>
 				</tr>
 				<c:set var="sum" value="0" />
+				<c:set var = "idx" value = "0" />
+
 				<c:forEach items="${payList}" var="pay">
+				
 					<tr>
 						<td>
 							<div class="cart_item">
@@ -77,7 +82,12 @@
 										<div class="code">${pay.uciCode}</div>
 									</a>
 									<div class="option_area">
-										<c:forEach items="${pay.getUsageList()}" var="UsageDTO">
+										<c:forEach items="${pay.getUsageList()}" var="UsageDTO" varStatus="status">
+										<input type="hidden" name="order[${idx}][uciCode]" value ="${pay.uciCode}"  />
+										<input type="hidden" name="order[${idx}][copyright]" value ="${pay.copyright}"  />
+										<input type="hidden" name="order[${idx}][price]" value ="${UsageDTO.price}"  />
+										<input type="hidden" name="order[${idx}][usage]" value ="${UsageDTO.usageList_seq}"  />
+										<input type="hidden" name="order[${idx}][usage.usage]" value ="${UsageDTO.usage}"  />
 											<ul class="opt_li">
 												<li>${UsageDTO.usage}</li>
 												<li>${UsageDTO.division1}</li>
@@ -85,6 +95,7 @@
 												<li>${UsageDTO.division3}</li>
 												<li>${UsageDTO.usageDate}</li>
 											</ul>
+											<c:set var="idx" value="${idx+1}" />
 										</c:forEach>
 									</div>
 								</div>
@@ -114,15 +125,15 @@
 				</div>
 				<ul>
 					<li>
-						<input type="radio" id="pay1" name="pay" />
+						<input type="radio" id="pay1" name="LGD_CUSTOM_USABLEPAY"  value="SC0010" required/>
 						<label for="pay1">신용카드 </label>
 					</li>
 					<li>
-						<input type="radio" id="pay2" name="pay" />
+						<input type="radio" id="pay2" name="LGD_CUSTOM_USABLEPAY" value="SC0030" />
 						<label for="pay2">실시간 계좌이체 </label>
 					</li>
 					<li>
-						<input type="radio" id="pay3" name="pay" />
+						<input type="radio" id="pay3" name="LGD_CUSTOM_USABLEPAY" value="SC0040" />
 						<label for="pay3">무통장입금 </label>
 					</li>
 				</ul>
@@ -159,13 +170,11 @@
 							</li>
 						</ul>
 						<div class="btn_area">
-							<a href="http://ecredit.uplus.co.kr/" class="btn_input2">결제하기</a>
+							<a href="javascript:;" class="btn_input2" id="frmSubmit">결제하기</a>
 						</div>
 					</div>
 				</div>
 			</div>
-			<input type="hidden" name="CST_PLATFORM" value="" id="CST_PLATFORM"/>       
-			<input type="hidden" name="CST_MID" value="" id="CST_MID"/> 
 
 		</form>
 		</section> </section>
