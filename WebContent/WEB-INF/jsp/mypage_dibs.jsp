@@ -169,12 +169,22 @@
 					<li class="on">
 						<a href="/dibs.myPage">찜관리</a>
 					</li>
-					<li>
-						<a href="/cart.myPage">장바구니</a>
-					</li>
-					<li>
-						<a href="/buylist.mypage">구매내역</a>
-					</li>
+					<c:if test="${MemberInfo.deferred eq 'Y'}">
+						<li>
+							<a href="/download.mypage">다운로드 내역</a>
+						</li>
+						<li>
+							<a href="/postBuylist.mypage">구매내역</a>
+						</li>
+					</c:if>
+					<c:if test="${MemberInfo.deferred eq 'N'}">
+						<li>
+							<a href="/cart.myPage">장바구니</a>
+						</li>
+						<li>
+							<a href="/buylist.mypage">구매내역</a>
+						</li>
+					</c:if>
 				</ul>
 				<!-- 컬렉션 생기면 추가 <ul class="mp_tab2">
 					<li class="on"><a href="#">사진 찜 관리</a></li>
