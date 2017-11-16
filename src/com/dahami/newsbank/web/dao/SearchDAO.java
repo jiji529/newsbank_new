@@ -234,6 +234,8 @@ public class SearchDAO extends DAOBase {
 		String keyword = params.getKeyword();
 		logger.debug("keyword: " + keyword);
 		query.setQuery(keyword);
+		query.set("defType", "edismax");
+		query.set("qf", "title description keyword shotperson copyright exif uciCode compCode");
 		
 		// 기본적으로 판매건만 보기
 		int saleState = params.getSaleState();

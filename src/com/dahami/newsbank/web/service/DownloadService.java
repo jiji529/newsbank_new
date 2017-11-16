@@ -150,7 +150,14 @@ public class DownloadService extends ServiceBase {
 						makeF = true;
 					}
 					if(makeF) {
-						if(makeLogoFile(mDto.getCompName(), tmpLogoPath)) {
+						String mdName = mDto.getCompName();
+						if(mdName == null || mdName.trim().length() == 0) {
+							mdName=  mDto.getName();
+						}
+						if(mdName == null || mdName.trim().length() == 0) {
+							mdName = "출처 불명";
+						}
+						if(makeLogoFile(mdName, tmpLogoPath)) {
 							FileUtil.makeFile(mDto.getCompName().getBytes("UTF-8"), tmpLogoInfoPath);
 							downPath = tmpLogoPath;
 						}
