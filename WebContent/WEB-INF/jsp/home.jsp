@@ -190,6 +190,19 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 					</ul>
 				</div>
 				
+				<div id="photo_hor" class="photo_cont img_hor">
+					<c:forEach items="${photoList}" var="photo">
+						<c:if test="${photo.widthCm > photo.heightCm}">
+							<div class="img_list">
+								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
+								<a href="#" onclick="go_photoView('${photo.uciCode}')">
+									<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%= currentTimeMills%>">
+								</a>
+							</div>
+						</c:if>
+					</c:forEach>
+				</div>
+				
 				<div id="photo_ver" class="photo_cont img_ver">
 					<c:forEach items="${photoList}" var="photo">
 						<c:if test="${photo.widthCm < photo.heightCm}">
@@ -203,18 +216,6 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 					</c:forEach>
 				</div>
 				
-				<div id="photo_hor" class="photo_cont img_hor">
-					<c:forEach items="${photoList}" var="photo">
-						<c:if test="${photo.widthCm > photo.heightCm}">
-							<div class="img_list">
-								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
-								<a href="#" onclick="go_photoView('${photo.uciCode}')">
-									<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%= currentTimeMills%>">
-								</a>
-							</div>
-						</c:if>
-					</c:forEach>
-				</div>
 			</div>
 			</section>
 			<!--엄선한사진-->

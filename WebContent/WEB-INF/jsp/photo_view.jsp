@@ -458,6 +458,11 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 		}
 		var url = "<%=IMG_SERVER_URL_PREFIX%>/service.down.photo?uciCode=${photoDTO.uciCode}&type=file";
 		$("#downFrame").attr("src", url);
+	}	
+	
+	function media_submit(media_seq) {
+		$("#seq").val(media_seq);
+		list_form.submit();
 	}
 </script>
 </head>
@@ -467,9 +472,28 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 	<form class="view_form" method="post" action="/pay" name="view_form" >
 		<input type="hidden" name="cartArry" id="cartArry" />
 	</form>
+	<form method="post" action="/photo" name="list_form" >
+		<input type="hidden" id="seq" name="seq"/>		
+	</form>
 	<section class="view">
 		<div class="view_lt">
-			<div class="navi"></div>
+			<div class="navi">
+				<a href="/home" title="뉴스뱅크 홈" class="home">뉴스뱅크 홈</a>
+				<div class="navi_wrap">
+					<a href="/photo">보도사진</a><span class="ico_depth"></span>
+				</div>
+				<div class="navi_wrap">
+					<span class="ico_depth"></span>
+					<div class="navi_cate">
+						${photoDTO.copyright}
+						<ul class="navi_select">
+							<c:forEach items="${mediaList}" var="media">
+								<li value="${media.seq}" onclick="media_submit(${media.seq})">${media.name}</li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+			</div>
 			<h2 class="media_logo"><img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
 			<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}" style="width:50%; height:50%"/>
 				<div class="cont_area">
@@ -529,63 +553,53 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 		</div>
 		<div class="view_rt">
 			<div class="view_rt_top">
-<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
 				<h3>이미지 구매하기</h3>
 				<a href="#" class="price_info">가격확인</a>
-</c:if>
-<c:if test="${loginInfo != null && loginInfo.deferred == 'Y'}">
-				<h3>후불 회원 다운로드</h3>
-</c:if>
+			</div>
+			<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
+				<div class="option_choice">
+					<ul>
+						<li><span>용도</span> <select id="usage"
+							onchange="usageChange(this)">
+						</select></li>
+						<li><span>옵션1</span> <select id="division1"
+							onchange="division1Change(this)">
+						</select></li>
+						<li><span>옵션2</span> <select id="division2"
+							onchange="division2Change(this)">
+						</select></li>
+						<li><span>옵션3</span> <select id="division3"
+							onchange="division3Change(this)">
+						</select></li>
+						<li style="display: none;"><span>옵션4</span> <select
+							id="division4" onchange="division4Change(this)">
+						</select></li>
+						<li><span>기간</span> <select id="usageDate"
+							onchange="usageDateChange(this)">
+						</select></li>
+					</ul>
 				</div>
-<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
-			<div class="option_choice">
-				<ul>
-					<li><span>용도</span>
-						<select id="usage" onchange="usageChange(this)">
-						</select>
-					</li>
-					<li><span>옵션1</span>
-						<select id="division1" onchange="division1Change(this)">
-						</select>
-					</li>
-					<li><span>옵션2</span>
-						<select id="division2" onchange="division2Change(this)">
-						</select>
-					</li>
-					<li><span>옵션3</span>
-						<select id="division3" onchange="division3Change(this)">
-						</select>
-					</li>
-					<li style="display: none;"><span>옵션4</span>
-						<select id="division4" onchange="division4Change(this)">
-						</select>
-					</li>
-					<li><span>기간</span>
-						<select id="usageDate" onchange="usageDateChange(this)">
-						</select>
-					</li>
-				</ul>
-			</div>
-			<div class="option_result">
-				<ul>
-				</ul>
-			</div>
-</c:if>
+				<div class="option_result">
+					<ul>
+					</ul>
+				</div>
+			</c:if>
 			<div class="sum_sec">
-<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
-				<div class="total"><span class="tit">총 금액 (수량)</span><span class="price">0<span class="price_txt">원(<span class="price_count">0</span>개)</span></span></div>
-				<div class="btn_wrap">
-					<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
-					<div class="btn_down" id="btnDownTentative"><a href="/list.down.photo?uciCode=${photoDTO.uciCode}">시안 다운로드</a></div>
-					<div class="btn_buy"><a href="#" onclick="go_pay()">구매하기</a></div>
-				</div>
-</c:if>
-<c:if test="${loginInfo != null && loginInfo.deferred == 'Y'}">
-				<div class="btn_wrap">
-					<div class="btn_cart" id="btnDown"><a href="#" onclick="down()">다운로드</a></div>
-					<div class="btn_down" id="btnDownTentative"><a href="#" onclick="downSian()">시안 다운로드</a></div>
-				</div>
-</c:if>
+				<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
+					<div class="total"><span class="tit">총 금액 (수량)</span><span class="price">0<span class="price_txt">원(<span class="price_count">0</span>개)</span></span></div>
+					<div class="btn_wrap">
+						<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
+						<div class="btn_down" id="btnDownTentative"><a href="/list.down.photo?uciCode=${photoDTO.uciCode}">시안 다운로드</a></div>
+						<div class="btn_buy"><a href="#" onclick="go_pay()">구매하기</a></div>
+					</div>
+				</c:if>
+				<c:if test="${loginInfo != null && loginInfo.deferred == 'Y'}">
+					<div class="btn_wrap">
+						<div class="btn_buy" id="btnDown">
+							<a href="#" onclick="down()">다운로드</a>
+						</div>
+					</div>
+				</c:if>
 			</div>
 		</div>
 	</section>

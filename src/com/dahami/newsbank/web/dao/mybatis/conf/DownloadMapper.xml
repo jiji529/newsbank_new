@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Download">
+    <insert id="insert">
+	    INSERT INTO download (photo_uciCode, member_id, deferUse, regDate) VALUES (#{photo_uciCode}, #{member_id}, 'N', NOW())	    
+	</insert>
+	
+</mapper>
+    

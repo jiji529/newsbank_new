@@ -17,6 +17,7 @@
 package com.dahami.newsbank.web.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BookmarkDAO;
+import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.BookmarkDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -49,6 +51,10 @@ public class PhotoViewService extends ServiceBase {
 		String photo_uciCode = request.getParameter("photo_uciCode");
 		String bookName = request.getParameter("bookName");
 		BookmarkDAO bookmarkDAO = new BookmarkDAO();
+		
+		MemberDAO mDao = new MemberDAO();
+		List<MemberDTO> mediaList = mDao.listActiveMedia();
+		request.setAttribute("mediaList", mediaList);
 		
 		if(action.equals("insertBookmark")) {
 			bookmarkDAO.insert(member_seq, photo_uciCode, bookName);
