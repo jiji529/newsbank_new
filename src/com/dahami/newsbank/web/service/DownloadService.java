@@ -271,7 +271,8 @@ public class DownloadService extends ServiceBase {
 					FileUtil.makeDirectory(tmpDir);
 					String uciEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downloadId + ".jpg";
 					try {
-						APIHandler.attach(new File(orgPath), new File(uciEmbedTmp), "I011-E001982934");
+						// UCI 코드 임베딩
+						APIHandler.attach(new File(orgPath), new File(uciEmbedTmp), uciCode);
 					}catch(Exception e) {
 						logger.warn("UCI 임베드 실패", e);
 						request.setAttribute("ErrorMSG", "원본("+photo.getUciCode()+")  다운로드 중 오류(1)가 발생했습니다.\n관리자에게 문의해 주세요");
@@ -279,6 +280,7 @@ public class DownloadService extends ServiceBase {
 						return;
 					}
 					
+					// 다운로드 정보 메타정보에 추가
 					if(!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downloadId)) {
 						// 생성 실패
 						logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downloadId);
