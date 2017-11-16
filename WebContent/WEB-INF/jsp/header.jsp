@@ -17,12 +17,55 @@
 			}
 		}
 	});
+
+	// 로그인 페이지 이동시 매개변수 넘기기
+	$(document).ready(function() {
+		var param = "${param}".replace(/, /gi, '&').slice(0, -1).slice(1);
+		$('a[href="/login"]').on("click", function(e) {
+			e.preventDefault();
+			var form = document.createElement('form');
+			var objs;
+			objs = document.createElement('input');
+			objs.setAttribute('type', 'hidden');
+			objs.setAttribute('name', "prevPage");
+			objs.setAttribute('value', window.location.pathname);
+			form.appendChild(objs);
+			if (param.length > 0) {
+				
+				$.each(parseQuery(param), function(key, value) {
+					
+					objs = document.createElement('input');
+					objs.setAttribute('type', 'hidden');
+					objs.setAttribute('name', key);
+					objs.setAttribute('value', value);
+					form.appendChild(objs);
+				});
+			}
+			
+			form.setAttribute('method', 'post');
+			form.setAttribute('action', $(this)[0].href);
+			document.body.appendChild(form);
+			form.submit();
+			return false;
+		});
+//	query string parse
+		function parseQuery(queryString) {
+			var query = {};
+			var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+			for (var i = 0; i < pairs.length; i++) {
+				var pair = pairs[i].split('=');
+				query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+			}
+			return query;
+		}
+
+	});
 </script>
 <nav class="gnb_dark">
 <div class="gnb">
 	<a href="/home" class="logo"></a>
 	<ul class="gnb_left">
-		<li >
+		<li>
 			<a href="/photo">보도사진</a>
 		</li>
 		<li>

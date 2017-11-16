@@ -13,6 +13,8 @@
   2017. 10. 23.   tealight        login
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
 	/*String id = "";
 	if (request.getAttribute("id") != null) {
@@ -37,10 +39,17 @@
 <body>
 	<div class="wrap">
 		<header>
-			<a href="/home" class="logo"><h1>
-				뉴스뱅크
-			</h1></a>
+			<a href="/home" class="logo">
+				<h1>뉴스뱅크</h1>
+			</a>
 		</header>
+		<form  method="post" id="frmPost" name="frmPost">
+			<c:if test="${!empty param}">
+				<c:forEach var="p" items="${param}">
+					<input type="hidden" name="${p.key }" value="${p.value }">
+				</c:forEach>
+			</c:if>
+		</form>
 		<section class="join">
 			<form method="post" id="frmLogin" name="frmLogin">
 				<fieldset class="login_form">
