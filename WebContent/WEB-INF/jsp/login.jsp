@@ -44,7 +44,6 @@
 			</a>
 		</header>
 		<form  method="post" id="frmPost" name="frmPost">
-			<input type="hidden" name="prevPage" value="${prevPage }">
 			<c:if test="${!empty param}">
 				<c:forEach var="p" items="${param}">
 					<input type="hidden" name="${p.key }" value="${p.value }">

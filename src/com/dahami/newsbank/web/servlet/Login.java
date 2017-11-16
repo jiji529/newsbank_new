@@ -46,7 +46,7 @@ public class Login extends NewsbankServletBase {
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 
-		String prevPage = (String) session.getAttribute("prevPage");
+		//String prevPage = (String) session.getAttribute("prevPage");
 		String refererUrl = request.getHeader("referer");
 		if (refererUrl == null || refererUrl.equals("/login")) {
 			refererUrl = "/home";
@@ -55,12 +55,12 @@ public class Login extends NewsbankServletBase {
 			refererUrl = aURL.getFile();
 		}
 
-		if (prevPage == null) {
+		/*if (prevPage == null) {
 			// 이전 페이지 정보 없음
 			session.setAttribute("prevPage", refererUrl);
 			prevPage = refererUrl;
 		} 
-		
+		*/
 		
 
 		if (MemberInfo == null) {
@@ -130,10 +130,10 @@ public class Login extends NewsbankServletBase {
 
 		} else {
 			// 로그인 정보 있음
-			session.removeAttribute("prevPage");
+			//session.removeAttribute("prevPage");
 			//RequestDispatcher dispatcher = request.getRequestDispatcher(prevPage);
 			//dispatcher.forward(request, response);
-			response.sendRedirect(prevPage);
+			response.sendRedirect(refererUrl);
 			//response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');history.back(-1);</script>").append(request.getContextPath());
 
 		}

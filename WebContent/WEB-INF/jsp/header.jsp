@@ -24,18 +24,24 @@
 		$('a[href="/login"]').on("click", function(e) {
 			e.preventDefault();
 			var form = document.createElement('form');
+			var objs;
+			objs = document.createElement('input');
+			objs.setAttribute('type', 'hidden');
+			objs.setAttribute('name', "prevPage");
+			objs.setAttribute('value', window.location.pathname);
+			form.appendChild(objs);
 			if (param.length > 0) {
-
+				
 				$.each(parseQuery(param), function(key, value) {
-					var objs;
+					
 					objs = document.createElement('input');
 					objs.setAttribute('type', 'hidden');
 					objs.setAttribute('name', key);
 					objs.setAttribute('value', value);
 					form.appendChild(objs);
 				});
-
 			}
+			
 			form.setAttribute('method', 'post');
 			form.setAttribute('action', $(this)[0].href);
 			document.body.appendChild(form);
