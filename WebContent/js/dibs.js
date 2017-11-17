@@ -1,3 +1,5 @@
+var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+
 /** 개별 다운로드 */
 $(document).on("click", ".btn_down", function() {
 	var uciCode = $(this).parent().parent().find("div span:first").text();
@@ -24,7 +26,7 @@ $(document).on("click", ".filter_list li", function() {
 function dibsList() {
 	$("#wish_list2 ul:first").empty();
 	
-	var member_seq = "1002"; // 사용자 고유번호		
+	//var member_seq = "1002"; // 사용자 고유번호		
 	var bookmark_seq = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val();
 	
 	var html = "";
@@ -33,13 +35,12 @@ function dibsList() {
 		type: "GET",
 		dataType: "json",
 		data: {
-			"member_seq" : member_seq,
 			"bookmark_seq" : bookmark_seq
 		},
 		success: function(data){ 
 			$(data.result).each(function(key, val) {
 				//html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages' + val.viewPath + '&dummy=<%= currentTimeMills%>"/></a>';
-				html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%= currentTimeMills%>"/></a>';
+				html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="'+IMG_SERVER_URL_PREFIX+'/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%= currentTimeMills%>"/></a>';
 				html += '<div class="thumb_info">';
 				html += '<input type="checkbox" value="'+val.uciCode+'"/>';
 				html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
@@ -102,4 +103,67 @@ $(document).on("click", "input[name='checkAll']", function() {
 function go_photoView(uciCode) {
 	$("#uciCode").val(uciCode);
 	view_form.submit();
+}
+
+/** 찜관리-폴더이동 */
+function change_folder(bookmark_seq) {
+	var chk_total = $("#wish_list2 input:checkbox:checked").length;
+		
+	if(chk_total == 0) {
+		alert("최소 1개 이상을 선택해주세요.");
+	} else {
+		$("#wish_list2 input:checkbox:checked").each(function(index) {
+			var uciCode = $(this).val();
+			dibsUpdate(uciCode, bookmark_seq);
+			$(this).closest(".thumb").remove();
+		});
+	}
+}
+
+/** DB 수정함수 */
+function dibsUpdate(uciCode, bookmark_seq) {
+	var param = "action=update";
+	
+	$.ajax({
+		url: "/dibs.myPage?"+param,
+		type: "POST",
+		data: {
+			"photo_uciCode" : uciCode,
+			"bookmark_seq" : bookmark_seq
+		},
+		success: function(data){ }, 
+		error:function(request,status,error){
+        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       	}
+	}); 
+}
+
+/** 단일 장바구니 추가 */
+function insertBasket(uciCode) {
+	//window.open('/cart.popOption?page=dibs.myPage&uciCode=' + uciCode,'new','resizable=no width=420 height=600');
+	$("#page").val("dibs.myPage");
+	$("#uciCode").val(uciCode);
+	
+	window.open("", "AddBasket", "resizable=no width=420 height=600");
+	cart_form.method = "post";
+	cart_form.action = "/cart.popOption";
+	cart_form.target = "_blank";
+	cart_form.submit();
+	
+	//cart_form.submit();
+}
+
+/** 선택항목-장바구니 추가 */
+function insertMultiBasket() {
+	var chk_total = $("#wish_list2 input:checkbox:checked").length;
+	var uciCode = new Array();
+	
+	if(chk_total == 0) {
+		alert("최소 1개 이상을 선택해주세요.");
+	} else {
+		$("#wish_list2 input:checkbox:checked").each(function(index) {
+			uciCode.push($(this).val());
+		});
+		insertBasket(uciCode.join("|"));
+	}
 }

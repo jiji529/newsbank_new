@@ -226,5 +226,34 @@ public class BookmarkDAO extends DAOBase {
 			}
 		}
 	}
+	
+	/**
+	 * @methodName  : updateBookmarkPhoto
+	 * @author      : LEE, GWANGHO
+	 * @date        : 2017. 10. 26. 오후 2:40:10
+	 * @methodCommet: 선택항목 찜폴더 이동
+	 * @param param
+	 * @return 
+	 */
+	public void updateBookmarkPhoto(String bookmark_seq, String photo_uciCode) {
+		SqlSession session = null;
+				
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("bookmark_seq", bookmark_seq);
+			param.put("photo_uciCode", photo_uciCode);
+			
+			session.update("Bookmark.updateBookmarkPhoto", param);		
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
 
 }

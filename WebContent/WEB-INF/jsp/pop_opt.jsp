@@ -47,11 +47,6 @@
 			
 		});
 		
-		// #장바구니 옵션변경 - 선택항목 변경
-		$(document).on("click", ".btn_cart", function() {
-			updateUsageOption();
-		});
-		
 		// #금액 천단위 콤마
 		function numberWithCommas(x) {
 		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -299,7 +294,6 @@
 		
 		// #장바구니 옵션 변경하기
 		function updateUsageOption() {
-			var member_seq = 1002;
 			var uciCode = "${uciCode}";
 			
 			// 기존의 옵션 모두 삭제
@@ -307,20 +301,18 @@
 				url: "/cart.popOption?action=deleteUsage",
 				type: "POST",
 				data: {
-					"member_seq" : member_seq,
 					"uciCode" : uciCode
 				},
 				success: function(data) {
-					insertUsageOption();
+					insertUsageOption(uciCode);
 				}
 				
 			});
 		}
 		
 		// #장바구니 옵션 추가하기
-		function insertUsageOption() {
-			var member_seq = 1002;
-			var uciCode = "${uciCode}";
+		function insertUsageOption(uciCode) {
+			//var uciCode = "${uciCode}";
 			
 			$(".op_cont").each(function(index){
 				var usageList_seq = $(".op_cont").eq(index).attr("value");
@@ -331,7 +323,6 @@
 					url: "/cart.popOption?action=insertUsage",
 					type: "POST",
 					data: {
-						"member_seq" : member_seq,
 						"uciCode" : uciCode,
 						"usageList_seq" : usageList_seq,
 						"price" : price						
@@ -341,6 +332,22 @@
 					}
 				});
 			});
+		}
+		
+		// #찜관리 - 다중선택에 따른 장바구니 담기
+		function insertMultiCart() {
+			var uciCode = "${uciCode}";
+			var result = "";
+			if(uciCode.indexOf("|")) {
+				result = uciCode.split("|");
+				$.each(result, function(key, value) {
+					//console.log(key+ " / " + value);
+					insertUsageOption(value);
+				});
+				
+			}else {
+				console.log(uciCode);
+			}
 		}
 		
 		// #옵션 추가/삭제에 따른 총 금액(수량) 후처리
@@ -363,7 +370,12 @@
 <body>
 	<div class="wrap_pop">
 		<div class="view_rt_top">
+		<c:if test="${page eq 'dibs.myPage'}">
+			<h3>장바구니 옵션선택</h3>
+		</c:if>
+		<c:if test="${page ne 'dibs.myPage'}">
 			<h3>장바구니 옵션변경</h3>
+		</c:if>
 			</div>
 		<div class="option_choice">
 			<ul>
@@ -396,16 +408,23 @@
 		<div class="option_result">
 			<ul>
 				<c:set var="total" value="0"/>
-				<c:forEach items="${usageOptions}" var="UsageDTO">
-					<li><span class="op_cont" value="${UsageDTO.usageList_seq}">${UsageDTO.usage} / ${UsageDTO.division1} / ${UsageDTO.division2} / ${UsageDTO.division3} / ${UsageDTO.division4} / ${UsageDTO.usageDate} </span><span class="op_price" value="${UsageDTO.price}"><fmt:formatNumber value="${UsageDTO.price}" type="number"/>원</span><span class="op_del">x</span></li>
-					<c:set var="total" value="${total + UsageDTO.price}"></c:set>
-				</c:forEach>
+				<c:if test="${page ne 'dibs.myPage'}">
+					<c:forEach items="${usageOptions}" var="UsageDTO">
+						<li><span class="op_cont" value="${UsageDTO.usageList_seq}">${UsageDTO.usage} / ${UsageDTO.division1} / ${UsageDTO.division2} / ${UsageDTO.division3} / ${UsageDTO.division4} / ${UsageDTO.usageDate} </span><span class="op_price" value="${UsageDTO.price}"><fmt:formatNumber value="${UsageDTO.price}" type="number"/>원</span><span class="op_del">x</span></li>
+						<c:set var="total" value="${total + UsageDTO.price}"></c:set>
+					</c:forEach>
+				</c:if>
 			</ul>
 		</div>
 		<div class="sum_sec">
 			<div class="total"><span class="tit">총 금액 (수량)</span><span class="price"><fmt:formatNumber value="${total}" type="number"/><span class="price_txt">원(<span class="price_count"><c:out value="${fn:length(usageOptions)}"/></span>개)</span></span></div>
 			<div class="btn_wrap">
-				<div class="btn_cart"><a href="#">변경하기</a></div>
+				<c:if test="${page eq 'dibs.myPage'}">
+					<div class="btn_cart" onclick="insertMultiCart()"><a href="#">장바구니 담기</a></div>
+				</c:if>
+				<c:if test="${page ne 'dibs.myPage'}">
+					<div class="btn_cart" onclick="updateUsageOption()"><a href="#">변경하기</a></div>
+				</c:if>
 				<div class="btn_down"><a href="#" onclick="javascript:self.close()">취소</a></div>
 			</div>
 			</div>

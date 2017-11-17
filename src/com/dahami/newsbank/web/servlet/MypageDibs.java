@@ -59,21 +59,23 @@ public class MypageDibs extends NewsbankServletBase {
 				response.sendRedirect("/auth.mypage");
 			} else {
 				
-				String member_seq = String.valueOf(MemberInfo.getSeq());
+				int member_seq = MemberInfo.getSeq();
 				String bookmark_seq = request.getParameter("bookmark_seq");
 				PhotoDAO photoDAO = new PhotoDAO();
 				List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq);
 				request.setAttribute("dibsPhotoList", dibsPhotoList);
 				
 				BookmarkDAO bookmarkDAO = new BookmarkDAO();
-				List<BookmarkDTO> bookmarkList = bookmarkDAO.userBookmark(Integer.parseInt(member_seq));
+				List<BookmarkDTO> bookmarkList = bookmarkDAO.userBookmark(member_seq);
 				request.setAttribute("bookmarkList", bookmarkList);
 				
 				String action = (request.getParameter("action") == null) ? "" : request.getParameter("action");
 				String photo_uciCode = request.getParameter("photo_uciCode");
 				
 				if(action.equals("delete")) {
-					bookmarkDAO.delete(Integer.parseInt(member_seq), photo_uciCode);
+					bookmarkDAO.delete(member_seq, photo_uciCode);
+				}else if(action.equals("update")) {
+					bookmarkDAO.updateBookmarkPhoto(bookmark_seq, photo_uciCode);
 				}
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_dibs.jsp");

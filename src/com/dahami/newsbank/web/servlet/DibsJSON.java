@@ -9,11 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
  * Servlet implementation class DibsJSON
@@ -38,7 +40,10 @@ public class DibsJSON extends NewsbankServletBase {
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    
-	    String member_seq = request.getParameter("member_seq");
+	    HttpSession session = request.getSession();
+		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+		int member_seq = MemberInfo.getSeq();
+		
 	    String bookmark_seq = request.getParameter("bookmark_seq");
 	    PhotoDAO photoDAO = new PhotoDAO();
 		List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq);

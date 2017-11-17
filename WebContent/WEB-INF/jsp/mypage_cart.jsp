@@ -34,7 +34,6 @@
 	
 	/** 찜하기 */
 	$(document).on("click", ".btn_b", function() {
-		var member_seq = "1002"; // 사용자 고유번호
 		var uciCode = $(this).closest("tr").find(".code").text();		
 		
 		var param = "action=bookmark";
@@ -43,7 +42,6 @@
 			url: "/cart.myPage?"+param,
 			type: "POST",
 			data: {
-				"member_seq" : member_seq,
 				"uciCode" : uciCode
 			},
 			success: function(data){ 
@@ -58,25 +56,23 @@
 
 	/** 개별 삭제 */
 	$(document).on("click", ".btn_g", function() {
-		var member_seq = "1002"; // 사용자 고유번호
 		var uciCode = $(this).closest("tr").find(".code").text();
 		
 		var chk = confirm("정말로 삭제하시겠습니까?");
 		if(chk == true) {
-			cartDelete(member_seq, uciCode);
+			cartDelete(uciCode);
 			$(this).closest("tr").remove();
 		} 				
 	});
 
 	/** 다중선택 삭제 */
 	$(document).on("click", ".mp_btn", function() {
-		var member_seq = "1002"; // 사용자 고유번호
 		var chk = confirm("정말로 삭제하시겠습니까?");
 		
 		if(chk == true) {
 			$("#order_list input:checkbox:checked").each(function(index) {
 				var uciCode = $(this).val();
-				cartDelete(member_seq, uciCode);
+				cartDelete(uciCode);
 				$(this).closest("tr").remove();
 			});
 		}
@@ -92,14 +88,13 @@
 	});
 	
 	/** DB 삭제함수 */
-	function cartDelete(member_seq, uciCode) {
+	function cartDelete(uciCode) {
 		var param = "action=delete";
 		
 		$.ajax({
 			url: "/cart.myPage?"+param,
 			type: "POST",
 			data: {
-				"member_seq" : member_seq,
 				"uciCode" : uciCode
 			},
 			success: function(data){ }, 

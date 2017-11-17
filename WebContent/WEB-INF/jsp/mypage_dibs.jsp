@@ -33,7 +33,7 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
-<script src="js/dibs.js"></script>
+<script src="js/dibs.js?v=20171117"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(key, val){
@@ -120,6 +120,10 @@
 				</div>
 			</div>
 			<!-- 필터끝 -->
+			<form class="cart_form" name="cart_form">
+				<input type="hidden" name="page" id="page"/>
+				<input type="hidden" name="uciCode" id="uciCode"/>
+			</form>
 			<form class="view_form" method="post" action="/view.photo" name="view_form" >
 				<input type="hidden" name="uciCode" id="uciCode"/>
 			</form>
@@ -127,7 +131,12 @@
 				<input type="checkbox" name="checkAll"/>
 				</span>
 				<ul class="button">
-					<li class="sort_down">장바구니</li>
+					<c:if test="${MemberInfo.deferred eq 'Y'}">
+						<li class="sort_down">다운로드</li>
+					</c:if>
+					<c:if test="${MemberInfo.deferred eq 'N'}">
+						<li class="sort_down" onclick="insertMultiBasket()">장바구니</li>
+					</c:if>
 					<li class="sort_del">삭제</li>
 					<li class="sort_folder">폴더이동
 						<div class="folder_item">
@@ -139,7 +148,7 @@
 										<li class="select" value="${bookmark.seq}">${bookmark.bookName}</li>
 									</c:if>
 									<c:if test="${bookmark.bookName ne '기본그룹'}">
-										<li value="${bookmark.seq}">${bookmark.bookName}</li>
+										<li value="${bookmark.seq}" onclick="change_folder('${bookmark.seq}')">${bookmark.bookName}</li>
 									</c:if>
 									
 								</c:forEach>
@@ -166,7 +175,12 @@
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 							<ul class="thumb_btn">
-								<li class="btn_down">다운로드</li>
+								<c:if test="${MemberInfo.deferred eq 'Y'}">
+									<li class="btn_down">다운로드</li>
+								</c:if>
+								<c:if test="${MemberInfo.deferred eq 'N'}">
+									<li class="btn_cart" onclick="insertBasket('${PhotoDTO.uciCode}')">장바구니</li>
+								</c:if>
 								<li class="btn_del">삭제</li>
 							</ul>
 						</li>
