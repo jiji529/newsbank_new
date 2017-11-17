@@ -70,28 +70,44 @@ public class PurchaseJSON extends NewsbankServletBase {
 
 		if (request.getParameter("orderJson") != null) {
 			String orderJson = request.getParameter("orderJson"); // json
+
+			UsageDAO usageDAO = new UsageDAO();
+			List<UsageDTO> usageList = usageDAO.usageList(); // 주문 가능 제품 전체
+
 			try {
 				JSONParser jsonParser = new JSONParser();
 				JSONObject jsonObj = (JSONObject) jsonParser.parse(orderJson);
 				JSONArray orderArray = (JSONArray) jsonObj.get("order");
+				JSONArray orderArray2 = (JSONArray) jsonObj.get("order2");
+				System.out.println(orderArray2);
 
-				String[] seqArry = new String[orderArray.size()];
-				LGD_CUSTOM_USABLEPAY = jsonObj.get("LGD_CUSTOM_USABLEPAY").toString();
-				System.out.println("LGD_CUSTOM_USABLEPAY : " + jsonObj.get("LGD_CUSTOM_USABLEPAY"));
-				System.out.println("=====ORDER=====");
-
-				for (int i = 0; i < orderArray.size(); i++) {
-					JSONObject tempObj = (JSONObject) orderArray.get(i);
-					seqArry[i] = tempObj.get("usage").toString();
-					LGD_AMOUNT += Integer.parseInt(tempObj.get("price").toString()) ;
-					System.out.println("" + (i + 1) + "uciCode : " + tempObj.get("uciCode"));
-					System.out.println("" + (i + 1) + "price : " + tempObj.get("price"));
-					System.out.println("" + (i + 1) + "copyright : " + tempObj.get("copyright"));
-					System.out.println("" + (i + 1) + "usage : " + tempObj.get("usage"));
-					System.out.println("----------------------------");
+				if (jsonObj.get("LGD_CUSTOM_USABLEPAY") != null) {
+					LGD_CUSTOM_USABLEPAY = jsonObj.get("LGD_CUSTOM_USABLEPAY").toString();
+					System.out.println("LGD_CUSTOM_USABLEPAY : " + jsonObj.get("LGD_CUSTOM_USABLEPAY"));
 				}
-				UsageDAO usageDAO = new UsageDAO();
-				List<UsageDTO> usageList = usageDAO.selectOptions(seqArry);
+
+				if (orderArray != null) {
+					for (int i = 0; i < orderArray.size(); i++) {
+						JSONObject tempObj = (JSONObject) orderArray.get(i);
+						int index = Integer.parseInt(tempObj.get("usage").toString());
+						int AMOUNT = Integer.parseInt(tempObj.get("price").toString());
+						LGD_AMOUNT += AMOUNT;
+						System.out.println("" + (i + 1) + "uciCode : " + tempObj.get("uciCode"));
+						System.out.println("" + (i + 1) + "price : " + tempObj.get("price"));
+						System.out.println("" + (i + 1) + "copyright : " + tempObj.get("copyright"));
+						System.out.println("" + (i + 1) + "usage : " + tempObj.get("usage"));
+						System.out.println("----------------------------");
+						System.out.println(LGD_AMOUNT + " : " + usageList.get(index - 1).getPrice());
+						if (AMOUNT != usageList.get(index - 1).getPrice()) {
+							result = false;
+							message = "요청한 금액이 올바르지 않습니다.";
+						}
+
+					}
+				}else {
+					result = false;
+					message = "요청한 결제 정보가 올바르지 않습니다.";
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -119,6 +135,9 @@ public class PurchaseJSON extends NewsbankServletBase {
 			String CST_MID = "dahaminewsbank"; // LG유플러스로 부터 발급받으신 상점아이디를 입력하세요.
 			String LGD_MID = ("test".equals(CST_PLATFORM.trim()) ? "t" : "") + CST_MID; // 테스트 아이디는 't'를 제외하고 입력하세요.
 			String LGD_MERTKEY = "49bd4da3b4414d8396a591a1c9565bbd";// 상점MertKey(mertkey는 상점관리자 -> 계약정보 -> 상점정보관리에서 확인하실수 있습니다)
+
+			String LGD_ENCODING = "UTF-8";
+
 			/*
 			 *************************************************
 			 * 2. MD5 해쉬암호화 (수정하지 마세요) - BEGIN
@@ -138,13 +157,16 @@ public class PurchaseJSON extends NewsbankServletBase {
 			/*
 			 * 가상계좌(무통장) 결제 연동을 하시는 경우 아래 LGD_CASNOTEURL 을 설정하여 주시기 바랍니다.
 			 */
-			String LGD_CASNOTEURL = "http://www.newsbank.co.kr/Noteurl.Xpay";
+			// String LGD_CASNOTEURL = "http://www.newsbank.co.kr/Noteurl.Xpay";
+			String LGD_CASNOTEURL = "http://localhost:8080/Noteurl.Xpay";
 
 			/*
 			 * LGD_RETURNURL 을 설정하여 주시기 바랍니다. 반드시 현재 페이지와 동일한 프로트콜 및 호스트이어야 합니다. 아래 부분을 반드시
 			 * 수정하십시요.
 			 */
-			String LGD_RETURNURL = "http://www.newsbank.co.kr/Returnurl.Xpay";// FOR MANUAL
+			// String LGD_RETURNURL = "http://www.newsbank.co.kr/Returnurl.Xpay";// FOR
+			// MANUAL
+			String LGD_RETURNURL = "http://localhost:8080/Returnurl.Xpay";// FOR MANUAL
 
 			LGD_DATA.put("CST_MID", CST_MID); // *LG U+와 계약시 설정한 상점아이디
 			LGD_DATA.put("LGD_VERSION", "JSP_Non-ActiveX_Standard"); // 사용 모듈 정보
@@ -167,8 +189,15 @@ public class PurchaseJSON extends NewsbankServletBase {
 			LGD_DATA.put("LGD_AMOUNT", LGD_AMOUNT); // *결제금액
 			LGD_DATA.put("LGD_MID", LGD_MID); // *회사 코드
 
+			LGD_DATA.put("LGD_ESCROW_USEYN", "N"); // 에스크로 사용안함
+			LGD_DATA.put("LGD_ACTIVEXYN", "N"); // 엑티브 x 사용여부
+
 			LGD_DATA.put("LGD_BUYERID", LGD_BUYERID); // *구매자 아이디
 			LGD_DATA.put("LGD_BUYERIP", LGD_BUYERIP); // *구매자 아이피
+
+			LGD_DATA.put("LGD_ENCODING", LGD_ENCODING);
+			LGD_DATA.put("LGD_ENCODING_NOTEURL", LGD_ENCODING);
+			LGD_DATA.put("LGD_ENCODING_RETURNURL", LGD_ENCODING);
 
 		}
 
@@ -225,41 +254,5 @@ public class PurchaseJSON extends NewsbankServletBase {
 		}
 	}
 
-	public static boolean isValidUsage(String orderJson) {
-		boolean err = false;
-
-		if (orderJson == null || orderJson.isEmpty()) {
-			err = false;
-
-		} else {
-			try {
-				JSONParser jsonParser = new JSONParser();
-				JSONObject jsonObj = (JSONObject) jsonParser.parse(orderJson);
-				JSONArray orderArray = (JSONArray) jsonObj.get("order");
-
-				String[] seqArry = new String[orderArray.size() - 1];
-				System.out.println("LGD_CUSTOM_USABLEPAY : " + jsonObj.get("LGD_CUSTOM_USABLEPAY"));
-				System.out.println("=====ORDER=====");
-
-				for (int i = 0; i < orderArray.size(); i++) {
-					JSONObject tempObj = (JSONObject) orderArray.get(i);
-					seqArry[i] = tempObj.get("usage").toString();
-
-					System.out.println("" + (i + 1) + "uciCode : " + tempObj.get("uciCode"));
-					System.out.println("" + (i + 1) + "price : " + tempObj.get("price"));
-					System.out.println("" + (i + 1) + "copyright : " + tempObj.get("copyright"));
-					System.out.println("" + (i + 1) + "usage : " + tempObj.get("usage"));
-					System.out.println("----------------------------");
-				}
-				UsageDAO usageDAO = new UsageDAO();
-				List<UsageDTO> usageList = usageDAO.selectOptions(seqArry);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-		return err;
-	}
 
 }
