@@ -144,13 +144,11 @@ function insertBasket(uciCode) {
 	$("#page").val("dibs.myPage");
 	$("#uciCode").val(uciCode);
 	
-	window.open("", "AddBasket", "resizable=no width=420 height=600");
+	window.open("", "openWin", "toolbar=no, resizable=no, width=420, height=600, directories=no, status=no, scrollbars=no");
 	cart_form.method = "post";
 	cart_form.action = "/cart.popOption";
-	cart_form.target = "_blank";
+	cart_form.target = "openWin";
 	cart_form.submit();
-	
-	//cart_form.submit();
 }
 
 /** 선택항목-장바구니 추가 */
