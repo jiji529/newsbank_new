@@ -308,10 +308,12 @@ public class DownloadService extends ServiceBase {
 							return;
 						}
 					}
-					String zipPath = "";
+					String zipFileName = "zip.zip";
+					String zipPath = PATH_PHOTO_DOWN + "/zip/" + ymDf.format(new Date()) + "/" + zipFileName;
 					ZipUtil zu = new ZipUtil();
 					zu.createZipFile(fileFds, zipPath, true);
-					downPath = zipPath;
+					// 압축파일 전송
+					sendImageFile(response, zipPath, zipFileName);
 				} catch (Exception e) {
 					logger.warn("", e);
 				} finally {
@@ -609,7 +611,12 @@ public class DownloadService extends ServiceBase {
 		response.addHeader("Expires", "0");
 		response.addHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 		response.addHeader("Cache-Control", "private");
-		response.addHeader("Content-Type", "image/jpeg");
+		if(headerFileName != null && headerFileName.endsWith(".zip")) {
+			response.addHeader("Content-Type", "application/zip");
+		}
+		else {
+			response.addHeader("Content-Type", "image/jpeg");
+		}
 		if(headerFileName != null) {
 			response.addHeader("Content-Disposition", "attachment; filename=\""+headerFileName+"\";");
 		}
