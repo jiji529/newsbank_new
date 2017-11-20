@@ -1,4 +1,5 @@
-var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+//var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+var IMG_SERVER_URL_PREFIX = "localhost:8080";
 
 /** 개별 다운로드 */
 /*$(document).on("click", ".btn_down", function() {
@@ -182,9 +183,11 @@ function mutli_download() {
 	$("#wish_list2 input:checkbox:checked").each(function(index) {
 		uciCode.push($(this).val());
 	});
-	console.log(uciCode.join("|"));
 	
-	var url = IMG_SERVER_URL_PREFIX + "/service.zip.photo?uciCode="+uciCode+"&type=file";
-	console.log(url);
+	var param = uciCode.join("&uciCode=");
+	
+	var url = IMG_SERVER_URL_PREFIX + "/zip.down.photo?&type=file&uciCode=";
+	url += param;
+	
 	$("#downFrame").attr("src", url);
 }

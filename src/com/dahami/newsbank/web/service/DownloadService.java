@@ -26,13 +26,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -304,6 +309,99 @@ public class DownloadService extends ServiceBase {
 				}
 				
 			}
+			// 구매한 이미지 압축
+			else if(targetSize.equals("zip")) {
+				boolean downConfirm = false;
+				String ip = HttpUtil.getRequestIpAddr(request);
+				
+				String corp = request.getParameter("corp");
+				// 다운로드 가능 여부 확인(연계 / IP 제한)
+				if(corp != null && corp.trim().length() > 0) {
+					Set<String> ipSet = ACCESS_IP_MAP.get(corp);
+					if(ipSet != null && ipSet.size() > 0) {
+						if(ipSet.contains(ip)) {
+							downConfirm = true;
+						}
+					}
+				}
+				else {
+					corp = "nb";
+				}
+				
+				if(!downConfirm) {
+					// 연계 이외에는 로그인한 경우만 다운로드 가능
+					if(memberInfo != null) {
+						// 후불 체크
+						int memberSeq = memberInfo.getSeq();
+						MemberDAO mDao = new MemberDAO();
+						memberInfo = mDao.getMember(memberSeq);
+						if(memberInfo.getDeferred() != null && memberInfo.getDeferred().equals("Y")) {
+							downConfirm = true;
+						}
+						// 구매여부 체크
+						else {
+							
+						}
+					}
+					
+					// 다운로드 가능 여부 확인(구매 / 후불 등)
+				}
+				
+				if(!downConfirm) {
+					response.sendRedirect(URL_PHOTO_ERROR_VIEW);
+					return;
+				}
+				
+				//String corp = "nb";
+				// 다운로드 로그 ID
+				String downloadId = "123456";
+				String serviceCode = corp;	// nb / gt / dt
+				String serviceName = CORP_NAME_MAP.get(corp); // 뉴스뱅크 / 게티이미지코리아 / 디지털저작권거래소
+				
+				try {
+					
+					String[] uciCodes = request.getParameterValues("uciCode");
+					String[] paths = new String[uciCodes.length];
+					
+					for(int i = 0; i < uciCodes.length; i++) {
+						// 원본 이미지를 실시간으로 카피 / UCI 임베드 / 다운로드 정보 임베드(메타태그) 하여 전송
+						photo = photoDao.read(uciCodes[i]);
+						orgPath = PATH_PHOTO_BASE + "/" + photo.getOriginPath();
+						if(!new File(orgPath).exists()) {
+							logger.warn("원본이미지 없음: " + orgPath);
+							request.setAttribute("ErrorMSG", "다운로드 대상("+uciCodes[i]+") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
+							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
+							return;
+						}
+						String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
+						FileUtil.makeDirectory(tmpDir);
+						String uciEmbedTmp = tmpDir + "/" + uciCodes[i] + "." + serviceCode + "." + downloadId + ".jpg";
+						paths[i] = uciEmbedTmp;
+						try {
+							// UCI 코드 임베딩
+							APIHandler.attach(new File(orgPath), new File(uciEmbedTmp), uciCode);
+						}catch(Exception e) {
+							logger.warn("UCI 임베드 실패", e);
+							request.setAttribute("ErrorMSG", "원본("+photo.getUciCode()+")  다운로드 중 오류(1)가 발생했습니다.\n관리자에게 문의해 주세요");
+							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
+							return;
+						}
+						
+						// 다운로드 정보 메타정보에 추가
+						if(!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downloadId)) {
+							// 생성 실패
+							logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downloadId);
+							request.setAttribute("ErrorMSG", "원본("+photo.getUciCode()+")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
+							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
+							return;
+						}
+					}
+					makeZipFile(response, paths, uciCodes);
+				} finally {
+					// TODO 로그테이블 기록
+					System.out.println();
+				}
+			}
 			// 기타 다운로드?? 
 			else {
 				logger.warn("잘못된 접근: " + targetSize + " / " + uciCode);
@@ -569,5 +667,33 @@ public class DownloadService extends ServiceBase {
 	    fullImg = ImageUtil.resize(fullImg, LOGO_MAX_WIDTH, LOGO_MAX_HEIGHT, true);
 	    
 	    return ImageUtil.saveImage(fullImg, tgtPath, ImageUtil.IMAGE_FORMAT_JPEG);
+	}
+	
+	private void makeZipFile(HttpServletResponse response, String[] sendPath, String[] headerFileName) throws IOException {
+		String zipName = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date()) + "/newsbank.zip";
+		
+		byte[] buf = new byte[4096];
+		
+		try {
+			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipName));
+			for(int i=0; i<sendPath.length; i++) {
+				FileInputStream in = new FileInputStream(sendPath[i]);
+				Path p = Paths.get(sendPath[i]);
+				String fileName = "newsbank/"+p.getFileName().toString();
+				
+				ZipEntry ze = new ZipEntry(fileName);
+				out.putNextEntry(ze);
+				
+				int len;
+				while((len = in.read(buf)) > 0) {
+					out.write(buf, 0, len);
+				}
+				out.closeEntry();
+				in.close();
+			}
+			out.close();
+		} finally {
+			
+		}
 	}
 }
