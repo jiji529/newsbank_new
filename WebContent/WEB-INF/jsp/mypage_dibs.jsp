@@ -190,7 +190,7 @@
 			<div class="more"><a href="#">다음 페이지</a></div>
 		</section>
 	</div>
-</body>
 <iframe id="downFrame" style="display:none" >
 </iframe>
+</body>
 </html>

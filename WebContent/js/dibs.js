@@ -186,8 +186,9 @@ function mutli_download() {
 	
 	var param = uciCode.join("&uciCode=");
 	
-	var url = IMG_SERVER_URL_PREFIX + "/zip.down.photo?&type=file&uciCode=";
+	var url = "/zip.down.photo?&type=file&uciCode=";
 	url += param;
 	
 	$("#downFrame").attr("src", url);
+//	$("#downFrame").get(0).contentDocument.location=url;
 }
