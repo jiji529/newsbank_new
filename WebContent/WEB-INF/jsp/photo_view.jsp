@@ -396,7 +396,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
 
 		var searchParam = {
-				"keyword":keyword
+				"uciCode":"${photoDTO.uciCode}"
 				, "pageNo":pageNo
 				, "pageVol":pageVol
 				, "contentType":contentType

@@ -39,6 +39,8 @@ import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.request.QueryRequest;
+import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -207,9 +209,17 @@ public class SearchDAO extends DAOBase {
 		try {
 			SolrQuery query = makeSolrQuery(param);
 			query.addSort("uciCode", ORDER.desc);
+			
+//			res = client.query(query, METHOD.POST);
+			
+			QueryRequest req = makeSolrURequest(query);
 			client = getClient();
-			res = client.query(query, METHOD.POST);
-			SolrDocumentList docList = res.getResults();
+			res = req.process(client);
+			
+			SolrDocumentList docList = null;
+			if(res.getResults() != null) {
+				docList = res.getResults();
+			}
 			List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 			for(SolrDocument doc : docList) {
 				photoList.add(new PhotoDTO(doc));
@@ -232,10 +242,7 @@ public class SearchDAO extends DAOBase {
 		SolrQuery query = new SolrQuery();
 		query.set("collection", collectionNameNewsbank);
 		String keyword = params.getKeyword();
-		logger.debug("keyword: " + keyword);
-		query.setQuery(keyword);
-		query.set("defType", "edismax");
-		query.set("qf", "title description keyword shotperson copyright exif uciCode compCode");
+		String uciCode = params.getUciCode();
 		
 		// 기본적으로 판매건만 보기
 		int saleState = params.getSaleState();
@@ -271,121 +278,143 @@ public class SearchDAO extends DAOBase {
 			query.addFilterQuery("saleState:(" + buf.toString() + ")");
 		}
 		
-		List<String> targetUserList = params.getTargetUserList();
-		if(targetUserList != null && targetUserList.size() > 0) {
-			StringBuffer buf = new StringBuffer();
-			for(String targetUser : targetUserList) {
-				if(buf.length() > 0) {
-					buf.append(" OR ");
-				}
-				buf.append(targetUser);
-			}
-			query.addFilterQuery("ownerNo:(" + buf.toString() + ")");
-			logger.debug("ownerNo: (" + buf.toString() + ")");
+		if(uciCode != null && uciCode.trim().length() > 0) {
+			query.setRequestHandler("/mlt");
+			query.setQuery("uciCode:" + uciCode);
+			query.set("mlt.fl", "morp_title morp_keyword morp_description");
+			query.set("mlt.match.include", false);
+			query.setRows(params.getPageVol());
 		}
-		
-		
-		String duration = params.getDuration();
-		if(duration != null && duration.trim().length() > 0) {
-			if(duration.indexOf("~") == -1) {
-				Calendar sCal = Calendar.getInstance();
-				Calendar eCal = Calendar.getInstance();
-				eCal.set(Calendar.HOUR_OF_DAY, 0);
-				eCal.set(Calendar.MINUTE, 0);
-				eCal.set(Calendar.SECOND, 0);
-				eCal.set(Calendar.MILLISECOND, 0);
-				eCal.add(Calendar.DAY_OF_YEAR, 1);
-				if(duration.equals("1d")) {
-					sCal.add(Calendar.DAY_OF_MONTH, -1);
+		else {
+			query.setRequestHandler("/select");
+			logger.debug("keyword: " + keyword);
+			query.setQuery(keyword);
+			query.set("defType", "edismax");
+			query.set("qf", "title description keyword shotperson copyright exif uciCode compCode");
+			
+			
+			
+			List<String> targetUserList = params.getTargetUserList();
+			if(targetUserList != null && targetUserList.size() > 0) {
+				StringBuffer buf = new StringBuffer();
+				for(String targetUser : targetUserList) {
+					if(buf.length() > 0) {
+						buf.append(" OR ");
+					}
+					buf.append(targetUser);
 				}
-				else if(duration.equals("1w")) {
-					sCal.add(Calendar.DAY_OF_MONTH, -7);
-				}
-				else if(duration.equals("1m")) {
-					sCal.add(Calendar.MONTH, -1);
-				}
-				else if(duration.equals("1y")) {
-					sCal.add(Calendar.YEAR, -1);
+				query.addFilterQuery("ownerNo:(" + buf.toString() + ")");
+				logger.debug("ownerNo: (" + buf.toString() + ")");
+			}
+			
+			
+			String duration = params.getDuration();
+			if(duration != null && duration.trim().length() > 0) {
+				if(duration.indexOf("~") == -1) {
+					Calendar sCal = Calendar.getInstance();
+					Calendar eCal = Calendar.getInstance();
+					eCal.set(Calendar.HOUR_OF_DAY, 0);
+					eCal.set(Calendar.MINUTE, 0);
+					eCal.set(Calendar.SECOND, 0);
+					eCal.set(Calendar.MILLISECOND, 0);
+					eCal.add(Calendar.DAY_OF_YEAR, 1);
+					if(duration.equals("1d")) {
+						sCal.add(Calendar.DAY_OF_MONTH, -1);
+					}
+					else if(duration.equals("1w")) {
+						sCal.add(Calendar.DAY_OF_MONTH, -7);
+					}
+					else if(duration.equals("1m")) {
+						sCal.add(Calendar.MONTH, -1);
+					}
+					else if(duration.equals("1y")) {
+						sCal.add(Calendar.YEAR, -1);
+					}
+					else {
+						logger.warn("잘못된 기간 형식: " + duration);
+						sCal = null;
+					}
+					
+					if(sCal != null) {
+						query.addFilterQuery("searchDate:[" + fullDf.format(sCal.getTime()) + " TO "+ fullDf.format(eCal.getTime()) +"}");
+					}
 				}
 				else {
-					logger.warn("잘못된 기간 형식: " + duration);
-					sCal = null;
+					String[] durationArry = duration.split("~");
+					query.addFilterQuery("searchDate:[" + durationArry[0] + " TO " + durationArry[1] + "]");
 				}
-				
-				if(sCal != null) {
-					query.addFilterQuery("searchDate:[" + fullDf.format(sCal.getTime()) + " TO "+ fullDf.format(eCal.getTime()) +"}");
+				logger.debug("Duration: " + duration);
+			}
+			
+			if(params.getContentType() != SearchParameterBean.CONTENT_TYPE_ALL) {
+	//			query.addFilterQuery(")
+				logger.debug("ContentType: " + params.getContentType());
+			}
+			
+			if(params.getColorMode() != SearchParameterBean.COLOR_ALL) {
+				query.addFilterQuery("mono:" + params.getColorMode());
+				logger.debug("mono:" + params.getColorMode());
+			}
+			if(params.getHoriVertChoice() != SearchParameterBean.HORIZONTAL_ALL) {
+				query.addFilterQuery("horizontal:" + params.getHoriVertChoice());
+				logger.debug("horizontal: " + params.getHoriVertChoice());
+			}
+			if(params.getIncludePerson() != SearchParameterBean.INCLUDE_PERSON_ALL) {
+				query.addFilterQuery("includePerson:" + params.getIncludePerson());
+				logger.debug("includePerson: "  + params.getIncludePerson());
+			}
+			if(params.getPortRight() != SearchParameterBean.PORTRAIT_RIGHT_ALL) {
+				query.addFilterQuery("portraitRightState:" + params.getPortRight());
+				logger.debug("portraitRightState: " + params.getPortRight());
+			}
+			if(params.getSize() != SearchParameterBean.SIZE_ALL) {
+				int size = params.getSize();
+				if(size == (SearchParameterBean.SIZE_SMALL | SearchParameterBean.SIZE_MEDIUM | SearchParameterBean.SIZE_LARGE)) {
+					// 전체
 				}
-			}
-			else {
-				String[] durationArry = duration.split("~");
-				query.addFilterQuery("searchDate:[" + durationArry[0] + " TO " + durationArry[1] + "]");
-			}
-			logger.debug("Duration: " + duration);
-		}
-		
-		if(params.getContentType() != SearchParameterBean.CONTENT_TYPE_ALL) {
-//			query.addFilterQuery(")
-			logger.debug("ContentType: " + params.getContentType());
-		}
-		
-		if(params.getColorMode() != SearchParameterBean.COLOR_ALL) {
-			query.addFilterQuery("mono:" + params.getColorMode());
-			logger.debug("mono:" + params.getColorMode());
-		}
-		if(params.getHoriVertChoice() != SearchParameterBean.HORIZONTAL_ALL) {
-			query.addFilterQuery("horizontal:" + params.getHoriVertChoice());
-			logger.debug("horizontal: " + params.getHoriVertChoice());
-		}
-		if(params.getIncludePerson() != SearchParameterBean.INCLUDE_PERSON_ALL) {
-			query.addFilterQuery("includePerson:" + params.getIncludePerson());
-			logger.debug("includePerson: "  + params.getIncludePerson());
-		}
-		if(params.getPortRight() != SearchParameterBean.PORTRAIT_RIGHT_ALL) {
-			query.addFilterQuery("portraitRightState:" + params.getPortRight());
-			logger.debug("portraitRightState: " + params.getPortRight());
-		}
-		if(params.getSize() != SearchParameterBean.SIZE_ALL) {
-			int size = params.getSize();
-			if(size == (SearchParameterBean.SIZE_SMALL | SearchParameterBean.SIZE_MEDIUM | SearchParameterBean.SIZE_LARGE)) {
-				// 전체
-			}
-			else {
-				StringBuffer buf = new StringBuffer();
-				if((size & SearchParameterBean.SIZE_LARGE) == SearchParameterBean.SIZE_LARGE) {
-					buf.append("(widthPx:[3000 TO *] AND heightPx:[3000 TO *])");
-				}
-				if((size & SearchParameterBean.SIZE_MEDIUM) == SearchParameterBean.SIZE_MEDIUM) {
-					if(buf.length() > 0) {
-						buf.append(" OR ");
+				else {
+					StringBuffer buf = new StringBuffer();
+					if((size & SearchParameterBean.SIZE_LARGE) == SearchParameterBean.SIZE_LARGE) {
+						buf.append("(widthPx:[3000 TO *] AND heightPx:[3000 TO *])");
 					}
-					buf.append("((NOT (widthPx:[3000 TO *] AND heightPx:[3000 TO *])) AND (NOT (widthPx:[* TO 1000] AND heightPx:[* TO 1000])))");
-				}
-				if((size & SearchParameterBean.SIZE_SMALL) == SearchParameterBean.SIZE_SMALL) {
-					if(buf.length() > 0) {
-						buf.append(" OR ");
+					if((size & SearchParameterBean.SIZE_MEDIUM) == SearchParameterBean.SIZE_MEDIUM) {
+						if(buf.length() > 0) {
+							buf.append(" OR ");
+						}
+						buf.append("((NOT (widthPx:[3000 TO *] AND heightPx:[3000 TO *])) AND (NOT (widthPx:[* TO 1000] AND heightPx:[* TO 1000])))");
 					}
-					buf.append("(widthPx:[* TO 1000] AND heightPx:[* TO 1000])");
-				}
-				
-				if(buf.length() > 0) {
-					query.addFilterQuery("(" + buf.toString() + ")");
+					if((size & SearchParameterBean.SIZE_SMALL) == SearchParameterBean.SIZE_SMALL) {
+						if(buf.length() > 0) {
+							buf.append(" OR ");
+						}
+						buf.append("(widthPx:[* TO 1000] AND heightPx:[* TO 1000])");
+					}
+					
+					if(buf.length() > 0) {
+						query.addFilterQuery("(" + buf.toString() + ")");
+					}
 				}
 			}
+			
+			int pageNo = params.getPageNo();
+			int pageVol = params.getPageVol();
+			logger.debug("pageNo: " + pageNo + " / PageVol: " + pageVol);
+			if(pageNo < 1) { 
+				pageNo = 1;
+			}
+			if(pageVol < 1) {
+				pageVol = 40;
+			}
+			int startNo = pageVol * (pageNo - 1);
+			query.setStart(startNo);
+			query.setRows(pageVol);
 		}
-		
-		int pageNo = params.getPageNo();
-		int pageVol = params.getPageVol();
-		logger.debug("pageNo: " + pageNo + " / PageVol: " + pageVol);
-		if(pageNo < 1) { 
-			pageNo = 1;
-		}
-		if(pageVol < 1) {
-			pageVol = 40;
-		}
-		int startNo = pageVol * (pageNo - 1);
-		query.setStart(startNo);
-		query.setRows(pageVol);
-		
 		return query;
+	}
+	
+	protected QueryRequest makeSolrURequest(SolrQuery query) {
+		QueryRequest req = new QueryRequest(query);
+		req.setBasicAuthCredentials(solrId, solrPw);
+		return req;
 	}
 }

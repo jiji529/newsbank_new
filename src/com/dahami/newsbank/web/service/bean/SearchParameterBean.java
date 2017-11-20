@@ -26,6 +26,7 @@ public class SearchParameterBean {
 	private static final int ALL = 0;
 //	private String searchKey;
 	private String keyword;
+	private String uciCode;
 	
 	/** 판매 상태 1:미판매 / 2:판매중 / 4:판매중지 / 8:삭제(플래그,판매건) */
 	private int saleState;
@@ -96,6 +97,7 @@ public class SearchParameterBean {
 	public SearchParameterBean(Map<String, String[]> params) {
 		this();
 		try{this.keyword = params.get("keyword")[0];}catch(Exception e){}
+		try{this.uciCode = params.get("uciCode")[0];}catch(Exception e){}
 		try{this.pageNo = Integer.parseInt(params.get("pageNo")[0]);}catch(Exception e){this.pageNo = 1;}
 		try{
 			this.pageVol = Integer.parseInt(params.get("pageVol")[0]);
@@ -134,6 +136,13 @@ public class SearchParameterBean {
 		}
 		return keyword;
 	}
+	public String getUciCode() {
+		return uciCode;
+	}
+	public void setUciCode(String uciCode) {
+		this.uciCode = uciCode;
+	}
+
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
