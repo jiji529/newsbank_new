@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.dahami.newsbank.web.dao.SearchDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.DownloadService;
+import com.dahami.newsbank.web.service.DownloadZipService;
 import com.dahami.newsbank.web.service.PhotoService;
 
 /**
@@ -54,8 +55,10 @@ public class Photo extends NewsbankServletBase {
 		if(cmd2 != null && cmd2.equals("down")) {
 			DownloadService ds = new DownloadService(cmd3, getParam("uciCode"));
 			ds.execute(request, response);
-		}
-		else {
+		} else if(cmd2 != null && cmd2.equals("zip")) {
+			DownloadZipService zs = new DownloadZipService(cmd3, getParam("uciCode"));
+			zs.execute(request, response);
+		} else {
 			PhotoService ps = new PhotoService();
 			ps.execute(request, response);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/photo.jsp");

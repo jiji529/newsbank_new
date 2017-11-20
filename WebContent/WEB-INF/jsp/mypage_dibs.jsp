@@ -33,7 +33,7 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
-<script src="js/dibs.js?v=20171117"></script>
+<script src="js/dibs.js?v=20171120"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(key, val){
@@ -132,7 +132,7 @@
 				</span>
 				<ul class="button">
 					<c:if test="${MemberInfo.deferred eq 'Y'}">
-						<li class="sort_down">다운로드</li>
+						<li class="sort_down" onclick="mutli_download()">다운로드</li>
 					</c:if>
 					<c:if test="${MemberInfo.deferred eq 'N'}">
 						<li class="sort_down" onclick="insertMultiBasket()">장바구니</li>
@@ -176,7 +176,7 @@
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 							<ul class="thumb_btn">
 								<c:if test="${MemberInfo.deferred eq 'Y'}">
-									<li class="btn_down">다운로드</li>
+									<li class="btn_down" onclick="down('${PhotoDTO.uciCode}')">다운로드</li>
 								</c:if>
 								<c:if test="${MemberInfo.deferred eq 'N'}">
 									<li class="btn_cart" onclick="insertBasket('${PhotoDTO.uciCode}')">장바구니</li>
@@ -191,4 +191,6 @@
 		</section>
 	</div>
 </body>
+<iframe id="downFrame" style="display:none" >
+</iframe>
 </html>

@@ -1,7 +1,7 @@
 var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 
 /** 개별 다운로드 */
-$(document).on("click", ".btn_down", function() {
+/*$(document).on("click", ".btn_down", function() {
 	var uciCode = $(this).parent().parent().find("div span:first").text();
 	var imgPath = $(this).parent().parent().find("a img").attr("src");
 	
@@ -9,7 +9,7 @@ $(document).on("click", ".btn_down", function() {
     link.download = uciCode;
     link.href = imgPath;
     link.click();
-});
+});*/
 
 /** 찜 카테고리 선택 */
 $(document).on("click", ".filter_list li", function() {		
@@ -164,4 +164,27 @@ function insertMultiBasket() {
 		});
 		insertBasket(uciCode.join("|"));
 	}
+}
+
+function down(uciCode) {
+	if(!confirm("원본을 다운로드 하시겠습니까?")) {
+		return;
+	}
+	var url = IMG_SERVER_URL_PREFIX + "/service.down.photo?uciCode="+uciCode+"&type=file";
+	$("#downFrame").attr("src", url);
+}	
+
+function mutli_download() {
+	var uciCode = new Array();
+	if(!confirm("선택파일을 압축파일로 다운로드하시겠습니까?")) {
+		return;
+	}
+	$("#wish_list2 input:checkbox:checked").each(function(index) {
+		uciCode.push($(this).val());
+	});
+	console.log(uciCode.join("|"));
+	
+	var url = IMG_SERVER_URL_PREFIX + "/service.zip.photo?uciCode="+uciCode+"&type=file";
+	console.log(url);
+	$("#downFrame").attr("src", url);
 }
