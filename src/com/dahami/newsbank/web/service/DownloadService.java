@@ -308,7 +308,7 @@ public class DownloadService extends ServiceBase {
 							return;
 						}
 					}
-					String zipFileName = "zip.zip";
+					String zipFileName = "newsbank_" + System.currentTimeMillis() + ".zip";
 					String zipPath = PATH_PHOTO_DOWN + "/zip/" + ymDf.format(new Date()) + "/" + zipFileName;
 					ZipUtil zu = new ZipUtil();
 					zu.createZipFile(fileFds, zipPath, true);

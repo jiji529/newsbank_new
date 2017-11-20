@@ -1,5 +1,5 @@
 //var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-var IMG_SERVER_URL_PREFIX = "localhost:8080";
+var IMG_SERVER_URL_PREFIX = "";
 
 /** 개별 다운로드 */
 /*$(document).on("click", ".btn_down", function() {
@@ -186,7 +186,7 @@ function mutli_download() {
 	
 	var param = uciCode.join("&uciCode=");
 	
-	var url = "/zip.down.photo?&type=file&uciCode=";
+	var url = IMG_SERVER_URL_PREFIX + "/zip.down.photo?&type=file&uciCode=";
 	url += param;
 	
 	$("#downFrame").attr("src", url);
