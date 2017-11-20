@@ -77,6 +77,9 @@ function dibsDelete(uciCode) {
 
 /** 개별 삭제 */
 $(document).on("click", ".btn_del", function() {
+	if(!confirm("정말로 삭제하시겠습니까?")) {
+		return;
+	}
 	var uciCode = $(this).parent().parent().find("div span:first").text();
 	$(this).closest(".thumb").remove();
 	
@@ -85,6 +88,9 @@ $(document).on("click", ".btn_del", function() {
 
 /** 다중선택 삭제 */
 $(document).on("click", ".sort_del", function() {
+	if(!confirm("선택항목을 정말로 삭제하시겠습니까?")) {
+		return;
+	}
 	$("#wish_list2 input:checkbox:checked").each(function(index) {
 		var uciCode = $(this).val();
 		dibsDelete(uciCode);

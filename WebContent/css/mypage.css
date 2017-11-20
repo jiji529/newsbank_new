@@ -233,14 +233,8 @@
 
 /*고객센터*/
 .rules{ }
-.rules .rule_list{ float:left; margin:40px 0 ; width:100%; padding:30px 60px; background:#f8f8f8; border:1px #ddd solid;  display: grid; 
-grid-template-rows: 10% 10% 10% 10% 10%;
-grid-template-columns: 33.3% 33.3% 33.3%;   
-grid-auto-flow: column;
--ms-grid-rows: 10% 10% 10% 10% 10%;
--ms-grid-columns: 33.3% 33.3% 33.3%;   
-grid-auto-flow: column;}
-.rules .rule_list li{ float:left;  height:45px; line-height:45px;}
+.rules .rule_list{ float:left; margin:40px 0 ; width:100%; padding:30px 60px; background:#f8f8f8; border:1px #ddd solid;}
+.rules .rule_list li{ float:left;  height:45px; line-height:45px; width:50%;}
 .rules .rule_list li a{ display:block; color:#666; font-size:16px;text-align:left;}
 .rules .rule_list li a:hover{ color:#f79320;}
 .rules .rule_cont{ float:left; width:100%; text-align:left;}
@@ -252,12 +246,16 @@ grid-auto-flow: column;}
 .rules .rule_cont li span{margin:10px 0 5px; font-size:14px; color:#000; width:100%; float:left;}
 .rules .rule_cont li ul{ padding-left:10px; float:left;  width:100%; }
 .rules .rule_cont li ul li{margin-bottom:0; list-style-type:decimal; float:left;  width:100%; }
-.rules .rule_cont li ul li:before{content:")"; margin-right:5px;}
+.rules .rule_cont li ul li:before{content:")"; margin-right:5px; margin-left:-3px;}
 .rules .rule_cont li ul li li{list-style-type:lower-alpha; }
 .rules .rule_cont li ul li li:before{ display:none;}
 .rules .rule_cont table{ margin-bottom:15px;}
 .rules .rule_cont th, .rules .rule_cont td{border-left:1px #ccc solid; padding:10px 20px;}
 .rules .rule_cont th:first-child, .rules .rule_cont td:first-child{border-left:0;}
+.rules .rule_cont li ul li li:before{ display:none;}
+.rules .rule_cont .contact{float:left; width:100%; border:1px #ccc solid; background:#f9f9f9; padding:30px;}
+.rules .rule_cont dt{font-size:14px; font-weight:bold; margin-bottom:5px; margin-top:10px;}
+.rules .rule_cont dd{font-size:14px; line-height:22px;}
 
 /* 직접 문의하기 */
 .call th{background:#f6f6f6; height:45px; border-bottom:1px #ddd solid; border-left:1px #ddd solid; font-size:14px; color:#333;}
