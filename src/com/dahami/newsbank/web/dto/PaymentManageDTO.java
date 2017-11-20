@@ -45,6 +45,7 @@ public class PaymentManageDTO implements Serializable {
 	private String LGD_RESPMSG; // 응답메시지
 	private String LGD_OID; // 상점주문번호
 	private int LGD_AMOUNT; // 결제금액
+	private String LGD_PAYSTATUS;// 상태값 /1:결제성공 0:결제실패 2:결제대기중 3:무통장입금 대기중 
 	private String LGD_TID; // 거래 번호
 	private String LGD_PAYTYPE; // 결제수단 코드
 	private String LGD_PAYDATE; // 결제 일시
@@ -111,7 +112,11 @@ public class PaymentManageDTO implements Serializable {
 		LGD_OID = lGD_OID;
 	}
 
-	public String getLGD_AMOUNT() {
+	public int getLGD_AMOUNT() {
+		return LGD_AMOUNT;
+	}
+	
+	public String getLGD_AMOUNT_Str() {
 		DecimalFormat df = new DecimalFormat("#,##0");
 		return "\\" + df.format(LGD_AMOUNT); // 가격 출력 포멧
 	}
@@ -129,7 +134,7 @@ public class PaymentManageDTO implements Serializable {
 	}
 
 	public String getLGD_PAYTYPE() {
-		switch (LGD_PAYTYPE) {
+		/*switch (LGD_PAYTYPE) {
 		case "SC0010":
 			LGD_PAYTYPE = "신용카드";
 			break;
@@ -163,8 +168,48 @@ public class PaymentManageDTO implements Serializable {
 		case "000000":
 			LGD_PAYTYPE = "후불";
 			break;
-		}
+		}*/
 		return LGD_PAYTYPE;
+	}
+	
+	public String getPayType() {
+		String PAYTYPE="";
+		switch (LGD_PAYTYPE) {
+		case "SC0010":
+			PAYTYPE = "신용카드";
+			break;
+		case "SC0030":
+			PAYTYPE = "계좌이체";
+			break;
+		case "SC0040":
+			PAYTYPE = "무통장";
+			break;
+		case "SC0060":
+			PAYTYPE = "휴대폰";
+			break;
+		case "SC0070":
+			PAYTYPE = "유선전화결제";
+			break;
+		case "SC0090":
+			PAYTYPE = "OK캐쉬백";
+			break;
+		case "SC0111":
+			PAYTYPE = "문화상품권";
+			break;
+		case "SC0112":
+			PAYTYPE = "게임문화상품권";
+			break;
+		case "SC0113":
+			PAYTYPE = "도서문화상품권";
+			break;
+		case "SC0220":
+			PAYTYPE = "모바일T머니";
+			break;
+		case "000000":
+			PAYTYPE = "후불";
+			break;
+		}
+		return PAYTYPE;
 	}
 
 	public void setLGD_PAYTYPE(String lGD_PAYTYPE) {
@@ -225,6 +270,15 @@ public class PaymentManageDTO implements Serializable {
 
 	public void setPaymentManage_seq(int paymentManage_seq) {
 		this.paymentManage_seq = paymentManage_seq;
+	}
+
+	public String getLGD_PAYSTATUS() {
+		return LGD_PAYSTATUS;
+	}
+
+	public void setLGD_PAYSTATUS(int lGD_PAYSTATUS) {
+		
+		LGD_PAYSTATUS = Integer.toString(lGD_PAYSTATUS);
 	}
 	
 	

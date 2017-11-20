@@ -5,16 +5,24 @@
 
 
 	<!--기간별 온라인/오프라인 결제 합계 -->
-	<select id="selectTotalPrice" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<select id="selectTotalPrice" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
 		SELECT CASE
-		M.LGD_PAYTYPE WHEN '000000' THEN 'onLine' ELSE 'offline' END as TYPE,
-		YEAR(M.LGD_PAYDATE) as Y, MONTH(M.LGD_PAYDATE) as M, SUM(D.price) AS
-		totalPrice		FROM		`paymentManage`
-		AS M		LEFT JOIN `paymentDetail` D ON M.seq		= D.`paymentManage_seq`		LEFT JOIN `photo` P ON P.`uciCode` =		D.`photo_uciCode`
+		M.LGD_PAYTYPE WHEN '000000' THEN 'onLine' ELSE
+		'offline' END as TYPE,
+		YEAR(M.LGD_PAYDATE) as Y, MONTH(M.LGD_PAYDATE)
+		as M, SUM(D.price) AS
+		totalPrice FROM `paymentManage`
+		AS M LEFT JOIN
+		`paymentDetail` D ON M.seq = D.`paymentManage_seq` LEFT JOIN `photo` P
+		ON P.`uciCode` = D.`photo_uciCode`
 		where
-		M.LGD_RESPCODE='0000' 
-		AND (P.`member_seq` = #{member_seq} OR P.`member_seq` IN		(SELECT		`adjSlave` FROM `adjustment` WHERE `admission`='Y' AND
-		`adjMaster`= #{member_seq} ))
+		M.LGD_RESPCODE='0000'
+		AND
+		(P.`member_seq` = #{member_seq} OR P.`member_seq` IN (SELECT
+		`adjSlave` FROM `adjustment` WHERE `admission`='Y' AND
+		`adjMaster`=
+		#{member_seq} ))
 		AND M.LGD_PAYDATE BETWEEN #{start_date}
 		AND
 		#{end_date}
@@ -25,7 +33,7 @@
 	<!--검색 기간별 온라인/오프라인 결제 내역 -->
 	<select id="selectToTalAccountList" parameterType="java.util.HashMap"
 		resultType="java.util.HashMap">
-		
+
 		SELECT M.`LGD_BUYER`,
 		M.`LGD_OID`,
 		M.`LGD_PAYTYPE`,
@@ -37,29 +45,38 @@
 		U.`usageDate`,
 		P.`copyright`,
 		mp.`preRate`,
-		mp.`postRate` 
+		mp.`postRate`
 		FROM
 		`paymentManage` AS M
-		LEFT JOIN paymentDetail D ON M.seq =
+		LEFT JOIN
+		paymentDetail D ON M.seq =
 		D.paymentManage_seq
-		LEFT JOIN usageList U ON U.seq = D.usageList_seq
-		LEFT JOIN photo P ON P.uciCode = D.photo_uciCode
-		LEFT JOIN member mm ON	M.member_seq = mm.seq
-		LEFT JOIN member mp ON	P.member_seq = mp.seq
+		LEFT JOIN usageList U ON
+		U.seq = D.usageList_seq
+		LEFT JOIN photo P ON P.uciCode =
+		D.photo_uciCode
+		LEFT JOIN member mm ON
+		M.member_seq = mm.seq
+		LEFT JOIN
+		member mp ON P.member_seq = mp.seq
 		where
 		M.LGD_RESPCODE='0000'
-		AND (P.`member_seq` = #{member_seq} OR
+		AND
+		(P.`member_seq` = #{member_seq} OR
 		P.`member_seq` IN
-		(SELECT `adjSlave` FROM `adjustment` WHERE `admission`='Y' AND
+		(SELECT `adjSlave`
+		FROM `adjustment` WHERE
+		`admission`='Y' AND
 		`adjMaster` =#{member_seq}))
 		<if test="start_date !=null and end_date !=null">
 			AND M.LGD_PAYDATE BETWEEN #{start_date} AND
 			#{end_date}
 		</if>
 		<if test="keyword !=null">
-		<bind name="keyword" value="'%' + keyword + '%'" />
+			<bind name="keyword" value="'%' + keyword + '%'" />
 			AND (mm.`id` LIKE #{keyword} OR mm.`name` LIKE #{keyword}
-			OR mm.`compName` LIKE #{keyword})
+			OR
+			mm.`compName` LIKE #{keyword})
 		</if>
 
 
@@ -70,7 +87,7 @@
 		<if test="media !=null">
 			AND P.`member_seq` IN (${media})
 		</if>
-			ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
+		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
 	</select>
 
 
@@ -78,11 +95,12 @@
 	<!-- 결제 정보 목록 호출 -->
 	<select id="selectPaymentManage" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
 		resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
-		SELECT `seq`, `member_seq`, `LGD_BUYER`, `LGD_BUYERID`,
+		SELECT `seq` as `paymentManage_seq`, `member_seq`, `LGD_BUYER`, `LGD_BUYERID`,
 		`LGD_BUYERPHONE`, `LGD_RESPCODE`, `LGD_RESPMSG`, `LGD_OID`,
 		`LGD_AMOUNT`, `LGD_TID`, `LGD_PAYTYPE`, `LGD_PAYDATE`,
 		`LGD_PRODUCTINFO`, `LGD_ACCOUNTNUM`, `regDate` FROM `paymentManage`
 		where `member_seq` = #{member_seq}
+		AND `LGD_PAYSTATUS` = '1'
 		<if test="LGD_OID !=null">
 			AND LGD_OID = #{LGD_OID}
 		</if>
@@ -98,7 +116,7 @@
 		M.`LGD_BUYERID`,
 		M.`LGD_BUYERPHONE`, M.`LGD_RESPCODE`,
 		M.`LGD_RESPMSG`,
-		M.`LGD_OID`,
+		M.`LGD_OID`,M.LGD_PAYSTATUS,
 		M.`LGD_AMOUNT`, M.`LGD_TID`,
 		M.`LGD_PAYTYPE`,
 		M.`LGD_PAYDATE`,
@@ -132,6 +150,9 @@
 		#{member_seq}
 		<if test="LGD_OID !=null">
 			AND M.LGD_OID = #{LGD_OID}
+		</if>
+		<if test="LGD_PAYSTATUS !=null">
+			AND M.LGD_PAYSTATUS = #{LGD_PAYSTATUS}
 		</if>
 
 		ORDER BY M.`regDate` DESC
@@ -195,8 +216,8 @@
 
 
 	<!-- 결제정보 입력 -->
-	<insert id="insertPaymentMaange" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
-		useGeneratedKeys="true" keyProperty="seq">
+	<insert id="insertPaymentManage" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
+		useGeneratedKeys="true" keyProperty="paymentManage_seq">
 		INSERT INTO `paymentManage` (
 		member_seq
 		<if test="LGD_BUYER != null">, LGD_BUYER</if>
@@ -205,6 +226,7 @@
 		<if test="LGD_RESPCODE != null">, LGD_RESPCODE</if>
 		<if test="LGD_RESPMSG != null">, LGD_RESPMSG</if>
 		<if test="LGD_OID != null">, LGD_OID</if>
+		<if test="LGD_PAYSTATUS != null">, LGD_PAYSTATUS</if>
 		<if test="LGD_AMOUNT != null">, LGD_AMOUNT</if>
 		<if test="LGD_TID != null">, LGD_TID</if>
 		<if test="LGD_PAYTYPE != null">, LGD_PAYTYPE</if>
@@ -219,6 +241,7 @@
 		<if test="LGD_RESPCODE != null">, #{LGD_RESPCODE}</if>
 		<if test="LGD_RESPMSG != null">, #{LGD_RESPMSG}</if>
 		<if test="LGD_OID != null">, #{LGD_OID}</if>
+		<if test="LGD_PAYSTATUS != null">, #{LGD_PAYSTATUS}</if>
 		<if test="LGD_AMOUNT != null">, #{LGD_AMOUNT}</if>
 		<if test="LGD_TID != null">, #{LGD_TID}</if>
 		<if test="LGD_PAYTYPE != null">, #{LGD_PAYTYPE}</if>
@@ -226,5 +249,99 @@
 		<if test="LGD_PRODUCTINFO != null">, #{LGD_PRODUCTINFO}</if>
 		<if test="LGD_ACCOUNTNUM != null">, #{LGD_ACCOUNTNUM}</if>
 		)
+		<selectKey resultType="int" keyProperty="paymentManage_seq">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
 	</insert>
+
+
+	<!-- 결제 상세정보 입력 -->
+	<insert id="insertPaymentDetail" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO"
+		useGeneratedKeys="true" keyProperty="paymentDetail_seq">
+		INSERT INTO `paymentDetail` (
+		paymentManage_seq
+		<if test="usageList_seq != null">, usageList_seq</if>
+		<if test="photo_uciCode != null">,photo_uciCode</if>
+		<if test="price != null">, price</if>
+
+		) values (
+		#{paymentManage_seq}
+		<if test="usageList_seq != null">, #{usageList_seq}</if>
+		<if test="photo_uciCode != null">, #{photo_uciCode}</if>
+		<if test="price != null">, #{price}</if>
+
+		)
+		<selectKey resultType="int" keyProperty="paymentDetail_seq">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+
+
+	<!-- 결제 정보 업데이트 -->
+	<update id="updatePaymentManage" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO">
+		update `paymentManage`
+		<set>
+			LGD_RESPCODE = #{LGD_RESPCODE}
+			<if test="LGD_RESPMSG != null">, LGD_RESPMSG = #{LGD_RESPMSG}</if>
+			<if test="LGD_TID != null">, LGD_TID = #{LGD_TID}</if>
+			<if test="LGD_PAYSTATUS != null">, LGD_PAYSTATUS = #{LGD_PAYSTATUS}</if>
+			<if test="LGD_FINANCENAME != null">, LGD_FINANCENAME = #{LGD_FINANCENAME}</if>
+			<if test="LGD_ACCOUNTNUM != null">, LGD_ACCOUNTNUM = #{LGD_ACCOUNTNUM}</if>
+
+		</set>
+		where LGD_OID = #{LGD_OID}
+
+	</update>
+	
+		<!-- 결제 정보 목록 호출 -->
+	<select id="selectPaymentOID" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
+		resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
+		SELECT `seq` as `paymentManage_seq`, `member_seq`, `LGD_BUYER`, `LGD_BUYERID`,
+		`LGD_BUYERPHONE`, `LGD_RESPCODE`, `LGD_RESPMSG`, `LGD_OID`,
+		`LGD_AMOUNT`, `LGD_TID`, `LGD_PAYTYPE`, `LGD_PAYDATE`,
+		`LGD_PRODUCTINFO`, `LGD_ACCOUNTNUM`, `regDate` FROM `paymentManage`
+		where  LGD_OID = #{LGD_OID}
+
+	</select>
+	
+
+	<!-- 결제 상세 정보 업데이트 -->
+	<update id="updatePaymentDetail" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO">
+		update `paymentDetail`
+		<set>
+			downCount = #{downCount}
+			<if test="price >0">, price = #{price}</if>
+			<if test="downStart != null">, downStart = #{downStart}</if>
+			<if test="downEnd != null">, downEnd = #{downEnd}</if>
+
+		</set>
+		where `seq`=#{paymentDetail_seq}
+	</update>
+
+
+	<!-- 결제 이미지 날짜 갱신 -->
+	<update id="updateDownloadDate" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO">
+		update `paymentDetail`
+		<set>
+			downStart = #{downStart} , downEnd = #{downEnd}
+		</set>
+		where paymentManage_seq = #{paymentManage_seq}
+
+	</update>
+
+	<delete id="deletePaymentCart">
+		DELETE FROM basket WHERE
+		member_seq=#{member_seq} AND photo_uciCode
+		IN (SELECT photo_uciCode
+		FROM paymentDetail WHERE
+		paymentManage_seq =
+		#{paymentManage_seq});
+	</delete>
+
+
+
+
 </mapper>

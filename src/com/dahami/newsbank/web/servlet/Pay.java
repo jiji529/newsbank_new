@@ -1,9 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -40,6 +38,7 @@ public class Pay extends NewsbankServletBase {
 		super.doGet(request, response);
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
+		System.setProperty("jsse.enableSNIExtension", "false"); //handshake alert: unrecognized_name 에러
 
 		// 로그인 정보 세션 체크
 		HttpSession session = request.getSession();
@@ -49,11 +48,10 @@ public class Pay extends NewsbankServletBase {
 		if (MemberInfo != null) {
 
  			String cartArry = request.getParameter("cartArry");
-			System.out.println(cartArry);
 			if (cartArry != null && !cartArry.isEmpty()) {
 				List<CartDTO> payList = new ArrayList<CartDTO>();
 				String[] splitCart = cartArry.split(",");
-
+				System.out.println(splitCart.length);
 				for (int num = 0; num < splitCart.length; num++) {
 					String[] items = splitCart[num].split("\\|");
 					String[] usageList = new String[items.length - 1];

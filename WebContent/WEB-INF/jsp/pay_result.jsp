@@ -33,43 +33,9 @@
 		<%@include file="header.jsp"%>
 		<section class="mypage">
 		<div class="head">
-			<h2>마이페이지</h2>
-			<p>설명어쩌고저쩌고</p>
+			<h2>결제 확인</h2>
 		</div>
-		<div class="mypage_ul">
-			<ul class="mp_tab1">
-				<c:if test="${MemberInfo.type eq 'M'}">
-					<li>
-						<a href="/account.mypage">정산 관리</a>
-					</li>
-					<li>
-						<a href="/cms">사진 관리</a>
-					</li>
-				</c:if>
-				<li>
-					<a href="/info.mypage">회원정보 관리</a>
-				</li>
-				<li>
-					<a href="/dibs.myPage">찜관리</a>
-				</li>
-				<c:if test="${MemberInfo.deferred eq 'Y'}">
-					<li>
-						<a href="/download.mypage">다운로드 내역</a>
-					</li>
-					<li>
-						<a href="/postBuylist.mypage">구매내역</a>
-					</li>
-				</c:if>
-				<c:if test="${MemberInfo.deferred eq 'N'}">
-					<li>
-						<a href="/cart.myPage">장바구니</a>
-					</li>
-					<li>
-						<a href="/buylist.mypage">구매내역</a>
-					</li>
-				</c:if>
-			</ul>
-		</div>
+		
 		<div class="table_head">
 			<h3>주문 상세 정보</h3>
 		</div>

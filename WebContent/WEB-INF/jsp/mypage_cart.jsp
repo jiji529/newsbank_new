@@ -136,6 +136,7 @@
 	<div class="wrap">
 		<%@include file="header.jsp" %>
 		<form class="cart_form" method="post" action="/pay" name="cart_form" >
+			<input type="hidden" name="orderType" id="orderType" value="cart" />
 			<input type="hidden" name="cartArry" id="cartArry" />
 		</form>
 		<section class="mypage">

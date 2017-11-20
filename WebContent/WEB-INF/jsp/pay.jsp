@@ -50,7 +50,8 @@
 			<h3>주문정보 확인</h3>
 		</div>
 		<section id="order_list">
-		<form  id="frmOrder" name="frmOrder"  method="post">
+		<form  id="frmOrder" name="frmOrder"  method="post" >
+		<input type="hidden" name="orderType" value="${param.orderType }" />
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top: 0; margin-bottom: 15px;">
 				<colgroup>
 					<col>

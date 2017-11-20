@@ -29,7 +29,7 @@ function payment_return() {
 	fDoc = lgdwin.contentWindow || lgdwin.contentDocument;
 
 	if (fDoc.document.getElementById('LGD_RESPCODE').value == "0000") {
-
+		alert("사용자가 결제를 완료했습니다.");
 		document.getElementById("LGD_PAYKEY").value = fDoc.document.getElementById('LGD_PAYKEY').value;
 		document.getElementById("LGD_PAYINFO").target = "_self";
 		document.getElementById("LGD_PAYINFO").action = "Payres.Xpay";
@@ -67,6 +67,9 @@ $(document).ready(function() {
 						var form = $('<form></form>');
 						form.attr('id', 'LGD_PAYINFO');
 						form.attr('method', 'post');
+						form.attr('name', 'LGD_PAYINFO');
+						form.attr('action', 'Payres.Xpay');
+						
 						form.appendTo($("#order_list"));
 
 						$.each(data.data, function(key, value) {
@@ -74,6 +77,7 @@ $(document).ready(function() {
 							objs = document.createElement('input');
 							objs.setAttribute('type', 'hidden');
 							objs.setAttribute('name', key);
+							objs.setAttribute('id', key);
 							objs.setAttribute('value', value);
 							form.append(objs);
 						});

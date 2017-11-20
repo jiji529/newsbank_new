@@ -24,10 +24,10 @@ Map payReqMap = request.getParameterMap();
 	</script>
 </head>
 <body onload="setLGDResult()">
-<p><h1>RETURN_URL (인증결과)</h1></p>
+<!-- <p><h1>RETURN_URL (인증 결과)</h1></p> -->
 <div>
-<p>LGD_RESPCODE (결과코드) : <%= LGD_RESPCODE %></p>
-<p>LGD_RESPMSG (결과메시지): <%= LGD_RESPMSG %></p>
+<%-- <p>LGD_RESPCODE (결과 코드) : <%= LGD_RESPCODE %></p>
+<p>LGD_RESPMSG (결과 메시지): <%= LGD_RESPMSG %></p> --%>
 	<form method="post" name="LGD_RETURNINFO" id="LGD_RETURNINFO">
 	<%
 	for (Iterator i = payReqMap.keySet().iterator(); i.hasNext();) {

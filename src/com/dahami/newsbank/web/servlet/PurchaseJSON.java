@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +22,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
+import com.dahami.newsbank.web.dto.BookmarkDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.dto.PaymentDetailDTO;
+import com.dahami.newsbank.web.dto.PaymentManageDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
 
 /**
@@ -65,8 +70,12 @@ public class PurchaseJSON extends NewsbankServletBase {
 
 		Map<String, Object> LGD_DATA = new HashMap<String, Object>();
 
+		
+		List<PaymentDetailDTO> DetailList =new ArrayList<PaymentDetailDTO>();
+
 		int LGD_AMOUNT = 0;
 		String LGD_CUSTOM_USABLEPAY = "";
+		String ORDER_TYPE = "";
 
 		if (request.getParameter("orderJson") != null) {
 			String orderJson = request.getParameter("orderJson"); // json
@@ -78,17 +87,24 @@ public class PurchaseJSON extends NewsbankServletBase {
 				JSONParser jsonParser = new JSONParser();
 				JSONObject jsonObj = (JSONObject) jsonParser.parse(orderJson);
 				JSONArray orderArray = (JSONArray) jsonObj.get("order");
-				JSONArray orderArray2 = (JSONArray) jsonObj.get("order2");
-				System.out.println(orderArray2);
 
 				if (jsonObj.get("LGD_CUSTOM_USABLEPAY") != null) {
 					LGD_CUSTOM_USABLEPAY = jsonObj.get("LGD_CUSTOM_USABLEPAY").toString();
 					System.out.println("LGD_CUSTOM_USABLEPAY : " + jsonObj.get("LGD_CUSTOM_USABLEPAY"));
 				}
+				
+				if (jsonObj.get("orderType") != null) {
+					ORDER_TYPE = jsonObj.get("orderType").toString();
+				}
 
 				if (orderArray != null) {
 					for (int i = 0; i < orderArray.size(); i++) {
 						JSONObject tempObj = (JSONObject) orderArray.get(i);
+						PaymentDetailDTO paymentDetail = new PaymentDetailDTO();
+						paymentDetail.setPhoto_uciCode(tempObj.get("uciCode").toString());
+						paymentDetail.setPrice(Integer.parseInt(tempObj.get("price").toString()));
+						paymentDetail.setUsageList_seq(Integer.parseInt(tempObj.get("usage").toString()));
+						DetailList.add(paymentDetail);
 						int index = Integer.parseInt(tempObj.get("usage").toString());
 						int AMOUNT = Integer.parseInt(tempObj.get("price").toString());
 						LGD_AMOUNT += AMOUNT;
@@ -104,7 +120,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 						}
 
 					}
-				}else {
+				} else {
 					result = false;
 					message = "요청한 결제 정보가 올바르지 않습니다.";
 				}
@@ -128,6 +144,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 			String LGD_BUYERID = MemberInfo.getId(); // 구매자 아이디
 			String LGD_BUYER = MemberInfo.getName(); // 구매자 명
 			String LGD_BUYEREMAIL = MemberInfo.getEmail(); // 구매자 이메일
+			String LGD_BUYERPHONE = MemberInfo.getPhone(); // 구매자 이메일
 			String LGD_OID = LGD_BUYERID + "_" + LGD_TIMESTAMP; // 주문번호(상점정의 유니크한 주문번호를 입력하세요)
 			String LGD_PRODUCTINFO = LGD_BUYER + "(" + LGD_BUYERID + ")_" + LGD_AMOUNT + "_구매"; // 상품명
 
@@ -177,7 +194,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 			LGD_DATA.put("LGD_WINDOW_TYPE", "iframe"); // 결제창 호출 방식
 			LGD_DATA.put("LGD_TIMESTAMP", LGD_TIMESTAMP); // * 타임 스탬프 거래 위변조 방지용
 			LGD_DATA.put("LGD_RETURNURL", LGD_RETURNURL); // *인증결과 응답수신페이지 URL
-			// LGD_DATA.put("LGD_RESPMSG", ""); // 응답 메시지
+			LGD_DATA.put("LGD_RESPMSG", ""); // 응답 메시지
 			LGD_DATA.put("LGD_BUYER", LGD_BUYER); // * 구매자명
 			LGD_DATA.put("LGD_CUSTOM_SWITCHINGTYPE", "IFRAME"); //
 			LGD_DATA.put("LGD_PRODUCTINFO", LGD_PRODUCTINFO); // * 제품정보
@@ -185,9 +202,12 @@ public class PurchaseJSON extends NewsbankServletBase {
 			LGD_DATA.put("LGD_OID", LGD_OID); // * 상점 거래번호
 			LGD_DATA.put("LGD_HASHDATA", LGD_HASHDATA); // *해쉬데이터 거래 위변조 방지
 			LGD_DATA.put("LGD_OSTYPE_CHECK", "P"); // LGD_OSTYPE_CHECK
-			// LGD_DATA.put("LGD_RESPCODE", "0000"); // 응답코드
+			LGD_DATA.put("LGD_RESPCODE", ""); // 응답코드
 			LGD_DATA.put("LGD_AMOUNT", LGD_AMOUNT); // *결제금액
 			LGD_DATA.put("LGD_MID", LGD_MID); // *회사 코드
+
+			LGD_DATA.put("LGD_WINDOW_TYPE", "iframe"); // 창 띄우기 타입
+			LGD_DATA.put("LGD_CUSTOM_PROCESSTYPE", "TWOTR"); // 상점정의 프로세스 타입
 
 			LGD_DATA.put("LGD_ESCROW_USEYN", "N"); // 에스크로 사용안함
 			LGD_DATA.put("LGD_ACTIVEXYN", "N"); // 엑티브 x 사용여부
@@ -198,6 +218,34 @@ public class PurchaseJSON extends NewsbankServletBase {
 			LGD_DATA.put("LGD_ENCODING", LGD_ENCODING);
 			LGD_DATA.put("LGD_ENCODING_NOTEURL", LGD_ENCODING);
 			LGD_DATA.put("LGD_ENCODING_RETURNURL", LGD_ENCODING);
+			
+			LGD_DATA.put("ORDER_TYPE", ORDER_TYPE);
+			
+			
+			
+			
+
+			//결제 정보 요청 저장
+			PaymentManageDTO payment = new PaymentManageDTO();
+			payment.setMember_seq(MemberInfo.getSeq());
+			payment.setLGD_BUYER(LGD_BUYER);
+			payment.setLGD_BUYERID(LGD_BUYERID);
+			payment.setLGD_BUYERPHONE(LGD_BUYERPHONE);
+			payment.setLGD_OID(LGD_OID);
+			payment.setLGD_RESPCODE("9999");
+			payment.setLGD_RESPMSG("결제요청");
+			payment.setLGD_AMOUNT(LGD_AMOUNT);
+			payment.setLGD_PAYSTATUS(2);
+			payment.setLGD_PRODUCTINFO(LGD_PRODUCTINFO);
+			payment.setLGD_PAYDATE(LGD_TIMESTAMP);
+			payment.setLGD_PAYTYPE(LGD_CUSTOM_USABLEPAY);
+			PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
+			int paymentManage_seq = paymentDAO.insertPaymentManage(payment,DetailList);
+			System.out.println(paymentManage_seq);
+			if (paymentManage_seq > 0) {
+				// 등록 성공
+
+			}
 
 		}
 
@@ -253,6 +301,5 @@ public class PurchaseJSON extends NewsbankServletBase {
 			return null;
 		}
 	}
-
 
 }

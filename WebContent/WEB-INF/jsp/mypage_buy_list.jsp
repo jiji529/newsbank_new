@@ -93,8 +93,8 @@
 							<td>
 								<a href="javascript:;">${paymentManage.LGD_OID }</a>
 							</td>
-							<td>${paymentManage.LGD_PAYTYPE}</td>
-							<td>${paymentManage.LGD_AMOUNT}</td>
+							<td>${paymentManage.getPayType()}</td>
+							<td>${paymentManage.getLGD_AMOUNT_Str()}</td>
 							<td>${paymentManage.LGD_RESPMSG}</td>
 						</tr>
 					</c:forEach>

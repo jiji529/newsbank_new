@@ -61,9 +61,12 @@ public class PaymentDetailDTO implements Serializable {
 	public void setPhoto_uciCode(String photo_uciCode) {
 		this.photo_uciCode = photo_uciCode;
 	}
-	public String getPrice() {
+	public String getPrice_Str() {
 		DecimalFormat df = new DecimalFormat("#,##0");
 		return "\\" + df.format( price); // 가격 출력 포멧
+	}
+	public int getPrice() {
+		return price; 
 	}
 	public void setPrice(int price) {
 		this.price = price;

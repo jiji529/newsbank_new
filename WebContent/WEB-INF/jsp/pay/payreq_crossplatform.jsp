@@ -232,7 +232,7 @@ function payment_return() {
 <%
 	for(Iterator i = payReqMap.keySet().iterator(); i.hasNext();){
 		Object key = i.next();
-		out.println("<input type='hidden' name='" + key + "' id='"+key+"' value='" + payReqMap.get(key) + "'>" );
+		out.println("<input type='text' name='" + key + "' id='"+key+"' value='" + payReqMap.get(key) + "'>" );
 	}
 %>
 </form>
