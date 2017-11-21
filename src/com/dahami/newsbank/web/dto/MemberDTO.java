@@ -15,6 +15,8 @@ public class MemberDTO implements Serializable {
 	private String email; // 이메일
 	private String name; // 이름
 	private String phone; // 핸드폰번호
+	/** 회원타입: 관리자 */
+	public static final String TYPE_ADMIN = "A";
 	/** 회원타입: 매체 */
 	public static final String TYPE_MEDIA = "M";
 	/** 회원타입: 개인 */
