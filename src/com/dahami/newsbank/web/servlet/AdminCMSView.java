@@ -19,13 +19,13 @@ import com.dahami.newsbank.web.dto.StatsDTO;
  * Servlet implementation class CMSViewManage
  */
 @WebServlet("/view.cms.manage")
-public class CMSViewManage extends NewsbankServletBase {
+public class AdminCMSView extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see NewsbankServletBase#NewsbankServletBase()
      */
-    public CMSViewManage() {
+    public AdminCMSView() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -88,7 +88,7 @@ public class CMSViewManage extends NewsbankServletBase {
 			//System.out.println("ACTION parameter null or empty");
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/manage_cms_view.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_cms_view.jsp");
 		dispatcher.forward(request, response);
 	}
 

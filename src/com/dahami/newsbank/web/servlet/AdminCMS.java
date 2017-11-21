@@ -23,13 +23,13 @@ import com.dahami.newsbank.web.service.bean.SearchParameterBean;
  * Servlet implementation class CMSManage
  */
 @WebServlet("/cms.manage")
-public class CMSManage extends NewsbankServletBase {
+public class AdminCMS extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see NewsbankServletBase#NewsbankServletBase()
      */
-    public CMSManage() {
+    public AdminCMS() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,18 +43,27 @@ public class CMSManage extends NewsbankServletBase {
 		request.setCharacterEncoding("UTF-8");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-		MemberDAO mDao = new MemberDAO();
-		MemberDTO memberDTO = new MemberDTO();
-		List<MemberDTO> mediaList = mDao.listActiveMedia();
-		request.setAttribute("mediaList", mediaList);
+		HttpSession session = request.getSession();
+		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+
+		if (MemberInfo != null) {
+			MemberDAO mDao = new MemberDAO();
+			MemberDTO memberDTO = new MemberDTO();
+			List<MemberDTO> mediaList = mDao.listActiveMedia();
+			request.setAttribute("mediaList", mediaList);
+			
+			SearchParameterBean parameterBean = new SearchParameterBean();
+			String cms_keyword = request.getParameter("cms_keyword_current") == null ? "" : request.getParameter("cms_keyword_current");
+			parameterBean.setPageVol(40);
+			request.setAttribute("cms_keyword", cms_keyword);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_cms.jsp");
+			dispatcher.forward(request, response);
+			
+		} else {
+			response.sendRedirect("/login");
+		}
 		
-		SearchParameterBean parameterBean = new SearchParameterBean();
-		String cms_keyword = request.getParameter("cms_keyword_current") == null ? "" : request.getParameter("cms_keyword_current");
-		parameterBean.setPageVol(40);
-		request.setAttribute("cms_keyword", cms_keyword);
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/manage_cms.jsp");
-		dispatcher.forward(request, response);
 	}
 
 	/**
