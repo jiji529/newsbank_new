@@ -64,7 +64,7 @@
 					<li>
 						<a href="/cart.myPage">장바구니</a>
 					</li>
-					<li>
+					<li class="on">
 						<a href="/buylist.mypage">구매내역</a>
 					</li>
 				</c:if>
