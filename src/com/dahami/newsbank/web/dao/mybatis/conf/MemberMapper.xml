@@ -179,4 +179,8 @@
 		ORDER BY `compName` ASC
 	</select>
 
+
+	<select id="selGetty" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+		select * from member where id = 'gettyimage';
+	</select>
 </mapper>

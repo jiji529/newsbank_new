@@ -28,6 +28,12 @@ public class SearchParameterBean {
 	private String keyword;
 	private String uciCode;
 	
+	public static final String OWNER_SELF = PhotoDTO.OWNER_SELF;
+	public static final String OWNER_COOP = PhotoDTO.OWNER_COOP;
+	public static final String OWNER_MEDIA = PhotoDTO.OWNER_MEDIA;
+	public static final String OWNER_PERSONAL = PhotoDTO.OWNER_PERSONAL;
+	private String[] ownerType;
+	
 	/** 판매 상태 1:미판매 / 2:판매중 / 4:판매중지 / 8:삭제(플래그,판매건) */
 	private int saleState;
 	public static final int SALE_STATE_NOT = 1;
@@ -90,6 +96,9 @@ public class SearchParameterBean {
 	private int pageNo;
 	
 	public SearchParameterBean() {
+		this.ownerType = new String[] {
+			OWNER_MEDIA	
+		};
 		pageVol = 20;
 		pageNo = 1;
 	}
@@ -251,6 +260,14 @@ public class SearchParameterBean {
 
 	public void setGroup(int group) {
 		this.group = group;
+	}
+
+	public String[] getOwnerType() {
+		return ownerType;
+	}
+
+	public void setOwnerType(String[] ownerType) {
+		this.ownerType = ownerType;
 	}
 	
 }

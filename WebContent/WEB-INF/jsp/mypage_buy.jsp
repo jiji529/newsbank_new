@@ -64,7 +64,7 @@
 					<li>
 						<a href="/cart.myPage">장바구니</a>
 					</li>
-					<li>
+					<li class="on">
 						<a href="/buylist.mypage">구매내역</a>
 					</li>
 				</c:if>
@@ -182,8 +182,8 @@
 							${paymentDetailList.downCount }회
 							<br />
 							<div class="btn_group">
-								<button type="button" class="btn_o" name="btn_down">다운로드</button>
-								<button type="button" class="btn_g" name="btn_cancle">결제취소</button>
+								<button type="button" class="btn_o" name="btn_down" value="${paymentDetailList.photo_uciCode }">다운로드</button>
+								<button type="button" class="btn_g" name="btn_cancle" value="${paymentDetailList.photo_uciCode }">결제취소</button>
 								<!-- 다운로드 0일때만 가능-->
 							</div>
 						</td>

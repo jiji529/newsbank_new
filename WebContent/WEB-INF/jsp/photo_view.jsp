@@ -3,7 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+// String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+String IMG_SERVER_URL_PREFIX = "";
 //String IMG_SERVER_URL_PREFIX = "";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -422,7 +423,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 			url: "search",
 			success : function(data) {
 				$(data.result).each(function(key, val) {
-					html += '<li><a href="#"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+					html += '<li><a href="javascript:;"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
 				});
 				$(html).appendTo(".cfix");
 			},
@@ -437,19 +438,24 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 		var cartArry = new Array();
 		var uciCode = "${photoDTO.uciCode}";
 		var cart = uciCode;
-		$(".option_result ul li").each(function(index) {
-			var usage_seq = $(this).children(".op_cont").attr("value");
-			cart = cart + "|" + usage_seq;
-		});		
-		cartArry.push(cart);
-		
-		var param = {
-			"cart" : cartArry
-		};
-		
-		$("#cartArry").val(cartArry);
-		
-		view_form.submit();
+		if($(".option_result ul li").length>0){
+			$(".option_result ul li").each(function(index) {
+				var usage_seq = $(this).children(".op_cont").attr("value");
+				cart = cart + "|" + usage_seq;
+			});		
+			cartArry.push(cart);
+			
+			var param = {
+				"cart" : cartArry
+			};
+			
+			$("#cartArry").val(cartArry);
+			
+			view_form.submit();
+		}else{
+			alert("상품을 선택하세요.");
+		}
+
 	}
 	
 	function down() {
@@ -502,7 +508,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<a href="#" class="btn_wish">찜하기 X</a>	
 					</c:if>
 					<c:if test="${bookmark.seq ne null}">
-						<a href="#" class="btn_wish on">찜하기 O</a>
+						<a href="javascript:;" class="btn_wish on">찜하기 O</a>
 					</c:if>
 					<p class="img_cont">${photoDTO.descriptionKor}</p>
 				</div>
@@ -554,7 +560,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 		<div class="view_rt">
 			<div class="view_rt_top">
 				<h3>이미지 구매하기</h3>
-				<a href="#" class="price_info">가격확인</a>
+				<a href="javascript:;" class="price_info">가격확인</a>
 			</div>
 			<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
 				<div class="option_choice">
@@ -590,13 +596,13 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 					<div class="btn_wrap">
 						<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
 						<div class="btn_down" id="btnDownTentative"><a href="/list.down.photo?uciCode=${photoDTO.uciCode}">시안 다운로드</a></div>
-						<div class="btn_buy"><a href="#" onclick="go_pay()">구매하기</a></div>
+						<div class="btn_buy"><a href="javascript:;" onclick="go_pay()">구매하기</a></div>
 					</div>
 				</c:if>
 				<c:if test="${loginInfo != null && loginInfo.deferred == 'Y'}">
 					<div class="btn_wrap">
 						<div class="btn_buy" id="btnDown">
-							<a href="#" onclick="down()">다운로드</a>
+							<a href="javascript:;" onclick="down()">다운로드</a>
 						</div>
 					</div>
 				</c:if>

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dto.DownloadDTO;
 import com.dahami.newsbank.web.dto.StatsDTO;
 
 public class PhotoDAO extends DAOBase {
@@ -342,5 +343,56 @@ public class PhotoDAO extends DAOBase {
 			try {session.commit();} catch (Exception e) {}
 			try {session.close();} catch (Exception e) {}
 		}
+	}
+	
+	/**
+	 * @methodName  : insDownLog
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 11. 21. 오전 11:26:03
+	 * @methodCommet: 다운로드 기록 생성
+	 * @param downLog 
+	 * @returnType  : void
+	 */
+	public void insDownLog(DownloadDTO downLog) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			session.insert("Download.insDownload", downLog);
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+	}
+	
+	/**
+	 * @methodName  : checkDownloadable
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 11. 21. 오후 5:31:10
+	 * @methodCommet: 
+	 * @param uciCode
+	 * @param memberSeq
+	 * @return 
+	 * @returnType  : boolean
+	 */
+	public boolean checkDownloadable(String uciCode, int memberSeq) {		SqlSession session = null;
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("uciCode", uciCode);
+		param.put("memberSeq", memberSeq);
+		try {
+			session = sf.getSession();
+			if(session.selectOne("Download.selDownloadable", param) != null) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return false;
 	}
 }

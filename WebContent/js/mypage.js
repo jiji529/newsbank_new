@@ -503,13 +503,11 @@ $(document).ready(function() {
 $(document).ready(function() {
 	/** 개별 다운로드 */
 	$(".btn_group [name=btn_down]").on("click", function() {
-		var uciCode = $(this).parent().parent().find("div span:first").text();
-		var imgPath = $(this).parent().parent().find("a img").attr("src");
+		var uciCode = $(this).val();
+		var imgPath = "/service.down.photo?uciCode=" + uciCode + "&type=file";
 
 		var link = document.createElement("a");
-		/*
-		 * link.download = uciCode; link.href = imgPath; link.click();
-		 */
+		link.download = uciCode; link.href = imgPath; link.click();
 	});
 
 });

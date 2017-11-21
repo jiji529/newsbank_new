@@ -2,9 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Download">
-    <insert id="insert">
-	    INSERT INTO download (photo_uciCode, member_id, deferUse, regDate) VALUES (#{photo_uciCode}, #{member_id}, 'N', NOW())	    
-	</insert>
+	<insert id="insDownload" keyColumn="seq" keyProperty="seq" useGeneratedKeys="true" parameterType="com.dahami.newsbank.web.dto.DownloadDTO">
+		insert 
+			into download
+			(photo_uciCode, member_seq, ipAddress, deferUse)
+			values
+       		(#{uciCode}, #{memberSeq}, #{ipAddress}, #{deferUse})
+    </insert>
 	
+	<select id="selDownloadable" parameterType="java.util.Map" resultType="int">
+		<![CDATA[
+		SELECT seq 
+			FROM 
+				paymentDetail
+			WHERE photo_uciCode = #{uciCode}
+				AND downStart <= NOW() 
+				AND downEnd >= NOW() 
+				AND paymentManage_seq IN 
+					(SELECT seq FROM paymentManage WHERE member_seq = #{memberSeq} AND LGD_PAYSTATUS = 1)
+		]]>
+	</select>
 </mapper>
     

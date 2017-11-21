@@ -244,6 +244,18 @@ public class SearchDAO extends DAOBase {
 		String keyword = params.getKeyword();
 		String uciCode = params.getUciCode();
 		
+		String[] ownerTypes = params.getOwnerType();
+		StringBuffer ownerTypeBuf = new StringBuffer();
+		for(String ownerType : ownerTypes) {
+			if(ownerTypeBuf.length() > 0) {
+				ownerTypeBuf.append(" OR " );
+			}
+			ownerTypeBuf.append(ownerType);
+		}
+		if(ownerTypeBuf.length() > 0) {
+			query.addFilterQuery("ownerType:(" + ownerTypeBuf.toString() + ")");
+		}
+		
 		// 기본적으로 판매건만 보기
 		int saleState = params.getSaleState();
 		if(saleState == 0) {

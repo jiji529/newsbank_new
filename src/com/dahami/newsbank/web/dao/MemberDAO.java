@@ -55,6 +55,28 @@ public class MemberDAO extends DAOBase {
 		}
 	}
 	
+	/**
+	 * @methodName  : getMember
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2017. 11. 21. 오전 11:20:49
+	 * @methodCommet: 해당 쿼리로 사용자 정보를 읽어온다(연계 계정을 위해 필요)
+	 * @param qryMap
+	 * @return 
+	 * @returnType  : MemberDTO
+	 */
+	public MemberDTO getMember(String qryMap) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectOne(qryMap);
+		}catch(Exception e) {
+			logger.warn("", e);
+			return null;
+		}finally{
+			try {session.close();}catch(Exception e){}
+		}
+	}
+	
 	public MemberDTO getMember(int memberSeq) {
 		SqlSession session = null;
 		try {
