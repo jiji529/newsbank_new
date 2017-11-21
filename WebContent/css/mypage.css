@@ -413,15 +413,18 @@
 .admin .ad_result .ad_result_btn_area select { float:left; border:1px #bbb solid; padding:0 5px; width:70px; height:28px;border-radius:2px;}
 .admin .ad_result .ad_result_btn_area a{ float:left; padding:6px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa; margin-left:8px;}
 .admin .ad_result .ad_result_btn_area a:hover{border:1px #f79320 solid; color:#f79320;}
-.admin .tb01 .btn_input1{ padding: 5px 20px; color: #666; border: 1px solid #aaa; background:#fff; border-radius: 2px; margin-left:10px; }
-.admin .tb01 .btn_input2{ padding: 5px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; border-radius: 2px; margin-left:10px; }
+.admin .tb01 .btn_input1{ padding: 5px 20px; color: #666; border: 1px solid #aaa; background:#fff; }
+.admin .tb01 .btn_input2{ padding: 5px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; }
 .admin .bar{margin:7px 5px;}
 .admin .tb01 td .my_addr{float:left; width:100%; margin-bottom:5px;}
 .admin .tb01 td input[type=file]{ padding:2px ; border: 1px solid #d9d9d9; border-radius: 2px; width:400px;}
 .admin .tb01 td .file_add{ float:left; margin-left:40px; margin-top:3px; width:24px; height:24px; background:url(../images/mp/add.png) 0 0 no-repeat; text-indent:-9999px;}
 .admin .tb01 td .file_del{ float:left; margin-left:8px;  margin-top:3px; width:24px; height:24px; background:url(../images/mp/del.png) 0 0 no-repeat;text-indent:-9999px}
 .mypage .tb01 td.phone { padding: 0 0 0 30px;  }
-
+.admin .mypage .btn_area a{ padding: 12px 30px; background:#fff; border-radius:4px; margin-left:10px; display:inline-block; }
+.admin .mypage .btn_area .btn_input1{ color: #999; border: 1px solid #999; }
+.admin .mypage .btn_area .btn_input2{ color: #f79320; border: 1px solid #f79320; }
+.admin .mypage .btn_area .btn_input3{ color: #000; border: 1px solid #000; }
 
 .admin .tb04 { border-top:2px #555b62 solid; border-bottom:1px #999 solid; margin-bottom:0;}
 .tb04 th { padding: 5px 10px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:40px; background:#f6f6f6; }
