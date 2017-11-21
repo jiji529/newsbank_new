@@ -124,6 +124,24 @@
 		cart_form.submit();
 	}
 	
+	
+	
+	/** 바로 구매 */
+	$(document).on("click", ".btn_o", function() {
+		var uciCode = $(this).closest("tr").find(".code").text();
+		var cart ="";
+		var cartArry = new Array();
+		 $(this).closest("tr").find(".opt_li").each(function(index) {
+			 var usage_seq = $(this).attr("value");
+			
+			 cart += uciCode + "|" + usage_seq;
+		 });
+		 cartArry.push(cart);
+		$("#cartArry").val(cartArry);
+		cart_form.submit();
+		
+	});
+	
 </script>
 
 <link rel="stylesheet" href="css/base.css" />
@@ -231,9 +249,9 @@
 					</tr>
 					</c:forEach>
 				</table>
-	<a href="#" class="mp_btn" style="float:left;">선택 삭제</a>
+			<a href="javascript:;" class="mp_btn" style="float:left;">선택 삭제</a>
 			<div class="calculate_info_area">총 금액<strong><fmt:formatNumber value="${total * 10 / 11}" type="number"/></strong>원<span style="margin:0 20px;">+</span> 부가세<strong><fmt:formatNumber value="${total * 10 / 11 / 10}" type="number"/></strong>원<span style="margin:0 20px;">=</span> 총 판매금액 : <strong class="color"><fmt:formatNumber value="${total}" type="number"/></strong>원</div>
-			<div class="btn_area"><a href="#" class="btn_input2" onclick="multi_pay()">결제하기</a></div>
+			<div class="btn_area"><a href="javascript:;" class="btn_input2" onclick="multi_pay()">결제하기</a></div>
 	
 	</section>
 		</section>

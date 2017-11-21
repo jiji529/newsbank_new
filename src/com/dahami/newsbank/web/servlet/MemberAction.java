@@ -53,7 +53,7 @@ public class MemberAction extends NewsbankServletBase {
 		boolean check = true;
 		boolean result = false;
 		String message = null;
-		String cmd = null;
+		String cmd = "";
 
 		/** 공통 **/
 		int seq = 0;

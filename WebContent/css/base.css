@@ -14,7 +14,8 @@ a{text-decoration: none;}
 button{cursor:pointer;}
 ::-moz-selection {background: #f79320; color:#fff;}
 ::selection {background: #f79320; color:#fff;}
-
+.fl{float:left;}
+.fr{float:right;}
 
 /*
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;}
@@ -41,8 +42,8 @@ nav.gnb_dark .gnb a.logo{height: 50px; display: block; float: left; width: 142px
 nav.gnb_dark .gnb .gnb_left li a{color:#555;}
 nav.gnb_dark .gnb .gnb_left li.on a{color:#f79320;}
 
-.admin nav.gnb_dark .gnb a.logo{width:260px; color:#f79320; text-indent:108px; font-size:18px; text-align:left; line-height:40px; font-weight:bold;
-height: 30px; background-size:100px; margin:5px 0;}
+.admin nav.gnb_dark .gnb a.logo{width:210px; color:#f79320; text-indent:108px; font-size:18px; text-align:left; line-height:40px; font-weight:bold;height: 35px; background-size:100px; margin:0 30px 5px 0; background-position:0 2px;}
+.admin nav.gnb_dark .gnb a.link{color:#f79320; font-size:13px; text-align:left; padding:6px 10px; border-radius:20px; margin:5px 0; border:1px #f79320 solid; float:left;}
 .admin nav.gnb_dark{position:fixed; top:0; z-index:50; float:left; height:60px;}
 .admin nav .gnb_right li{ float:left; padding:0 10px; height:30px; line-height:30px; margin-top:8px; border:1px #ddd solid; border-radius:4px; }
 .admin nav .gnb_right li a{font-size:13px;}

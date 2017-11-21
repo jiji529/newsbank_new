@@ -21,10 +21,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js'></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
+<style type="text/css">
+.upload-btn-wrapper {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+}
+
+.btn {
+	padding: 12px 20px;
+	color: #666;
+	border: 1px solid #aaa;
+	background: #fff;
+	border-radius: 2px;
+	margin-left: 10px;
+}
+
+.upload-btn-wrapper input[type=file] {
+	font-size: 100px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+}
+</style>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
@@ -42,10 +67,61 @@
 		$("#info_table").css("display", "none");
 		$("#account_table").css("display", "block");
 	});
-	
+
+	$(function() {
+		//등록증 업로드
+		$('input[name=compNumFile]').bind('change', function() {
+			console.log()
+			/*$('#uploadFile').remove();
+			var form = $('<form></form>');
+			form.attr('method', 'post');
+			form.attr('id', 'uploadFile');
+			form.attr('enctype', 'multipart/form-data');
+			form.attr('action', 'upload.test');
+			form.appendTo($("body"));
+
+			var objs = document.createElement('input');
+			objs.setAttribute('type', 'hidden');
+			objs.setAttribute('name', 'uploadFile');
+			objs.setAttribute('value', $(this).val());
+			form.append(objs);
+
+			var objs = document.createElement('input');
+			objs.setAttribute('type', 'hidden');
+			objs.setAttribute('name', 'type');
+			objs.setAttribute('value', 'doc');
+			form.append(objs);
+
+			$('#uploadFile').ajaxForm({
+				dataType : 'json',
+				beforeSubmit : function(data, form, option) {
+					//validation체크
+					//막기위해서는 return false를 잡아주면됨
+					return true;
+				},
+				success : function(response, status) {
+					//성공후 서버에서 받은 데이터 처리
+					console.log(response,status);
+				},
+				error : function() {
+					//에러발생을 위한 code페이지
+				}
+			}).submit();*/
+
+			$("<form action='upload.test' enctype='multipart/form-data' method='post'/>").ajaxForm({
+				dataType : 'json',
+				beforeSend : function() {
+					//$('#result').append( "beforeSend...\n" );
+				},
+				complete : function(data) {
+					//$('#result')							.append( "complete...\n" )							.append( JSON.stringify( data.responseJSON ) + "\n" );
+					console.log(data);
+				}
+			}).append($(this)).submit();
+		});
+	});
 </script>
 </head>
-
 <body>
 	<div class="wrap">
 		<%@include file="header.jsp"%>
@@ -120,9 +196,7 @@
 							</tr>
 							<tr>
 								<th>이름</th>
-								<td>
-								${MemberInfo.name}
-								</td>
+								<td>${MemberInfo.name}</td>
 							</tr>
 							<tr>
 								<th>휴대전화</th>
@@ -169,97 +243,100 @@
 						</tbody>
 					</table>
 					<c:if test="${MemberInfo.type ne 'P'}">
-					<h4>법인 정보</h4>
-					<table class="tb01" cellpadding="0" cellspacing="0">
-						<colgroup>
-							<col style="width: 240px;">
-							<col style="width:;">
-						</colgroup>
-						<tbody>
-							<tr>
-								<th>회사/기관명</th>
-								<td>
-									<input type="text" id="compName" name="compName" class="inp_txt" size="60" value="${MemberInfo.compName}" required />
-								</td>
-							</tr>
-							<tr>
-								<th>사업자등록번호</th>
-								<td>
-									<input type="text" size="3" id="compNum1" class="inp_txt" value="${compNum1}" maxlength="3" required />
-									<span class=" bar">-</span>
-									<input type="text" size="2" id="compNum2" class="inp_txt" value="${compNum2}" maxlength="2" required />
-									<span class=" bar">-</span>
-									<input type="text" size="5" id="compNum3" class="inp_txt" value="${compNum3}" maxlength="5" required />
-									<a href="#" class="btn_input1">등록증 업로드</a>
-									<a href="#" class="btn_input1">다운로드</a>
-								</td>
-							</tr>
-							<tr>
-								<th>사무실 전화</th>
-								<td>
-									<select id="compTel1" class="inp_txt" style="width: 70px;">
-										<option value="">선택</option>
-										<option value="010" <c:if test="${compTel1 eq '010'}">selected</c:if>>010</option>
-										<option value="011" <c:if test="${compTel1 eq '011'}">selected</c:if>>011</option>
-										<option value="016" <c:if test="${compTel1 eq '016'}">selected</c:if>>016</option>
-										<option value="017" <c:if test="${compTel1 eq '017'}">selected</c:if>>017</option>
-										<option value="018" <c:if test="${compTel1 eq '018'}">selected</c:if>>018</option>
-										<option value="019" <c:if test="${compTel1 eq '019'}">selected</c:if>>019</option>
-										<option value="02" <c:if test="${compTel1 eq '02'}">selected</c:if>>02</option>
-										<option value="031" <c:if test="${compTel1 eq '031'}">selected</c:if>>031</option>
-										<option value="032" <c:if test="${compTel1 eq '032'}">selected</c:if>>032</option>
-										<option value="033" <c:if test="${compTel1 eq '033'}">selected</c:if>>033</option>
-										<option value="041" <c:if test="${compTel1 eq '041'}">selected</c:if>>041</option>
-										<option value="042" <c:if test="${compTel1 eq '042'}">selected</c:if>>042</option>
-										<option value="043" <c:if test="${compTel1 eq '043'}">selected</c:if>>043</option>
-										<option value="044" <c:if test="${compTel1 eq '044'}">selected</c:if>>044</option>
-										<option value="051" <c:if test="${compTel1 eq '051'}">selected</c:if>>051</option>
-										<option value="052" <c:if test="${compTel1 eq '052'}">selected</c:if>>052</option>
-										<option value="053" <c:if test="${compTel1 eq '053'}">selected</c:if>>053</option>
-										<option value="054" <c:if test="${compTel1 eq '054'}">selected</c:if>>054</option>
-										<option value="055" <c:if test="${compTel1 eq '055'}">selected</c:if>>055</option>
-										<option value="061" <c:if test="${compTel1 eq '061'}">selected</c:if>>061</option>
-										<option value="062" <c:if test="${compTel1 eq '062'}">selected</c:if>>062</option>
-										<option value="063" <c:if test="${compTel1 eq '063'}">selected</c:if>>063</option>
-										<option value="064" <c:if test="${compTel1 eq '064'}">selected</c:if>>064</option>
-										<option value="070" <c:if test="${compTel1 eq '070'}">selected</c:if>>070</option>
-										<option value="080" <c:if test="${compTel1 eq '080'}">selected</c:if>>080</option>
-										<option value="0130" <c:if test="${compTel1 eq '0130'}">selected</c:if>>0130</option>
-									</select>
-									<span class=" bar">-</span>
-									<input type="text" id="compTel2" size="5" class="inp_txt" value="${compTel2}" maxlength="4" required />
-									<span class=" bar">-</span>
-									<input type="text" id="compTel3" size="5" class="inp_txt" value="${compTel3}" maxlength="4" required />
-								</td>
-							</tr>
-							<tr>
-								<th>회사 주소</th>
-								<td>
-									<div class="my_addr">
-										<input type="text" id="compZipcode" name="compZipcode" class="inp_txt" size="6" value="${MemberInfo.compZipcode}" readonly required />
-										<a href="javascript:;" id="findAddress" class="btn_input1">수정</a>
-									</div>
-									<div class="my_addr">
-										<input type="text" id="compAddress" name="compAddress" class="inp_txt" size="55" value="${MemberInfo.compAddress}" readonly required />
-										<input type="text" id="compAddDetail" name="compAddDetail" class="inp_txt" size="55" value="${MemberInfo.compAddDetail}" />
-									</div>
-								</td>
-							</tr>
-							<c:if test="${MemberInfo.type eq 'M'}">
-							<tr>
-								<th>정산 매체</th>
-								<td>
-									<input type="file" />
-									<a href="javascript:;" class="btn_input1">매체선택</a>
-									<a href="javascript:;" class="btn_input1">제호업로드</a>
-									<a href="javascript:;" class="btn_input1">다운로드</a>
-									<a class="file_add">파일 추가</a>
-									<a class="file_del">파일 삭제</a>
-								</td>
-							</tr>
-							</c:if>
-						</tbody>
-					</table>
+						<h4>법인 정보</h4>
+						<table class="tb01" cellpadding="0" cellspacing="0">
+							<colgroup>
+								<col style="width: 240px;">
+								<col style="width:;">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>회사/기관명</th>
+									<td>
+										<input type="text" id="compName" name="compName" class="inp_txt" size="60" value="${MemberInfo.compName}" required />
+									</td>
+								</tr>
+								<tr>
+									<th>사업자등록번호</th>
+									<td>
+										<input type="text" size="3" id="compNum1" class="inp_txt" value="${compNum1}" maxlength="3" required />
+										<span class=" bar">-</span>
+										<input type="text" size="2" id="compNum2" class="inp_txt" value="${compNum2}" maxlength="2" required />
+										<span class=" bar">-</span>
+										<input type="text" size="5" id="compNum3" class="inp_txt" value="${compNum3}" maxlength="5" required />
+										<div class="upload-btn-wrapper">
+											<button class="btn">등록증 업로드</button>
+											<input type="file" name="compNumFile" />
+										</div>
+										<a href="javascript:;" class="btn_input1">다운로드</a>
+									</td>
+								</tr>
+								<tr>
+									<th>사무실 전화</th>
+									<td>
+										<select id="compTel1" class="inp_txt" style="width: 70px;">
+											<option value="">선택</option>
+											<option value="010" <c:if test="${compTel1 eq '010'}">selected</c:if>>010</option>
+											<option value="011" <c:if test="${compTel1 eq '011'}">selected</c:if>>011</option>
+											<option value="016" <c:if test="${compTel1 eq '016'}">selected</c:if>>016</option>
+											<option value="017" <c:if test="${compTel1 eq '017'}">selected</c:if>>017</option>
+											<option value="018" <c:if test="${compTel1 eq '018'}">selected</c:if>>018</option>
+											<option value="019" <c:if test="${compTel1 eq '019'}">selected</c:if>>019</option>
+											<option value="02" <c:if test="${compTel1 eq '02'}">selected</c:if>>02</option>
+											<option value="031" <c:if test="${compTel1 eq '031'}">selected</c:if>>031</option>
+											<option value="032" <c:if test="${compTel1 eq '032'}">selected</c:if>>032</option>
+											<option value="033" <c:if test="${compTel1 eq '033'}">selected</c:if>>033</option>
+											<option value="041" <c:if test="${compTel1 eq '041'}">selected</c:if>>041</option>
+											<option value="042" <c:if test="${compTel1 eq '042'}">selected</c:if>>042</option>
+											<option value="043" <c:if test="${compTel1 eq '043'}">selected</c:if>>043</option>
+											<option value="044" <c:if test="${compTel1 eq '044'}">selected</c:if>>044</option>
+											<option value="051" <c:if test="${compTel1 eq '051'}">selected</c:if>>051</option>
+											<option value="052" <c:if test="${compTel1 eq '052'}">selected</c:if>>052</option>
+											<option value="053" <c:if test="${compTel1 eq '053'}">selected</c:if>>053</option>
+											<option value="054" <c:if test="${compTel1 eq '054'}">selected</c:if>>054</option>
+											<option value="055" <c:if test="${compTel1 eq '055'}">selected</c:if>>055</option>
+											<option value="061" <c:if test="${compTel1 eq '061'}">selected</c:if>>061</option>
+											<option value="062" <c:if test="${compTel1 eq '062'}">selected</c:if>>062</option>
+											<option value="063" <c:if test="${compTel1 eq '063'}">selected</c:if>>063</option>
+											<option value="064" <c:if test="${compTel1 eq '064'}">selected</c:if>>064</option>
+											<option value="070" <c:if test="${compTel1 eq '070'}">selected</c:if>>070</option>
+											<option value="080" <c:if test="${compTel1 eq '080'}">selected</c:if>>080</option>
+											<option value="0130" <c:if test="${compTel1 eq '0130'}">selected</c:if>>0130</option>
+										</select>
+										<span class=" bar">-</span>
+										<input type="text" id="compTel2" size="5" class="inp_txt" value="${compTel2}" maxlength="4" required />
+										<span class=" bar">-</span>
+										<input type="text" id="compTel3" size="5" class="inp_txt" value="${compTel3}" maxlength="4" required />
+									</td>
+								</tr>
+								<tr>
+									<th>회사 주소</th>
+									<td>
+										<div class="my_addr">
+											<input type="text" id="compZipcode" name="compZipcode" class="inp_txt" size="6" value="${MemberInfo.compZipcode}" readonly required />
+											<a href="javascript:;" id="findAddress" class="btn_input1">수정</a>
+										</div>
+										<div class="my_addr">
+											<input type="text" id="compAddress" name="compAddress" class="inp_txt" size="55" value="${MemberInfo.compAddress}" readonly required />
+											<input type="text" id="compAddDetail" name="compAddDetail" class="inp_txt" size="55" value="${MemberInfo.compAddDetail}" />
+										</div>
+									</td>
+								</tr>
+								<c:if test="${MemberInfo.type eq 'M'}">
+									<tr>
+										<th>정산 매체</th>
+										<td>
+											<input type="file" />
+											<a href="javascript:;" class="btn_input1">매체선택</a>
+											<a href="javascript:;" class="btn_input1">제호업로드</a>
+											<a href="javascript:;" class="btn_input1">다운로드</a>
+											<a class="file_add">파일 추가</a>
+											<a class="file_del">파일 삭제</a>
+										</td>
+									</tr>
+								</c:if>
+							</tbody>
+						</table>
 					</c:if>
 					<div class="btn_area">
 						<a href="javascript:;" id="btnSubmit" class="btn_input2">수정</a>

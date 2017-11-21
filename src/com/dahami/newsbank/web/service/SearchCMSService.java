@@ -31,11 +31,11 @@ public class SearchCMSService extends ServiceBase{
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		
-		if (MemberInfo != null) { // 세션값이 있을 때는 해당 매체만 보여주기
+		if (MemberInfo != null && !MemberInfo.getType().equals("A")) { // 세션값이 있을 때는 해당 매체만 보여주기
 			String member_seq = String.valueOf(MemberInfo.getSeq());
 			sParam.resetTargetUserList();
 			sParam.addTargetUser(member_seq);
-		} else { // 세션값이 없을 때는 전체 
+		} else { // 세션값이 없을 때 & 관리자 계정일 때는 전체 
 			
 		}
 		
