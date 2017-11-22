@@ -90,11 +90,16 @@
 			</c:when>
 			<c:otherwise>
 				<li>
-					<a href="/logout">Log Out</a>
+					<a href="/logout">로그아웃</a>
 				</li>
 				<li>
-					<a href="/info.mypage">My Page</a>
+					<a href="/info.mypage">마이페이지</a>
 				</li>
+				<c:if test="${MemberInfo.type == 'A'}">
+					<li class="go_admin">
+						<a href="/cms.manage">관리자페이지</a>
+					</li>
+				</c:if>
 			</c:otherwise>
 		</c:choose>
 	</ul>

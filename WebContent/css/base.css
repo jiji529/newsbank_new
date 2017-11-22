@@ -35,6 +35,8 @@ nav a{display:block;font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotum,'돋움'
 nav .gnb_right{ float:right; display:block;}
 nav .gnb_right li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px;  }
 nav .gnb_right li a{ color:#bbb; font-size:15px;}
+nav .gnb_right li.go_admin{ border:1px #f79320 solid; height:inherit; line-height:inherit; padding:6px 15px; border-radius:16px; margin-top:20px;}
+nav .gnb_right li.go_admin a{ color:#f79320;font-size:14px; }
 
 nav.gnb_dark{height: 90px; width: 100%; margin: 0 auto; top: 0; padding-top:10px; background:#fff; border-bottom:1px #e6e6e6 solid;}
 nav.gnb_dark .gnb{padding:0 50px; }
@@ -82,7 +84,7 @@ footer a.clean{ float:right; margin:-2px 0 0 20px; }
 #select-layer ul.site-list li a:hover {   color: #222; background:#f5f5f5 }
 
 .foot_banner{ float:left; margin-top:30px; }
-.foot_banner li{ float:left; margin-bottom:20px; width:200px;font-size:11px; text-align:left; line-height:16px; color:#777;}
-.foot_banner li a{ display:block; padding-left:80px; }
+.foot_banner li{ float:left; margin-bottom:20px; width:200px;font-size:11px; text-align:left; line-height:16px;}
+.foot_banner li a{ display:block; padding-left:80px;  color:#777;}
 .foot_banner li.uci a{ background:url(../images/foot_uci.jpg) 0 2px no-repeat; }
 .foot_banner li.cleansite a{background:url(../images/foot_clean.jpg) 0 0 no-repeat; }
