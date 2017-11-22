@@ -2,11 +2,15 @@
 var IMG_SERVER_URL_PREFIX = "";
 
 function down(uciCode) {
-	if(!confirm("원본을 다운로드 하시겠습니까?")) {
+	if(!confirm("원본 크기로 다운로드 하시겠습니까?")) {
 		return;
 	}
-	var url = IMG_SERVER_URL_PREFIX + "/service.down.photo?uciCode="+uciCode+"&type=file";
-	$("#downFrame").attr("src", url);
+	
+	$("#downUciCode").val(uciCode);
+	$("#downType").val("file");
+	$("#downForm").attr("action", "/outline.down.photo");
+	$("#downForm").submit();
+//	$("#downFrame").attr("src", url);
 }
 
 function setDatepicker() {

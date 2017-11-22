@@ -18,7 +18,6 @@
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-long currentTimeMills = System.currentTimeMillis(); 
  String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 // String IMG_SERVER_URL_PREFIX = "";
 %>
@@ -466,7 +465,12 @@ long currentTimeMills = System.currentTimeMillis();
 		</div>
 		<%@include file="footer.jsp"%>
 	</div>
-<iframe id="downFrame" style="display:none" >
+<form id="downForm" method="post"  target="downFrame">
+	<input type="hidden" id="downUciCode" name="uciCode" />
+	<input type="hidden" id="downType" name="type" />
+	<input type="hidden" name="dummy" value="<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+</form>
+<iframe id="downFrame" name="downFrame" style="display:none" >
 </iframe>
 </body>
 </html>
