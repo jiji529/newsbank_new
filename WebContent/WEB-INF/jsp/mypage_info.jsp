@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js'></script>
+<script src='js/jquery.form.min.js'></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
@@ -71,53 +71,25 @@
 	$(function() {
 		//등록증 업로드
 		$('input[name=compNumFile]').bind('change', function() {
-			console.log()
-			/*$('#uploadFile').remove();
-			var form = $('<form></form>');
-			form.attr('method', 'post');
-			form.attr('id', 'uploadFile');
-			form.attr('enctype', 'multipart/form-data');
-			form.attr('action', 'upload.test');
-			form.appendTo($("body"));
 
-			var objs = document.createElement('input');
-			objs.setAttribute('type', 'hidden');
-			objs.setAttribute('name', 'uploadFile');
-			objs.setAttribute('value', $(this).val());
-			form.append(objs);
+			var formData = new FormData();
+			//첫번째 파일태그
+			formData.append("uploadFile", $(this)[0].files[0]);
+			//타입
+			formData.append("type", "doc");
 
-			var objs = document.createElement('input');
-			objs.setAttribute('type', 'hidden');
-			objs.setAttribute('name', 'type');
-			objs.setAttribute('value', 'doc');
-			form.append(objs);
-
-			$('#uploadFile').ajaxForm({
-				dataType : 'json',
-				beforeSubmit : function(data, form, option) {
-					//validation체크
-					//막기위해서는 return false를 잡아주면됨
-					return true;
-				},
-				success : function(response, status) {
-					//성공후 서버에서 받은 데이터 처리
-					console.log(response,status);
-				},
-				error : function() {
-					//에러발생을 위한 code페이지
-				}
-			}).submit();*/
-
-			$("<form action='upload.test' enctype='multipart/form-data' method='post'/>").ajaxForm({
-				dataType : 'json',
-				beforeSend : function() {
-					//$('#result').append( "beforeSend...\n" );
-				},
-				complete : function(data) {
-					//$('#result')							.append( "complete...\n" )							.append( JSON.stringify( data.responseJSON ) + "\n" );
+			$.ajax({
+				url : '/FileUpload.api?type=doc',
+				data : formData,
+				dataType : "json",
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
 					console.log(data);
 				}
-			}).append($(this)).submit();
+			});
+
 		});
 	});
 </script>
