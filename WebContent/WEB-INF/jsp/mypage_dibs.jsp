@@ -33,7 +33,7 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
-<script src="js/dibs.js?v=20171122"></script>
+<script src="js/dibs.js.jsp?v=20171122"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(key, val){
