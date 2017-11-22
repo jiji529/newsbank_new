@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -274,6 +275,7 @@ public class DownloadService extends ServiceBase {
 				}
 				
 				String orgPath = null;
+				
 				// 썸네일 / 뷰 이미지의 경우 서비스중인 이미지에 대해 모두 다운로드 가능함
 				if(targetSize.equals("list") || targetSize.equals("view")) {
 					// 서비스중이거나
@@ -301,7 +303,7 @@ public class DownloadService extends ServiceBase {
 					}
 				}
 				// 구매한 이미지 다운로드
-				else if(targetSize.equals("service")) {
+				else if(targetSize.equals("service") || targetSize.equals("outline")) {
 					DownloadDTO downLog = new DownloadDTO();
 					downLog.setIpAddress(ip);
 					boolean downConfirm = false;
@@ -341,20 +343,26 @@ public class DownloadService extends ServiceBase {
 								}
 							}
 						}
-						
-						// 다운로드 가능 여부 확인(구매 / 후불 등)
 					}
 					
 					if(!downConfirm) {
-						response.sendRedirect(URL_PHOTO_ERROR_VIEW);
-						return;
+						// 로그인은 했고 아웃라인의 경우 아웃라인(원본+썸네일) 생성하여 다운로드 하도록 처리
+						if(targetSize.equals("outline") && memberInfo != null) {
+							
+						}
+						else {
+							response.sendRedirect(URL_PHOTO_ERROR_VIEW);
+							return;	
+						}
 					}
 					
 					downLog.setMemberSeq(memberInfo.getSeq());
 					downLog.setUciCode(uciCode);
 					
-					photoDao.insDownLog(downLog);
-					// 다운로드 로그 ID
+					if(downConfirm) {
+						photoDao.insDownLog(downLog);
+					}
+					
 					String serviceCode = corp;	// nb / gt / dt
 					String serviceName = CORP_NAME_MAP.get(corp); // 뉴스뱅크 / 게티이미지코리아 / 디지털저작권거래소
 					
@@ -369,6 +377,15 @@ public class DownloadService extends ServiceBase {
 						}
 						String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
 						FileUtil.makeDirectory(tmpDir);
+						
+						// 원본 다운로드 허가 없는 경우 => 시안 요청 단순 로그인 / 시안요청구매건인 경우 원본으로 다운로드 됨
+						if(!downConfirm) {
+							// 워터마크본 생성
+							String watermarkEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downLog.getSeq() + ".wm.jpg";
+							makeWatermarkImage(orgPath, watermarkEmbedTmp);
+							orgPath = watermarkEmbedTmp;
+						}
+						
 						String uciEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downLog.getSeq() + ".jpg";
 						try {
 							// UCI 코드 임베딩
@@ -394,6 +411,7 @@ public class DownloadService extends ServiceBase {
 					}finally {
 					}
 					
+					// 원본/시안 다운로드는 아래로 내려가지 않음
 				}
 				// 기타 다운로드?? 
 				else {
@@ -639,6 +657,40 @@ public class DownloadService extends ServiceBase {
 	private boolean checkDownloadable(String uciCode, int memberSeq) {
 		PhotoDAO dao = new PhotoDAO();
 		return dao.checkDownloadable(uciCode, memberSeq);
+	}
+	
+	private static BufferedImage watermarkBimg;
+	private static int wImgWidth;
+	private static int wImgHeight;
+	static {
+		watermarkBimg = ImageUtil.getBufferedImage(MethodHandles.lookup().lookupClass().getClassLoader().getResource("com/dahami/newsbank/web/service/resources/watermarkTemplate.png").getFile()).get(0);
+		wImgWidth = watermarkBimg.getWidth();
+		wImgHeight = watermarkBimg.getHeight();
+	}
+	private boolean makeWatermarkImage(String orgPath, String outPath) {
+		File inputFd = new File(orgPath);
+		BufferedImage bImg = ImageUtil.getBufferedImage(inputFd).get(0);
+		short colorBit = (short)bImg.getColorModel().getPixelSize();
+		if(colorBit != 24) {
+			logger.info("NOT 24bit: " + inputFd.getAbsolutePath());
+		}
+		Graphics g = bImg.getGraphics();
+		int width = bImg.getWidth();
+		int height = bImg.getHeight();
+		
+		// 이미지 높이에 맞춰서 워터마크 반복
+		int startY = 0;
+		do {
+			// 이미지 넓이에 맞춰서 워터마크 반복
+			int startX = 0;
+			do {
+				g.drawImage(watermarkBimg, startX, startY, null);
+				startX += wImgWidth;
+			}while(startX < width);
+			g.drawImage(watermarkBimg, 0, startY, null);
+			startY += wImgHeight;
+		}while(startY < height);
+		return ImageUtil.saveImage(bImg, outPath,  ImageUtil.IMAGE_FORMAT_JPEG, colorBit);
 	}
 	
 	private boolean makeLogoFile(String mdName, String tgtPath) {
