@@ -184,7 +184,7 @@
 					<li class="thumb"> 
 						<a href="/view.cms.manage?uciCode=${PhotoDTO.uciCode}">
 							<%-- <img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}"/> --%>
-							<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%= currentTimeMills%>">
+							<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 						</a>
 						<div class="thumb_info">
 							<input type="checkbox" />

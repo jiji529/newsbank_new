@@ -237,7 +237,7 @@ String IMG_SERVER_URL_PREFIX = "";
 				$("#search_list1 ul").empty();
 				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\"></a>";
+					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
@@ -391,7 +391,7 @@ String IMG_SERVER_URL_PREFIX = "";
 				<li class="thumb">
 					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
 					<a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')">
-						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%= currentTimeMills%>">
+						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
@@ -410,7 +410,7 @@ String IMG_SERVER_URL_PREFIX = "";
 				<li class="thumb">
 					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
 					<a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')">
-						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%= currentTimeMills%>">
+						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
