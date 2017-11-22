@@ -18,7 +18,6 @@
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-long currentTimeMills = System.currentTimeMillis(); 
  String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 // String IMG_SERVER_URL_PREFIX = "";
 %>

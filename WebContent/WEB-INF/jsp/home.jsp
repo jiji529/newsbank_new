@@ -20,7 +20,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
-long currentTimeMills = System.currentTimeMillis(); 
 String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 // String IMG_SERVER_URL_PREFIX = "";
 %>
@@ -140,11 +139,16 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 					</c:when>
 					<c:otherwise>
 						<li>
-							<a href="/logout">Log Out</a>
+							<a href="/logout">로그아웃</a>
 						</li>
 						<li>
-							<a href="/info.mypage">My Page</a>
+							<a href="/info.mypage">마이페이지</a>
 						</li>
+						<c:if test="${MemberInfo.type == 'A'}">
+							<li class="go_admin">
+								<a href="/cms.manage">관리자페이지</a>
+							</li>
+						</c:if>
 					</c:otherwise>
 				</c:choose>
 			</ul>
