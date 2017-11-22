@@ -188,9 +188,23 @@ public class DownloadService extends ServiceBase {
 				DownloadDTO downLog = new DownloadDTO();
 				downLog.setIpAddress(ip);
 				boolean downConfirm = false;
+				boolean isOwner = false;
 				String corp = "nb";
-				// ZIP은 후불 회원만 다운로드 가능
+				
+				PhotoDTO[] photoDtos = null;
+				File[] fileFds = null;
+				
+				// ZIP은 후불 회원 혹은 소유자만 다운로드 가능
 				if(memberInfo != null) {
+					// PhotoDTO 읽기
+					String[] uciCodes = request.getParameterValues("uciCode");
+					photoDtos = new PhotoDTO[uciCodes.length];
+					fileFds = new File[uciCodes.length];	
+					for(int i = 0; i < uciCodes.length; i++) {
+						PhotoDTO photo = photoDao.read(uciCodes[i]);
+						photoDtos[i] = photo;
+					}
+					
 					// 후불 체크
 					int memberSeq = memberInfo.getSeq();
 					MemberDAO mDao = new MemberDAO();
@@ -199,7 +213,22 @@ public class DownloadService extends ServiceBase {
 						downLog.setDeferUse("Y");
 						downConfirm = true;
 					}
+					
+					// 소유자 체크
+					if(!downConfirm) {
+						isOwner = true;
+						for(PhotoDTO cur : photoDtos) {
+							if(cur.getOwnerNo() != memberInfo.getSeq()) {
+								isOwner = false;
+								break;
+							}
+						}
+						if(isOwner) {
+							downConfirm = true;
+						}
+					}
 				}
+				
 				
 				if(!downConfirm) {
 					response.sendRedirect(URL_PHOTO_ERROR_VIEW);
@@ -211,23 +240,21 @@ public class DownloadService extends ServiceBase {
 				String serviceName = CORP_NAME_MAP.get(corp); // 뉴스뱅크 / 게티이미지코리아 / 디지털저작권거래소
 				
 				try {
-					String[] uciCodes = request.getParameterValues("uciCode");
-					File[] fileFds = new File[uciCodes.length];					
-					for(int i = 0; i < uciCodes.length; i++) {
-						downLog.setUciCode(uciCodes[i]);
+					for(int i = 0; i < photoDtos.length; i++) {
+						PhotoDTO photo = photoDtos[i];
+						downLog.setUciCode(photo.getUciCode());
 						photoDao.insDownLog(downLog);
 						// 원본 이미지를 실시간으로 카피 / UCI 임베드 / 다운로드 정보 임베드(메타태그) 하여 전송
-						PhotoDTO photo = photoDao.read(uciCodes[i]);
 						String orgPath = PATH_PHOTO_BASE + "/" + photo.getOriginPath();
 						if(!new File(orgPath).exists()) {
 							logger.warn("원본이미지 없음: " + orgPath);
-							request.setAttribute("ErrorMSG", "다운로드 대상("+uciCodes[i]+") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
+							request.setAttribute("ErrorMSG", "다운로드 대상("+photo.getUciCode()+") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
 							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
 							return;
 						}
 						String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
 						FileUtil.makeDirectory(tmpDir);
-						String uciEmbedTmp = tmpDir + "/" + uciCodes[i] + "." + serviceCode + "." + downLog.getSeq() + ".jpg";
+						String uciEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downLog.getSeq() + ".jpg";
 						fileFds[i] = new File(uciEmbedTmp);
 						try {
 							// UCI 코드 임베딩
@@ -240,7 +267,7 @@ public class DownloadService extends ServiceBase {
 						}
 						
 						// 다운로드 정보 메타정보에 추가
-						if(!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downLog.getSeq())) {
+						if(!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downLog.getSeq(), isOwner, false)) {
 							// 생성 실패
 							logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downLog.getSeq());
 							request.setAttribute("ErrorMSG", "원본("+photo.getUciCode()+")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
@@ -307,21 +334,34 @@ public class DownloadService extends ServiceBase {
 					DownloadDTO downLog = new DownloadDTO();
 					downLog.setIpAddress(ip);
 					boolean downConfirm = false;
+					boolean isOwner = false;
+					boolean isOutline = false;
+
+					// 소유자 여부 체크
+					if(memberInfo != null) {
+						if(memberInfo.getSeq() == photo.getOwnerNo()) {
+							downConfirm = true;
+							isOwner = true;
+						}
+					}
 					
-					String corp = request.getParameter("corp");
-					// 다운로드 가능 여부 확인(연계 / IP 제한)
-					if(corp != null && corp.trim().length() > 0) {
-						Set<String> ipSet = ACCESS_IP_MAP.get(corp);
-						if(ipSet != null && ipSet.size() > 0) {
-							if(ipSet.contains(ip)) {
-								// 연계계정 정보 읽기(ex. 게티)
-								MemberDAO mDao = new MemberDAO();
-								memberInfo = mDao.getMember(CORP_INFO_QUERY_MAP.get(corp));
-								downConfirm = true;
+					String corp = null;
+					if(!downConfirm) {
+						corp = request.getParameter("corp");
+						// 다운로드 가능 여부 확인(연계 / IP 제한)
+						if(corp != null && corp.trim().length() > 0) {
+							Set<String> ipSet = ACCESS_IP_MAP.get(corp);
+							if(ipSet != null && ipSet.size() > 0) {
+								if(ipSet.contains(ip)) {
+									// 연계계정 정보 읽기(ex. 게티)
+									MemberDAO mDao = new MemberDAO();
+									memberInfo = mDao.getMember(CORP_INFO_QUERY_MAP.get(corp));
+									downConfirm = true;
+								}
 							}
 						}
 					}
-					else {
+					if(corp == null || corp.trim().length() == 0) {
 						corp = "nb";
 					}
 					
@@ -359,8 +399,12 @@ public class DownloadService extends ServiceBase {
 					downLog.setMemberSeq(memberInfo.getSeq());
 					downLog.setUciCode(uciCode);
 					
-					if(downConfirm) {
+					if(downConfirm && !isOwner) {
 						photoDao.insDownLog(downLog);
+					}
+					else if(isOwner) {
+						// 소유자의 경우 콘솔 로그만 남김
+						logger.info("Owner Down: " + this.uciCode);
 					}
 					
 					String serviceCode = corp;	// nb / gt / dt
@@ -378,12 +422,13 @@ public class DownloadService extends ServiceBase {
 						String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
 						FileUtil.makeDirectory(tmpDir);
 						
-						// 원본 다운로드 허가 없는 경우 => 시안 요청 단순 로그인 / 시안요청구매건인 경우 원본으로 다운로드 됨
+						// 원본 다운로드 허가 없는 경우 => 시안 요청 단순 로그인 (참고: 시안요청 이더라도 구매건인 경우 원본으로 다운로드 됨)
 						if(!downConfirm) {
 							// 워터마크본 생성
 							String watermarkEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downLog.getSeq() + ".wm.jpg";
 							makeWatermarkImage(orgPath, watermarkEmbedTmp);
 							orgPath = watermarkEmbedTmp;
+							isOutline = true;
 						}
 						
 						String uciEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downLog.getSeq() + ".jpg";
@@ -398,7 +443,7 @@ public class DownloadService extends ServiceBase {
 						}
 						
 						// 다운로드 정보 메타정보에 추가
-						if(!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downLog.getSeq())) {
+						if(!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downLog.getSeq(), isOwner, isOutline)) {
 							// 생성 실패
 							logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downLog.getSeq());
 							request.setAttribute("ErrorMSG", "원본("+photo.getUciCode()+")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
@@ -491,7 +536,7 @@ public class DownloadService extends ServiceBase {
 	private static final String DAHAMI_DIST_HEADER_STRING = DAHAMI_HEADER_DELIMITER_STRING + "배포(http://www.newsbank.co.kr) : ";
 	private static final String DAHAMI_ID_HEADER_STRING = DAHAMI_HEADER_DELIMITER_STRING + "I011-";
 	
-	private boolean embedMetaTags(String orgPath, String uciCode, String serviceName, String serviceCode, int downSeq) {
+	private boolean embedMetaTags(String orgPath, String uciCode, String serviceName, String serviceCode, int downSeq, boolean isOwner, boolean isOutline) {
 		File fd = new File(orgPath);
 		if(!fd.exists()) {
 			return false;
@@ -539,7 +584,16 @@ public class DownloadService extends ServiceBase {
 				}
 			}
 			
-			String id = uciCode + "." + serviceCode + "." + downSeq;
+			String id = uciCode + ".";
+			if(isOwner) {
+				id += "owner";
+			}
+			else if(isOutline) {
+				id += "outline";
+			}
+			else {
+				id  += serviceCode + "." + downSeq;
+			}
 			if(uniqueId != null) {
 				String currentValue = "";
 				try {
