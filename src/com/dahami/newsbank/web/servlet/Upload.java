@@ -164,12 +164,13 @@ public class Upload extends NewsbankServletBase {
 				} // else
 
 			} catch (Exception e) {
-
+				System.out.print("예외 발생 : " + e);
 				if (e.getMessage().indexOf("exceeds limit") > -1) { // 파일사이즈 초과된 경우
 					message = "파일 용량을 초과했습니다.";
+					logger.warn("Invalid Request: " + message);
 					sizeError = true;
 				}
-				System.out.print("예외 발생 : " + e);
+				
 			}
 		} else {
 			message = "다시 로그인해주세요.";

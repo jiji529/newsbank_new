@@ -23,9 +23,51 @@
 <link rel="stylesheet" href="css/join.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src='js/jquery.form.min.js'></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript" src="js/join.js"></script>
+<script>
+
+
+
+//등록증 업로드
+$(function() {
+
+	var fileTypes = [ 'image/jpeg', 'image/pjpeg', 'image/png', 'application/pdf'
+
+	]
+	//확장자 검사
+	function validFileType(file) {
+		for (var i = 0; i < fileTypes.length; i++) {
+			if (file.type === fileTypes[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	$('input[name=compDoc]').bind('change', function() {
+		var tmpFile = $(this)[0].files[0];
+		var sizeLimit = 1024 * 1024 * 15;
+		if (tmpFile.size > sizeLimit) {
+			alert("파일 용량이 15MB를 초과했습니다");
+			$(this).val("");
+			return;
+		}
+
+		if (!validFileType(tmpFile))  {
+			alert("파일 형식이 올바르지 않습니다.");
+			$(this).val("");
+			return;
+		}
+
+	});
+
+});
+
+</script>
 </head>
 <body>
 	<div class="wrap">
@@ -160,7 +202,7 @@
 									<dt>사업자등록증</dt>
 									<dd>
 										<div class="inp">
-											<input type="file" id="compDoc" name="compDoc" />
+											<input type="file" id="compDoc" name="compDoc" accept="application/pdf, image/*"  />
 										</div>
 									</dd>
 									<!--언론사 회원한테만 파일첨부 창 보여주기 여기까지-->
@@ -206,7 +248,7 @@
 								</dl>
 							</div>
 						</c:if>
-						<c:if test="${type eq 'M'}">
+						<c:if test="${type eq '사용안함'}">
 							<!--여기부턴 언론사회원-->
 							<div class="box_info">
 								<dl class="item_info">

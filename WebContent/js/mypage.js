@@ -816,3 +816,70 @@ $(document).ready(function() {
 	});
 
 });
+
+
+
+//등록증 업로드
+$(function() {
+
+	var fileTypes = [ 'image/jpeg', 'image/pjpeg', 'image/png', 'application/pdf'
+
+	]
+	//확장자 검사
+	function validFileType(file) {
+		for (var i = 0; i < fileTypes.length; i++) {
+			if (file.type === fileTypes[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	$('input[name=compNumFile]').bind('change', function() {
+		console.log("ddd");
+		var tmpFile = $(this)[0].files[0];
+		var sizeLimit = 1024 * 1024 * 15;
+		if (tmpFile.size > sizeLimit) {
+			alert("파일 용량이 15MB를 초과했습니다");
+			$(this).val("");
+			return;
+		}
+
+		if (validFileType(tmpFile)) {
+			var formData = new FormData();
+			//첫번째 파일태그
+			formData.append("uploadFile", tmpFile);
+			//타입
+			formData.append("type", "doc");
+
+			$.ajax({
+				url : '/FileUpload.api?type=doc',
+				data : formData,
+				dataType : "json",
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					console.log(data);
+					if (data.success) {
+						alert(data.message);
+					} else {
+						alert(data.message);
+					}
+				},
+				error : function(data) {
+					console.log("Error: " + data.statusText);
+					alert("잘못된 접근입니다.");
+				},
+
+			});
+
+		} else {
+			alert("파일 형식이 올바르지 않습니다.");
+			$(this).val("");
+		}
+
+	});
+
+});
