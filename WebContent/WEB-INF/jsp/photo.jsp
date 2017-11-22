@@ -19,8 +19,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 long currentTimeMills = System.currentTimeMillis(); 
-// String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-String IMG_SERVER_URL_PREFIX = "";
+ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 // String IMG_SERVER_URL_PREFIX = "";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -251,9 +250,34 @@ String IMG_SERVER_URL_PREFIX = "";
 				var totalPage = $(data.totalPage)[0];
 				$("div .result b").html(totalCount);
 				$("div .paging span.total").html(totalPage);
+				
+				if("${loginInfo}" != ""){ // 로그인 시, 찜 목록을 불러오기
+					console.log("회원사 이름 : ${loginInfo.compName}");
+					userBookmarkList();
+				}
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
+	
+	function userBookmarkList() { // 사용자가 찜한 북마크 목록
+		$.ajax({
+			type: "POST",
+			url: "bookmarkPhoto.api",
+			dataType: "json",
+			success : function(data) { console.log(data);
+				$(data.result).each(function(key, val) {
+					var uciCode = val.uciCode;
+					$("#search_list1 .over_wish").each(function(idx, value) {
+						var list_uci = $(".over_wish").eq(idx).attr("value");
+						
+						if(list_uci == uciCode) {
+							$(".over_wish").eq(idx).addClass("on");
+						}
+					});
+				});
 			}
 		});
 	}

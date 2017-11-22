@@ -213,12 +213,12 @@
 			data: searchParam,
 			timeout: 1000000,
 			url: "cms.search",
-			success : function(data) { console.log(data);
+			success : function(data) { //console.log(data);
 				$("#cms_list2 ul").empty();
 				$(data.result).each(function(key, val) {	
-					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";  
+					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";  					
 					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
-					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
+					html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";
 				});
 				$(html).appendTo("#cms_list2 ul");
@@ -279,7 +279,7 @@
 				$(data.result).each(function(key, val) {	
 					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";
 					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";
-					html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
+					html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
 					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";					
 				});
 				$(html).appendTo("#cms_list2 ul");
@@ -359,6 +359,33 @@
 			$("#cms_list2 input:checkbox").prop("checked", false);
 		}
 	});
+	
+	function down(uciCode) {
+		if(!confirm("원본을 다운로드 하시겠습니까?")) {
+			return;
+		}
+		var url = IMG_SERVER_URL_PREFIX + "/service.down.photo?uciCode="+uciCode+"&type=file";
+		$("#downFrame").attr("src", url);
+	}
+	
+	function mutli_download() {
+		var uciCode = new Array();
+		if(!confirm("선택파일을 압축파일로 다운로드하시겠습니까?")) {
+			return;
+		}
+		$("#cms_list2 input:checkbox:checked").each(function(index) {
+			uciCode.push($(this).val());
+		});
+		
+		var param = uciCode.join("&uciCode=");
+		
+		//var url = "<%=IMG_SERVER_URL_PREFIX%>/zip.down.photo?&type=file&uciCode=";
+		var url = "/zip.down.photo?&type=file&uciCode=";
+		url += param;
+		console.log(url);
+		
+		$("#downFrame").attr("src", url);
+	}
 	
 </script>
 </head>
@@ -483,19 +510,19 @@
 		<form class="view_form" method="post" action="/view.cms" name="view_form" >
 			<input type="hidden" name="uciCode" id="uciCode"/>
 		</form>
-		<!-- <div class="btn_sort"><span class="task_check">
+		<div class="btn_sort"><span class="task_check">
 			<input type="checkbox" name="check_all" />
 			</span>
 			<ul class="button">
-				<li class="sort_down">다운로드</li>
+				<li class="sort_down" onclick="mutli_download()">다운로드</li>
 				<li class="sort_del">삭제</li>
-				1차 제외
+				<!-- 1차 제외
 				<li class="sort_menu">블라인드</li>
 				<li class="sort_menu">초상권 해결</li>
-				<li class="sort_menu">관련사진 묶기</li>
+				<li class="sort_menu">관련사진 묶기</li> -->
 				<li class="sort_up">수동 업로드</li>
 			</ul>
-		</div> -->
+		</div>
 		<section id="cms_list2">
 			<ul>
 				<c:forEach items="${picture}" var="PhotoDTO">
@@ -505,7 +532,7 @@
 							<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 						</a>
 						<div class="thumb_info">
-							<input type="checkbox" />
+							<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 							<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 						<ul class="thumb_btn">
 							<li class="btn_down"><a>다운로드</a></li>
@@ -519,5 +546,7 @@
 	<div class="more"><a href="#" name="nextPage">다음 페이지</a></div>
 	</section>
 </div>
+<iframe id="downFrame" style="display:none" >
+</iframe>
 </body>
 </html>

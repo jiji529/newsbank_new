@@ -50,4 +50,11 @@
         	bookmark_seq = #{bookmark_seq} 
        	WHERE photo_uciCode = #{photo_uciCode}        
     </update>
+    
+    <select id="selectBookmarkPhoto" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">
+        SELECT B.seq, A.member_seq, A.activate, B.photo_uciCode, A.bookName
+		FROM bookmark A
+		INNER JOIN bookmarkPhoto B ON A.seq = B.bookmark_seq
+		WHERE A.member_seq = #{member_seq} 
+    </select>
 </mapper>

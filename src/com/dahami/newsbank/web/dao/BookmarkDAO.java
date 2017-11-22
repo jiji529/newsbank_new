@@ -255,5 +255,34 @@ public class BookmarkDAO extends DAOBase {
 			}
 		}
 	}
+	
+	/**
+	 * @methodName  : selectBookmarkPhoto
+	 * @author      : HOYADEV
+	 * @date        : 2017. 11. 21. 오후 05:14:20
+	 * @methodCommet: 사용자별 찜 사진 목록
+	 * @param param
+	 * @return 
+	 */
+	public List<BookmarkDTO> selectBookmarkPhoto(int member_seq) {
+		SqlSession session = null;
+		List<BookmarkDTO> bookmarkList = new ArrayList<BookmarkDTO>();
+				
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			bookmarkList = session.selectList("Bookmark.selectBookmarkPhoto", param);		
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return bookmarkList;
+	}
 
 }
