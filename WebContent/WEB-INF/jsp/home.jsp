@@ -20,7 +20,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
-long currentTimeMills = System.currentTimeMillis(); 
 String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 // String IMG_SERVER_URL_PREFIX = "";
 %>
