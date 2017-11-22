@@ -353,7 +353,7 @@ public class SearchDAO extends DAOBase {
 				}
 				else {
 					String[] durationArry = duration.split("~");
-					query.addFilterQuery("searchDate:[" + durationArry[0] + " TO " + durationArry[1] + "]");
+					query.addFilterQuery("searchDate:[" + durationArry[0] + "000000 TO " + durationArry[1] + "000000]");
 				}
 				logger.debug("Duration: " + duration);
 			}

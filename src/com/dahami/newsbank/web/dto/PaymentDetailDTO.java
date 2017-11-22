@@ -19,7 +19,8 @@ package com.dahami.newsbank.web.dto;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 
@@ -28,10 +29,10 @@ import com.dahami.newsbank.dto.PhotoDTO;
  *
  */
 public class PaymentDetailDTO implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7039845313451288322L;
+	
+	private static final SimpleDateFormat fullDf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	private int paymentDetail_seq;
 	private int paymentManage_seq; //paymemtManage 시퀀스
 	private int usageList_seq; //usageList 시퀀스
@@ -42,7 +43,14 @@ public class PaymentDetailDTO implements Serializable {
 	private String downCount;  // 다운로드 횟수
 	private UsageDTO usageDTO;
 	private PhotoDTO photoDTO;
+	
+	/** 다운기한 종료(혹은 미도래) / downStart, downEnd 세팅시 확인 후 설정함 */
+	private boolean downExpire;
 
+	public boolean isDownExpire() {
+		return this.downExpire;
+	}
+	
 	public int getPaymentManage_seq() {
 		return paymentManage_seq;
 	}
@@ -76,12 +84,14 @@ public class PaymentDetailDTO implements Serializable {
 	}
 	public void setDownStart(String downStart) {
 		this.downStart = downStart;
+		checkDownExpire();
 	}
 	public String getDownEnd() {
 		return downEnd;
 	}
 	public void setDownEnd(String downEnd) {
 		this.downEnd = downEnd;
+		checkDownExpire();
 	}
 	public String getDownCount() {
 		return downCount;
@@ -107,6 +117,20 @@ public class PaymentDetailDTO implements Serializable {
 	public void setPhotoDTO(PhotoDTO photoDTO) {
 		this.photoDTO = photoDTO;
 	}
-	
+	private void checkDownExpire() {
+		try{
+			Date downS = fullDf.parse(this.downStart);
+			Date downE = fullDf.parse(this.downEnd);
+			Date now = new Date();
+			if(downS.before(now) && downE.after(now)) {
+				this.downExpire = false;
+			}
+			else {
+				this.downExpire = true;
+			}
+		}catch(Exception e) {
+			this.downExpire = true;
+		}
+	}
 	
 }

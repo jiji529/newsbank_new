@@ -40,9 +40,6 @@ public class SearchService extends ServiceBase {
 	public static final int EXPORT_TYPE_JSON = 0;
 	public static final int EXPORT_TYPE_XML = 1;
 	
-	/* (non-Javadoc)
-	 * @see com.dahami.newsbank.web.service.ServiceBase#execute(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {

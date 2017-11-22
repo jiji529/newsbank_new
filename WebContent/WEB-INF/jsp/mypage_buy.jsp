@@ -182,7 +182,9 @@
 							${paymentDetailList.downCount }회
 							<br />
 							<div class="btn_group">
+<c:if test="${paymentDetailList.downExpire eq false}">
 								<button type="button" class="btn_o" name="btn_down" value="${paymentDetailList.photo_uciCode }">다운로드</button>
+</c:if>
 								<button type="button" class="btn_g" name="btn_cancle" value="${paymentDetailList.photo_uciCode }">결제취소</button>
 								<!-- 다운로드 0일때만 가능-->
 							</div>
