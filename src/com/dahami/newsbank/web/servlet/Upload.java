@@ -2,6 +2,8 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
@@ -22,16 +24,21 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 /**
  * Servlet implementation class UploadTest
  */
-@WebServlet("/upload.test")
-public class UploadTest extends NewsbankServletBase {
+@WebServlet("/FileUpload.api")
+public class Upload extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 	private static final String PATH_COMP_DOC_BASE = "/data/newsbank/comp/doc";
 	private static final String PATH_COMP_BANK_BASE = "/data/newsbank/comp/bank";
+	private static final String PATH_LOGO_BASE = "/data/newsbank/logo";
+
+	private static final String PATH_COMP_DOC_BASE_LOCAL = "D:/IdeaProjects/git/newsbank/comp/doc";
+	private static final String PATH_COMP_BANK_BASE_LOCAL = "D:/IdeaProjects/git/newsbank/comp/bank";
+	private static final String PATH_LOGO_BASE_LOCAL = "D:/IdeaProjects/git/newsbank/logo";
 
 	/**
 	 * @see NewsbankServletBase#NewsbankServletBase()
 	 */
-	public UploadTest() {
+	public Upload() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -43,22 +50,39 @@ public class UploadTest extends NewsbankServletBase {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		
+		response.addHeader("Cache-Control", "no-cache");
+
 		JSONObject json = new JSONObject();
 		boolean result = false;
 		String message = "";
-		
-		
+
 		HttpSession session = request.getSession();
 		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 		MemberDTO MemberInfo = null;
-		if (session.getAttribute("MemberInfo") != null) {
+
+		String type = request.getParameter("type");
+		// String savePath = request.getServletContext().getRealPath("folderName");
+
+		String savePath = "";
+
+		switch (type) {
+		case "doc":
+			savePath = PATH_COMP_DOC_BASE_LOCAL;
+			break;
+		case "bank":
+			savePath = PATH_COMP_BANK_BASE_LOCAL;
+			break;
+		case "logo":
+			savePath = PATH_LOGO_BASE_LOCAL;
+			break;
+		}
+
+		if (savePath.isEmpty()) {
+			message = "파일 경로를 찾을 수 없습니다.";
+		} else if (session.getAttribute("MemberInfo") != null) {
 			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 
 			// 파일이 저장될 서버의 경로. 되도록이면 getRealPath를 이용하자.
-
-			// String savePath = request.getServletContext().getRealPath("folderName");
-			String savePath = "D:/IdeaProjects/git/newsbank/comp/doc";
 
 			RequestDispatcher rd = null;
 			String fileName = "";
@@ -79,8 +103,9 @@ public class UploadTest extends NewsbankServletBase {
 				// (HttpServletRequest request, String saveDirectory, int maxPostSize, String
 				// encoding, FileRenamePolicy policy)
 				// 아래와 같이 MultipartRequest를 생성만 해주면 파일이 업로드 된다.(파일 자체의 업로드 완료)
+
 				MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit, "UTF-8", new DefaultFileRenamePolicy());
-				fileName = multi.getFilesystemName("compNumFile"); // 파일의 이름 얻기
+				fileName = multi.getFilesystemName("uploadFile"); // 파일의 이름 얻기
 
 				files = multi.getFileNames();
 				String name = (String) files.nextElement();
@@ -91,15 +116,59 @@ public class UploadTest extends NewsbankServletBase {
 				} else { // 파일이 업로드 되었을때
 					result = true;
 					message = "파일 업로드 성공";
-					System.out.println("User Name : " + multi.getParameter("user"));
-					System.out.println("File Name  : " + fileName);
+					String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date()); // 현재시간
+
+					String tmpFileName = Integer.toString(MemberInfo.getSeq());
+					if (multi.getParameter("name") != null && !multi.getParameter("name").isEmpty()) {
+						tmpFileName = multi.getParameter("name");
+					}
+
+					String orgFileName = savePath + "/" + fileName;
+					String reFileName = savePath + "/" + tmpFileName + fileName.substring(fileName.lastIndexOf("."));
+					String bakFileName = savePath + "/" + tmpFileName + "_" + now + fileName.substring(fileName.lastIndexOf("."));
+
+					File upfile1 = new File(orgFileName);
+					File upfile2 = new File(reFileName);
+					File backFile = new File(bakFileName);
+
+					if (upfile2.exists())
+						upfile2.renameTo(backFile);
+
+					if (upfile1.renameTo(upfile2)) {
+						System.out.print("이름변경성공");
+
+						fileName = upfile2.getName();
+						String fileFullPath = savePath + "/" + fileName;
+
+						switch (type) {
+						case "doc":
+							MemberInfo.setComDocPath(fileFullPath);
+							break;
+						case "bank":
+							MemberInfo.setCompBankPath(fileFullPath);
+							break;
+						case "logo":
+							MemberInfo.setLogo(fileFullPath);
+							break;
+						}
+
+						memberDAO.updateMember(MemberInfo); // 회원정보 업데이트 요청
+
+						System.out.println("User Name : " + type);
+						System.out.println("File Name  : " + fileName);
+					} else {
+						message = "파일 업로드 실패";
+					}
+
 				} // else
 
 			} catch (Exception e) {
 				System.out.print("예외 발생 : " + e);
 			} // catch
+		} else {
+			message = "다시 로그인해주세요.";
 		}
-		
+
 		json.put("success", result);
 		json.put("message", message);
 

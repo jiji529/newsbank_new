@@ -215,7 +215,7 @@
 </head>
 <body>
 	<div class="wrap admin">
-		<%@include file="header_manage.jsp" %>
+		<%@include file="header_admin.jsp" %>
 		<section class="wide">
 			<%@include file="sidebar.jsp" %>
 			<div class="mypage">
