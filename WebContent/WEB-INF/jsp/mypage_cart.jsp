@@ -220,7 +220,7 @@
 								<label for="check${status.index}">선택</label>
 							</div></td>
 						<td><div class="cart_item">
-								<div class="thumb"><a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank"><img src="http://www.dev.newsbank.co.kr/list.down.photo?uciCode=${CartDTO.uciCode}&dummy=<%= currentTimeMills%>" /></a></div>
+								<div class="thumb"><a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank"><img src="http://www.dev.newsbank.co.kr/list.down.photo?uciCode=${CartDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a></div>
 								<div class="cart_info"> <a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank">
 									<div class="brand">${CartDTO.copyright}</div>
 									<div class="code">${CartDTO.uciCode}</div>

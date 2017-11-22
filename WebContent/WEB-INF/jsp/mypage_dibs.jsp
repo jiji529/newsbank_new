@@ -170,7 +170,7 @@
 				<ul>					
 					<c:forEach items="${dibsPhotoList}" var="PhotoDTO">
 						<%-- <li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="images/serviceImages${PhotoDTO.getViewPath()}&dummy=<%= currentTimeMills%>"/></a> --%>
-						<li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%= currentTimeMills%>"/></a>
+						<li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>
 							<div class="thumb_info">
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
