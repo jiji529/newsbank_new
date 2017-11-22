@@ -57,13 +57,14 @@ public class Upload extends NewsbankServletBase {
 		String message = "";
 
 		HttpSession session = request.getSession();
-		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
+		
 		MemberDTO MemberInfo = null;
 
 		String type = request.getParameter("type");
 		// String savePath = request.getServletContext().getRealPath("folderName");
 
 		String savePath = "";
+		boolean sizeError =false;
 
 		switch (type) {
 		case "doc":
@@ -151,7 +152,7 @@ public class Upload extends NewsbankServletBase {
 							MemberInfo.setLogo(fileFullPath);
 							break;
 						}
-
+						MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 						memberDAO.updateMember(MemberInfo); // 회원정보 업데이트 요청
 
 						System.out.println("User Name : " + type);
@@ -163,11 +164,23 @@ public class Upload extends NewsbankServletBase {
 				} // else
 
 			} catch (Exception e) {
+
+				if (e.getMessage().indexOf("exceeds limit") > -1) { // 파일사이즈 초과된 경우
+					message = "파일 용량을 초과했습니다.";
+					sizeError = true;
+				}
 				System.out.print("예외 발생 : " + e);
-			} // catch
+			}
 		} else {
 			message = "다시 로그인해주세요.";
 		}
+
+		/*if (sizeError) {
+			response.setContentType("text/html; charset=UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			//response.getWriter().write("<script>alert(''); location.href=''; </script>");
+			return;
+		}*/
 
 		json.put("success", result);
 		json.put("message", message);
