@@ -39,7 +39,7 @@ public class PhotoViewService extends ServiceBase {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-		String member_seq = (MemberInfo != null) ? String.valueOf(MemberInfo.getSeq()) : "1002";
+		//String member_seq = (MemberInfo != null) ? String.valueOf(MemberInfo.getSeq()) : "1002";
 		// 찜 추가, 삭제에서 로그인 여부를 체크이후 기능 동작필요
 		
 		PhotoDAO photoDAO = new PhotoDAO();
@@ -56,17 +56,20 @@ public class PhotoViewService extends ServiceBase {
 		List<MemberDTO> mediaList = mDao.listActiveMedia();
 		request.setAttribute("mediaList", mediaList);
 		
-		if(action.equals("insertBookmark")) {
-			bookmarkDAO.insert(member_seq, photo_uciCode, bookName);
-		}else if(action.equals("deleteBookmark")) {
-			bookmarkDAO.delete(Integer.parseInt(member_seq), photo_uciCode);
-		}
-		
-		BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
-		if(bookmark == null) {
-			request.setAttribute("bookmark", bookmark);		
-		}else {
-			request.setAttribute("bookmark", bookmark);
+		if(MemberInfo != null) {
+			String member_seq = String.valueOf(MemberInfo.getSeq());
+			if(action.equals("insertBookmark")) {
+				bookmarkDAO.insert(member_seq, photo_uciCode, bookName);
+			}else if(action.equals("deleteBookmark")) {
+				bookmarkDAO.delete(Integer.parseInt(member_seq), photo_uciCode);
+			}
+			
+			BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
+			if(bookmark == null) {
+				request.setAttribute("bookmark", bookmark);		
+			}else {
+				request.setAttribute("bookmark", bookmark);
+			}
 		}
 	}
 

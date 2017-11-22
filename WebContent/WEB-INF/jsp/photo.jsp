@@ -34,26 +34,13 @@ long currentTimeMills = System.currentTimeMillis();
 <link rel="stylesheet" href="css/sub.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+<script src="js/photo.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		search();
 		setDatepicker();	
 		
 	});
-	
-	function setDatepicker() {
-		$( ".datepicker" ).datepicker({
-         changeMonth: true, 
-         dayNames: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
-         dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], 
-         monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
-         monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-         showButtonPanel: true, 
-         currentText: '오늘 날짜', 
-         closeText: '닫기', 
-         dateFormat: "yymmdd"
-	  });
-	}
 	
 	$(document).on("click", ".square", function() {
 		$(".viewbox > .size > span.grid").removeClass("on");
@@ -101,7 +88,6 @@ long currentTimeMills = System.currentTimeMillis();
 		var startDate = $("#startDate").val();
 		var endDate = $("#endDate").val();
 		var choice = startDate + "~" + endDate;
-		console.log("choice : " + choice);
 		$(".choice").attr("value", choice);
 		$(this).closest(".filter_list").stop().slideUp("fast");
 		
@@ -137,35 +123,66 @@ long currentTimeMills = System.currentTimeMillis();
 	
 	// #찜하기
 	$(document).on("click", ".over_wish", function() {
-		var uciCode = $(this).attr("value");		
-		var bookName = "기본그룹";
-		var state = $(this).hasClass("on");
+		var login_state = login_chk();
 		
-		if(state) {
-			// 찜 해제
-			$(this).removeClass("on");
-			var param = "action=deleteBookmark";
-		}else {
-			// 찜 하기
-			$(this).addClass("on");
-			var param = "action=insertBookmark";
-		}
-		
-		$.ajax({
-			url: "/view.photo?"+param,
-			type: "POST",
-			data: {
-				"photo_uciCode" : uciCode,
-				"bookName" : bookName
-			},
-			success: function(data) {
-				
-			},
-			error : function(request, status, error) {
-				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+		if(login_state) { // 로그인 상태에서만 찜활성화
+			var uciCode = $(this).attr("value");		
+			var bookName = "기본그룹";
+			var state = $(this).hasClass("on");
+			
+			if(state) {
+				// 찜 해제
+				$(this).removeClass("on");
+				var param = "action=deleteBookmark";
+			}else {
+				// 찜 하기
+				$(this).addClass("on");
+				var param = "action=insertBookmark";
 			}
-		});		
+			
+			$.ajax({
+				url: "/view.photo?"+param,
+				type: "POST",
+				data: {
+					"photo_uciCode" : uciCode,
+					"bookName" : bookName
+				},
+				success: function(data) {
+					
+				},
+				error : function(request, status, error) {
+					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+				}
+			});
+		
+		} else {
+			alert("로그인을 해주세요");
+			$(".gnb_right li").first().children("a").click();
+		}
+				
 	});	
+	
+	// #다운로드
+	$(document).on("click", ".over_down", function() {
+		var login_state = login_chk();
+		
+		if(login_state) {
+			var uciCode = $(this).attr("value");
+			down(uciCode); // 다운로드
+		} else {
+			alert("로그인을 해주세요");
+			$(".gnb_right li").first().children("a").click();
+		}
+	});
+	
+	
+	function login_chk() { // 로그인 여부 체크
+		var login_state = false;
+		if("${loginInfo}" != ""){ // 로그인 시
+			login_state = true;
+		}
+		return login_state;
+	}
 	
 	function checkNumber(event) {
 		event = event || window.event;
@@ -222,8 +239,6 @@ long currentTimeMills = System.currentTimeMillis();
 		
 		$("#keyword").val($("#keyword_current").val());
 		
-		//console.log("func search() - duration : " + duration);
-		
 		var html = "";
 		$.ajax({
 			type: "POST",
@@ -232,7 +247,7 @@ long currentTimeMills = System.currentTimeMillis();
 			data: searchParam,
 			timeout: 1000000,
 			url: "search",
-			success : function(data) { console.log(data);
+			success : function(data) { //console.log(data);
 				$("#search_list1 ul").empty();
 				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {
@@ -240,7 +255,7 @@ long currentTimeMills = System.currentTimeMillis();
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
-					html += "<a class=\"over_wish\" href=\"#\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>시안 다운로드</a> </div>";
+					html += "<a class=\"over_wish\" href=\"#\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"#\" value=\"" + val.uciCode + "\">시안 다운로드</a> </div>";
 					html += "</div>";
 					html += "</li>";
 				});
@@ -252,7 +267,6 @@ long currentTimeMills = System.currentTimeMillis();
 				$("div .paging span.total").html(totalPage);
 				
 				if("${loginInfo}" != ""){ // 로그인 시, 찜 목록을 불러오기
-					console.log("회원사 이름 : ${loginInfo.compName}");
 					userBookmarkList();
 				}
 			},
@@ -267,7 +281,7 @@ long currentTimeMills = System.currentTimeMillis();
 			type: "POST",
 			url: "bookmarkPhoto.api",
 			dataType: "json",
-			success : function(data) { console.log(data);
+			success : function(data) { 
 				$(data.result).each(function(key, val) {
 					var uciCode = val.uciCode;
 					$("#search_list1 .over_wish").each(function(idx, value) {
@@ -421,7 +435,7 @@ long currentTimeMills = System.currentTimeMillis();
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
 							<a class="over_wish" href="#" value="${PhotoDTO.uciCode}">찜</a>
-							<a class="over_down" href="/list.down.photo?uciCode=${PhotoDTO.uciCode}" download>시안 다운로드</a>
+							<a class="over_down" href="#" value="${PhotoDTO.uciCode}">시안 다운로드</a>
 						</div>
 					</div>
 				</li>
@@ -440,7 +454,7 @@ long currentTimeMills = System.currentTimeMillis();
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
 							<a class="over_wish" href="#" value="${PhotoDTO.uciCode}">찜</a>
-							<a class="over_down" href="/list.down.photo?uciCode=${PhotoDTO.uciCode}" download>시안 다운로드</a>
+							<a class="over_down" href="#" value="${PhotoDTO.uciCode}">시안 다운로드</a>
 						</div>
 					</div>
 				</li>
@@ -452,5 +466,7 @@ long currentTimeMills = System.currentTimeMillis();
 		</div>
 		<%@include file="footer.jsp"%>
 	</div>
+<iframe id="downFrame" style="display:none" >
+</iframe>
 </body>
 </html>

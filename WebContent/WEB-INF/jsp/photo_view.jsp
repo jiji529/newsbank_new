@@ -3,9 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-// String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-String IMG_SERVER_URL_PREFIX = "";
-//String IMG_SERVER_URL_PREFIX = "";
+ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+// String IMG_SERVER_URL_PREFIX = "";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -24,34 +23,52 @@ String IMG_SERVER_URL_PREFIX = "";
 	
 	// #찜하기 버튼 on/off
 	$(document).on("click", ".btn_wish", function() {
-		var uciCode = "${photoDTO.uciCode}";
-		var bookName = "기본그룹";
-		var state = $(".btn_wish").hasClass("on");
+		var login_state = login_chk();
 		
-		if(state) {
-			// 찜 해제
-			$(".btn_wish").removeClass("on");
-			var param = "action=deleteBookmark";
-		}else {
-			// 찜 하기
-			$(".btn_wish").addClass("on");
-			var param = "action=insertBookmark";
-		}
-		
-		$.ajax({
-			url: "/view.photo?"+param,
-			type: "POST",
-			data: {
-				"photo_uciCode" : uciCode,
-				"bookName" : bookName,
-			},
-			success: function(data) {
-				
-			},
-			error : function(request, status, error) {
-				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+		if(login_state) {
+			var uciCode = "${photoDTO.uciCode}";
+			var bookName = "기본그룹";
+			var state = $(".btn_wish").hasClass("on");
+			
+			if(state) {
+				// 찜 해제
+				$(".btn_wish").removeClass("on");
+				var param = "action=deleteBookmark";
+			}else {
+				// 찜 하기
+				$(".btn_wish").addClass("on");
+				var param = "action=insertBookmark";
 			}
-		});
+			
+			$.ajax({
+				url: "/view.photo?"+param,
+				type: "POST",
+				data: {
+					"photo_uciCode" : uciCode,
+					"bookName" : bookName,
+				},
+				success: function(data) {
+					
+				},
+				error : function(request, status, error) {
+					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+				}
+			});
+		} else {
+			alert("로그인을 해주세요");
+			$(".gnb_right li").first().children("a").click();
+		}
+	});
+	
+	$(document).on("click", ".btn_down", function() {
+		var login_state = login_chk();
+		
+		if(login_state) {
+			down();
+		} else {
+			alert("로그인을 해주세요");
+			$(".gnb_right li").first().children("a").click();
+		}
 	});
 	
 	$(document).on("click", ".in_prev", function() {
@@ -352,32 +369,41 @@ String IMG_SERVER_URL_PREFIX = "";
 	
 	// #장바구니에 추가하기
 	function insertUsageOption() {
-		var uciCode = "${photoDTO.uciCode}";
-		var count = $(".op_cont").length;
 		
-		if(count > 0) {
-			$(".op_cont").each(function(index){
-				var usageList_seq = $(".op_cont").eq(index).attr("value");
-				var price = $(".op_price").eq(index).attr("value");
-				
-				// 선택옵션 새롭게 추가
-				$.ajax({
-					url: "/cart.popOption?action=insertUsage",
-					type: "POST",
-					data: {
-						"uciCode" : uciCode,
-						"usageList_seq" : usageList_seq,
-						"price" : price						
-					},
-					success: function(data) {					
-					}
-				});
-			});
+		var login_state = login_chk();
+		
+		if(login_state) {
+			var uciCode = "${photoDTO.uciCode}";
+			var count = $(".op_cont").length;
 			
-			alert("장바구니에 담겼습니다.");
-		}else {
-			alert("최소한 1개의 구매옵션은 선택해야 합니다.");
+			if(count > 0) {
+				$(".op_cont").each(function(index){
+					var usageList_seq = $(".op_cont").eq(index).attr("value");
+					var price = $(".op_price").eq(index).attr("value");
+					
+					// 선택옵션 새롭게 추가
+					$.ajax({
+						url: "/cart.popOption?action=insertUsage",
+						type: "POST",
+						data: {
+							"uciCode" : uciCode,
+							"usageList_seq" : usageList_seq,
+							"price" : price						
+						},
+						success: function(data) {					
+						}
+					});
+				});
+				
+				alert("장바구니에 담겼습니다.");
+			}else {
+				alert("최소한 1개의 구매옵션은 선택해야 합니다.");
+			}
+		} else {
+			alert("로그인을 해주세요");
+			$(".gnb_right li").first().children("a").click();
 		}
+		
 	}
 	
 	// #연관사진
@@ -469,6 +495,14 @@ String IMG_SERVER_URL_PREFIX = "";
 	function media_submit(media_seq) {
 		$("#seq").val(media_seq);
 		list_form.submit();
+	}
+	
+	function login_chk() { // 로그인 여부 체크
+		var login_state = false;
+		if("${loginInfo}" != ""){ // 로그인 시
+			login_state = true;
+		}
+		return login_state;
 	}
 </script>
 </head>
@@ -595,7 +629,7 @@ String IMG_SERVER_URL_PREFIX = "";
 					<div class="total"><span class="tit">총 금액 (수량)</span><span class="price">0<span class="price_txt">원(<span class="price_count">0</span>개)</span></span></div>
 					<div class="btn_wrap">
 						<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
-						<div class="btn_down" id="btnDownTentative"><a href="/list.down.photo?uciCode=${photoDTO.uciCode}">시안 다운로드</a></div>
+						<div class="btn_down" id="btnDownTentative"><a href="#" value="${photoDTO.uciCode}">시안 다운로드</a></div>
 						<div class="btn_buy"><a href="javascript:;" onclick="go_pay()">구매하기</a></div>
 					</div>
 				</c:if>
