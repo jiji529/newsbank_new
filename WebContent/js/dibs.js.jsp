@@ -2,11 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
-	long currentTimeMills = System.currentTimeMillis(); 
 	 String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 	// String IMG_SERVER_URL_PREFIX = "";
 %>
-<script type="text/javascript">
 
 /** 개별 다운로드 */
 /*$(document).on("click", ".btn_down", function() {
@@ -47,8 +45,8 @@ function dibsList() {
 		},
 		success: function(data){ 
 			$(data.result).each(function(key, val) {
-				//html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages' + val.viewPath + '&dummy=<%= currentTimeMills%>"/></a>';
-				html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%= currentTimeMills%>"/></a>';
+				//html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages' + val.viewPath + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
+				html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
 				html += '<div class="thumb_info">';
 				html += '<input type="checkbox" value="'+val.uciCode+'"/>';
 				html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
@@ -203,6 +201,4 @@ function mutli_download() {
 	url += param;
 	
 	$("#downFrame").attr("src", url);
-//	$("#downFrame").get(0).contentDocument.location=url;
 }
-</script>

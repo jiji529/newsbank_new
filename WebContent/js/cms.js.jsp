@@ -1,4 +1,11 @@
-var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%
+	 String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+	// String IMG_SERVER_URL_PREFIX = "";
+%>
+
 function setDatepicker() {
 	$( ".datepicker" ).datepicker({
      changeMonth: true, 
@@ -167,10 +174,10 @@ function search() {
 		success : function(data) { console.log(data);
 			$("#cms_list2 ul").empty();
 			$(data.result).each(function(key, val) {	
-				var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";  
-				html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"" + IMG_SERVER_URL_PREFIX + "/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\"></a>";
-				html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-				html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"" + IMG_SERVER_URL_PREFIX + "/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";
+				var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";
+				html += '<li class="thumb"> <a href="#" onclick="go_cmsView(\'' + val.uciCode + '\')"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"></a>';
+				html += '<div class="thumb_info"><input type="checkbox" /><span>' + val.uciCode + '</span><span>' + val.copyright + '</span></div>';
+				html += '<ul class="thumb_btn"><li class="btn_down"><a href="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" download>다운로드</a></li> <li class="btn_del" value="' + val.uciCode + '"><a>삭제</a></li> <li class="btn_view "' + blind + ' value="' + val.uciCode + '"><a>블라인드</a></li> </ul>';
 			});
 			$(html).appendTo("#cms_list2 ul");
 			var totalCount = $(data.count)[0];
@@ -229,9 +236,9 @@ function cms_search() {
 			$("#cms_list2 ul").empty();
 			$(data.result).each(function(key, val) {	
 				var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";
-				html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"" + IMG_SERVER_URL_PREFIX + "/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%= currentTimeMills%>\" /></a>";
-				html += "<div class=\"thumb_info\"><input type=\"checkbox\" /><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-				html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"" + IMG_SERVER_URL_PREFIX + "/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";					
+				html += '<li class="thumb"> <a href="#" onclick="go_cmsView(\'' + val.uciCode + '\')"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"></a>';
+				html += '<div class="thumb_info"><input type="checkbox" /><span>' + val.uciCode + '</span><span>' + val.copyright + '</span></div>';
+				html += '<ul class="thumb_btn"><li class="btn_down"><a href="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" download>다운로드</a></li> <li class="btn_del" value="' + val.uciCode + '"><a>삭제</a></li> <li class="btn_view "' + blind + ' value="' + val.uciCode + '"><a>블라인드</a></li> </ul>';					
 			});
 			$(html).appendTo("#cms_list2 ul");
 			var totalCount = $(data.count)[0];

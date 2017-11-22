@@ -17,7 +17,6 @@
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% 
-	long currentTimeMills = System.currentTimeMillis(); 
 	String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -31,7 +30,7 @@
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
-<script src="js/cms.js"></script>
+<script src="js/cms.js.jsp"></script>
 <script> 
 	//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
 	$(document).ready(function() {

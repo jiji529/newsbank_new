@@ -17,7 +17,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% 
-	long currentTimeMills = System.currentTimeMillis();
 	String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -169,7 +168,6 @@
 			<section id="wish_list2">
 				<ul>					
 					<c:forEach items="${dibsPhotoList}" var="PhotoDTO">
-						<%-- <li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="images/serviceImages${PhotoDTO.getViewPath()}&dummy=<%= currentTimeMills%>"/></a> --%>
 						<li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>
 							<div class="thumb_info">
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
