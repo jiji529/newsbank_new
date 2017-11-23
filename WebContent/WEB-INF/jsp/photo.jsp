@@ -154,9 +154,10 @@
 				}
 			});
 		
-		} else {
-			alert("로그인을 해주세요");
-			$(".gnb_right li").first().children("a").click();
+		} else { // 비회원
+			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
+				$(".gnb_right li").first().children("a").click();	
+			}
 		}
 				
 	});	
@@ -165,12 +166,14 @@
 	$(document).on("click", ".over_down", function() {
 		var login_state = login_chk();
 		
-		if(login_state) {
+		if(login_state) { // 로그인 시
 			var uciCode = $(this).attr("value");
 			down(uciCode); // 다운로드
-		} else {
-			alert("로그인을 해주세요");
-			$(".gnb_right li").first().children("a").click();
+			
+		} else { // 비회원
+			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
+				$(".gnb_right li").first().children("a").click();	
+			}
 		}
 	});
 	
@@ -283,11 +286,19 @@
 			success : function(data) { 
 				$(data.result).each(function(key, val) {
 					var uciCode = val.uciCode;
-					$("#search_list1 .over_wish").each(function(idx, value) {
-						var list_uci = $(".over_wish").eq(idx).attr("value");
+					$("#search_list1 ul .over_wish").each(function(idx, value) { // 가로맞춤 보기
+						var list_uci = $("#search_list1 ul .over_wish").eq(idx).attr("value");
 						
 						if(list_uci == uciCode) {
-							$(".over_wish").eq(idx).addClass("on");
+							$("#search_list1 ul .over_wish").eq(idx).addClass("on");
+						}
+					});
+					
+					$("#search_list2 ul .over_wish").each(function(idx, value) { // 사각형 보기
+						var list_uci = $("#search_list2 ul .over_wish").eq(idx).attr("value");
+						if(list_uci == uciCode) {
+							console.log(list_uci);
+							$("#search_list2 ul .over_wish").eq(idx).addClass("on");
 						}
 					});
 				});
@@ -366,6 +377,7 @@
 							</li>
 						</ul>
 					</li>
+					<%-- 1차 제외 
 					<li class="filter_title filter_color">
 						<span>컬러/흑백 :전체</span>
 						<ul class="filter_list">
@@ -373,7 +385,7 @@
 							<li value="<%=SearchParameterBean.COLOR_YES%>">컬러</li>
 							<li value="<%=SearchParameterBean.COLOR_NO%>">흑백</li>
 						</ul>
-					</li>
+					</li> --%>
 					<li class="filter_title filter_horizontal">
 						<span>가로/세로 : 전체</span>
 						<ul class="filter_list">

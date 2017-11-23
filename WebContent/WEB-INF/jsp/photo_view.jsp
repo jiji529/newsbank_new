@@ -55,8 +55,9 @@
 				}
 			});
 		} else {
-			alert("로그인을 해주세요");
-			$(".gnb_right li").first().children("a").click();
+			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
+				$(".gnb_right li").first().children("a").click();	
+			}
 		}
 	});
 	
@@ -66,8 +67,9 @@
 		if(login_state) {
 			down();
 		} else {
-			alert("로그인을 해주세요");
-			$(".gnb_right li").first().children("a").click();
+			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
+				$(".gnb_right li").first().children("a").click();	
+			}
 		}
 	});
 	
@@ -372,7 +374,7 @@
 		
 		var login_state = login_chk();
 		
-		if(login_state) {
+		if(login_state) { // 로그인 체크
 			var uciCode = "${photoDTO.uciCode}";
 			var count = $(".op_cont").length;
 			
@@ -399,9 +401,11 @@
 			}else {
 				alert("최소한 1개의 구매옵션은 선택해야 합니다.");
 			}
-		} else {
-			alert("로그인을 해주세요");
-			$(".gnb_right li").first().children("a").click();
+			
+		} else { //비회원
+			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
+				$(".gnb_right li").first().children("a").click();	
+			}
 		}
 		
 	}

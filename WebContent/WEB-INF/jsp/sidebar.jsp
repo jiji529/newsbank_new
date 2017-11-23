@@ -7,7 +7,7 @@
 	<ul>
 		<li><strong>회원관리</strong>
 			<ul class="lnb_li2">
-				<li><a href="#">회원 현황</a></li>
+				<li><a href="/member.manage">회원 현황</a></li>
 				<li><a href="#">CP회원 관리</a></li>
 			</ul>
 		</li>

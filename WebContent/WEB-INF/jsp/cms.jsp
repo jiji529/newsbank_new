@@ -460,6 +460,7 @@
 						</li>
 					</ul>
 				</li>
+				<%-- 1차 제외
 				<li class="filter_title filter_color">
 					색상
 					<ul class="filter_list">
@@ -467,7 +468,7 @@
 						<li value="<%=SearchParameterBean.COLOR_YES%>">컬러</li>
 						<li value="<%=SearchParameterBean.COLOR_NO%>">흑백</li>
 					</ul>
-				</li>
+				</li> --%>
 				<li class="filter_title filter_horizontal">
 					형태
 					<ul class="filter_list">

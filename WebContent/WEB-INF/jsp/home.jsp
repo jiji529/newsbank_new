@@ -146,7 +146,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						</li>
 						<c:if test="${MemberInfo.type == 'A'}">
 							<li class="go_admin">
-								<a href="/cms.manage">관리자페이지</a>
+								<a href="/member.manage">관리자페이지</a>
 							</li>
 						</c:if>
 					</c:otherwise>
