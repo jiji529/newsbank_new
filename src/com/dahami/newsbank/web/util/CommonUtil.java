@@ -29,7 +29,11 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class CommonUtil {
 
-	
+	/**
+	 * sha1  암호화
+	 * @param input
+	 * @return
+	 */
 	public static String sha1(String input) {
 	    String sha1 = null;
 	    try {

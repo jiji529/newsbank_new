@@ -45,5 +45,7 @@ section.media{width:100%; background:#f3f4f8; float:left;}
 section.media .media_list { margin:40px 0; background:#fff; padding:20px; float:left; }
 section.media .media_list li { border-right:1px #f3f4f8 solid;border-bottom:1px #f3f4f8 solid; margin:0; width:133px; height:132px; float:left;}
 section.media .media_list li:nth-child(9n){ border-right:0;}
-section.media .media_list li a{ display:block; }
-section.media .media_list li a img{vertical-align: bottom;}
+section.media .media_list li a{ display:table-cell; width:133px; height:132px; vertical-align:middle; line-height:132px; }
+section.media .media_list li a img{max-width:110px; max-height:30px;}
+
+
