@@ -96,11 +96,11 @@ public class MemberAction extends NewsbankServletBase {
 		if (request.getParameter("cmd") != null) {
 			cmd = request.getParameter("cmd"); // api 구분 crud
 		}
-		if (request.getParameter("type") != null) {
+		if (check && request.getParameter("type") != null) {
 			type = request.getParameter("type"); // 회원 구분
 		}
 		System.out.println("type => " + type + " : " + check);
-		if (request.getParameter("id") != null) {
+		if (check && request.getParameter("id") != null) {
 			id = request.getParameter("id"); // 아이디 request
 			check = check && isValidId(id);
 			System.out.println("id => " + id + " : " + check);
@@ -108,7 +108,7 @@ public class MemberAction extends NewsbankServletBase {
 				message = "아이디 형식이 올바르지 않습니다.s";
 			}
 		}
-		if (request.getParameter("pw") != null) {
+		if (check && request.getParameter("pw") != null) {
 			pw = request.getParameter("pw"); // 비밀번호 request
 			check = check && isValidPw(pw);
 			System.out.println("pw => " + pw + " : " + check);
@@ -117,7 +117,7 @@ public class MemberAction extends NewsbankServletBase {
 			}
 		}
 
-		if (request.getParameter("email") != null) {
+		if (check && request.getParameter("email") != null) {
 			email = request.getParameter("email"); // 이메일 request
 			check = check && isValidEmail(email);
 			System.out.println("email => " + email + " : " + check);
@@ -126,12 +126,12 @@ public class MemberAction extends NewsbankServletBase {
 			}
 		}
 
-		if (request.getParameter("name") != null) {
+		if (check && request.getParameter("name") != null) {
 			name = request.getParameter("name"); // 이름 request
 
 		}
 
-		if (request.getParameter("phone") != null) {
+		if (check && request.getParameter("phone") != null) {
 			phone = request.getParameter("phone"); // 전화번호 request
 			check = check && isValidPhone(phone);
 			System.out.println("phone => " + phone + " : " + check);
@@ -145,25 +145,27 @@ public class MemberAction extends NewsbankServletBase {
 
 		}
 
-		if (request.getParameter("compNum") != null) {
+		if (check && request.getParameter("compNum") != null) {
 			compNum = request.getParameter("compNum"); // 사업자등록번호
 			check = check && isValidCompNum(compNum);
+
 			System.out.println("compNum => " + compNum + " : " + check);
 			if (!check) {
 				message = "사업자 등록번호 형식이 올바르지 않습니다.";
 			}
 		}
 
-		if (request.getParameter("compDocPath") != null) {
+		if (check && request.getParameter(
+				"compDocPath") != null) {
 			compDocPath = request.getParameter("compDocPath"); // 사업자등록증
 		}
 
-		if (request.getParameter("compName") != null) {
+		if (check && request.getParameter("compName") != null) {
 			compName = request.getParameter("compName"); // 회사 이름
 
 		}
 
-		if (request.getParameter("compTel") != null) {
+		if (check && request.getParameter("compTel") != null) {
 			compTel = request.getParameter("compTel"); // 회사전화번호
 			check = check && isValidPhone(compTel);
 			System.out.println("compTel => " + compTel + " : " + check);
@@ -172,89 +174,89 @@ public class MemberAction extends NewsbankServletBase {
 			}
 		}
 
-		if (request.getParameter("compAddress") != null) {
+		if (check && request.getParameter("compAddress") != null) {
 			compAddress = request.getParameter("compAddress"); // 회사주소
 		}
 
-		if (request.getParameter("compAddDetail") != null) {
+		if (check && request.getParameter("compAddDetail") != null) {
 			compAddDetail = request.getParameter("compAddDetail"); // 회사상세주소
 		}
 
-		if (request.getParameter("compZipcode") != null) {
+		if (check && request.getParameter("compZipcode") != null) {
 			compZipcode = request.getParameter("compZipcode"); // 회사우편번호
 
 		}
 
-		if (request.getParameter("logo") != null) {
+		if (check && request.getParameter("logo") != null) {
 			logo = request.getParameter("logo"); // 로고 경로 request
 		}
 
 		// process(request, response);
 
-		if (request.getParameter("compBankName") != null) {
+		if (check && request.getParameter("compBankName") != null) {
 			compBankName = request.getParameter("compBankName"); // 로고 경로 request
 		}
 
-		if (request.getParameter("compBankAcc") != null) {
+		if (check && request.getParameter("compBankAcc") != null) {
 			compBankAcc = request.getParameter("compBankAcc"); // 로고 경로 request
 		}
 
-		if (request.getParameter("compBankPath") != null) {
+		if (check && request.getParameter("compBankPath") != null) {
 			compBankPath = request.getParameter("compBankPath"); // 로고 경로 request
 		}
 
-		if (request.getParameter("contractPath") != null) {
+		if (check && request.getParameter("contractPath") != null) {
 			contractPath = request.getParameter("contractPath"); // 로고 경로 request
 		}
 
-		if (request.getParameter("contractStart") != null) {
+		if (check && request.getParameter("contractStart") != null) {
 			contractStart = request.getParameter("contractStart"); // 로고 경로 request
 		}
 
-		if (request.getParameter("contractEnd") != null) {
+		if (check && request.getParameter("contractEnd") != null) {
 			contractEnd = request.getParameter("contractEnd"); // 로고 경로 request
 		}
 
-		if (request.getParameter("contractAuto") != null) {
+		if (check && request.getParameter("contractAuto") != null) {
 			contractAuto = request.getParameter("contractAuto"); // 로고 경로 request
 		}
 
-		if (request.getParameter("preRate") != null) {
+		if (check && request.getParameter("preRate") != null) {
 			preRate = Double.parseDouble(request.getParameter("preRate"));
 		}
 
-		if (request.getParameter("postRate") != null) {
+		if (check && request.getParameter("postRate") != null) {
 			postRate = Double.parseDouble(request.getParameter("postRate"));
 		}
 
-		if (request.getParameter("taxName") != null) {
+		if (check && request.getParameter("taxName") != null) {
 			taxName = request.getParameter("taxName"); // 로고 경로 request
 		}
 
-		if (request.getParameter("taxPhone") != null) {
+		if (check && request.getParameter("taxPhone") != null) {
 			taxPhone = request.getParameter("taxPhone"); // 로고 경로 request
 		}
-		if (request.getParameter("taxEmail") != null) {
+		if (check && request.getParameter("taxEmail") != null) {
 			taxEmail = request.getParameter("taxEmail"); // 로고 경로 request
 		}
 
-		if (request.getParameter("permission") != null) {
+		if (check && request.getParameter("permission") != null) {
 			permission = request.getParameter("permission"); // 로고 경로 request
 		}
 
-		if (request.getParameter("deferred") != null) {
+		if (check && request.getParameter("deferred") != null) {
 			deferred = request.getParameter("deferred"); // 로고 경로 request
 		}
 
-		if (request.getParameter("activate") != null) {
+		if (check && request.getParameter("activate") != null) {
 			activate = request.getParameter("activate"); // 로고 경로 request
 		}
 
-		if (request.getParameter("master_seq") != null) {
+		if (check && request.getParameter("master_seq") != null) {
 			master_seq = Integer.parseInt(request.getParameter("master_seq"));
 		}
 
-		if (request.getParameter("group_seq") != null) {
+		if (check && request.getParameter("group_seq") != null) {
 			group_seq = Integer.parseInt(request.getParameter("group_seq"));
 		}
 
@@ -263,7 +265,7 @@ public class MemberAction extends NewsbankServletBase {
 			seq = MemberInfo.getSeq();
 		}
 
-		if (request.getParameter("media_code") != null) {
+		if (check && request.getParameter("media_code") != null) {
 			int adjSlave = Integer.parseInt(request.getParameter("media_code"));
 			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 			memberDTO.setSeq(adjSlave);

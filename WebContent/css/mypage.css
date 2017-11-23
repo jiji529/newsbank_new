@@ -10,7 +10,7 @@
 .mypage h4 { float:left; margin:30px 0 10px; width:100%; text-align:left;}
 .mypage  p.txt{width:100%; text-align:left; margin-bottom:30px; font-size:13px; color:#999;}
 
-.mypage .pw{ float:left; width:100%; border-top:3px #f79320 solid; background:#fbfbfb; height:250px; padding:80px 0; border-bottom:1px #ccc solid;}
+.mypage .pw{ float:left; width:100%;background:#fbfbfb; height:250px; padding:80px 0; border-bottom:1px #ccc solid;}
 .mypage .pw .pw_box{ }
 .mypage .pw .pw_box input{width:400px; border:1px #ccc solid; padding:10px 15px; border-radius:4px; font-size:16px; }
 .mypage .pw .pw_box button{margin-left:5px; padding:10px 30px; color:#fff; background:#f79320; font-size:16px; border-radius:4px; border:0;}
@@ -45,7 +45,7 @@
 
 .mypage .tb01 {border-bottom:1px #999 solid; text-align:left; }
 .mypage .tb01 tfoot td{background:#f6f6f6; font-weight:bold;}
-.mypage .tb01 th { padding: 10px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:60px; }
+.mypage .tb01 th { padding: 10px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:60px; text-align:left; }
 .mypage .tb01 th .ex { color:red; margin-right:5px; float:left; margin-top:2px;}
 .mypage .tb01 td { padding: 10px 30px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; }
 .mypage .tb01 td .my_addr{float:left; width:100%; margin-bottom:10px;}
@@ -173,8 +173,17 @@
 .mypage .view .view_lt .img_info_area.area2{width:520px; margin-left:20px; margin-top:30px; border-top:0;}
 .mypage .view .view_lt .img_info_area.area1 .info_tit, .mypage .view .view_lt .img_info_area.area2 .info_tit{margin-top:0;}
 .mypage .view .view_lt .img_info_area.area1 dl{grid-template-columns:28% 72%; -ms-grid-columns:28% 72%;}
-.mypage .view .view_lt .img_info_area.area2 dl{grid-template-columns:18% 30% 15% 34%;-ms-grid-columns:18% 30% 15% 34%;}
+.mypage .view .view_lt .img_info_area.area1 dl dt{ width:28%;}
+.mypage .view .view_lt .img_info_area.area1 dl dd{ width:72%;}
+.mypage .view .view_lt .img_info_area.area2 dl dt{ width:16%;}
+.mypage .view .view_lt .img_info_area.area2 dl dd{ width:28%;}
+.mypage .view .view_lt .img_info_area.area2 dl dt:nth-child(4n-1){ width:20%;}
+.mypage .view .view_lt .img_info_area.area2 dl dd:nth-child(4n){ width:36%;}
 
+
+/*.mypage .view .view_lt .img_info_area.area1 dl{grid-template-columns:28% 72%; -ms-grid-columns:28% 72%;}
+.mypage .view .view_lt .img_info_area.area2 dl{grid-template-columns:18% 30% 15% 34%;-ms-grid-columns:18% 30% 15% 34%;}
+*/
 .mypage .view .view_rt{ padding-top:25px; padding-left:20px; }
 .mypage .view .view_rt .cms_rt{ float:left; width:100%; }
 .mypage .view .view_rt .cms_rt .info_tit {float:left; width:100%; margin:30px 0 15px; font-size:15px; color:#f79320; }
@@ -346,14 +355,14 @@
 .uci_info section{width:100%;padding:80px 0; display:block;}
 .uci_info section.uci_sec1{ width:1240px; margin:0 auto;}
 .uci_info section.uci_sec2{ background:#f2f2f2; padding-bottom:0; }
-.uci_info section.uci_sec3{width:1240px; margin:0 auto; padding-right:300px; position:relative;}
+.uci_info section.uci_sec3{width:1240px; margin:0 auto; padding-right:300px; padding-bottom:200px; position:relative;}
 .uci_info section.uci_sec4{ background:url(../images/uci/bg_sec4.png) center no-repeat; }
 .uci_info section h4{ font-size:20px; color:#333; float:left; text-align:center; margin-bottom:60px; width:100%; text-align:center;}
 .uci_info section h4:after{ content:' ';width:50px; height:1px; background:#f79320; position:absolute; left:50%; margin:50px 0 0 -25px;}
 .uci_info section p{font-size:14px; line-height:26px; color:#666; margin-bottom:50px;}
 
 .uci_info section.uci_sec1 .uci_ex{width:100%; background:#f8f6f3; border:1px #e5e5e5 solid; padding:28px; }
-.uci_info section h3{ float:left; margin-bottom:30px; width:100%; text-align:left; font-size:18px; }
+.uci_info section h3{  margin-bottom:30px; width:100%; text-align:left; font-size:18px; }
 .uci_info section h3:before{content:""; width:5px; height:18px; background:#f79320; float:left; margin-right:10px; margin-top:1px ;}
 
 .uci_info section .tab{margin:10px 0 30px; display:inline-block;}
@@ -366,8 +375,12 @@
 .uci_info section.uci_sec3 *{text-align:left; position:relative;}
 .uci_info section.uci_sec3 h4:after{left:0; margin-left:0;}
 .uci_info section.uci_sec3 .uci_list{  width:100%;}
-.uci_info section.uci_sec3 .uci_list ul{display: grid;  grid-template-columns:35% 65%; width:100%;}
+/*
+.uci_info section.uci_sec3 .uci_list ul{display: grid;  grid-template-columns:35% 65%; width:100%;}*/
+.uci_info section.uci_sec3 .uci_list ul{width:100%;}
 .uci_info section.uci_sec3 .uci_list li{font-size:14px ; line-height:28px; color:#666;float:left; }
+.uci_info section.uci_sec3 .uci_list li:nth-child(odd){width:35%;}
+.uci_info section.uci_sec3 .uci_list li:nth-child(even){width:65%;}
 .uci_info section.uci_sec3 .uci_img_regi{ position:absolute; right:0; top:80px;}
 
 .uci_info section.uci_sec4 *{color:#fff;}
@@ -450,3 +463,4 @@
 #popup_wrap .pop_foot .pop_btn{width:100%; margin-top:15px; float:left;}
 #popup_wrap .pop_foot .pop_btn button{background:#fff; border:1px #f79320 solid; padding:8px 15px; color:#f79320; font-weight:bold; border-radius:2px;}
 #popup_wrap .pop_foot .pop_btn button.popup_close{border:1px #ccc solid; color:#666;}
+

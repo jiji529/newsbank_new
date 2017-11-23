@@ -7,7 +7,9 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -19,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
+
+import com.dahami.newsbank.web.dao.MemberDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
  * Servlet implementation class SendSMS
@@ -75,39 +80,53 @@ public class SendSMS extends NewsbankServletBase {
 		}
 		
 		if (tel != null && token == null ) {
-			// 전화번호 인증 요청
-			success_msg = "인증번호를 입력하신 휴대폰번호에 전송했습니다.";
-			String certifyNumber = Integer.toString(generateNumber(6)); // 랜덤 생성
+			
+			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
+			MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
+			List<MemberDTO> listMember = new ArrayList<MemberDTO>();
+			
+			memberDTO.setPhone(tel);
+			listMember = memberDAO.listMember(memberDTO); // 회원정보 요청
+			// 회원정보 배열 크기 체크
+			if (listMember.size() > 0) {
+				success_msg = "입력하신 핸드폰번호는 이미 가입되어있습니다.";
+			}else {
 
-			if (session.getAttribute("sCertifyCount") != null) {
-				//세션에 인증 횟수 누적
-				certifyCount = (int) session.getAttribute("sCertifyCount") + 1;
-			}
+				// 전화번호 인증 요청
+				success_msg = "인증번호를 입력하신 휴대폰번호에 전송했습니다.";
+				String certifyNumber = Integer.toString(generateNumber(6)); // 랜덤 생성
 
-			if (certifyCount < 100) {
-				// 같은 세션에서 100회 이상 번호 인증 요청시 차단
-				session.setAttribute("sCertifyPhone", tel); // 핸드폰번호
-				session.setAttribute("sCertifyNumber", certifyNumber); // 랜덤 6자리
-				session.setAttribute("sCertifyCount", certifyCount); // 횟수
-				// session.removeAttribute("preDate");
-
-				String sendMemo = "고객님의 인증번호는 [ " + certifyNumber + " ] 입니다.";
-
-				String URL = "http://222.231.4.31/~voc_user/MMS_Send/mms_process_v2.php";
-				Map<String, Object> param = new HashMap<String, Object>();
-				param.put("send_num", "025934174");
-				param.put("receive_num", tel);
-				param.put("send_title", "[뉴스뱅크]");
-				param.put("send_memo", sendMemo);
-				System.out.println(param);
-				//String result = URLPost(URL, param); // 주석해제하면 문자로 전송됨
-				String result ="success";
-				if (result.equalsIgnoreCase("success")) {
-					success = true;
+				if (session.getAttribute("sCertifyCount") != null) {
+					//세션에 인증 횟수 누적
+					certifyCount = (int) session.getAttribute("sCertifyCount") + 1;
 				}
-			} else {
-				success_msg = "더이상 인증번호를 요청할수 없습니다.";
+
+				if (certifyCount < 100) {
+					// 같은 세션에서 100회 이상 번호 인증 요청시 차단
+					session.setAttribute("sCertifyPhone", tel); // 핸드폰번호
+					session.setAttribute("sCertifyNumber", certifyNumber); // 랜덤 6자리
+					session.setAttribute("sCertifyCount", certifyCount); // 횟수
+					// session.removeAttribute("preDate");
+
+					String sendMemo = "고객님의 인증번호는 [ " + certifyNumber + " ] 입니다.";
+
+					String URL = "http://222.231.4.31/~voc_user/MMS_Send/mms_process_v2.php";
+					Map<String, Object> param = new HashMap<String, Object>();
+					param.put("send_num", "025934174");
+					param.put("receive_num", tel);
+					param.put("send_title", "[뉴스뱅크]");
+					param.put("send_memo", sendMemo);
+					System.out.println(param);
+					//String result = URLPost(URL, param); // 주석해제하면 문자로 전송됨
+					String result ="success";
+					if (result.equalsIgnoreCase("success")) {
+						success = true;
+					}
+				} else {
+					success_msg = "더이상 인증번호를 요청할수 없습니다.";
+				}
 			}
+			
 
 		}
 		
