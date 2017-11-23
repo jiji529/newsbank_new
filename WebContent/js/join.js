@@ -397,6 +397,50 @@ $(document).ready(function() {
 	});
 	
 	
+	var fileTypes = [ 'image/jpeg', 'image/pjpeg', 'image/png', 'application/pdf'
+
+		]
+		//확장자 검사
+		function validFileType(file) {
+			for (var i = 0; i < fileTypes.length; i++) {
+				if (file.type === fileTypes[i]) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+		//파일 다운로드 체크
+		$('input[name=compDoc]').bind('change', function() {
+			var tmpFile = $(this)[0].files[0];
+			var sizeLimit = 1024 * 1024 * 15;
+			if (tmpFile.size > sizeLimit) {
+				alert("파일 용량이 15MB를 초과했습니다");
+				$(this).val("");
+				return;
+			}
+
+			if (!validFileType(tmpFile))  {
+				alert("파일 형식이 올바르지 않습니다.");
+				$(this).val("");
+				return;
+			}
+
+		});
+		
+		
+		function validCompDoc() {
+			var compDoc = $("#compDoc").val();
+			if (compDoc.length > 0) {
+				return true;
+			} else {
+				alert("사업자 등록증 사본을 등록해주세요.");
+				return false;
+			}
+		}
+	
+	
+	
 	function validCompAddr() {
 		var compAddress = $("#compAddress").val();
 		if (compAddress.length > 0) {
@@ -435,6 +479,7 @@ $(document).ready(function() {
 			check = check && validCompName();
 			check = check && validCompNum();
 			check = check && validCompTel();
+			check = check && validCompDoc();
 
 			if ($(this).find("[name=type]").val() == "M") {
 

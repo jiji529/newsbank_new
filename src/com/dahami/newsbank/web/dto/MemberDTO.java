@@ -3,6 +3,8 @@ package com.dahami.newsbank.web.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.dahami.newsbank.web.util.CommonUtil;
+
 /**
  * @author p153-1706
  *
@@ -455,7 +457,8 @@ public class MemberDTO implements Serializable {
 	}
 
 	public void setPw(String pw) {
-		this.pw = pw;
+		
+		this.pw = CommonUtil.sha1(pw);
 	}
 
 	public String getCompZipcode() {

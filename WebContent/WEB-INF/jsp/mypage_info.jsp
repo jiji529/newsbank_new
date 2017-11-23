@@ -215,7 +215,7 @@
 										<input type="text" size="5" id="compNum3" class="inp_txt" value="${compNum3}" maxlength="5" required />
 										<div class="upload-btn-wrapper">
 											<button class="btn">등록증 업로드</button>
-											<input type="file" name="compNumFile" accept="application/pdf, image/*" />
+											<input type="file" name="compNumFile" accept="application/pdf, image/*"  required/>
 										</div>
 										<a href="javascript:;" class="btn_input1">다운로드</a>
 									</td>

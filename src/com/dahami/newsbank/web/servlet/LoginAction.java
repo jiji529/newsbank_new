@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
  * Servlet implementation class MypageAuth
@@ -64,6 +65,7 @@ public class LoginAction extends NewsbankServletBase {
 			MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 			memberDTO.setId(id);
 			memberDTO.setPw(pw);
+			System.out.println(CommonUtil.sha1(pw));
 
 			memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
 			if (memberDTO != null) {
