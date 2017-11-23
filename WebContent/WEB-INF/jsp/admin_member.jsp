@@ -47,7 +47,7 @@ $("#mask").css("display", "none");
 }); 
 }); 
 </script>
-<script>
+<script type="text/javascript">
 //관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
 $(document).ready(function() {
 	$("[href]").each(function() {
@@ -55,7 +55,90 @@ $(document).ready(function() {
 			$(this).parent().addClass("on");
 		}
 	});
+	search();
 });
+
+$(document).on("click", ".btn_input2", function() {
+	search();
+});
+
+$(document).on("keypress", "#keyword", function(e) {
+	if (e.keyCode == 13) { // 엔터
+		search();
+	}
+});
+
+function search() { // 검색
+	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
+	var type = $("#sel_type option:selected").attr("value"); // 회원구분
+	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
+	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
+	var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
+	
+	var searchParam = {
+			"keyword":keyword
+			, "type":type
+			, "deferred":deferred
+			, "group":group
+			, "pageVol":pageVol
+	};
+	
+	var html = "";
+	$("#mtBody").empty();
+	
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		data: searchParam,
+		url: "/listMember.api",
+		success: function(data) { //console.log(data);
+			$(data.result).each(function(key, val) {
+				var type = val.type;
+				if(type == "P") type = "개인";
+				if(type == "C") type = "법인";
+				
+				var group = val.group_seq;
+				if(group == 0){ 
+					group = "개별";  
+				}else{
+					group = "그룹( )";  
+				}
+				
+				var deferred = val.deferred;
+				if(deferred == 'Y') deferred = "오프라인 결제";
+				if(deferred == 'N') deferred = "온라인 결제";	
+				
+				var contractStart = val.contractStart;
+				var contractEnd = val.contractEnd;
+				var duration = "";
+				if(contractStart == null || contractEnd == null) duration = "정보 미기재"; // 둘 중 하나라도 null이면 표시 
+				if(contractStart != null && contractEnd != null) duration = contractStart + "~" + contractEnd; // 모든 정보가 있을 때 표시
+				
+				var regDate = val.regDate;
+				regDate = regDate.substring(0, 10);
+				
+				html += '<tr onclick="javascript:void(0)">';
+				html += '<td><div class="tb_check">';
+				html += '<input id="check1" name="check1" type="checkbox">';
+				html += '<label for="check1">선택</label>';
+				html += '</div></td>';
+				html += '<td>' + (key+1) + '</td>';
+				html += '<td>' + val.id + '</td>';
+				html += '<td>' + val.compName + '</td>';
+				html += '<td>' + type +'</td>';
+				html += '<td>' + val.name + '</td>';
+				html += '<td>' + val.email + '</td>';
+				html += '<td>' + val.phone + '</td>';
+				html += '<td>' + deferred + '</td>';
+				html += '<td>' + group + '</td>';
+				html += '<td>' + duration + '</td>';
+				html += '<td>' + regDate + '</td>';
+				html += '</tr>';
+			});
+			$(html).appendTo("#mtBody");
+		}
+	});
+}
 </script>
 </head>
 <body>
@@ -68,7 +151,7 @@ $(document).ready(function() {
 				<h3>회원 현황</h3>
 			</div>
 			<div class="ad_sch_area">
-				<table class="tb01" cellpadding="0" cellspacing="0">
+				<table class="tb01" cellpadding="0" cellspacing="0" >
 					<colgroup>
 					<col style="width:240px;">
 					<col style="width:;">
@@ -76,44 +159,44 @@ $(document).ready(function() {
 					<tbody>
 						<tr>
 							<th>아이디/이름/회사명</th>
-							<td><input type="text" class="inp_txt" size="50" /></td>
+							<td><input type="text" id="keyword" class="inp_txt" size="50" /></td>
 						</tr>
 						<tr>
 							<th>회원구분</th>
-							<td><select name="" class="inp_txt" style="width:380px;">
-									<option>전체</option>
-									<option>개인</option>
-									<option>법인</option>
+							<td><select name="" id="sel_type" class="inp_txt" style="width:380px;">
+									<option value="">전체</option>
+									<option value="P">개인</option>
+									<option value="C">법인</option>
 								</select></td>
 						</tr>
 						<tr>
 							<th>결제구분</th>
-							<td><select name="" class="inp_txt" style="width:380px;">
-									<option>전체</option>
-									<option>온라인결제</option>
-									<option>오프라인결제</option>
+							<td><select name="" id="sel_deferred" class="inp_txt" style="width:380px;">
+									<option value="">전체</option>
+									<option value="N">온라인결제</option>
+									<option value="Y">오프라인결제</option>
 								</select></td>
 						</tr>
 						<tr>
 							<th>그룹구분</th>
-							<td><select name="" class="inp_txt" style="width:380px;">
-									<option>전체</option>
-									<option>개별</option>
-									<option>그룹</option>
+							<td><select name="" id="sel_group" class="inp_txt" style="width:380px;">
+									<option value="">전체</option>
+									<option value="I">개별</option>
+									<option value="G">그룹</option>
 								</select></td>
 						</tr>
 					</tbody>
 				</table>
-				<div class="btn_area" style="margin-top:0;"><a href="#" class="btn_input2">검색</a></div>
+				<div class="btn_area" style="margin-top:0;"><a href="javascript:void(0)" class="btn_input2">검색</a></div>
 			</div>
 			<div class="ad_result">
 				<div class="ad_result_btn_area">
-					<select>
-						<option>20개</option>
-						<option>50개</option>
-						<option>100개</option>
+					<select id="sel_pageVol">
+						<option value="20">20개</option>
+						<option value="50">50개</option>
+						<option value="100">100개</option>
 					</select>
-					<span  id="popup_open"><a href="#none">그룹묶기</a></span><a href="#">엑셀저장</a></div>
+					<span  id="popup_open"><a href="#none">그룹묶기</a></span><a href="javascript:void(0)">엑셀저장</a></div>
 				<table cellpadding="0" cellspacing="0" class="tb04">
 					<colgroup>
 					<col width="30" />
@@ -148,41 +231,8 @@ $(document).ready(function() {
 							<th>가입일자</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr onclick="location.href='admin2.html'">
-							<td><div class="tb_check">
-									<input id="check1" name="check1" type="checkbox">
-									<label for="check1">선택</label>
-								</div></td>
-							<td>1</td>
-							<td>crk0526</td>
-							<td>(주)다하미</td>
-							<td>법인</td>
-							<td>김정현</td>
-							<td>funcion@korea.kr</td>
-							<td>010-0000-0000</td>
-							<td>온라인결제</td>
-							<td>개별</td>
-							<td>&nbsp;</td>
-							<td>2017-07-01</td>
-						</tr>
-						<tr onclick="location.href='admin2.html'">
-							<td><div class="tb_check">
-									<input id="check2" name="check2" type="checkbox">
-									<label for="check2">선택</label>
-								</div></td>
-							<td>2</td>
-							<td>maywood</td>
-							<td>대한민국역사박물관</td>
-							<td>법인</td>
-							<td>최고운</td>
-							<td>kdahyuns@gmail.com</td>
-							<td>010-0000-0000</td>
-							<td>온라인결제</td>
-							<td>그룹(maywood)</td>
-							<td>2017-01-01 ~ 2017-12-31</td>
-							<td>2017-07-01</td>
-						</tr>
+					<tbody id="mtBody">
+						
 					</tbody>
 				</table>
 				<div id="popup_wrap">
@@ -227,20 +277,20 @@ $(document).ready(function() {
 				<div id="mask"></div>
 				<div class="page">
 					<ul>
-						<li class="first"> <a href="#">첫 페이지</a> </li>
-						<li class="prev"> <a href="#">이전 페이지</a> </li>
-						<li> <a href="#">1</a> </li>
-						<li class="active"> <a href="#">2</a> </li>
-						<li> <a href="#">3</a> </li>
-						<li> <a href="#">4</a> </li>
-						<li> <a href="#">5</a> </li>
-						<li> <a href="#">6</a> </li>
-						<li> <a href="#">7</a> </li>
-						<li> <a href="#">8</a> </li>
-						<li> <a href="#">9</a> </li>
-						<li> <a href="#">10</a> </li>
-						<li class="next"> <a href="#"> 다음 페이지 </a> </li>
-						<li class="last"> <a href="#"> 마지막 페이지 </a> </li>
+						<li class="first"> <a href="javascript:void(0)">첫 페이지</a> </li>
+						<li class="prev"> <a href="javascript:void(0)">이전 페이지</a> </li>
+						<li> <a href="javascript:void(0)">1</a> </li>
+						<li class="active"> <a href="javascript:void(0)">2</a> </li>
+						<li> <a href="javascript:void(0)">3</a> </li>
+						<li> <a href="javascript:void(0)">4</a> </li>
+						<li> <a href="javascript:void(0)">5</a> </li>
+						<li> <a href="javascript:void(0)">6</a> </li>
+						<li> <a href="javascript:void(0)">7</a> </li>
+						<li> <a href="javascript:void(0)">8</a> </li>
+						<li> <a href="javascript:void(0)">9</a> </li>
+						<li> <a href="javascript:void(0)">10</a> </li>
+						<li class="next"> <a href="javascript:void(0)"> 다음 페이지 </a> </li>
+						<li class="last"> <a href="javascript:void(0)"> 마지막 페이지 </a> </li>
 					</ul>
 				</div>
 			</div>

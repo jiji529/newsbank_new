@@ -539,7 +539,7 @@
 				</div>
 			</div>
 			<h2 class="media_logo"><img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
-			<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}" style="width:50%; height:50%"/>
+			<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
 				<div class="cont_area">
 					<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>
 					<c:if test="${bookmark.seq eq null || bookmark.seq eq ''}">

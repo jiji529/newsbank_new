@@ -141,13 +141,6 @@
 		AND phone= #{phone}
 	</select>
 
-
-	<select id="listMember" resultType="java.util.HashMap">
-		SELECT * FROM member LIMIT
-		100
-
-	</select>
-
 	<!-- 활성 매체사 리스트 읽기 -->
 	<select id="listAdjustMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		SELECT
@@ -182,5 +175,35 @@
 
 	<select id="selGetty" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member where id = 'gettyimage';
+	</select>
+	
+	<!-- 관리자 회원현황 목록 -->
+	<select id="selMemberList" resultType="com.dahami.newsbank.web.dto.MemberDTO" parameterType="java.util.Map">
+	    SELECT * FROM member 
+	    <where>
+	        
+            <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
+	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
+            </if>
+            	        
+	        <if test="type != ''"> <!-- 회원구분 -->
+	            AND `type` = #{type}
+            </if>
+            
+			<if test="deferred != ''"> <!-- 결제구분 -->
+				AND `deferred` = #{deferred}    
+			</if>
+			
+			<if test='group == "I"'> <!-- 개별 -->
+				AND `group_seq` is NULL    
+			</if>
+			
+			<if test='group == "G"'> <!-- 그룹 -->
+				AND `group_seq` is not NULL    
+			</if>
+			
+		</where>
+		ORDER BY regDate DESC 
+		LIMIT 0, #{pageVol}
 	</select>
 </mapper>

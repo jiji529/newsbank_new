@@ -249,5 +249,29 @@ public class MemberDAO extends DAOBase {
 			}
 		}
 	}
+	
+	/**
+	 * @methodName : selectMemberList
+	 * @author : Lee, Gwangho
+	 * @date : 2017. 11. 23. 오전 10:27:13
+	 * @methodCommet: 회원 현황 (조건절 : 타입, 결제, 그룹)
+	 * @return
+	 * @returnType : List<MemberDTO>
+	 */
+	public List<MemberDTO> selectMemberList(Map<Object, Object> searchOpt) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Member.selMemberList", searchOpt);
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
 
 }
