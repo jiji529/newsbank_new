@@ -118,13 +118,13 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 					<a href="/photo">보도사진</a>
 				</li>
 				<!-- <li>
-					<a href="#">뮤지엄</a>
+					<a href="javascript:void(0)">뮤지엄</a>
 				</li>
 				<li>
-					<a href="#">사진</a>
+					<a href="javascript:void(0)">사진</a>
 				</li>
 				<li>
-					<a href="#">컬렉션</a>
+					<a href="javascript:void(0)">컬렉션</a>
 				</li> -->
 			</ul>
 			<ul class="gnb_right">
@@ -166,13 +166,13 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<input type="hidden" id="seq" name="seq"/>
 						<div class="search_area">
 							<input type="text" class="search_bar"  id="keyword" name="keyword" placeholder="검색어를 입력해주세요." />
-							<a href="#" class="btn_search">검색</a>
+							<a href="javascript:void(0)" class="btn_search">검색</a>
 						</div>
 					</form>
 					<form class="view_form" method="post" action="/view.photo" name="view_form" >
 						<input type="hidden" name="uciCode" id="uciCode"/>
 					</form>
-					<!--상세검색    <a href="#" class="search_detail">상세검색</a>   -->
+					<!--상세검색    <a href="javascript:void(0)" class="search_detail">상세검색</a>   -->
 				</div>
 			</div>
 			</section>
@@ -186,10 +186,10 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 							<a href="/photo" class="active">보도사진</a>
 						</li>
 						<!-- <li>
-							<a href="#">뮤지엄</a>
+							<a href="javascript:void(0)">뮤지엄</a>
 						</li>
 						<li>
-							<a href="#">컬렉션</a>
+							<a href="javascript:void(0)">컬렉션</a>
 						</li> -->
 					</ul>
 				</div>
@@ -199,7 +199,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<c:if test="${photo.widthCm > photo.heightCm}">
 							<div class="img_list">
 								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
-								<a href="#" onclick="go_photoView('${photo.uciCode}')">
+								<a href="javascript:void(0)" onclick="go_photoView('${photo.uciCode}')">
 									<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 								</a>
 							</div>
@@ -212,7 +212,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<c:if test="${photo.widthCm < photo.heightCm}">
 							<div class="img_list">
 								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
-								<a href="#" onclick="go_photoView('${photo.uciCode}')">
+								<a href="javascript:void(0)" onclick="go_photoView('${photo.uciCode}')">
 									<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 								</a>
 							</div>
@@ -269,7 +269,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<c:forEach items="${downloadList}" var="down">
 							<c:if test="${down.widthCm < down.heightCm}">
 								<div class="img_list">
-									<a href="#" onclick="go_photoView('${down.uciCode}')">
+									<a href="javascript:void(0)" onclick="go_photoView('${down.uciCode}')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
@@ -281,7 +281,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<c:forEach items="${downloadList}" var="down">
 							<c:if test="${down.widthCm > down.heightCm}">
 								<div class="img_list">
-									<a href="#" onclick="go_photoView('${down.uciCode}')">
+									<a href="javascript:void(0)" onclick="go_photoView('${down.uciCode}')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
@@ -296,7 +296,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 							<c:if test="${basket.widthCm < basket.heightCm}">
 								<div class="img_list">
 									<%-- <a href="/view.photo?uciCode=${basket.uciCode}"> --%>
-									<a href="#" onclick="go_photoView('${basket.uciCode}')">
+									<a href="javascript:void(0)" onclick="go_photoView('${basket.uciCode}')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
@@ -308,7 +308,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<c:forEach items="${basketList}" var="basket">
 							<c:if test="${basket.widthCm > basket.heightCm}">
 								<div class="img_list">
-									<a href="#" onclick="go_photoView('${basket.uciCode}')">
+									<a href="javascript:void(0)" onclick="go_photoView('${basket.uciCode}')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
 									</a>
 								</div>
@@ -322,7 +322,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<c:forEach items="${hitsList}" var="hit">
 							<c:if test="${hit.widthCm < hit.heightCm}">
 								<div class="img_list">
-									<a href="#" onclick="go_photoView('${hit.uciCode}')">
+									<a href="javascript:void(0)" onclick="go_photoView('${hit.uciCode}')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
@@ -334,7 +334,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 						<c:forEach items="${hitsList}" var="hit">
 							<c:if test="${hit.widthCm > hit.heightCm}">
 								<div class="img_list">
-									<a href="#" onclick="go_photoView('${hit.uciCode}')">
+									<a href="javascript:void(0)" onclick="go_photoView('${hit.uciCode}')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
@@ -352,7 +352,7 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 				<ul class="media_list">
 					<c:forEach items="${mediaList}" var="member">
 						<li>
-							<a href="#" onclick="media_submit('${member.seq}')">
+							<a href="javascript:void(0)" onclick="media_submit('${member.seq}')">
 								<img src="/logo.down.photo?seq=${member.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
 							</a>
 						</li>

@@ -69,13 +69,13 @@
 			<a href="/photo">보도사진</a>
 		</li>
 		<li>
-			<a href="#">뮤지엄</a>
+			<a href="javascript:void(0)">뮤지엄</a>
 		</li>
 		<li>
-			<a href="#">사진</a>
+			<a href="javascript:void(0)">사진</a>
 		</li>
 		<li>
-			<a href="#">컬렉션</a>
+			<a href="javascript:void(0)">컬렉션</a>
 		</li>
 	</ul>
 	<ul class="gnb_right">
@@ -108,7 +108,7 @@
 	<form id="searchform">
 		<input type="text" id="keyword" value="${keyword}" placeholder="검색어를 입력해주세요." />
 		<input type="text" id="keyword_current" value="${keyword}" style="display: none;" />
-		<a href="#" class="btn_search">검색</a>
+		<a href="javascript:void(0)" class="btn_search">검색</a>
 	</form>
 </div>
 </nav>

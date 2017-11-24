@@ -140,7 +140,7 @@
 					<li class="on"><a href="/board">공지사항</a></li>
 					<li><a href="/FAQ">FAQ</a></li>
 					<li><a href="/contact">직접 문의하기</a></li>
-					<!-- <li><a href="#">사이트맵</a></li> -->
+					<!-- <li><a href="javascript:void(0)">사이트맵</a></li> -->
 				</ul>
 			</div>
 			<div class="table_head">
@@ -162,20 +162,20 @@
 				<!-- 나중에 쓸수도 있어요 지금 어차피 faq 11개라 그냥 가려놔도 될거같아요
 				<div class="paging">
 					<ul>
-						<li class="first"> <a href="#">첫 페이지</a> </li>
-						<li class="prev"> <a href="#">이전 페이지</a> </li>
-						<li> <a href="#">1</a> </li>
-						<li class="active"> <a href="#">2</a> </li>
-						<li> <a href="#">3</a> </li>
-						<li> <a href="#">4</a> </li>
-						<li> <a href="#">5</a> </li>
-						<li> <a href="#">6</a> </li>
-						<li> <a href="#">7</a> </li>
-						<li> <a href="#">8</a> </li>
-						<li> <a href="#">9</a> </li>
-						<li> <a href="#">10</a> </li>
-						<li class="next"> <a href="#"> 다음 페이지 </a> </li>
-						<li class="last"> <a href="#"> 마지막 페이지 </a> </li>
+						<li class="first"> <a href="javascript:void(0)">첫 페이지</a> </li>
+						<li class="prev"> <a href="javascript:void(0)">이전 페이지</a> </li>
+						<li> <a href="javascript:void(0)">1</a> </li>
+						<li class="active"> <a href="javascript:void(0)">2</a> </li>
+						<li> <a href="javascript:void(0)">3</a> </li>
+						<li> <a href="javascript:void(0)">4</a> </li>
+						<li> <a href="javascript:void(0)">5</a> </li>
+						<li> <a href="javascript:void(0)">6</a> </li>
+						<li> <a href="javascript:void(0)">7</a> </li>
+						<li> <a href="javascript:void(0)">8</a> </li>
+						<li> <a href="javascript:void(0)">9</a> </li>
+						<li> <a href="javascript:void(0)">10</a> </li>
+						<li class="next"> <a href="javascript:void(0)"> 다음 페이지 </a> </li>
+						<li class="last"> <a href="javascript:void(0)"> 마지막 페이지 </a> </li>
 					</ul>
 				</div> -->
 			</div>

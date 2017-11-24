@@ -420,12 +420,12 @@
 			<div class="total"><span class="tit">총 금액 (수량)</span><span class="price"><fmt:formatNumber value="${total}" type="number"/><span class="price_txt">원(<span class="price_count"><c:out value="${fn:length(usageOptions)}"/></span>개)</span></span></div>
 			<div class="btn_wrap">
 				<c:if test="${page eq 'dibs.myPage'}">
-					<div class="btn_cart" onclick="insertMultiCart()"><a href="#">장바구니 담기</a></div>
+					<div class="btn_cart" onclick="insertMultiCart()"><a href="javascript:void(0)">장바구니 담기</a></div>
 				</c:if>
 				<c:if test="${page ne 'dibs.myPage'}">
-					<div class="btn_cart" onclick="updateUsageOption()"><a href="#">변경하기</a></div>
+					<div class="btn_cart" onclick="updateUsageOption()"><a href="javascript:void(0)">변경하기</a></div>
 				</c:if>
-				<div class="btn_down"><a href="#" onclick="javascript:self.close()">취소</a></div>
+				<div class="btn_down"><a href="javascript:void(0)" onclick="javascript:self.close()">취소</a></div>
 			</div>
 			</div>
 	</div>

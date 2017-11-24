@@ -123,7 +123,7 @@
 						<textarea></textarea>
 					</dd>
 				</dl>
-				<div class="call_send"><a href="#">등록</a></div>
+				<div class="call_send"><a href="javascript:void(0)">등록</a></div>
 			</div>
 		</div>
 	</section>

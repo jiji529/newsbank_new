@@ -451,10 +451,10 @@
 							<div class="calendar">
 								<div class="cal_input">
 									<input type="text" class="datepicker" id="startDate" title="검색기간 시작일" />
-									<a href="#" class="ico_cal">달력</a> </div>
+									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 								<div class="cal_input">
 									<input type="text" class="datepicker" id="endDate" title="검색기간 마지막일" />
-									<a href="#" class="ico_cal">달력</a> </div>
+									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 								<button class="btn_cal" type="button">적용</button>
 							</div>
 						</li>
@@ -489,11 +489,11 @@
 			<div class="filter_rt">
 				<div class="result"><b class="count">0</b>개의 결과</div>
 				<div class="paging">
-					<a href="#" class="prev" title="이전페이지"></a>
+					<a href="javascript:void(0)" class="prev" title="이전페이지"></a>
 					<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="cms_search()"/>
 					<span>/</span>
 					<span class="total">0</span>
-					<a href="#" class="next" title="다음페이지"></a>
+					<a href="javascript:void(0)" class="next" title="다음페이지"></a>
 				</div>
 				<div class="viewbox">
 					<div class="size">
@@ -544,7 +544,7 @@
 				</c:forEach>
 			</ul>
 		</section>
-	<div class="more"><a href="#" name="nextPage">다음 페이지</a></div>
+	<div class="more"><a href="javascript:void(0)" name="nextPage">다음 페이지</a></div>
 	</section>
 	<%@include file="footer.jsp"%>
 </div>

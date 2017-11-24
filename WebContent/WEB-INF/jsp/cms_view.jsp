@@ -279,7 +279,7 @@
 			url: "search",
 			success : function(data) {
 				$(data.result).each(function(key, val) {
-					html += '<li><a href="#"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+					html += '<li><a href="javascript:void(0)"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
 				});
 				$(html).appendTo(".cfix");
 			},

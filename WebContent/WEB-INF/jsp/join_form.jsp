@@ -154,7 +154,7 @@ $(function() {
 									<input type="text" id="phone2" size="5" class="inp_txt" value="" maxlength="4" required pattern="[0-9]*" title="숫자만 입력 하세요." />
 									<span class=" bar">-</span>
 									<input type="text" id="phone3" size="5" class="inp_txt" value="" maxlength="4" required pattern="[0-9]*" title="숫자만 입력 하세요." />
-									<a href="#" id="phone_certify" class="btn_input1">인증</a>
+									<a href="javascript:void(0)" id="phone_certify" class="btn_input1">인증</a>
 								</dd>
 								<dd>
 									<p class="txt_message" id="phone_message" style="display: none;">형식이 올바르지 않은 휴대폰 번호입니다.</p>

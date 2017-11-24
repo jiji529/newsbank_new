@@ -82,8 +82,8 @@
 					</c:if>
 				</ul>
 				<!-- 컬렉션 생기면 추가 <ul class="mp_tab2">
-					<li class="on"><a href="#">사진 찜 관리</a></li>
-					<li><a href="#">컬렉션 찜 관리</a></li>
+					<li class="on"><a href="javascript:void(0)">사진 찜 관리</a></li>
+					<li><a href="javascript:void(0)">컬렉션 찜 관리</a></li>
 				</ul> -->
 			</div>
 			<div class="table_head">
@@ -106,9 +106,9 @@
 				</ul>
 				<div class="filter_rt">
 					<div class="result"><b class="count">123</b>개의 결과</div>
-					<div class="paging"><a href="#" class="prev" title="이전페이지"></a>
+					<div class="paging"><a href="javascript:void(0)" class="prev" title="이전페이지"></a>
 						<input type="text" class="page" value="1" />
-						<span>/</span><span class="total">1234</span><a href="#" class="next" title="다음페이지"></a></div>
+						<span>/</span><span class="total">1234</span><a href="javascript:void(0)" class="next" title="다음페이지"></a></div>
 					<div class="viewbox">
 						<select name="limit">
 							<option value="40" selected="selected">40</option>
@@ -168,7 +168,7 @@
 			<section id="wish_list2">
 				<ul>					
 					<c:forEach items="${dibsPhotoList}" var="PhotoDTO">
-						<li class="thumb"> <a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>
+						<li class="thumb"> <a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>
 							<div class="thumb_info">
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
@@ -185,7 +185,7 @@
 					</c:forEach>
 				</ul>
 			</section>
-			<div class="more"><a href="#">다음 페이지</a></div>
+			<div class="more"><a href="javascript:void(0)">다음 페이지</a></div>
 		</section>
 		<%@include file="footer.jsp"%>
 	</div>

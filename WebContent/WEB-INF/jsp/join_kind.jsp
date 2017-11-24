@@ -46,19 +46,19 @@
 			<li class="join1">
 				<form>
 					<input type="hidden" name="type" value="P" />
-					<a href="#">개인회원</a>
+					<a href="javascript:void(0)">개인회원</a>
 				</form>
 			</li>
 			<li class="join2">
 				<form>
 					<input type="hidden" name="type" value="C" />
-					<a href="#">기업회원</a>
+					<a href="javascript:void(0)">기업회원</a>
 				</form>
 			</li>
 			<li class="join3">
 				<form>
 					<input type="hidden" name="type" value="M" />
-					<a href="#">언론사회원</a>
+					<a href="javascript:void(0)">언론사회원</a>
 				</form>
 			</li>
 		</ul>

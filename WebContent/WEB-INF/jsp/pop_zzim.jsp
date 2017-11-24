@@ -38,13 +38,13 @@
 		$(document).on("click", ".btn_update", function() {
 			var originName = $(this).parents(".folder_btn_area").siblings("p").text();	
 			var bookmark_seq = $(this).attr("value");
-			var html = '<div class="folder_btn_area"><a href="#">수정</a><a href="#">삭제</a></div>';
+			var html = '<div class="folder_btn_area"><a href="javascript:void(0)">수정</a><a href="javascript:void(0)">삭제</a></div>';
 			html += '<form style="display:block ;">';
 			html += '<fieldset>';
 			html += '<legend>폴더 수정 폼</legend>';
 			html += '<input id="originName" type="hidden" value="' + originName + '"/>';
 			html += '<input class="inputs" type="text" maxlength="20" value="' + originName + '"/>';
-			html += '<div class="folder_btn_area"><a class="btn_complete" href="#" value="' + bookmark_seq + '">완료</a><a class="btn_back" href="#" value="' + bookmark_seq + '">취소</a></div>';
+			html += '<div class="folder_btn_area"><a class="btn_complete" href="javascript:void(0)" value="' + bookmark_seq + '">완료</a><a class="btn_back" href="javascript:void(0)" value="' + bookmark_seq + '">취소</a></div>';
 			html += '</fieldset>';
 			html += '</form>';
 			
@@ -58,7 +58,7 @@
 			var latestName = $(this).parents(".folder_btn_area").siblings("input").val();
 			
 			var html = '<p>' + latestName + '</p></div>';
-			html += '<div class="folder_btn_area"><a class="btn_update" href="#">수정</a><a class="btn_delete" href="#">삭제</a></div>';
+			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)">수정</a><a class="btn_delete" href="javascript:void(0)">삭제</a></div>';
 			$(this).closest("li").html(html);
 			
 			var param = "action=insertBookmark";
@@ -81,12 +81,12 @@
 		
 		// #폴더 추가 레이아웃
 		function add_layout() {
-			var html = '<li><div class="folder_btn_area"><a href="#">수정</a><a href="#">삭제</a></div>';
+			var html = '<li><div class="folder_btn_area"><a href="javascript:void(0)">수정</a><a href="javascript:void(0)">삭제</a></div>';
 			html += '<form style="display:block ;">';
 			html += '<fieldset>';
 			html += '<legend>폴더 수정 폼</legend>';
 			html += '<input type="text" maxlength="20"/>';
-			html += '<div class="folder_btn_area"><a class="btn_add" href="#">추가</a><a class="btn_cancel" href="#">취소</a></div>';
+			html += '<div class="folder_btn_area"><a class="btn_add" href="javascript:void(0)">추가</a><a class="btn_cancel" href="javascript:void(0)">취소</a></div>';
 			html += '</fieldset>';
 			html += '</form></li>';
 			
@@ -130,7 +130,7 @@
 			var bookmark_seq = $(this).attr("value");
 			
 			var html = '<p>' + latestName + '</p></div>';
-			html += '<div class="folder_btn_area"><a class="btn_update" href="#" value="'+bookmark_seq+'">수정</a><a class="btn_delete" href="#" value="'+bookmark_seq+'">삭제</a></div>';
+			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)" value="'+bookmark_seq+'">수정</a><a class="btn_delete" href="javascript:void(0)" value="'+bookmark_seq+'">삭제</a></div>';
 			
 			$(this).closest("li").html(html);
 			
@@ -156,7 +156,7 @@
 			var originName = $("#originName").val();
 			
 			var html = '<p>' + originName + '</p></div>';
-			html += '<div class="folder_btn_area"><a class="btn_update" href="#">수정</a><a class="btn_delete" href="#">삭제</a></div>';
+			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)">수정</a><a class="btn_delete" href="javascript:void(0)">삭제</a></div>';
 			
 			$(this).closest("li").html(html);
 		});
@@ -174,7 +174,7 @@
 					<li>
 						<p>${bookmark.bookName}</p>
 						<c:if test="${bookmark.bookName ne '기본그룹'}">
-							<div class="folder_btn_area"><a class="btn_update" href="#" value="${bookmark.seq}">수정</a><a class="btn_delete" href="#" value="${bookmark.seq}">삭제</a></div>
+							<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)" value="${bookmark.seq}">수정</a><a class="btn_delete" href="javascript:void(0)" value="${bookmark.seq}">삭제</a></div>
 						</c:if>
 						<div class="folder_btn_area"></div>
 					</li>
@@ -185,16 +185,16 @@
 				</li>
 				<li>
 					<p>일이삼사오육칠팔구십일이삼사오육칠팔구십</p>
-					<div class="folder_btn_area"><a class="btn_update" href="#">수정</a><a class="btn_delete" href="#">삭제</a></div>
+					<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)">수정</a><a class="btn_delete" href="javascript:void(0)">삭제</a></div>
 				</li> -->
 				<!-- <li>
 					<p>수정눌렀을때</p>
-					<div class="folder_btn_area"><a href="#">수정</a><a href="#">삭제</a></div>
+					<div class="folder_btn_area"><a href="javascript:void(0)">수정</a><a href="javascript:void(0)">삭제</a></div>
 					<form style="display:block ;">
 						<fieldset>
 							<legend>폴더 수정 폼</legend>
 							<input type="text" maxlength="20" />
-							<div class="folder_btn_area"><a href="#">완료</a><a href="#">취소</a></div>
+							<div class="folder_btn_area"><a href="javascript:void(0)">완료</a><a href="javascript:void(0)">취소</a></div>
 						</fieldset>
 					</form>
 				</li> -->
@@ -202,8 +202,8 @@
 		</div>
 		<div class="sum_sec">
 			<div class="btn_wrap">
-				<div class="btn_cart"><a href="#">폴더 추가하기</a></div>
-				<div class="btn_down"><a href="#" onclick="javascript:self.close()">닫기</a></div>
+				<div class="btn_cart"><a href="javascript:void(0)">폴더 추가하기</a></div>
+				<div class="btn_down"><a href="javascript:void(0)" onclick="javascript:self.close()">닫기</a></div>
 			</div>
 		</div>
 	</div>

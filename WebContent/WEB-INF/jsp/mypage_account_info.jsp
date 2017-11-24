@@ -125,8 +125,8 @@
 								<option value="SC제일">SC제일</option>
 							</select>
 							<input type="text" class="inp_txt" size="40" name='compBankAcc' value="" />
-							<a href="#" class="btn_input1">통장사본 업로드</a>
-							<a href="#" class="btn_input1">다운로드</a>
+							<a href="javascript:void(0)" class="btn_input1">통장사본 업로드</a>
+							<a href="javascript:void(0)" class="btn_input1">다운로드</a>
 						</td>
 					</tr>
 					<tr>
@@ -140,8 +140,8 @@
 										<input type="hidden" name="contractAuto" value='' />
 										자동연장
 									</div>
-									<a href="#" class="btn_input1">계약서 업로드</a>
-									<a href="#" class="btn_input1">다운로드</a>
+									<a href="javascript:void(0)" class="btn_input1">계약서 업로드</a>
+									<a href="javascript:void(0)" class="btn_input1">다운로드</a>
 						</td>
 					</tr>
 					<tr>

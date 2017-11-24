@@ -253,11 +253,11 @@
 				$("#search_list1 ul").empty();
 				$("#search_list2 ul").empty();
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
+					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
 					html += "<div class=\"right\">";
-					html += "<a class=\"over_wish\" href=\"#\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"#\" value=\"" + val.uciCode + "\">시안 다운로드</a> </div>";
+					html += "<a class=\"over_wish\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">시안 다운로드</a> </div>";
 					html += "</div>";
 					html += "</li>";
 				});
@@ -366,11 +366,11 @@
 								<div class="calendar">
 									<div class="cal_input">
 										<input type="text" class="datepicker" id="startDate" title="검색기간 시작일" />
-										<a href="#" class="ico_cal">달력</a>
+										<a href="javascript:void(0)" class="ico_cal">달력</a>
 									</div>
 									<div class="cal_input">
 										<input type="text" class="datepicker" id="endDate" title="검색기간 마지막일" />
-										<a href="#" class="ico_cal">달력</a>
+										<a href="javascript:void(0)" class="ico_cal">달력</a>
 									</div>
 									<button class="btn_cal" type="button">적용</button>
 								</div>
@@ -410,11 +410,11 @@
 						개의 결과
 					</div>
 					<div class="paging">
-						<a href="#" class="prev" title="이전페이지"></a>
+						<a href="javascript:void(0)" class="prev" title="이전페이지"></a>
 						<input type="text" name="pageNo" class="page" value="1"  onkeydown="return checkNumber(event);" onblur="search()"/>
 						<span>/</span>
 						<span class="total">0</span>
-						<a href="#" class="next" title="다음페이지"></a>
+						<a href="javascript:void(0)" class="next" title="다음페이지"></a>
 					</div>
 					<div class="viewbox">
 						<div class="size">
@@ -439,14 +439,14 @@
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
 					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
-					<a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')">
+					<a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')">
 						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
-							<a class="over_wish" href="#" value="${PhotoDTO.uciCode}">찜</a>
-							<a class="over_down" href="#" value="${PhotoDTO.uciCode}">시안 다운로드</a>
+							<a class="over_wish" href="javascript:void(0)" value="${PhotoDTO.uciCode}">찜</a>
+							<a class="over_down" href="javascript:void(0)" value="${PhotoDTO.uciCode}">시안 다운로드</a>
 						</div>
 					</div>
 				</li>
@@ -458,14 +458,14 @@
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
 					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
-					<a href="#" onclick="go_photoView('${PhotoDTO.uciCode}')">
+					<a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')">
 						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
 						<div class="right">
-							<a class="over_wish" href="#" value="${PhotoDTO.uciCode}">찜</a>
-							<a class="over_down" href="#" value="${PhotoDTO.uciCode}">시안 다운로드</a>
+							<a class="over_wish" href="javascript:void(0)" value="${PhotoDTO.uciCode}">찜</a>
+							<a class="over_down" href="javascript:void(0)" value="${PhotoDTO.uciCode}">시안 다운로드</a>
 						</div>
 					</div>
 				</li>
@@ -473,7 +473,7 @@
 		</ul>
 		</section>
 		<div class="more">
-			<a href="#" name="nextPage">다음 페이지</a>
+			<a href="javascript:void(0)" name="nextPage">다음 페이지</a>
 		</div>
 		<%@include file="footer.jsp"%>
 	</div>

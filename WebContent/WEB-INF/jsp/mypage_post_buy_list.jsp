@@ -74,8 +74,8 @@
 					</c:if>
 				</ul>
 				<!-- 컬렉션 생기면 추가 <ul class="mp_tab2">
-					<li class="on"><a href="#">사진 찜 관리</a></li>
-					<li><a href="#">컬렉션 찜 관리</a></li>
+					<li class="on"><a href="javascript:void(0)">사진 찜 관리</a></li>
+					<li><a href="javascript:void(0)">컬렉션 찜 관리</a></li>
 				</ul> -->
 			</div>
 		<div class="table_head">

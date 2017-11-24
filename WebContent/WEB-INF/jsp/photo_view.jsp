@@ -543,7 +543,7 @@
 				<div class="cont_area">
 					<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>
 					<c:if test="${bookmark.seq eq null || bookmark.seq eq ''}">
-						<a href="#" class="btn_wish">찜하기 X</a>	
+						<a href="javascript:void(0)" class="btn_wish">찜하기 X</a>	
 					</c:if>
 					<c:if test="${bookmark.seq ne null}">
 						<a href="javascript:;" class="btn_wish on">찜하기 O</a>
@@ -633,7 +633,7 @@
 					<div class="total"><span class="tit">총 금액 (수량)</span><span class="price">0<span class="price_txt">원(<span class="price_count">0</span>개)</span></span></div>
 					<div class="btn_wrap">
 						<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
-						<div class="btn_down" id="btnDownTentative"><a href="#" value="${photoDTO.uciCode}">시안 다운로드</a></div>
+						<div class="btn_down" id="btnDownTentative"><a href="javascript:void(0)" value="${photoDTO.uciCode}">시안 다운로드</a></div>
 						<div class="btn_buy"><a href="javascript:;" onclick="go_pay()">구매하기</a></div>
 					</div>
 				</c:if>
