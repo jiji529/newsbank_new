@@ -1,12 +1,16 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.dahami.newsbank.web.dao.MemberDAO;
 
 /**
  * Servlet implementation class AdminMember
@@ -31,6 +35,22 @@ public class AdminMember extends NewsbankServletBase {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		String action = (request.getParameter("action") == null) ? "" : request.getParameter("action");
+		
+		if(action.equals("makeGroup")) {
+			String groupName = request.getParameter("groupName");
+			String radio_id = request.getParameter("radio_id");
+			String[] id = radio_id.split(",");
+			
+			Map<Object, Object> param = new HashMap<Object, Object>();
+			param.put("groupName", groupName);
+			//param.put("id", id);
+			
+			MemberDAO memberDAO = new MemberDAO();
+			memberDAO.insertGroup(param);	
+			System.out.println("LAST INSERT SEQ : " + param.get("seq"));
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_member.jsp");
 		dispatcher.forward(request, response);

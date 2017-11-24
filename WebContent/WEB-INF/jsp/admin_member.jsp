@@ -29,22 +29,10 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script> 
 $(document).ready(function(){ 
-$("#popup_open").click(function(){ 
-$("#popup_wrap").css("display", "block"); 
-$("#mask").css("display", "block"); 
-}); 
-}); 
-</script>
-<script> 
-$(document).ready(function(){ 
-$("#popup_open").click(function(){ 
-$("#popup_wrap").css("display", "block"); 
-$("#mask").css("display", "block"); 
-}); 
-$(".popup_close").click(function(){ 
-$("#popup_wrap").css("display", "none"); 
-$("#mask").css("display", "none"); 
-}); 
+	$(".popup_close").click(function(){ 
+		$("#popup_wrap").css("display", "none"); 
+		$("#mask").css("display", "none"); 
+	}); 
 }); 
 </script>
 <script type="text/javascript">
@@ -67,6 +55,74 @@ $(document).on("keypress", "#keyword", function(e) {
 		search();
 	}
 });
+
+/** 전체선택 */
+$(document).on("click", "input[name='check_all']", function() {
+	if($("input[name='check_all']").prop("checked")) {
+		$("#mtBody input:checkbox").prop("checked", true);
+	}else {
+		$("#mtBody input:checkbox").prop("checked", false);
+	}
+});
+
+// 그룹묶기 팝업창, 옵션선택에 따른 알림문구 변경
+$(document).on("click", ".group_li input[type='radio']", function() {
+	var id = $(this).val();
+	$(".pop_foot > p").html('선택한 ID를 그룹(<span class="color">' + id + '</span>)으로 묶겠습니까?');
+});
+
+/** 그룹묶기 팝업  */
+function popup_group() {
+	var chk_total = $("#mtBody input:checkbox:checked").length;
+	var uciCode = new Array();
+	
+	if(chk_total == 0) { // 선택항목 갯수 체크
+		alert("최소 1개 이상을 선택해주세요.");
+		
+	} else {
+		$("#popup_wrap").css("display", "block"); 
+		$("#mask").css("display", "block"); 
+		$(".group_li").empty();
+		$(".pop_foot > p").text('그룹명으로 지정할 항목을 선택해주세요');
+		
+		$("#mtBody input:checkbox:checked").each(function(index) {
+			
+			var option = $(this).val();
+			var id = option.split("(");
+			id = id[0];
+			var popup_html = '<li>';
+			popup_html += '<input type="radio" id="radio_chk' + index + '" name="group" value="' + id + '"/>';
+			popup_html += '<label for="radio_chk' + index + '""> ' + option + '</label>';
+			popup_html += '</li>';
+			
+			$(popup_html).appendTo(".group_li");
+		});
+	}
+}
+
+// 그룹 생성
+function make_group() {
+	var groupName = $("input:radio[name='group']:checked").val();
+	var radio_id = [];
+	$("input:radio[name='group']").each(function(key, val) {
+		radio_id.push($(this).val());
+	});	
+	
+	var param = {
+			"groupName" : groupName,
+			"radio_id" : radio_id.join(",")
+	};
+	console.log(param);
+	
+	$.ajax({
+		type: "POST",
+		data: param,
+		url: "/member.manage?action=makeGroup",
+		success: function(data) { 
+			
+		}
+	});
+}
 
 function search() { // 검색
 	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
@@ -119,8 +175,8 @@ function search() { // 검색
 				
 				html += '<tr onclick="javascript:void(0)">';
 				html += '<td><div class="tb_check">';
-				html += '<input id="check1" name="check1" type="checkbox">';
-				html += '<label for="check1">선택</label>';
+				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
+				html += '<label for="check' + key + '">선택</label>';
 				html += '</div></td>';
 				html += '<td>' + (key+1) + '</td>';
 				html += '<td>' + val.id + '</td>';
@@ -196,7 +252,7 @@ function search() { // 검색
 						<option value="50">50개</option>
 						<option value="100">100개</option>
 					</select>
-					<span  id="popup_open"><a href="#none">그룹묶기</a></span><a href="javascript:void(0)">엑셀저장</a></div>
+					<span  id="popup_open"><a href="javascript:void(0)" onclick="popup_group()">그룹묶기</a></span><a href="javascript:void(0)">엑셀저장</a></div>
 				<table cellpadding="0" cellspacing="0" class="tb04">
 					<colgroup>
 					<col width="30" />
@@ -244,32 +300,13 @@ function search() { // 검색
 					</div>
 					<div class="pop_cont">
 						<ul class="group_li">
-							<li>
-								<input type="radio" id="radio_chk1" name="group" />
-								<label for="radio_chk1"> ottffssentottffssent(아이디스무자)</label>
-							</li>
-							<li>
-								<input type="radio" id="radio_chk2" name="group" />
-								<label for="radio_chk2"> ok0526(다하미)</label>
-							</li>
-							<li>
-								<input type="radio" id="radio_chk3" name="group" />
-								<label for="radio_chk3"> ok0526(다하미)</label>
-							</li>
-							<li>
-								<input type="radio" id="radio_chk4" name="group" />
-								<label for="radio_chk4"> ok0526(다하미)</label>
-							</li>
-							<li>
-								<input type="radio" id="radio_chk5" name="group" />
-								<label for="radio_chk5"> ok0526(다하미)</label>
-							</li>
+						
 						</ul>
 					</div>
 					<div class="pop_foot">
-						<p>선택한 ID를 그룹(<span class="color">ottffssentottffssent</span>)으로 묶겠습니까?</p>
+						<p>그룹명으로 지정할 항목을 선택해주세요.</p>
 						<div class="pop_btn">
-							<button onclick="location.href='#'";>확인</button>
+							<button onclick="make_group()">확인</button>
 							<button class="popup_close">취소</button>
 						</div>
 					</div>

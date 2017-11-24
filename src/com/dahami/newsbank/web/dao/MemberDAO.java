@@ -273,5 +273,30 @@ public class MemberDAO extends DAOBase {
 			}
 		}
 	}
+	
+	/**
+	 * @methodName : insertGroup
+	 * @author : Lee, Gwangho
+	 * @date : 2017. 11. 24. 오후 04:02:13
+	 * @methodCommet: 그룹 추가
+	 * @return
+	 * @returnType : 
+	 */
+	public void insertGroup(Map<Object, Object> param) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			
+			session.insert("Member.insertGroup", param);
+			//System.out.println("LAST INSERT SEQ : " + param.get("seq"));
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
 
 }

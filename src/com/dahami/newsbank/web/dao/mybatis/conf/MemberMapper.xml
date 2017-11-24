@@ -206,4 +206,12 @@
 		ORDER BY regDate DESC 
 		LIMIT 0, #{pageVol}
 	</select>
+	
+	<insert id="insertGroup" useGeneratedKeys="true" keyProperty="seq">	    
+	    <selectKey resultType="integer" keyProperty="seq" order="AFTER">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO `group` (groupName, regDate) VALUES (#{groupName}, NOW())
+	</insert>
 </mapper>
