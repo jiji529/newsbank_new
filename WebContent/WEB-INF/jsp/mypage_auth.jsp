@@ -60,6 +60,7 @@
 			</form>
 		</div>
 		</section>
+		<%@include file="footer.jsp"%>
 	</div>
 </body>
 </html>

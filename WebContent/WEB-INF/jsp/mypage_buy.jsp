@@ -197,6 +197,7 @@
 			</tfoot>
 		</table>
 		<a href="buylist.mypage" class="mp_btn">목록</a> </section> </section>
+		<%@include file="footer.jsp"%>
 	</div>
 </body>
 </html>

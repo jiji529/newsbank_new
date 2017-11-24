@@ -546,6 +546,7 @@
 		</section>
 	<div class="more"><a href="#" name="nextPage">다음 페이지</a></div>
 	</section>
+	<%@include file="footer.jsp"%>
 </div>
 <iframe id="downFrame" style="display:none" >
 </iframe>
