@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
-<script src="js/cms_view.js?v=20171120"></script>
+<script src="js/cms_view.js"></script>
 <script> 
 	//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
 	$(document).ready(function() {
@@ -210,6 +210,60 @@
 			
 		});
 	});
+	
+	//#연관사진
+	function relation_photo() {
+		var keyword = "";
+		keyword = $.trim(keyword);
+		var pageNo = "1";
+		var pageVol = "10";
+		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
+		var media = 0;
+		var duration = "";
+		var colorMode = "0";
+		var horiVertChoice = "0";
+		var size = "0";
+		var portRight = $(".filter_portRight .filter_list").find("[selected=selected]").attr("value");
+		var includePerson = $(".filter_incPerson .filter_list").find("[selected=selected]").attr("value");
+		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
+
+		var searchParam = {
+				"uciCode":"${photoDTO.uciCode}"
+				,"keyword":keyword
+				, "pageNo":pageNo
+				, "pageVol":pageVol
+				, "contentType":contentType
+				, "media":media
+				, "duration":duration
+				, "colorMode":colorMode
+				, "horiVertChoice":horiVertChoice
+				, "size":size
+				, "portRight":portRight
+				, "includePerson":includePerson
+				, "group":group
+		};
+		
+		$("#keyword").val($("#keyword_current").val());
+		console.log(searchParam);
+		var html = "";
+		$.ajax({
+			type: "POST",
+			async: false,
+			dataType: "json",
+			data: searchParam,
+			timeout: 1000000,
+			url: "search",
+			success : function(data) {
+				$(data.result).each(function(key, val) {
+					html += '<li><a href="javascript:void(0)"><img src="<%= IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+				});
+				$(html).appendTo(".cfix");
+			},
+			error : function(request, status, error) {
+				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
 </script>
 <title>뉴스뱅크</title>
 </head>
@@ -234,55 +288,55 @@
 				<div class="view_lt">
 					<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
 					<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
-						<div class="cont_area">
-							<h3 class="img_tit"><span class="uci">[${photoDTO.uciCode}]</span>ns696100264</h3>
-							<h3 class="img_tit">${photoDTO.titleKor}</h3>
-							<a class="btn_edit">수정</a>
-							<p class="img_cont">
-								${photoDTO.descriptionKor} <br />
-							</p>
-						</div>
-						<div class="img_info_area area1">
-							<h3 class="info_tit">사진 정보</h3>
-							<dl>
-								<dt>촬영일</dt>
-								<dd>${photoDTO.shotDate}</dd>
-								<dt>픽셀수</dt>
-								<dd>${photoDTO.widthPx} X ${photoDTO.heightPx}(pixel)</dd>
-								<dt>출력사이즈</dt>
-								<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
-								<dt>파일용량</dt>
-								<dd>${photoDTO.fileSize}MB</dd>
-								<dt>파일포멧</dt>
-								<dd>JPEG</dd>
-								<dt>해상도</dt>
-								<dd>${photoDTO.dpi}dpi</dd>
-								<dt>저작권자</dt>
-								<dd>${photoDTO.copyright}</dd>
-							</dl>
-						</div>
-						<div class="img_info_area area2">
-							<h3 class="info_tit">EXIF (Exchangeable Image File Format)</h3>
-							<c:set var="split_exif" value="${fn:split(photoDTO.exif, '|')}" />
-							
-							<dl>
-								<c:forEach items="${split_exif}" var="split_exif">
-									<c:set var="name" value="${fn:substringBefore(split_exif, ':')}" />
-									<c:set var="value" value="${fn:substringAfter(split_exif, ':')}" />
-									<dt>${name}</dt>
-									<dd>${value}</dd>
-								</c:forEach>
-							</dl>
-						</div>
-						<div class="img_info_area">
-							<h3 class="info_tit">연관 사진</h3>
-							<div class="conn">
-								<ul class="cfix">
-								</ul>
-								<div class="btn_conn">
-									<button class="in_prev">이전</button>
-									<button class="in_next">다음</button>
-								</div>
+					</div>
+					<div class="cont_area">
+						<h3 class="img_tit"><span class="uci">[${photoDTO.uciCode}]</span>ns696100264</h3>
+						<h3 class="img_tit">${photoDTO.titleKor}</h3>
+						<a class="btn_edit">수정</a>
+						<p class="img_cont">
+							${photoDTO.descriptionKor} <br />
+						</p>
+					</div>
+					<div class="img_info_area area1">
+						<h3 class="info_tit">사진 정보</h3>
+						<dl>
+							<dt>촬영일</dt>
+							<dd>${photoDTO.shotDate}</dd>
+							<dt>픽셀수</dt>
+							<dd>${photoDTO.widthPx} X ${photoDTO.heightPx}(pixel)</dd>
+							<dt>출력사이즈</dt>
+							<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
+							<dt>파일용량</dt>
+							<dd>${photoDTO.fileSize}MB</dd>
+							<dt>파일포멧</dt>
+							<dd>JPEG</dd>
+							<dt>해상도</dt>
+							<dd>${photoDTO.dpi}dpi</dd>
+							<dt>저작권자</dt>
+							<dd>${photoDTO.copyright}</dd>
+						</dl>
+					</div>
+					<div class="img_info_area area2">
+						<h3 class="info_tit">EXIF (Exchangeable Image File Format)</h3>
+						<c:set var="split_exif" value="${fn:split(photoDTO.exif, '|')}" />
+						
+						<dl>
+							<c:forEach items="${split_exif}" var="split_exif">
+								<c:set var="name" value="${fn:substringBefore(split_exif, ':')}" />
+								<c:set var="value" value="${fn:substringAfter(split_exif, ':')}" />
+								<dt>${name}</dt>
+								<dd>${value}</dd>
+							</c:forEach>
+						</dl>
+					</div>
+					<div class="img_info_area">
+						<h3 class="info_tit">연관 사진</h3>
+						<div class="conn">
+							<ul class="cfix">
+							</ul>
+							<div class="btn_conn">
+								<button class="in_prev">이전</button>
+								<button class="in_next">다음</button>
 							</div>
 						</div>
 					</div>

@@ -465,27 +465,35 @@
 	
 	// #구매 페이지 이동
 	function go_pay() {
-		var cartArry = new Array();
-		var uciCode = "${photoDTO.uciCode}";
-		var cart = uciCode;
-		if($(".option_result ul li").length>0){
-			$(".option_result ul li").each(function(index) {
-				var usage_seq = $(this).children(".op_cont").attr("value");
-				cart = cart + "|" + usage_seq;
-			});		
-			cartArry.push(cart);
+		var login_state = login_chk();
+		
+		if(login_state) {
+			var cartArry = new Array();
+			var uciCode = "${photoDTO.uciCode}";
+			var cart = uciCode;
+			if($(".option_result ul li").length>0){
+				$(".option_result ul li").each(function(index) {
+					var usage_seq = $(this).children(".op_cont").attr("value");
+					cart = cart + "|" + usage_seq;
+				});		
+				cartArry.push(cart);
+				
+				var param = {
+					"cart" : cartArry
+				};
+				
+				$("#cartArry").val(cartArry);
+				
+				view_form.submit();
+			}else{
+				alert("상품을 선택하세요.");
+			}
 			
-			var param = {
-				"cart" : cartArry
-			};
-			
-			$("#cartArry").val(cartArry);
-			
-			view_form.submit();
-		}else{
-			alert("상품을 선택하세요.");
+		}else{ // 비회원
+			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
+				
+			}	
 		}
-
 	}
 	
 	function down() {
@@ -540,57 +548,57 @@
 			</div>
 			<h2 class="media_logo"><img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
 			<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
-				<div class="cont_area">
-					<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>
-					<c:if test="${bookmark.seq eq null || bookmark.seq eq ''}">
-						<a href="javascript:void(0)" class="btn_wish">찜하기 X</a>	
-					</c:if>
-					<c:if test="${bookmark.seq ne null}">
-						<a href="javascript:;" class="btn_wish on">찜하기 O</a>
-					</c:if>
-					<p class="img_cont">${photoDTO.descriptionKor}</p>
-				</div>
-				<div class="img_info_area">
-					<h3 class="info_tit">사진 정보</h3>
-					<dl>
-						<dt>촬영일</dt>
-						<dd>${photoDTO.shotDate}</dd>
-						<dt>픽셀수</dt>
-						<dd>${photoDTO.widthPx} X ${photoDTO.heightPx}(pixel)</dd>
-						<dt>출력사이즈</dt>
-						<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
-						<dt>파일용량</dt>
-						<dd>${photoDTO.fileSize}MB</dd>
-						<dt>파일포맷</dt>
-						<dd>JPEG</dd>
-						<dt>해상도</dt>
-						<dd>${photoDTO.dpi}dpi</dd>
-						<dt>저작권자</dt>
-						<dd>${photoDTO.copyright}</dd>
-					</dl>
-				</div>
-				<div class="img_info_area">
-					<h3 class="info_tit">EXIF (Exchangeable Image File Format)</h3>
-					<c:set var="split_exif" value="${fn:split(photoDTO.exif, '|')}" />
-						
-					<dl>
-						<c:forEach items="${split_exif}" var="split_exif">
-							<c:set var="name" value="${fn:substringBefore(split_exif, ':')}" />
-							<c:set var="value" value="${fn:substringAfter(split_exif, ':')}" />
-							<dt>${name}</dt>
-							<dd>${value}</dd>
-						</c:forEach>
-					</dl>
-				</div>
-				<div class="img_info_area">
-					<h3 class="info_tit">연관 사진</h3>
-					<div class="conn">
-						<ul class="cfix">
-						</ul>
-						<div class="btn_conn">
-							<button class="in_prev">이전</button>
-							<button class="in_next">다음</button>
-						</div>
+			</div>
+			<div class="cont_area">
+				<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>
+				<c:if test="${bookmark.seq eq null || bookmark.seq eq ''}">
+					<a href="javascript:void(0)" class="btn_wish">찜하기 X</a>	
+				</c:if>
+				<c:if test="${bookmark.seq ne null}">
+					<a href="javascript:;" class="btn_wish on">찜하기 O</a>
+				</c:if>
+				<p class="img_cont">${photoDTO.descriptionKor}</p>
+			</div>
+			<div class="img_info_area">
+				<h3 class="info_tit">사진 정보</h3>
+				<dl>
+					<dt>촬영일</dt>
+					<dd>${photoDTO.shotDate}</dd>
+					<dt>픽셀수</dt>
+					<dd>${photoDTO.widthPx} X ${photoDTO.heightPx}(pixel)</dd>
+					<dt>출력사이즈</dt>
+					<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
+					<dt>파일용량</dt>
+					<dd>${photoDTO.fileSize}MB</dd>
+					<dt>파일포맷</dt>
+					<dd>JPEG</dd>
+					<dt>해상도</dt>
+					<dd>${photoDTO.dpi}dpi</dd>
+					<dt>저작권자</dt>
+					<dd>${photoDTO.copyright}</dd>
+				</dl>
+			</div>
+			<div class="img_info_area">
+				<h3 class="info_tit">EXIF (Exchangeable Image File Format)</h3>
+				<c:set var="split_exif" value="${fn:split(photoDTO.exif, '|')}" />
+					
+				<dl>
+					<c:forEach items="${split_exif}" var="split_exif">
+						<c:set var="name" value="${fn:substringBefore(split_exif, ':')}" />
+						<c:set var="value" value="${fn:substringAfter(split_exif, ':')}" />
+						<dt>${name}</dt>
+						<dd>${value}</dd>
+					</c:forEach>
+				</dl>
+			</div>
+			<div class="img_info_area">
+				<h3 class="info_tit">연관 사진</h3>
+				<div class="conn">
+					<ul class="cfix">
+					</ul>
+					<div class="btn_conn">
+						<button class="in_prev">이전</button>
+						<button class="in_next">다음</button>
 					</div>
 				</div>
 			</div>
