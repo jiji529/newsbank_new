@@ -179,7 +179,8 @@
 	
 	<!-- 관리자 회원현황 목록 -->
 	<select id="selMemberList" resultType="com.dahami.newsbank.web.dto.MemberDTO" parameterType="java.util.Map">
-	    SELECT * FROM member 
+	    SELECT A.*, B.groupName FROM member A 
+	    LEFT JOIN `group` B ON A.group_seq = B.seq
 	    <where>
 	        
             <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
@@ -203,7 +204,7 @@
 			</if>
 			
 		</where>
-		ORDER BY regDate DESC 
+		ORDER BY A.regDate DESC 
 		LIMIT 0, #{pageVol}
 	</select>
 	
@@ -214,4 +215,11 @@
 		</selectKey>
 		INSERT INTO `group` (groupName, regDate) VALUES (#{groupName}, NOW())
 	</insert>
+	
+	<update id="updateMemberGroup">
+	    UPDATE member SET group_seq = #{group_seq} WHERE 
+	    <foreach collection="id" item="mID"  separator="OR">
+	        ( id = #{mID} )
+	    </foreach>
+	</update>
 </mapper>

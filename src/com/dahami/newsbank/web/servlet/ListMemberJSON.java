@@ -77,6 +77,7 @@ public class ListMemberJSON extends NewsbankServletBase {
 			arr.put("phone", member.getPhone());
 			arr.put("deferred", member.getDeferred());
 			arr.put("group_seq", member.getGroup_seq());
+			arr.put("groupName", member.getGroupName());
 			arr.put("contractStart", member.getContractStart());
 			arr.put("contractEnd", member.getContractEnd());
 			arr.put("regDate", member.getRegDate());

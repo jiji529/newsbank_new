@@ -288,15 +288,45 @@ public class MemberDAO extends DAOBase {
 			session = sf.getSession();
 			
 			session.insert("Member.insertGroup", param);
+			
 			//System.out.println("LAST INSERT SEQ : " + param.get("seq"));
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
 			try {
+				session.commit();
 				session.close();
 			} catch (Exception e) {
 			}
 		}
 	}
+	
+	/**
+	 * @methodName : updateMemberGroup
+	 * @author : Lee, Gwangho
+	 * @date : 2017. 11. 24. 오후 04:02:13
+	 * @methodCommet: 회원 그룹정보 수정
+	 * @return
+	 * @returnType : 
+	 */
+	public void updateMemberGroup(Map<Object, Object> param) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			session.update("Member.updateMemberGroup", param);
+			//String sql = session.getConfiguration().getMappedStatement("Member.updateMemberGroup").getBoundSql(param).getSql();
+			//System.out.println("sql : " + sql);
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	
 
 }
