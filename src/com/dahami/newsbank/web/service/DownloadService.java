@@ -491,6 +491,7 @@ public class DownloadService extends ServiceBase {
 		if (downPath != null) {
 			// 대상 파일이 없는경우 (썸네일/뷰 다운로드 요청에 대해서만) / 원본이 있으면 동적 생성 후 전송
 			if (!new File(downPath).exists() && (targetSize.equals("list") || targetSize.equals("view"))) {
+				logger.warn("File Not Exist: " + downPath);
 				// 파일 부재(이미지 부재 / 오류) 이미지 전송
 				if (targetSize.equals("list")) {
 					response.sendRedirect(URL_PHOTO_ERROR_LIST);
