@@ -218,12 +218,16 @@ public class SearchDAO extends DAOBase {
 			if(res.getResults() != null) {
 				docList = res.getResults();
 			}
+			
+			int resultCount = 0;
 			List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-			for(SolrDocument doc : docList) {
-				photoList.add(new PhotoDTO(doc));
+			if(docList != null) {
+				for(SolrDocument doc : docList) {
+					photoList.add(new PhotoDTO(doc));
+				}
+				resultCount = (int)docList.getNumFound();
 			}
 			ret.put("result", photoList);
-			int resultCount = (int)docList.getNumFound();
 			int pageVol = query.getRows();
 			ret.put("count", resultCount);
 			ret.put("totalPage", ((resultCount / pageVol) + 1));
