@@ -210,8 +210,6 @@ public class SearchDAO extends DAOBase {
 			SolrQuery query = makeSolrQuery(param);
 			query.addSort("uciCode", ORDER.desc);
 			
-//			res = client.query(query, METHOD.POST);
-			
 			QueryRequest req = makeSolrURequest(query);
 			client = getClient();
 			res = req.process(client);
@@ -288,6 +286,16 @@ public class SearchDAO extends DAOBase {
 				buf.append(PhotoDTO.SALE_STATE_DEL_SOLD);
 			}
 			query.addFilterQuery("saleState:(" + buf.toString() + ")");
+		}
+		
+		int mediaInactive = params.getMediaInactive();
+		if(mediaInactive > 0) {
+			if(mediaInactive == SearchParameterBean.MEDIA_INACTIVE_YES) {
+				query.addFilterQuery("mediaInactive:1");	
+			}
+			else if(mediaInactive == SearchParameterBean.MEDIA_INACTIVE_NO) {
+				query.addFilterQuery("mediaInactive:0");
+			}
 		}
 		
 		if(uciCode != null && uciCode.trim().length() > 0) {

@@ -2,8 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
-	 String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-	// String IMG_SERVER_URL_PREFIX = "";
+String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
 
 /** 개별 다운로드 */

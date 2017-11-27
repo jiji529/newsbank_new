@@ -45,6 +45,7 @@
 				publishDate, shotDate, regDate, updDate, 
 				widthPixel widthPx, heightPixel heightPx, widthCm, heightCm, dpi, mb fileSizeMB, exif,
 				member_seq ownerNo, compCode, hitCount
+				, (select (activate != 1) from member where seq = ownerNo) mediaInactive
 			from photo 
 			where uciCode = #{uciCode}
 		]]>

@@ -19,6 +19,7 @@ package com.dahami.newsbank.web.service;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -305,8 +306,8 @@ public class DownloadService extends ServiceBase {
 				
 				// 썸네일 / 뷰 이미지의 경우 서비스중인 이미지에 대해 모두 다운로드 가능함
 				if(targetSize.equals("list") || targetSize.equals("view")) {
+					if(photo.isServiceActive()
 					// 서비스중이거나
-					if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK
 							// 소유자일 때 이미지 전송
 						|| (memberInfo != null && photo.getOwnerNo() == memberInfo.getSeq())
 					) {
@@ -748,7 +749,21 @@ public class DownloadService extends ServiceBase {
 	}
 	
 	private boolean makeLogoFile(String mdName, String tgtPath) {
-		Font font = new Font("나눔고딕", Font.BOLD, 47);
+		Font font = null;
+		GraphicsEnvironment ge = null;
+        ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Font[] fonts = ge.getAllFonts();
+        
+        for(int i=0; i<fonts.length;i++){
+           if(fonts[i].getFontName().equals("나눔고딕")){
+        	 font = new Font("나눔고딕", Font.BOLD, 47);
+        	 break;
+           }else if(fonts[i].getFontName().equals("나눔고딕코딩")){
+        	 font = new Font("나눔고딕코딩", Font.BOLD, 47);
+        	 break;
+           }
+        }
+		
 		FontRenderContext frc = new FontRenderContext(null,  true, true);
 		Rectangle2D r2D = font.getStringBounds(mdName, frc);
 		int orgLogoImgW = (int) Math.round(r2D.getWidth());

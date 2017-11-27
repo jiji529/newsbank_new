@@ -18,8 +18,7 @@
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
- String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-// String IMG_SERVER_URL_PREFIX = "";
+ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -440,7 +439,7 @@
 				<li class="thumb">
 					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
 					<a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')">
-						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+						<img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
@@ -457,9 +456,9 @@
 		<ul>
 			<c:forEach items="${picture}" var="PhotoDTO">
 				<li class="thumb">
-					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
+					<%-- <a href="<%=IMG_SERVER_URL_PREFIX %>/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
 					<a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')">
-						<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+						<img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
 					</a>
 					<div class="info">
 						<div class="photo_info">${PhotoDTO.copyright}</div>
