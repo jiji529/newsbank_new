@@ -64,8 +64,8 @@ public class LoginAction extends NewsbankServletBase {
 			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 			MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 			memberDTO.setId(id);
-			memberDTO.setPw(pw);
-			System.out.println(CommonUtil.sha1(pw));
+			memberDTO.setPw(CommonUtil.sha1(pw));
+			System.out.println(memberDTO.getPw());
 
 			memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
 			if (memberDTO != null) {

@@ -458,9 +458,9 @@ public class MemberDTO implements Serializable {
 
 	public void setPw(String pw) {
 		
-		this.pw = CommonUtil.sha1(pw);
+		this.pw = pw;
 	}
-
+	
 	public String getCompZipcode() {
 		return compZipcode;
 	}

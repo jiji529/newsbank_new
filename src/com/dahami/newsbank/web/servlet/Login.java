@@ -76,54 +76,7 @@ public class Login extends NewsbankServletBase {
 					}
 				}
 			}
-/*
-			String id = request.getParameter("id"); // 아이디 request
-			String pw = request.getParameter("pw"); // 패스워드 request
-			String login_chk = request.getParameter("login_chk"); // 아이디 저장 request
-			if (id != null || pw != null) {
-				// 로그인 정보 요청
-				MemberDTO memberDTO = new MemberDTO(); // 객체 생성
-				memberDTO.setId(id);
-				memberDTO.setPw(pw);
-				
 
-				MemberDAO memberDAO  = new MemberDAO(); // 회원정보 연결
-				memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
-				if (memberDTO != null) {
-					// 로그인 성공
-					session.setAttribute("MemberInfo", memberDTO); // 회원정보 세션 저장
-					session.setMaxInactiveInterval(60 * 60 * 25 * 7);// 유효기간 7일
-
-					// 자동로그인 쿠키 저장
-					if (login_chk != null && login_chk.trim().equals("on")) {
-						Cookie cookie = new Cookie("id", URLEncoder.encode(id, "UTF-8"));
-						cookie.setMaxAge(60 * 60 * 25 * 7);//세션 유효기간 1주일
-						response.addCookie(cookie);
-					} else {
-						Cookie cookie = new Cookie("id", null);
-						cookie.setMaxAge(0);// 유효기간 0
-						response.addCookie(cookie);
-					}
-					session.removeAttribute("prevPage");
-					//RequestDispatcher dispatcher = request.getRequestDispatcher(prevPage);
-					//dispatcher.forward(request, response);
-					 response.sendRedirect(prevPage);
-				} else {
-					// 로그인 실패
-					request.setAttribute("msg", "0");
-					//request.setAttribute("id", id);
-					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-					dispatcher.forward(request, response);
-					
-					//response.sendRedirect("/login");
-				}
-			} else {
-				// 초기화면 또는 아이디 패스워드 누락
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-				dispatcher.forward(request, response);
-
-
-			}*/
 			// 초기화면 또는 아이디 패스워드 누락
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
 			dispatcher.forward(request, response);
