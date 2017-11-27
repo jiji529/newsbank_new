@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
 <link rel="stylesheet" href="css/jquery.bxslider.css" />
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.bxslider.js"></script>
 <script src="js/footer.js"></script>
 <script> 

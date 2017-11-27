@@ -20,7 +20,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/jquery-1.12.4.min.js"></script>
 <script src='js/jquery.form.min.js'></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <link rel="stylesheet" href="css/base.css" />
@@ -132,14 +132,14 @@
 							<tr>
 								<th>비밀번호 변경</th>
 								<td>
-									<input type="password" id="pw" class="inp_txt" size="40" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)">
+									<input type="password" id="pw" class="inp_txt" size="50" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)">
 									<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
 								</td>
 							</tr>
 							<tr>
 								<th>비밀번호 재확인</th>
 								<td>
-									<input type="password" id="pw_check" class="inp_txt" size="40" maxlength="16" placeholder="비밀번호 재확인">
+									<input type="password" id="pw_check" class="inp_txt" size="50" maxlength="16" placeholder="비밀번호 재확인">
 									<p class="txt_message" id="pw_check_message" style="display: none;">비밀번호가 일치하지 않습니다.</p>
 								</td>
 							</tr>
@@ -223,7 +223,7 @@
 								<tr>
 									<th>사무실 전화</th>
 									<td>
-										<select id="compTel1" class="inp_txt" style="width: 70px;">
+										<select id="compTel1" class="inp_txt" style="width: 80px;">
 											<option value="">선택</option>
 											<option value="010" <c:if test="${compTel1 eq '010'}">selected</c:if>>010</option>
 											<option value="011" <c:if test="${compTel1 eq '011'}">selected</c:if>>011</option>

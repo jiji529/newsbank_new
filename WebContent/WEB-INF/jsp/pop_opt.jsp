@@ -22,13 +22,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<script
-		src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/sub.css" />
 	<style type="text/css">
 		body { width:420px; min-width:inherit}
 	</style>
+	<script src="js/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript">
 		usageList();
 		

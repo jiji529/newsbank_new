@@ -21,10 +21,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
 <link rel="stylesheet" href="css/join.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css">
+<script src="js/jquery-1.12.4.min.js"></script>
 <script src='js/jquery.form.min.js'></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript" src="js/join.js"></script>
 <script>

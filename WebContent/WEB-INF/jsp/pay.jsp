@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.serialize-object.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>

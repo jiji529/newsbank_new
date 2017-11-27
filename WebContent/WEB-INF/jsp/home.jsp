@@ -28,7 +28,8 @@ String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.row-grid.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/main.css" />

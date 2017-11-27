@@ -26,7 +26,7 @@ System.out.println(memberDTO);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크 비밀번호 찾기</title>
 <link rel="stylesheet" href="css/join.css" />
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="js/find.js"></script>
 </head>
 <body>
