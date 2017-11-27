@@ -17,6 +17,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
+ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+%>
+<%
 	request.setCharacterEncoding("UTF-8");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -74,7 +77,7 @@
 							<div class="cart_item">
 								<div class="thumb">
 									<a href="/view.cms?uciCode=${pay.uciCode}" target="_blank">
-										<img src="http://www.dev.newsbank.co.kr/list.down.photo?uciCode=${pay.uciCode}" />
+										<img src="<%=IMG_SERVER_URL_PREFIX  %>/list.down.photo?uciCode=${pay.uciCode}" />
 									</a>
 								</div>
 								<div class="cart_info">
