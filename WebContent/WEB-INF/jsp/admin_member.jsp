@@ -61,18 +61,47 @@ $(document).on("keypress", "#keyword", function(e) {
 	}
 });
 
-// 페이징
-$('#pagination-demo').twbsPagination({
-    totalPages: 15,
-    visiblePages: 10,
-    onPageClick: function (event, page) {
-        $('#page-content').text('Page ' + 15);
-        //pagingw(page);
-    }
+
+
+// 페이징 번호 클릭
+$(document).on("click",".page",function() {
+	var pages = $(this).text();
+	if(pages == "") pages = 1;
+	$("#startgo").val(pages);
+	
+	listJson();
 });
 
-$(document).on("click",".page-item",function() {
+// 첫번쨰 페이지
+$(document).on("click",".first",function() {
+	var pages = "1";
+	$("#startgo").val(pages);
 	
+	listJson();
+});
+
+// 마지막 페이지
+$(document).on("click",".last",function() {
+	var pages = $("#lastvalue").val();
+	$("#startgo").val(pages);
+	
+	listJson();
+});
+
+// 이전 페이지
+$(document).on("click",".prev",function() {
+	var pages = $("#pagination-demo .page.active").text();
+	$("#startgo").val(pages);
+	
+	listJson();
+});
+
+// 다음 페이지
+$(document).on("click",".next",function() {
+	var pages = $("#pagination-demo .page.active").text();
+	$("#startgo").val(pages);
+	
+	listJson();
 });
 
 function pagings(tot){
@@ -92,13 +121,12 @@ function pagings(tot){
 	if(tot == "0"){
 		tot = 1;
 	}
-	console.log("tot : " + tot + " / firval : " + firval + " / realtot : " + realtot);
 	
 	realtot = parseInt(tot);
 		
 	
-	$('.page').empty();
-	$('.page').html('<ul id="pagination-demo" class="pagination-sm"></ul>');
+	$('.paging').empty();
+	$('.paging').html('<ul id="pagination-demo" class="pagination-sm"></ul>');
 	
 	$('#pagination-demo').twbsPagination({
 		startPage: firval,
@@ -192,7 +220,6 @@ function make_group() {
 				"groupName" : groupName,
 				"radio_id" : radio_id.join(",")
 		};
-		//console.log(param);
 		
 		$.ajax({
 			type: "POST",
@@ -207,12 +234,13 @@ function make_group() {
 	}
 }
 
-function search() { // 검색
+function listJson() {
 	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
 	var type = $("#sel_type option:selected").attr("value"); // 회원구분
 	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
 	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
 	var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
+	var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
 	var pageCnt = 0;
 	
 	var searchParam = {
@@ -221,6 +249,7 @@ function search() { // 검색
 			, "deferred":deferred
 			, "group":group
 			, "pageVol":pageVol
+			, "startPage":startPage
 	};
 	
 	var html = "";
@@ -228,10 +257,91 @@ function search() { // 검색
 	
 	$.ajax({
 		type: "POST",
+		cache : false,
 		dataType: "json",
 		data: searchParam,
 		url: "/listMember.api",
-		success: function(data) { console.log(data);
+		success: function(data) { //console.log(data);
+			pageCnt = data.pageCnt; // 총 페이지 갯수
+			
+			$(data.result).each(function(key, val) {
+				var number = ($("#startgo").val() - 1) * pageVol + (key + 1);
+				var type = val.type;
+				if(type == "P") type = "개인";
+				if(type == "C") type = "법인";
+				
+				var group = val.group_seq;
+				var groupName = val.groupName;
+				if(group == 0){ 
+					group = "개별";  
+				}else{
+					group = "그룹("+groupName+")";  
+				}
+				
+				var deferred = val.deferred;
+				if(deferred == 'Y') deferred = "오프라인 결제";
+				if(deferred == 'N') deferred = "온라인 결제";	
+				
+				var contractStart = val.contractStart;
+				var contractEnd = val.contractEnd;
+				var duration = "";
+				if(contractStart == null || contractEnd == null) duration = "정보 미기재"; // 둘 중 하나라도 null이면 표시 
+				if(contractStart != null && contractEnd != null) duration = contractStart + "~" + contractEnd; // 모든 정보가 있을 때 표시
+				
+				var regDate = val.regDate;
+				regDate = regDate.substring(0, 10);
+				
+				html += '<tr onclick="javascript:void(0)">';
+				html += '<td><div class="tb_check">';
+				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
+				html += '<label for="check' + key + '">선택</label>';
+				html += '</div></td>';
+				html += '<td>' + number + '</td>';
+				html += '<td>' + val.id + '</td>';
+				html += '<td>' + val.compName + '</td>';
+				html += '<td>' + type +'</td>';
+				html += '<td>' + val.name + '</td>';
+				html += '<td>' + val.email + '</td>';
+				html += '<td>' + val.phone + '</td>';
+				html += '<td>' + deferred + '</td>';
+				html += '<td>' + group + '</td>';
+				html += '<td>' + duration + '</td>';
+				html += '<td>' + regDate + '</td>';
+				html += '</tr>';
+			});
+			$(html).appendTo("#mtBody");
+		}
+	});
+}
+
+function search() { // 검색
+	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
+	var type = $("#sel_type option:selected").attr("value"); // 회원구분
+	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
+	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
+	var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
+	var startPage = ($("#startgo").val()-1)*10; // 시작 페이지
+	var pageCnt = 0;
+	
+	var searchParam = {
+			"keyword":keyword
+			, "type":type
+			, "deferred":deferred
+			, "group":group
+			, "pageVol":pageVol
+			, "startPage":startPage
+	};
+	
+	var html = "";
+	$("#mtBody").empty();
+	//console.log(searchParam);
+	
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		data: searchParam,
+		url: "/listMember.api",
+		success: function(data) { //console.log(data);
 			pageCnt = data.pageCnt; // 총 페이지 갯수
 			
 			$(data.result).each(function(key, val) {
@@ -280,8 +390,7 @@ function search() { // 검색
 			});
 			$(html).appendTo("#mtBody");
 		},
-		complete: function() {
-			$("#totcnt").val(pageCnt);
+		complete: function() {			
 			pagings(pageCnt);		
 		}
 	});
@@ -416,7 +525,7 @@ function excel() { // 엑셀저장
 				<input type="hidden" id="totcnt" value="" />
 				<input type="hidden" id="startgo" value="" />
 				<input type="hidden" id="lastvalue" value="" />
-				<div class="page">
+				<div class="paging">
 					<ul id="pagination-demo" class="pagination-sm">
 					</ul>
 					<!-- <ul>

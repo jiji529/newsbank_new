@@ -45,6 +45,7 @@ public class ListMemberJSON extends NewsbankServletBase {
 		String deferred = request.getParameter("deferred"); // 후불결제 구분 (Y/N)
 		String group = request.getParameter("group"); // 그룹구분 (개별: I, 그룹: G) 
 		int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표시 갯수
+		int startPage = Integer.parseInt(request.getParameter("startPage")); // 시작 페이지
 		//int group_seq = (request.getParameter("group") == null) ? 0 : Integer.parseInt(request.getParameter("group")); // 그룹구분 (개별: 0, 그룹: 1) 
 		//int group_seq = Integer.parseInt(request.getParameter("group"));
 		
@@ -54,6 +55,7 @@ public class ListMemberJSON extends NewsbankServletBase {
 		searchOpt.put("deferred", deferred);
 		searchOpt.put("group", group);
 		searchOpt.put("pageVol", pageVol);
+		searchOpt.put("startPage", startPage);
 		
 		/*MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 		memberDTO.setType(type);

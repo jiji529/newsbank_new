@@ -205,7 +205,7 @@
 			
 		</where>
 		ORDER BY A.regDate DESC 
-		LIMIT 0, #{pageVol}
+		LIMIT #{startPage}, #{pageVol}
 	</select>
 	
 	<!-- 회원현황(그룹추가) -->
