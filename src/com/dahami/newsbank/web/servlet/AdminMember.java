@@ -46,7 +46,6 @@ public class AdminMember extends NewsbankServletBase {
 			
 			Map<Object, Object> param = new HashMap<Object, Object>();
 			param.put("groupName", groupName);
-			//param.put("id", id);
 			
 			MemberDAO memberDAO = new MemberDAO();
 			memberDAO.insertGroup(param);

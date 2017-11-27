@@ -27,6 +27,7 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/mypage.css" />
+<script src="js/jquery.twbsPagination.js"></script>
 <script> 
 $(document).ready(function(){ 
 	$(".popup_close").click(function(){ 
@@ -43,18 +44,71 @@ $(document).ready(function() {
 			$(this).parent().addClass("on");
 		}
 	});
+	$("#startgo").val(1); // 최초 1페이지로
 	search();
 });
 
 $(document).on("click", ".btn_input2", function() {
+	$("#startgo").val(1); // 최초 1페이지로
 	search();
 });
 
 $(document).on("keypress", "#keyword", function(e) {
 	if (e.keyCode == 13) { // 엔터
+		$("#startgo").val(1); // 최초 1페이지로
 		search();
 	}
 });
+
+// 페이징
+$('#pagination-demo').twbsPagination({
+    totalPages: 15,
+    visiblePages: 10,
+    onPageClick: function (event, page) {
+        $('#page-content').text('Page ' + 15);
+        //pagingw(page);
+    }
+});
+
+$(document).on("click",".page-item",function() {
+	
+});
+
+function pagings(tot){
+	
+	var firval = 1;
+	var realtot = 1;
+	var startpage = $("#startgo").val();
+	$("#lastvalue").val(tot);
+	
+	if($("#totcnt").val() != ""){
+		if(startpage == "1"){
+			firval = parseInt(startpage);
+		}else{
+			firval = parseInt($("#totcnt").val());
+		}
+	}
+	if(tot == "0"){
+		tot = 1;
+	}
+	console.log("tot : " + tot + " / firval : " + firval + " / realtot : " + realtot);
+	
+	realtot = parseInt(tot);
+		
+	
+	$('.page').empty();
+	$('.page').html('<ul id="pagination-demo" class="pagination-sm"></ul>');
+	
+	$('#pagination-demo').twbsPagination({
+		startPage: firval,
+	    totalPages: realtot,
+	    visiblePages: 10,
+	    onPageClick: function (event, page) {
+	    	
+	    	$('#page-content').text('Page ' + page);
+        }
+	});
+}
 
 /** 전체선택 */
 $(document).on("click", "input[name='check_all']", function() {
@@ -158,6 +212,7 @@ function search() { // 검색
 	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
 	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
 	var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
+	var pageCnt = 0;
 	
 	var searchParam = {
 			"keyword":keyword
@@ -175,7 +230,9 @@ function search() { // 검색
 		dataType: "json",
 		data: searchParam,
 		url: "/listMember.api",
-		success: function(data) { //console.log(data);
+		success: function(data) { console.log(data);
+			pageCnt = data.pageCnt; // 총 페이지 갯수
+			
 			$(data.result).each(function(key, val) {
 				var type = val.type;
 				if(type == "P") type = "개인";
@@ -221,8 +278,13 @@ function search() { // 검색
 				html += '</tr>';
 			});
 			$(html).appendTo("#mtBody");
+		},
+		complete: function() {
+			$("#totcnt").val(pageCnt);
+			pagings(pageCnt);		
 		}
 	});
+	
 }
 
 function excel() { // 엑셀저장
@@ -350,8 +412,13 @@ function excel() { // 엑셀저장
 					</div>
 				</div>
 				<div id="mask"></div>
+				<input type="hidden" id="totcnt" value="" />
+				<input type="hidden" id="startgo" value="" />
+				<input type="hidden" id="lastvalue" value="" />
 				<div class="page">
-					<ul>
+					<ul id="pagination-demo" class="pagination-sm">
+					</ul>
+					<!-- <ul>
 						<li class="first"> <a href="javascript:void(0)">첫 페이지</a> </li>
 						<li class="prev"> <a href="javascript:void(0)">이전 페이지</a> </li>
 						<li> <a href="javascript:void(0)">1</a> </li>
@@ -366,7 +433,7 @@ function excel() { // 엑셀저장
 						<li> <a href="javascript:void(0)">10</a> </li>
 						<li class="next"> <a href="javascript:void(0)"> 다음 페이지 </a> </li>
 						<li class="last"> <a href="javascript:void(0)"> 마지막 페이지 </a> </li>
-					</ul>
+					</ul> -->
 				</div>
 			</div>
 		</div>

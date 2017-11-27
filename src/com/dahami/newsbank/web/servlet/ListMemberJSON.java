@@ -61,9 +61,13 @@ public class ListMemberJSON extends NewsbankServletBase {
 		memberDTO.setGroup_seq(group_seq);*/
 		
 		List<MemberDTO> listMember = new ArrayList<MemberDTO>();
+		int totalCnt = 0; // 총 갯수
+		int pageCnt = 0; // 페이지 갯수
 		
 		MemberDAO memberDAO = new MemberDAO();
 		listMember = memberDAO.selectMemberList(searchOpt);
+		totalCnt = memberDAO.getMemberCount(searchOpt);
+		pageCnt = (totalCnt / pageVol) + 1; // 페이지 갯수 (총 갯수 / 페이지 당 행의 수  + 1)
 		
 		JSONArray jArray = new JSONArray(); // json 배열
 		
@@ -88,6 +92,7 @@ public class ListMemberJSON extends NewsbankServletBase {
 		JSONObject json = new JSONObject();
 		
 		json.put("message", "");
+		json.put("pageCnt", pageCnt);
 		json.put("result", jArray);
 
 		response.getWriter().print(json);

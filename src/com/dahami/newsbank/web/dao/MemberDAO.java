@@ -327,6 +327,31 @@ public class MemberDAO extends DAOBase {
 		}
 	}
 	
+	/**
+	 * @methodName : getMemberCount
+	 * @author : Lee, Gwangho
+	 * @date : 2017. 11. 27. 오후 01:02:13
+	 * @methodCommet: 조건에 따른 회원 인원수
+	 * @return
+	 * @returnType : 
+	 */
+	public int getMemberCount(Map<Object, Object> param) {
+		SqlSession session = null;
+		int count = 0;
+		try {
+			session = sf.getSession();
+			count = session.selectOne("Member.memberCnt", param);
+			return count;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
 	
 
 }

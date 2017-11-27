@@ -208,6 +208,7 @@
 		LIMIT 0, #{pageVol}
 	</select>
 	
+	<!-- 회원현황(그룹추가) -->
 	<insert id="insertGroup" useGeneratedKeys="true" keyProperty="seq">	    
 	    <selectKey resultType="integer" keyProperty="seq" order="AFTER">
 			SELECT
@@ -216,10 +217,41 @@
 		INSERT INTO `group` (groupName, regDate) VALUES (#{groupName}, NOW())
 	</insert>
 	
+	<!-- 회원현황 (선택회원 그룹정보 변경) -->
 	<update id="updateMemberGroup">
 	    UPDATE member SET group_seq = #{group_seq} WHERE 
 	    <foreach collection="id" item="mID"  separator="OR">
 	        ( id = #{mID} )
 	    </foreach>
 	</update>
+	
+	<!-- 조건에 따른 전체 회원명수 -->
+	<select id="memberCnt" resultType="integer" parameterType="java.util.Map">	    
+	    SELECT count(seq) as cnt 
+	    FROM member 
+	    <where>
+	        
+            <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
+	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
+            </if>
+            	        
+	        <if test="type != ''"> <!-- 회원구분 -->
+	            AND `type` = #{type}
+            </if>
+            
+			<if test="deferred != ''"> <!-- 결제구분 -->
+				AND `deferred` = #{deferred}    
+			</if>
+			
+			<if test='group == "I"'> <!-- 개별 -->
+				AND `group_seq` is NULL    
+			</if>
+			
+			<if test='group == "G"'> <!-- 그룹 -->
+				AND `group_seq` is not NULL    
+			</if>
+			
+		</where>
+	    ORDER BY regDate DESC
+	</select>
 </mapper>
