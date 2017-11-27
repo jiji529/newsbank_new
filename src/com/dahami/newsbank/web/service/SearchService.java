@@ -45,6 +45,10 @@ public class SearchService extends ServiceBase {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String[]> params = request.getParameterMap();
 		SearchParameterBean sParam = new SearchParameterBean(params);
+		
+		// 사용자 검색은 활성 매체만을 대상으로 함
+		sParam.setMediaInactive(SearchParameterBean.MEDIA_INACTIVE_NO);
+		
 		SearchDAO searchDAO = new SearchDAO();
 		Map<String, Object> photoList = searchDAO.search(sParam);
 		
