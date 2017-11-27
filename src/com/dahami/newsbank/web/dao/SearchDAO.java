@@ -208,6 +208,7 @@ public class SearchDAO extends DAOBase {
 		QueryResponse res = null;
 		try {
 			SolrQuery query = makeSolrQuery(param);
+			query.addSort("searchDate", ORDER.desc);
 			query.addSort("uciCode", ORDER.desc);
 			
 			QueryRequest req = makeSolrURequest(query);
