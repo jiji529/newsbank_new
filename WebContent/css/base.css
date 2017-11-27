@@ -7,7 +7,7 @@
 body{height:100%; text-align:center; min-width:1240px;}
 ul,ol,dl{list-style:none;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,form,fieldset,p,button{margin:0;padding:0}
-body,h1,h2,h3,h4,input,button{font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif;}
+body,h1,h2,h3,h4,input,button{font-family:"nsr",Helvetica,AppleSDGothicNeo, AppleGothic,Arial,Dotum,'돋움',sans-serif;}
 a{text-decoration: none;}
 .color{ color:#f79320!important;}
 .block {display:block;}
@@ -16,7 +16,7 @@ button{cursor:pointer;}
 ::selection {background: #f79320; color:#fff;}
 .fl{float:left;}
 .fr{float:right;}
-
+a img{border:none;}
 /*
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;}
 */
@@ -31,7 +31,7 @@ nav .gnb_left{ float:left; display:block; margin-left:40px;}
 nav .gnb_left li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px; display:none }
 nav .gnb_left li:first-child{ display:block;}
 nav.gnb_light .gnb .gnb_left li a{color:#fff;}
-nav a{display:block;font-family:"nsr",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif; font-size:17px;}
+nav a{display:block;font-family:"nsr",Helvetica,AppleSDGothicNeo,AppleGothic,Arial, Dotum,'돋움',sans-serif; font-size:17px;}
 nav .gnb_right{ float:right; display:block;}
 nav .gnb_right li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px;  }
 nav .gnb_right li a{ color:#bbb; font-size:15px;}
