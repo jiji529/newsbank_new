@@ -19,6 +19,7 @@ package com.dahami.newsbank.web.service;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -86,8 +87,8 @@ public class DownloadService extends ServiceBase {
 	private static final String URL_PHOTO_STOP_LIST = "/images/error/list_image_stopSale.jpg";
 	private static final String URL_PHOTO_STOP_VIEW = "/images/error/view_image_stopSale.jpg";
 
-	private static final int LOGO_MAX_WIDTH = 122;
-	private static final int LOGO_MAX_HEIGHT = 122;
+	private static final int LOGO_MAX_WIDTH = 177;
+	private static final int LOGO_MAX_HEIGHT = 40;
 
 	private static final Map<String, Set<String>> ACCESS_IP_MAP;
 	private static final Map<String, String> CORP_NAME_MAP;
@@ -768,7 +769,21 @@ public class DownloadService extends ServiceBase {
 	}
 
 	private boolean makeLogoFile(String mdName, String tgtPath) {
-		Font font = new Font("나눔고딕", Font.BOLD, 47);
+		Font font = null;
+		GraphicsEnvironment ge = null;
+        ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Font[] fonts = ge.getAllFonts();
+        
+        for(int i=0; i<fonts.length;i++){
+           if(fonts[i].getFontName().equals("나눔고딕")){
+        	 font = new Font("나눔고딕", Font.BOLD, 47);
+        	 break;
+           }else if(fonts[i].getFontName().equals("나눔고딕코딩")){
+        	 font = new Font("나눔고딕코딩", Font.BOLD, 47);
+        	 break;
+           }
+        }
+		
 		FontRenderContext frc = new FontRenderContext(null, true, true);
 		Rectangle2D r2D = font.getStringBounds(mdName, frc);
 		int orgLogoImgW = (int) Math.round(r2D.getWidth());
@@ -787,11 +802,11 @@ public class DownloadService extends ServiceBase {
 
 		int imgFullW = orgLogoImgW;
 		int imgFullH = orgLogoImgH;
-		if (imgFullW > imgFullH) {
-			imgFullH = imgFullW;
-		} else {
-			imgFullW = imgFullH;
-		}
+//		if (imgFullW > imgFullH) {
+//			imgFullH = imgFullW;
+//		} else {
+//			imgFullW = imgFullH;
+//		}
 		BufferedImage fullImg = new BufferedImage(imgFullW, imgFullH, BufferedImage.TYPE_3BYTE_BGR);
 		for (int i = 0; i < fullImg.getWidth(); i++) {
 			for (int j = 0; j < fullImg.getHeight(); j++) {

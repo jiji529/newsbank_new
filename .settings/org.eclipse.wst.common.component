@@ -42,6 +42,9 @@
         <dependent-module archiveName="solr-solrj-6.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/solr-solrj-6.0.0-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="API_SolrCommon.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon/API_SolrCommon">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="commons-logging-1.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/commons-logging-1.2.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -49,12 +52,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="commons-io-2.4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Newsbank_2017_Common/lib/commons-io-2.4.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="API_SolrCommon.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon/API_SolrCommon">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="arirang.lucene-analyzer-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/API_SolrCommon/lib/arirang.lucene-analyzer-0.0.1-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/NewsBank_2017/build/classes"/>
