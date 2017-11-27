@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.service.UploadService;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -44,6 +45,7 @@ public class Upload extends NewsbankServletBase {
 	}
 
 	/**
+	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
@@ -51,7 +53,12 @@ public class Upload extends NewsbankServletBase {
 		response.setContentType("application/json;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		response.addHeader("Cache-Control", "no-cache");
-
+		JSONObject json = new JSONObject();
+		
+		UploadService us = new UploadService();
+		json = us.execute(request, response);
+		response.getWriter().print(json);
+/*
 		JSONObject json = new JSONObject();
 		boolean result = false;
 		String message = "";
@@ -64,7 +71,6 @@ public class Upload extends NewsbankServletBase {
 		// String savePath = request.getServletContext().getRealPath("folderName");
 
 		String savePath = "";
-		boolean sizeError =false;
 
 		switch (type) {
 		case "doc":
@@ -168,7 +174,6 @@ public class Upload extends NewsbankServletBase {
 				if (e.getMessage().indexOf("exceeds limit") > -1) { // 파일사이즈 초과된 경우
 					message = "파일 용량을 초과했습니다.";
 					logger.warn("Invalid Request: " + message);
-					sizeError = true;
 				}
 				
 			}
@@ -176,18 +181,12 @@ public class Upload extends NewsbankServletBase {
 			message = "다시 로그인해주세요.";
 		}
 
-		/*if (sizeError) {
-			response.setContentType("text/html; charset=UTF-8");
-			response.setCharacterEncoding("UTF-8");
-			//response.getWriter().write("<script>alert(''); location.href=''; </script>");
-			return;
-		}*/
 
 		json.put("success", result);
 		json.put("message", message);
 
 		response.getWriter().print(json);
-
+*/
 	}
 
 	/**

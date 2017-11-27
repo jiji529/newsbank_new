@@ -74,54 +74,82 @@ $(document).on("click", ".group_li input[type='radio']", function() {
 /** 그룹묶기 팝업  */
 function popup_group() {
 	var chk_total = $("#mtBody input:checkbox:checked").length;
-	var uciCode = new Array();
+	var groupDivision = new Array();
 	
 	if(chk_total == 0) { // 선택항목 갯수 체크
 		alert("최소 1개 이상을 선택해주세요.");
 		
 	} else {
-		$("#popup_wrap").css("display", "block"); 
-		$("#mask").css("display", "block"); 
-		$(".group_li").empty();
-		$(".pop_foot > p").text('그룹명으로 지정할 항목을 선택해주세요');
 		
-		$("#mtBody input:checkbox:checked").each(function(index) {
+		if(!check_existGroup()) { // 선택항목 중에 그룹이 포함되었는지 여부 확인
 			
-			var option = $(this).val();
-			var id = option.split("(");
-			id = id[0];
-			var popup_html = '<li>';
-			popup_html += '<input type="radio" id="radio_chk' + index + '" name="group" value="' + id + '"/>';
-			popup_html += '<label for="radio_chk' + index + '""> ' + option + '</label>';
-			popup_html += '</li>';
+			$("#popup_wrap").css("display", "block"); 
+			$("#mask").css("display", "block"); 
+			$(".group_li").empty();
+			$(".pop_foot > p").text('그룹명으로 지정할 항목을 선택해주세요');
 			
-			$(popup_html).appendTo(".group_li");
-		});
+			$("#mtBody input:checkbox:checked").each(function(index) {
+				
+				var option = $(this).val();
+				var id = option.split("(");
+				id = id[0];
+				var popup_html = '<li>';
+				popup_html += '<input type="radio" id="radio_chk' + index + '" name="group" value="' + id + '"/>';
+				popup_html += '<label for="radio_chk' + index + '""> ' + option + '</label>';
+				popup_html += '</li>';
+				
+				$(popup_html).appendTo(".group_li");
+			});
+		}
+		
 	}
+}
+
+function check_existGroup() { // 그룹포함여부 확인
+	var result = false;
+	$("#mtBody input:checkbox:checked").each(function(index) {
+		var groupType = $(this).closest("tr").children().eq(9).text();
+		//var id = $(this).closest("tr").children().eq(2).text();
+		
+		if(groupType != "개별"){ 
+			result = true;	
+			alert("이미 그룹인 회원이 포함되어 있습니다.");
+		}
+	});
+	return result;
 }
 
 // 그룹 생성
 function make_group() {
-	var groupName = $("input:radio[name='group']:checked").val();
-	var radio_id = [];
-	$("input:radio[name='group']").each(function(key, val) {
-		radio_id.push($(this).val());
-	});	
+	var chk_total = $(".group_li input:radio:checked").length;
 	
-	var param = {
-			"groupName" : groupName,
-			"radio_id" : radio_id.join(",")
-	};
-	console.log(param);
-	
-	$.ajax({
-		type: "POST",
-		data: param,
-		url: "/member.manage?action=makeGroup",
-		success: function(data) { 
-			
-		}
-	});
+	if(chk_total == 0) { // 선택항목 갯수 체크
+		alert("최소 1개 이상을 선택해주세요.");
+		
+	}else {
+		var groupName = $("input:radio[name='group']:checked").val();
+		var radio_id = [];
+		$("input:radio[name='group']").each(function(key, val) {
+			radio_id.push($(this).val());
+		});	
+		
+		var param = {
+				"groupName" : groupName,
+				"radio_id" : radio_id.join(",")
+		};
+		//console.log(param);
+		
+		$.ajax({
+			type: "POST",
+			data: param,
+			url: "/member.manage?action=makeGroup",
+			success: function(data) { 
+				alert("그룹이 생성되었습니다");
+				$("#popup_wrap").css("display", "none"); 
+				$("#mask").css("display", "none"); 
+			}
+		});
+	}
 }
 
 function search() { // 검색
@@ -154,10 +182,11 @@ function search() { // 검색
 				if(type == "C") type = "법인";
 				
 				var group = val.group_seq;
+				var groupName = val.groupName;
 				if(group == 0){ 
 					group = "개별";  
 				}else{
-					group = "그룹( )";  
+					group = "그룹("+groupName+")";  
 				}
 				
 				var deferred = val.deferred;
@@ -195,6 +224,12 @@ function search() { // 검색
 		}
 	});
 }
+
+function excel() { // 엑셀저장
+	var excelHtml = '<table cellpadding="0" cellspacing="0">' + $("#mTable").html() + "</table>";
+	$("#excelHtml").val(excelHtml);
+	excel_form.submit();
+}
 </script>
 </head>
 <body>
@@ -206,6 +241,9 @@ function search() { // 검색
 			<div class="table_head">
 				<h3>회원 현황</h3>
 			</div>
+			<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
+				<input type="hidden" id="excelHtml" name="excelHtml" />
+			</form>
 			<div class="ad_sch_area">
 				<table class="tb01" cellpadding="0" cellspacing="0" >
 					<colgroup>
@@ -252,8 +290,8 @@ function search() { // 검색
 						<option value="50">50개</option>
 						<option value="100">100개</option>
 					</select>
-					<span  id="popup_open"><a href="javascript:void(0)" onclick="popup_group()">그룹묶기</a></span><a href="javascript:void(0)">엑셀저장</a></div>
-				<table cellpadding="0" cellspacing="0" class="tb04">
+					<span  id="popup_open"><a href="javascript:void(0)" onclick="popup_group()">그룹묶기</a></span><a href="javascript:void(0)" onclick="excel()">엑셀저장</a></div>
+				<table cellpadding="0" cellspacing="0" class="tb04" id="mTable">
 					<colgroup>
 					<col width="30" />
 					<col width="30" />

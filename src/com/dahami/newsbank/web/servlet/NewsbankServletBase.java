@@ -15,14 +15,11 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dahami.newsbank.web.dao.SearchDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 
 public abstract class NewsbankServletBase extends HttpServlet {
-	
-//	public static final String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-	public static final String IMG_SERVER_URL_PREFIX = "";
-	
 	private static final long serialVersionUID = 4745659834372195390L;
 	protected Logger logger;
 	

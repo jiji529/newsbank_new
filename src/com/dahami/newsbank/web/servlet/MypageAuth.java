@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
  * Servlet implementation class MypageAuth
@@ -65,13 +66,13 @@ public class MypageAuth extends NewsbankServletBase {
 				} else {
 
 					// 로그인 정보 요청
-					Map<String, Object> param = new HashMap<String, Object>();
+					/*Map<String, Object> param = new HashMap<String, Object>();
 					param.put("id", MemberInfo.getId());
-					param.put("pw", pw);
+					param.put("pw", pw);*/
 					
 					MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 					memberDTO.setId(MemberInfo.getId());
-					memberDTO.setPw(pw);
+					memberDTO.setPw(CommonUtil.sha1(pw));
 					
 					
 

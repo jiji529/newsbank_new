@@ -217,7 +217,7 @@
 											<button class="btn">등록증 업로드</button>
 											<input type="file" name="compNumFile" accept="application/pdf, image/*"  required/>
 										</div>
-										<a href="javascript:;" class="btn_input1">다운로드</a>
+										<a href="/doc.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
 									</td>
 								</tr>
 								<tr>

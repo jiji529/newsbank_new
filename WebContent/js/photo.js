@@ -1,3 +1,5 @@
+//var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+var IMG_SERVER_URL_PREFIX = "";
 
 function down(uciCode) {
 	if(!confirm("원본 크기로 다운로드 하시겠습니까?")) {

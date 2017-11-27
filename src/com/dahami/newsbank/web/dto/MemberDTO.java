@@ -55,6 +55,7 @@ public class MemberDTO implements Serializable {
 	private String activate;
 	private int master_seq; // 마스터 시퀀스
 	private int group_seq; // 그룹 시퀀스
+	private String groupName; // 그룹명
 	
 
 	/**
@@ -451,6 +452,20 @@ public class MemberDTO implements Serializable {
 	public void setGroup_seq(int group_seq) {
 		this.group_seq = group_seq;
 	}
+	
+	/**
+	 * @return
+	 */
+	public String getGroupName() {
+		return groupName;
+	}
+	
+	/**
+	 * @param groupName
+	 */
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 
 	public String getPw() {
 		return pw;
@@ -458,9 +473,9 @@ public class MemberDTO implements Serializable {
 
 	public void setPw(String pw) {
 		
-		this.pw = CommonUtil.sha1(pw);
+		this.pw = pw;
 	}
-
+	
 	public String getCompZipcode() {
 		return compZipcode;
 	}

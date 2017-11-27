@@ -28,9 +28,6 @@ public class SearchCMSService extends ServiceBase{
 		// 모든 판매상태(삭제/완전삭제 제외) 보기
 		sParam.setSaleState(SearchParameterBean.SALE_STATE_NOT | SearchParameterBean.SALE_STATE_OK | SearchParameterBean.SALE_STATE_STOP | SearchParameterBean.SALE_STATE_DEL_SOLD);
 		
-		// CMS 검색은 비활성 매체도 가능하도록 함
-		sParam.setMediaInactive(SearchParameterBean.MEDIA_INACTIVE_NO | SearchParameterBean.MEDIA_INACTIVE_YES);
-		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		

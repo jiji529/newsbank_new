@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
  * Servlet implementation class MypageAuth
@@ -115,6 +116,7 @@ public class MemberAction extends NewsbankServletBase {
 			if (!check) {
 				message = "패스워드 형식이 올바르지 않습니다.";
 			}
+			pw = CommonUtil.sha1(pw);
 		}
 
 		if (check && request.getParameter("email") != null) {
@@ -155,8 +157,7 @@ public class MemberAction extends NewsbankServletBase {
 			}
 		}
 
-		if (check && request.getParameter(
-				"compDocPath") != null) {
+		if (check && request.getParameter("compDocPath") != null) {
 			compDocPath = request.getParameter("compDocPath"); // 사업자등록증
 		}
 
@@ -287,7 +288,6 @@ public class MemberAction extends NewsbankServletBase {
 		}
 		MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 		if (check) {
-			
 
 			memberDTO.setSeq(seq);
 			memberDTO.setId(id);
@@ -352,9 +352,9 @@ public class MemberAction extends NewsbankServletBase {
 		}
 
 		JSONObject json = new JSONObject();
-		
+
 		if (cmd.equalsIgnoreCase("R")) {
-			if (memberDTO!=null && memberDTO.isMember()) {
+			if (memberDTO != null && memberDTO.isMember()) {
 				result = true;
 				Map<String, Object> data = new HashMap<String, Object>();
 				data.put("compBankName", memberDTO.getCompBankName());
@@ -371,10 +371,10 @@ public class MemberAction extends NewsbankServletBase {
 				data.put("taxPhone", memberDTO.getTaxPhone());
 
 				json.put("data", data);
-			}else {
-				message ="매체 정보를 찾을 수 없습니다.";
+			} else {
+				message = "매체 정보를 찾을 수 없습니다.";
 			}
-			
+
 		}
 		json.put("success", result);
 		json.put("message", message);

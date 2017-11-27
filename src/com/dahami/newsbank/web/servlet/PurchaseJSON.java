@@ -22,6 +22,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.dahami.common.util.HttpUtil;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.BookmarkDTO;
@@ -139,8 +140,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 			Date today = new Date();
 			String LGD_TIMESTAMP = DATE_TIME_FORMAT.format(today);// 타임스탬프
-			String LGD_BUYERIP = request.getRemoteAddr(); // 구매자 아이피
-
+			String LGD_BUYERIP =HttpUtil.getRequestIpAddr(request); //request.getRemoteAddr(); // 구매자 아이피
 			String LGD_BUYERID = MemberInfo.getId(); // 구매자 아이디
 			String LGD_BUYER = MemberInfo.getName(); // 구매자 명
 			String LGD_BUYEREMAIL = MemberInfo.getEmail(); // 구매자 이메일
