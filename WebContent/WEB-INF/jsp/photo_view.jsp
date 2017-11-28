@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
@@ -564,13 +565,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<h3 class="info_tit">사진 정보</h3>
 				<dl>
 					<dt>촬영일</dt>
-					<dd>${photoDTO.shotDate}</dd>
+					<dd><fmt:formatDate value="${photoDTO.shotDate}" pattern="yyyy년 MM월 dd일  HH시 mm분 ss초"/></dd>
 					<dt>픽셀수</dt>
 					<dd>${photoDTO.widthPx} X ${photoDTO.heightPx}(pixel)</dd>
 					<dt>출력사이즈</dt>
 					<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
 					<dt>파일용량</dt>
-					<dd>${photoDTO.fileSize}MB</dd>
+					<dd>${photoDTO.getFileSizeMBStr()}MB</dd>
 					<dt>파일포맷</dt>
 					<dd>JPEG</dd>
 					<dt>해상도</dt>
