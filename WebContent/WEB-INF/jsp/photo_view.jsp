@@ -15,6 +15,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <link rel="stylesheet" href="css/sub.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+<script src="js/photo.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(key, val){
 		relation_photo();
@@ -62,9 +63,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	
 	$(document).on("click", ".btn_down", function() {
 		var login_state = login_chk();
+		var uciCode = '${photoDTO.uciCode}';
 		
 		if(login_state) {
-			down();
+			down(uciCode);
 		} else {
 			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
 				$(".gnb_right li").first().children("a").click();	
@@ -452,7 +454,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			url: "search",
 			success : function(data) {
 				$(data.result).each(function(key, val) {
-					html += '<li><a href="javascript:;"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+					html += '<li><a href="javascript:;" onclick="go_photoView(\'' + val.uciCode + '\')"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
 				});
 				$(html).appendTo(".cfix");
 			},
@@ -483,7 +485,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				
 				$("#cartArry").val(cartArry);
 				
-				view_form.submit();
+				pay_form.submit();
 			}else{
 				alert("상품을 선택하세요.");
 			}
@@ -493,15 +495,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				
 			}	
 		}
-	}
-	
-	function down() {
-		if(!confirm("원본을 다운로드 하시겠습니까?")) {
-			return;
-		}
-		var url = "<%=IMG_SERVER_URL_PREFIX%>/service.down.photo?uciCode=${photoDTO.uciCode}&type=file";
-		$("#downFrame").attr("src", url);
-	}	
+	}		
 	
 	function media_submit(media_seq) {
 		$("#seq").val(media_seq);
@@ -515,16 +509,24 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}
 		return login_state;
 	}
+	
+	function go_photoView(uciCode) {
+		$("#uciCode").val(uciCode);
+		view_form.submit();
+	}
 </script>
 </head>
 <body> 
 <div class="wrap">
 	<%@include file="header.jsp" %>
-	<form class="view_form" method="post" action="/pay" name="view_form" >
+	<form class="pay_form" method="post" action="/pay" name="pay_form" >
 		<input type="hidden" name="cartArry" id="cartArry" />
 	</form>
 	<form method="post" action="/photo" name="list_form" >
 		<input type="hidden" id="seq" name="seq"/>		
+	</form>
+	<form class="view_form" method="post" action="/view.photo" name="view_form" >
+		<input type="hidden" name="uciCode" id="uciCode"/>
 	</form>
 	<section class="view">
 		<div class="view_lt">
@@ -647,7 +649,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<c:if test="${loginInfo != null && loginInfo.deferred == 'Y'}">
 					<div class="btn_wrap">
 						<div class="btn_buy" id="btnDown">
-							<a href="javascript:;" onclick="down()">다운로드</a>
+							<a href="javascript:;" onclick="down('${photoDTO.uciCode}')">다운로드</a>
 						</div>
 					</div>
 				</c:if>
@@ -656,6 +658,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	</section>
 	<%@include file="footer.jsp"%>
 </div>
+<form id="downForm" method="post"  target="downFrame">
+	<input type="hidden" id="downUciCode" name="uciCode" />
+	<input type="hidden" id="downType" name="type" />
+	<input type="hidden" name="dummy" value="<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+</form>
 <iframe id="downFrame" style="display:none" >
 </iframe>
 </body>

@@ -160,7 +160,7 @@
 					</c:forEach>
 				</dl>
 				<!-- 나중에 쓸수도 있어요 지금 어차피 faq 11개라 그냥 가려놔도 될거같아요
-				<div class="paging">
+				<div class="pagination">
 					<ul>
 						<li class="first"> <a href="javascript:void(0)">첫 페이지</a> </li>
 						<li class="prev"> <a href="javascript:void(0)">이전 페이지</a> </li>

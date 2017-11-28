@@ -125,8 +125,8 @@ function pagings(tot){
 	realtot = parseInt(tot);
 		
 	
-	$('.paging').empty();
-	$('.paging').html('<ul id="pagination-demo" class="pagination-sm"></ul>');
+	$('.pagination').empty();
+	$('.pagination').html('<ul id="pagination-demo" class="pagination-sm"></ul>');
 	
 	$('#pagination-demo').twbsPagination({
 		startPage: firval,
@@ -229,6 +229,9 @@ function make_group() {
 				alert("그룹이 생성되었습니다");
 				$("#popup_wrap").css("display", "none"); 
 				$("#mask").css("display", "none"); 
+				
+			}, complete: function() {
+				listJson();
 			}
 		});
 	}
@@ -525,7 +528,7 @@ function excel() { // 엑셀저장
 				<input type="hidden" id="totcnt" value="" />
 				<input type="hidden" id="startgo" value="" />
 				<input type="hidden" id="lastvalue" value="" />
-				<div class="paging">
+				<div class="pagination">
 					<ul id="pagination-demo" class="pagination-sm">
 					</ul>
 					<!-- <ul>

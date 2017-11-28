@@ -310,20 +310,20 @@
 
 
 /* page */
-.paging {width:100%; float:left; text-align:center;}
-.paging ul { margin:40px auto;}
-.paging li {overflow: hidden;display: inline-block;vertical-align: top; font-size:14px; font-weight:100;}
-.paging ul li a { color:#808080; display:block; width:30px; height:30px; border:1px #fff solid; line-height:26px;}
-.paging ul li a:hover { border:1px #efefef solid; }
-.paging ul li.active a { color:#f79320; font-weight:500;}
-.paging li.first a{  text-indent:-9999px; background: url(../images/page/btn_first.png) 0 0 no-repeat;} 
-.paging li.prev a{  text-indent:-9999px; background: url(../images/page/btn_prev.png) 0 0 no-repeat; margin-right:5px;} 
-.paging li.next a{  text-indent:-9999px; background: url(../images/page/btn_next.png) 0 0 no-repeat; margin-left:5px;} 
-.paging li.last a{  text-indent:-9999px; background: url(../images/page/btn_end.png) 0 0 no-repeat;} 
-.paging li.first a:hover{ background: url(../images/page/btn_first_over.png) 0 0 no-repeat;} 
-.paging li.prev a:hover{ background: url(../images/page/btn_prev_over.png) 0 0 no-repeat;} 
-.paging li.next a:hover{ background: url(../images/page/btn_next_over.png) 0 0 no-repeat;} 
-.paging li.last a:hover{ background: url(../images/page/btn_end_over.png) 0 0 no-repeat;} 
+.pagination {width:100%; float:left; text-align:center;}
+.pagination ul { margin:40px auto;}
+.pagination li {overflow: hidden;display: inline-block;vertical-align: top; font-size:14px; font-weight:100;}
+.pagination ul li a { color:#808080; display:block; width:30px; height:30px; border:1px #fff solid; line-height:26px;}
+.pagination ul li a:hover { border:1px #efefef solid; }
+.pagination ul li.active a { color:#f79320; font-weight:500;}
+.pagination li.first a{  text-indent:-9999px; background: url(../images/page/btn_first.png) 0 0 no-repeat;} 
+.pagination li.prev a{  text-indent:-9999px; background: url(../images/page/btn_prev.png) 0 0 no-repeat; margin-right:5px;} 
+.pagination li.next a{  text-indent:-9999px; background: url(../images/page/btn_next.png) 0 0 no-repeat; margin-left:5px;} 
+.pagination li.last a{  text-indent:-9999px; background: url(../images/page/btn_end.png) 0 0 no-repeat;} 
+.pagination li.first a:hover{ background: url(../images/page/btn_first_over.png) 0 0 no-repeat;} 
+.pagination li.prev a:hover{ background: url(../images/page/btn_prev_over.png) 0 0 no-repeat;} 
+.pagination li.next a:hover{ background: url(../images/page/btn_next_over.png) 0 0 no-repeat;} 
+.pagination li.last a:hover{ background: url(../images/page/btn_end_over.png) 0 0 no-repeat;} 
 
 /* pay */
 .pay{width:1000px;}

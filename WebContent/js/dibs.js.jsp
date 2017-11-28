@@ -17,14 +17,17 @@
 });*/
 
 /** 찜 카테고리 선택 */
-$(document).on("click", ".filter_list li", function() {		
-	var choice = $(this).text();
-	$(this).attr("selected", "selected");
-	$(this).siblings().removeAttr("selected");
-	var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
-	$(this).parents(".filter_title").children().remove().end().html(choice + filter_list);
+$(document).on("click", ".filter_list li", function() {
+	if(!$(this).hasClass("folder_edit")) { // 폴더관리를 제외한 나머지
+		var choice = $(this).text();
+		$(this).attr("selected", "selected");
+		$(this).siblings().removeAttr("selected");
+		var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
+		$(this).parents(".filter_title").children().remove().end().html(choice + filter_list);
+		
+		dibsList();
+	}		
 	
-	dibsList();
 });
 
 /** 찜 목록 */

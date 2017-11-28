@@ -162,6 +162,11 @@
 			$(this).closest("li").html(html);
 		});
 		
+		 // 팝업창 닫으면서 부모창 새로고침
+		 function popup_close() {
+			 opener.parent.location.reload();
+			 window.close();
+		 }
 	</script>
 </head>
 <body>
@@ -204,7 +209,7 @@
 		<div class="sum_sec">
 			<div class="btn_wrap">
 				<div class="btn_cart"><a href="javascript:void(0)">폴더 추가하기</a></div>
-				<div class="btn_down"><a href="javascript:void(0)" onclick="javascript:self.close()">닫기</a></div>
+				<div class="btn_down"><a href="javascript:void(0)" onclick="popup_close()">닫기</a></div>
 			</div>
 		</div>
 	</div>
