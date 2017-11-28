@@ -34,6 +34,10 @@
 		<if test="bookmark_seq != null">
 			AND B.bookmark_seq = #{bookmark_seq}
 		</if>
+		
+		<if test="pageVol != 0">
+			LIMIT #{start}, #{pageVol}    
+		</if>
 	</select>
 	
 	<select id="selPhoto" parameterType="string" resultType="com.dahami.newsbank.dto.PhotoDTO">

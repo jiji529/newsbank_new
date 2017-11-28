@@ -5,16 +5,48 @@
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
 
-/** 개별 다운로드 */
-/*$(document).on("click", ".btn_down", function() {
-	var uciCode = $(this).parent().parent().find("div span:first").text();
-	var imgPath = $(this).parent().parent().find("a img").attr("src");
-	
-	var link = document.createElement("a");
-    link.download = uciCode;
-    link.href = imgPath;
-    link.click();
-});*/
+function checkNumber(event) {
+	event = event || window.event;
+	var keyID = (event.which) ? event.which : event.keyCode;
+	if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 ) 
+		|| (keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 || keyID == 16 || keyID == 35 || keyID == 36)		
+	)
+	{
+		return;
+	}
+	else if(keyID == 13) {
+		dibsList();
+	}
+	else
+	{
+		return false;
+	}
+}
+
+$(document).on("click", "div .paging a.prev", function() {
+	var prev = $("input[name=pageNo]").val() - 1;
+	goPage(prev);
+});
+$(document).on("click", "div .paging a.next", function() {
+	var next = $("input[name=pageNo]").val() - (-1);
+	goPage(next);
+});
+
+$(document).on("click", "a[name=nextPage]", function() {
+	var next = $("input[name=pageNo]").val() - (-1);
+	goPage(next);
+});
+
+function goPage(pageNo) {
+	if(pageNo < 1) {
+		pageNo = 1;
+	}
+	else if(pageNo > $("div .paging span.total").html()) {
+		pageNo = $("div .paging span.total").html();
+	}
+	$("input[name=pageNo]").val(pageNo);
+	dibsList();
+}
 
 /** 찜 카테고리 선택 */
 $(document).on("click", ".filter_list li", function() {
@@ -34,8 +66,9 @@ $(document).on("click", ".filter_list li", function() {
 function dibsList() {
 	$("#wish_list2 ul:first").empty();
 	
-	//var member_seq = "1002"; // 사용자 고유번호		
 	var bookmark_seq = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val();
+	var pageVol = $("select[name=limit]").val(); // 페이지당 표현 갯수
+	var pageNo = $("input[name=pageNo]").val(); // 현재 페이지
 	
 	var html = "";
 	$.ajax({
@@ -43,11 +76,15 @@ function dibsList() {
 		type: "GET",
 		dataType: "json",
 		data: {
-			"bookmark_seq" : bookmark_seq
+			"bookmark_seq" : bookmark_seq,
+			"pageVol" : pageVol,
+			"pageNo" : pageNo
 		},
-		success: function(data){ 
-			$(data.result).each(function(key, val) {
-				//html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="images/serviceImages' + val.viewPath + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
+		success: function(data){ //console.log(data);
+			var totalCount = data.totalCount;
+			var totalPage = data.totalPage;
+			
+			$(data.result).each(function(key, val) { 
 				html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
 				html += '<div class="thumb_info">';
 				html += '<input type="checkbox" value="'+val.uciCode+'"/>';
@@ -58,6 +95,9 @@ function dibsList() {
 				html += '</ul></li>';					
 			});
 			$(html).appendTo("#wish_list2 ul:first");
+			
+			$("div .result b").html(totalCount);
+			$("div .paging span.total").html(totalPage);
 		}, 
 		error:function(request,status,error){
         	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);

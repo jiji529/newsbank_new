@@ -106,12 +106,12 @@
 					</li>
 				</ul>
 				<div class="filter_rt">
-					<div class="result"><b class="count">123</b>개의 결과</div>
+					<div class="result"><b class="count">${totalCount}</b>개의 결과</div>
 					<div class="paging"><a href="javascript:void(0)" class="prev" title="이전페이지"></a>
-						<input type="text" class="page" value="1" />
-						<span>/</span><span class="total">1234</span><a href="javascript:void(0)" class="next" title="다음페이지"></a></div>
+						<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="dibsList()"/>
+						<span>/</span><span class="total">${totalPage}</span><a href="javascript:void(0)" class="next" title="다음페이지"></a></div>
 					<div class="viewbox">
-						<select name="limit">
+						<select name="limit" onchange="dibsList()">
 							<option value="40" selected="selected">40</option>
 							<option value="80">80</option>
 							<option value="120">120</option>
@@ -153,7 +153,7 @@
 									
 								</c:forEach>
 							</ul>
-							<div class="box_add"><a>새 폴더 추가</a>
+							<div class="box_add"><a onclick="window.open('/dibs.popOption','new','resizable=no width=420 height=600');return false">새 폴더 추가</a>
 								<form style="display: ;"><!-- 바로윗줄 추가버튼 눌렀을때 display block-->
 									<fieldset>
 										<legend>폴더 추가 폼</legend>
@@ -186,7 +186,7 @@
 					</c:forEach>
 				</ul>
 			</section>
-			<div class="more"><a href="javascript:void(0)">다음 페이지</a></div>
+			<div class="more"><a href="javascript:void(0)" name="nextPage">다음 페이지</a></div>
 		</section>
 		<%@include file="footer.jsp"%>
 	</div>

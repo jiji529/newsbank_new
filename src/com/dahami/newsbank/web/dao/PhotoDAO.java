@@ -119,7 +119,7 @@ public class PhotoDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public List<PhotoDTO> dibsPhotoList(int member_seq, String bookmark_seq) {
+	public List<PhotoDTO> dibsPhotoList(int member_seq, String bookmark_seq, int pageVol, int start) {
 		SqlSession session = null;
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 				
@@ -128,6 +128,8 @@ public class PhotoDAO extends DAOBase {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("member_seq", member_seq);
 			param.put("bookmark_seq", bookmark_seq);
+			param.put("pageVol", pageVol);
+			param.put("start", start);
 			
 			photoList = session.selectList("Photo.dibsPhoto", param);
 		} catch (Exception e) {

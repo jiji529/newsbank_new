@@ -45,8 +45,13 @@ public class DibsJSON extends NewsbankServletBase {
 		int member_seq = MemberInfo.getSeq();
 		
 	    String bookmark_seq = request.getParameter("bookmark_seq");
+	    int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표현 갯수
+	    int pageNo = Integer.parseInt(request.getParameter("pageNo")); // 현재 페이지
+	    int start = (pageNo - 1) * pageVol; // 페이지 시작
+	    
 	    PhotoDAO photoDAO = new PhotoDAO();
-		List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq);
+		List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq, pageVol, start);
+		List<PhotoDTO> totalList = photoDAO.dibsPhotoList(member_seq, bookmark_seq, 0, 0); // 전체 목록
 		
 		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
 		List<PhotoDTO> list = (List<PhotoDTO>) dibsPhotoList;
@@ -58,8 +63,14 @@ public class DibsJSON extends NewsbankServletBase {
 				e.printStackTrace();
 			}
 		}
+		
+		int totalCount = totalList.size(); // 전체 갯수
+		int totalPage = (totalCount / pageVol) + 1; // 전체 페이지 수
+		
 		JSONObject json = new JSONObject();
-		json.put("result", jsonList);		
+		json.put("result", jsonList);	
+		json.put("totalCount", totalCount);
+		json.put("totalPage", totalPage);
 		
 		response.getWriter().print(json);		
 	

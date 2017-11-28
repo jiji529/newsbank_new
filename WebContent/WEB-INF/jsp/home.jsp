@@ -200,7 +200,7 @@
 							<div class="img_list">
 								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
 								<a href="javascript:void(0)" onclick="go_photoView('${photo.uciCode}')">
-									<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+									<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 								</a>
 							</div>
 						</c:if>
@@ -213,7 +213,7 @@
 							<div class="img_list">
 								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
 								<a href="javascript:void(0)" onclick="go_photoView('${photo.uciCode}')">
-									<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+									<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 								</a>
 							</div>
 						</c:if>					
@@ -272,7 +272,7 @@
 							<c:if test="${status.index < '3'}">
 								<div class="img_list">
 									<a href="javascript:void(0)" onclick="go_photoView('${down.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
 							</c:if>
@@ -284,7 +284,7 @@
 							<c:if test="${status.index >= '3'}">
 								<div class="img_list">
 									<a href="javascript:void(0)" onclick="go_photoView('${down.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
 							</c:if>					
@@ -299,7 +299,7 @@
 							<c:if test="${status.index < '3'}">
 								<div class="img_list">
 									<a href="javascript:void(0)" onclick="go_photoView('${basket.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
 									</a>
 								</div>
 							</c:if>
@@ -312,7 +312,7 @@
 								<div class="img_list">
 									<%-- <a href="/view.photo?uciCode=${basket.uciCode}"> --%>
 									<a href="javascript:void(0)" onclick="go_photoView('${basket.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
 							</c:if>					
@@ -328,7 +328,7 @@
 							<c:if test="${status.index < '3'}">
 								<div class="img_list">
 									<a href="javascript:void(0)" onclick="go_photoView('${hit.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
 							</c:if>
@@ -341,7 +341,7 @@
 							<c:if test="${status.index >= '3'}">
 								<div class="img_list">
 									<a href="javascript:void(0)" onclick="go_photoView('${hit.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
 							</c:if>

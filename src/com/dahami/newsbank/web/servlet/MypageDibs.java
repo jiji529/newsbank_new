@@ -59,15 +59,26 @@ public class MypageDibs extends NewsbankServletBase {
 				response.sendRedirect("/auth.mypage");
 			} else {
 				
+				int pageVol = 40; // 페이지당 표현 갯수
+				int pageNo = 1; // 현재 페이지
 				int member_seq = MemberInfo.getSeq();
 				String bookmark_seq = request.getParameter("bookmark_seq");
 				PhotoDAO photoDAO = new PhotoDAO();
-				List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq);
-				request.setAttribute("dibsPhotoList", dibsPhotoList);
+				
+				List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq, pageVol, pageNo);
+				List<PhotoDTO> totalList = photoDAO.dibsPhotoList(member_seq, bookmark_seq, 0, 0); // 전체 목록
+				
+				request.setAttribute("dibsPhotoList", dibsPhotoList); // 북마크한 사진 목록
 				
 				BookmarkDAO bookmarkDAO = new BookmarkDAO();
 				List<BookmarkDTO> bookmarkList = bookmarkDAO.userBookmark(member_seq);
-				request.setAttribute("bookmarkList", bookmarkList);
+				request.setAttribute("bookmarkList", bookmarkList); // 북마크 폴더목록
+				
+				int totalCount = totalList.size(); // 전체 갯수
+				int totalPage = (totalCount / pageVol) + 1; // 페이지 갯수
+				
+				request.setAttribute("totalCount", totalCount);
+				request.setAttribute("totalPage", totalPage);
 				
 				String action = (request.getParameter("action") == null) ? "" : request.getParameter("action");
 				String photo_uciCode = request.getParameter("photo_uciCode");

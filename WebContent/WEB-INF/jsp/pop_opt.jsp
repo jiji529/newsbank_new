@@ -328,7 +328,9 @@
 						"price" : price						
 					},
 					success: function(data) {
+						alert("장바구니에 추가되었습니다.");
 						window.close();
+						opener.parent.location.reload();						
 					}
 				});
 			});
