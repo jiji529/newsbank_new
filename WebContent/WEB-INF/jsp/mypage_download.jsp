@@ -83,7 +83,7 @@
 		<div class="table_head">
 			<h3>구매 내역</h3>
 		</div>
-		<section id="order_list">
+		<section class="order_list">
 			<table cellpadding="0" cellspacing="0" class="tb03" style="border-top:0; margin-bottom:10px;">
 				<colgroup>
 				<col width="30">

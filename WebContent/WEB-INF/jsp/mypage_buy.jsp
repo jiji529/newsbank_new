@@ -76,7 +76,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		<div class="table_head">
 			<h3>주문 상세 정보</h3>
 		</div>
-		<section id="order_list">
+		<section class="order_list">
 		<div class="calculate_info_area">
 			주문번호 :
 			<span class="color">${paymentManageDTO.LGD_OID }</span>

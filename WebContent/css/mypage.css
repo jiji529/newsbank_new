@@ -210,31 +210,31 @@
 
 
 /*장바구니*/
-#order_list .tb03 th{padding:10px;}
-#order_list .tb03 td{padding:10px; font-size:14px;}
-#order_list .tb03 th:first-child, #order_list .tb03 td:first-child{padding:10px 20px;}
+.order_list .tb03 th{padding:10px;}
+.order_list .tb03 td{padding:10px; font-size:14px;}
+.order_list .tb03 th:first-child, .order_list .tb03 td:first-child{padding:10px 20px;}
 .tb_check input{width:0; height:0; opacity: 0; outline: 0;}
 .tb_check label{display: block;width: 20px; height: 20px; text-indent: -9999px; background:url(../images/ico_chk3.png) 0 0 no-repeat;cursor:pointer;}
 .tb_check input:checked+label { background:url(../images/ico_chk4.png) 0 0 no-repeat;}
 
-#order_list .cart_item{ }
-#order_list .cart_item .thumb{display: table-cell; width: 120px; vertical-align: top; position: relative; padding-top:5px;}
-#order_list .cart_item .thumb a{}
-#order_list .cart_item .thumb img{ width: 100%; vertical-align: top;}
-#order_list .cart_item .cart_info{ display: table-cell; padding-left: 20px; line-height: 22px; vertical-align: top;}
-#order_list .cart_item .cart_info a { text-align:left;}
-#order_list .cart_item .cart_info .brand{color:#000; font-weight:600;}
-#order_list .cart_item .cart_info .code{color:#666; font-size:14px;}
-#order_list .cart_item .cart_info .option_area .opt_li{ float:left; width:100%;}
-#order_list .cart_item .cart_info .option_area .opt_li li{float:left;  font-size:12px; color:#666;}
-#order_list .cart_item .cart_info .option_area .opt_li li:after{ content:'';width:1px; height:12px; background:#ccc; margin:5px 5px 0; float:right;}
-#order_list .cart_item .cart_info .option_area .opt_li li:last-child:after{ display:none;}
-#order_list .cart_item .cart_info .option_area a{padding:0 8px; background-color:#f7f9fd; color:#888; display:block; border: 1px solid #ccc; font-size:12px; margin-top:10px; float:left; text-align:center;}
-#order_list .btn_group button{margin: 6px 0 0; width: 100px; font-size: 13px; line-height: 1.8em;background-color: #fff;}
-#order_list .btn_group button.btn_o{border: 1px solid #f79320; color: #f79320;}
-#order_list .btn_group button.btn_g{border: 1px solid #999; color: #999;}
-#order_list .btn_group button.btn_b{border: 1px solid #333; color: #333;}
-#order_list .cart_item .message{ float:left; width:100%; border-top:1px #ccc solid; margin-top:5px; text-align:left; font-size:12px; color:#666; padding:10px 0;}
+.order_list .cart_item{ }
+.order_list .cart_item .thumb{display: table-cell; width: 120px; vertical-align: top; position: relative; padding-top:5px;}
+.order_list .cart_item .thumb a{}
+.order_list .cart_item .thumb img{ width: 100%; vertical-align: top;}
+.order_list .cart_item .cart_info{ display: table-cell; padding-left: 20px; line-height: 22px; vertical-align: top;}
+.order_list .cart_item .cart_info a { text-align:left;}
+.order_list .cart_item .cart_info .brand{color:#000; font-weight:600;}
+.order_list .cart_item .cart_info .code{color:#666; font-size:14px;}
+.order_list .cart_item .cart_info .option_area .opt_li{ float:left; width:100%;}
+.order_list .cart_item .cart_info .option_area .opt_li li{float:left;  font-size:12px; color:#666;}
+.order_list .cart_item .cart_info .option_area .opt_li li:after{ content:'';width:1px; height:12px; background:#ccc; margin:5px 5px 0; float:right;}
+.order_list .cart_item .cart_info .option_area .opt_li li:last-child:after{ display:none;}
+.order_list .cart_item .cart_info .option_area a{padding:0 8px; background-color:#f7f9fd; color:#888; display:block; border: 1px solid #ccc; font-size:12px; margin-top:10px; float:left; text-align:center;}
+.order_list .btn_group button{margin: 6px 0 0; width: 100px; font-size: 13px; line-height: 1.8em;background-color: #fff;}
+.order_list .btn_group button.btn_o{border: 1px solid #f79320; color: #f79320;}
+.order_list .btn_group button.btn_g{border: 1px solid #999; color: #999;}
+.order_list .btn_group button.btn_b{border: 1px solid #333; color: #333;}
+.order_list .cart_item .message{ float:left; width:100%; border-top:1px #ccc solid; margin-top:5px; text-align:left; font-size:12px; color:#666; padding:10px 0;}
 
 /* 로그인 실패*/
 .error{text-align:center; font-size:12px;  padding-top:10px; margin-bottom:10px; }

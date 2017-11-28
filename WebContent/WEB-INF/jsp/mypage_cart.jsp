@@ -74,7 +74,7 @@
 		var chk = confirm("정말로 삭제하시겠습니까?");
 		
 		if(chk == true) {
-			$("#order_list input:checkbox:checked").each(function(index) {
+			$(".order_list input:checkbox:checked").each(function(index) {
 				var uciCode = $(this).val();
 				cartDelete(uciCode);
 				$(this).closest("tr").remove();
@@ -85,9 +85,9 @@
 	/** 전체선택 */
 	$(document).on("click", "input[name='check_all']", function() {
 		if($("input[name='check_all']").prop("checked")) {
-			$("#order_list input:checkbox").prop("checked", true);
+			$(".order_list input:checkbox").prop("checked", true);
 		}else {
-			$("#order_list input:checkbox").prop("checked", false);
+			$(".order_list input:checkbox").prop("checked", false);
 		}
 	});
 	
@@ -112,7 +112,7 @@
 	function multi_pay() {
 		var cartArry = new Array();
 		
-		$("#order_list input:checkbox:checked:not(#check_all)").each(function(index) {
+		$(".order_list input:checkbox:checked:not(#check_all)").each(function(index) {
 			var uciCode = $(this).val();
 			var cart = uciCode;
 			
@@ -193,7 +193,7 @@
 			<div class="table_head">
 				<h3>장바구니</h3>
 			</div>
-			<section id="order_list">
+			<section class="order_list">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top:0; margin-bottom:15px;">
 					<colgroup>
 					<col width="40">

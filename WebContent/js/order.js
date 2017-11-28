@@ -70,7 +70,7 @@ $(document).ready(function() {
 						form.attr('name', 'LGD_PAYINFO');
 						form.attr('action', 'Payres.Xpay');
 						
-						form.appendTo($("#order_list"));
+						form.appendTo($(".order_list"));
 
 						$.each(data.data, function(key, value) {
 							var objs;

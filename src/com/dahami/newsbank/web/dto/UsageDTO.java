@@ -2,6 +2,7 @@ package com.dahami.newsbank.web.dto;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,6 +66,15 @@ public class UsageDTO {
 	public void setPrice(int price) {
 		this.price = price;
 	}	
+	public String getPrice_Str() {
+		DecimalFormat df = new DecimalFormat("#,##0");
+		return "\\" + df.format(price); // 가격 출력 포멧
+	}
+	
+	public String formatPrice(int value) {
+		DecimalFormat df = new DecimalFormat("#,##0");
+		return "\\" + df.format(value); // 가격 출력 포멧
+	}
 	
 	/**
 	 * @methodName  : convertToMap

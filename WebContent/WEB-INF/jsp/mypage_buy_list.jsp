@@ -71,7 +71,7 @@
 			<div class="table_head">
 				<h3>구매내역</h3>
 			</div>
-			<section id="order_list">
+			<section class="order_list">
 				<table id="tbBuyList" width="100%" id="" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top: 0;">
 					<colgroup>
 						<col width="40">

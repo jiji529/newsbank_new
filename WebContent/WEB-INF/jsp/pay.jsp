@@ -51,7 +51,7 @@
 		<div class="table_head">
 			<h3>주문정보 확인</h3>
 		</div>
-		<section id="order_list">
+		<section class="order_list">
 		<form  id="frmOrder" name="frmOrder"  method="post" >
 		<input type="hidden" name="orderType" value="${param.orderType }" />
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top: 0; margin-bottom: 15px;">
@@ -76,12 +76,12 @@
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
-									<a href="/view.cms?uciCode=${pay.uciCode}" target="_blank">
+									<a href="/view.photo?uciCode=${pay.uciCode}" target="_blank">
 										<img src="<%=IMG_SERVER_URL_PREFIX  %>/list.down.photo?uciCode=${pay.uciCode}" />
 									</a>
 								</div>
 								<div class="cart_info">
-									<a href="/view.cms?uciCode=${pay.uciCode}${pay.uciCode}" target="_blank">
+									<a href="/view.photo?uciCode=${pay.uciCode}" target="_blank">
 										<div class="brand">${pay.copyright}</div>
 										<div class="code">${pay.uciCode}</div>
 									</a>
