@@ -154,18 +154,45 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var content = $(".img_cont").text();		
 		
 		if($(".btn_edit").hasClass("complete")) {
+			// DB에 기사 제목, 내용을 수정 기능 필요
+			var titleKor = $(".hTitle").val(); 
+			var descriptionKor = $(".img_cont").text();
+			var uciCode = "${photoDTO.uciCode}";
 			
+			console.log(titleKor);
+			console.log(descriptionKor);
+			
+			$(".btn_edit").text("수정");		
+			$(".btn_edit").removeClass("complete");
+			$(".img_tit").last().replaceWith("<h3 class=\"img_tit\">"+titleKor+"</h3>");
+			$(".img_cont").replaceWith("<p class=\"img_cont\">"+descriptionKor+"</p>");
+			
+			$.ajax({
+				type: "POST",
+				url: "/view.cms?action=updateCMS",
+				data: {
+					"uciCode" : uciCode,
+					"titleKor" : titleKor,
+					"descriptionKor" : descriptionKor
+				},
+				success: function(data){
+					
+				}, error:function(request,status,error){
+		        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		       	}
+				
+			});
 		}else {
+			$(".img_tit").last().replaceWith("<textarea class=\"img_tit hTitle\" style=\"width:100%; font-size:14px; line-height:22px; color:#666;\">"+title+"</textarea>");
+			$(".img_cont").replaceWith("<textarea class=\"img_cont\" style=\"height:300px; width:100%; font-size:14px; line-height:22px; color:#666;\">"+content+"</textarea>");	
 			$(".btn_edit").text("수정 완료");		
 			$(".btn_edit").addClass("complete");
-			$(".img_tit").last().replaceWith("<textarea class=\"img_tit\" style=\"width:100%; font-size:14px; line-height:22px; color:#666;\">"+title+"</textarea>");
-			$(".img_cont").replaceWith("<textarea class=\"img_cont\" style=\"height:300px; width:100%; font-size:14px; line-height:22px; color:#666;\">"+content+"</textarea>");	
 		}
 		
 		
 	});
 	
-	$(document).on("click", ".complete", function() {
+	/* $(document).on("click", ".complete", function() {
 		// DB에 기사 제목, 내용을 수정 기능 필요
 		var titleKor = $(".img_tit").last().text();
 		var descriptionKor = $(".img_cont").text();
@@ -191,7 +218,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	       	}
 			
 		});
-	});
+	}); */
 	
 	$(document).on("click", ".in_prev", function() {
 	    var slide_width = $(".cfix").width();
@@ -327,7 +354,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				</div>
 				<div class="cont_area">
 					<h3 class="img_tit"><span class="uci">[${photoDTO.uciCode}]</span>ns696100264</h3>
-					<h3 class="img_tit">${photoDTO.titleKor}</h3>
+					<h3 class="img_tit hTitle">${photoDTO.titleKor}</h3>
 					<a class="btn_edit">수정</a>
 					<p class="img_cont">
 						${photoDTO.descriptionKor} <br />
