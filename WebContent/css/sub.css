@@ -50,38 +50,38 @@
 .filters .filter_rt .viewbox .size .square{ background-position:-22px 2px;}
 .filters .filter_rt .viewbox select { float:left; padding:1px 4px; border-color:#999;}
 
-@media (max-width: 1200px) { #search_list1 { -moz-column-count: 4; -webkit-column-count: 4; column-count: 4; }}
-@media (max-width: 1000px) { #search_list1 { -moz-column-count: 3; -webkit-column-count: 3; column-count: 3; }}
-@media (max-width: 800px) { #search_list1 { -moz-column-count: 2; -webkit-column-count: 2; column-count: 2; }}
-@media (max-width: 400px) { #search_list1 { -moz-column-count: 1; -webkit-column-count: 1; column-count: 1; }}
-#search_list1 { /* Prevent vertical gaps */ line-height: 0;  float:left; -webkit-column-count: 5; -webkit-column-gap: 10px; -moz-column-count: 5; -moz-column-gap: 10px; column-count: 5; column-gap: 10px; padding:20px 40px;}
-#search_list1 img { /* Just in case there are inline attributes */ width: 100% !important; height: auto !important;}
-#search_list1 a{display:block;}
-#search_list1 .thumb{margin-bottom:10px;position:relative;}
+@media (max-width: 1200px) { .search_list.grid { -moz-column-count: 4; -webkit-column-count: 4; column-count: 4; }}
+@media (max-width: 1000px) { .search_list.grid { -moz-column-count: 3; -webkit-column-count: 3; column-count: 3; }}
+@media (max-width: 800px) { .search_list.grid { -moz-column-count: 2; -webkit-column-count: 2; column-count: 2; }}
+@media (max-width: 400px) { .search_list.grid { -moz-column-count: 1; -webkit-column-count: 1; column-count: 1; }}
+.search_list.grid { /* Prevent vertical gaps */ line-height: 0;  float:left; -webkit-column-count: 5; -webkit-column-gap: 10px; -moz-column-count: 5; -moz-column-gap: 10px; column-count: 5; column-gap: 10px; padding:20px 40px;}
+.search_list.grid img { /* Just in case there are inline attributes */ width: 100% !important; height: auto !important;}
+.search_list.grid a{display:block;}
+.search_list.grid .thumb{margin-bottom:10px;position:relative;}
 .more{float:left; width:100%; height:40px; margin:40px 0 40px;} 
 .more a{width:30%; height:50px; border:1px #bbb solid; background:#efefef; line-height:50px; display:block; margin:0 auto; color:#333; font-weight:600; font-size:15px;}
 
-#search_list1 .thumb .info{position: absolute; bottom: 0; left: 0; right: 0;  pointer-events: auto; min-height: 50px; background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0,0,0,0.6))); background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: -moz-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 100%); -webkit-transition: opacity 0.2s; -moz-transition: opacity 0.2s; transition: opacity 0.2s; }
-#search_list1 .thumb .photo_info{display: inline-block; max-width: 100%; font-size: 15px; font-weight: 500; color: #fff; position:absolute; left:20px; bottom:25px;}
-#search_list1 .thumb .right{position: absolute; right: 10px; bottom: 10px; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; transition: all 0.2s;}
-#search_list1 .thumb .right a{width: 24px; height: 24px; text-indent:-9999px; float:left; margin-left:10px;}
-#search_list1 .thumb .right a.over_wish{ background:url(../images/heart1.png) 0 0 no-repeat;}
-#search_list1 .thumb .right a.over_wish.on{ background:url(../images/heart2.png) 0 0 no-repeat;}
-#search_list1 .thumb .right a.over_down{background:url(../images/down.png) 0 0 no-repeat;}
+.search_list.grid .thumb .info{position: absolute; bottom: 0; left: 0; right: 0;  pointer-events: auto; min-height: 50px; background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0,0,0,0.6))); background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: -moz-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 100%); -webkit-transition: opacity 0.2s; -moz-transition: opacity 0.2s; transition: opacity 0.2s; }
+.search_list.grid .thumb .photo_info{display: inline-block; max-width: 100%; font-size: 15px; font-weight: 500; color: #fff; position:absolute; left:20px; bottom:25px;}
+.search_list.grid .thumb .right{position: absolute; right: 10px; bottom: 10px; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; transition: all 0.2s;}
+.search_list.grid .thumb .right a{width: 24px; height: 24px; text-indent:-9999px; float:left; margin-left:10px;}
+.search_list.grid .thumb .right a.over_wish{ background:url(../images/heart1.png) 0 0 no-repeat;}
+.search_list.grid .thumb .right a.over_wish.on{ background:url(../images/heart2.png) 0 0 no-repeat;}
+.search_list.grid .thumb .right a.over_down{background:url(../images/down.png) 0 0 no-repeat;}
 
-#search_list2{ padding:10px 30px;}
-#search_list2 ul{width:100%; float:left;}
-#search_list2 .thumb{border:1px #e6e6e6 solid; float:left; margin:5px; position:relative;} 
-#search_list2 .thumb a{display:table-cell;width:218px; height:218px; vertical-align:middle; padding:5px; }
-#search_list2 .thumb img{max-width:208px; max-height:208px; }
+.search_list.square{ padding:10px 30px;}
+.search_list.square ul{width:100%; float:left;}
+.search_list.square .thumb{border:1px #e6e6e6 solid; float:left; margin:5px; position:relative;} 
+.search_list.square .thumb a{display:table-cell;width:218px; height:218px; vertical-align:middle; padding:5px; }
+.search_list.square .thumb img{max-width:208px; max-height:208px; }
 
-#search_list2 .thumb .info{position: absolute; bottom: 0; left: 0; right: 0;  pointer-events: auto; height:40%; background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0,0,0,0.6))); background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: -moz-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 100%); -webkit-transition: opacity 0.2s; -moz-transition: opacity 0.2s; transition: opacity 0.2s; }
-#search_list2 .thumb .photo_info{display: inline-block; max-width: 100%; font-size: 15px; font-weight: 500; color: #fff; position:absolute; left:20px; bottom:15px;}
-#search_list2 .thumb .right{position: absolute; right: 10px; bottom: 10px; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; transition: all 0.2s;}
-#search_list2 .thumb .right a{width: 24px; height: 24px; text-indent:-9999px; float:left; margin-left:10px;}
-#search_list2 .thumb .right a.over_wish{ background:url(../images/heart1.png) 0 0 no-repeat;}
-#search_list2 .thumb .right a.over_wish.on{ background:url(../images/heart2.png) 0 0 no-repeat;}
-#search_list2 .thumb .right a.over_down{background:url(../images/down.png) 0 0 no-repeat;}
+.search_list.square .thumb .info{position: absolute; bottom: 0; left: 0; right: 0;  pointer-events: auto; height:40%; background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0,0,0,0.6))); background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: -moz-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 100%); -webkit-transition: opacity 0.2s; -moz-transition: opacity 0.2s; transition: opacity 0.2s; }
+.search_list.square .thumb .photo_info{display: inline-block; max-width: 100%; font-size: 15px; font-weight: 500; color: #fff; position:absolute; left:20px; bottom:15px;}
+.search_list.square .thumb .right{position: absolute; right: 10px; bottom: 10px; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; transition: all 0.2s;}
+.search_list.square .thumb .right a{width: 24px; height: 24px; text-indent:-9999px; float:left; margin-left:10px;}
+.search_list.square .thumb .right a.over_wish{ background:url(../images/heart1.png) 0 0 no-repeat;}
+.search_list.square .thumb .right a.over_wish.on{ background:url(../images/heart2.png) 0 0 no-repeat;}
+.search_list.square .thumb .right a.over_down{background:url(../images/down.png) 0 0 no-repeat;}
 
 
 .view{ width:1240px; margin:0 auto;  text-align:left; font-family:'nanum',AppleSDGothicNeo, '맑은고딕','돋움',Dotum,AppleGothic,Arial,sans-serif;}

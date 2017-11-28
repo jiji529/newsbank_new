@@ -44,15 +44,13 @@
 	$(document).on("click", ".square", function() {
 		$(".viewbox > .size > span.grid").removeClass("on");
 		$(".viewbox > .size > span.square").addClass("on");
-		$("#search_list1").css("display", "none");
-		$("#search_list2").css("display", "block");
+		$("#search_list").addClass("square").removeClass("grid"); 
 	});
 
 	$(document).on("click", ".grid", function() {
-		$(".viewbox > .size > span.square").removeClass("on");
+		$(".viewbox > .size > span.square").removeClass("on"); 
 		$(".viewbox > .size > span.grid").addClass("on");
-		$("#search_list1").css("display", "block");
-		$("#search_list2").css("display", "none");
+		$("#search_list").addClass("grid").removeClass("square");
 	});
 
 	$(document).on("click", ".filter_list li", function() {
@@ -250,8 +248,7 @@
 			timeout: 1000000,
 			url: "search",
 			success : function(data) { //console.log(data);
-				$("#search_list1 ul").empty();
-				$("#search_list2 ul").empty();
+				$("#search_list ul").empty();
 				$(data.result).each(function(key, val) {
 					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
 					html += "<div class=\"info\">";
@@ -261,8 +258,7 @@
 					html += "</div>";
 					html += "</li>";
 				});
-				$(html).appendTo("#search_list1 ul");
-				$(html).appendTo("#search_list2 ul");
+				$(html).appendTo("#search_list ul");
 				var totalCount = $(data.count)[0];
 				var totalPage = $(data.totalPage)[0];
 				$("div .result b").html(totalCount);
@@ -286,21 +282,14 @@
 			success : function(data) { 
 				$(data.result).each(function(key, val) {
 					var uciCode = val.uciCode;
-					$("#search_list1 ul .over_wish").each(function(idx, value) { // 가로맞춤 보기
-						var list_uci = $("#search_list1 ul .over_wish").eq(idx).attr("value");
+					$("#search_list ul .over_wish").each(function(idx, value) { // 가로맞춤 보기
+						var list_uci = $("#search_list ul .over_wish").eq(idx).attr("value");
 						
 						if(list_uci == uciCode) {
-							$("#search_list1 ul .over_wish").eq(idx).addClass("on");
+							$("#search_list ul .over_wish").eq(idx).addClass("on");
 						}
 					});
-					
-					$("#search_list2 ul .over_wish").each(function(idx, value) { // 사각형 보기
-						var list_uci = $("#search_list2 ul .over_wish").eq(idx).attr("value");
-						if(list_uci == uciCode) {
-							console.log(list_uci);
-							$("#search_list2 ul .over_wish").eq(idx).addClass("on");
-						}
-					});
+
 				});
 			}
 		});
@@ -434,44 +423,12 @@
 		<form class="view_form" method="post" action="/view.photo" name="view_form" >
 			<input type="hidden" name="uciCode" id="uciCode"/>
 		</form>
-		<section id="search_list1">
+		<section id="search_list" class="search_list grid">
 		<ul>
-			<c:forEach items="${picture}" var="PhotoDTO">
-				<li class="thumb">
-					<%-- <a href="/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
-					<a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')">
-						<img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
-					</a>
-					<div class="info">
-						<div class="photo_info">${PhotoDTO.copyright}</div>
-						<div class="right">
-							<a class="over_wish" href="javascript:void(0)" value="${PhotoDTO.uciCode}">찜</a>
-							<a class="over_down" href="javascript:void(0)" value="${PhotoDTO.uciCode}">시안 다운로드</a>
-						</div>
-					</div>
-				</li>
-			</c:forEach>
+
 		</ul>
 		</section>
-		<section id="search_list2" style="display: none;">
-		<ul>
-			<c:forEach items="${picture}" var="PhotoDTO">
-				<li class="thumb">
-					<%-- <a href="<%=IMG_SERVER_URL_PREFIX %>/view.photo?uciCode=${PhotoDTO.uciCode}"> --%>
-					<a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')">
-						<img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
-					</a>
-					<div class="info">
-						<div class="photo_info">${PhotoDTO.copyright}</div>
-						<div class="right">
-							<a class="over_wish" href="javascript:void(0)" value="${PhotoDTO.uciCode}">찜</a>
-							<a class="over_down" href="javascript:void(0)" value="${PhotoDTO.uciCode}">시안 다운로드</a>
-						</div>
-					</div>
-				</li>
-			</c:forEach>
-		</ul>
-		</section>
+	
 		<div class="more">
 			<a href="javascript:void(0)" name="nextPage">다음 페이지</a>
 		</div>
