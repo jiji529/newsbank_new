@@ -125,7 +125,7 @@
 				<input type="hidden" name="uciCode" id="uciCode"/>
 			</form>
 			<form class="view_form" method="post" action="/view.photo" name="view_form" >
-				<input type="hidden" name="uciCode" id="uciCode"/>
+				<input type="hidden" name="uciCode" id="uci_code"/>
 			</form>
 			<div class="btn_sort"><span class="task_check">
 				<input type="checkbox" name="checkAll"/>

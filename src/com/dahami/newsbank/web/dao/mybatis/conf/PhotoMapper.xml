@@ -67,16 +67,18 @@
 	
 	<!-- 인기사진 : 다운로드 -->
 	<select id="selectDownloadRank" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.* FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode FROM photo A
 		INNER JOIN paymentDetail B ON A.uciCode = B.photo_uciCode
+		WHERE A.saleStat = 1
 		ORDER BY B.downCount DESC
 		LIMIT 0, 7
 	</select>
 	
 	<!-- 인기사진 : 찜 -->
 	<select id="selectBasketRank" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.*, COUNT(*) AS count FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode, COUNT(*) AS count FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode
+		WHERE A.saleStat = 1
 		GROUP BY B.photo_uciCode
 		HAVING count > 0
 		ORDER BY count DESC
@@ -85,7 +87,11 @@
     
 	<!-- 인기사진 : 상세보기(조회 수) -->
 	<select id="selectHitsRank" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT * FROM photo ORDER BY hitCount DESC LIMIT 0, 7
+	    SELECT widthCm, heightCm, uciCode 
+	    FROM photo 
+	    WHERE saleStat = 1
+	    ORDER BY hitCount DESC 
+	    LIMIT 0, 7
     </select>
     
 	<!-- 사진관리 : 통계정보 (찜, 다운로드, 상세보기, 결제, 뮤지엄, 컬렉션) -->
