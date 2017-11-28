@@ -569,7 +569,6 @@ public class DownloadService extends ServiceBase {
 		TiffOutputDirectory rootDir = null;
 		TiffOutputDirectory exifDir = null;
 		try {
-
 			ImageMetadata meta = Imaging.getMetadata(fd);
 
 			if (meta == null) {
