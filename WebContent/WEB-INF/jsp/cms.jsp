@@ -216,7 +216,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			timeout: 1000000,
 			url: "cms.search",
 			success : function(data) { //console.log(data);
-				$("#cms_list2 ul").empty();
 				$(data.result).each(function(key, val) {	
 					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";  					
 					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
@@ -277,7 +276,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			timeout: 1000000,
 			url: "cms.search",
 			success : function(data) { 
-				$("#cms_list2 ul").empty();
 				$(data.result).each(function(key, val) {	
 					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";
 					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";

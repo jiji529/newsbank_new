@@ -33,6 +33,11 @@
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/main.css" />
 <script src="js/footer.js"></script>
+
+<script src="js/unitegallery.min.js"></script>
+<script src="js/ug-theme-tiles.js"></script>
+<link rel="stylesheet" href="css/unite-gallery.css" />
+
 <script>
 	$(document).ready(function() {
 		/* Start rowGrid.js */
@@ -42,8 +47,36 @@
 			maxMargin : 25,
 			firstItemClass : "first-item"
 		});
-		
 		$("#keyword").focus();
+		
+		// unite 옵션
+		var unite_option = { 
+			gallery_theme: "tiles",			
+			gallery_width:"1218px", // 전체 가로길이
+			
+			tiles_type: "justified", 
+			tile_enable_shadow:true,
+			tile_shadow_color:"#8B8B8B",
+			tile_enable_icons:false, // 아이콘 숨김
+			tile_as_link:true, // 링크처리
+			
+			tiles_justified_row_height: 250,
+			tiles_justified_space_between: 10,
+			tiles_set_initial_height: true,	
+			tiles_enable_transition: true,
+		};
+		
+		// 보도사진 영역 
+		$("#photo_area").unitegallery(unite_option);
+		
+		// 다운로드 영역 
+		$("#download_area").unitegallery(unite_option);
+		
+		// 찜관리 
+		$("#zzim_area").unitegallery(unite_option);
+		
+		// 상세보기
+		$("#hit_area").unitegallery(unite_option);
 	});
 	
 	$(document).on("click", ".btn_search", function() {
@@ -194,11 +227,19 @@
 					</ul>
 				</div>
 				
-				<div id="photo_hor" class="photo_cont img_hor">
+				
+				<div id="photo_area"> 
+					<c:forEach items="${photoList}" var="photo">
+						<a href='javascript:go_photoView("${photo.uciCode}")' onclick='go_photoView("${photo.uciCode}")'>
+							<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+						</a>
+					</c:forEach>					
+				 </div>
+				<%-- <div id="photo_hor" class="photo_cont img_hor">
 					<c:forEach items="${photoList}" var="photo">
 						<c:if test="${photo.widthCm > photo.heightCm}">
 							<div class="img_list">
-								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
+								<a href="/view.photo?uciCode=${photo.uciCode}">
 								<a href="javascript:void(0)" onclick="go_photoView('${photo.uciCode}')">
 									<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 								</a>
@@ -211,14 +252,14 @@
 					<c:forEach items="${photoList}" var="photo">
 						<c:if test="${photo.widthCm < photo.heightCm}">
 							<div class="img_list">
-								<%-- <a href="/view.photo?uciCode=${photo.uciCode}"> --%>
+								<a href="/view.photo?uciCode=${photo.uciCode}">
 								<a href="javascript:void(0)" onclick="go_photoView('${photo.uciCode}')">
 									<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 								</a>
 							</div>
 						</c:if>					
 					</c:forEach>
-				</div>
+				</div> --%>
 				
 			</div>
 			</section>
@@ -267,7 +308,14 @@
 				
 				<!-- 다운로드 Tab -->
 				<div class="popular_cont">
-					<div id="photo_hor" class="photo_cont img_hor">
+					<div id="download_area"> 
+						<c:forEach items="${downloadList}" var="down" varStatus="status">
+							<a href='javascript:go_photoView("${down.uciCode}")' onclick='go_photoView("${down.uciCode}")'>
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+							</a>
+						</c:forEach>					
+					 </div>
+					<%-- <div id="photo_hor" class="photo_cont img_hor">
 						<c:forEach items="${downloadList}" var="down" varStatus="status">
 							<c:if test="${status.index < '3'}">
 								<div class="img_list">
@@ -289,12 +337,19 @@
 								</div>
 							</c:if>					
 						</c:forEach>
-					</div>					
+					</div> --%>					
 				</div>
 				
 				<!-- 찜관리 Tab -->
 				<div class="zzim_cont" style="display:none;">
-					<div id="photo_hor" class="photo_cont img_hor">
+					<div id="zzim_area"> 
+						<c:forEach items="${basketList}" var="basket" varStatus="status">
+							<a href='javascript:go_photoView("${basket.uciCode}")' onclick='go_photoView("${basket.uciCode}")'>
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+							</a>
+						</c:forEach>					
+					 </div>
+					<%-- <div id="photo_hor" class="photo_cont img_hor">
 						<c:forEach items="${basketList}" var="basket" varStatus="status">
 							<c:if test="${status.index < '3'}">
 								<div class="img_list">
@@ -310,19 +365,26 @@
 						<c:forEach items="${basketList}" var="basket" varStatus="status">
 							<c:if test="${status.index >= '3'}">
 								<div class="img_list">
-									<%-- <a href="/view.photo?uciCode=${basket.uciCode}"> --%>
+									<a href="/view.photo?uciCode=${basket.uciCode}">
 									<a href="javascript:void(0)" onclick="go_photoView('${basket.uciCode}')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 									</a>
 								</div>
 							</c:if>					
 						</c:forEach>
-					</div>
+					</div> --%>
 				</div>
 				
 				<!-- 상세보기 Tab -->
 				<div class="hit_cont" style="display:none;">
-					<!-- 가로형 3개 사진 출력 -->
+					<div id="hit_area"> 
+						<c:forEach items="${hitsList}" var="hit" varStatus="status">
+							<a href='javascript:go_photoView("${hit.uciCode}")' onclick='go_photoView("${hit.uciCode}")'>
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+							</a>
+						</c:forEach>					
+					 </div>
+					<%-- <!-- 가로형 3개 사진 출력 -->
 					<div id="photo_hor" class="photo_cont img_hor">
 						<c:forEach items="${hitsList}" var="hit" varStatus="status">
 							<c:if test="${status.index < '3'}">
@@ -346,7 +408,7 @@
 								</div>
 							</c:if>
 						</c:forEach>
-					</div>
+					</div> --%>
 				</div>
 				
 			</div>

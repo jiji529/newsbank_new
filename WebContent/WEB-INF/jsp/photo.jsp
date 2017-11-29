@@ -248,7 +248,7 @@
 			timeout: 1000000,
 			url: "search",
 			success : function(data) { //console.log(data);
-				$("#search_list ul").empty();
+				
 				$(data.result).each(function(key, val) {
 					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
 					html += "<div class=\"info\">";
