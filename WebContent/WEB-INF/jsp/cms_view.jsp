@@ -159,9 +159,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			var descriptionKor = $(".img_cont").text();
 			var uciCode = "${photoDTO.uciCode}";
 			
-			console.log(titleKor);
-			console.log(descriptionKor);
-			
 			$(".btn_edit").text("수정");		
 			$(".btn_edit").removeClass("complete");
 			$(".img_tit").last().replaceWith("<h3 class=\"img_tit\">"+titleKor+"</h3>");
@@ -190,35 +187,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}
 		
 		
-	});
-	
-	/* $(document).on("click", ".complete", function() {
-		// DB에 기사 제목, 내용을 수정 기능 필요
-		var titleKor = $(".img_tit").last().text();
-		var descriptionKor = $(".img_cont").text();
-		var uciCode = "${photoDTO.uciCode}";
-		
-		$(".btn_edit").text("수정");		
-		$(".btn_edit").removeClass("complete");
-		$(".img_tit").last().replaceWith("<h3 class=\"img_tit\">"+titleKor+"</h3>");
-		$(".img_cont").replaceWith("<p class=\"img_cont\">"+descriptionKor+"</p>");
-		
-		$.ajax({
-			type: "POST",
-			url: "/view.cms?action=updateCMS",
-			data: {
-				"uciCode" : uciCode,
-				"titleKor" : titleKor,
-				"descriptionKor" : descriptionKor
-			},
-			success: function(data){
-				
-			}, error:function(request,status,error){
-	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       	}
-			
-		});
-	}); */
+	});	
 	
 	$(document).on("click", ".in_prev", function() {
 	    var slide_width = $(".cfix").width();

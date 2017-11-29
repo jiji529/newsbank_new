@@ -258,7 +258,7 @@
 					html += "</div>";
 					html += "</li>";
 				});
-				$(html).appendTo("#search_list ul");
+				$("#search_list ul").html(html);
 				var totalCount = $(data.count)[0];
 				var totalPage = $(data.totalPage)[0];
 				$("div .result b").html(totalCount);
