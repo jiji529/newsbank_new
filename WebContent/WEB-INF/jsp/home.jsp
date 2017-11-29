@@ -235,31 +235,6 @@
 						</a>
 					</c:forEach>					
 				 </div>
-				<%-- <div id="photo_hor" class="photo_cont img_hor">
-					<c:forEach items="${photoList}" var="photo">
-						<c:if test="${photo.widthCm > photo.heightCm}">
-							<div class="img_list">
-								<a href="/view.photo?uciCode=${photo.uciCode}">
-								<a href="javascript:void(0)" onclick="go_photoView('${photo.uciCode}')">
-									<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-								</a>
-							</div>
-						</c:if>
-					</c:forEach>
-				</div>
-				
-				<div id="photo_ver" class="photo_cont img_ver">
-					<c:forEach items="${photoList}" var="photo">
-						<c:if test="${photo.widthCm < photo.heightCm}">
-							<div class="img_list">
-								<a href="/view.photo?uciCode=${photo.uciCode}">
-								<a href="javascript:void(0)" onclick="go_photoView('${photo.uciCode}')">
-									<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-								</a>
-							</div>
-						</c:if>					
-					</c:forEach>
-				</div> --%>
 				
 			</div>
 			</section>
@@ -314,30 +289,7 @@
 								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 							</a>
 						</c:forEach>					
-					 </div>
-					<%-- <div id="photo_hor" class="photo_cont img_hor">
-						<c:forEach items="${downloadList}" var="down" varStatus="status">
-							<c:if test="${status.index < '3'}">
-								<div class="img_list">
-									<a href="javascript:void(0)" onclick="go_photoView('${down.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-									</a>
-								</div>
-							</c:if>
-						</c:forEach>
-					</div>
-					
-					<div id="photo_ver" class="photo_cont img_ver">
-						<c:forEach items="${downloadList}" var="down" varStatus="status">
-							<c:if test="${status.index >= '3'}">
-								<div class="img_list">
-									<a href="javascript:void(0)" onclick="go_photoView('${down.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-									</a>
-								</div>
-							</c:if>					
-						</c:forEach>
-					</div> --%>					
+					 </div>									
 				</div>
 				
 				<!-- 찜관리 Tab -->
@@ -348,31 +300,7 @@
 								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 							</a>
 						</c:forEach>					
-					 </div>
-					<%-- <div id="photo_hor" class="photo_cont img_hor">
-						<c:forEach items="${basketList}" var="basket" varStatus="status">
-							<c:if test="${status.index < '3'}">
-								<div class="img_list">
-									<a href="javascript:void(0)" onclick="go_photoView('${basket.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
-									</a>
-								</div>
-							</c:if>
-						</c:forEach>
-					</div>
-					
-					<div id="photo_ver" class="photo_cont img_ver">
-						<c:forEach items="${basketList}" var="basket" varStatus="status">
-							<c:if test="${status.index >= '3'}">
-								<div class="img_list">
-									<a href="/view.photo?uciCode=${basket.uciCode}">
-									<a href="javascript:void(0)" onclick="go_photoView('${basket.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-									</a>
-								</div>
-							</c:if>					
-						</c:forEach>
-					</div> --%>
+					 </div>					
 				</div>
 				
 				<!-- 상세보기 Tab -->
@@ -384,31 +312,6 @@
 							</a>
 						</c:forEach>					
 					 </div>
-					<%-- <!-- 가로형 3개 사진 출력 -->
-					<div id="photo_hor" class="photo_cont img_hor">
-						<c:forEach items="${hitsList}" var="hit" varStatus="status">
-							<c:if test="${status.index < '3'}">
-								<div class="img_list">
-									<a href="javascript:void(0)" onclick="go_photoView('${hit.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-									</a>
-								</div>
-							</c:if>
-						</c:forEach>
-					</div>
-					
-					<!-- 세로형 4개 사진 출력 -->
-					<div id="photo_ver" class="photo_cont img_ver">
-						<c:forEach items="${hitsList}" var="hit" varStatus="status">
-							<c:if test="${status.index >= '3'}">
-								<div class="img_list">
-									<a href="javascript:void(0)" onclick="go_photoView('${hit.uciCode}')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-									</a>
-								</div>
-							</c:if>
-						</c:forEach>
-					</div> --%>
 				</div>
 				
 			</div>
