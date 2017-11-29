@@ -38,6 +38,7 @@ public class Photo extends NewsbankServletBase {
 		super.doGet(request, response);
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
+		response.addHeader("Cache-Control", "no-cache");
 		
 		/*HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
