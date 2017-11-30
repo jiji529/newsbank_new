@@ -127,7 +127,7 @@
 							<input type="text" class="inp_txt" size="40" name='compBankAcc' value="" />
 							<div class="upload-btn-wrapper">
 								<button class="btn">통장사본 업로드</button>
-								<input type="file" name="bankFile" accept="application/pdf, image/*" required />
+								<input type="file" name="bank" accept="application/pdf, image/*" required />
 							</div>
 							<c:if test="${!empty MemberInfo.compBankPath}">
 								<a href="/bank.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
@@ -147,7 +147,7 @@
 									</div>
 									<div class="upload-btn-wrapper">
 										<button class="btn">계약서 업로드</button>
-										<input type="file" name="contractFile" accept="application/pdf, image/*" required />
+										<input type="file" name="contract" accept="application/pdf, image/*" required />
 									</div>
 							<c:if test="${!empty MemberInfo.contractPath}">
 								<a href="/contract.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>

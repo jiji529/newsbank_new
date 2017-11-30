@@ -90,6 +90,9 @@ public class Upload extends NewsbankServletBase {
 					case "logo":
 						MemberInfo.setLogo(fileFullPath);
 						break;
+					case "contract":
+						MemberInfo.setContractPath(fileFullPath);
+						break;
 					}
 					MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 					memberDAO.updateMember(MemberInfo); // 회원정보 업데이트 요청

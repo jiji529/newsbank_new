@@ -192,7 +192,7 @@
 										<input type="text" size="5" id="compNum3" class="inp_txt" value="${compNum3}" maxlength="5" required />
 										<div class="upload-btn-wrapper">
 											<button class="btn">등록증 업로드</button>
-											<input type="file" name="compNumFile" accept="application/pdf, image/*"  required/>
+											<input type="file" name="doc" accept="application/pdf, image/*"  required/>
 										</div>
 										<c:if test="${!empty MemberInfo.compDocPath}">
 											<a href="/doc.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>	

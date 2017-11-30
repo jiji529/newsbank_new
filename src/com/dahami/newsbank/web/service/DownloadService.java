@@ -201,6 +201,20 @@ public class DownloadService extends ServiceBase {
 					downPath = PATH_LOGO_BASE + "/error.jpg";
 				}
 
+			}else if (targetSize.equals("contract")) {
+				String seq = request.getParameter("seq");
+				MemberDAO mDao = new MemberDAO();
+				MemberDTO mDto = mDao.getMember(Integer.parseInt(seq));
+				String path = mDto.getContractPath();
+
+				File fd = new File(path);
+				if (fd.exists()) {
+					downPath = fd.getAbsolutePath();
+				} else {
+					logger.warn("계약서 이미지 생성 실패");
+					downPath = PATH_LOGO_BASE + "/error.jpg";
+				}
+
 			}
 		} else {
 			PhotoDAO photoDao = new PhotoDAO();
@@ -523,9 +537,7 @@ public class DownloadService extends ServiceBase {
 				try {
 					if (targetSize.equals("logo")) {
 						sendImageFile(response, downPath);
-					} else if (targetSize.equals("doc")) {
-						sendFile(response, downPath);
-					} else if (targetSize.equals("bank")) {
+					} else if (targetSize.equals("doc")||targetSize.equals("bank")||targetSize.equals("contract")) {
 						sendFile(response, downPath);
 					} else {
 						if (targetSize.equals("service")) {

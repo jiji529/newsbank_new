@@ -836,8 +836,10 @@ $(function() {
 		return false;
 	}
 	
-	$('input[name=compNumFile]').bind('change', function() {
-		console.log("ddd");
+	$('input[type=file]').bind('change', function() {
+		
+		var uType = $(this).attr("name");	
+		console.log(uType);
 		var tmpFile = $(this)[0].files[0];
 		var sizeLimit = 1024 * 1024 * 15;
 		if (tmpFile.size > sizeLimit) {
@@ -850,11 +852,9 @@ $(function() {
 			var formData = new FormData();
 			//첫번째 파일태그
 			formData.append("uploadFile", tmpFile);
-			//타입
-			formData.append("type", "doc");
 
 			$.ajax({
-				url : '/doc.upload',
+				url : '/'+uType+'.upload',
 				data : formData,
 				dataType : "json",
 				processData : false,
@@ -867,6 +867,7 @@ $(function() {
 					} else {
 						alert(data.message);
 					}
+					location.reload();
 				},
 				error : function(data) {
 					console.log("Error: " + data.statusText);
