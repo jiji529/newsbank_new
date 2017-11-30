@@ -8,11 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.swing.JOptionPane;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.dto.PhotoTagDTO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.TagDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.StatsDTO;
 
 /**
@@ -39,57 +42,72 @@ public class AdminCMSView extends NewsbankServletBase {
 		request.setCharacterEncoding("UTF-8");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-		PhotoDAO photoDAO = new PhotoDAO();
-		String uciCode = request.getParameter("uciCode");
-		PhotoDTO photoDTO = photoDAO.read(uciCode);
-		
-		StatsDTO statsDTO = new StatsDTO();
-		statsDTO = photoDAO.getStats(uciCode);
-		//System.out.println("찜 : " + statsDTO.getBookmarkCount() + " / 다운로드 : " + statsDTO.getDownCount() + " / 상세보기 : " + statsDTO.getHitCount() + " / 결제 : " + statsDTO.getSaleCount() + " / 뮤지엄 : " + statsDTO.getMuseumCount() + " / 컬렉션 : " + statsDTO.getCollectionCount());
-		
-		photoDAO.hit(uciCode);
-		request.setAttribute("photoDTO", photoDTO);
-		request.setAttribute("statsDTO", statsDTO);
-		
-		TagDAO tagDAO = new TagDAO();
-		List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);
-		request.setAttribute("photoTagList", photoTagList);
-		
-		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
-		String titleKor = request.getParameter("titleKor");
-		String descriptionKor = request.getParameter("descriptionKor");
-		String tagName = request.getParameter("tagName");
-		String columnName = request.getParameter("columnName");
-		String columnValue = request.getParameter("columnValue");
-		
-		if(action.equals("insertTag")){		
-			boolean exist = false;
-			//System.out.println("photoTagList 갯수 : "+photoTagList.size());
+		HttpSession session = request.getSession();
+		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+
+		if (MemberInfo != null) {
 			
-			for(PhotoTagDTO photoTagDTO : photoTagList) {
-				if(tagName.equals(photoTagDTO.getTag_tagName())) {
-					exist = exist | true;
-				}else {
-					exist = exist | false;					
-				}				
+			if(MemberInfo.getType().equals('A')) { // 관리자 권한만 접근
+				PhotoDAO photoDAO = new PhotoDAO();
+				String uciCode = request.getParameter("uciCode");
+				PhotoDTO photoDTO = photoDAO.read(uciCode);
+				
+				StatsDTO statsDTO = new StatsDTO();
+				statsDTO = photoDAO.getStats(uciCode);
+				
+				photoDAO.hit(uciCode);
+				request.setAttribute("photoDTO", photoDTO);
+				request.setAttribute("statsDTO", statsDTO);
+				
+				TagDAO tagDAO = new TagDAO();
+				List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);
+				request.setAttribute("photoTagList", photoTagList);
+				
+				String action = request.getParameter("action") == null ? "" : request.getParameter("action");
+				String titleKor = request.getParameter("titleKor");
+				String descriptionKor = request.getParameter("descriptionKor");
+				String tagName = request.getParameter("tagName");
+				String columnName = request.getParameter("columnName");
+				String columnValue = request.getParameter("columnValue");
+				
+				if(action.equals("insertTag")){		
+					boolean exist = false;
+					//System.out.println("photoTagList 갯수 : "+photoTagList.size());
+					
+					for(PhotoTagDTO photoTagDTO : photoTagList) {
+						if(tagName.equals(photoTagDTO.getTag_tagName())) {
+							exist = exist | true;
+						}else {
+							exist = exist | false;					
+						}				
+					}
+					
+					if(!exist) {
+						this.insertTag(uciCode, tagName);				
+					}			
+					
+				}else if(action.equals("deleteTag")) {
+					tagDAO.delete_PhotoTag(uciCode, tagName);
+				}else if(action.equals("updateCMS")){
+					this.updateCMS(uciCode, titleKor, descriptionKor);
+				}else if(action.equals("updateOne")){
+					this.updateOne(uciCode, columnName, columnValue);
+				}else{
+					//System.out.println("ACTION parameter null or empty");
+				}
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_cms_view.jsp");
+				dispatcher.forward(request, response);
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "해당페이지는 관리자만 접근할 수 있습니다.\n 메인페이지로 이동합니다.");
+				response.sendRedirect("/home");
 			}
 			
-			if(!exist) {
-				this.insertTag(uciCode, tagName);				
-			}			
-			
-		}else if(action.equals("deleteTag")) {
-			tagDAO.delete_PhotoTag(uciCode, tagName);
-		}else if(action.equals("updateCMS")){
-			this.updateCMS(uciCode, titleKor, descriptionKor);
-		}else if(action.equals("updateOne")){
-			this.updateOne(uciCode, columnName, columnValue);
-		}else{
-			//System.out.println("ACTION parameter null or empty");
+		} else {
+			response.sendRedirect("/login");
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_cms_view.jsp");
-		dispatcher.forward(request, response);
 	}
 
 	/**

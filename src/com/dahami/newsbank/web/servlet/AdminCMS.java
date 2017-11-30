@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.JOptionPane;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.MemberDAO;
@@ -47,18 +49,26 @@ public class AdminCMS extends NewsbankServletBase {
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 
 		if (MemberInfo != null) {
-			MemberDAO mDao = new MemberDAO();
-			MemberDTO memberDTO = new MemberDTO();
-			List<MemberDTO> mediaList = mDao.listActiveMedia();
-			request.setAttribute("mediaList", mediaList);
 			
-			SearchParameterBean parameterBean = new SearchParameterBean();
-			String cms_keyword = request.getParameter("cms_keyword_current") == null ? "" : request.getParameter("cms_keyword_current");
-			parameterBean.setPageVol(40);
-			request.setAttribute("cms_keyword", cms_keyword);
+			if(MemberInfo.getType().equals('A')) { // 관리자 권한만 접근
+				MemberDAO mDao = new MemberDAO();
+				MemberDTO memberDTO = new MemberDTO();
+				List<MemberDTO> mediaList = mDao.listActiveMedia();
+				request.setAttribute("mediaList", mediaList);
+				
+				SearchParameterBean parameterBean = new SearchParameterBean();
+				String cms_keyword = request.getParameter("cms_keyword_current") == null ? "" : request.getParameter("cms_keyword_current");
+				parameterBean.setPageVol(40);
+				request.setAttribute("cms_keyword", cms_keyword);
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_cms.jsp");
+				dispatcher.forward(request, response);
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "해당페이지는 관리자만 접근할 수 있습니다.\n 메인페이지로 이동합니다.");
+				response.sendRedirect("/home");
+			}			
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_cms.jsp");
-			dispatcher.forward(request, response);
 			
 		} else {
 			response.sendRedirect("/login");
