@@ -26,30 +26,7 @@
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
-<style type="text/css">
-.upload-btn-wrapper {
-	position: relative;
-	overflow: hidden;
-	display: inline-block;
-}
 
-.btn {
-	padding: 12px 20px;
-	color: #666;
-	border: 1px solid #aaa;
-	background: #fff;
-	border-radius: 2px;
-	margin-left: 10px;
-}
-
-.upload-btn-wrapper input[type=file] {
-	font-size: 100px;
-	position: absolute;
-	left: 0;
-	top: 0;
-	opacity: 0;
-}
-</style>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
@@ -217,7 +194,10 @@
 											<button class="btn">등록증 업로드</button>
 											<input type="file" name="compNumFile" accept="application/pdf, image/*"  required/>
 										</div>
-										<a href="/doc.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+										<c:if test="${!empty MemberInfo.compDocPath}">
+											<a href="/doc.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>	
+										</c:if> 
+										
 									</td>
 								</tr>
 								<tr>

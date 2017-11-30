@@ -452,8 +452,84 @@ $(document).ready(function() {
 	}
 	
 	
+
+	var fileTypes = [ 'image/jpeg', 'image/pjpeg', 'image/png', 'application/pdf'
+
+	]
+	//확장자 검사
+	function validFileType(file) {
+		for (var i = 0; i < fileTypes.length; i++) {
+			if (file.type === fileTypes[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	function validUploadFile(){
+		var uploadFile = $('input[name=uploadFile]');
+		if(uploadFile.length>0){
+			var tmpFile = $('input[name=uploadFile]')[0].files[0];
+			var sizeLimit = 1024 * 1024 * 15;
+			if (tmpFile.size > sizeLimit) {
+				alert("파일 용량이 15MB를 초과했습니다");
+				$(this).val("");
+				return;
+			}
+			
+			if (validFileType(tmpFile)) {
+				var formData = new FormData();
+				//첫번째 파일태그
+				formData.append("uploadFile", tmpFile);
+
+				$.ajax({
+					url : '/doc.upload',
+					data : formData,
+					dataType : "json",
+					processData : false,
+					contentType : false,
+					type : 'POST',
+					success : function(data) {
+						console.log(data);
+						if (data.success) {
+							
+							if($('#frmJoin').find("[name=compDocPath]").length>0){
+								$('#frmJoin').find("[name=compDocPath]").val(data.file);
+							}else{
+								$('<input>').attr({
+									type : 'hidden',
+									name : 'compDocPath',
+									value : data.file
+								}).appendTo('#frmJoin');
+							}
+							
+							joinAccess();
+						} else {
+							alert(data.message);
+						}
+					},
+					error : function(data) {
+						console.log("Error: " + data.statusText);
+						alert("잘못된 접근입니다.");
+					},
+
+				});
+
+			} else {
+				alert("파일 형식이 올바르지 않습니다.");
+				uploadFile.val("");
+			}
+
+		}else{
+			joinAccess();
+		}
+		
+	}
+	
+	
 	function joinAccess() {
-		$.post($("#frmJoin").attr("action"), $("#frmJoin").serialize(), function(data) {
+		$.post("/member.api", $("#frmJoin").serialize(), function(data) {
 			if (data.success) {
 				alert("정상적으로 회원 가입되었습니다.");
 				location.href = "/success.join";
@@ -480,6 +556,7 @@ $(document).ready(function() {
 			check = check && validCompNum();
 			check = check && validCompTel();
 			check = check && validCompDoc();
+			check = check && validUploadFile();
 
 			if ($(this).find("[name=type]").val() == "M") {
 
@@ -487,7 +564,8 @@ $(document).ready(function() {
 		}
 		if (check) {
 			if (confirm("회원 가입하시겠습니까?")) {
-				joinAccess();
+				//joinAccess();
+				validUploadFile()
 
 				return false;
 			}

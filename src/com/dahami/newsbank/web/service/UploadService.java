@@ -18,23 +18,15 @@
 package com.dahami.newsbank.web.service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.xml.DOMConfigurator;
-import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.dahami.newsbank.web.dao.MemberDAO;
-import com.dahami.newsbank.web.dto.MemberDTO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -42,16 +34,19 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
  * @author p153-1706
  *
  */
-public class UploadService {
+public class UploadService extends ServiceBase {
 
-	private static final long serialVersionUID = 1L;
-	private static final String PATH_COMP_DOC_BASE = "/data/newsbank/comp/doc";
-	private static final String PATH_COMP_BANK_BASE = "/data/newsbank/comp/bank";
-	private static final String PATH_LOGO_BASE = "/data/newsbank/logo";
+	public static final long serialVersionUID = 1L;
+	public static final String PATH_COMP_DOC_BASE = "/data/newsbank/comp/doc";
+	public static final String PATH_COMP_BANK_BASE = "/data/newsbank/comp/bank";
+	public static final String PATH_COMP_CONTRACT_BASE = "/data/newsbank/comp/contract";
+	public static final String PATH_LOGO_BASE = "/data/newsbank/logo";
+	public static final String PATH_BASE = "/data/newsbank/tmp";
 
-	private static final String PATH_COMP_DOC_BASE_LOCAL = "D:/IdeaProjects/git/newsbank/comp/doc";
-	private static final String PATH_COMP_BANK_BASE_LOCAL = "D:/IdeaProjects/git/newsbank/comp/bank";
-	private static final String PATH_LOGO_BASE_LOCAL = "D:/IdeaProjects/git/newsbank/logo";
+//	public static final String PATH_COMP_DOC_BASE = "D:/IdeaProjects/git/newsbank/comp/doc";
+//	public static final String PATH_COMP_BANK_BASE = "D:/IdeaProjects/git/newsbank/comp/bank";
+//	public static final String PATH_LOGO_BASE = "D:/IdeaProjects/git/newsbank/logo";
+//	public static final String PATH_BASE = "D:/IdeaProjects/git/newsbank/tmp";
 
 	/*
 	 * (non-Javadoc)
@@ -60,56 +55,48 @@ public class UploadService {
 	 * HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 
-	protected Logger logger;
-	private static boolean loggerConfInitF;
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-	public UploadService() {
-		if (!loggerConfInitF) {
-			DOMConfigurator.configure(this.getClass().getClassLoader().getResource("com/dahami/newsbank/web/conf/log4j.xml"));
-			loggerConfInitF = true;
-		}
-		logger = LoggerFactory.getLogger(this.getClass());
-	}
-
-	public JSONObject execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		JSONObject json = new JSONObject();
+		// JSONObject json = new JSONObject();
 		boolean result = false;
-		String message = "";
+		String message = ""; //결과 메시지
 
-		HttpSession session = request.getSession();
 
-		MemberDTO MemberInfo = null;
+		String fileFullPath = ""; //파일 실제 경로
+		String fileName = ""; //파일 명
 
-		String type;
-
-		if (request.getParameter("type") != null) {
-			type = request.getParameter("type");
+		if (request.getAttribute("pathType") != null) {
+			String pathType = (String)request.getAttribute("pathType");
 			// String savePath = request.getServletContext().getRealPath("folderName");
 
-			String savePath = "";
+			String savePath = PATH_BASE;
 
-			switch (type) {
-			case "doc":
-				savePath = PATH_COMP_DOC_BASE_LOCAL;
-				break;
-			case "bank":
-				savePath = PATH_COMP_BANK_BASE_LOCAL;
-				break;
-			case "logo":
-				savePath = PATH_LOGO_BASE_LOCAL;
-				break;
+			if (pathType != null && !pathType.isEmpty()) {
+				switch (pathType) {
+				case "doc":
+					savePath = PATH_COMP_DOC_BASE;
+					break;
+				case "bank":
+					savePath = PATH_COMP_BANK_BASE;
+					break;
+				case "logo":
+					savePath = PATH_LOGO_BASE;
+					break;
+				case "contract":
+					savePath = PATH_COMP_CONTRACT_BASE;
+					break;
+					
+				}
 			}
-
+			
 			if (savePath.isEmpty()) {
 				message = "파일 경로를 찾을 수 없습니다.";
-			} else if (session.getAttribute("MemberInfo") != null) {
-				MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+			} else {
 
 				// 파일이 저장될 서버의 경로. 되도록이면 getRealPath를 이용하자.
 
 				RequestDispatcher rd = null;
-				String fileName = "";
+				
 				File file = null;
 				Enumeration files = null;
 
@@ -130,7 +117,7 @@ public class UploadService {
 
 					MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit, "UTF-8", new DefaultFileRenamePolicy());
 					fileName = multi.getFilesystemName("uploadFile"); // 파일의 이름 얻기
-
+					
 					files = multi.getFileNames();
 					String name = (String) files.nextElement();
 					file = multi.getFile(name);
@@ -140,49 +127,8 @@ public class UploadService {
 					} else { // 파일이 업로드 되었을때
 						result = true;
 						message = "파일 업로드 성공";
-						String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date()); // 현재시간
-
-						String tmpFileName = Integer.toString(MemberInfo.getSeq());
-						if (multi.getParameter("name") != null && !multi.getParameter("name").isEmpty()) {
-							tmpFileName = multi.getParameter("name");
-						}
-
-						String orgFileName = savePath + "/" + fileName;
-						String reFileName = savePath + "/" + tmpFileName + fileName.substring(fileName.lastIndexOf("."));
-						String bakFileName = savePath + "/" + tmpFileName + "_" + now + fileName.substring(fileName.lastIndexOf("."));
-
-						File upfile1 = new File(orgFileName);
-						File upfile2 = new File(reFileName);
-						File backFile = new File(bakFileName);
-
-						if (upfile2.exists())
-							upfile2.renameTo(backFile);
-
-						if (upfile1.renameTo(upfile2)) {
-							System.out.print("이름변경성공");
-
-							fileName = upfile2.getName();
-							String fileFullPath = savePath + "/" + fileName;
-
-							switch (type) {
-							case "doc":
-								MemberInfo.setComDocPath(fileFullPath);
-								break;
-							case "bank":
-								MemberInfo.setCompBankPath(fileFullPath);
-								break;
-							case "logo":
-								MemberInfo.setLogo(fileFullPath);
-								break;
-							}
-							MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
-							memberDAO.updateMember(MemberInfo); // 회원정보 업데이트 요청
-
-							System.out.println("User Name : " + type);
-							System.out.println("File Name  : " + fileName);
-						} else {
-							message = "파일 업로드 실패";
-						}
+						fileFullPath= savePath + "/" + fileName;
+										
 
 					} // else
 
@@ -194,14 +140,18 @@ public class UploadService {
 					}
 
 				}
-			} else {
-				message = "다시 로그인해주세요.";
 			}
-			json.put("success", result);
-			json.put("message", message);
+			// json.put("success", result);
+			// json.put("message", message);
 			// response.getWriter().print(json);
 		}
-		return json;
+
+		System.out.println("success  : " + result);
+		System.out.println("message  : " + message);
+		System.out.println("File Name  : " + fileFullPath);
+
+		request.setAttribute("fileName", fileName);
+		request.setAttribute("filePath", fileFullPath);
 
 	}
 

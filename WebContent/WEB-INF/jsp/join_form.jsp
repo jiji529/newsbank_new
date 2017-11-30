@@ -87,7 +87,7 @@ $(function() {
 				<h3 class="tit_join">가입 정보 입력</h3>
 				<div class="txt_desc">가입 정보를 입력하세요.</div>
 			</div>
-			<form id="frmJoin" name="frmJoin" action="/member.api" method="post" enctype="multipart/form-data">
+			<form id="frmJoin" name="frmJoin">
 				<input type="hidden" name="cmd" value="C" />
 				<input type="hidden" name="type" value="${type }" />
 				<fieldset class="fld_comm">
@@ -202,7 +202,7 @@ $(function() {
 									<dt>사업자등록증</dt>
 									<dd>
 										<div class="inp">
-											<input type="file" id="compDoc" name="compDoc" accept="application/pdf, image/*"  />
+											<input type="file" id="compDoc" name="uploadFile" accept="application/pdf, image/*"  />
 										</div>
 									</dd>
 									<!--언론사 회원한테만 파일첨부 창 보여주기 여기까지-->

@@ -1,8 +1,8 @@
 @charset "utf-8"; /* CSS Document */  
 .mypage{width:1240px; margin:0 auto; padding-bottom:100px;}
 .head{float:left; width:100%; padding-top:80px;}
-.head h2{width:100%; float:left; color:#333; font-size:28px; font-weight:400;}
-.head p{float: left; width:100%; color:#999; font-size:16px; margin-top:20px; display:none;}
+.head h2{width:100%; float:left; color:#000; font-size:28px; font-weight:400;}
+.head p{float: left; width:100%; color:#666; font-size:16px; margin-top:20px; display:none;}
 
 .table_head {border-bottom:3px #555b62 solid; float:left; width:100%;}
 .table_head h3 { float:left; margin:50px 0 15px; width:100%; text-align:left; font-size:18px; }
@@ -463,3 +463,29 @@
 #popup_wrap .pop_foot .pop_btn{width:100%; margin-top:15px; float:left;}
 #popup_wrap .pop_foot .pop_btn button{background:#fff; border:1px #f79320 solid; padding:8px 15px; color:#f79320; font-weight:bold; border-radius:2px;}
 #popup_wrap .pop_foot .pop_btn button.popup_close{border:1px #ccc solid; color:#666;}
+
+
+.upload-btn-wrapper {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+}
+
+.btn {
+	padding: 12px 20px;
+	color: #666;
+	border: 1px solid #aaa;
+	background: #fff;
+	border-radius: 2px;
+	margin-left: 10px;
+}
+
+.upload-btn-wrapper input[type=file] {
+	font-size: 100px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+}
+
+

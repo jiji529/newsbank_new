@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.service.UploadService;
 import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
@@ -159,6 +160,7 @@ public class MemberAction extends NewsbankServletBase {
 
 		if (check && request.getParameter("compDocPath") != null) {
 			compDocPath = request.getParameter("compDocPath"); // 사업자등록증
+			compDocPath = com.dahami.newsbank.web.service.UploadService.PATH_COMP_DOC_BASE+"/"+compDocPath;
 		}
 
 		if (check && request.getParameter("compName") != null) {
@@ -286,6 +288,10 @@ public class MemberAction extends NewsbankServletBase {
 			}
 
 		}
+	
+	
+		
+		
 		MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 		if (check) {
 
@@ -323,10 +329,14 @@ public class MemberAction extends NewsbankServletBase {
 			memberDTO.setActivate(activate);
 			memberDTO.setMaster_seq(master_seq);
 			memberDTO.setGroup_seq(group_seq);
+			
 
 			switch (cmd) {
 			case "C":
-				result = memberDAO.insertMember(memberDTO); // 회원정보 요청
+				memberDTO = memberDAO.insertMember(memberDTO); // 회원정보 요청
+				if (memberDTO.getSeq() > 0) {
+					result = true;
+				}
 				break;
 			case "R":
 				memberDTO = memberDAO.selectMember(memberDTO);

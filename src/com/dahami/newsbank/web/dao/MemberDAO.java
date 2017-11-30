@@ -135,13 +135,12 @@ public class MemberDAO extends DAOBase {
 		return result;
 	}
 
-	public boolean insertMember(MemberDTO memberDTO) {
-		boolean result = false;
+	public MemberDTO insertMember(MemberDTO memberDTO) {
+		
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
 			if ((int) session.selectOne("Member.selectId", memberDTO) > 0) {
-				result = false;
 			} else {
 				session.insert("Member.insertMember", memberDTO);
 
@@ -151,9 +150,7 @@ public class MemberDAO extends DAOBase {
 				bookmark.put("bookName", "기본그룹");
 				session.insert("Bookmark.insertBookmark", bookmark);
 
-				result = true;
 			}
-			System.out.println(session);
 			session.commit();
 			// result = memberDTO.isMember();
 
@@ -169,7 +166,7 @@ public class MemberDAO extends DAOBase {
 		System.out.println("insert(" + memberDTO + ") --> " + memberDTO.getEmail());
 		System.out.println(memberDTO.getName());
 
-		return result;
+		return memberDTO;
 	}
 
 	public boolean updateMember(MemberDTO memberDTO) {

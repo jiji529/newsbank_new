@@ -854,7 +854,7 @@ $(function() {
 			formData.append("type", "doc");
 
 			$.ajax({
-				url : '/FileUpload.api?type=doc',
+				url : '/doc.upload',
 				data : formData,
 				dataType : "json",
 				processData : false,

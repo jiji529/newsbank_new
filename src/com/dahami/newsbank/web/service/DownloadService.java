@@ -524,9 +524,9 @@ public class DownloadService extends ServiceBase {
 					if (targetSize.equals("logo")) {
 						sendImageFile(response, downPath);
 					} else if (targetSize.equals("doc")) {
-						sendFile(response, downPath,"사업자등록증");
+						sendFile(response, downPath);
 					} else if (targetSize.equals("bank")) {
-						sendFile(response, downPath,"통장사본");
+						sendFile(response, downPath);
 					} else {
 						if (targetSize.equals("service")) {
 							sendImageFile(response, downPath, this.uciCode + ".jpg");
@@ -841,11 +841,43 @@ public class DownloadService extends ServiceBase {
 			fileName = new String(file.getName().getBytes("utf-8"), "iso-8859-1");
 		}*/
 		
+		if(fileName!="") {
+			
+		}
 		int pos = file.getName().lastIndexOf( "." );
 		String ext = file.getName().substring( pos + 1 );
 		fileName = URLEncoder.encode(fileName, "utf-8");
 		fileName = fileName+"."+ext;
 		//fileName = URLEncoder.encode(file.getName(), "utf-8");
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;filename=\"" +fileName  + "\";");
+
+		FileInputStream fis = new FileInputStream(file);
+		BufferedInputStream bis = new BufferedInputStream(fis);
+		ServletOutputStream so = response.getOutputStream();
+		BufferedOutputStream bos = new BufferedOutputStream(so);
+
+		byte[] data = new byte[2048];
+		int input = 0;
+		while ((input = bis.read(data)) != -1) {
+			bos.write(data, 0, input);
+			bos.flush();
+		}
+
+		if (bos != null)
+			bos.close();
+		if (bis != null)
+			bis.close();
+		if (so != null)
+			so.close();
+		if (fis != null)
+			fis.close();
+	}
+	private void sendFile( HttpServletResponse response, String sendPath ) throws Exception  {
+		File file = new File(sendPath);
+		
+	
+		String fileName = URLEncoder.encode(file.getName(), "utf-8");
 		response.setContentType("application/octet-stream");
 		response.setHeader("Content-Disposition", "attachment;filename=\"" +fileName  + "\";");
 

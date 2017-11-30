@@ -21,13 +21,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
 <link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css">
-<script src="js/jquery-1.12.4.min.js"></script>
-<script src="js/jquery-ui-1.12.1.min.js"></script>
-<link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/sub.css" />
-<link rel="stylesheet" href="css/mypage.css" />
-<script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
+	<script src="js/jquery-1.12.4.min.js"></script>
+	<script src="js/jquery-ui-1.12.1.min.js"></script>
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/sub.css" />
+	<link rel="stylesheet" href="css/mypage.css" />
+	<script src="js/footer.js"></script>
+	<script src="js/mypage.js"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -125,8 +125,13 @@
 								<option value="SC제일">SC제일</option>
 							</select>
 							<input type="text" class="inp_txt" size="40" name='compBankAcc' value="" />
-							<a href="javascript:void(0)" class="btn_input1">통장사본 업로드</a>
-							<a href="javascript:void(0)" class="btn_input1">다운로드</a>
+							<div class="upload-btn-wrapper">
+								<button class="btn">통장사본 업로드</button>
+								<input type="file" name="bankFile" accept="application/pdf, image/*" required />
+							</div>
+							<c:if test="${!empty MemberInfo.compBankPath}">
+								<a href="/bank.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+							</c:if>
 						</td>
 					</tr>
 					<tr>
@@ -140,8 +145,13 @@
 										<input type="hidden" name="contractAuto" value='' />
 										자동연장
 									</div>
-									<a href="javascript:void(0)" class="btn_input1">계약서 업로드</a>
-									<a href="javascript:void(0)" class="btn_input1">다운로드</a>
+									<div class="upload-btn-wrapper">
+										<button class="btn">계약서 업로드</button>
+										<input type="file" name="contractFile" accept="application/pdf, image/*" required />
+									</div>
+							<c:if test="${!empty MemberInfo.contractPath}">
+								<a href="/contract.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+							</c:if>
 						</td>
 					</tr>
 					<tr>
