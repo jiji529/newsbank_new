@@ -37,13 +37,13 @@
 			<div class="mypage_ul">
 				<ul class="mp_tab1">
 					<c:if test="${MemberInfo.type eq 'M'}">
-							<li>
-								<a href="/account.mypage">정산 관리</a>
-							</li>
-							<li>
-								<a href="/cms">사진 관리</a>
-							</li>
-						</c:if>
+						<li>
+							<a href="/account.mypage">정산 관리</a>
+						</li>
+						<li>
+							<a href="/cms">사진 관리</a>
+						</li>
+					</c:if>
 					<li>
 						<a href="/info.mypage">회원정보 관리</a>
 					</li>
@@ -95,7 +95,17 @@
 							</td>
 							<td>${paymentManage.getPayType()}</td>
 							<td>${paymentManage.getLGD_AMOUNT_Str()}</td>
-							<td>${paymentManage.LGD_RESPMSG}</td>
+							<c:choose>
+								<c:when test="${paymentManage.LGD_PAYSTATUS eq '1'}">
+									<td>결제 성공</td>
+								</c:when>
+								<c:when test="${paymentManage.LGD_PAYSTATUS eq '3'}">
+									<td>입금 대기중</td>
+								</c:when>
+								<c:otherwise>
+									<td>결제 실패</td>
+								</c:otherwise>
+							</c:choose>
 						</tr>
 					</c:forEach>
 					<c:if test="${fn:length(listPaymentManage) == 0}">

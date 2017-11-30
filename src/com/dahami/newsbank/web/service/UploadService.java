@@ -43,12 +43,12 @@ public class UploadService extends ServiceBase {
 	public static final String PATH_LOGO_BASE = "/data/newsbank/logo";
 	public static final String PATH_BASE = "/data/newsbank/tmp";
 
-//	public static final String PATH_COMP_DOC_BASE = "D:/IdeaProjects/git/newsbank/comp/doc";
-//	public static final String PATH_COMP_BANK_BASE = "D:/IdeaProjects/git/newsbank/comp/bank";
-//	public static final String PATH_COMP_CONTRACT_BASE =  "D:/IdeaProjects/git/newsbank/comp/contract";
-//	public static final String PATH_LOGO_BASE = "D:/IdeaProjects/git/newsbank/logo";
-//	public static final String PATH_BASE = "D:/IdeaProjects/git/newsbank/tmp";
-
+	/*public static final String PATH_COMP_DOC_BASE = "D:/IdeaProjects/git/newsbank/comp/doc";
+	public static final String PATH_COMP_BANK_BASE = "D:/IdeaProjects/git/newsbank/comp/bank";
+	public static final String PATH_COMP_CONTRACT_BASE =  "D:/IdeaProjects/git/newsbank/comp/contract";
+	public static final String PATH_LOGO_BASE = "D:/IdeaProjects/git/newsbank/logo";
+	public static final String PATH_BASE = "D:/IdeaProjects/git/newsbank/tmp";
+*/
 	/*
 	 * (non-Javadoc)
 	 * 
