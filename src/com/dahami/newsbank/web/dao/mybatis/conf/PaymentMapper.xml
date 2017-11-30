@@ -60,7 +60,7 @@
 		LEFT JOIN
 		member mp ON P.member_seq = mp.seq
 		where
-		M.LGD_RESPCODE='0000'
+		M.LGD_PAYSTATUS='1'
 		AND
 		(P.`member_seq` = #{member_seq} OR
 		P.`member_seq` IN
