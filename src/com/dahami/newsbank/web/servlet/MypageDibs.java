@@ -60,7 +60,7 @@ public class MypageDibs extends NewsbankServletBase {
 			} else {
 				
 				int pageVol = 40; // 페이지당 표현 갯수
-				int pageNo = 1; // 현재 페이지
+				int pageNo = 0; // 시작 인덱스
 				int member_seq = MemberInfo.getSeq();
 				String bookmark_seq = request.getParameter("bookmark_seq");
 				PhotoDAO photoDAO = new PhotoDAO();
