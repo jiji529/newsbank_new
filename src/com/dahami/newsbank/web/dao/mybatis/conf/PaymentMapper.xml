@@ -100,6 +100,8 @@
 		`LGD_AMOUNT`, `LGD_TID`, `LGD_PAYTYPE`, `LGD_PAYDATE`, `LGD_PAYSTATUS`,
 		`LGD_PRODUCTINFO`, `LGD_ACCOUNTNUM`, `regDate` FROM `paymentManage`
 		where `member_seq` = #{member_seq}
+		AND `LGD_PAYSTATUS` != '2'
+		AND !(`LGD_PAYSTATUS`='3' AND now()  > date_add(`regDate`, interval 1 day))
 		<if test="LGD_OID !=null">
 			AND LGD_OID = #{LGD_OID}
 		</if>
@@ -164,6 +166,7 @@
 		<result property="LGD_BUYERID" column="LGD_BUYERID" />
 		<result property="LGD_BUYERPHONE" column="LGD_BUYERPHONE" />
 		<result property="LGD_RESPCODE" column="LGD_RESPCODE" />
+		<result property="LGD_PAYSTATUS" column="LGD_PAYSTATUS" />
 		<result property="LGD_RESPMSG" column="LGD_RESPMSG" />
 		<result property="LGD_OID" column="LGD_OID" />
 		<result property="LGD_AMOUNT" column="LGD_AMOUNT" />

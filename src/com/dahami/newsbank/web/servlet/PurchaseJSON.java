@@ -139,8 +139,11 @@ public class PurchaseJSON extends NewsbankServletBase {
 			// 로그인중 처리
 			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 			Date today = new Date();
+			Date tomorrow = new Date(new Date().getTime() + 60*60*24*1000);
 			String LGD_TIMESTAMP = DATE_TIME_FORMAT.format(today);// 타임스탬프
-			String LGD_BUYERIP =HttpUtil.getRequestIpAddr(request); //request.getRemoteAddr(); // 구매자 아이피
+			String LGD_CLOSEDATE = DATE_TIME_FORMAT.format(tomorrow);
+			
+			String LGD_BUYERIP =getClientIP(request); //request.getRemoteAddr(); // 구매자 아이피
 			String LGD_BUYERID = MemberInfo.getId(); // 구매자 아이디
 			String LGD_BUYER = MemberInfo.getName(); // 구매자 명
 			String LGD_BUYEREMAIL = MemberInfo.getEmail(); // 구매자 이메일
@@ -172,7 +175,9 @@ public class PurchaseJSON extends NewsbankServletBase {
 
 			String LGD_HASHDATA = md5(LGD_MID + LGD_OID + LGD_AMOUNT + LGD_TIMESTAMP + LGD_MERTKEY);
 			
-			String SERVER_HOST  ="www.dev.newsbank.co.kr";//"localhost:8080";//www.newsbank.co.kr//www.dev.newsbank.co.kr
+			//String SERVER_HOST  ="www.dev.newsbank.co.kr";//"localhost:8080";//www.newsbank.co.kr//www.dev.newsbank.co.kr
+			String SERVER_HOST  =request.getServerName()+":"+request.getServerPort();
+
 			/*
 			 * 가상계좌(무통장) 결제 연동을 하시는 경우 아래 LGD_CASNOTEURL 을 설정하여 주시기 바랍니다.
 			 */
@@ -200,7 +205,10 @@ public class PurchaseJSON extends NewsbankServletBase {
 			LGD_DATA.put("LGD_BUYER", LGD_BUYER); // * 구매자명
 			LGD_DATA.put("LGD_CUSTOM_SWITCHINGTYPE", "IFRAME"); //
 			LGD_DATA.put("LGD_PRODUCTINFO", LGD_PRODUCTINFO); // * 제품정보
+			
 			LGD_DATA.put("LGD_CASNOTEURL", LGD_CASNOTEURL); // 무통장입금 결과 수신페이지
+			LGD_DATA.put("LGD_CLOSEDATE", LGD_CLOSEDATE); // 무통장입금 마감시간
+			
 			LGD_DATA.put("LGD_OID", LGD_OID); // * 상점 거래번호
 			LGD_DATA.put("LGD_HASHDATA", LGD_HASHDATA); // *해쉬데이터 거래 위변조 방지
 			LGD_DATA.put("LGD_OSTYPE_CHECK", "P"); // LGD_OSTYPE_CHECK
@@ -303,5 +311,27 @@ public class PurchaseJSON extends NewsbankServletBase {
 			return null;
 		}
 	}
+	
+	 public String getClientIP(HttpServletRequest request) {
+
+	     String ip = request.getHeader("X-FORWARDED-FOR"); 
+	     
+	     if (ip == null || ip.length() == 0) {
+	         ip = request.getHeader("Proxy-Client-IP");
+	     }
+
+	     if (ip == null || ip.length() == 0) {
+	         ip = request.getHeader("WL-Proxy-Client-IP");  // 웹로직
+	     }
+
+	     if (ip == null || ip.length() == 0) {
+	         ip = request.getRemoteAddr() ;
+	     }
+	     
+	     return ip;
+
+	 }
+
+
 
 }

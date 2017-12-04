@@ -15,8 +15,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<% 
-String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+<%
+	String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -84,9 +84,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03">
 			<colgroup>
 				<col width="200">
-					<col width="200">
-						<col width="300">
-							<col width="300">
+				<col width="200">
+				<col width="300">
+				<col width="300">
 			</colgroup>
 			<tr>
 				<th scope="col">결제방법</th>
@@ -96,7 +96,18 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			</tr>
 			<tr>
 				<td>${paymentManageDTO.getPayType() }</td>
-				<td>${paymentManageDTO.LGD_RESPMSG }</td>
+				
+				<c:choose>
+					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '1'}">
+						<td>결제 성공</td>
+					</c:when>
+					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '3'}">
+						<td>입금 대기중</td>
+					</c:when>
+					<c:otherwise>
+						<td>결제 실패 ${paymentManageDTO.LGD_PAYSTATUS }</td>
+					</c:otherwise>
+				</c:choose>
 				<td>${paymentManageDTO.LGD_TID }</td>
 				<td>
 					<c:if test="${!empty paymentManageDTO.LGD_FINANCENAME}">
@@ -109,11 +120,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		<table cellpadding="0" cellspacing="0" class="tb02">
 			<colgroup>
 				<col width="100">
-					<col>
-						<col width="120">
-							<col width="60">
-								<col width="200">
-									<col width="100">
+				<col>
+				<col width="120">
+				<col width="60">
+				<col width="200">
+				<col width="100">
 			</colgroup>
 			<thead>
 				<tr>
@@ -182,15 +193,17 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							${paymentDetailList.downEnd }
 						</td>
 						<td>
+							<c:if test="${paymentManage.LGD_PAYSTATUS eq '1'}">
 							${paymentDetailList.downCount }회
 							<br />
-							<div class="btn_group">
-<c:if test="${paymentDetailList.downExpire eq false}">
-								<button type="button" class="btn_o" name="btn_down" value="${paymentDetailList.photo_uciCode }">다운로드</button>
-</c:if>
-								<button type="button" class="btn_g" name="btn_cancle" value="${paymentDetailList.photo_uciCode }">결제취소</button>
-								<!-- 다운로드 0일때만 가능-->
-							</div>
+								<div class="btn_group">
+									<c:if test="${paymentDetailList.downExpire eq false}">
+										<button type="button" class="btn_o" name="btn_down" value="${paymentDetailList.photo_uciCode }">다운로드</button>
+									</c:if>
+									<button type="button" class="btn_g" name="btn_cancle" value="${paymentDetailList.photo_uciCode }">결제취소</button>
+									<!-- 다운로드 0일때만 가능-->
+								</div>
+							</c:if>
 						</td>
 					</tr>
 				</c:forEach>

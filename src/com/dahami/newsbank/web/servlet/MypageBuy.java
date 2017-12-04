@@ -62,7 +62,7 @@ public class MypageBuy extends NewsbankServletBase {
 				PaymentManageDTO paymentManageDTO = new PaymentManageDTO(); // 객체 생성
 				paymentManageDTO.setMember_seq(MemberInfo.getSeq());
 				paymentManageDTO.setLGD_OID(LGD_OID);
-				paymentManageDTO.setLGD_PAYSTATUS(1);
+				//paymentManageDTO.setLGD_PAYSTATUS(1);
 				
 				PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
 				paymentManageDTO = paymentDAO.selectPaymentManage(paymentManageDTO); // 회원정보 요청
