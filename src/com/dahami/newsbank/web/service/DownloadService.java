@@ -486,7 +486,9 @@ public class DownloadService extends ServiceBase {
 						}
 
 						// 원본파일 전송
-						sendImageFile(response, uciEmbedTmp, this.uciCode + ".jpg");
+						// TODO 주석제거 원본파일 전송 
+						logger.warn("TODO 주석제거 원본파일 전송");
+//						sendImageFile(response, uciEmbedTmp, this.uciCode + ".jpg");
 					} finally {
 					}
 
