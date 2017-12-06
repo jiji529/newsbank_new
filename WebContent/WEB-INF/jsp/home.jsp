@@ -59,6 +59,7 @@
 			tile_shadow_color:"#8B8B8B",
 			tile_enable_icons:false, // 아이콘 숨김
 			tile_as_link:true, // 링크처리
+			tile_link_newpage: false, // 링크 새 페이지로 이동
 			
 			tiles_justified_row_height: 250,
 			tiles_justified_space_between: 10,
@@ -229,7 +230,7 @@
 				
 				
 				<div id="photo_area"> 
-					<c:forEach items="${photoList}" var="photo">
+					<c:forEach items="${photoList}" var="photo">						
 						<a href='javascript:go_photoView("${photo.uciCode}")' onclick='go_photoView("${photo.uciCode}")'>
 							<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 						</a>

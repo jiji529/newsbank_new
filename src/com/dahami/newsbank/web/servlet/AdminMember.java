@@ -38,14 +38,13 @@ public class AdminMember extends NewsbankServletBase {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-
+		
 		if (MemberInfo != null) {
 			
-			if(MemberInfo.getType().equals('A')) { // 관리자 권한만 접근
+			if(MemberInfo.getType().equals("A")) { // 관리자 권한만 접근
 				String action = (request.getParameter("action") == null) ? "" : request.getParameter("action");
 				
 				if(action.equals("makeGroup")) {
