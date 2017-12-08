@@ -170,3 +170,23 @@ display: block; width: 50px; height:30px; line-height:30px; font-size:13px; bord
 .pop_folder ul li  fieldset{ border:0;margin: 10px 5px; }
 .pop_folder ul li  legend{display:none;}
 .pop_folder ul li  input{ color: #999; border: 1px solid #ddd; vertical-align: middle; height: 30px; float:left; width:240px;}
+
+
+.collection{width:1240px; margin:0 auto; padding-bottom:100px;}
+.head{float:left; width:100%; padding-top:80px;}
+.head h2{width:100%; float:left; color:#000; font-size:28px; font-weight:400;}
+.collection .head p{float: left; width:100%; color:#666; font-size:16px; margin-top:20px; display:block;}
+
+.collection .tile{ float:left; margin-top:80px; }
+.collection .tile .collect_li{ float:left; margin:0 20px 20px 0; width:400px; height:400px;  border-radius:8px; position:relative; }
+.collection .tile .collect_li:nth-child(3n){margin-right:0;}
+.collection .tile .collect_li a{width:100%; height:100%; z-index:101; position:absolute; left:0; top:0;}
+.collection .tile .collect_li .cover{width:400px; height:400px;background-size: cover;background-position: center;background-repeat: no-repeat;position: relative; border-radius:8px;}
+.collection .tile .collect_li .cover:after { content:''; position: absolute; width: 100%; height: 100%; left: 0; top: 0; background-color: rgba(0,0,0,0.5); transition: background 0.1s ease-in; border-radius:8px;}
+.collection .tile .collect_li:hover .cover:after {content:'';background-color: rgba(0,0,0,0.7); }
+
+.collection .tile .collect_li h3{width: 100%;text-align: left; padding: 20px; overflow: hidden; text-overflow: ellipsis;  white-space: nowrap; position: absolute;z-index: 100; bottom: 0; height: auto; background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%);background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 );}
+.collection .tile .collect_li h3 .profile{ float:left; margin-right:8px; width:26px; height:26px; background:url(../images/sub/user.png) 0 3px no-repeat; border:1px #fff solid; border-radius:26px;}
+.collection .tile .collect_li h3 a{ color:#fff; font-size:12px; width:auto; height:auto; float:left; position:relative; line-height:28px; z-index:103;}
+.collection .tile .collect_li strong{ font-size:24px; top:35%; left:0; font-weight: 600; width: 100%; padding: 30px; text-align:center;  color: #fff; z-index:100; position:absolute; float:left; }
+.collection .tile .collect_li strong span{ font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 10px;font-weight: 400; width:100%; float:left;}

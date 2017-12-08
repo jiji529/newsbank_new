@@ -75,7 +75,7 @@
 			<a href="javascript:void(0)">사진</a>
 		</li>
 		<li>
-			<a href="javascript:void(0)">컬렉션</a>
+			<a href="/collection">컬렉션</a>
 		</li>
 	</ul>
 	<ul class="gnb_right">

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Collection">
+    <!-- 공개처리된 찜 폴더 목록 -->
+     <select id="selectCollection" resultType="com.dahami.newsbank.web.dto.CollectionDTO">
+        SELECT A.seq, A.bookName, C.id, COUNT(A.seq) AS photo_count
+		FROM bookmark A
+		INNER JOIN bookmarkPhoto B ON A.seq = B.bookmark_seq
+		INNER JOIN member C ON A.member_seq = C.seq
+		WHERE A.activate = 1 
+		GROUP BY seq, bookName, C.id
+    </select>
+    
+     <select id="selectBackgroundPhoto" resultType="com.dahami.newsbank.web.dto.CollectionDTO" parameterType="java.util.Map">
+        SELECT photo_uciCode AS uciCode
+		FROM bookmarkPhoto 
+		WHERE bookmark_seq = #{bookmark_seq}
+		ORDER BY regDate DESC
+		LIMIT 0, 1
+     </select>
+</mapper>
+

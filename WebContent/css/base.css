@@ -30,6 +30,7 @@ nav.gnb_light .gnb a.logo{height: 50px; display: block; float: left; width: 142p
 nav .gnb_left{ float:left; display:block; margin-left:40px;}
 nav .gnb_left li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px; display:none }
 nav .gnb_left li:first-child{ display:block;}
+nav .gnb_left li:last-child{ display:block;}
 nav.gnb_light .gnb .gnb_left li a{color:#fff;}
 nav a{display:block;font-family:"nsr",Helvetica,AppleSDGothicNeo,AppleGothic,Arial, Dotum,'돋움',sans-serif; font-size:17px;}
 nav .gnb_right{ float:right; display:block;}
