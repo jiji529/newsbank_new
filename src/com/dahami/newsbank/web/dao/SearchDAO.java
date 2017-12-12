@@ -211,7 +211,7 @@ public class SearchDAO extends DAOBase {
 			query.addSort("searchDate", ORDER.desc);
 			query.addSort("uciCode", ORDER.desc);
 			
-			QueryRequest req = makeSolrURequest(query);
+			QueryRequest req = makeSolrRequest(query);
 			client = getClient();
 			res = req.process(client);
 			
@@ -304,10 +304,36 @@ public class SearchDAO extends DAOBase {
 		}
 		
 		if(uciCode != null && uciCode.trim().length() > 0) {
+			
+			PhotoDTO pDto = new PhotoDAO().read(uciCode);
+			if(pDto == null) {
+				return null;
+			}
+			StringBuffer mltQfBuf = new StringBuffer();
+			String pTitle = pDto.getTitle();
+			if(pTitle.trim().length() > 1) {
+				mltQfBuf.append("morp_title^2");
+			}
+			else {
+				mltQfBuf.append("morp_title");
+			}
+			
+			String pKeyword = pDto.getKeyword();
+			if(pKeyword != null && pKeyword.trim().length() > 1) {
+				mltQfBuf.append(" morp_keyword^1.5");
+			}
+			else {
+				mltQfBuf.append(" morp_keyword");
+			}
+			mltQfBuf.append(" morp_description");
+			
 			query.setRequestHandler("/mlt");
 			query.setQuery("uciCode:" + uciCode);
 			query.set("mlt.fl", "morp_title morp_keyword morp_description");
+			query.set("mlt.qf", mltQfBuf.toString());
 			query.set("mlt.match.include", false);
+			query.set("mlt.boost", true);
+			query.set("mlt.mintf", 1);
 			query.setRows(params.getPageVol());
 		}
 		else {
@@ -437,7 +463,7 @@ public class SearchDAO extends DAOBase {
 		return query;
 	}
 	
-	protected QueryRequest makeSolrURequest(SolrQuery query) {
+	protected QueryRequest makeSolrRequest(SolrQuery query) {
 		QueryRequest req = new QueryRequest(query);
 		req.setBasicAuthCredentials(solrId, solrPw);
 		return req;
