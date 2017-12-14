@@ -17,6 +17,18 @@
 			}
 		}
 	});
+	
+	$(document).on("click", "#btn_search", function(e) { // 검색 버튼
+		var keyword = $("#keyword").val();
+		keyword = $.trim(keyword);
+		$("#keyword_current").val(keyword);
+
+		if (keyword != "") {
+			location.href = "/photo?keyword=" + keyword;
+		} else {
+			location.href = "/photo";
+		}
+	});
 
 	// 로그인 페이지 이동시 매개변수 넘기기
 	$(document).ready(function() {
@@ -108,7 +120,7 @@
 	<form id="searchform">
 		<input type="text" id="keyword" value="${keyword}" placeholder="검색어를 입력해주세요." />
 		<input type="text" id="keyword_current" value="${keyword}" style="display: none;" />
-		<a href="javascript:void(0)" class="btn_search">검색</a>
+		<a href="javascript:void(0)" id="btn_search" class="btn_search">검색</a>
 	</form>
 </div>
 </nav>

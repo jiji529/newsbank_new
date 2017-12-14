@@ -56,6 +56,7 @@ $(document).on("click", ".filter_list li", function() {
 		$(this).siblings().removeAttr("selected");
 		var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
 		$(this).parents(".filter_title").children().remove().end().html(choice + filter_list);
+		$("input[name=pageNo]").val(1); // 1페이지로 이동
 		
 		dibsList();
 	}		

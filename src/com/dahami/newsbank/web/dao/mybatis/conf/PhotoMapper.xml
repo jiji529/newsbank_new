@@ -31,10 +31,10 @@
 		INNER JOIN bookmark C ON B.bookmark_seq = C.seq
 		INNER JOIN member D  ON C.member_seq = D.seq
 		WHERE C.member_seq = #{member_seq}
-		<if test="bookmark_seq != null">
+		<if test="bookmark_seq != 0 and bookmark_seq != null">
 			AND B.bookmark_seq = #{bookmark_seq}
-		</if>
-		
+		</if>		
+	    
 		<if test="pageVol != 0">
 			LIMIT #{start}, #{pageVol}    
 		</if>

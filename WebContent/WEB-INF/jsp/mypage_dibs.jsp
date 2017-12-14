@@ -96,6 +96,7 @@
 					<li class="filter_title folder_ico">찜 그룹</li>
 					<li class="filter_title"> 찜한 사진 전체
 						<ul class="filter_list">
+							<li value="">찜한 사진 전체</li>
 							<c:forEach items="${bookmarkList}" var="bookmark">
 								<li value="${bookmark.seq}">${bookmark.bookName}</li>
 							</c:forEach>

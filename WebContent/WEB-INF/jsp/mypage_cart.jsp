@@ -66,7 +66,8 @@
 		if(chk == true) {
 			cartDelete(uciCode);
 			$(this).closest("tr").remove();
-		} 				
+		} 			
+		recalculate();
 	});
 
 	/** 다중선택 삭제 */
@@ -79,6 +80,7 @@
 				cartDelete(uciCode);
 				$(this).closest("tr").remove();
 			});
+			recalculate();
 		}
 	});
 	
@@ -90,6 +92,39 @@
 			$(".order_list input:checkbox").prop("checked", false);
 		}
 	});
+	
+	// #총 금액 재계산
+	function recalculate() { 
+		var tot_sell = 0; // 총 금액
+		var tot_surtax = 0; // 총 부가세
+		var tot_purchase = 0; // 총 판매금액
+		
+		$(".order_list tr").each(function(index) {
+			if(index > 0) {
+				var sell_price = $(this).find("td:eq(2)").text(); // 판매가
+				var surtax = $(this).find("td:eq(3)").text(); // 부가세
+				var purchase_price = $(this).find("td:eq(4)").text(); // 구매금액
+				
+				// 숫자만 추출
+				sell_price = parseInt(sell_price.replace(/[^0-9]/g, '')); 
+				surtax = parseInt(surtax.replace(/[^0-9]/g, '')); 
+				purchase_price = parseInt(purchase_price.replace(/[^0-9]/g, '')); 
+				
+				tot_sell += sell_price;
+				tot_surtax += surtax;
+				tot_purchase += purchase_price;
+			}
+		});
+		
+		// 천단위 콤마
+		tot_sell = tot_sell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		tot_surtax = tot_surtax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		tot_purchase = tot_purchase.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		
+		$(".calculate_info_area").find("strong:eq(0)").text(tot_sell);
+		$(".calculate_info_area").find("strong:eq(1)").text(tot_surtax);
+		$(".calculate_info_area").find("strong:eq(2)").text(tot_purchase);
+	}
 	
 	/** DB 삭제함수 */
 	function cartDelete(uciCode) {

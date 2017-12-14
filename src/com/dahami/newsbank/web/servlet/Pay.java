@@ -73,7 +73,7 @@ public class Pay extends NewsbankServletBase {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pay.jsp");
 				dispatcher.forward(request, response);
 			} else {
-				response.getWriter().append("<script type=\"text/javascript\">alert('결제 정보가 없습니다. 이전 화면으로 이동합니다.');history.back(-1);</script>").append(request.getContextPath());
+				response.getWriter().append("<script type=\"text/javascript\">alert('결제할 사진을 선택해 주세요.');history.back(-1);</script>").append(request.getContextPath());
 			}
 
 		} else {

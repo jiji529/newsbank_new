@@ -247,7 +247,7 @@
 			data: searchParam,
 			timeout: 1000000,
 			url: "search",
-			success : function(data) { //console.log(data);
+			success : function(data) { console.log(data);
 				
 				$(data.result).each(function(key, val) {
 					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
@@ -260,7 +260,10 @@
 				});
 				$("#search_list ul").html(html);
 				var totalCount = $(data.count)[0];
+				totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
+				
 				var totalPage = $(data.totalPage)[0];
+				totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
 				$("div .result b").html(totalCount);
 				$("div .paging span.total").html(totalPage);
 				
