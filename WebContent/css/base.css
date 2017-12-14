@@ -26,11 +26,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 nav.gnb_light{height: 90px; width: 100%; margin: 0 auto; -webkit-transition: 0.1s box-shadow ease-in-out; -moz-transition: 0.1s box-shadow ease-in-out; transition: 0.1s box-shadow ease-in-out; position: absolute; z-index: 1000; -webkit-transform: translate3d(0, 0, 0); -moz-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(transparent)); background: -webkit-linear-gradient(rgba(0,0,0,0.5), transparent); background: -moz-linear-gradient(rgba(0,0,0,0.5), transparent); background: linear-gradient(rgba(0,0,0,0.5), transparent); top: 0; padding-top:10px;}
 nav.gnb_light .gnb {padding:0 50px; }
 nav.gnb_light .gnb a.logo{height: 50px; display: block; float: left; width: 142px; margin: 10px 0; position: relative; background:url(../images/logo_w.svg) 0 0 no-repeat;}  
-/* 1차에선 메뉴 주석처리*/
 nav .gnb_left{ float:left; display:block; margin-left:40px;}
-nav .gnb_left li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px; display:none }
-nav .gnb_left li:first-child{ display:block;}
-nav .gnb_left li:last-child{ display:block;}
+nav .gnb_left li{ float:left; padding:0 10px; height:70px; line-height:70px; margin-left:20px; display:block }
 nav.gnb_light .gnb .gnb_left li a{color:#fff;}
 nav a{display:block;font-family:"nsr",Helvetica,AppleSDGothicNeo,AppleGothic,Arial, Dotum,'돋움',sans-serif; font-size:17px;}
 nav .gnb_right{ float:right; display:block;}

@@ -1,12 +1,6 @@
 package com.dahami.newsbank.web.servlet;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Enumeration;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,12 +11,11 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.web.dao.BoardDAO;
 import com.dahami.newsbank.web.dao.MemberDAO;
-import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.UploadService;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 /**
  * Servlet implementation class UploadTest
@@ -57,8 +50,10 @@ public class Upload extends NewsbankServletBase {
 		boolean result = false;
 		String message = "";
 		String fileName = "";
+		int notice_seq = 0;
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = null;
+		BoardDTO NoticeInfo = null;
 
 		if (closed) {
 			return;
@@ -80,6 +75,7 @@ public class Upload extends NewsbankServletBase {
 				
 				if (session.getAttribute("MemberInfo") != null) {
 					MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+					NoticeInfo = new BoardDTO();
 					switch (cmd2) {
 					case "doc":
 						MemberInfo.setComDocPath(fileFullPath);
@@ -93,9 +89,28 @@ public class Upload extends NewsbankServletBase {
 					case "contract":
 						MemberInfo.setContractPath(fileFullPath);
 						break;
+					case "notice":
+						NoticeInfo.setFileName(fileFullPath);
+						break;
 					}
 					MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 					memberDAO.updateMember(MemberInfo); // 회원정보 업데이트 요청
+					
+					if(MemberInfo.getType().equals("A")) { // 관리자 회원만 업로드
+						BoardDAO boardDAO = new BoardDAO(); // 공지사항 정보 연결
+						
+						if(request.getParameter("seq") == null || request.getParameter("seq").equals("")){ 
+							// 공지사항 신규 첨부파일 추가
+							notice_seq = boardDAO.insertNotice(NoticeInfo); 
+							
+						} else {
+							// 공지사항 정보 업데이트 요청(파일 경로 변경)
+							notice_seq = Integer.parseInt(request.getParameter("seq"));
+							NoticeInfo.setSeq(notice_seq); // 공지사항 고유번호
+							boardDAO.updateNotice(NoticeInfo); 
+						}
+						
+					}
 				} 
 			}
 
@@ -107,6 +122,7 @@ public class Upload extends NewsbankServletBase {
 		json.put("success", result);
 		json.put("message", message);
 		json.put("file", fileName);
+		json.put("notice_seq", notice_seq);
 		response.getWriter().print(json);
 		/*
 		 * JSONObject json = new JSONObject(); boolean result = false; String message =

@@ -80,7 +80,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			<div class="table_head">
 				<h3>사진관리</h3>
 				<div class="cms_search">
-					이미지 검색 <input id="cms_keyword" type="text" />
+					<input id="cms_keyword" type="text" placeholder="이미지 검색" />
 					<button id="cms_searchBtn">검색</button>
 				</div>
 

@@ -41,6 +41,7 @@ public class UploadService extends ServiceBase {
 	public static final String PATH_COMP_BANK_BASE = "/data/newsbank/comp/bank";
 	public static final String PATH_COMP_CONTRACT_BASE = "/data/newsbank/comp/contract";
 	public static final String PATH_LOGO_BASE = "/data/newsbank/logo";
+	public static final String PATH_NOTICE_BASE = "/data/newsbank/notice";
 	public static final String PATH_BASE = "/data/newsbank/tmp";
 
 	/*public static final String PATH_COMP_DOC_BASE = "D:/IdeaProjects/git/newsbank/comp/doc";
@@ -85,6 +86,9 @@ public class UploadService extends ServiceBase {
 					break;
 				case "contract":
 					savePath = PATH_COMP_CONTRACT_BASE;
+					break;
+				case "notice":
+					savePath = PATH_NOTICE_BASE;
 					break;
 					
 				}

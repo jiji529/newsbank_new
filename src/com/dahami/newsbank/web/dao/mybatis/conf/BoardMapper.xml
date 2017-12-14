@@ -17,4 +17,31 @@
 	    	notice SET hitCount = hitCount + 1 
 	    WHERE seq = #{seq} 
 	</update>
+	
+	<select id="selectNotice" resultType="com.dahami.newsbank.web.dto.BoardDTO" parameterType="int">
+	    SELECT * FROM notice WHERE seq = #{seq}
+	</select>
+	
+	<insert id="insertNotice" parameterType="com.dahami.newsbank.web.dto.BoardDTO" useGeneratedKeys="true" keyProperty="seq">
+	    INSERT INTO notice (title, description, fileName, popup, hitCount, regDate) VALUES (#{title}, #{description}, #{fileName}, "N", 0, NOW())
+	    
+	    <selectKey resultType="int" keyProperty="seq">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="updateNotice" parameterType="com.dahami.newsbank.web.dto.BoardDTO">
+	    UPDATE notice 
+	    	<set>
+	    	   hitCount = hitCount + 1
+	    	   <if test="title != null">, title = #{title}</if>
+	    	   <if test="description != null">, description = #{description}</if>
+	    	   <if test="fileName != null">, fileName = #{fileName}</if> 
+	    	</set>
+    	WHERE seq = #{seq}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="int">
+	    DELETE FROM notice WHERE seq = #{seq}
+	</delete>
 </mapper>

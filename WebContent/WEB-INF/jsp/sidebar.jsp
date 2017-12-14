@@ -14,7 +14,7 @@
 		<li><strong>콘텐츠 관리</strong>
 			<ul class="lnb_li2">
 				<li><a href="/cms.manage">사진관리</a></li>
-				<li><a href="javascript:void(0)">공지사항</a></li>
+				<li><a href="/board.manage">공지사항</a></li>
 				<li><a href="javascript:void(0)">보도사진</a></li>
 				<li><a href="javascript:void(0)">인기검색어 Top10</a></li>
 			</ul>

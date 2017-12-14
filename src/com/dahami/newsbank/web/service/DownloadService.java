@@ -64,8 +64,10 @@ import com.dahami.common.util.HttpUtil;
 import com.dahami.common.util.ImageUtil;
 import com.dahami.common.util.ZipUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.BoardDAO;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
+import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.dto.DownloadDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
@@ -212,6 +214,25 @@ public class DownloadService extends ServiceBase {
 					downPath = fd.getAbsolutePath();
 				} else {
 					logger.warn("계약서 이미지 생성 실패");
+					downPath = PATH_LOGO_BASE + "/error.jpg";
+				}
+
+			}else if (targetSize.equals("notice")) {
+				int seq = Integer.parseInt(request.getParameter("seq"));
+
+				//MemberDAO mDao = new MemberDAO();
+				//MemberDTO mDto = mDao.getMember(Integer.parseInt(seq));
+				//String path = mDto.getCompDocPath();
+				
+				BoardDAO bDao = new BoardDAO();
+				BoardDTO bDto = bDao.getNotice(seq);
+				String path = bDto.getFileName();
+
+				File fd = new File(path);
+				if (fd.exists()) {
+					downPath = fd.getAbsolutePath();
+				} else {
+					logger.warn("공지사항 첨부 파일 생성 실패");
 					downPath = PATH_LOGO_BASE + "/error.jpg";
 				}
 
@@ -539,7 +560,7 @@ public class DownloadService extends ServiceBase {
 				try {
 					if (targetSize.equals("logo")) {
 						sendImageFile(response, downPath);
-					} else if (targetSize.equals("doc")||targetSize.equals("bank")||targetSize.equals("contract")) {
+					} else if (targetSize.equals("doc") || targetSize.equals("bank") || targetSize.equals("contract") || targetSize.equals("notice")) {
 						sendFile(response, downPath);
 					} else {
 						if (targetSize.equals("service")) {
