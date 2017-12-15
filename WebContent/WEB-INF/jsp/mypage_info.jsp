@@ -133,6 +133,7 @@
 									<span class=" bar">-</span>
 									<input type="text" size="5" class="inp_txt" value="${phone3}" maxlength="4" readonly />
 									<a href="javascrpit:;" id="btnEdit" class="btn_input1">수정</a>
+									<a href="javascrpit:;" id="btnCancel" class="btn_input1" style="display:none">취소</a>
 									<!-- 수정 누르면 보이는 -->
 									<div class="edit_phone" style="display: none" id="editView">
 										<span class="edit_phone_txt">변경할 휴대전화</span>
@@ -168,7 +169,8 @@
 							</tr>
 						</tbody>
 					</table>
-					<c:if test="${MemberInfo.type ne 'P'}">
+					<!-- 주석처리  -->
+					<c:if test="${MemberInfo.type eq 'M' or MemberInfo.type eq 'C'}">
 						<h4>법인 정보</h4>
 						<table class="tb01" cellpadding="0" cellspacing="0">
 							<colgroup>

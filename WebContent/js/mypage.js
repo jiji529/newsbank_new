@@ -301,7 +301,13 @@ $(document).ready(function() {
 
 	$("#btnEdit").on("click", function() {
 		$("#editView").css("display", "block");
+		$("#btnCancel").css("display", "block");
 	});
+	$("#btnCancel").on("click", function() {
+		$("#editView").css("display", "none");
+		$("#btnCancel").css("display", "none");
+	});
+	
 	// 사업자 등록번호 체크
 	$("#compNum1").on("input", function() {
 		if ($(this).val().length == 3) {
