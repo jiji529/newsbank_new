@@ -38,8 +38,58 @@
 	$(document).ready(function() {
 		search();
 		setDatepicker();	
-		
-	});
+		checkForHash(); 
+	});	
+	
+	function checkForHash() { // hash 유무에 따른 검색옵션 불러오기
+	    if(document.location.hash){ // hash 정보가 있을 때
+	        var vars = [], hash;
+	        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('#');
+	        for(var i = 0; i < hashes.length; i++)
+		    {
+		        hash = hashes[i].split('=');
+		        var name = hash[0]; // 옵션이름
+		        var opt = hash[1]; // 옵션 값
+		        var filter; // 필터이름
+		        		        
+		        if(name == "media") {
+		        	filter = ".filter_media"; 
+		        }else if(name == "duration") {
+		        	filter = ".filter_duration";
+		        }else if(name == "horizontal") {
+		        	filter = ".filter_horizontal";
+		        }else if(name == "size") {
+		        	filter = ".filter_size";
+		        }
+		        
+		        $(filter + " .filter_list").find("li").removeAttr("selected");
+	        	$(filter + " .filter_list").find("li[value='" + opt + "']").attr("selected", "selected");
+	        	
+	        	var choice = $(filter + " .filter_list").find("li[value='" + opt + "']").text();
+	        	var titleTag = $(filter).find("span");
+	        	var titleStr = titleTag.text();
+	        	titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+				titleTag.html(titleStr);
+		        
+		        vars.push(hash[0]);
+		        vars[hash[0]] = hash[1];
+		    }
+	        
+	        var keyword_current = $("#keyword_current").val();
+		    if(keyword_current) {
+		    	var url = location.href;
+		    	var split_url = url.split("?");
+		    	split_url = split_url[0] + "?keyword=" + keyword_current;
+		    	history.replaceState({}, null, split_url);
+		    } else {
+		    	history.replaceState({}, null, location.pathname);
+		    }
+		    search();
+		    
+	    } else {
+	        
+	    }    
+	}
 	
 	$(document).on("click", ".square", function() {
 		$(".viewbox > .size > span.grid").removeClass("on");
@@ -53,7 +103,7 @@
 		$("#search_list").addClass("grid").removeClass("square");
 	});
 
-	$(document).on("click", ".filter_list li", function() {
+	$(document).on("click", ".filter_list li", function() { // 검색 옵션 선택
 		var choice = $(this).text();
 		$(this).siblings().removeAttr("selected");
 		$(this).attr("selected", "selected");
@@ -247,8 +297,7 @@
 			data: searchParam,
 			timeout: 1000000,
 			url: "search",
-			success : function(data) { console.log(data);
-				
+			success : function(data) { //console.log(data);
 				$(data.result).each(function(key, val) {
 					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
 					html += "<div class=\"info\">";
@@ -259,11 +308,17 @@
 					html += "</li>";
 				});
 				$("#search_list ul").html(html);
-				var totalCount = $(data.count)[0];
-				totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
 				
-				var totalPage = $(data.totalPage)[0];
-				totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
+				var totalCount = data.count;
+				if(totalCount.length > 3) {
+					totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마	
+				}
+				
+				var totalPage = data.totalPage;
+				if(totalPage.length > 3) {
+					totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마	
+				}
+				
 				$("div .result b").html(totalCount);
 				$("div .paging span.total").html(totalPage);
 				
@@ -299,6 +354,13 @@
 	}
 	
 	function go_photoView(uciCode) {
+		// 상세페이지에서 [뒤로가기]로 목록페이지 이동 시, 기존의 검색옵션값을 유지하기 위해서 hash 설정
+		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value"); // 매체
+		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value"); // 기간
+		var horizontal = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value"); // 가로,세로
+		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value"); // 크기
+		document.location.hash = "#media=" + media + "#duration=" + duration + "#horizontal=" + horizontal + "#size=" + size; // 검색옵션 hash 설정
+		
 		$("#uciCode").val(uciCode);
 		view_form.submit();
 	}
