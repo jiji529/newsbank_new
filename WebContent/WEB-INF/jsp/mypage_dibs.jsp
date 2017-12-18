@@ -146,10 +146,11 @@
 								<li>사용자 폴더</li> -->
 								<c:forEach items="${bookmarkList}" var="bookmark">
 									<c:if test="${bookmark.bookName eq '기본그룹'}">
-										<li class="select" value="${bookmark.seq}">${bookmark.bookName}</li>
+										<%-- <li value="${bookmark.seq}">${bookmark.bookName}</li> --%>
+										<li value="${bookmark.seq}" onclick="change_folder('${bookmark.seq}', '${bookmark.bookName}')">${bookmark.bookName}</li>
 									</c:if>
 									<c:if test="${bookmark.bookName ne '기본그룹'}">
-										<li value="${bookmark.seq}" onclick="change_folder('${bookmark.seq}')">${bookmark.bookName}</li>
+										<li value="${bookmark.seq}" onclick="change_folder('${bookmark.seq}', '${bookmark.bookName}')">${bookmark.bookName}</li>
 									</c:if>
 									
 								</c:forEach>

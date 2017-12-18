@@ -51,12 +51,19 @@ function goPage(pageNo) {
 /** 찜 카테고리 선택 */
 $(document).on("click", ".filter_list li", function() {
 	if(!$(this).hasClass("folder_edit")) { // 폴더관리를 제외한 나머지
+		var seq = $(this).val();
 		var choice = $(this).text();
 		$(this).attr("selected", "selected");
 		$(this).siblings().removeAttr("selected");
 		var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
 		$(this).parents(".filter_title").children().remove().end().html(choice + filter_list);
 		$("input[name=pageNo]").val(1); // 1페이지로 이동
+		
+		$(".sort_folder .list_layer li").css("display", "block");
+		if(seq != "") {
+			$(".sort_folder .list_layer").find("[value=" + seq + "]").css("display", "none");
+			console.log("list_layer : " + seq);
+		}
 		
 		dibsList();
 	}		
@@ -131,7 +138,11 @@ $(document).on("click", ".btn_del", function() {
 	var uciCode = $(this).parent().parent().find("div span:first").text();
 	$(this).closest(".thumb").remove();
 	
-	dibsDelete(uciCode);		
+	dibsDelete(uciCode);
+	
+	$("input:checkbox[name='checkAll']").attr("checked", false);
+	var count = $("#wish_list2 .thumb").length;
+	$(".count").text(count);		
 });
 
 /** 다중선택 삭제 */
@@ -144,6 +155,10 @@ $(document).on("click", ".sort_del", function() {
 		dibsDelete(uciCode);
 		$(this).closest(".thumb").remove();
 	});
+	
+	$("input:checkbox[name='checkAll']").attr("checked", false);
+	var count = $("#wish_list2 .thumb").length;
+	$(".count").text(count);
 });
 
 /** 전체선택 */
@@ -161,17 +176,28 @@ function go_photoView(uciCode) {
 }
 
 /** 찜관리-폴더이동 */
-function change_folder(bookmark_seq) {
+function change_folder(bookmark_seq, bookmark_name) {
 	var chk_total = $("#wish_list2 input:checkbox:checked").length;
-		
+	var filter_title = $(".filter_list").find("[selected=selected]").text();
+			
 	if(chk_total == 0) {
 		alert("최소 1개 이상을 선택해주세요.");
 	} else {
 		$("#wish_list2 input:checkbox:checked").each(function(index) {
 			var uciCode = $(this).val();
 			dibsUpdate(uciCode, bookmark_seq);
-			$(this).closest(".thumb").remove();
+			
+			if(filter_title == "찜한 사진 전체" || filter_title == "") { 
+				$(this).attr("checked", false);
+			} else { // 카테고리를 선택했을 떄만 이미지 지우기
+				$(this).closest(".thumb").remove();
+			}
 		});
+		$("input:checkbox[name='checkAll']").attr("checked", false);
+		var count = $("#wish_list2 .thumb").length;
+		$(".count").text(count);
+		
+		alert("선택하신 사진이 " + bookmark_name + "폴더로 이동되었습니다.");
 	}
 }
 

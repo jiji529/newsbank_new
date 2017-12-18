@@ -64,8 +64,15 @@
 		        
 		        $(filter + " .filter_list").find("li").removeAttr("selected");
 	        	$(filter + " .filter_list").find("li[value='" + opt + "']").attr("selected", "selected");
+	        	var choice; 
 	        	
-	        	var choice = $(filter + " .filter_list").find("li[value='" + opt + "']").text();
+	        	var regx = /[~]/gi; // 기간 옵션 예외
+	        	if(regx.test(opt)){
+	        		choice = opt;	
+	        	} else {
+	        		choice = $(filter + " .filter_list").find("li[value='" + opt + "']").text();
+	        	}
+	        	
 	        	var titleTag = $(filter).find("span");
 	        	var titleStr = titleTag.text();
 	        	titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
@@ -134,13 +141,24 @@
 		// 기간 : 직접선택
 		var startDate = $("#startDate").val();
 		var endDate = $("#endDate").val();
-		var choice = startDate + "~" + endDate;
-		$(".choice").attr("value", choice);
-		$(this).closest(".filter_list").stop().slideUp("fast");
 		
-		// 필터 바꾸면 페이지 번호 초기화
-		$("input[name=pageNo]").val("1");
-		search();
+		if(startDate != "" && endDate != "") {
+			var choice = startDate + "~" + endDate;
+			$(".choice").attr("value", choice);
+			$(this).closest(".filter_list").stop().slideUp("fast");
+			
+			// 필터 바꾸면 페이지 번호 초기화
+			$("input[name=pageNo]").val("1");
+			search();	
+			
+		} else {
+			alert("시작날짜, 마지막날짜를 정확히 기입해주세요.");
+		}
+		
+	});
+	
+	$(document).on("click", ".ico_cal", function() {
+		
 	});
 
 	$(document).on("click", "div .paging a.prev", function() {
@@ -286,7 +304,7 @@
 				, "includePerson":includePerson
 				, "group":group
 		};
-		
+		console.log(searchParam);
 		$("#keyword").val($("#keyword_current").val());
 		
 		var html = "";
@@ -419,11 +437,11 @@
 								직접 입력
 								<div class="calendar">
 									<div class="cal_input">
-										<input type="text" class="datepicker" id="startDate" title="검색기간 시작일" />
+										<input type="text" class="datepicker" id="startDate" title="검색기간 시작일" placeholder="시작날짜"/>
 										<a href="javascript:void(0)" class="ico_cal">달력</a>
 									</div>
 									<div class="cal_input">
-										<input type="text" class="datepicker" id="endDate" title="검색기간 마지막일" />
+										<input type="text" class="datepicker" id="endDate" title="검색기간 마지막일" placeholder="마지막날짜"/>
 										<a href="javascript:void(0)" class="ico_cal">달력</a>
 									</div>
 									<button class="btn_cal" type="button">적용</button>

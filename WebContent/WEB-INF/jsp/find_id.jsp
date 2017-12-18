@@ -28,7 +28,9 @@
 <body>
 <div class="wrap">
 	<header>
-		<h1><a href="/home" class="logo">뉴스뱅크</a></h1>
+		<a href="/home" class="logo">
+			<h1>뉴스뱅크</h1>
+		</a>
 	</header>
 	<section class="join">
 		<div class="wrap_tit">

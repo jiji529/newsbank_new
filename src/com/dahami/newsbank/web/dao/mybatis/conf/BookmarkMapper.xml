@@ -19,7 +19,7 @@
     </insert>
     
     <select id="selectBookmark" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">
-        SELECT seq, member_seq, bookName, activate, regDate FROM bookmark WHERE member_seq = #{member_seq} 
+        SELECT seq, member_seq, bookName, activate, regDate FROM bookmark WHERE member_seq = #{member_seq} ORDER BY regDate ASC
     </select>
     
     <select id="selectOne_Bookmark" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">
@@ -56,6 +56,7 @@
 		FROM bookmark A
 		INNER JOIN bookmarkPhoto B ON A.seq = B.bookmark_seq
 		WHERE A.member_seq = #{member_seq} 
+		ORDER BY B.seq DESC
     </select>
     
 </mapper>
