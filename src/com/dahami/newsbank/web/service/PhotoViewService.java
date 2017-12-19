@@ -56,6 +56,16 @@ public class PhotoViewService extends ServiceBase {
 		List<MemberDTO> mediaList = mDao.listActiveMedia();
 		request.setAttribute("mediaList", mediaList);
 		
+		/*String ownerName = photoDTO.getOwnerName();
+		request.setAttribute("ownerName", ownerName);*/
+		
+		/*MemberDAO memberDAO = new MemberDAO();
+		int ownerNo = photoDTO.getOwnerNo();
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO = memberDAO.getMember(ownerNo);
+		String ownerName = memberDTO.getCompName();	// 소유자 매체명
+		request.setAttribute("ownerName", ownerName);*/ 
+		
 		if(MemberInfo != null) {
 			String member_seq = String.valueOf(MemberInfo.getSeq());
 			if(action.equals("insertBookmark")) {

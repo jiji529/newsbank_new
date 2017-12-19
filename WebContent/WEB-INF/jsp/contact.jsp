@@ -11,6 +11,7 @@
   date            author         comment
   ----------      ---------      ----------------------------------------------
   2017. 11. 13.   	  tealight        file_name
+  2017. 12. 19.   	  hoydev        질문하기 등록
 ---------------------------------------------------------------------------%>
 
 
@@ -28,6 +29,100 @@
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/footer.js"></script>
+<script type="text/javascript">
+
+	$(document).on("keyup", ".num", function() { // 숫자만 입력
+		this.value = this.value.replace(/[^0-9]/g,'');
+	});
+	
+	// 이메일 보내기
+	$(document).on("click", ".call_send", function() {
+		var name = "";
+		var phone = "";
+		var email = "";
+		var title = "";
+		var contents = "";
+		var tempPhone = "";
+		var tempEmail = "";
+		var chkflag = false;
+		
+		name = $('#commuName').val();
+		phone = $('#firNum').val()+"-"+$('#midNum').val()+"-"+$('#lastNum').val();
+		email = $('#firEmail').val()+"@"+$('#lastEmail').val();
+		title = $('#commuTitle').val();
+		contents = $('#commuContents').val();
+		
+		tempPhone = $('#firNum').val()+$('#midNum').val()+$('#lastNum').val();
+		tempEmail = $('#firEmail').val()+$('#lastEmail').val();
+		chkflag = $('#chk').prop('checked');
+		
+		if(chkflag  == false){
+			alert("개인정보 수집에 동의 하여 주십시오");
+			$('#chk').focus();
+		}else if(name == ""){
+			alert("성명을 기입하여 주십시오");
+			$('#commuName').focus();
+			return false;
+		}else if(tempPhone == ""){
+			alert("연락처를 기입하여 주십시오");
+			$('#firNum').focus();
+			return false;
+		}else if(tempEmail == ""){
+			alert("이메일을 기입하여 주십시오");
+			$('#firEmail').focus();
+			return false;
+		}else if(title == ""){
+			alert("제목을 기입하여 주십시오");
+			$('#commuTitle').focus();
+			return false;
+		}else if(contents == ""){
+			alert("내용을 기입하여 주십시오");
+			$('#commuContents').focus();
+			return false;
+		}else{
+			
+			$.ajax({
+				url : "/SendEmail",
+				cache : false,
+			    dataType: 'json',
+			    contentType: 'application/json; charset=utf-8',
+				data: {
+					name: name,
+					phone: phone,
+					email: email,
+					title: title,
+					contents: contents
+		        },
+				success: response_jsonlst
+			});
+		}
+	});
+	
+	// success성공시 성공 여부 확인 창
+	function response_jsonlst(data){
+		var success = data.success;
+		
+		if(success) {
+			alert("관리자에게 문의사항이 전달 되었습니다.");
+			
+			$('#commuName').val("");
+			$('#firNum').val("");
+			$('#midNum').val("");
+			$('#lastNum').val("");
+			$('#firEmail').val("")
+			$('#lastEmail').val("");
+			$('#commuTitle').val("");
+			$('#commuContents').val("");
+			
+			tempPhone = $('#firNum').val()+$('#midNum').val()+$('#lastNum').val();
+			tempEmail = $('#firEmail').val()+$('#lastEmail').val();
+		} else {
+			alert("전송과정에서 오류가 발생했습니다.\n 관리자에게 문의바랍니다.");
+		}
+		
+	}
+	
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -92,7 +187,7 @@
 				</div>
 				<div class="agree_check">
 					<p>
-						<input type="checkbox">
+						<input type="checkbox" id="chk">
 						<label for="agree">개인정보 수집 및 이용에 동의합니다.</label>
 					</p>
 				</div>
@@ -100,29 +195,29 @@
 				<dl>
 					<dt>성명</dt>
 					<dd>
-						<input type="text"  />
+						<input type="text" id="commuName" maxlength="10"/>
 					</dd>
 					<dt>연락처</dt>
 					<dd>
-						<input type="text" class="num" />
+						<input type="text" class="num" id="firNum" maxlength="3"/>
 						<span>-</span>
-						<input type="text" class="num" />
+						<input type="text" class="num" id="midNum" maxlength="4"/>
 						<span>-</span>
-						<input type="text" class="num" />
+						<input type="text" class="num" id="lastNum" maxlength="4"/>
 					</dd>
 					<dt>이메일</dt>
 					<dd>
-						<input type="text" class="mail"/>
+						<input type="text" class="mail" id="firEmail"/>
 						<span>@</span>
-						<input type="text" class="mail"/>
+						<input type="text" class="mail" id="lastEmail"/>
 					</dd>
 					<dt>제목</dt>
 					<dd>
-						<input type="text" style="width:950px" />
+						<input type="text" style="width:950px" id="commuTitle"/>
 					</dd>
 					<dt class="main_cont">질문내용</dt>
 					<dd class="main_cont">
-						<textarea></textarea>
+						<textarea id="commuContents"></textarea>
 					</dd>
 				</dl>
 				<div class="call_send"><a href="javascript:void(0)">등록</a></div>

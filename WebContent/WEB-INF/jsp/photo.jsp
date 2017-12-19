@@ -304,7 +304,7 @@
 				, "includePerson":includePerson
 				, "group":group
 		};
-		console.log(searchParam);
+		//console.log(searchParam);
 		$("#keyword").val($("#keyword_current").val());
 		
 		var html = "";
@@ -319,7 +319,7 @@
 				$(data.result).each(function(key, val) {
 					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
 					html += "<div class=\"info\">";
-					html += "<div class=\"photo_info\">" + val.copyright + "</div>";
+					html += "<div class=\"photo_info\">" + val.ownerName + "</div>";
 					html += "<div class=\"right\">";
 					html += "<a class=\"over_wish\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">시안 다운로드</a> </div>";
 					html += "</div>";
@@ -397,10 +397,9 @@
 							<span>매체 :전체</span>
 						</c:if>
 						<c:if test="${seq ne '0'}">
-							<%-- <span>매체 :${seq}</span> --%>
 							<c:forEach items="${mediaList}" var="media">
 								<c:if test="${seq eq media.seq}">
-									<span>매체 :${media.name}</span>
+									<span>매체 :${media.compName}</span>
 								</c:if>
 							</c:forEach>
 						</c:if>
@@ -415,11 +414,11 @@
 							<c:forEach items="${mediaList}" var="media">
 							
 								<c:if test="${seq eq media.seq}">
-									<li value="${media.seq }" selected="selected">${media.name }</li>
+									<li value="${media.seq }" selected="selected">${media.compName}</li>
 								</c:if>
 								
 								<c:if test="${seq ne media.seq}">
-									<li value="${media.seq }">${media.name }</li>
+									<li value="${media.seq }">${media.compName}</li>
 								</c:if>
 																
 							</c:forEach>

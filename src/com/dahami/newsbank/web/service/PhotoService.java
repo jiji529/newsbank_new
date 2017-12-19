@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -29,9 +30,12 @@ public class PhotoService extends ServiceBase {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		MemberDAO mDao = new MemberDAO();
 		List<MemberDTO> mediaList = mDao.listActiveMedia();
+		request.setAttribute("mediaList", mediaList); // 활성 매체사
 		
-		request.setAttribute("mediaList", mediaList);
-		String seq = request.getParameter("seq") == null ? "0": request.getParameter("seq");
+		String seq = request.getParameter("seq"); // 선택 매체사 고유seq
+		if(seq == null || seq.isEmpty()) {
+			seq = "0";
+		}
 		request.setAttribute("seq", seq);
 	
 		String keyword = request.getParameter("keyword");

@@ -26,20 +26,33 @@
 <script type="text/javascript">
 	$(document).ready(function (){
 		$("#searchTxt").on('click', function(e) {
-			var pages = 1;
-			var keyword = $("#searchInput").val();
-			//var param = "action=search";
-			$(".faq dl").empty();
-			
-			$.ajax({
-				url: "/boardJson",
-				type: "GET",
-				dataType: "json",
-				data: {
-					"keyword": keyword
-				},
-				success: function(data) {
-					$(data.result).each(function(key, val) {		
+			boardSearch();
+		});
+		
+		$('#searchInput').on('keypress', function(e) {
+			if (e.which == 13) {/* 13 == enter key@ascii */
+				boardSearch();
+			}
+		});
+	});
+	
+	function boardSearch() { // 공지사항 검색
+		var pages = 1;
+		var keyword = $("#searchInput").val();
+		var html = "";
+		$(".faq dl").empty();
+		
+		$.ajax({
+			url: "/boardJson",
+			type: "GET",
+			dataType: "json",
+			data: {
+				"keyword": keyword
+			},
+			success: function(data) {
+				
+				if(data.result != "") {
+					$(data.result).each(function(key, val) {
 						html += '<dt id="dt'+key+'" style="cursor: pointer;">';
 						html += '<a onclick="evt('+key+', '+val.seq+')">';
 						html += '<span class="faq_tit noti">'+val.title+'</span>';
@@ -52,47 +65,14 @@
 						html += '</dd>';
 					});
 					
-					$(html).appendTo(".faq dl");
+				} else {
+					html += '<dt><a><span class="faq_tit noti">결과내 검색결과가 없습니다.</span></a></dt>';
 				}
-			});
-		});
-		
-		$('#searchInput').on('keypress', function(e) {
-			if (e.which == 13) {/* 13 == enter key@ascii */
-				var pages = 1;
-				var keyword = $("#searchInput").val();
-				var html = "";
-				//var param = "action=search";
-				$(".faq dl").empty();
 				
-				$.ajax({
-					url: "/boardJson",
-					type: "GET",
-					dataType: "json",
-					data: {
-						"keyword": keyword
-					},
-					success: function(data) {
-						
-						$(data.result).each(function(key, val) {		
-							html += '<dt id="dt'+key+'" style="cursor: pointer;">';
-							html += '<a onclick="evt('+key+', '+val.seq+')">';
-							html += '<span class="faq_tit noti">'+val.title+'</span>';
-							html += '<span class="faq_date">'+val.regDate+'</span>';
-							html += '<span class="faq_ico"></span>';
-							html += '</a>';
-							html += '</dt>';
-							html += '<dd id="'+key+'">';
-							html += '<p>'+val.description+'</p>';
-							html += '</dd>';
-						});
-						
-						$(html).appendTo(".faq dl");
-					}
-				});
+				$(html).appendTo(".faq dl");
 			}
 		});
-	});
+	}
 	
 	//공지사항 클릭시 반응
 	function evt(newwin, board_seq){

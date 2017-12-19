@@ -101,6 +101,7 @@ public class SearchService extends ServiceBase {
 					itemList.add(itemMap);
 					itemMap.put("link", dto.getViewUrl());
 					itemMap.put("copyright", dto.getCopyright());
+					itemMap.put("ownerName", dto.getOwnerName());
 					String description = dto.getDescription();
 					if(description != null) {
 						description = description.replaceAll("((\\r)?\\n)+", "\n").trim();

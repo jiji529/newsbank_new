@@ -539,10 +539,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<div class="navi_wrap">
 					<span class="ico_depth"></span>
 					<div class="navi_cate">
-						${photoDTO.copyright}
+						${photoDTO.ownerName}
 						<ul class="navi_select">
 							<c:forEach items="${mediaList}" var="media">
-								<li value="${media.seq}" onclick="media_submit(${media.seq})">${media.name}</li>
+								<li value="${media.seq}" onclick="media_submit(${media.seq})">${media.compName}</li>
 							</c:forEach>
 						</ul>
 					</div>
