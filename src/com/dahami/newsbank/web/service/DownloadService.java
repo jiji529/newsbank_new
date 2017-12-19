@@ -517,7 +517,7 @@ public class DownloadService extends ServiceBase {
 				}
 				// 기타 다운로드??
 				else {
-					logger.warn("잘못된 접근: " + targetSize + " / " + uciCode);
+					logger.warn("잘못된 접근: (" + targetSize + ") / " + uciCode);
 					// 현재 대상이 되는 케이스 없음 / 향후 확장성을 위해
 				}
 				if (downPath != null) {
