@@ -48,6 +48,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.common.util.ObjectUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 public class SearchDAO extends DAOBase {
@@ -225,9 +226,24 @@ public class SearchDAO extends DAOBase {
 			
 			int resultCount = 0;
 			List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-			if(docList != null) {
+			if(docList != null && docList.size() > 0) {
+				MemberDAO mDao = new MemberDAO();
+				List<MemberDTO> mList = mDao.listActiveMedia();
+				Map<Integer, MemberDTO> memberMap = new HashMap<Integer, MemberDTO>();
+				for(MemberDTO curM : mList) {
+					memberMap.put(curM.getSeq(), curM);
+				}
 				for(SolrDocument doc : docList) {
-					photoList.add(new PhotoDTO(doc));
+					PhotoDTO cur = new PhotoDTO(doc);
+					int ownerNo = cur.getOwnerNo();
+					MemberDTO curMember = memberMap.get(ownerNo);
+					if(curMember != null) {
+						cur.setOwnerName(curMember.getName());
+					}
+					else {
+						logger.warn("멤버정보 없음: seq / " + ownerNo);
+					}
+					photoList.add(cur);
 				}
 				resultCount = (int)docList.getNumFound();
 			}
