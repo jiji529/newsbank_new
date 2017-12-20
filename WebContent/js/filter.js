@@ -10,6 +10,7 @@
  		  // 기간 (직접선택)을 제외한 나머지 검색옵션만 slide up 이벤트 적용
  		  $(".filter_duration .filter_list").stop().slideUp("fast");
  		  $(this).children(".filter_list").stop().slideUp("fast");
+ 		  $(".ui-datepicker-close").trigger("click");
  	  }
   });;
  });

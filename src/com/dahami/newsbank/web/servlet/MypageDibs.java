@@ -84,10 +84,31 @@ public class MypageDibs extends NewsbankServletBase {
 				String photo_uciCode = request.getParameter("photo_uciCode");
 				
 				if(action.equals("delete")) {
+					if(photo_uciCode.contains("|")) { // 다수 선택
+						String[] uciCode = photo_uciCode.split("\\|");
+						for (String code : uciCode) {
+							bookmarkDAO.delete(member_seq, code);
+						}
+					} else { // 단일 선택
+						bookmarkDAO.delete(member_seq, photo_uciCode);
+					}
+					
+				}else if(action.equals("update")) { // 다수 선택
+					if(photo_uciCode.contains("|")) {
+						String[] uciCode = photo_uciCode.split("\\|");
+						for (String code : uciCode) {
+							bookmarkDAO.updateBookmarkPhoto(bookmark_seq, code);
+						}
+					} else { // 단일 선택
+						bookmarkDAO.updateBookmarkPhoto(bookmark_seq, photo_uciCode);
+					}
+				}				
+				
+				/*if(action.equals("delete")) {
 					bookmarkDAO.delete(member_seq, photo_uciCode);
 				}else if(action.equals("update")) {
 					bookmarkDAO.updateBookmarkPhoto(bookmark_seq, photo_uciCode);
-				}
+				}*/
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_dibs.jsp");
 				dispatcher.forward(request, response);

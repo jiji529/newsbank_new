@@ -106,23 +106,28 @@
 		
 		 // #폴더 삭제
 		$(document).on("click", ".btn_delete", function() {
-			var bookmark_seq = $(this).attr("value");
-			var param = "action=deleteBookmark";
-			$.ajax({
-				url: "/dibs.popOption?"+param,
-				type: "POST",
-				data: {
-					"bookmark_seq" : bookmark_seq
-				},
-				success: function(data) {
-					
-				},
-				error : function(request, status, error) {
-					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-				}
-			});	
+			var chk = confirm("폴더 내에 저장된 이미지가 모두 삭제됩니다.\n 정말로 삭제하시겠습니까?");
 			
-			$(this).closest("li").remove();
+			if(chk == true) {
+				var bookmark_seq = $(this).attr("value");
+				var param = "action=deleteBookmark";
+				$.ajax({
+					url: "/dibs.popOption?"+param,
+					type: "POST",
+					data: {
+						"bookmark_seq" : bookmark_seq
+					},
+					success: function(data) {
+						alert("폴더가 삭제되었습니다.");
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+					}
+				});	
+				
+				$(this).closest("li").remove();
+			} 
+			
 		});
 		 
 		 // #폴더 수정완료

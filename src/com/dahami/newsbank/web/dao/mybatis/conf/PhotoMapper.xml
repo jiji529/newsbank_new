@@ -34,7 +34,7 @@
 		<if test="bookmark_seq != 0 and bookmark_seq != null">
 			AND B.bookmark_seq = #{bookmark_seq}
 		</if>		
-	    
+	    ORDER BY B.regDate DESC
 		<if test="pageVol != 0">
 			LIMIT #{start}, #{pageVol}    
 		</if>

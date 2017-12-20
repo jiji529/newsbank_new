@@ -72,15 +72,21 @@
 
 	/** 다중선택 삭제 */
 	$(document).on("click", ".mp_btn", function() {
-		var chk = confirm("정말로 삭제하시겠습니까?");
+		var chkCount = $(".order_list input:checkbox:checked").length;
 		
-		if(chk == true) {
-			$(".order_list input:checkbox:checked").each(function(index) {
-				var uciCode = $(this).val();
-				cartDelete(uciCode);
-				$(this).closest("tr").remove();
-			});
-			recalculate();
+		if(chkCount == 0) {
+			alert("최소 1개 이상을 선택해주세요.");
+		} else {
+			var chk = confirm("정말로 삭제하시겠습니까?");
+			
+			if(chk == true) {
+				$(".order_list input:checkbox:checked").each(function(index) {
+					var uciCode = $(this).val();
+					cartDelete(uciCode);
+					$(this).closest("tr").remove();
+				});
+				recalculate();
+			}
 		}
 	});
 	

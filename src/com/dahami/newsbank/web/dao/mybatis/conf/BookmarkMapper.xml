@@ -33,6 +33,10 @@
         DELETE FROM bookmark WHERE member_seq = #{member_seq} AND seq = #{bookmark_seq}        
     </delete>
     
+    <delete id="deleteBookmarkPhotoAll" parameterType="java.util.Map">
+        DELETE FROM bookmarkPhoto WHERE bookmark_seq = #{bookmark_seq}        
+    </delete>
+    
     <delete id="deleteBookmarkPhoto">
         DELETE A.* FROM bookmarkPhoto A
 		INNER JOIN bookmark B ON A.bookmark_seq = B.seq

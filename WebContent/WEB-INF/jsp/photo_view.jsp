@@ -45,7 +45,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				url: "/view.photo?"+param,
 				type: "POST",
 				data: {
-					"photo_uciCode" : uciCode,
+					"uciCode" : uciCode,
 					"bookName" : bookName,
 				},
 				success: function(data) {

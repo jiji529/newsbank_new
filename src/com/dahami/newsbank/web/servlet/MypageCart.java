@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.CartDAO;
+import com.dahami.newsbank.web.dto.BookmarkDTO;
 import com.dahami.newsbank.web.dto.CartDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
@@ -69,7 +70,11 @@ public class MypageCart extends NewsbankServletBase {
 				}else if(action.equals("bookmark")) {
 					String bookName = "기본그룹"; // 기본값
 					BookmarkDAO bookmarkDAO = new BookmarkDAO();
-					bookmarkDAO.insert(member_seq, uciCode, bookName);
+					BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
+					if(bookmark == null) { // 중복 데이터 확인
+						bookmarkDAO.insert(member_seq, uciCode, bookName);
+					}
+					
 				}
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_cart.jsp");

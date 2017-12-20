@@ -38,6 +38,8 @@ $(document).on("click", "a[name=nextPage]", function() {
 });
 
 function goPage(pageNo) {
+	$("input:checkbox[name='checkAll']").attr("checked", false);
+	
 	if(pageNo < 1) {
 		pageNo = 1;
 	}
@@ -64,7 +66,7 @@ $(document).on("click", ".filter_list li", function() {
 			$(".sort_folder .list_layer").find("[value=" + seq + "]").css("display", "none");
 			console.log("list_layer : " + seq);
 		}
-		
+		$("input:checkbox[name='checkAll']").attr("checked", false);
 		dibsList();
 	}		
 	
@@ -93,7 +95,8 @@ function dibsList() {
 			var totalPage = data.totalPage;
 			
 			$(data.result).each(function(key, val) { 
-				html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
+				//html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
+				html += '<li class="thumb"> <a href="javascript:void(0)" onclick="go_photoView(\'' + val.uciCode + '\')"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
 				html += '<div class="thumb_info">';
 				html += '<input type="checkbox" value="'+val.uciCode+'"/>';
 				html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
@@ -179,13 +182,15 @@ function go_photoView(uciCode) {
 function change_folder(bookmark_seq, bookmark_name) {
 	var chk_total = $("#wish_list2 input:checkbox:checked").length;
 	var filter_title = $(".filter_list").find("[selected=selected]").text();
-			
+	var uciCode = new Array();
+				
 	if(chk_total == 0) {
 		alert("최소 1개 이상을 선택해주세요.");
 	} else {
 		$("#wish_list2 input:checkbox:checked").each(function(index) {
-			var uciCode = $(this).val();
-			dibsUpdate(uciCode, bookmark_seq);
+			//var uciCode = $(this).val();
+			//dibsUpdate(uciCode, bookmark_seq);
+			uciCode.push($(this).val());
 			
 			if(filter_title == "찜한 사진 전체" || filter_title == "") { 
 				$(this).attr("checked", false);
@@ -193,6 +198,8 @@ function change_folder(bookmark_seq, bookmark_name) {
 				$(this).closest(".thumb").remove();
 			}
 		});
+		
+		dibsUpdate(uciCode, bookmark_seq);
 		$("input:checkbox[name='checkAll']").attr("checked", false);
 		var count = $("#wish_list2 .thumb").length;
 		$(".count").text(count);
@@ -201,7 +208,25 @@ function change_folder(bookmark_seq, bookmark_name) {
 	}
 }
 
+function dibsUpdate(uciCode, bookmark_seq) {
+	var param = "action=update";
+	console.log(uciCode.join("|"), bookmark_seq);
+	$.ajax({
+		url: "/dibs.myPage?"+param,
+		type: "POST",
+		data: {
+			"photo_uciCode" : uciCode.join("|"),
+			"bookmark_seq" : bookmark_seq
+		},
+		success: function(data){ }, 
+		error:function(request,status,error){
+        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       	}
+	}); 
+}
+
 /** DB 수정함수 */
+/*
 function dibsUpdate(uciCode, bookmark_seq) {
 	var param = "action=update";
 	
@@ -218,7 +243,7 @@ function dibsUpdate(uciCode, bookmark_seq) {
        	}
 	}); 
 }
-
+*/
 /** 단일 장바구니 추가 */
 function insertBasket(uciCode) {
 	//window.open('/cart.popOption?page=dibs.myPage&uciCode=' + uciCode,'new','resizable=no width=420 height=600');

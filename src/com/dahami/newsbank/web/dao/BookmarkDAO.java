@@ -153,9 +153,7 @@ public class BookmarkDAO extends DAOBase {
 			
 			session.insert("Bookmark.insertBookmark", param);
 			bookmark_seq = (int) param.get("seq");
-			//System.out.println("bookmark_seq : " + bookmark_seq);
-			//int last_insert_seq = (int) param.get("seq");
-			//param.put("bookmark_seq", last_insert_seq);
+			
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
@@ -215,7 +213,8 @@ public class BookmarkDAO extends DAOBase {
 			param.put("member_seq", member_seq);
 			param.put("bookmark_seq", bookmark_seq);
 			
-			session.delete("Bookmark.deleteBookmark", param);		
+			session.delete("Bookmark.deleteBookmarkPhotoAll", param); // 해당 폴더에 저장된 사진 삭제
+			session.delete("Bookmark.deleteBookmark", param); // 폴더 DB 삭제	
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {

@@ -48,7 +48,7 @@ public class PhotoViewService extends ServiceBase {
 		photoDAO.hit(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
 		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
-		String photo_uciCode = request.getParameter("photo_uciCode");
+		//String photo_uciCode = request.getParameter("photo_uciCode");
 		String bookName = request.getParameter("bookName");
 		BookmarkDAO bookmarkDAO = new BookmarkDAO();
 		
@@ -68,13 +68,14 @@ public class PhotoViewService extends ServiceBase {
 		
 		if(MemberInfo != null) {
 			String member_seq = String.valueOf(MemberInfo.getSeq());
-			if(action.equals("insertBookmark")) {
-				bookmarkDAO.insert(member_seq, photo_uciCode, bookName);
+			BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
+			
+			if(action.equals("insertBookmark") && bookmark == null) { // 중복 데이터 확인
+				bookmarkDAO.insert(member_seq, uciCode, bookName);
 			}else if(action.equals("deleteBookmark")) {
-				bookmarkDAO.delete(Integer.parseInt(member_seq), photo_uciCode);
+				bookmarkDAO.delete(Integer.parseInt(member_seq), uciCode);
 			}
 			
-			BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
 			if(bookmark == null) {
 				request.setAttribute("bookmark", bookmark);		
 			}else {
