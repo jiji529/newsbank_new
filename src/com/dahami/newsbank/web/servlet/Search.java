@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.newsbank.web.service.SearchService;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class Search
@@ -28,12 +29,13 @@ public class Search extends NewsbankServletBase {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
 		request.setCharacterEncoding("UTF-8");
-		if (closed) {
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
 			return;
 		}
-		
 		try {
-			if(cmd2.equals("xml")) {
+			if(cmd.is2("xml")) {
 				request.setAttribute("exportType", SearchService.EXPORT_TYPE_XML);
 			}
 		}catch(Exception e){

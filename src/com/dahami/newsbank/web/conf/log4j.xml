@@ -31,6 +31,10 @@
     	<level value="DEBUG" />
     </logger>
     
+<!--     <logger name="com.dahami.newsbank.web.service.DownloadService"> -->
+<!--     	<level value="DEBUG" /> -->
+<!--     </logger> -->
+    
     <root>
         <level value="info"/>
         <appender-ref ref="CONSOLE" />

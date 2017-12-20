@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.dahami.newsbank.web.service.SearchCMSService;
 import com.dahami.newsbank.web.service.SearchService;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class CMSSearch
@@ -31,9 +32,9 @@ public class CMSSearch extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		if (closed) {
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
 			return;
 		}
 		

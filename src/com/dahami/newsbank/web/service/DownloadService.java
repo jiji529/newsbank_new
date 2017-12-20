@@ -70,6 +70,7 @@ import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.dto.DownloadDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 import kr.or.uci.dist.api.APIHandler;
 
@@ -111,16 +112,20 @@ public class DownloadService extends ServiceBase {
 		CORP_INFO_QUERY_MAP.put("gt", "Member.selGetty");
 	}
 
-	private String targetSize;
-	private String uciCode;
+//	private String targetSize;
+//	private String uciCode;
 
-	public DownloadService(String targetSize, String uciCode) {
-		this.targetSize = targetSize;
-		this.uciCode = uciCode;
-	}
+//	public DownloadService(String targetSize, String uciCode) {
+//		this.targetSize = targetSize;
+//		this.uciCode = uciCode;
+//	}
 
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		CmdClass cmd = CmdClass.getInstance(request);
+		String targetSize = cmd.get3();
 		String downPath = null;
+		
+		String uciCode = request.getParameter("uciCode");
 		String sendType = request.getParameter("type");
 		if (sendType == null) {
 			sendType = "view";
@@ -141,6 +146,10 @@ public class DownloadService extends ServiceBase {
 					String tmpLogoInfoPath = PATH_LOGO_TEMP + "/" + seq + ".logoInfo";
 					MemberDAO mDao = new MemberDAO();
 					MemberDTO mDto = mDao.getMember(Integer.parseInt(seq));
+					if(mDto == null) {
+						mDto = new MemberDTO();
+						mDto.setCompName("출처 불명");
+					}
 					boolean makeF = false;
 					File infoFd = new File(tmpLogoInfoPath);
 					if (infoFd.exists()) {
@@ -350,9 +359,9 @@ public class DownloadService extends ServiceBase {
 
 				}
 			} else {
-				PhotoDTO photo = photoDao.read(this.uciCode);
+				PhotoDTO photo = photoDao.read(uciCode);
 				// 사진 정보가 없는 경우
-				if (photo == null) {
+				if (photo == null || photo.getUciCode().equals(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)) {
 					// 파일 부재(이미지 부재 / 오류) 이미지 전송
 					if (targetSize.equals("list")) {
 						response.sendRedirect(URL_PHOTO_ERROR_LIST);
@@ -435,7 +444,7 @@ public class DownloadService extends ServiceBase {
 							}
 							// 구매여부 체크
 							else {
-								if (checkDownloadable(this.uciCode, memberSeq)) {
+								if (checkDownloadable(uciCode, memberSeq)) {
 									downConfirm = true;
 								}
 							}
@@ -459,7 +468,7 @@ public class DownloadService extends ServiceBase {
 						photoDao.insDownLog(downLog);
 					} else if (isOwner) {
 						// 소유자의 경우 콘솔 로그만 남김
-						logger.info("Owner Down: " + this.uciCode);
+						logger.info("Owner Down: " + uciCode);
 					}
 
 					String serviceCode = corp; // nb / gt / dt
@@ -564,12 +573,13 @@ public class DownloadService extends ServiceBase {
 						sendFile(response, downPath);
 					} else {
 						if (targetSize.equals("service")) {
-							sendImageFile(response, downPath, this.uciCode + ".jpg");
+							sendImageFile(response, downPath, uciCode + ".jpg");
 						} else {
 							if (sendType.equals("file")) {
-								String fileName = this.uciCode + "_" + targetSize + ".jpg";
+								String fileName = uciCode + "_" + targetSize + ".jpg";
 								sendImageFile(response, downPath, fileName);
 							} else {
+								logger.debug("Send Image: " + downPath);
 								sendImageFile(response, downPath);
 							}
 						}
@@ -588,7 +598,7 @@ public class DownloadService extends ServiceBase {
 
 	private static final String DAHAMI_HEADER_DELIMITER_STRING = "$$";
 	private static final String DAHAMI_DIST_HEADER_STRING = DAHAMI_HEADER_DELIMITER_STRING + "배포(http://www.newsbank.co.kr) : ";
-	private static final String DAHAMI_ID_HEADER_STRING = DAHAMI_HEADER_DELIMITER_STRING + "I011-";
+	private static final String DAHAMI_ID_HEADER_STRING = DAHAMI_HEADER_DELIMITER_STRING + PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI;
 
 	private boolean embedMetaTags(String orgPath, String uciCode, String serviceName, String serviceCode, int downSeq, boolean isOwner, boolean isOutline) {
 		File fd = new File(orgPath);

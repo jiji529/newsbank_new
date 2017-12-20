@@ -16,6 +16,7 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.UploadService;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class UploadTest
@@ -43,9 +44,12 @@ public class Upload extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		response.addHeader("Cache-Control", "no-cache");
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		JSONObject json = new JSONObject();
 		boolean result = false;
 		String message = "";
@@ -55,11 +59,7 @@ public class Upload extends NewsbankServletBase {
 		MemberDTO MemberInfo = null;
 		BoardDTO NoticeInfo = null;
 
-		if (closed) {
-			return;
-		}
-
-		request.setAttribute("pathType", cmd2);
+		request.setAttribute("pathType", cmd.get2());
 
 		if (request.getAttribute("pathType") != null) {
 			UploadService us = new UploadService();
@@ -76,7 +76,7 @@ public class Upload extends NewsbankServletBase {
 				if (session.getAttribute("MemberInfo") != null) {
 					MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 					NoticeInfo = new BoardDTO();
-					switch (cmd2) {
+					switch (cmd.get2()) {
 					case "doc":
 						MemberInfo.setComDocPath(fileFullPath);
 						break;

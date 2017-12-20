@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -8,12 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dao.SearchDAO;
-import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.DownloadService;
 import com.dahami.newsbank.web.service.PhotoService;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class Photo
@@ -34,26 +34,18 @@ public class Photo extends NewsbankServletBase {
     	new SearchDAO().init();
     }
     
+    private static int idx = 0;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		response.addHeader("Cache-Control", "no-cache");
-		
-		/*HttpSession session = request.getSession();
-		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-		if (MemberInfo != null) {
-			String member_seq = String.valueOf(MemberInfo.getSeq());
-			request.setAttribute("member_seq", member_seq);
-		}*/
-		
-		
-		if (closed) {
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
 			return;
 		}
+		Map<String, String[]> params = request.getParameterMap();
 		
-		if(cmd2 != null && cmd2.equals("down")) {
-			DownloadService ds = new DownloadService(cmd3, getParam("uciCode"));
+		if(cmd.is2("down")) {
+			DownloadService ds = new DownloadService();
 			ds.execute(request, response);
 		} else {
 			PhotoService ps = new PhotoService();
@@ -61,9 +53,5 @@ public class Photo extends NewsbankServletBase {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/photo.jsp");
 			dispatcher.forward(request, response);
 		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 }

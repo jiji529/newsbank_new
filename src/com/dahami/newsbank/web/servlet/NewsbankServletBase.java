@@ -20,24 +20,13 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 
 public abstract class NewsbankServletBase extends HttpServlet {
 	
-	public static final String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-//	public static final String IMG_SERVER_URL_PREFIX = "";
+//	public static final String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+	public static final String IMG_SERVER_URL_PREFIX = "";
 	
 	private static final long serialVersionUID = 4745659834372195390L;
 	protected Logger logger;
 	
-	protected boolean closed;
 	private boolean loggerConfInitF;
-	
-	protected String cmd1;
-	protected String cmd2;
-	protected String cmd3;
-	
-	protected HttpServletRequest request;
-	protected HttpServletResponse response;
-	protected Map<String, String[]> params;
-	
-	protected MemberDTO loginInfo;
 	
     public NewsbankServletBase() {
         super();
@@ -48,49 +37,17 @@ public abstract class NewsbankServletBase extends HttpServlet {
 			DOMConfigurator.configure(MethodHandles.lookup().lookupClass().getClassLoader().getResource("com/dahami/newsbank/web/conf/log4j.xml"));
 			loggerConfInitF = true;
 		}
-		logger = LoggerFactory.getLogger(this.getClass());
+		logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		this.loginInfo = (MemberDTO) session.getAttribute("MemberInfo");
-		request.setAttribute("loginInfo", loginInfo);
-		
+		request.setAttribute("loginInfo",(MemberDTO) session.getAttribute("MemberInfo"));
 		request.setCharacterEncoding("UTF-8");
-		closed = false;
-		cmd1 = cmd2 = cmd3 = "";
-		this.request = request;
-		this.response = response;
-		params = request.getParameterMap();
 		
-		String reqUri = request.getRequestURI().substring(request.getContextPath().length()+1);
-		if(reqUri.indexOf("/") != -1) {
-			logger.warn("Invalid Request: " + reqUri);
-			response.sendRedirect("/invalidPage.jsp");
-			closed = true;
-			return;
-		}
-		
-		String[] cmds = reqUri.split("\\.");	
-		if(cmds.length == 1) {
-			cmd1 = cmds[0];
-		}
-		else if(cmds.length == 2) {
-			cmd1 = cmds[1];
-			cmd2 = cmds[0];	
-		}
-		else if(cmds.length == 3) {
-			cmd1 = cmds[2];
-			cmd2 = cmds[1];
-			cmd3 = cmds[0];
-		}
-		else {
-			logger.warn("Invalid Request(LONG): " + reqUri);
-			response.sendRedirect("/invlidPage.jsp");
-			closed = true;
-			return;
-		}
-		logger.debug("REQ: " + reqUri);
+		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
+		response.addHeader("Cache-Control", "no-cache");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -102,16 +59,16 @@ public abstract class NewsbankServletBase extends HttpServlet {
 	 * @author      : JEON,HYUNGGUK
 	 * @date        : 2017. 10. 30. 오후 2:49:33
 	 * @methodCommet: 특정 파라메터 읽어오기 (값이 1개인 경우만 가능 / 여러개인 경우 첫번째것만) / 없으면 공백 리턴
+	 * @param params
 	 * @param pName
 	 * @return 
 	 * @returnType  : String
 	 */
-	protected String getParam(String pName) {
+	protected String getParam(Map<String, String[]> params, String pName) {
 		try {
-			return this.params.get(pName)[0];
+			return params.get(pName)[0];
 		}catch(Exception e) {
 			return "";
 		}
 	}
-	
 }

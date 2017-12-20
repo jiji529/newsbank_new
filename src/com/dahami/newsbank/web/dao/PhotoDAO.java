@@ -26,7 +26,12 @@ public class PhotoDAO extends DAOBase {
 		
 		try {
 			session = sf.getSession();
-			return session.selectOne("Photo.selPhoto", uciCode);
+			PhotoDTO dto = session.selectOne("Photo.selPhoto", uciCode);
+			if(dto == null) {
+				dto = new PhotoDTO();
+				dto.setUciCode(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI);
+			}
+			return dto;
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {

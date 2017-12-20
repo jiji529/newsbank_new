@@ -217,7 +217,12 @@ public class SearchDAO extends DAOBase {
 			long sTime = System.currentTimeMillis();
 			res = req.process(client);
 			long eTime = System.currentTimeMillis();
-			logger.debug("QueryTime: " + (eTime-sTime) + " msec");
+			if(query.get("qt") != null && query.get("qt").trim().equals("/mlt")) {
+				logger.debug("MltTime: " + (eTime-sTime) + " msec");
+			}
+			else {
+				logger.debug("QueryTime: " + (eTime-sTime) + " msec");	
+			}
 			
 			SolrDocumentList docList = null;
 			if(res.getResults() != null) {
