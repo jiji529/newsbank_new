@@ -104,12 +104,6 @@ public class MypageDibs extends NewsbankServletBase {
 					}
 				}				
 				
-				/*if(action.equals("delete")) {
-					bookmarkDAO.delete(member_seq, photo_uciCode);
-				}else if(action.equals("update")) {
-					bookmarkDAO.updateBookmarkPhoto(bookmark_seq, photo_uciCode);
-				}*/
-				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_dibs.jsp");
 				dispatcher.forward(request, response);
 			}

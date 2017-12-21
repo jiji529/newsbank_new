@@ -18,7 +18,7 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
  * Servlet implementation class BookmarkPhotoJSON
- * 사용자별 북마크 사진 목록을 가져오는 부분
+ * 보도사진 목록 -사용자별 북마크 사진 목록을 가져오는 부분 (찜 아이콘 표시)
  */
 @WebServlet("/bookmarkPhoto.api")
 public class BookmarkPhotoJSON extends NewsbankServletBase {

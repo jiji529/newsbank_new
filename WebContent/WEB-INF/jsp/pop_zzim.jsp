@@ -37,6 +37,12 @@
 	
 		// #폴더이름 변경
 		$(document).on("click", ".btn_update", function() {
+			
+			// 폴더명 변경은 하나씩만 가능하도록 처리
+			if($(".pop_folder").find("form fieldset").length > 0) {
+				$(".pop_folder").find("form fieldset .btn_back").trigger("click"); 
+			} 			
+			
 			var originName = $(this).parents(".folder_btn_area").siblings("p").text();	
 			var bookmark_seq = $(this).attr("value");
 			var html = '<div class="folder_btn_area"><a href="javascript:void(0)">수정</a><a href="javascript:void(0)">삭제</a></div>';
@@ -44,7 +50,7 @@
 			html += '<fieldset>';
 			html += '<legend>폴더 수정 폼</legend>';
 			html += '<input id="originName" type="hidden" value="' + originName + '"/>';
-			html += '<input class="inputs" type="text" maxlength="20" value="' + originName + '"/>';
+			html += '<input id="" class="inputs" type="text" maxlength="20" value="' + originName + '" onkeypress="if(event.keyCode == 13){ complete_folder(); return false; }"/>';
 			html += '<div class="folder_btn_area"><a class="btn_complete" href="javascript:void(0)" value="' + bookmark_seq + '">완료</a><a class="btn_back" href="javascript:void(0)" value="' + bookmark_seq + '">취소</a></div>';
 			html += '</fieldset>';
 			html += '</form>';
@@ -80,13 +86,40 @@
 			});	
 		});
 		
+		// #폴더 추가함수
+		function add_folder() {
+			var latestName = $("#newFolder").val(); 
+			
+			var html = '<p>' + latestName + '</p></div>';
+			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)">수정</a><a class="btn_delete" href="javascript:void(0)">삭제</a></div>';
+			$("#newFolder").closest("li").html(html); // 폴더추가 입력란 생성
+			
+			var param = "action=insertBookmark";
+			$.ajax({
+				url: "/dibs.popOption?"+param,
+				type: "POST",
+				data: {
+					"bookName" : latestName
+				},
+				success: function(data) {					
+					
+				},
+				error : function(request, status, error) {
+					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+				}, complete: function() {
+					
+				}
+			}); 
+		}
+		
+		
 		// #폴더 추가 레이아웃
 		function add_layout() {
 			var html = '<li><div class="folder_btn_area"><a href="javascript:void(0)">수정</a><a href="javascript:void(0)">삭제</a></div>';
 			html += '<form style="display:block ;">';
 			html += '<fieldset>';
 			html += '<legend>폴더 수정 폼</legend>';
-			html += '<input type="text" maxlength="20"/>';
+			html += '<input type="text" id="newFolder" maxlength="20" onkeypress="if(event.keyCode == 13){ add_folder(); return false; }"/>';
 			html += '<div class="folder_btn_area"><a class="btn_add" href="javascript:void(0)">추가</a><a class="btn_cancel" href="javascript:void(0)">취소</a></div>';
 			html += '</fieldset>';
 			html += '</form></li>';
@@ -130,15 +163,15 @@
 			
 		});
 		 
-		 // #폴더 수정완료
-		$(document).on("click", ".btn_complete", function() {
+		// #폴더 수정완료
+		function complete_folder() {
 			var latestName = $(".inputs").val();
-			var bookmark_seq = $(this).attr("value");
+			var bookmark_seq = $(".btn_complete").attr("value");
 			
 			var html = '<p>' + latestName + '</p></div>';
 			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)" value="'+bookmark_seq+'">수정</a><a class="btn_delete" href="javascript:void(0)" value="'+bookmark_seq+'">삭제</a></div>';
 			
-			$(this).closest("li").html(html);
+			$(".inputs").closest("li").html(html);
 			
 			var param = "action=updateBookmark";
 			$.ajax({
@@ -155,6 +188,11 @@
 					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 				}
 			});	
+		}
+		 
+		// #폴더 수정완료 
+		$(document).on("click", ".btn_complete", function() {
+			complete_folder();
 		});
 		 
 		 // #폴더 수정취소
@@ -190,25 +228,6 @@
 						<div class="folder_btn_area"></div>
 					</li>
 				</c:forEach>
-				<!-- <li>
-					<p>기본 폴더</p>
-					<div class="folder_btn_area"></div>
-				</li>
-				<li>
-					<p>일이삼사오육칠팔구십일이삼사오육칠팔구십</p>
-					<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)">수정</a><a class="btn_delete" href="javascript:void(0)">삭제</a></div>
-				</li> -->
-				<!-- <li>
-					<p>수정눌렀을때</p>
-					<div class="folder_btn_area"><a href="javascript:void(0)">수정</a><a href="javascript:void(0)">삭제</a></div>
-					<form style="display:block ;">
-						<fieldset>
-							<legend>폴더 수정 폼</legend>
-							<input type="text" maxlength="20" />
-							<div class="folder_btn_area"><a href="javascript:void(0)">완료</a><a href="javascript:void(0)">취소</a></div>
-						</fieldset>
-					</form>
-				</li> -->
 			</ul>
 		</div>
 		<div class="sum_sec">

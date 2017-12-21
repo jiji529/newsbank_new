@@ -104,7 +104,7 @@ function dibsList() {
 				html += '<li class="btn_down" onclick="down(\''+ val.uciCode +'\')">다운로드</li>';
 				html += '<li class="btn_del">삭제</li>';
 				html += '</ul></li>';					
-			});
+			});			
 			$(html).appendTo("#wish_list2 ul:first");
 			
 			$("div .result b").html(totalCount);
@@ -150,18 +150,25 @@ $(document).on("click", ".btn_del", function() {
 
 /** 다중선택 삭제 */
 $(document).on("click", ".sort_del", function() {
-	if(!confirm("선택항목을 정말로 삭제하시겠습니까?")) {
-		return;
+	var chk_total = $("#wish_list2 input:checkbox:checked").length;
+				
+	if(chk_total == 0) {
+		alert("최소 1개 이상을 선택해주세요.");
+	} else {
+		if(!confirm("선택항목을 정말로 삭제하시겠습니까?")) {
+			return;
+		}
+		$("#wish_list2 input:checkbox:checked").each(function(index) {
+			var uciCode = $(this).val();
+			dibsDelete(uciCode);
+			$(this).closest(".thumb").remove();
+		});
+		
+		$("input:checkbox[name='checkAll']").attr("checked", false);
+		var count = $("#wish_list2 .thumb").length;
+		$(".count").text(count);
 	}
-	$("#wish_list2 input:checkbox:checked").each(function(index) {
-		var uciCode = $(this).val();
-		dibsDelete(uciCode);
-		$(this).closest(".thumb").remove();
-	});
 	
-	$("input:checkbox[name='checkAll']").attr("checked", false);
-	var count = $("#wish_list2 .thumb").length;
-	$(".count").text(count);
 });
 
 /** 전체선택 */
