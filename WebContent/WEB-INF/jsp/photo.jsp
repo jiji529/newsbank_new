@@ -206,7 +206,7 @@
 			}
 			
 			$.ajax({
-				url: "/view.photo?"+param,
+				url: "/bookmark.api?"+param,
 				type: "POST",
 				data: {
 					"uciCode" : uciCode,
@@ -351,9 +351,10 @@
 	}
 	
 	function userBookmarkList() { // 사용자가 찜한 북마크 목록
+		var param = "action=list";
 		$.ajax({
 			type: "POST",
-			url: "bookmarkPhoto.api",
+			url: "bookmark.api?"+param,
 			dataType: "json",
 			success : function(data) { 
 				$(data.result).each(function(key, val) {

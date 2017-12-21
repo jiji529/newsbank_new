@@ -48,7 +48,6 @@ public class PhotoViewService extends ServiceBase {
 		photoDAO.hit(uciCode);
 		request.setAttribute("photoDTO", photoDTO);
 		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
-		//String photo_uciCode = request.getParameter("photo_uciCode");
 		String bookName = request.getParameter("bookName");
 		BookmarkDAO bookmarkDAO = new BookmarkDAO();
 		
@@ -56,31 +55,17 @@ public class PhotoViewService extends ServiceBase {
 		List<MemberDTO> mediaList = mDao.listActiveMedia();
 		request.setAttribute("mediaList", mediaList);
 		
-		/*String ownerName = photoDTO.getOwnerName();
-		request.setAttribute("ownerName", ownerName);*/
-		
-		/*MemberDAO memberDAO = new MemberDAO();
-		int ownerNo = photoDTO.getOwnerNo();
-		MemberDTO memberDTO = new MemberDTO();
-		memberDTO = memberDAO.getMember(ownerNo);
-		String ownerName = memberDTO.getCompName();	// 소유자 매체명
-		request.setAttribute("ownerName", ownerName);*/ 
-		
 		if(MemberInfo != null) {
-			String member_seq = String.valueOf(MemberInfo.getSeq());
-			BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
+			int member_seq = MemberInfo.getSeq();
+			BookmarkDTO bookmark = bookmarkDAO.select(member_seq, uciCode);
 			
 			if(action.equals("insertBookmark") && bookmark == null) { // 중복 데이터 확인
 				bookmarkDAO.insert(member_seq, uciCode, bookName);
 			}else if(action.equals("deleteBookmark")) {
-				bookmarkDAO.delete(Integer.parseInt(member_seq), uciCode);
+				bookmarkDAO.delete(member_seq, uciCode);
 			}
 			
-			if(bookmark == null) {
-				request.setAttribute("bookmark", bookmark);		
-			}else {
-				request.setAttribute("bookmark", bookmark);
-			}
+			request.setAttribute("bookmark", bookmark);
 		}
 	}
 

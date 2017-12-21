@@ -62,7 +62,7 @@ public class MypageDibs extends NewsbankServletBase {
 				int pageVol = 40; // 페이지당 표현 갯수
 				int pageNo = 0; // 시작 인덱스
 				int member_seq = MemberInfo.getSeq();
-				String bookmark_seq = request.getParameter("bookmark_seq");
+				int bookmark_seq = request.getParameter("bookmark_seq") == null ? 0 : Integer.parseInt(request.getParameter("bookmark_seq"));
 				PhotoDAO photoDAO = new PhotoDAO();
 				
 				List<PhotoDTO> dibsPhotoList = photoDAO.dibsPhotoList(member_seq, bookmark_seq, pageVol, pageNo);
@@ -79,30 +79,6 @@ public class MypageDibs extends NewsbankServletBase {
 				
 				request.setAttribute("totalCount", totalCount);
 				request.setAttribute("totalPage", totalPage);
-				
-				String action = (request.getParameter("action") == null) ? "" : request.getParameter("action");
-				String photo_uciCode = request.getParameter("photo_uciCode");
-				
-				if(action.equals("delete")) {
-					if(photo_uciCode.contains("|")) { // 다수 선택
-						String[] uciCode = photo_uciCode.split("\\|");
-						for (String code : uciCode) {
-							bookmarkDAO.delete(member_seq, code);
-						}
-					} else { // 단일 선택
-						bookmarkDAO.delete(member_seq, photo_uciCode);
-					}
-					
-				}else if(action.equals("update")) { // 다수 선택
-					if(photo_uciCode.contains("|")) {
-						String[] uciCode = photo_uciCode.split("\\|");
-						for (String code : uciCode) {
-							bookmarkDAO.updateBookmarkPhoto(bookmark_seq, code);
-						}
-					} else { // 단일 선택
-						bookmarkDAO.updateBookmarkPhoto(bookmark_seq, photo_uciCode);
-					}
-				}				
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_dibs.jsp");
 				dispatcher.forward(request, response);

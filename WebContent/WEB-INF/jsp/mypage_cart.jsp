@@ -39,17 +39,24 @@
 	/** 찜하기 */
 	$(document).on("click", ".btn_b", function() {
 		var uciCode = $(this).closest("tr").find(".code").text();		
+		var param = "action=insertBookmark";
 		
-		var param = "action=bookmark";
-		
-		$.ajax({
-			url: "/cart.myPage?"+param,
+		$.ajax({			
+			url: "/bookmark.api?"+param,
 			type: "POST",
 			data: {
 				"uciCode" : uciCode
 			},
 			success: function(data){ 
-				alert("찜목록에 추가되었습니다.");
+				var success = data.success;
+				var message = data.message;
+				
+				if(success) {
+					alert("찜목록에 추가되었습니다.");	
+				} else {
+					alert(message);
+				}
+				
 			}, 
 			error:function(request,status,error){
 	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -134,10 +141,10 @@
 	
 	/** DB 삭제함수 */
 	function cartDelete(uciCode) {
-		var param = "action=delete";
+		var param = "action=deleteBookmark";
 		
-		$.ajax({
-			url: "/cart.myPage?"+param,
+		$.ajax({			
+			url: "/bookmark.api?"+param,
 			type: "POST",
 			data: {
 				"uciCode" : uciCode

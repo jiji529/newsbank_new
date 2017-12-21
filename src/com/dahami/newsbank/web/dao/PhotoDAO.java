@@ -124,7 +124,7 @@ public class PhotoDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public List<PhotoDTO> dibsPhotoList(int member_seq, String bookmark_seq, int pageVol, int start) {
+	public List<PhotoDTO> dibsPhotoList(int member_seq, int bookmark_seq, int pageVol, int start) {
 		SqlSession session = null;
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 				

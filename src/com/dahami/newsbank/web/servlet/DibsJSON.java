@@ -44,7 +44,7 @@ public class DibsJSON extends NewsbankServletBase {
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		int member_seq = MemberInfo.getSeq();
 		
-	    String bookmark_seq = request.getParameter("bookmark_seq");
+	    int bookmark_seq = request.getParameter("bookmark_seq") == null ? 0 : Integer.parseInt(request.getParameter("bookmark_seq"));
 	    int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표현 갯수
 	    int pageNo = Integer.parseInt(request.getParameter("pageNo")); // 현재 페이지
 	    int start = (pageNo - 1) * pageVol; // 페이지 시작

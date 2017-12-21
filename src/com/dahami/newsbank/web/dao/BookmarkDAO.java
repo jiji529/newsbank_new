@@ -20,7 +20,7 @@ public class BookmarkDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public void insert(String member_seq, String photo_uciCode, String bookName) {
+	public void insert(int member_seq, String photo_uciCode, String bookName) {
 		SqlSession session = null;
 				
 		try {
@@ -234,7 +234,7 @@ public class BookmarkDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public void updateBookmarkPhoto(String bookmark_seq, String photo_uciCode) {
+	public void updateBookmarkPhoto(int bookmark_seq, String photo_uciCode) {
 		SqlSession session = null;
 				
 		try {

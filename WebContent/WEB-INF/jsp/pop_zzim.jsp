@@ -62,15 +62,18 @@
 		
 		// #폴더 추가
 		$(document).on("click", ".btn_add", function() {
-			var latestName = $(this).parents(".folder_btn_area").siblings("input").val();
+			add_folder();
+			/* var latestName = $(this).parents(".folder_btn_area").siblings("input").val();
 			
 			var html = '<p>' + latestName + '</p></div>';
 			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)">수정</a><a class="btn_delete" href="javascript:void(0)">삭제</a></div>';
 			$(this).closest("li").html(html);
 			
-			var param = "action=insertBookmark";
+			//var param = "action=insertBookmark";
+			var param = "action=insertFolder";
 			$.ajax({
-				url: "/dibs.popOption?"+param,
+				//url: "/dibs.popOption?"+param,
+				url: "/bookmark.api?"+param,
 				type: "POST",
 				data: {
 					"bookName" : latestName
@@ -83,7 +86,7 @@
 				}, complete: function() {
 					
 				}
-			});	
+			}); */	
 		});
 		
 		// #폴더 추가함수
@@ -94,9 +97,11 @@
 			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)">수정</a><a class="btn_delete" href="javascript:void(0)">삭제</a></div>';
 			$("#newFolder").closest("li").html(html); // 폴더추가 입력란 생성
 			
-			var param = "action=insertBookmark";
+			//var param = "action=insertBookmark";
+			var param = "action=insertFolder";
 			$.ajax({
-				url: "/dibs.popOption?"+param,
+				//url: "/dibs.popOption?"+param,
+				url: "/bookmark.api?"+param,
 				type: "POST",
 				data: {
 					"bookName" : latestName
@@ -143,9 +148,11 @@
 			
 			if(chk == true) {
 				var bookmark_seq = $(this).attr("value");
-				var param = "action=deleteBookmark";
+				//var param = "action=deleteBookmark";
+				var param = "action=deleteFolder";
 				$.ajax({
-					url: "/dibs.popOption?"+param,
+					//url: "/dibs.popOption?"+param,
+					url: "/bookmark.api?"+param,
 					type: "POST",
 					data: {
 						"bookmark_seq" : bookmark_seq
@@ -173,9 +180,11 @@
 			
 			$(".inputs").closest("li").html(html);
 			
-			var param = "action=updateBookmark";
+			//var param = "action=updateBookmark";
+			var param = "action=updateFolder";
 			$.ajax({
-				url: "/dibs.popOption?"+param,
+				//url: "/dibs.popOption?"+param,
+				url: "/bookmark.api?"+param,
 				type: "POST",
 				data: {
 					"bookName" : latestName,

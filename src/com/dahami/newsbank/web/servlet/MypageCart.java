@@ -56,26 +56,12 @@ public class MypageCart extends NewsbankServletBase {
 			if (mypageAuth == false) {
 				// 이전에 my page 비밀번호 입력했는지 체크
 				response.sendRedirect("/auth.mypage");
-			} else {
 				
-				String action = request.getParameter("action") == null ? "" : request.getParameter("action");
-				String member_seq = String.valueOf(MemberInfo.getSeq());
-				String uciCode = request.getParameter("uciCode");
+			} else {						
+				int member_seq = MemberInfo.getSeq();
 				CartDAO cartDAO = new CartDAO();
-				List<CartDTO> cartList = cartDAO.cartList(member_seq);
+				List<CartDTO> cartList = cartDAO.cartList(String.valueOf(member_seq));
 				request.setAttribute("cartList", cartList);
-				
-				if(action.equals("delete")) {
-					cartDAO.deleteCart(member_seq, uciCode);
-				}else if(action.equals("bookmark")) {
-					String bookName = "기본그룹"; // 기본값
-					BookmarkDAO bookmarkDAO = new BookmarkDAO();
-					BookmarkDTO bookmark = bookmarkDAO.select(Integer.parseInt(member_seq), uciCode);
-					if(bookmark == null) { // 중복 데이터 확인
-						bookmarkDAO.insert(member_seq, uciCode, bookName);
-					}
-					
-				}
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_cart.jsp");
 				dispatcher.forward(request, response);

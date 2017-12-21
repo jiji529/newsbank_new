@@ -118,13 +118,13 @@ function dibsList() {
 
 /** DB 삭제함수 */
 function dibsDelete(uciCode) {
-	var param = "action=delete";
+	var param = "action=deleteBookmark";
 	
 	$.ajax({
-		url: "/dibs.myPage?"+param,
+		url: "/bookmark.api?"+param,
 		type: "POST",
 		data: {
-			"photo_uciCode" : uciCode
+			"uciCode" : uciCode
 		},
 		success: function(data){ }, 
 		error:function(request,status,error){
@@ -215,14 +215,16 @@ function change_folder(bookmark_seq, bookmark_name) {
 	}
 }
 
+/** DB 수정함수 */
 function dibsUpdate(uciCode, bookmark_seq) {
-	var param = "action=update";
-	console.log(uciCode.join("|"), bookmark_seq);
+	var param = "action=updateBookmark";
+	//console.log(uciCode.join("|"), bookmark_seq);
+	
 	$.ajax({
-		url: "/dibs.myPage?"+param,
+		url: "/bookmark.api?"+param,
 		type: "POST",
 		data: {
-			"photo_uciCode" : uciCode.join("|"),
+			"uciCode" : uciCode.join("|"),
 			"bookmark_seq" : bookmark_seq
 		},
 		success: function(data){ }, 
@@ -232,25 +234,7 @@ function dibsUpdate(uciCode, bookmark_seq) {
 	}); 
 }
 
-/** DB 수정함수 */
-/*
-function dibsUpdate(uciCode, bookmark_seq) {
-	var param = "action=update";
-	
-	$.ajax({
-		url: "/dibs.myPage?"+param,
-		type: "POST",
-		data: {
-			"photo_uciCode" : uciCode,
-			"bookmark_seq" : bookmark_seq
-		},
-		success: function(data){ }, 
-		error:function(request,status,error){
-        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-       	}
-	}); 
-}
-*/
+
 /** 단일 장바구니 추가 */
 function insertBasket(uciCode) {
 	//window.open('/cart.popOption?page=dibs.myPage&uciCode=' + uciCode,'new','resizable=no width=420 height=600');

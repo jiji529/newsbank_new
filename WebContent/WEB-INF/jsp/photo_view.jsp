@@ -42,7 +42,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			}
 			
 			$.ajax({
-				url: "/view.photo?"+param,
+				url: "/bookmark.api?"+param,
 				type: "POST",
 				data: {
 					"uciCode" : uciCode,

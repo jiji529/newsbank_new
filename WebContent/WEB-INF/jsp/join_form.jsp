@@ -184,6 +184,7 @@ $(function() {
 										<div class="inp">
 											<input type="text" id="compName" name="compName" placeholder="소속/기관명" required />
 										</div>
+										<p class="txt_message">뉴스뱅크에 사진 데이터를 제공하시는 경우 반드시 매체명으로 가입해주세요.</p>
 									</dd>
 								</dl>
 								<dl class="item_info">
