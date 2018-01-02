@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.session.SqlSession;
 
 import com.dahami.newsbank.web.dto.BookmarkDTO;
@@ -188,8 +189,8 @@ public class MemberDAO extends DAOBase {
 			} catch (Exception e) {
 			}
 		}
-		System.out.println("insert(" + memberDTO + ") --> " + memberDTO.getEmail());
-		System.out.println(memberDTO.getName());
+		//System.out.println("insert(" + memberDTO + ") --> " + memberDTO.getEmail());
+		//System.out.println(memberDTO.getName());
 
 		return result;
 	}
@@ -338,6 +339,56 @@ public class MemberDAO extends DAOBase {
 		try {
 			session = sf.getSession();
 			count = session.selectOne("Member.memberCnt", param);
+			return count;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
+	
+	/**
+	 * @methodName : selectMediaList
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 01. 02. 오후 03:27:13
+	 * @methodCommet: 회원 현황 (조건절 : 타입, 결제, 그룹)
+	 * @return
+	 * @returnType : List<MemberDTO>
+	 */
+	public List<MemberDTO> selectMediaList(Map<Object, Object> searchOpt) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Member.selMediaList", searchOpt);
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	/**
+	 * @methodName : getMediaCount
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 01. 02. 오후 03:35:13
+	 * @methodCommet: 조건에 따른 정산 매체사 수
+	 * @return
+	 * @returnType : 
+	 */
+	public int getMediaCount(Map<Object, Object> param) {
+		SqlSession session = null;
+		int count = 0;
+		try {
+			session = sf.getSession();
+			count = session.selectOne("Member.mediaCnt", param);
 			return count;
 		} catch (Exception e) {
 			logger.warn("", e);

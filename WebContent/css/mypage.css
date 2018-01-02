@@ -59,15 +59,17 @@
 .mypage .tb01 td .file_add{ float:left; margin-left:40px; margin-top:8px; width:24px; height:24px; background:url(../images/mp/add.png) 0 0 no-repeat; text-indent:-9999px;}
 .mypage .tb01 td .file_del{ float:left; margin-left:8px;  margin-top:8px; width:24px; height:24px; background:url(../images/mp/del.png) 0 0 no-repeat;text-indent:-9999px}
 
+
 .mypage .tb01 td label{ float:left; width:50%; margin:8px 0;}
 .mypage .tb01 td label.per{float:left; color:#666;}
 .mypage .tb01 td label.per .media_name{float:left; font-size:13px; color:#333; font-weight:bold; margin:0;}
 .mypage .tb01 td label.per .media_name input{ float:left; margin:3px;}
 .mypage .tb01 td label.per span{float:left; margin-left:15px;}
 .mypage .tb01 td label.per span b{float:none; margin:0 3px;}
-.mypage .inp_txt { padding: 10px; color: #999; border: 1px solid #d9d9d9; border-radius: 2px;}
+.mypage .inp_txt { padding: 10px; color: #666; border: 1px solid #d9d9d9; border-radius: 2px;}
 .mypage .ico_require { display:inline-block; overflow:hidden; width:15px; height:15px; margin-left:5px; vertical-align:-5px; background:url(../images/ico_pack.png) 0 0 no-repeat; text-indent:-9999px; }
 .mypage .bar{margin:10px 5px;}
+.mypage .txt_mess{ font-size:11px; color:#666;}
 .mypage .btn_input1{ padding: 10px 20px; color: #666; border: 1px solid #aaa; background:#fff; border-radius: 2px; margin-left:10px; }
 .mypage .btn_input2{ padding: 10px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; border-radius: 2px; margin-left:10px; }
 .mypage .edit_phone{width:100%; margin-top:10px; border-top:1px #ddd solid;  background:#f9f9f9; padding:10px 20px;}
@@ -400,7 +402,7 @@
 /*admin*/
 .wide{width:100%; padding:60px 60px 0 280px;}
 
-.lnb{width:240px; float:left; border-right:1px #eee solid; height:100%; position:fixed; left:0; padding:0 30px;}
+.lnb{width:240px; float:left; border-right:1px #eee solid; height:100%; position:fixed; left:0; padding:0 30px; background:#fff;}
 .lnb ul li{margin-top:18px;padding-top:18px;border-top:1px solid #efefef; text-align:left;}
 .lnb ul li:first-child{margin-top:15px;border:0 none}
 .lnb ul li strong{display:block;overflow:hidden;height:27px;font-size:18px;line-height:20px;color:#333; padding-left:5px;}
@@ -415,6 +417,7 @@
 .lnb ul li .lnb_li2 li.on a{color:#f79320;}
 .lnb ul li .lnb_li2 li.on a:hover{text-decoration:none;}
 
+.admin{min-width:1500px;}
 .admin .mypage{float:left; width:100%;}
 .admin h3{margin-top:30px; font-weight:normal; font-size:24px;}
 .admin .table_head h3:before{content:""; width:3px; height:24px; background:#f79320; float:left; margin-right:10px; margin-top:1px ;}
@@ -424,22 +427,25 @@
 .admin .table_head button.btn_head {padding:6px 15px; background:#fff;  border:1px #f79320 solid; color:#f79320; border-radius:2px; font-size:15px; margin-top:-42px;}
 
 .admin .tb01{margin-bottom:25px;}
-.admin .tb01 th { padding:5px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:50px; }
-.admin .tb01 td { padding: 5px 30px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; }
+.admin .tb01 th { padding:5px 20px; color:#333; font-size: 14px; border-top: 1px solid #e6e9f0; height:50px; }
+.admin .tb01 td { padding: 5px 30px; border-top: 1px solid #e6e9f0; font-size:13px; line-height: 18px; }
 .admin .tb01 td input{  padding: 8px 10px;}
 .admin .tb01 select{margin-right:5px; height:32px; padding:0 5px;}
 .admin .tb01 td textarea{  padding: 8px 10px; width:100%;}
 
 .admin .ad_result{float:left; width:100%;}
-.admin .ad_result .ad_result_btn_area{width:100%; float:left; margin-bottom:10px;}
+.admin .ad_result .ad_result_btn_area{ float:left; margin-bottom:10px;}
 .admin .ad_result .ad_result_btn_area select { float:left; border:1px #bbb solid; padding:0 5px; width:70px; height:28px;border-radius:2px;}
 .admin .ad_result .ad_result_btn_area a{ float:left; padding:6px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa; margin-left:8px;}
 .admin .ad_result .ad_result_btn_area a:hover{border:1px #f79320 solid; color:#f79320;}
+.admin .ad_result .ad_result_btn_area a.bk{ color: #000; border: 1px solid #333;}
+
 .admin .tb01 .btn_input1{ padding: 5px 20px; color: #666; border: 1px solid #aaa; background:#fff; }
 .admin .tb01 .btn_input2{ padding: 5px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; }
 .admin .bar{margin:7px 5px;}
+.admin .bar2{margin:7px 5px 7px 15px;}
 .admin .tb01 td .my_addr{float:left; width:100%; margin-bottom:5px;}
-.admin .tb01 td input[type=file]{ padding:2px ; border: 1px solid #d9d9d9; border-radius: 2px; width:400px;}
+.admin .tb01 td input[type=file]{ padding:2px ; border: 1px solid #d9d9d9; border-radius: 2px; width:378px;}
 .admin .tb01 td .file_add{ float:left; margin-left:40px; margin-top:3px; width:24px; height:24px; background:url(../images/mp/add.png) 0 0 no-repeat; text-indent:-9999px;}
 .admin .tb01 td .file_del{ float:left; margin-left:8px;  margin-top:3px; width:24px; height:24px; background:url(../images/mp/del.png) 0 0 no-repeat;text-indent:-9999px}
 .mypage .tb01 td.phone { padding: 0 0 0 30px;  }

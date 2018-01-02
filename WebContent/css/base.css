@@ -14,8 +14,8 @@ a{text-decoration: none;}
 button{cursor:pointer;}
 ::-moz-selection {background: #f79320; color:#fff;}
 ::selection {background: #f79320; color:#fff;}
-.fl{float:left;}
-.fr{float:right;}
+.fl{float:left!important;}
+.fr{float:right!important;}
 a img{border:none;}
 /*
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;}

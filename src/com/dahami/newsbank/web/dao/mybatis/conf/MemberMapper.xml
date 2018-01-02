@@ -103,6 +103,7 @@
 			<if test="pw != null">, pw = #{pw}</if>
 			<if test="email != null">, email = #{email}</if>
 			<if test="name != null">, name = #{name}</if>
+			<if test="phone != null">, phone = #{phone}</if>
 			<if test="permission != null">, permission = #{permission}</if>
 			<if test="deferred != null">, deferred = #{deferred}</if>
 			<if test="compNum != null">, compNum = #{compNum}</if>
@@ -183,7 +184,7 @@
 	    LEFT JOIN `group` B ON A.group_seq = B.seq
 	    <where>
 	        
-            <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
+            <if test="keyword != null"> <!-- 키워드 -->
 	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
             </if>
             	        
@@ -202,6 +203,25 @@
 			<if test='group == "G"'> <!-- 그룹 -->
 				AND `group_seq` is not NULL    
 			</if>
+			
+		</where>
+		ORDER BY A.regDate DESC 
+		LIMIT #{startPage}, #{pageVol}
+	</select>
+	
+	<!-- 관리자 정산 매체사 목록 -->
+	<select id="selMediaList" resultType="com.dahami.newsbank.web.dto.MemberDTO" parameterType="java.util.Map">
+	    SELECT A.*, B.groupName FROM member A 
+	    LEFT JOIN `group` B ON A.group_seq = B.seq
+	    <where>
+	        
+            <if test="keyword != null"> <!-- 키워드 -->
+	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
+            </if>
+            	        
+	        <if test="type != ''"> <!-- 회원구분 -->
+	            AND `type` = #{type}
+            </if>
 			
 		</where>
 		ORDER BY A.regDate DESC 
@@ -251,6 +271,24 @@
 				AND `group_seq` is not NULL    
 			</if>
 			
+		</where>
+	    ORDER BY regDate DESC
+	</select>
+	
+	<!-- 조건에 따른 전체 정산매체수 -->
+	<select id="mediaCnt" resultType="integer" parameterType="java.util.Map">	    
+	    SELECT count(seq) as cnt 
+	    FROM member 
+	    <where>
+	        
+            <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
+	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
+            </if>
+            	        
+	        <if test="type != ''"> <!-- 회원구분 -->
+	            AND `type` = #{type}
+            </if>
+            
 		</where>
 	    ORDER BY regDate DESC
 	</select>

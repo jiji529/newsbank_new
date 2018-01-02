@@ -359,6 +359,7 @@ $(document).ready(function() {
 	$('#frmMypage').on('submit', function() {
 		var type = $("#type").val();
 		var check = true;
+		console.log("pw size : " + $('#frmMypage').find('[name=pw]').size());
 		if ($('#frmMypage').find('[name=pw]').size() > 0) {
 			check = check && validPw();
 		}

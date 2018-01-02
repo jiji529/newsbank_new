@@ -8,7 +8,7 @@
 		<li><strong>회원관리</strong>
 			<ul class="lnb_li2">
 				<li><a href="/member.manage">회원 현황</a></li>
-				<li><a href="javascript:void(0)">CP회원 관리</a></li>
+				<li><a href="/media.manage">정산 매체사 관리</a></li>
 			</ul>
 		</li>
 		<li><strong>콘텐츠 관리</strong>

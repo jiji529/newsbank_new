@@ -209,10 +209,29 @@ $(function() {
 									<!--언론사 회원한테만 파일첨부 창 보여주기 여기까지-->
 								</dl>
 								<dl class="item_info">
-									<dt>회사 전화 번호</dt>
+									<dt>회사/기관 전화</dt>
 									<dd class="inp_num">
 										<select id="compTel1" class="inp_txt" style="width: 85px;">
-											<option value="010" selected="selected">010</option>
+											<option value="02" selected="selected">02</option>
+											<option value="031">031</option>
+											<option value="032">032</option>
+											<option value="033">033</option>
+											<option value="041">041</option>
+											<option value="042">042</option>
+											<option value="043">043</option>
+											<option value="044">044</option>
+											<option value="051">051</option>
+											<option value="052">052</option>
+											<option value="053">053</option>
+											<option value="054">054</option>
+											<option value="055">055</option>
+											<option value="061">061</option>
+											<option value="062">062</option>
+											<option value="063">063</option>
+											<option value="064">064</option>
+											<option value="070">070</option>
+											<option value="080">080</option>
+											<option value="010">010</option>
 											<option value="011">011</option>
 											<option value="016">016</option>
 											<option value="017">017</option>
@@ -229,7 +248,7 @@ $(function() {
 									</dd>
 								</dl>
 								<dl class="item_info">
-									<dt>회사 주소</dt>
+									<dt>회사/기관 주소</dt>
 									<dd class="inp">
 										<div class="inp addr">
 											<input type="text" id="compZipcode" name="compZipcode" readonly required>

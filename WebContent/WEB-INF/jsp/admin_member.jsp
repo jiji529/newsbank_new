@@ -244,7 +244,8 @@ function listJson() {
 	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
 	var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
 	var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
-	var pageCnt = 0;
+	var pageCnt = 0; // 전체 페이지 갯수
+	var totalCnt = 0; // 전체 갯수
 	
 	var searchParam = {
 			"keyword":keyword
@@ -264,11 +265,12 @@ function listJson() {
 		dataType: "json",
 		data: searchParam,
 		url: "/listMember.api",
-		success: function(data) { //console.log(data);
+		success: function(data) { console.log(data);
 			pageCnt = data.pageCnt; // 총 페이지 갯수
+			totalCnt = data.totalCnt; // 총 갯수
 			
-			$(data.result).each(function(key, val) {
-				var number = ($("#startgo").val() - 1) * pageVol + (key + 1);
+			$(data.result).each(function(key, val) {				
+				var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
 				var type = val.type;
 				if(type == "P") type = "개인";
 				if(type == "C") type = "법인";
@@ -294,7 +296,7 @@ function listJson() {
 				var regDate = val.regDate;
 				regDate = regDate.substring(0, 10);
 				
-				html += '<tr onclick="javascript:void(0)">';
+				html += '<tr onclick="go_memberView(\'' + val.seq + '\')">';
 				html += '<td><div class="tb_check">';
 				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
 				html += '<label for="check' + key + '">선택</label>';
@@ -323,8 +325,9 @@ function search() { // 검색
 	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
 	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
 	var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
-	var startPage = ($("#startgo").val()-1)*10; // 시작 페이지
-	var pageCnt = 0;
+	var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
+	var pageCnt = 0; // 전체 페이지 갯수
+	var totalCnt = 0; // 전체 갯수
 	
 	var searchParam = {
 			"keyword":keyword
@@ -337,17 +340,20 @@ function search() { // 검색
 	
 	var html = "";
 	$("#mtBody").empty();
-	//console.log(searchParam);
+	console.log(searchParam);
 	
 	$.ajax({
 		type: "POST",
 		dataType: "json",
 		data: searchParam,
 		url: "/listMember.api",
-		success: function(data) { //console.log(data);
+		success: function(data) { console.log(data);
 			pageCnt = data.pageCnt; // 총 페이지 갯수
+			totalCnt = data.totalCnt; // 총 갯수
 			
 			$(data.result).each(function(key, val) {
+				var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
+				
 				var type = val.type;
 				if(type == "P") type = "개인";
 				if(type == "C") type = "법인";
@@ -373,12 +379,12 @@ function search() { // 검색
 				var regDate = val.regDate;
 				regDate = regDate.substring(0, 10);
 				
-				html += '<tr onclick="javascript:void(0)">';
+				html += '<tr onclick="go_memberView(\'' + val.seq + '\')">';
 				html += '<td><div class="tb_check">';
 				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
 				html += '<label for="check' + key + '">선택</label>';
 				html += '</div></td>';
-				html += '<td>' + (key+1) + '</td>';
+				html += '<td>' + number + '</td>';
 				html += '<td>' + val.id + '</td>';
 				html += '<td>' + val.compName + '</td>';
 				html += '<td>' + type +'</td>';
@@ -404,6 +410,11 @@ function excel() { // 엑셀저장
 	var excelHtml = '<table cellpadding="0" cellspacing="0">' + $("#mTable").html() + "</table>";
 	$("#excelHtml").val(excelHtml);
 	excel_form.submit();
+}
+
+function go_memberView(member_seq) {
+	$("#member_seq").val(member_seq);
+	view_member_manage.submit();
 }
 </script>
 </head>
@@ -459,13 +470,28 @@ function excel() { // 엑셀저장
 				<div class="btn_area" style="margin-top:0;"><a href="javascript:void(0)" class="btn_input2">검색</a></div>
 			</div>
 			<div class="ad_result">
-				<div class="ad_result_btn_area">
+				<!-- <div class="ad_result_btn_area">
 					<select id="sel_pageVol">
 						<option value="20">20개</option>
 						<option value="50">50개</option>
 						<option value="100">100개</option>
-					</select>
-					<span  id="popup_open"><a href="javascript:void(0)" onclick="popup_group()">그룹묶기</a></span><a href="javascript:void(0)" onclick="excel()">엑셀저장</a></div>
+					</select> <span id="popup_open"><a href="javascript:void(0)"
+						onclick="popup_group()">그룹묶기</a></span><a href="javascript:void(0)"
+						onclick="excel()">엑셀저장</a>
+				</div> -->
+				<div class="ad_result_btn_area">
+					<a href="javascript:void(0)" style="margin-left: 0;">회원추가</a> 
+					<span id="popup_open"><a href="javascript:void(0)" onclick="popup_group()">그룹묶기</a></span> 
+					<a href="javascript:void(0)" class="bk">탈퇴처리</a>
+				</div>
+				<div class="ad_result_btn_area fr">
+					<select id="sel_pageVol">
+						<option value="20">20개</option>
+						<option value="50">50개</option>
+						<option value="100">100개</option>
+					</select> 
+					<a href="javascript:void(0)" onclick="excel()">엑셀저장</a>
+				</div>
 				<table cellpadding="0" cellspacing="0" class="tb04" id="mTable">
 					<colgroup>
 					<col width="30" />
@@ -531,26 +557,13 @@ function excel() { // 엑셀저장
 				<div class="pagination">
 					<ul id="pagination-demo" class="pagination-sm">
 					</ul>
-					<!-- <ul>
-						<li class="first"> <a href="javascript:void(0)">첫 페이지</a> </li>
-						<li class="prev"> <a href="javascript:void(0)">이전 페이지</a> </li>
-						<li> <a href="javascript:void(0)">1</a> </li>
-						<li class="active"> <a href="javascript:void(0)">2</a> </li>
-						<li> <a href="javascript:void(0)">3</a> </li>
-						<li> <a href="javascript:void(0)">4</a> </li>
-						<li> <a href="javascript:void(0)">5</a> </li>
-						<li> <a href="javascript:void(0)">6</a> </li>
-						<li> <a href="javascript:void(0)">7</a> </li>
-						<li> <a href="javascript:void(0)">8</a> </li>
-						<li> <a href="javascript:void(0)">9</a> </li>
-						<li> <a href="javascript:void(0)">10</a> </li>
-						<li class="next"> <a href="javascript:void(0)"> 다음 페이지 </a> </li>
-						<li class="last"> <a href="javascript:void(0)"> 마지막 페이지 </a> </li>
-					</ul> -->
 				</div>
 			</div>
 		</div>
 	</section>
+	<form method="post" action="/view.member.manage" name="view_member_manage" >
+		<input type="hidden" name="member_seq" id="member_seq"/>
+	</form>
 </div>
 </body>
 </html>

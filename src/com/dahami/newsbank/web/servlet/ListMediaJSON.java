@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,16 +19,16 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
- * Servlet implementation class ListMemberJSON
+ * Servlet implementation class ListMediaJSON
  */
-@WebServlet("/listMember.api")
-public class ListMemberJSON extends NewsbankServletBase {
+@WebServlet("/listMedia.api")
+public class ListMediaJSON extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
-     * @see NewsbankServletBase#NewsbankServletBase()
+     * @see HttpServlet#HttpServlet()
      */
-    public ListMemberJSON() {
+    public ListMediaJSON() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,34 +42,23 @@ public class ListMemberJSON extends NewsbankServletBase {
 		response.setCharacterEncoding("UTF-8");
 		
 		String keyword = request.getParameter("keyword"); // 키워드
-		String type = request.getParameter("type"); // 회원유형 (P: 개인, C: 기업)
-		String deferred = request.getParameter("deferred"); // 후불결제 구분 (Y/N)
-		String group = request.getParameter("group"); // 그룹구분 (개별: I, 그룹: G) 
+		String type = "M"; // 회원유형 (P: 개인, M: 매체사, C: 기업)
 		int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표시 갯수
 		int startPage = Integer.parseInt(request.getParameter("startPage")); // 시작 페이지
-		//int group_seq = (request.getParameter("group") == null) ? 0 : Integer.parseInt(request.getParameter("group")); // 그룹구분 (개별: 0, 그룹: 1) 
-		//int group_seq = Integer.parseInt(request.getParameter("group"));
 		
 		Map<Object, Object> searchOpt = new HashMap<Object, Object>();
 		searchOpt.put("keyword", keyword);
 		searchOpt.put("type", type);
-		searchOpt.put("deferred", deferred);
-		searchOpt.put("group", group);
 		searchOpt.put("pageVol", pageVol);
-		searchOpt.put("startPage", startPage);
-		
-		/*MemberDTO memberDTO = new MemberDTO(); // 객체 생성
-		memberDTO.setType(type);
-		memberDTO.setDeferred(deferred);
-		memberDTO.setGroup_seq(group_seq);*/
+		searchOpt.put("startPage", startPage); 
 		
 		List<MemberDTO> listMember = new ArrayList<MemberDTO>();
 		int totalCnt = 0; // 총 갯수
 		int pageCnt = 0; // 페이지 갯수
 		
 		MemberDAO memberDAO = new MemberDAO();
-		listMember = memberDAO.selectMemberList(searchOpt);
-		totalCnt = memberDAO.getMemberCount(searchOpt);
+		listMember = memberDAO.selectMediaList(searchOpt);
+		totalCnt = memberDAO.getMediaCount(searchOpt);
 		pageCnt = (totalCnt / pageVol) + 1; // 페이지 갯수 (총 갯수 / 페이지 당 행의 수  + 1)
 		
 		JSONArray jArray = new JSONArray(); // json 배열
@@ -77,12 +67,14 @@ public class ListMemberJSON extends NewsbankServletBase {
 			JSONObject arr = new JSONObject(); // json 배열에 들어갈 객체
 			arr.put("seq", member.getSeq());
 			arr.put("id", member.getId());
+			arr.put("compNum", member.getCompNum());
 			arr.put("compName", member.getCompName());
+			arr.put("preRate", member.getPreRate());
+			arr.put("postRate", member.getPostRate());			
 			arr.put("type", member.getType());
 			arr.put("name", member.getName());
 			arr.put("email", member.getEmail());
-			arr.put("phone", member.getPhone());
-			arr.put("deferred", member.getDeferred());
+			arr.put("phone", member.getPhone());			
 			arr.put("group_seq", member.getGroup_seq());
 			arr.put("groupName", member.getGroupName());
 			arr.put("contractStart", member.getContractStart());
@@ -111,4 +103,3 @@ public class ListMemberJSON extends NewsbankServletBase {
 	}
 
 }
-

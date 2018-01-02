@@ -98,6 +98,7 @@ footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#9
 .wrap_info .box_info .item_info dd.inp_num input, .wrap_info .box_info .item_info dd.inp_num select{ float:left; position:relative; border: 1px #d4d4d4 solid; background: 0; font-weight: bold;  z-index: 99; height: 40px; padding:0 15px;}
 .wrap_info .box_info .item_info dd.inp_num a{width: 60px; height: 28px; background: #aaa; border:0; color: #fff; text-align: center; line-height: 30px; font-size:12px; float:left; display:block; margin:5px 10px; text-indent:0;}
 .wrap_info .box_info .item_info dd .bar{margin:10px 5px; float:left; text-indent:0; line-height:normal}
+.wrap_info .box_info .item_info dd .bar2{margin:10px 5px 10px 20px; float:left; text-indent:0; line-height:normal; font-size:12px}
 .wrap_info .box_info .item_info dd .inp.num2{border:0;}
 .wrap_info .box_info .item_info dd .inp.num2 input{position: relative; float:left;  height: 38px; border: 1px solid #d4d4d4;  font-weight: bold; text-indent: 15px; -webkit-appearance: none; z-index: 99;}
 
