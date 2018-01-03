@@ -209,24 +209,81 @@
 		LIMIT #{startPage}, #{pageVol}
 	</select>
 	
-	<!-- 관리자 정산 매체사 목록 -->
-	<select id="selMediaList" resultType="com.dahami.newsbank.web.dto.MemberDTO" parameterType="java.util.Map">
-	    SELECT A.*, B.groupName FROM member A 
-	    LEFT JOIN `group` B ON A.group_seq = B.seq
-	    <where>
+	<!-- 정산 매체사 MediaDTO -->
+	<resultMap id="MediaDTO" type="java.util.HashMap">
+	    <!-- <result javaType="java.lang.Integer" column="blind" property="blind"></result>
+	    <result javaType="java.lang.Integer" column="total" property="total"></result> -->
+	    <result javaType="java.lang.Integer" column="seq" property="seq"></result>
+	    <result javaType="java.lang.String" column="id" property="id"></result>
+	    <result javaType="java.lang.String" column="email" property="email"></result>
+	    <result javaType="java.lang.String" column="name" property="name"></result>
+	    <result javaType="java.lang.String" column="phone" property="phone"></result>
+	    <result javaType="java.lang.String" column="compNum" property="compNum"></result>
+	    <result javaType="java.lang.String" column="compName" property="compName"></result>
+	    <result javaType="java.lang.String" column="preRate" property="preRate"></result>
+	    <result javaType="java.lang.String" column="postRate" property="postRate"></result>
+	    <result javaType="java.lang.String" column="masterID" property="masterID"></result>
+	</resultMap>
+	
+	<!-- 관리자 정산 매체사 목록 -->	
+	<select id="selMediaList" resultMap="MediaDTO" parameterType="java.util.Map">
+	    SELECT (SELECT id FROM member WHERE seq = adjustment.adjMaster) AS masterID, member.seq, id, email, name, phone, compNum, compName, preRate, postRate 
+	    FROM member 
+		LEFT JOIN adjustment ON member.seq = adjustment.adjSlave
+		WHERE member.type='M'		
 	        
-            <if test="keyword != null"> <!-- 키워드 -->
-	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
-            </if>
-            	        
-	        <if test="type != ''"> <!-- 회원구분 -->
-	            AND `type` = #{type}
-            </if>
+        <if test="keyword != null"> 
+         AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
+        </if>
 			
-		</where>
-		ORDER BY A.regDate DESC 
+		ORDER BY member.regDate DESC 
 		LIMIT #{startPage}, #{pageVol}
 	</select>
+	
+	<!-- 콘텐츠 수량 DTO (블라인드 / 전체 갯수) -->
+	<resultMap id="ContentDTO" type="java.util.HashMap">
+	    <result javaType="java.lang.Integer" column="blind" property="blind"></result>
+	    <result javaType="java.lang.Integer" column="total" property="total"></result>
+    </resultMap>
+    
+	<!-- 블라인드 & 전체 콘텐츠 갯수 -->
+	<select id="countContents" resultMap="ContentDTO" parameterType="java.util.Map">
+	    SELECT SUM(IF(saleStat=2, 1, 0)) AS blindCnt, COUNT(uciCode) AS totalCnt
+		FROM photo A
+		LEFT JOIN member B ON A.member_seq = B.seq
+		WHERE B.type='M' AND B.seq = #{seq}
+	</select>
+	
+	<!-- 정산 매체사 MediaDTO -->
+	<!-- <resultMap id="MediaDTO" type="java.util.HashMap">
+	    <result javaType="java.lang.Integer" column="blind" property="blind"></result>
+	    <result javaType="java.lang.Integer" column="total" property="total"></result>
+	    <result javaType="java.lang.Integer" column="seq" property="seq"></result>
+	    <result javaType="java.lang.String" column="id" property="id"></result>
+	    <result javaType="java.lang.String" column="email" property="email"></result>
+	    <result javaType="java.lang.String" column="name" property="name"></result>
+	    <result javaType="java.lang.String" column="phone" property="phone"></result>
+	    <result javaType="java.lang.String" column="compNum" property="compNum"></result>
+	    <result javaType="java.lang.String" column="compName" property="compName"></result>
+	    <result javaType="java.lang.String" column="preRate" property="preRate"></result>
+	    <result javaType="java.lang.String" column="postRate" property="postRate"></result>
+	</resultMap> -->
+	
+	<!-- 관리자 정산 매체사 목록 -->	
+	<!-- <select id="selMediaList" resultMap="MediaDTO" parameterType="java.util.Map">
+	    SELECT SUM(IF(saleStat=2, 1, 0)) AS blind, COUNT(uciCode) AS total, 
+		seq, id, email, name, phone, compNum, compName, preRate, postRate
+		FROM news_bank_dev.photo
+		LEFT JOIN member ON photo.member_seq = member.seq
+		WHERE member.type='M'
+		
+		<if test="keyword != null">  
+         	AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
+        </if>
+        
+		GROUP BY member_seq
+		ORDER BY member.regDate DESC
+	</select> -->
 	
 	<!-- 회원현황(그룹추가) -->
 	<insert id="insertGroup" useGeneratedKeys="true" keyProperty="seq">	    
@@ -279,17 +336,12 @@
 	<select id="mediaCnt" resultType="integer" parameterType="java.util.Map">	    
 	    SELECT count(seq) as cnt 
 	    FROM member 
-	    <where>
+	    WHERE `type` = 'M'
 	        
-            <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
-	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
-            </if>
-            	        
-	        <if test="type != ''"> <!-- 회원구분 -->
-	            AND `type` = #{type}
-            </if>
+        <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
+         AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
+        </if>
             
-		</where>
 	    ORDER BY regDate DESC
 	</select>
 </mapper>

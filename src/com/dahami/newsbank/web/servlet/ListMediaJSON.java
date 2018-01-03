@@ -42,17 +42,15 @@ public class ListMediaJSON extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		
 		String keyword = request.getParameter("keyword"); // 키워드
-		String type = "M"; // 회원유형 (P: 개인, M: 매체사, C: 기업)
 		int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표시 갯수
 		int startPage = Integer.parseInt(request.getParameter("startPage")); // 시작 페이지
 		
 		Map<Object, Object> searchOpt = new HashMap<Object, Object>();
 		searchOpt.put("keyword", keyword);
-		searchOpt.put("type", type);
 		searchOpt.put("pageVol", pageVol);
 		searchOpt.put("startPage", startPage); 
 		
-		List<MemberDTO> listMember = new ArrayList<MemberDTO>();
+		List<Map<String, String>> listMember = new ArrayList<Map<String, String>>();
 		int totalCnt = 0; // 총 갯수
 		int pageCnt = 0; // 페이지 갯수
 		
@@ -63,7 +61,31 @@ public class ListMediaJSON extends HttpServlet {
 		
 		JSONArray jArray = new JSONArray(); // json 배열
 		
-		for (MemberDTO member : listMember) {
+		for(int idx=0; idx<listMember.size(); idx++) {
+			JSONObject arr = new JSONObject(); // json 배열에 들어갈 객체
+			arr.put("seq", listMember.get(idx).get("seq"));
+			//System.out.println(getContentCnt(String.valueOf(listMember.get(idx).get("seq"))));
+			arr.put("contentCnt", getContentCnt(String.valueOf(listMember.get(idx).get("seq")))); // 콘텐츠 수량 (블라인드 / 전체)
+			arr.put("id", listMember.get(idx).get("id"));
+			arr.put("compNum", listMember.get(idx).get("compNum"));
+			arr.put("compName", listMember.get(idx).get("compName"));
+			arr.put("preRate", listMember.get(idx).get("preRate"));
+			arr.put("postRate", listMember.get(idx).get("postRate"));			
+			arr.put("type", listMember.get(idx).get("type"));
+			arr.put("name", listMember.get(idx).get("name"));
+			arr.put("email", listMember.get(idx).get("email"));
+			arr.put("phone", listMember.get(idx).get("phone"));			
+			arr.put("group_seq", listMember.get(idx).get("group_seq"));
+			arr.put("groupName", listMember.get(idx).get("groupName"));
+			arr.put("contractStart", listMember.get(idx).get("contractStart"));
+			arr.put("contractEnd", listMember.get(idx).get("contractEnd"));
+			arr.put("regDate", listMember.get(idx).get("regDate"));
+			arr.put("masterID", listMember.get(idx).get("masterID"));
+			//arr.put("blind", listMember.get(idx).get("blind"));
+			//arr.put("total", listMember.get(idx).get("total"));
+			jArray.add(arr);
+		}
+		/*for (MemberDTO member : listMember) {
 			JSONObject arr = new JSONObject(); // json 배열에 들어갈 객체
 			arr.put("seq", member.getSeq());
 			arr.put("id", member.getId());
@@ -82,7 +104,7 @@ public class ListMediaJSON extends HttpServlet {
 			arr.put("regDate", member.getRegDate());
 			jArray.add(arr);
 			
-		}
+		}*/
 		
 		JSONObject json = new JSONObject();
 		
@@ -100,6 +122,22 @@ public class ListMediaJSON extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	// 매체사별 콘텐츠 수량 반환 (ex. 블라인드 | 전체수량)
+	public static String getContentCnt(String seq) {
+		
+		Map<Object, Object> option = new HashMap<Object, Object>();
+		option.put("seq", seq);
+		
+		List<Map<String, String>> content = new ArrayList<Map<String, String>>();
+		MemberDAO dao = new MemberDAO();
+		content = dao.getContentAmount(option);					
+			
+		String contentCnt = String.valueOf(content.get(0).get("blindCnt")) + "|" + String.valueOf(content.get(0).get("totalCnt"));
+		//System.out.println(contentCnt);
+		
+		return contentCnt; 
 	}
 
 }
