@@ -26,7 +26,7 @@
 		`compAddress`,
 		`compAddDetail`, `compZipcode`, `compBankName`,
 		`compBankAcc`,
-		`compBankPath`, `compTel`, `contractPath`,
+		`compBankPath`, `compTel`, `compExtTel`, `contractPath`,
 		DATE_FORMAT(`contractStart`,'%Y-%m-%d') AS `contractStart`,
 		DATE_FORMAT(`contractEnd`,'%Y-%m-%d') AS `contractEnd`,
 		`contractAuto`, `preRate`, `postRate`,
@@ -35,7 +35,7 @@
 		`taxEmail`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
 		`logo`,
-		`activate`, `master_seq`, `group_seq` FROM member
+		`activate`, `group_seq` FROM member
 		where
 		1
 		<if test="id != null">
@@ -76,6 +76,7 @@
 		<if test="compAddDetail != null">, compAddDetail</if>
 		<if test="compZipcode != null">, compZipcode</if>
 		<if test="compTel != null">, compTel</if>
+		<if test="compExtTel != null">, compExtTel</if>
 		<if test="logo != null">, logo</if>
 		) values (
 		#{id},#{pw},#{email},#{name},#{phone},#{type}
@@ -86,6 +87,7 @@
 		<if test="compAddDetail != null">, #{compAddDetail}</if>
 		<if test="compZipcode != null">, #{compZipcode}</if>
 		<if test="compTel != null">, #{compTel}</if>
+		<if test="compExtTel != null">, #{compExtTel}</if>
 		<if test="logo != null">, #{logo}</if>
 		)
 		<selectKey resultType="int" keyProperty="seq">
@@ -116,6 +118,7 @@
 			<if test="compBankAcc != null">, compBankAcc = #{compBankAcc}</if>
 			<if test="compBankPath != null">, compBankPath = #{compBankPath}</if>
 			<if test="compTel != null">, compTel = #{compTel}</if>
+			<if test="compExtTel != null">, compExtTel = #{compExtTel}</if>
 			<if test="contractPath != null">, contractPath = #{contractPath}</if>
 			<if test="contractStart != null">, contractStart = #{contractStart}</if>
 			<if test="contractEnd != null">, contractEnd = #{contractEnd}</if>
@@ -127,7 +130,6 @@
 			<if test="taxEmail != null">, taxEmail = #{taxEmail}</if>
 			<if test="logo != null">, logo = #{logo}</if>
 			<if test="activate >0">, activate = #{activate}</if>
-			<if test="master_seq >0">, master_seq = #{master_seq}</if>
 			<if test="group_seq >0">, group_seq = #{group_seq}</if>
 		</set>
 		where seq = #{seq}
@@ -151,14 +153,14 @@
 		`compAddress`,
 		`compAddDetail`, `compZipcode`, `compBankName`,
 		`compBankAcc`,
-		`compBankPath`, `compTel`, `contractPath`,
+		`compBankPath`, `compTel`, `compExtTel`, `contractPath`,
 		DATE_FORMAT(`contractStart`,'%Y-%m-%d') AS `contractStart`,
 		DATE_FORMAT(`contractEnd`,'%Y-%m-%d') AS `contractEnd`,
 		`contractAuto`, `preRate`, `postRate`,
 		`taxName`,
 		`taxPhone`, `taxEmail`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
-		`logo`, `activate`, `master_seq`, `group_seq` FROM `member`
+		`logo`, `activate`, `group_seq` FROM `member`
 		WHERE `type` = 'M'
 		AND `activate` = 1
 		AND `compName`!=''

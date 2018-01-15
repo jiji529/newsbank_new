@@ -72,6 +72,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 		String compDocPath = null;
 		String compName = null;
 		String compTel = null;
+		String compExtTel = null;
 		String compAddress = null;
 		String compAddDetail = null;
 		String compZipcode = null;
@@ -176,6 +177,15 @@ public class AdminMemberAction extends NewsbankServletBase {
 			System.out.println("compTel => " + compTel + " : " + check);
 			if (!check) {
 				message = "회사 전화 번호 형식이 올바르지 않습니다.";
+			}
+		}
+		
+		if(check && request.getParameter("compExtTel") != null) {
+			compExtTel = request.getParameter("compExtTel"); // 회사 내선번호
+			check = check && isValidExhTel(compExtTel); 
+			System.out.println("compExtTel => " + compExtTel + " : " + check);
+			if (!check) {
+				message = "회사 내선번호 형식이 올바르지 않습니다.";
 			}
 		}
 
@@ -308,6 +318,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setComDocPath(compDocPath);
 			memberDTO.setCompName(compName);
 			memberDTO.setCompTel(compTel);
+			memberDTO.setcompExtTel(compExtTel);
 			memberDTO.setCompAddress(compAddress);
 			memberDTO.setCompAddDetail(compAddDetail);
 			memberDTO.setCompZipcode(compZipcode);
@@ -469,6 +480,22 @@ public class AdminMemberAction extends NewsbankServletBase {
 
 		return err;
 	}
+	
+	public static boolean isValidExhTel(String phone) {
+		boolean err = false;
+		String regex = "[(0-9)]{3}";
+		if (phone != null && !phone.isEmpty()) {
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(phone);
+			if (m.matches()) {
+				err = true;
+			}
+		}
+
+		return err;
+	}
+	
+	
 
 	public static boolean isValidCompNum(String CompNum) {
 		boolean err = false;

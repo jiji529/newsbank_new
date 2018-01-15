@@ -258,6 +258,7 @@ function listJson() {
 	
 	var html = "";
 	$("#mtBody").empty();
+	console.log(searchParam);
 	
 	$.ajax({
 		type: "POST",
@@ -284,8 +285,9 @@ function listJson() {
 				}
 				
 				var deferred = val.deferred;
-				if(deferred == 'Y') deferred = "오프라인 결제";
-				if(deferred == 'N') deferred = "온라인 결제";	
+				if(deferred == '0') deferred = "온라인 결제";
+				if(deferred == '1') deferred = "오프라인 결제<br/>(온라인 가격)";
+				if(deferred == '2') deferred = "오프라인 결제<br/>(별도 가격)";	
 				
 				var contractStart = val.contractStart;
 				var contractEnd = val.contractEnd;
@@ -297,7 +299,7 @@ function listJson() {
 				regDate = regDate.substring(0, 10);
 				
 				html += '<tr onclick="go_memberView(\'' + val.seq + '\')">';
-				html += '<td><div class="tb_check">';
+				html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
 				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
 				html += '<label for="check' + key + '">선택</label>';
 				html += '</div></td>';
@@ -367,8 +369,9 @@ function search() { // 검색
 				}
 				
 				var deferred = val.deferred;
-				if(deferred == 'Y') deferred = "오프라인 결제";
-				if(deferred == 'N') deferred = "온라인 결제";	
+				if(deferred == '0') deferred = "온라인 결제";
+				if(deferred == '1') deferred = "오프라인 결제<br/>(온라인 가격)";
+				if(deferred == '2') deferred = "오프라인 결제<br/>(별도 가격)";	
 				
 				var contractStart = val.contractStart;
 				var contractEnd = val.contractEnd;
@@ -380,7 +383,7 @@ function search() { // 검색
 				regDate = regDate.substring(0, 10);
 				
 				html += '<tr onclick="go_memberView(\'' + val.seq + '\')">';
-				html += '<td><div class="tb_check">';
+				html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
 				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
 				html += '<label for="check' + key + '">선택</label>';
 				html += '</div></td>';
@@ -447,14 +450,15 @@ function go_memberView(member_seq) {
 									<option value="">전체</option>
 									<option value="P">개인</option>
 									<option value="C">법인</option>
+									<option value="M">언론사</option>
 								</select></td>
 						</tr>
 						<tr>
 							<th>결제구분</th>
 							<td><select name="" id="sel_deferred" class="inp_txt" style="width:380px;">
 									<option value="">전체</option>
-									<option value="N">온라인결제</option>
-									<option value="Y">오프라인결제</option>
+									<option value="0">온라인결제</option>
+									<option value="1">오프라인결제</option>
 								</select></td>
 						</tr>
 						<tr>
@@ -480,7 +484,7 @@ function go_memberView(member_seq) {
 						onclick="excel()">엑셀저장</a>
 				</div> -->
 				<div class="ad_result_btn_area">
-					<a href="javascript:void(0)" style="margin-left: 0;">회원추가</a> 
+					<a href="/add.member.manage" style="margin-left: 0;">회원추가</a> 
 					<span id="popup_open"><a href="javascript:void(0)" onclick="popup_group()">그룹묶기</a></span> 
 					<a href="javascript:void(0)" class="bk">탈퇴처리</a>
 				</div>

@@ -38,6 +38,7 @@ public class MemberDTO implements Serializable {
 	private String compBankAcc;// 정산계좌
 	private String compBankPath;// 정산통장 사본 경
 	private String compTel; // 회사 전화번호
+	private String compExtTel; // 회사 내선번호
 	private String contractPath;// 계약서 사본경로
 	private String contractStart; // 계약시작일
 	private String contractEnd;// 계약종료일
@@ -283,6 +284,20 @@ public class MemberDTO implements Serializable {
 	 */
 	public void setCompTel(String compTel) {
 		this.compTel = compTel;
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getcompExtTel() {
+		return compExtTel;
+	}
+
+	/**
+	 * @param compExtTel
+	 */
+	public void setcompExtTel(String compExtTel) {
+		this.compExtTel = compExtTel;
 	}
 
 	/**

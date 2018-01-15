@@ -101,6 +101,13 @@ public class AdminMemberView extends NewsbankServletBase {
 
 				}
 				
+				// 사무실 내선
+				if (memberDTO.getcompExtTel() != null && memberDTO.getcompExtTel().length() >= 3) {
+					memberDTO.setCompTel(memberDTO.getcompExtTel());				
+					
+					request.setAttribute("compExtTel", memberDTO.getcompExtTel());
+				}
+				
 				// 세금계산서 전화번호, 이메일
 				if (memberDTO.getTaxPhone() != null && memberDTO.getTaxPhone().length() >= 9) {
 					memberDTO.setTaxPhone(memberDTO.getTaxPhone().replaceAll("-", ""));
