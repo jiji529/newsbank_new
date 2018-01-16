@@ -25,21 +25,26 @@
 <title>뉴스뱅크관리자</title>
 
 <script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/jquery-ui-1.12.1.min.js"></script>
+
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
+<link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css" />
 <script src="js/footer.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
 <!-- <script src="js/join.js"></script> --> <!-- 기존의 회원가입의 형식과는 다른 부분이 있어서 admin.js를 생성해서 필요한 부분만 커스터마이징 -->
-<script src="js/admin.js?v=20180110"></script>
+<script src="js/admin.js"></script>
 <script>
 
 	$(document).ready(function() {
 		// 법인, 오프라인 별도요금 항목 숨김처리
-		$(".offline_separate").hide();
+		$(".offline_area").hide();
 		$(".media_only").hide();
 		$(".corp_area").hide();
+		
+		setDatepicker();
 	});
 	
 	// 회원구분 선택박스
@@ -65,24 +70,26 @@
 	}
 	
 	// 결제 구분 옵션 선택박스
-	function pay_choice() { 
-		var pay = $("select[name=pay]").val();
-		pay = parseInt(pay);
+	function deferred_choice() { 
+		var deferred = parseInt($("select[name=deferred]").val());
 		
-		switch(pay) {
+		switch(deferred) {
 			case 0:
 				// 온라인
-				$(".offline_separate").hide();
+				$(".offline_area").hide();
+				$(".photoUsage").hide();
 				break;
 				
 			case 1:
-				$(".offline_separate").hide();
 				// 오프라인
+				$(".offline_area").show();
+				$(".photoUsage").hide();
 				break;
 				
 			case 2:
 				// 오프라인 별도요금
-				$(".offline_separate").show();
+				$(".offline_area").show();
+				$(".photoUsage").show();
 				break;
 		}
 	}
@@ -244,32 +251,32 @@
 								</tr>
 								<tr>
 									<th>결제구분</th>
-									<td><select name="pay" class="inp_txt" style="width:180px;" onchange="pay_choice()">
+									<td><select name="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
 											<option value="0" selected="selected">온라인결제</option>
 											<option value="1">오프라인결제</option>
 											<option value="2">오프라인 별도 요금</option>
 										</select></td>
 								</tr>
 								<!-- 법인, 언론사 둘다 오프라인 결제 시에만 노출  -->
-								<tr class="offline_separate">
+								<tr class="offline_area">
 									<th>계약 기간</th>
-									<td><input type="text" name="contractStart" class="inp_txt" size="12" value="" />
+									<td><input type="text" name="contractStart" class="inp_txt datepicker" size="12" value="" />
 										<span class=" bar">~</span>
-										<input type="text" name="contractEnd" class="inp_txt" size="12" value="" />
+										<input type="text" name="contractEnd" class="inp_txt datepicker" size="12" value="" />
 										<a href="#" class="btn_input1">계약서 업로드</a> <a href="#" class="btn_input1">계약서 다운로드</a></td>
 								</tr>
-								<tr class="offline_separate">
+								<tr class="offline_area photoUsage" style="display: none;">
 									<th>사진 용도</th>
-									<td><input type="text" class="inp_txt" size="43" value="" />
+									<td><input type="text" class="inp_txt" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />
 										<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>
 										<input type="text" class="inp_txt" size="10" value="" />
 										<span class=" bar">원</span> <a class="file_add">파일 추가</a><a class="file_del">파일 삭제</a></td>
 								</tr>
-								<tr class="offline_separate">
+								<tr class="offline_area">
 									<th>세금계산서 담당자</th>
 									<td><input type="text" name="taxName" class="inp_txt" size="43" value="" /></td>
 								</tr>
-								<tr class="offline_separate">
+								<tr class="offline_area">
 									<th>세금계산서 담당자 전화번호</th>
 									<td><select name="" class="inp_txt" style="width:70px;">
 											<option value="02" selected="selected">02</option>
@@ -305,16 +312,16 @@
 										<span class=" bar2">내선</span>
 										<input type="text" name="taxDirectTel" id="celphone3" size="5"  class="inp_txt" value="" maxlength="4" /></td>
 								</tr>
-								<tr class="offline_separate">
+								<tr class="offline_area">
 									<th>세금계산서 담당자 이메일</th>
 									<td><input type="text" name="taxEmail" class="inp_txt" size="50" value="" /></td>
 								</tr>
 								<!-- 여기부터 언론사만 노출 -->
 								<tr class="media_only">
 									<th>정산 매체</th>
-									<td><select name="" class="inp_txt" style="width:180px;">
-											<option value="" >승인</option>
-											<option value="" selected="selected">비승인</option>
+									<td><select name="admission" class="inp_txt" style="width:180px;">
+											<option value="Y" >승인</option>
+											<option value="N" selected="selected">비승인</option>
 										</select><a href="#" class="btn_input1">정산정보 보기</a></td>
 								</tr>
 							</tbody>
@@ -323,7 +330,7 @@
 				</form>
 			<div class="btn_area">
 				<a href="javascript:void(0)" class="btn_input2" onclick="member_submit()">회원 추가</a>
-				<a href="#"	class="btn_input1">취소</a>
+				<a href="/member.manage" class="btn_input1">취소</a>
 			</div>
 		</div>
 		</section>

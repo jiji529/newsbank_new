@@ -4,10 +4,24 @@ $(document).ready(function() {
 	$("#frmJoin").on("submit", function() {
 		// process form
 		var check = true;
-		check = check && validId();
-		check = check && validPw();
-		check = check && validEmail();
-		check = check && validName();
+		var cmd = $("input[name=cmd]").val();
+		var message = "";
+		
+		if(cmd == "C") {
+			message = "회원 추가하시겠습니까?";
+			check = check && validId();
+			check = check && validPw();
+			check = check && validName();
+			
+		}else if(cmd == "U") {
+			if($("#frmJoin").find("[name=pw]").val().length > 0) {
+				check = check && validPw();
+				console.log("비밀번호 수정");
+			}
+			message = "회원정보를 수정하시겠습니까?";
+		}
+		
+		check = check && validEmail();		
 		check = check && validPhone();
 		// check = check && validCertify(); (인증번호 체크는 관리자 페이지에서 필요 없음.)
 		if ($(this).find("[name=type]").val() != "P") {
@@ -23,40 +37,18 @@ $(document).ready(function() {
 				console.log("언론사 회원");
 			}
 		}
+		
+
+		if($("input[name=deferred]").val() == 1) { 		// 결제 구분 (오프라인 결제)
+			
+		}else if($("input[name=deferred]").val() == 2) { 		// 결제 구분 (오프라인 별도 요금)
+			
+		}
+		
 		if (check) {
-			if (confirm("회원 추가하시겠습니까?")) {
+			if (confirm(message)) {
 				//joinAccess();
 				validUploadFile()
-
-				return false;
-			}
-		}
-
-		return false;
-	});
-	
-	// 회원정보 수정
-	$("#frmMypage").on("submit", function() {
-		// process form
-		var check = true;
-		check = check && validEmail();
-		check = check && validPhone();
-		if ($(this).find("[name=type]").val() != "P") {
-			check = check && validCompAddr();
-			check = check && validCompName();
-			check = check && validCompNum();
-			check = check && validCompTel();
-			check = check && validCompExtTel();
-			//check = check && validCompDoc();
-			//check = check && validUploadFile();
-
-			if ($(this).find("[name=type]").val() == "M") {
-				console.log("언론사 회원");
-			}
-		}
-		if (check) {
-			if (confirm("회원정보를 수정하시겠습니까?")) {
-				updateAccess();
 
 				return false;
 			}
@@ -263,25 +255,45 @@ $(document).ready(function() {
 		
 	}
 	
-	// 회원가입 최종완료
-	function joinAccess() {
-		$.post("/admin.member.api", $("#frmJoin").serialize(), function(data) {
-			if (data.success) {
-				alert("정상적으로 추가되었습니다.");
-				location.href = "/member.manage";
-			} else {
-				alert(data.message);
+	// 세금계산서 담당자 연락처 체크
+	function validTaxPhone() {
+		var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+		var taxPhone = $("#taxPhone1").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
+		// name=phone의 존재여부를 확인하여 없으면 별도로 태그를 추가
+		if($('#frmJoin').find("[name=taxPhone]").length>0){
+			$('#frmJoin').find("[name=taxPhone]").val(phone);
+		}else{
+			$('<input>').attr({
+				type : 'hidden',
+				name : 'taxPhone',
+				value : taxPhone
+			}).appendTo('#frmJoin');
+		}
+		
+		
+		if (regex.test(taxPhone) && taxPhone.length > 0) { // 숫자 정규식과 값의 존재여부 확인
+			//$("#phone_message").css("display", "none");
+			return true;
+		} else {
+			//$("#phone_message").css("display", "block");
+			$("#taxPhone3").focus();
+			return false;
+		}
 
-			}
-		}, "json");
-		return false;
 	}
 	
-	// 회원정보 최종 수정완료
-	function updateAccess() {
-		$.post("/admin.member.api", $("#frmMypage").serialize(), function(data) {
+	// 핸드폰 번호 인증 체크
+	$("#taxPhone3").change(function() {
+		return validTaxPhone();
+	});
+	
+	// 회원가입 최종완료
+	function joinAccess() {
+		var cmd = $("input[name=cmd]").val();
+		var message = (cmd == "C") ? "정상적으로 추가되었습니다." : "정상적으로 수정되었습니다.";
+		$.post("/admin.member.api", $("#frmJoin").serialize(), function(data) {
 			if (data.success) {
-				alert("정상적으로 수정되었습니다.");
+				alert(message);
 				location.href = "/member.manage";
 			} else {
 				alert(data.message);
@@ -513,6 +525,35 @@ $(document).ready(function() {
 		}
 	}
 	
+	$(document).on("click", ".file_add", function() {
+		var usageHtml = '<p><input type="text" class="inp_txt" name="usage" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸">';
+		usageHtml += '<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>';
+		usageHtml += '<input type="text" name="price" class="inp_txt" size="10" value="">';
+		usageHtml += '<span class=" bar">원</span>';
+		usageHtml += ' <a class="file_del">용도 삭제</a></p>';		
+		$(usageHtml).appendTo(".photoUsage td");
+		
+		var count = $(".photoUsage td p").length; 
+	});
+
+	$(document).on("click", ".file_del", function() {
+		$(this).parent("p").remove();
+	});
+	
 });
 
 
+
+function setDatepicker() {
+	$( ".datepicker" ).datepicker({
+     changeMonth: true, 
+     dayNames: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
+     dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], 
+     monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+     monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+     showButtonPanel: true, 
+     currentText: '오늘 날짜', 
+     closeText: '닫기', 
+     dateFormat: "yymmdd"
+  });
+}

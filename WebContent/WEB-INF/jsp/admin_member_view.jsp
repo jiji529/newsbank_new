@@ -25,31 +25,56 @@
 <title>뉴스뱅크관리자</title>
 
 <script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/jquery-ui-1.12.1.min.js"></script>
+
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
+<link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css" />
 <script src="js/footer.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
 <script src="js/admin.js"></script>
 <script type="text/javascript">
-	function pay_choice() {
-		var pay = $("select[name=pay]").val();
+
+	$(document).ready(function() {
+		var deferred = ${MemberDTO.deferred};
+		var memberType = "${MemberDTO.type}"; 
 		
-		switch(pay) {
+		if(deferred == 0) {
+			$(".offline_area").hide();
+		}else if(deferred == 2) {
+			$(".photoUsage").show();
+		}
+		
+		if(memberType == "P") { // 개인 회원
+			$(".corp_area").hide();
+			$(".corp_area").children().find("input").attr("disabled", true);
+		}
+		
+		setDatepicker();
+	});
+	
+	function deferred_choice() {
+		var deferred = parseInt($("select[name=deferred]").val());
+		
+		switch(deferred) {
 			case 0:
 				// 온라인
-				$(".offline_area").css("display", "none");
+				$(".offline_area").hide();
+				$(".photoUsage").hide();
 				break;
 				
 			case 1:
 				// 오프라인
-				$(".offline_area").css("display", "block");
+				$(".offline_area").show();
+				$(".photoUsage").hide();
 				break;
 				
 			case 2:
 				// 오프라인 별도요금
-				$(".photoUsage").css("display", "block");
+				$(".offline_area").show();
+				$(".photoUsage").show();
 				break;
 		}
 	}	
@@ -78,7 +103,7 @@
 	
 	// 회원정보 수정
 	function member_update() {
-		$('#frmMypage').submit(); // 회원 정보 수정
+		$('#frmJoin').submit(); // 회원 정보 수정
 	}
 </script>
 </head>
@@ -92,7 +117,7 @@
 				<h3>회원 현황</h3>
 			</div>
 			<h4>기본 정보</h4>
-			<form id="frmMypage" action="/admin.member.api" name="frmMypage" method="post">
+			<form id="frmJoin" action="/admin.member.api" name="frmJoin" method="post">
 				<table class="tb01" cellpadding="0" cellspacing="0">
 					<colgroup>
 					<col style="width:240px;">
@@ -106,14 +131,14 @@
 						<tr>
 							<th> 비밀번호 변경 </th>
 							<td>
-								<input type="password" name="pw" id="pw" class="inp_txt" size="40">
+								<input type="password" id="pw" name="pw" class="inp_txt" size="40">
 								<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
 							</td>
 						</tr>
 						<tr>
 							<th>비밀번호 재확인</th>
 							<td>
-								<input type="password" name="pw_check" id="pw_check" class="inp_txt" size="40">
+								<input type="password" id="pw_check" name="pw_check" class="inp_txt" size="40">
 								<p class="txt_message" id="pw_check_message" style="display: none;">비밀번호가 일치하지 않습니다.</p>
 							</td>
 						</tr>
@@ -153,7 +178,7 @@
 					</tbody>
 				</table>
 				<!--여기부터 법인-->
-				<c:if test="${MemberDTO.type eq 'C' || MemberDTO.type eq 'M'}">
+				<%-- <c:if test="${MemberDTO.type eq 'C' || MemberDTO.type eq 'M'}"> --%>
 				<div class="corp_area">
 					<h4>법인 회원 추가 정보</h4>
 					<table class="tb01" cellpadding="0" cellspacing="0">
@@ -211,7 +236,10 @@
 										<span class=" bar">-</span>
 										<input type="text" id="compTel3" name="compTel3" size="5"  class="inp_txt" value="${compTel3}" maxlength="4">
 										<span class=" bar2">내선</span>
-										<input type="text" id="compExtTel" name="compExtTel" size="5"  class="inp_txt" value="${compExtTel}" maxlength="4" /></td>
+										<input type="text" id="compExtTel" name="compExtTel" size="5"  class="inp_txt" value="${compExtTel}" maxlength="4" />
+										<p class="txt_message" id="compExtTel_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p><br/>
+									</td>
+										
 								</tr>
 								<tr>
 									<th>회사/기관 주소</th>
@@ -228,7 +256,7 @@
 								<tr>
 									<th>결제구분</th>
 									<td>
-										<select name="pay" class="inp_txt" style="width:180px;" onchange="pay_choice()">
+										<select name="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
 											<option value="0" <c:if test="${MemberDTO.deferred eq '0'}">selected</c:if>>온라인결제</option>
 											<option value="1" <c:if test="${MemberDTO.deferred eq '1'}">selected</c:if>>오프라인결제</option>
 											<option value="2" <c:if test="${MemberDTO.deferred eq '2'}">selected</c:if>>오프라인 별도 요금</option>
@@ -236,7 +264,7 @@
 									</td>
 								</tr>
 								<!-- 법인, 언론사 둘다 오프라인 결제 시에만 노출  -->
-								<c:if test="${MemberDTO.deferred eq '2'}">
+								<%-- <c:if test="${MemberDTO.deferred eq '2'}"> --%>
 								<tr class="offline_area">
 									<th>계약 기간</th>
 									
@@ -244,18 +272,22 @@
 									<fmt:parseDate value="${MemberDTO.contractEnd}" var="contractEnd" pattern="yyyy-MM-dd"/>
 									
 									<td>
-										<input type="text" name="contractStart" class="inp_txt" size="12" value="<fmt:formatDate value="${contractStart}" pattern="yyyy-MM-dd"/>" maxlength="10"/>
+										<input type="text" name="contractStart" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractStart}" pattern="yyyy-MM-dd"/>" maxlength="10"/>
 										<span class=" bar">~</span>
-										<input type="text" name="contractEnd" class="inp_txt" size="12" value="<fmt:formatDate value="${contractEnd}" pattern="yyyy-MM-dd"/>" maxlength="10"/>
+										<input type="text" name="contractEnd" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractEnd}" pattern="yyyy-MM-dd"/>" maxlength="10"/>
 										<a href="#" class="btn_input1">계약서 업로드</a> <a href="#" class="btn_input1">계약서 다운로드</a>
 									</td>
 								</tr>
-								<tr class="offline_area photoUsage" style="display:none;">
+								<tr class="offline_area photoUsage" style="display: none;">
 									<th>사진 용도</th>
-									<td><input type="text" class="inp_txt" size="43" value="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />
-										<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>
-										<input type="text" class="inp_txt" size="10" value="88,000" />
-										<span class=" bar">원</span> <a class="file_add">파일 추가</a><a class="file_del">파일 삭제</a></td>
+									<td>
+										<p>
+											<input type="text" class="inp_txt" name="usage" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />
+											<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>
+											<input type="text" class="inp_txt" name="price" size="10" />
+											<span class=" bar">원</span> <a class="file_add">용도 추가</a>
+										</p>
+									</td>									
 								</tr>
 								<tr class="offline_area">
 									<th>세금계산서 담당자</th>
@@ -295,7 +327,7 @@
 										<span class=" bar">-</span>
 										<input type="text" name="taxPhone3" id="taxPhone3" size="5" value="${taxPhone3}" class="inp_txt" maxlength="4">
 										<span class=" bar2">내선</span>
-										<input type="text" name="taxDirectTel" size="5"  class="inp_txt" value="216" maxlength="4" /></td>
+										<input type="text" name="taxDirectTel" size="5"  class="inp_txt" maxlength="4" /></td>
 								</tr>
 								<tr>
 									<th>세금계산서 담당자 이메일</th>
@@ -305,18 +337,22 @@
 								<c:if test="${MemberDTO.type eq 'M'}">
 								<tr class="media_only">
 									<th>정산 매체</th>
-									<td><select name="" class="inp_txt" style="width:180px;">
-											<option value="" >승인</option>
-											<option value="" selected="selected">비승인</option>
+									<td><select name="admission" class="inp_txt" style="width:180px;">
+											<option value="Y" >승인</option>
+											<option value="N" selected="selected">비승인</option>
 										</select><a href="#" class="btn_input1">정산정보 보기</a></td>
 								</tr>
 								</c:if>
-								</c:if>
+							<%-- </c:if> --%>
 						</tbody>
 					</table>
 				</div>
-				</c:if>
-				<div class="btn_area"><a href="javascript:;" id="btnSubmit" class="btn_input2" onclick="member_update()">회원정보 수정</a><a href="/member.manage" class="btn_input1">취소</a><a href="#" class="btn_input3 fr">탈퇴</a></div>
+				<%-- </c:if> --%>
+				<div class="btn_area">
+					<a href="javascript:;" id="btnSubmit" class="btn_input2" onclick="member_update()">회원정보 수정</a>
+					<a href="/member.manage" class="btn_input1">취소</a>
+					<a href="#" class="btn_input3 fr">탈퇴</a>
+				</div>
 				<input type="hidden" name="cmd" value="U" />
 				<input type="hidden" name="seq" value="${MemberDTO.seq}" />
 				<input type="hidden" id="type" name="type" value="${MemberDTO.type}" />

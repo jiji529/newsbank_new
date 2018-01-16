@@ -164,8 +164,7 @@ function popup_group() {
 		
 	} else {
 		
-		if(!check_existGroup()) { // 선택항목 중에 그룹이 포함되었는지 여부 확인
-			
+		if((!check_existGroup()) && check_corp()) { // 선택항목 중에 그룹이 포함되었는지 여부 확인 & 법인회원인지 유무 확인
 			$("#popup_wrap").css("display", "block"); 
 			$("#mask").css("display", "block"); 
 			$(".group_li").empty();
@@ -191,14 +190,37 @@ function popup_group() {
 function check_existGroup() { // 그룹포함여부 확인
 	var result = false;
 	$("#mtBody input:checkbox:checked").each(function(index) {
-		var groupType = $(this).closest("tr").children().eq(9).text();
-		//var id = $(this).closest("tr").children().eq(2).text();
+		var groupType = $(this).closest("tr").children().eq(9).text(); // 그룹 구분
 		
 		if(groupType != "개별"){ 
-			result = true;	
-			alert("이미 그룹인 회원이 포함되어 있습니다.");
+			result = true;				
 		}
 	});
+	
+	if(result) {
+		alert("이미 그룹인 회원이 포함되어 있습니다.");
+	}
+	
+	return result;
+}
+
+function check_corp() { // 법인 회원유무 확인
+	var result = true;
+	var other = new Array();
+	
+	$("#mtBody input:checkbox:checked").each(function(index) {
+		var memberType = $(this).closest("tr").children().eq(4).text(); // 회원구분
+		var id = $(this).closest("tr").children().eq(2).text();
+		
+		if(memberType != "법인") {
+			result = false;
+			other.push(id);			
+		}
+	});
+	
+	if(!result) {
+		alert(other.join(", ")+" 계정은 개인/언론사 회원입니다.\n 그룹묶기는 법인 회원만 가능합니다.");
+	}	
 	return result;
 }
 
@@ -258,7 +280,6 @@ function listJson() {
 	
 	var html = "";
 	$("#mtBody").empty();
-	console.log(searchParam);
 	
 	$.ajax({
 		type: "POST",
@@ -266,7 +287,7 @@ function listJson() {
 		dataType: "json",
 		data: searchParam,
 		url: "/listMember.api",
-		success: function(data) { console.log(data);
+		success: function(data) { //console.log(data);
 			pageCnt = data.pageCnt; // 총 페이지 갯수
 			totalCnt = data.totalCnt; // 총 갯수
 			
@@ -275,6 +296,7 @@ function listJson() {
 				var type = val.type;
 				if(type == "P") type = "개인";
 				if(type == "C") type = "법인";
+				if(type == "M") type = "매체사";
 				
 				var group = val.group_seq;
 				var groupName = val.groupName;
@@ -293,7 +315,7 @@ function listJson() {
 				var contractEnd = val.contractEnd;
 				var duration = "";
 				if(contractStart == null || contractEnd == null) duration = "정보 미기재"; // 둘 중 하나라도 null이면 표시 
-				if(contractStart != null && contractEnd != null) duration = contractStart + "~" + contractEnd; // 모든 정보가 있을 때 표시
+				if(contractStart != null && contractEnd != null) duration = contractStart.split(" ")[0] + " ~ " + contractEnd.split(" ")[0]; // 모든 정보가 있을 때 표시
 				
 				var regDate = val.regDate;
 				regDate = regDate.substring(0, 10);
@@ -309,7 +331,7 @@ function listJson() {
 				html += '<td>' + type +'</td>';
 				html += '<td>' + val.name + '</td>';
 				html += '<td>' + val.email + '</td>';
-				html += '<td>' + val.phone + '</td>';
+				html += '<td>' + makePhoneNumber(val.phone) + '</td>';
 				html += '<td>' + deferred + '</td>';
 				html += '<td>' + group + '</td>';
 				html += '<td>' + duration + '</td>';
@@ -319,6 +341,10 @@ function listJson() {
 			$(html).appendTo("#mtBody");
 		}
 	});
+}
+
+function makePhoneNumber(phoneNumber) { // 휴대폰 번호로 표현
+	return phoneNumber.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
 }
 
 function search() { // 검색
@@ -342,14 +368,13 @@ function search() { // 검색
 	
 	var html = "";
 	$("#mtBody").empty();
-	console.log(searchParam);
 	
 	$.ajax({
 		type: "POST",
 		dataType: "json",
 		data: searchParam,
 		url: "/listMember.api",
-		success: function(data) { console.log(data);
+		success: function(data) { //console.log(data);
 			pageCnt = data.pageCnt; // 총 페이지 갯수
 			totalCnt = data.totalCnt; // 총 갯수
 			
@@ -359,6 +384,7 @@ function search() { // 검색
 				var type = val.type;
 				if(type == "P") type = "개인";
 				if(type == "C") type = "법인";
+				if(type == "M") type = "매체사";
 				
 				var group = val.group_seq;
 				var groupName = val.groupName;
@@ -377,7 +403,7 @@ function search() { // 검색
 				var contractEnd = val.contractEnd;
 				var duration = "";
 				if(contractStart == null || contractEnd == null) duration = "정보 미기재"; // 둘 중 하나라도 null이면 표시 
-				if(contractStart != null && contractEnd != null) duration = contractStart + "~" + contractEnd; // 모든 정보가 있을 때 표시
+				if(contractStart != null && contractEnd != null) duration = contractStart.split(" ")[0] + " ~ " + contractEnd.split(" ")[0]; // 모든 정보가 있을 때 표시
 				
 				var regDate = val.regDate;
 				regDate = regDate.substring(0, 10);
@@ -393,7 +419,7 @@ function search() { // 검색
 				html += '<td>' + type +'</td>';
 				html += '<td>' + val.name + '</td>';
 				html += '<td>' + val.email + '</td>';
-				html += '<td>' + val.phone + '</td>';
+				html += '<td>' + makePhoneNumber(val.phone) + '</td>';
 				html += '<td>' + deferred + '</td>';
 				html += '<td>' + group + '</td>';
 				html += '<td>' + duration + '</td>';

@@ -113,7 +113,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 				message = "아이디 형식이 올바르지 않습니다.s";
 			}
 		}
-		if (check && request.getParameter("pw") != null) {
+		if (check && request.getParameter("pw") != null && request.getParameter("pw") != "") {
 			pw = request.getParameter("pw"); // 비밀번호 request
 			check = check && isValidPw(pw);
 			System.out.println("pw => " + pw + " : " + check);
@@ -224,11 +224,11 @@ public class AdminMemberAction extends NewsbankServletBase {
 			contractPath = request.getParameter("contractPath"); // 로고 경로 request
 		}
 
-		if (check && request.getParameter("contractStart") != null) {
+		if (check && request.getParameter("contractStart") != null && request.getParameter("contractStart") != "") {
 			contractStart = request.getParameter("contractStart"); // 로고 경로 request
 		}
 
-		if (check && request.getParameter("contractEnd") != null) {
+		if (check && request.getParameter("contractEnd") != null && request.getParameter("contractEnd") != "") {
 			contractEnd = request.getParameter("contractEnd"); // 로고 경로 request
 		}
 
