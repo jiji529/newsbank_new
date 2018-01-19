@@ -278,7 +278,7 @@
 								</tr>
 								<tr class="offline_area">
 									<th>세금계산서 담당자 전화번호</th>
-									<td><select name="" class="inp_txt" style="width:70px;">
+									<td><select name="taxPhone1" id="taxPhone1" class="inp_txt" style="width:70px;">
 											<option value="02" selected="selected">02</option>
 											<option value="031">031</option>
 											<option value="032">032</option>
@@ -306,11 +306,11 @@
 											<option value="019">019</option>
 										</select>
 										<span class=" bar">-</span>
-										<input type="text" name="taxPhone2" id="celphone" size="5"  class="inp_txt" value="" maxlength="4">
+										<input type="text" name="taxPhone2" id="taxPhone2" size="5"  class="inp_txt" value="" maxlength="4">
 										<span class=" bar">-</span>
-										<input type="text" name="taxPhone3" id="celphone2" size="5"  class="inp_txt" value="" maxlength="4">
+										<input type="text" name="taxPhone3" id="taxPhone3" size="5"  class="inp_txt" value="" maxlength="4">
 										<span class=" bar2">내선</span>
-										<input type="text" name="taxDirectTel" id="celphone3" size="5"  class="inp_txt" value="" maxlength="4" /></td>
+										<input type="text" name="taxExtTell" id="taxExtTell" size="5"  class="inp_txt" value="" maxlength="4" /></td>
 								</tr>
 								<tr class="offline_area">
 									<th>세금계산서 담당자 이메일</th>

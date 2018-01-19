@@ -425,5 +425,38 @@ public class MemberDAO extends DAOBase {
 			}
 		}		
 	}	
+	
+	/**
+	 * @methodName : leaveMember
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 01. 19. 오전 10:09:13
+	 * @methodCommet: 회원 탈퇴
+	 * @return
+	 * @returnType : 
+	 */
+	public boolean leaveMember(MemberDTO memberDTO) {
+		boolean result = false;
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			session.update("Member.leaveMember", memberDTO);
+			result = true;
+			session.commit();
+			// result = memberDTO.isMember();
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		//System.out.println("insert(" + memberDTO + ") --> " + memberDTO.getEmail());
+		//System.out.println(memberDTO.getName());
+
+		return result;
+	}
 
 }

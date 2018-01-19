@@ -48,8 +48,10 @@ public class MemberDTO implements Serializable {
 	private String taxName; // 계산서 담당자
 	private String taxPhone; // 계산서 담당자 전화번호
 	private String taxEmail; // 계산서 담당자 메일
+	private String taxExtTell; // 계산서 담당자 내선번호
 	private String regDate; // 등록일
 	private String logo; // 로고
+	private int withdraw; // 회원 상태(0: 정상, 1: 탈퇴)
 	
 	public static final int ACTIVATE_TRUE = 1;
 	public static final int ACTIVATE_FALSE = 2;
@@ -299,6 +301,20 @@ public class MemberDTO implements Serializable {
 	public void setcompExtTel(String compExtTel) {
 		this.compExtTel = compExtTel;
 	}
+	
+	/**
+	 * @return
+	 */
+	public String getTaxExtTell() {
+		return taxExtTell;
+	}
+	
+	/**
+	 * @param taxExtTell
+	 */
+	public void setTaxExtTell(String taxExtTell) {
+		this.taxExtTell = taxExtTell;
+	}
 
 	/**
 	 * @return
@@ -452,6 +468,20 @@ public class MemberDTO implements Serializable {
 	 */
 	public void setLogo(String logo) {
 		this.logo = logo;
+	}
+	
+	/**
+	 * @return
+	 */
+	public int getWithdraw() {
+		return withdraw;
+	}
+
+	/**
+	 * @param withdraw
+	 */	
+	public void setWithdraw(int withdraw) {
+		this.withdraw = withdraw;
 	}
 
 	/**

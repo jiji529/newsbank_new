@@ -171,19 +171,54 @@ function popup_group() {
 			$(".pop_foot > p").text('그룹명으로 지정할 항목을 선택해주세요');
 			
 			$("#mtBody input:checkbox:checked").each(function(index) {
+				var id = $(this).closest("tr").find("td:eq(2)").text().trim();
+				var compName = $(this).closest("tr").find("td:eq(3)").text().trim();
 				
-				var option = $(this).val();
-				var id = option.split("(");
-				id = id[0];
+				//var option = $(this).val();
+				//var id = option.split("(");
+				//id = id[0];
 				var popup_html = '<li>';
 				popup_html += '<input type="radio" id="radio_chk' + index + '" name="group" value="' + id + '"/>';
-				popup_html += '<label for="radio_chk' + index + '""> ' + option + '</label>';
+				popup_html += '<label for="radio_chk' + index + '""> ' + id + '</label>';
 				popup_html += '</li>';
 				
 				$(popup_html).appendTo(".group_li");
 			});
 		}
 		
+	}
+}
+
+// 탈퇴처리
+function drop_out() {
+	var chk_total = $("#mtBody input:checkbox:checked").length;
+	
+	if(chk_total == 0) { // 선택항목 갯수 체크
+		alert("최소 1개 이상을 선택해주세요.");
+	
+	} else {
+		
+		if(confirm("선택한 회원을 정말로 탈퇴처리 하시겠습니까?")) {
+			$("#mtBody input:checkbox:checked").each(function(index) {
+				var seq = $(this).val();
+				
+				$.ajax({
+					type: "POST",
+					url: "/admin.member.api",
+					data : ({
+						cmd : 'D',
+						seq : seq
+					}),
+					dataType : "json",
+					success : function(data) {
+						if (data.success) {
+						} 
+					}
+				});
+			});	
+			alert("탈퇴 완료");
+			location.href = "/member.manage";
+		}
 	}
 }
 
@@ -322,7 +357,8 @@ function listJson() {
 				
 				html += '<tr onclick="go_memberView(\'' + val.seq + '\')">';
 				html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
-				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
+				//html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
+				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
 				html += '<label for="check' + key + '">선택</label>';
 				html += '</div></td>';
 				html += '<td>' + number + '</td>';
@@ -410,7 +446,8 @@ function search() { // 검색
 				
 				html += '<tr onclick="go_memberView(\'' + val.seq + '\')">';
 				html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
-				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
+				//html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
+				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
 				html += '<label for="check' + key + '">선택</label>';
 				html += '</div></td>';
 				html += '<td>' + number + '</td>';
@@ -485,6 +522,7 @@ function go_memberView(member_seq) {
 									<option value="">전체</option>
 									<option value="0">온라인결제</option>
 									<option value="1">오프라인결제</option>
+									<option value="2">오프라인 별도요금</option>
 								</select></td>
 						</tr>
 						<tr>
@@ -512,7 +550,7 @@ function go_memberView(member_seq) {
 				<div class="ad_result_btn_area">
 					<a href="/add.member.manage" style="margin-left: 0;">회원추가</a> 
 					<span id="popup_open"><a href="javascript:void(0)" onclick="popup_group()">그룹묶기</a></span> 
-					<a href="javascript:void(0)" class="bk">탈퇴처리</a>
+					<a href="javascript:void(0)" class="bk" onclick="drop_out()">탈퇴처리</a>
 				</div>
 				<div class="ad_result_btn_area fr">
 					<select id="sel_pageVol">

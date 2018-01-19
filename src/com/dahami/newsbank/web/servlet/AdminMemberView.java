@@ -139,6 +139,13 @@ public class AdminMemberView extends NewsbankServletBase {
 
 				}
 				
+				// 세금계산서 담당자 내선번호
+				if (memberDTO.getTaxExtTell() != null && memberDTO.getTaxExtTell().length() >= 3) {
+					memberDTO.setCompTel(memberDTO.getTaxExtTell());				
+					
+					request.setAttribute("taxExtTell", memberDTO.getTaxExtTell());
+				}
+				
 				request.setAttribute("MemberDTO", memberDTO);
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_member_view.jsp");

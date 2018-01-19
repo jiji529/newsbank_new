@@ -90,6 +90,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 		String taxName = null;
 		String taxPhone = null;
 		String taxEmail = null;
+		String taxExtTell = null;
 
 		/** 관리자 기능 **/
 		String permission = null;
@@ -254,6 +255,15 @@ public class AdminMemberAction extends NewsbankServletBase {
 		if (check && request.getParameter("taxEmail") != null) {
 			taxEmail = request.getParameter("taxEmail"); // 로고 경로 request
 		}
+		
+		if(check && request.getParameter("taxExtTell") != null) {
+			taxExtTell = request.getParameter("taxExtTell"); // 회사 내선번호
+			check = check && isValidExhTel(taxExtTell); 
+			System.out.println("taxExtTell => " + taxExtTell + " : " + check);
+			if (!check) {
+				message = "세금계산서 담당자 내선번호 형식이 올바르지 않습니다.";
+			}
+		}
 
 		if (check && request.getParameter("permission") != null) {
 			permission = request.getParameter("permission"); // 로고 경로 request
@@ -336,6 +346,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setTaxEmail(taxEmail);
 			memberDTO.setTaxName(taxName);
 			memberDTO.setTaxPhone(taxPhone);
+			memberDTO.setTaxExtTell(taxExtTell);
 
 			memberDTO.setPermission(permission);
 			memberDTO.setDeferred(deferred);
@@ -369,6 +380,12 @@ public class AdminMemberAction extends NewsbankServletBase {
 
 				break;
 			case "D":
+				// 탈퇴
+				if (seq > 0) {
+					result = memberDAO.leaveMember(memberDTO); // 회원정보 요청
+				} else {
+					message = "세션정보가 없습니다. 다시 로그인 해주세요.";
+				}
 				break;
 			}
 

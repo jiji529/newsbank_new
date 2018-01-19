@@ -44,8 +44,8 @@
 			} 			
 			
 			var originName = $(this).parents(".folder_btn_area").siblings("p").text();	
-			var bookmark_seq = $(this).attr("value");
-			var html = '<div class="folder_btn_area"><a href="javascript:void(0)">수정</a><a href="javascript:void(0)">삭제</a></div>';
+			var bookmark_seq = $(this).attr("value"); console.log("bookmark_seq : " + bookmark_seq);
+			var html = '<div class="folder_btn_area"><a href="javascript:void(0)" value="' + bookmark_seq + '">수정</a><a href="javascript:void(0)" value="' + bookmark_seq + '">삭제</a></div>';
 			html += '<form style="display:block ;">';
 			html += '<fieldset>';
 			html += '<legend>폴더 수정 폼</legend>';
@@ -207,9 +207,10 @@
 		 // #폴더 수정취소
 		$(document).on("click", ".btn_back", function() {
 			var originName = $("#originName").val();
+			var bookmark_seq = $(this).attr("value");
 			
 			var html = '<p>' + originName + '</p></div>';
-			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)">수정</a><a class="btn_delete" href="javascript:void(0)">삭제</a></div>';
+			html += '<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)" value="' + bookmark_seq + '">수정</a><a class="btn_delete" href="javascript:void(0)" value="' + bookmark_seq + '">삭제</a></div>';
 			
 			$(this).closest("li").html(html);
 		});

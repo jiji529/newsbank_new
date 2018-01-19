@@ -8,6 +8,7 @@
 		select * from member
 		where type = 'M'
 		and activate = 1
+		and withdraw = 0
 		order by name asc
 	</select>
 
@@ -32,10 +33,10 @@
 		`contractAuto`, `preRate`, `postRate`,
 		`taxName`,
 		`taxPhone`,
-		`taxEmail`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
+		`taxEmail`, `taxExtTell`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
 		`logo`,
-		`activate`, `group_seq` FROM member
+		`activate`, `withdraw`, `group_seq` FROM member
 		where
 		1
 		<if test="id != null">
@@ -128,6 +129,7 @@
 			<if test="taxName != null">, taxName = #{taxName}</if>
 			<if test="taxPhone != null">, taxPhone = #{taxPhone}</if>
 			<if test="taxEmail != null">, taxEmail = #{taxEmail}</if>
+			<if test="taxExtTell != null">, taxExtTell = #{taxExtTell}</if>
 			<if test="logo != null">, logo = #{logo}</if>
 			<if test="activate >0">, activate = #{activate}</if>
 			<if test="group_seq >0">, group_seq = #{group_seq}</if>
@@ -158,11 +160,12 @@
 		DATE_FORMAT(`contractEnd`,'%Y-%m-%d') AS `contractEnd`,
 		`contractAuto`, `preRate`, `postRate`,
 		`taxName`,
-		`taxPhone`, `taxEmail`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
+		`taxPhone`, `taxEmail`, `taxExtTell`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
-		`logo`, `activate`, `group_seq` FROM `member`
+		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
 		WHERE `type` = 'M'
 		AND `activate` = 1
+		AND `withdraw` = 0
 		AND `compName`!=''
 		AND `compName`
 		is not null
@@ -185,9 +188,9 @@
 	    SELECT A.*, B.groupName FROM member A 
 	    LEFT JOIN `group` B ON A.group_seq = B.seq
 	    <where>
-	        
+	        A.withdraw = 0 <!-- 정상 회원만 출력 -->
             <if test="keyword != null"> <!-- 키워드 -->
-	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
+	            AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
             </if>
             	        
 	        <if test="type != ''"> <!-- 회원구분 -->
@@ -256,37 +259,6 @@
 		WHERE B.type='M' AND B.seq = #{seq}
 	</select>
 	
-	<!-- 정산 매체사 MediaDTO -->
-	<!-- <resultMap id="MediaDTO" type="java.util.HashMap">
-	    <result javaType="java.lang.Integer" column="blind" property="blind"></result>
-	    <result javaType="java.lang.Integer" column="total" property="total"></result>
-	    <result javaType="java.lang.Integer" column="seq" property="seq"></result>
-	    <result javaType="java.lang.String" column="id" property="id"></result>
-	    <result javaType="java.lang.String" column="email" property="email"></result>
-	    <result javaType="java.lang.String" column="name" property="name"></result>
-	    <result javaType="java.lang.String" column="phone" property="phone"></result>
-	    <result javaType="java.lang.String" column="compNum" property="compNum"></result>
-	    <result javaType="java.lang.String" column="compName" property="compName"></result>
-	    <result javaType="java.lang.String" column="preRate" property="preRate"></result>
-	    <result javaType="java.lang.String" column="postRate" property="postRate"></result>
-	</resultMap> -->
-	
-	<!-- 관리자 정산 매체사 목록 -->	
-	<!-- <select id="selMediaList" resultMap="MediaDTO" parameterType="java.util.Map">
-	    SELECT SUM(IF(saleStat=2, 1, 0)) AS blind, COUNT(uciCode) AS total, 
-		seq, id, email, name, phone, compNum, compName, preRate, postRate
-		FROM news_bank_dev.photo
-		LEFT JOIN member ON photo.member_seq = member.seq
-		WHERE member.type='M'
-		
-		<if test="keyword != null">  
-         	AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
-        </if>
-        
-		GROUP BY member_seq
-		ORDER BY member.regDate DESC
-	</select> -->
-	
 	<!-- 회원현황(그룹추가) -->
 	<insert id="insertGroup" useGeneratedKeys="true" keyProperty="seq">	    
 	    <selectKey resultType="integer" keyProperty="seq" order="AFTER">
@@ -346,4 +318,9 @@
             
 	    ORDER BY regDate DESC
 	</select>
+	
+	<!-- 회원탈퇴(withdraw 0: 정상, 1: 탈퇴) -->
+	<update id="leaveMember" parameterType="com.dahami.newsbank.web.dto.MemberDTO">
+	    UPDATE member SET withdraw = 1 WHERE seq = #{seq}
+	</update>
 </mapper>

@@ -105,6 +105,33 @@
 	function member_update() {
 		$('#frmJoin').submit(); // 회원 정보 수정
 	}
+	
+	// 회원탈퇴
+	function drop_out() {
+		if(confirm("정말로 탈퇴하시겠습니까?")) {
+			var seq = ${MemberDTO.seq};
+			
+			$.ajax({
+				type: "POST",
+				url: "/admin.member.api",
+				data : ({
+					cmd : 'D',
+					seq : seq
+				}),
+				dataType : "json",
+				success : function(data) {
+					if (data.success) {
+						alert("탈퇴 완료");
+						location.href = "/member.manage";
+					} else {
+						alert("회원 탈퇴 과정에서 오류발생");						
+					}
+
+				}
+			});
+		}
+		
+	}
 </script>
 </head>
 <body>
@@ -327,7 +354,7 @@
 										<span class=" bar">-</span>
 										<input type="text" name="taxPhone3" id="taxPhone3" size="5" value="${taxPhone3}" class="inp_txt" maxlength="4">
 										<span class=" bar2">내선</span>
-										<input type="text" name="taxDirectTel" size="5"  class="inp_txt" maxlength="4" /></td>
+										<input type="text" name="taxExtTell" id="taxExtTell" size="5" value="${taxExtTell}"  class="inp_txt" maxlength="4" /></td>
 								</tr>
 								<tr>
 									<th>세금계산서 담당자 이메일</th>
@@ -351,7 +378,9 @@
 				<div class="btn_area">
 					<a href="javascript:;" id="btnSubmit" class="btn_input2" onclick="member_update()">회원정보 수정</a>
 					<a href="/member.manage" class="btn_input1">취소</a>
-					<a href="#" class="btn_input3 fr">탈퇴</a>
+					<c:if test="${MemberDTO.withdraw == 0}">
+						<a href="javascript:;" class="btn_input3 fr" onclick="drop_out()">탈퇴</a>
+					</c:if>
 				</div>
 				<input type="hidden" name="cmd" value="U" />
 				<input type="hidden" name="seq" value="${MemberDTO.seq}" />

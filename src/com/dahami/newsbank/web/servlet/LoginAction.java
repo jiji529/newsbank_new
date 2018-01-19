@@ -69,21 +69,28 @@ public class LoginAction extends NewsbankServletBase {
 
 			memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
 			if (memberDTO != null) {
-				// 로그인 성공
-				session.setAttribute("MemberInfo", memberDTO); // 회원정보 세션 저장
-				session.setMaxInactiveInterval(60 * 60 * 25 * 7);// 유효기간 7일
+				
+				if(memberDTO.getWithdraw() == 0) { // 정상회원
+					// 로그인 성공
+					session.setAttribute("MemberInfo", memberDTO); // 회원정보 세션 저장
+					session.setMaxInactiveInterval(60 * 60 * 25 * 7);// 유효기간 7일
 
-				// 자동로그인 쿠키 저장
-				if (login_chk != null && login_chk.trim().equals("on")) {
-					Cookie cookie = new Cookie("id", URLEncoder.encode(id, "UTF-8"));
-					cookie.setMaxAge(60 * 60 * 25 * 7);// 쿠기 유효기간 1주일
-					response.addCookie(cookie);
-				} else {
-					Cookie cookie = new Cookie("id", null);
-					cookie.setMaxAge(0);// 유효기간 0
-					response.addCookie(cookie);
+					// 자동로그인 쿠키 저장
+					if (login_chk != null && login_chk.trim().equals("on")) {
+						Cookie cookie = new Cookie("id", URLEncoder.encode(id, "UTF-8"));
+						cookie.setMaxAge(60 * 60 * 25 * 7);// 쿠기 유효기간 1주일
+						response.addCookie(cookie);
+					} else {
+						Cookie cookie = new Cookie("id", null);
+						cookie.setMaxAge(0);// 유효기간 0
+						response.addCookie(cookie);
+					}
+					result = true;
+					
+				} else { // 탈퇴 회원
+					message = "탈퇴 회원입니다.";
 				}
-				result = true;
+				
 			}else {
 				message = "아이디 또는 패스워드를 확인하세요.";
 			}
