@@ -46,7 +46,7 @@
 				uciCode, uciStat uciState, saleStat saleState, ownerType, rightYn portraitRightState, monochrome mono, person includePerson, 
 				titleKr titleKor, titleEn titleEng, keywordKr keywordKor, keywordEn keywordEng, descriptionKr descriptionKor, descriptionEn descriptionEng,
 				copyright, shotPerson, 
-				publishDate, shotDate, A.regDate, updDate, 
+				publishDate, shotDate, A.regDate, A.updDate, 
 				widthPixel widthPx, heightPixel heightPx, widthCm, heightCm, dpi, fileSize, exif,
 				member_seq ownerNo, B.compName ownerName, compCode, hitCount
 				, (select (activate != 1) from member where seq = ownerNo) mediaInactive
