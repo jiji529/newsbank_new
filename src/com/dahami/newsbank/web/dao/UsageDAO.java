@@ -184,4 +184,132 @@ public class UsageDAO extends DAOBase {
 		}
 		return null;
 	}
+		
+	/**
+	 * @methodName  : insertUsage
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2018. 01. 19. 오후 16:24:32
+	 * @methodCommet: 사용용도 추가(오프라인 별도 요금)
+	 * @param param : ArrayList<UsageDTO>, seq(회원 고유번호)
+	 * @return 
+	 */
+	public void insertUsage(List<UsageDTO> usageList, int seq) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			
+			for(int idx = 0; idx < usageList.size(); idx++) {
+				String usage = usageList.get(idx).getUsage();
+				String price = String.valueOf(usageList.get(idx).getPrice());
+				String individual = String.valueOf(seq);	// 회원 고유 member_seq
+				
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("usage", usage);
+				param.put("price", price);
+				param.put("individual", individual);
+				
+				session.insert("Usage.insertUsage", param);
+			}
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			session.commit();
+			session.close();
+		}
+	}
+	
+	/**
+	 * @methodName  : usageListOfuser
+	 * @author      : HOYADEV
+	 * @date        : 2018. 01. 22. 오전 09:21:32
+	 * @methodCommet: 사용자별 사용용도 옵션
+	 * @param param
+	 * @return 
+	 */
+	public List<UsageDTO> usageListOfuser(int seq) {
+		SqlSession session = null;
+		List<UsageDTO> usageList = new ArrayList<UsageDTO>();
+				
+		try {
+			session = sf.getSession();
+			
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("individual", String.valueOf(seq));
+			usageList = session.selectList("Usage.selectList", param);
+					
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return usageList;
+	}
+	
+	/**
+	 * @methodName  : disableUsage
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2018. 01. 23. 오전 09:42:32
+	 * @methodCommet: 사용용도 비활성화(오프라인 별도 요금)
+	 * @param param : ArrayList<UsageDTO>, seq(회원 고유번호)
+	 * @return 
+	 */
+	public void disableUsage(List<UsageDTO> usageList, int seq) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			
+			for(int idx = 0; idx < usageList.size(); idx++) {
+				int usageList_seq = usageList.get(idx).getUsageList_seq();
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("usageList_seq", usageList_seq);
+				
+				session.insert("Usage.disableUsage", param);
+			}
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			session.commit();
+			session.close();
+		}
+	}
+	
+	/**
+	 * @methodName  : updateUsage
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2018. 01. 23. 오전 09:42:32
+	 * @methodCommet: 사용용도 변경 (오프라인 별도 요금)
+	 * @param param : ArrayList<UsageDTO>, seq(회원 고유번호)
+	 * @return 
+	 */
+	public void updateUsage(List<UsageDTO> usageList, int seq) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			
+			for(int idx = 0; idx < usageList.size(); idx++) {
+				int usageList_seq = usageList.get(idx).getUsageList_seq();
+				String usage = usageList.get(idx).getUsage();
+				int price = usageList.get(idx).getPrice();
+				
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("usageList_seq", usageList_seq);
+				param.put("usage", usage);
+				param.put("price", price);
+				
+				session.insert("Usage.updateUsage", param);
+			}
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			session.commit();
+			session.close();
+		}
+	}
 }

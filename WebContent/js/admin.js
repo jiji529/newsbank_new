@@ -31,6 +31,7 @@ $(document).ready(function() {
 			check = check && validCompTel();
 			check = check && validCompExtTel();
 			//check = check && validCompDoc();
+			check = check && validUsage();
 			check = check && validUploadFile();
 
 			if ($(this).find("[name=type]").val() == "M") {
@@ -56,6 +57,26 @@ $(document).ready(function() {
 
 		return false;
 	});
+	
+	// 사진 용도 유무 체크
+	function validUsage() {
+		var result = false;
+		
+		$("input[name=usage]").each(function(index) {
+			var usage = $(this).val();
+			var price = $("input[name=price]:eq(" + index + ")").val();
+			
+			if(usage.length != 0 && price.length != 0) {
+				result = true;
+			} else {
+				result = false;
+			}	
+		});
+		
+		if(!result) alert("사진 용도 옵션을 입력해주세요.");
+		
+		return result;
+	}
 	
 	//form.join 아이디 상용 유무 체크
 	function validId() {
@@ -258,7 +279,8 @@ $(document).ready(function() {
 	// 세금계산서 담당자 연락처 체크
 	function validTaxPhone() {
 		var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
-		var taxPhone = $("#taxPhone1").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
+		//var taxPhone = $("#taxPhone1").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
+		var taxPhone = $("#taxPhone1 option:selected").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
 		// name=phone의 존재여부를 확인하여 없으면 별도로 태그를 추가
 		if($('#frmJoin').find("[name=taxPhone]").length>0){
 			$('#frmJoin').find("[name=taxPhone]").val(phone);
@@ -284,6 +306,10 @@ $(document).ready(function() {
 	
 	// 핸드폰 번호 인증 체크
 	$("#taxPhone3").change(function() {
+		return validTaxPhone();
+	});
+	
+	$("#taxPhone1").change(function() {
 		return validTaxPhone();
 	});
 	
@@ -526,11 +552,11 @@ $(document).ready(function() {
 	}
 	
 	$(document).on("click", ".file_add", function() {
-		var usageHtml = '<p><input type="text" class="inp_txt" name="usage" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸">';
+		var usageHtml = '<p> <input type="hidden" name="usageList_seq" value="" /> <input type="text" class="inp_txt" name="usage" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸">';
 		usageHtml += '<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>';
 		usageHtml += '<input type="text" name="price" class="inp_txt" size="10" value="">';
 		usageHtml += '<span class=" bar">원</span>';
-		usageHtml += ' <a class="file_del">용도 삭제</a></p>';		
+		usageHtml += ' <a class="file_add">용도 추가</a> <a class="file_del">용도 삭제</a></p>';		
 		$(usageHtml).appendTo(".photoUsage td");
 		
 		var count = $(".photoUsage td p").length; 

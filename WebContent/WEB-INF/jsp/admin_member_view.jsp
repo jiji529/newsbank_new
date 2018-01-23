@@ -308,12 +308,26 @@
 								<tr class="offline_area photoUsage" style="display: none;">
 									<th>사진 용도</th>
 									<td>
-										<p>
-											<input type="text" class="inp_txt" name="usage" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />
-											<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>
-											<input type="text" class="inp_txt" name="price" size="10" />
-											<span class=" bar">원</span> <a class="file_add">용도 추가</a>
-										</p>
+										<c:if test="${usageList != null}" >
+											<c:forEach var="usageList" items="${usageList}" >
+												<p>
+													<input type="hidden" name="usageList_seq" value="${usageList.usageList_seq}"/>
+													<input type="text" class="inp_txt" name="usage" size="43" value="${usageList.usage}" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />
+													<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>
+													<input type="text" class="inp_txt" name="price" size="10" value="${usageList.price}"/>
+													<span class=" bar">원</span> <a class="file_add">용도 추가</a> <a class="file_del">용도 삭제</a>
+												</p>
+											</c:forEach>
+										</c:if>
+										<c:if test="${usageList == null}" >
+											<p>
+												<input type="hidden" name="usageList_seq" value="" />
+												<input type="text" class="inp_txt" name="usage" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />
+												<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>
+												<input type="text" class="inp_txt" name="price" size="10" />
+												<span class=" bar">원</span> <a class="file_add">용도 추가</a> <a class="file_del">용도 삭제</a>
+											</p>
+										</c:if>
 									</td>									
 								</tr>
 								<tr class="offline_area">
@@ -356,7 +370,7 @@
 										<span class=" bar2">내선</span>
 										<input type="text" name="taxExtTell" id="taxExtTell" size="5" value="${taxExtTell}"  class="inp_txt" maxlength="4" /></td>
 								</tr>
-								<tr>
+								<tr class="offline_area">
 									<th>세금계산서 담당자 이메일</th>
 									<td><input type="text" name="taxEmail" class="inp_txt" size="50" value="${MemberDTO.taxEmail}" /></td>
 								</tr>

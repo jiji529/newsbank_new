@@ -1,6 +1,8 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +13,9 @@ import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
+import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.dto.UsageDTO;
 
 /**
  * Servlet implementation class AdminMemberView
@@ -144,6 +148,15 @@ public class AdminMemberView extends NewsbankServletBase {
 					memberDTO.setCompTel(memberDTO.getTaxExtTell());				
 					
 					request.setAttribute("taxExtTell", memberDTO.getTaxExtTell());
+				}
+				
+				// 결제구분 (deferred 0: 온라인결제, 1: 오프라인결제(후불 온라인 가격), 2: 오프라인결제(후불 별도가격))
+				if(Integer.parseInt(memberDTO.getDeferred()) == 2) {
+					UsageDAO usageDAO = new UsageDAO();
+					
+					List<UsageDTO> usageList = new ArrayList<>();
+					usageList = usageDAO.usageListOfuser(memberDTO.getSeq());
+					request.setAttribute("usageList", usageList);					
 				}
 				
 				request.setAttribute("MemberDTO", memberDTO);

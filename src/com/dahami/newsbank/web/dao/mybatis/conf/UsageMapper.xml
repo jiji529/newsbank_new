@@ -3,7 +3,13 @@
 
 <mapper namespace="Usage">
 	<select id="selectList" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
-	    SELECT seq AS usageList_seq, `usage`, division1, division2, division3, division4, usageDate, price FROM usageList ORDER BY seq, `usage`, division1, division2, division3, division4, usageDate, price
+	    SELECT seq AS usageList_seq, `usage`, division1, division2, division3, division4, usageDate, price FROM usageList 
+	    where
+		`active` = 'Y'
+		<if test="individual != null">
+			AND individual = #{individual}
+		</if>
+	    ORDER BY seq, `usage`, division1, division2, division3, division4, usageDate, price
 	</select>
 	
 	<select id="usageOption" resultType="java.util.Map" parameterType="java.util.Map">
@@ -31,4 +37,17 @@
 	        #{item}
 	    </foreach>
 	</select>
+	
+	<insert id="insertUsage" parameterType="java.util.Map">
+	    INSERT INTO usageList (`usage`, `division1`, `division2`, `division3`, `division4`, `usageDate`, `price`, `individual`, `regDate`) 
+		VALUES (#{usage}, '', '', '', '', '', #{price}, #{individual}, NOW())
+	</insert>
+	
+	<update id="disableUsage" parameterType="java.util.Map">
+	    UPDATE usageList SET active = 'N' WHERE seq = #{usageList_seq}	    
+	</update>
+	
+	<update id="updateUsage" parameterType="java.util.Map">
+	    UPDATE usageList SET `usage` = #{usage}, `price` = #{price} WHERE seq = #{usageList_seq}	    
+	</update>
 </mapper>

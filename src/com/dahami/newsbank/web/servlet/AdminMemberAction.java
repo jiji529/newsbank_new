@@ -1,6 +1,8 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,9 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
+import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.dto.UsageDTO;
 import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
@@ -85,6 +89,9 @@ public class AdminMemberAction extends NewsbankServletBase {
 		String contractStart = null;
 		String contractEnd = null;
 		String contractAuto = null;
+		String[] usage = null; // 사용용도
+		String[] price = null; // 사진단가
+		String[] usageList_seq = null; // 사진용도 고유번호
 		Double preRate = null;
 		Double postRate = null;
 		String taxName = null;
@@ -236,6 +243,18 @@ public class AdminMemberAction extends NewsbankServletBase {
 		if (check && request.getParameter("contractAuto") != null) {
 			contractAuto = request.getParameter("contractAuto"); // 로고 경로 request
 		}
+		
+		if (check && request.getParameterValues("usage") != null && request.getParameterValues("usage").length != 0) {
+			usage = request.getParameterValues("usage"); // 로고 경로 request
+		}
+		
+		if (check && request.getParameterValues("price") != null && request.getParameterValues("price").length != 0) {
+			price = request.getParameterValues("price"); // 로고 경로 request
+		}
+		
+		if (check && request.getParameterValues("usageList_seq") != null && request.getParameterValues("usageList_seq").length != 0) {
+			usageList_seq = request.getParameterValues("usageList_seq"); // 로고 경로 request
+		}
 
 		if (check && request.getParameter("preRate") != null) {
 			preRate = Double.parseDouble(request.getParameter("preRate"));
@@ -310,11 +329,11 @@ public class AdminMemberAction extends NewsbankServletBase {
 			}
 
 		}
-	
-	
 		
 		
 		MemberDTO memberDTO = new MemberDTO(); // 객체 생성
+		ArrayList<UsageDTO> usageList = new ArrayList<>(); // 사용용도 리스트
+		
 		if (check) {
 
 			memberDTO.setSeq(seq);
@@ -354,7 +373,22 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setMaster_seq(master_seq);
 			memberDTO.setGroup_seq(group_seq);
 			
-
+			// 사용 용도 갯수만큼 생성
+			for(int i = 0; i<usage.length; i++) {
+				UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
+				usageDTO.setUsage(usage[i]);
+				usageDTO.setPrice(Integer.parseInt(price[i]));
+				//System.out.println("["+i+"] : "+usageList_seq[i]);
+				
+				if(usageList_seq[i] != null && usageList_seq[i] != "") {
+					usageDTO.setUsageList_seq(Integer.parseInt(usageList_seq[i]));
+				}			
+				
+				usageList.add(i, usageDTO);
+			}
+			
+			saveUsageList(seq, usageList); // 사용용도 저장
+			
 			switch (cmd) {
 			case "C":
 				memberDTO = memberDAO.insertMember(memberDTO); // 회원정보 요청
@@ -525,6 +559,36 @@ public class AdminMemberAction extends NewsbankServletBase {
 			}
 		}
 		return err;
+	}
+	
+	public void saveUsageList(int seq, List<UsageDTO> usageList) { // 사용용도를 저장
+		UsageDAO usageDAO = new UsageDAO();
+		List<UsageDTO> dbUsageList = usageDAO.usageListOfuser(seq); // 기존의 DB 사용용도
+		
+		ArrayList<UsageDTO> dbsameList = new ArrayList<>(); // 공통항목(DB)
+		ArrayList<UsageDTO> usageSameList = new ArrayList<>(); // 공통항목(수정항목)
+		
+		for(int ix=0; ix<dbUsageList.size(); ix++) {
+			for(int idx=0; idx<usageList.size(); idx++) {
+				
+				if(dbUsageList.get(ix).getUsageList_seq() == usageList.get(idx).getUsageList_seq()) {
+					usageDAO.updateUsage(usageList, seq); // 사용용도 수정
+					dbsameList.add(dbUsageList.get(ix));
+					usageSameList.add(usageList.get(idx));
+				}				
+			}
+		}
+		
+		usageList.removeAll(usageSameList); // 공통항목 제거
+		dbUsageList.removeAll(dbsameList); // 공통항목 제거		
+		
+		if(dbUsageList.size() != 0) { 
+			usageDAO.disableUsage(dbUsageList, seq); // 사용용도 비활성화
+		}
+		
+		if(usageList.size() != 0) {
+			usageDAO.insertUsage(usageList, seq); // 사용용도 추가
+		}
 	}
 
 	/*public static boolean isValidCertiNum(HttpServletRequest request) {

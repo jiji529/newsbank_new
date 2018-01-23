@@ -6,6 +6,10 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.sun.xml.internal.ws.wsdl.writer.UsingAddressing;
+
 public class UsageDTO {
 
 	private int usageList_seq; // 고유번호
@@ -100,4 +104,22 @@ public class UsageDTO {
 		}
 		return result;
 	}
+	
+	/*@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(usageList_seq).toHashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof UsageDTO) {
+			UsageDTO temp = (UsageDTO) obj;
+			if(this.usageList_seq == temp.usageList_seq) {
+				return true;
+			}
+		}
+		return false;
+	}*/
+	
+	
 }
