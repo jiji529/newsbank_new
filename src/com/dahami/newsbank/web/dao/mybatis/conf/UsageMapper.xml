@@ -5,7 +5,7 @@
 	<select id="selectList" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
 	    SELECT seq AS usageList_seq, `usage`, division1, division2, division3, division4, usageDate, price FROM usageList 
 	    where
-		`active` = 'Y'
+		`active` = 'Y'		
 		<if test="individual != null">
 			AND individual = #{individual}
 		</if>

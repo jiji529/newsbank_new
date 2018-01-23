@@ -610,7 +610,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<h3>이미지 구매하기</h3>
 				<a href="/price.info" class="price_info">가격확인</a>
 			</div>
-			<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
+			<c:if test="${loginInfo == null || loginInfo.deferred == 0}">
 				<div class="option_choice">
 					<ul>
 						<li><span>용도</span> <select id="usage"
@@ -639,7 +639,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				</div>
 			</c:if>
 			<div class="sum_sec">
-				<c:if test="${loginInfo == null || loginInfo.deferred != 'Y'}">
+				<c:if test="${loginInfo == null || loginInfo.deferred == 0}">
 					<div class="total"><span class="tit">총 금액 (수량)</span><span class="price">0<span class="price_txt">원(<span class="price_count">0</span>개)</span></span></div>
 					<div class="btn_wrap">
 						<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
@@ -647,7 +647,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<div class="btn_buy"><a href="javascript:;" onclick="go_pay()">구매하기</a></div>
 					</div>
 				</c:if>
-				<c:if test="${loginInfo != null && loginInfo.deferred == 'Y'}">
+				<c:if test="${loginInfo != null && loginInfo.deferred != 0}">
 					<div class="btn_wrap">
 						<div class="btn_buy" id="btnDown">
 							<a href="javascript:;" onclick="down('${photoDTO.uciCode}')">다운로드</a>

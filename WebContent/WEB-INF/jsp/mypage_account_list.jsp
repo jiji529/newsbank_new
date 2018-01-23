@@ -60,7 +60,7 @@
 				<li>
 					<a href="/dibs.myPage">찜관리</a>
 				</li>
-				<c:if test="${MemberInfo.deferred eq 'Y'}">
+				<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
 					<li>
 						<a href="/download.mypage">다운로드 내역</a>
 					</li>
@@ -68,7 +68,7 @@
 						<a href="/postBuylist.mypage">구매내역</a>
 					</li>
 				</c:if>
-				<c:if test="${MemberInfo.deferred eq 'N'}">
+				<c:if test="${MemberInfo.deferred eq 0}">
 					<li>
 						<a href="/cart.myPage">장바구니</a>
 					</li>

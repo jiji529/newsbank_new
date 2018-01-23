@@ -65,7 +65,7 @@
 					<li class="on">
 						<a href="/dibs.myPage">찜관리</a>
 					</li>
-					<c:if test="${MemberInfo.deferred eq 'Y'}">
+					<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
 						<li>
 							<a href="/download.mypage">다운로드 내역</a>
 						</li>
@@ -73,7 +73,7 @@
 							<a href="/postBuylist.mypage">구매내역</a>
 						</li>
 					</c:if>
-					<c:if test="${MemberInfo.deferred eq 'N'}">
+					<c:if test="${MemberInfo.deferred eq 0}">
 						<li>
 							<a href="/cart.myPage">장바구니</a>
 						</li>
@@ -132,10 +132,10 @@
 				<input type="checkbox" name="checkAll"/>
 				</span>
 				<ul class="button">
-					<c:if test="${MemberInfo.deferred eq 'Y'}">
+					<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
 						<li class="sort_down" onclick="mutli_download()">다운로드</li>
 					</c:if>
-					<c:if test="${MemberInfo.deferred eq 'N'}">
+					<c:if test="${MemberInfo.deferred eq 0}">
 						<li class="sort_down" onclick="insertMultiBasket()">장바구니</li>
 					</c:if>
 					<li class="sort_del">삭제</li>
@@ -176,10 +176,10 @@
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 							<ul class="thumb_btn">
-								<c:if test="${MemberInfo.deferred eq 'Y'}">
+								<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
 									<li class="btn_down" onclick="down('${PhotoDTO.uciCode}')">다운로드</li>
 								</c:if>
-								<c:if test="${MemberInfo.deferred eq 'N'}">
+								<c:if test="${MemberInfo.deferred eq 0}">
 									<li class="btn_cart" onclick="insertBasket('${PhotoDTO.uciCode}')">장바구니</li>
 								</c:if>
 								<li class="btn_del">삭제</li>

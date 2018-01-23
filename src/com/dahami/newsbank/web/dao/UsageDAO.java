@@ -18,7 +18,7 @@ public class UsageDAO extends DAOBase {
 	 * @author      : HOYADEV
 	 * @date        : 2017. 10. 30. 오전 11:12:32
 	 * @methodCommet: 사용용도 옵션
-	 * @param param
+	 * @param param : individual (0: 공통 사용용도)
 	 * @return 
 	 */
 	public List<UsageDTO> usageList() {
@@ -27,9 +27,10 @@ public class UsageDAO extends DAOBase {
 				
 		try {
 			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("individual", 0);
 			
-			usageList = session.selectList("Usage.selectList");
-			//usageList = session.selectList("Usage.usageOption");
+			usageList = session.selectList("Usage.selectList", param);
 					
 		} catch (Exception e) {
 			logger.warn("", e);
