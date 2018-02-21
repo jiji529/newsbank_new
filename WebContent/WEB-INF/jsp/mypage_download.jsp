@@ -46,7 +46,7 @@
 				<ul class="mp_tab1">
 					<c:if test="${MemberInfo.type eq 'M'}">
 						<li>
-							<a href="/account.mypage">정산 관리</a>
+							<a href="/accountlist.mypage">정산 관리</a>
 						</li>
 						<li>
 							<a href="/cms">사진 관리</a>
@@ -103,48 +103,46 @@
 					</th>
 						<th>번호</th>
 						<th>다운로드 이미지 정보</th>
-						<th>콘텐츠가격</th>
-						<th>파일</th>
 						<th>다운로드 날짜</th>
 						<th>다운로드 횟수</th>
 					</tr>
 				</thead>
 				<tbody>
+					<c:forEach items="${downList}" var="download" varStatus="loop">
 					<tr>
-					<td><div class="tb_check">
-							<input id="check1" name="check1" type="checkbox">
-							<label for="check1">선택</label>
-						</div></td>
-						<td>1</td>
 						<td>
-						<div class="cart_item">
-							<div class="thumb">
-							<a href="view.html" target="_blank"><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg"></a>
+							<div class="tb_check">
+								<input id="check${loop.index+1}" name="check${loop.index+1}" type="checkbox"> <label
+									for="check${loop.index+1}">선택</label>
 							</div>
-							<div class="cart_info">
-								<a href="view.html" target="_blank">
-									<div class="brand">뉴시스</div>
-									<div class="code">E006203286</div>
-								</a>
-							</div>
-							</div>
-							</a></td>
-						<td>\88,000</td>
-						<td>jpg</td>
-						<td>2016-08-04 10:29:19</td>
+						</td>
+						<td>${loop.index+1}</td>
+						<td>
+							<div class="cart_item">
+								<div class="thumb">
+									<a href="view.html" target="_blank">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${download.photo_uciCode}"/>
+									</a>
+								</div>
+								<div class="cart_info">
+									<a href="view.html" target="_blank">
+										<div class="brand">${download.copyright}</div>
+										<div class="code">${download.photo_uciCode}</div>
+									</a>
+								</div>
+							</div> </a>
+						</td>
+						<td>${download.regDate}</td>
 						<td>0회<br />
 							<div class="btn_group">
 								<button type="button" class="btn_o" name="btn_down">다운로드</button>
-							<!-- 	<button type="button" class="btn_g" name="btn_down">결제취소</button>다운로드 0일때만 가능 / 위치 바꿀것-->
 							</div></td>
 					</tr>
+					</c:forEach>
 				</tbody>
-				<tfoot>
-				<td colspan="7">합계 : \88,000</td>
-					</tfoot>
 			</table>		
 			<div class="btn_area">
-				<a href="main.html" onclick="window.open('pop_opt2.html','new','resizable=no width=420 height=600');return false" class="btn_input2">구매하기</a>
+				<a href="main.html" onclick="window.open('/download.popOption','new','resizable=no width=420 height=600');return false" class="btn_input2">구매하기</a>
 			</div>
 		</section>
 	</section>

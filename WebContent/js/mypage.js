@@ -381,9 +381,25 @@ $(document).ready(function() {
 		if ($('#taxPhone3').size() > 0) {
 			check = check && validTaxPhone();
 		}
+		
 
 		if (check) {
-			if (confirm("회원정보를 수정하시겠습니까?")) {
+			var message = "";
+			
+			if($("input:checkbox[name='check']").is(":checked")) { 
+				// 정산매체 여러개를 일괄적용
+				var mediaCodes = $.map($("#media option"), function(e) { if(e.value) return e.value; });
+				mediaCodes.join(",");
+				console.log(mediaCodes);
+				$("#mediaCodes").val(mediaCodes);
+				message = "모든 정산매체를 일괄 수정하시겠습니까?";
+			} else {
+				// 단일 적용
+				message = "회원정보를 수정하시겠습니까?";
+			}
+			
+			
+			if (confirm(message)) {
 				$.post($("#frmMypage").attr("action"), $("#frmMypage").serialize(), function(data) {
 					if (data.success) {
 						alert("수정되었습니다.");
@@ -460,30 +476,38 @@ $(document).ready(function() {
 				success : function(data) {
 					if (data.success) {
 
-						var reuslt = data.data;
-						console.log(reuslt);
-						$('select[name=compBankName]').val(reuslt.compBankName);
-						$('input[name=compBankAcc]').val(reuslt.compBankAcc);
-						$('input[name=contractStart]').val(reuslt.contractStart);
-						$('input[name=contractEnd]').val(reuslt.contractEnd);
-						$('input[name=contractAuto]').val(reuslt.contractAuto);
-						if (reuslt.contractAuto == 'Y') {
+						var result = data.data;
+						console.log(result);
+						$('input[name=compBankName]').val(result.compBankName); // 입금계좌 직접입력 방식으로 디자인 변경 (2018.02.21)
+						$('input[name=compBankAcc]').val(result.compBankAcc);
+						$('input[name=contractStart]').val(result.contractStart);
+						$('input[name=contractEnd]').val(result.contractEnd);
+						$('input[name=contractAuto]').val(result.contractAuto);
+						if (result.contractAuto == 'Y') {
 							$("#contractAuto").prop('checked', true);
 						} else {
 							$("#contractAuto").prop('checked', false);
 						}
 
-						$('input[name=preRate]').val(reuslt.preRate);
-						$('input[name=postRate]').val(reuslt.postRate);
-						$('input[name=taxName]').val(reuslt.taxName);
-						if (reuslt.taxPhone != null) {
-							$('#taxPhone1').val(reuslt.taxPhone.substr(0, 3));
-							if (reuslt.taxPhone.length == 11) {
-								$('#taxPhone2').val(reuslt.taxPhone.substr(3, 4));
-								$('#taxPhone3').val(reuslt.taxPhone.substr(8, 4));
+						$('input[name=preRate]').val(result.preRate);
+						$('input[name=postRate]').val(result.postRate);
+						$('input[name=taxName]').val(result.taxName);
+						if (result.taxPhone != null) {
+							
+							if(result.taxPhone.length == 9) {
+								$('#taxPhone1').val(result.taxPhone.substr(0, 2));
+								$('#taxPhone2').val(result.taxPhone.substr(2, 3));
+								$('#taxPhone3').val(result.taxPhone.substr(6, 4));
+								
+							} else if (result.taxPhone.length == 10) {
+								$('#taxPhone1').val(result.taxPhone.substr(0, 3));
+								$('#taxPhone2').val(result.taxPhone.substr(3, 3));
+								$('#taxPhone3').val(result.taxPhone.substr(6, 4));
+								
 							} else {
-								$('#taxPhone2').val(reuslt.taxPhone.substr(3, 3));
-								$('#taxPhone3').val(reuslt.taxPhone.substr(7, 4));
+								$('#taxPhone1').val(result.taxPhone.substr(0, 3));
+								$('#taxPhone2').val(result.taxPhone.substr(3, 4));
+								$('#taxPhone3').val(result.taxPhone.substr(7, 4));
 							}
 						} else {
 							$('#taxPhone1').val("010");
@@ -491,8 +515,8 @@ $(document).ready(function() {
 							$('#taxPhone3').val("");
 						}
 
-						$('input[name=taxName]').val(reuslt.taxName);
-						$('input[name=taxEmail]').val(reuslt.taxEmail);
+						$('input[name=taxName]').val(result.taxName);
+						$('input[name=taxEmail]').val(result.taxEmail);
 					} else {
 						alert(data.message);
 					}

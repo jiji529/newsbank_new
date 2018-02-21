@@ -53,7 +53,7 @@
 				<ul class="mp_tab1">
 					<c:if test="${MemberInfo.type eq 'M'}">
 						<li>
-							<a href="/account.mypage">정산 관리</a>
+							<a href="/accountlist.mypage">정산 관리</a>
 						</li>
 						<li>
 							<a href="/cms">사진 관리</a>
@@ -145,11 +145,11 @@
 								<!-- <li class="select">기본폴더</li>
 								<li>사용자 폴더</li> -->
 								<c:forEach items="${bookmarkList}" var="bookmark">
-									<c:if test="${bookmark.bookName eq '기본그룹'}">
+									<c:if test="${bookmark.bookName eq '기본폴더'}">
 										<%-- <li value="${bookmark.seq}">${bookmark.bookName}</li> --%>
 										<li value="${bookmark.seq}" onclick="change_folder('${bookmark.seq}', '${bookmark.bookName}')">${bookmark.bookName}</li>
 									</c:if>
-									<c:if test="${bookmark.bookName ne '기본그룹'}">
+									<c:if test="${bookmark.bookName ne '기본폴더'}">
 										<li value="${bookmark.seq}" onclick="change_folder('${bookmark.seq}', '${bookmark.bookName}')">${bookmark.bookName}</li>
 									</c:if>
 									

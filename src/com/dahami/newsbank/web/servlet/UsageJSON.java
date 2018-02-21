@@ -40,7 +40,11 @@ public class UsageJSON extends NewsbankServletBase {
 	    response.setCharacterEncoding("UTF-8");
 		
 		UsageDAO usageDAO = new UsageDAO();
-		List<UsageDTO> usageOption = usageDAO.usageList();
+		int individual = 0;
+		if(request.getParameter("individual") != null) {
+			individual = Integer.parseInt(request.getParameter("individual"));
+		}
+		List<UsageDTO> usageOption = usageDAO.usageList(individual);
 		
 		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
 		List<UsageDTO> list = (List<UsageDTO>) usageOption;

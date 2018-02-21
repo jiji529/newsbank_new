@@ -218,7 +218,7 @@
 				<ul class="mp_tab1">
 					<c:if test="${MemberInfo.type eq 'M'}">
 						<li>
-							<a href="/account.mypage">정산 관리</a>
+							<a href="/accountlist.mypage">정산 관리</a>
 						</li>
 						<li>
 							<a href="/cms">사진 관리</a>

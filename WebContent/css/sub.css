@@ -20,8 +20,8 @@
 .filters li.filter_title.folder_ico{ text-indent:-9999px; background:url(../images/sub/if_folder.svg) 20px 14px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid; background-size:22px 20px;}
 .filters li.filter_title.filter_ico:after,.filters li.filter_title.folder_ico:after{ content: ''; display:none;}
 .filters li .filter_list{display:none;  background:#f5f6f8; z-index:2000; position:absolute; border:1px #e5e5e5 solid; margin-left:-20px; margin-top:-2px;}
-.filters li ul{overflow:auto; max-height:600px; width:180px;}
-.filters li .filter_list li{float:left; width:100%; padding:0 20px; border-bottom:#e5e5e5 1px solid; height:45px; text-align:left; font-size:14px; line-height:45px;}
+.filters li ul{overflow:auto; max-height:600px; width:200px;}
+.filters li .filter_list li{float:left; width:100%; padding:0 20px; border-bottom:#e5e5e5 1px solid; height:45px; text-align:left; font-size:14px; line-height:45px; overflow:hidden;white-space: nowrap;word-wrap: normal; text-overflow:ellipsis;}
 .filters li .filter_list li.choice{height:165px;}
 
 .filters .calendar{ float:left; }
@@ -139,7 +139,7 @@
 .option_choice ul li select{float:left; margin-left:10px; border:1px #dadada solid; padding:0 10px; width:308px; height:30px;}
 .option_result{float:left; width:100%;  border-bottom:1px #d9d9d9 solid;}
 .option_result ul{}
-.option_result ul li{float:left; border-top:1px #dcdcdc solid; background:#f5f5f5; padding:15px; position:relative;}
+.option_result ul li{float:left; border-top:1px #dcdcdc solid; background:#f5f5f5; padding:15px; position:relative; width:100%;}
 .option_result ul li .op_cont{float:left; width:100%; font-size:13px; line-height:18px; text-align:left;}
 .option_result ul li .op_price{float:left; width:100%; text-align:right; position:relative; padding-right:28px; font-size:15px; font-weight:600; color:#333}
 .option_result ul li .op_del{width:21px; height:21px; background:url(../images/view/btn_del.png) 0 0 no-repeat; text-indent:-9999px; position:absolute; right:15px; bottom:12px;}
@@ -150,7 +150,7 @@
 .sum_sec .total .price .price_txt{font-size:13px; color:#333; font-weight:400; padding-left:3px;}
 .sum_sec .total .price .price_txt .price_count{ }
 
-.sum_sec .btn_wrap{float:left;width:100%; padding:20px 10px;}
+.sum_sec .btn_wrap{float:left;width:100%; padding:20px 10px; margin-bottom:20px;}
 .sum_sec .btn_wrap a{display:block;text-align:center;height:50px; line-height:50px; font-weight:600; float:left; }
 .sum_sec .btn_wrap .btn_cart a{ width:175px; border:1px #f79320 solid; font-size:14px;margin-right:9px; color:#f79320;}
 .sum_sec .btn_wrap .btn_down a{ width:175px; border:1px #ccc solid; font-size:14px;color:#666;}

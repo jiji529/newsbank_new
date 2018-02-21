@@ -43,7 +43,7 @@
 			<ul class="mp_tab1">
 				<c:if test="${MemberInfo.type eq 'M'}">
 					<li>
-						<a href="/account.mypage">정산 관리</a>
+						<a href="/accountlist.mypage">정산 관리</a>
 					</li>
 					<li>
 						<a href="/cms">사진 관리</a>
@@ -131,7 +131,6 @@
 					<th>카테고리</th>
 					<th>구매 이미지 정보</th>
 					<th>콘텐츠가격</th>
-					<th>파일</th>
 					<th>다운로드 기간</th>
 					<th>다운로드 횟수</th>
 				</tr>
@@ -186,7 +185,6 @@
 							</a>
 						</td>
 						<td>${paymentDetailList.getPrice_Str() }</td>
-						<td>jpg</td>
 						<td>
 							${paymentDetailList.downStart }~
 							<br />

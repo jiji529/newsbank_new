@@ -156,6 +156,7 @@
 					유통내역 추적, 거래인증, 참조연계서비스 등 온라인과 오프라인 구분 없이 실질적인 활용분야에 다양하게 적용됩니다.
 			</section>
 		</div>
+		<%@include file="footer.jsp"%>
 	</div>
 </body>
 </html>

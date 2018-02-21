@@ -46,7 +46,7 @@
 				<ul class="mp_tab1">
 					<c:if test="${MemberInfo.type eq 'M'}">
 						<li>
-							<a href="/account.mypage">정산 관리</a>
+							<a href="/accountlist.mypage">정산 관리</a>
 						</li>
 						<li>
 							<a href="/cms">사진 관리</a>
@@ -90,7 +90,6 @@
 				<col width="70">
 				<col>
 				<col width="120">
-				<col width="60">
 				<col width="220">
 				</colgroup>
 				<thead>
@@ -103,7 +102,6 @@
 						<th>번호</th>
 						<th>구매 이미지 정보</th>
 						<th>콘텐츠가격</th>
-						<th>파일</th>
 						<th>구매일</th>
 					</tr>
 				</thead>
@@ -133,7 +131,6 @@
 							</div>
 							</a></td>
 						<td>\88,000</td>
-						<td>jpg</td>
 						<td>2016-08-04 10:29:19</td>
 					</tr>
 				</tbody>

@@ -48,7 +48,7 @@
 			<ul class="mp_tab1">
 				<c:if test="${MemberInfo.type eq 'M'}">
 					<li class="on">
-						<a href="/account.mypage">정산 관리</a>
+						<a href="/accountlist.mypage">정산 관리</a>
 					</li>
 					<li>
 						<a href="/cms">사진 관리</a>
@@ -79,10 +79,10 @@
 			</ul>
 			<ul class="mp_tab2">
 				<li>
-					<a href="/account.mypage">정산정보 관리</a>
+					<a href="/accountlist.mypage">정산 내역</a>
 				</li>
 				<li>
-					<a href="/accountlist.mypage">정산 내역</a>
+					<a href="/account.mypage">정산 정보 관리</a>
 				</li>
 			</ul>
 		</div>

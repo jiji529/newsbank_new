@@ -148,7 +148,7 @@ public class MemberDAO extends DAOBase {
 				// 회원가입시 기본 북마크 그룹 생성
 				Map<String, Object> bookmark = new HashMap<String, Object>();
 				bookmark.put("member_seq", memberDTO.getSeq());
-				bookmark.put("bookName", "기본그룹");
+				bookmark.put("bookName", "기본폴더");
 				session.insert("Bookmark.insertBookmark", bookmark);
 
 			}

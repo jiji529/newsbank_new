@@ -32,21 +32,36 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
+<script src="js/photo.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(key, val){
 		var saleState = ${photoDTO.saleState};
 		var portraitRightState = ${photoDTO.portraitRightState};
+		var mediaExActive = ${photoDTO.mediaExActive};
 		
 		if(saleState == 1) { // 판매중
 			$('input:radio[name="blind"][value="1"]').attr('checked', true);
 		}else if(saleState == 2) { // 판매중지
 			$('input:radio[name="blind"][value="2"]').attr('checked', true);
+		}else {
+			$('input:radio[name="blind"][value="2"]').attr('checked', true);
 		}
 		
+		/*
+		# 항목 숨기기 처리   -- 2018.02.20. hoyadev 
 		if(portraitRightState == 1) {
 			$('input:radio[name="likeness"][value="1"]').attr('checked', true);
 		}else if(portraitRightState == 2) {
 			$('input:radio[name="likeness"][value="2"]').attr('checked', true);
+		}
+		*/
+		
+		if(mediaExActive == 0) {
+			$('input:radio[name="mediaExActive"][value="0"]').attr('checked', true);
+		}else if(mediaExActive == 1) {
+			$('input:radio[name="mediaExActive"][value="1"]').attr('checked', true);
+		}else{
+			$('input:radio[name="mediaExActive"][value="0"]').attr('checked', true);
 		}
 		
 		relation_photo();
@@ -57,10 +72,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		changeOption("saleState", saleState);
 	});
 	
+	/*
+	# 항목 숨기기 처리   -- 2018.02.20. hoyadev
 	$(document).on("change", "input[type=radio][name=likeness]", function() {
 		var portraitRightState = $('input[type=radio][name=likeness]:checked').val();
 		changeOption("portraitRightState", portraitRightState);
 	});
+	*/
 	
 	function changeOption(name, value) {	
 		var uciCode = "${photoDTO.uciCode}";
@@ -298,12 +316,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<li><a href="/account.mypage">정산 관리</a></li>
+				<li><a href="/accountlist.mypage">정산 관리</a></li>
 				<li class="on"><a href="/cms">사진 관리</a></li>
 				<li><a href="/info.mypage">회원정보 관리</a></li>
 				<li><a href="/dibs.myPage">찜관리</a></li>
 				<li><a href="/cart.myPage">장바구니</a></li>
-				<li><a href="/buy.mypage">구매내역</a></li>
+				<li><a href="/buylist.mypage">구매내역</a></li>
 			</ul>
 		</div>
 		<form class="view_form" method="post" action="/cms" name="view_form" >
@@ -375,6 +393,19 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				
 			</div>
 			<div class="view_rt">
+				<div class="btn_down"><a href="javascript:;" onclick="down('${photoDTO.uciCode}')">원본이미지 다운로드</a></div>
+				<!--
+				<div class="cms_rt">
+					<h3 class="info_tit">다운로드</h3>
+					<div class="sum_sec">
+						<div class="btn_wrap">
+							<div class="btn_buy" id="btnDown">
+								<a href="javascript:;" onclick="down('${photoDTO.uciCode}')">원본이미지 다운로드</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				-->
 				<div class="cms_rt">
 					<h3 class="info_tit">통계</h3>
 					<table width="100%" border="0" cellspacing="0" cellpadding="0"  class="cms_table1">
@@ -398,6 +429,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<th scope="row">결제</th>
 							<td><b>${statsDTO.saleCount}</b>회</td>
 						</tr>
+						<!--
+							주석처리 
 						<tr>
 							<th scope="row">뮤지엄</th>
 							<td><b>${statsDTO.museumCount}</b>회</td>
@@ -406,6 +439,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<th scope="row">컬렉션</th>
 							<td><b>${statsDTO.collectionCount}</b>회</td>
 						</tr>
+						 -->
 					</table>
 				</div>
 				<div class="cms_rt">
@@ -414,10 +448,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<tr>
 							<th scope="row">게티 노출 / 타 서비스 노출</th>
 							<td><label>
-									<input type="radio" name="serv" />
+									<input type="radio" name="mediaExActive" value="0"/>
 									ON</label>
 								<label>
-									<input type="radio" name="serv"/>
+									<input type="radio" name="mediaExActive" value="1"/>
 									OFF</label></td>
 						</tr>
 						<tr>
@@ -429,6 +463,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<input type="radio" name="blind" value="1"/>
 									OFF</label></td>
 						</tr>
+						<!-- 
+						# 항목 숨기기 처리   -- 2018.02.20. hoyadev
 						<tr>
 							<th scope="row">초상권 해결</th>
 							<td><label>
@@ -438,6 +474,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<input type="radio" name="likeness" value="2"/>
 									OFF</label></td>
 						</tr>
+						-->
 					</table>
 				</div>
 				<div class="cms_rt">

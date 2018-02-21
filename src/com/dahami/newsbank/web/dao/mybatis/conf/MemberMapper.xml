@@ -36,7 +36,7 @@
 		`taxEmail`, `taxExtTell`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
 		`logo`,
-		`activate`, `withdraw`, `group_seq` FROM member
+		`activate`, `withdraw`, `group_seq`, `admission` FROM member
 		where
 		1
 		<if test="id != null">
@@ -172,7 +172,7 @@
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM
-			`adjustment` WHERE `admission`='Y'
+			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission`='Y'
 			AND `adjMaster` = #{seq})
 		</if>
 		ORDER BY `compName` ASC

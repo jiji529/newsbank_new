@@ -429,7 +429,7 @@
 				</c:if>
 				<div class="btn_down"><a href="javascript:void(0)" onclick="javascript:self.close()">취소</a></div>
 			</div>
-			</div>
+		</div>
 	</div>
 </body>
 </html>

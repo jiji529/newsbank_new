@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,7 @@ public class MemberAction extends NewsbankServletBase {
 		boolean result = false;
 		String message = null;
 		String cmd = "";
+		String mediaCodes = "";
 
 		/** 공통 **/
 		int seq = 0;
@@ -70,6 +72,7 @@ public class MemberAction extends NewsbankServletBase {
 		String compDocPath = null;
 		String compName = null;
 		String compTel = null;
+		String compExtTel = null;
 		String compAddress = null;
 		String compAddDetail = null;
 		String compZipcode = null;
@@ -86,6 +89,7 @@ public class MemberAction extends NewsbankServletBase {
 		Double postRate = null;
 		String taxName = null;
 		String taxPhone = null;
+		String taxExtTell = null;
 		String taxEmail = null;
 
 		/** 관리자 기능 **/
@@ -102,6 +106,10 @@ public class MemberAction extends NewsbankServletBase {
 			type = request.getParameter("type"); // 회원 구분
 		}
 		System.out.println("type => " + type + " : " + check);
+		
+		if(request.getParameter("mediaCodes") != null) { // 정산매체 일괄적용
+			mediaCodes = request.getParameter("mediaCodes");
+		}
 		if (check && request.getParameter("id") != null) {
 			id = request.getParameter("id"); // 아이디 request
 			check = check && isValidId(id);
@@ -176,6 +184,10 @@ public class MemberAction extends NewsbankServletBase {
 				message = "회사 전화 번호 형식이 올바르지 않습니다.";
 			}
 		}
+		
+		if (check && request.getParameter("compExtTel") != null) {
+			compExtTel = request.getParameter("compExtTel"); // 회사 내선번호
+		}
 
 		if (check && request.getParameter("compAddress") != null) {
 			compAddress = request.getParameter("compAddress"); // 회사주소
@@ -239,6 +251,11 @@ public class MemberAction extends NewsbankServletBase {
 		if (check && request.getParameter("taxPhone") != null) {
 			taxPhone = request.getParameter("taxPhone"); // 로고 경로 request
 		}
+		
+		if (check && request.getParameter("taxExtTell") != null) {
+			taxExtTell = request.getParameter("taxExtTell"); // 로고 경로 request
+		}
+		
 		if (check && request.getParameter("taxEmail") != null) {
 			taxEmail = request.getParameter("taxEmail"); // 로고 경로 request
 		}
@@ -288,8 +305,6 @@ public class MemberAction extends NewsbankServletBase {
 			}
 
 		}
-	
-	
 		
 		
 		MemberDTO memberDTO = new MemberDTO(); // 객체 생성
@@ -306,6 +321,7 @@ public class MemberAction extends NewsbankServletBase {
 			memberDTO.setComDocPath(compDocPath);
 			memberDTO.setCompName(compName);
 			memberDTO.setCompTel(compTel);
+			memberDTO.setcompExtTel(compExtTel);
 			memberDTO.setCompAddress(compAddress);
 			memberDTO.setCompAddDetail(compAddDetail);
 			memberDTO.setCompZipcode(compZipcode);
@@ -323,6 +339,7 @@ public class MemberAction extends NewsbankServletBase {
 			memberDTO.setTaxEmail(taxEmail);
 			memberDTO.setTaxName(taxName);
 			memberDTO.setTaxPhone(taxPhone);
+			memberDTO.setTaxExtTell(taxExtTell);
 
 			memberDTO.setPermission(permission);
 			memberDTO.setDeferred(deferred);
@@ -343,11 +360,21 @@ public class MemberAction extends NewsbankServletBase {
 				// 로그인 정보 요청
 				break;
 			case "U":
-				if (seq > 0) {
-					result = memberDAO.updateMember(memberDTO); // 회원정보 요청
-				} else {
-					message = "세션정보가 없습니다. 다시 로그인 해주세요.";
-				}
+				
+				if(mediaCodes.length() > 1) { // 정산매체 일괄 선택
+					String[] codes = mediaCodes.split(",");
+					for(String code : codes) {
+						memberDTO.setSeq(Integer.parseInt(code));
+						result = memberDAO.updateMember(memberDTO); // 회원정보 요청
+					}
+				} else { // 단일 선택
+					
+					if (seq > 0) {
+						result = memberDAO.updateMember(memberDTO); // 회원정보 요청	
+					} else {
+						message = "세션정보가 없습니다. 다시 로그인 해주세요.";
+					}
+				}		
 
 				if (result) {
 					// 로그인 성공
@@ -379,6 +406,7 @@ public class MemberAction extends NewsbankServletBase {
 				data.put("taxEmail", memberDTO.getTaxEmail());
 				data.put("taxName", memberDTO.getTaxName());
 				data.put("taxPhone", memberDTO.getTaxPhone());
+				data.put("taxExtTell", memberDTO.getTaxExtTell());
 
 				json.put("data", data);
 			} else {

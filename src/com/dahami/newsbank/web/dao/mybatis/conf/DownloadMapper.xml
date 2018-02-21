@@ -22,5 +22,23 @@
 					(SELECT seq FROM paymentManage WHERE member_seq = #{memberSeq} AND LGD_PAYSTATUS = 1)
 		]]>
 	</select>
+	
+	<!-- 정산 매체사 MediaDTO -->
+	<resultMap id="DelayDownloadDTO" type="java.util.HashMap">
+	    <result javaType="java.lang.Integer" column="seq" property="seq"></result>
+	    <result javaType="java.lang.String" column="photo_uciCode" property="photo_uciCode"></result>
+	    <result javaType="java.lang.String" column="ipAddress" property="ipAddress"></result>
+	    <result javaType="java.lang.String" column="regDate" property="regDate"></result>
+	    <result javaType="java.lang.String" column="copyright" property="copyright"></result>
+	</resultMap>
+	
+	<select id="selDownList" parameterType="java.util.Map" resultMap="DelayDownloadDTO">
+	    SELECT A.seq, A.photo_uciCode, A.ipAddress, A.regDate, B.copyright
+			FROM `download` A
+		INNER JOIN photo B
+		ON A.photo_uciCode = B.uciCode
+		WHERE A.member_seq = #{member_seq}
+		ORDER BY A.regDate DESC
+	</select>
 </mapper>
     

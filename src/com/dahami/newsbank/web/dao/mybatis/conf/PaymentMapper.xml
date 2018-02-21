@@ -20,7 +20,9 @@
 		M.LGD_RESPCODE='0000'
 		AND
 		(P.`member_seq` = #{member_seq} OR P.`member_seq` IN (SELECT
-		`adjSlave` FROM `adjustment` WHERE `admission`='Y' AND
+		`adjSlave` FROM `adjustment` A
+		INNER JOIN member M ON A.adjSlave = M.seq
+		WHERE M.admission = 'Y' AND
 		`adjMaster`=
 		#{member_seq} ))
 		AND M.LGD_PAYDATE BETWEEN #{start_date}
@@ -65,8 +67,9 @@
 		(P.`member_seq` = #{member_seq} OR
 		P.`member_seq` IN
 		(SELECT `adjSlave`
-		FROM `adjustment` WHERE
-		`admission`='Y' AND
+		FROM `adjustment` A 
+		INNER JOIN member M ON A.adjSlave = M.seq
+		WHERE M.admission = 'Y' AND
 		`adjMaster` =#{member_seq}))
 		<if test="start_date !=null and end_date !=null">
 			AND M.LGD_PAYDATE BETWEEN #{start_date} AND

@@ -160,6 +160,7 @@ public class AdminMemberView extends NewsbankServletBase {
 				}
 				
 				request.setAttribute("MemberDTO", memberDTO);
+				System.out.println("admission : " + memberDTO.getAdmission());
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_member_view.jsp");
 				dispatcher.forward(request, response);

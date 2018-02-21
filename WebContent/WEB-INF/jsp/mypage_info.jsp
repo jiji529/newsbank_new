@@ -58,7 +58,7 @@
 					<ul class="mp_tab1">
 						<c:if test="${MemberInfo.type eq 'M'}">
 							<li>
-								<a href="/account.mypage">정산 관리</a>
+								<a href="/accountlist.mypage">정산 관리</a>
 							</li>
 							<li>
 								<a href="/cms">사진 관리</a>
@@ -238,7 +238,11 @@
 										<input type="text" id="compTel2" size="5" class="inp_txt" value="${compTel2}" maxlength="4" required />
 										<span class=" bar">-</span>
 										<input type="text" id="compTel3" size="5" class="inp_txt" value="${compTel3}" maxlength="4" required />
+										
+										<span class=" bar">내선</span>
+										<input type="text" id="compExtTel" name="compExtTel" size="5"  class="inp_txt" value="${compExtTel}" maxlength="4" />
 									</td>
+									
 								</tr>
 								<tr>
 									<th>회사 주소</th>
@@ -253,19 +257,20 @@
 										</div>
 									</td>
 								</tr>
-								<c:if test="${MemberInfo.type eq 'M'}">
-									<tr>
-										<th>정산 매체</th>
-										<td>
-											<input type="file" />
-											<a href="javascript:;" class="btn_input1">매체선택</a>
-											<a href="javascript:;" class="btn_input1">제호업로드</a>
-											<a href="javascript:;" class="btn_input1">다운로드</a>
-											<a class="file_add">파일 추가</a>
-											<a class="file_del">파일 삭제</a>
-										</td>
-									</tr>
-								</c:if>
+								<%-- <c:if test="${MemberInfo.type eq 'M'}"> --%>
+								<tr>
+									<th>정산 매체</th>	
+									<td>
+									<c:forEach items="${mediaList}" var="media" varStatus="status">
+										<c:if test="${media.type eq 'M'}">
+											<div class="add_line">
+												<a href="javascript:;" class="btn_input1">제호업로드</a>
+												<a href="javascript:;" class="btn_input1">다운로드</a>
+											</div>	
+										</c:if>
+									</c:forEach>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</c:if>

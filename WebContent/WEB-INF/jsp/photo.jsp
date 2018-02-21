@@ -192,7 +192,7 @@
 		
 		if(login_state) { // 로그인 상태에서만 찜활성화
 			var uciCode = $(this).attr("value");		
-			var bookName = "기본그룹";
+			var bookName = "기본폴더";
 			var state = $(this).hasClass("on");
 			
 			if(state) {

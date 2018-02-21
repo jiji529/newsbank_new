@@ -232,7 +232,7 @@
 				<c:forEach items="${bookmarkList}" var="bookmark">
 					<li>
 						<p>${bookmark.bookName}</p>
-						<c:if test="${bookmark.bookName ne '기본그룹'}">
+						<c:if test="${bookmark.bookName ne '기본폴더'}">
 							<div class="folder_btn_area"><a class="btn_update" href="javascript:void(0)" value="${bookmark.seq}">수정</a><a class="btn_delete" href="javascript:void(0)" value="${bookmark.seq}">삭제</a></div>
 						</c:if>
 						<div class="folder_btn_area"></div>

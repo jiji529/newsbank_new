@@ -52,6 +52,7 @@ public class MemberDTO implements Serializable {
 	private String regDate; // 등록일
 	private String logo; // 로고
 	private int withdraw; // 회원 상태(0: 정상, 1: 탈퇴)
+	private String admission; // 승인(N: 비승인, Y: 승인)
 	
 	public static final int ACTIVATE_TRUE = 1;
 	public static final int ACTIVATE_FALSE = 2;
@@ -510,6 +511,20 @@ public class MemberDTO implements Serializable {
 	 */
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getAdmission() {
+		return admission;
+	}
+	
+	/**
+	 * @param admission
+	 */
+	public void setAdmission(String admission) {
+		this.admission = admission;
 	}
 
 	public String getPw() {

@@ -59,9 +59,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			}
 		});
 		
-		$("#popup_open").click(function() {
+		$(".popup_open").click(function() {
 			$("#popup_wrap").css("display", "block");
 			$("#mask").css("display", "block");
+			console.log("팝업 오픈");
 		});
 		$(".popup_close").click(function() {
 			$("#popup_wrap").css("display", "none");
@@ -228,9 +229,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += '<td>' + compNum + '</td>';
 					html += '<td>' + totalRate + '</td>';
 					html += '<td>' + contentCnt + '</td>';
-					html += '<td>' + service + '</td>';
+					html += '<td><span class="popup_open"><a href="#none" class="table_btn">' + service + '</a></span></td>';
 					html += '<td>' + calc + '</td>';
-					html += '<td><input type="file" /><a href="#">수정</a></td>';
+					html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" /></a></div></td>';
 					html += '</tr>';
 					
 				});
@@ -336,9 +337,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += '<td>' + compNum + '</td>';
 					html += '<td>' + totalRate + '</td>';
 					html += '<td>' + contentCnt + '</td>';
-					html += '<td>' + service + '</td>';
+					html += '<td><span class="popup_open"><a href="#none" class="table_btn">' + service + '</a></span></td>';
 					html += '<td>' + calc + '</td>';
-					html += '<td><input type="file" /><a href="#">수정</a></td>';
+					html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" /></a></div></td>';
 					html += '</tr>';
 					
 				});
@@ -489,6 +490,26 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						</p>
 					</div>
 					<div class="pop_cont">
+
+<p class="alert"><b>뉴시스</b>의 서비스 상태를 변경하시겠습니까?<br /><br />비활성화 시 뉴스뱅크 사이트에서 <br />서비스 매체 노출, 사진 검색, 구매가 모두 제한됩니다.</p>
+
+					</div>
+					<div class="pop_foot">
+						<div class="pop_btn">
+							<button onclick="location.href='#'";>활성화</button>
+							<button class="popup_close">비활성화</button>
+						</div>
+					</div>
+				</div>
+				
+				<!--div id="popup_wrap">
+					<div class="pop_tit">
+						<h2>서비스 설정</h2>
+						<p>
+							<button class="popup_close">닫기</button>
+						</p>
+					</div>
+					<div class="pop_cont">
 						<ul class="group_li">
 							<li>
 								<input type="radio" id="radio_chk1" name="group" />
@@ -519,7 +540,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<button class="popup_close">비활성화</button>
 						</div>
 					</div>
-				</div>
+				</div-->
+				
 				<div id="mask"></div>
 				<input type="hidden" id="totcnt" value="" />
 				<input type="hidden" id="startgo" value="" />

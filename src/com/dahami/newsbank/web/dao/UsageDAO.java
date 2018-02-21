@@ -21,14 +21,14 @@ public class UsageDAO extends DAOBase {
 	 * @param param : individual (0: 공통 사용용도)
 	 * @return 
 	 */
-	public List<UsageDTO> usageList() {
+	public List<UsageDTO> usageList(int individual) {
 		SqlSession session = null;
 		List<UsageDTO> usageList = new ArrayList<UsageDTO>();
 				
 		try {
 			session = sf.getSession();
 			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("individual", 0);
+			param.put("individual", individual);
 			
 			usageList = session.selectList("Usage.selectList", param);
 					

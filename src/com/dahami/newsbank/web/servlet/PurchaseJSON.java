@@ -82,7 +82,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 			String orderJson = request.getParameter("orderJson"); // json
 
 			UsageDAO usageDAO = new UsageDAO();
-			List<UsageDTO> usageList = usageDAO.usageList(); // 주문 가능 제품 전체
+			List<UsageDTO> usageList = usageDAO.usageList(0); // 주문 가능 제품 전체
 
 			try {
 				JSONParser jsonParser = new JSONParser();

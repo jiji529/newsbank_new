@@ -17,6 +17,10 @@ button{cursor:pointer;}
 .fl{float:left!important;}
 .fr{float:right!important;}
 a img{border:none;}
+#top{position: fixed; bottom:30px; right:30px; z-index: 1000; display: block; width: 50px; height:50px; text-decoration: none; font-size: 13px; opacity: 0.8; cursor: pointer; border-radius:25px; background:#666; line-height:50px;font-family:'Montserrat',sans-serif; }
+#top a{color:#fff; display:block;}
+.ml10{margin-left:10px;}
+.mr10{margin-right:10px;}
 /*
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;}
 */
@@ -74,8 +78,8 @@ footer .foot_bt{width:100%; float:left; height:40px; line-height:40px; margin-to
 footer a.clean{ float:right; margin:-2px 0 0 20px; }
 #select-title { float: left; text-align:left; cursor:pointer;  width:200px;padding:2px 20px 0 10px; }
 #select-title:hover { text-decoration: none; color: #222; }
-#select-layer { display: none; position:relative; margin:-114px 0px 0 -1px; width:200px; }
-#select-layer { border: 1px solid #ababab; background: #fff; z-index:2000;}
+#select-layer { display: none; position:relative; margin:-114px 0px 0 -1px; width:200px; border: 1px solid #ababab; background: #fff; z-index:2000;}
+#select-layer:after{content:""; width:12px; height:12px; background:url(../images/ico_family2.png) 0 0 no-repeat; z-index:2000; position:absolute; right:5px; bottom:-24px;}
 #select-layer ul.site-list { overflow: auto; overflow-x:hidden; height: 112px; margin: 0 auto; }
 #select-layer ul.site-list li { line-height: 28px; text-align:left; }
 #select-layer ul.site-list li a { overflow: hidden; padding: 0 0 0 7px; display:block; color:#666; }

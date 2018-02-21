@@ -28,7 +28,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		
 		if(login_state) {
 			var uciCode = "${photoDTO.uciCode}";
-			var bookName = "기본그룹";
+			var bookName = "기본폴더";
 			var state = $(".btn_wish").hasClass("on");
 			
 			if(state) {

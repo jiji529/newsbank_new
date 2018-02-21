@@ -76,7 +76,7 @@ public class BookmarkAction extends NewsbankServletBase {
 			} else if(action.equals("insertBookmark")) { // 찜 추가
 				BookmarkDTO bookmark = bookmarkDAO.select(member_seq, uciCode);
 				if(bookmark == null) { // 중복 데이터 확인
-					bookName = "기본그룹";
+					bookName = "기본폴더";
 					bookmarkDAO.insert(member_seq, uciCode, bookName);
 				} else {
 					message = "이미 찜폴더에 존재합니다.";

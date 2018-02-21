@@ -379,8 +379,8 @@
 								<tr class="media_only">
 									<th>정산 매체</th>
 									<td><select name="admission" class="inp_txt" style="width:180px;">
-											<option value="Y" >승인</option>
-											<option value="N" selected="selected">비승인</option>
+											<option value="Y" <c:if test="${MemberDTO.admission eq 'Y'}">selected</c:if>>승인</option>
+											<option value="N" <c:if test="${MemberDTO.admission eq 'N'}">selected</c:if>>비승인</option>
 										</select><a href="#" class="btn_input1">정산정보 보기</a></td>
 								</tr>
 								</c:if>

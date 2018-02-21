@@ -69,6 +69,37 @@ public class MypageAccountInfo extends NewsbankServletBase {
 					request.setAttribute("phone3", MemberInfo.getPhone().substring(MemberInfo.getPhone().length() - 4, MemberInfo.getPhone().length()));
 
 				}
+				/*
+				// 세금계산서 전화번호, 이메일
+				if (MemberInfo.getTaxPhone() != null && MemberInfo.getTaxPhone().length() >= 9) {
+					MemberInfo.setTaxPhone(MemberInfo.getTaxPhone().replaceAll("-", ""));
+
+					if (MemberInfo.getTaxPhone().substring(0, 2).equalsIgnoreCase("02")) {
+						request.setAttribute("taxPhone1", MemberInfo.getTaxPhone().substring(0, 2));
+						if (MemberInfo.getTaxPhone().length() == 9) {
+							request.setAttribute("taxPhone2", MemberInfo.getTaxPhone().substring(2, 5));
+						} else {
+							request.setAttribute("taxPhone2", MemberInfo.getTaxPhone().substring(2, 6));
+						}
+					} else if (MemberInfo.getTaxPhone().substring(0, 4).equalsIgnoreCase("0130")) {
+						request.setAttribute("taxPhone1", MemberInfo.getTaxPhone().substring(0, 4));
+						if (MemberInfo.getTaxPhone().length() == 11) {
+							request.setAttribute("taxPhone2", MemberInfo.getTaxPhone().substring(4, 7));
+						} else {
+							request.setAttribute("taxPhone2", MemberInfo.getTaxPhone().substring(4, 8));
+						}
+					} else {
+						request.setAttribute("taxPhone1", MemberInfo.getTaxPhone().substring(0, 3));
+						if (MemberInfo.getTaxPhone().length() == 10) {
+							request.setAttribute("taxPhone2", MemberInfo.getTaxPhone().substring(3, 6));
+						} else {
+							request.setAttribute("taxPhone2", MemberInfo.getTaxPhone().substring(3, 7));
+						}
+					}
+
+					request.setAttribute("taxPhone3", MemberInfo.getTaxPhone().substring(MemberInfo.getTaxPhone().length() - 4, MemberInfo.getTaxPhone().length()));
+				}
+				*/
 				
 				CMSService cs = new CMSService(); //매체목록
 				cs.execute(request, response);

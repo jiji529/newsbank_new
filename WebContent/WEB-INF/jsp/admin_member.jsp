@@ -598,7 +598,7 @@ function go_memberView(member_seq) {
 						
 					</tbody>
 				</table>
-				<div id="popup_wrap">
+				<div id="popup_wrap" class="pop_group">
 					<div class="pop_tit">
 						<h2>그룹묶기</h2>
 						<p>
