@@ -26,6 +26,13 @@
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/footer.js"></script>
+<script type="text/javascript">
+	// 이전 개인정보처리 방침
+	function past_privacy(url) { 
+		if(url.length != 0)
+			window.open(url, "뉴스뱅크 개인정보 처리방침");	
+	}
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -330,7 +337,14 @@
 				<p>개인정보처리방침 버전번호 3.1</p>
 				<p> 개인정보처리방침 시행일자 2016년 03월 01일</p>
 				<p> 개인정보처리방침 최종변경일자 2017년 11월 30일</p>
-				<a href="" target="_blank">이전 개인정보 처리방침 보기</a> </div>
+				<%
+					String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+				%>
+				<select onchange="past_privacy(this.value)">
+					<option value="">이전 개인정보처리 방침</option>
+					<option value="<%= url %>/file/newsbank_privacy_201710.pdf">이전 개인정보 처리방침 확인하기(2017년 10월 개정)</option>
+					<option value="<%= url %>/file/newsbank_privacy_201603.pdf">이전 개인정보 처리방침 확인하기(2016년 3월 개정)</option>
+				</select>
 		</div>
 	</section>
 	<%@include file="footer.jsp"%>

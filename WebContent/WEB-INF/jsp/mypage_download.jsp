@@ -33,6 +33,13 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
+<script type="text/javascript">
+	function select_year(year) {
+		$("#year").val(year);
+		$("#dateForm").attr("action", "/download.mypage");
+		$("#dateForm").submit();
+	}
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -81,7 +88,19 @@
 				</ul> -->
 			</div>
 		<div class="table_head">
-			<h3>구매 내역</h3>
+			<h3>다운로드 내역</h3>
+			<div class="cms_search"> 
+				<c:if test="${MemberInfo.group_seq != 0}">
+					<span class="mess">※고객님과 같은 그룹으로 묶인 계정에서 다운로드 받은 내역이 모두 공유됩니다.</span>
+				</c:if>
+				
+				<select onchange="select_year(this.value)">
+					<option value="" selected="selected">전체</option>
+					<option value="2018">2018년</option>
+					<option value="2017">2017년</option>
+					<option value="2016">2016년</option>
+				</select>
+			</div>
 		</div>
 		<section class="order_list">
 			<table cellpadding="0" cellspacing="0" class="tb03" style="border-top:0; margin-bottom:10px;">
@@ -148,5 +167,8 @@
 	</section>
 	<%@include file="footer.jsp"%>
 </div>
+<form id="dateForm" method="post"  target="dateFrame">
+	<input type="hidden" id="year" name="year" />
+</form>
 </body>
 </html>

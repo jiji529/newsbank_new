@@ -547,9 +547,46 @@ $(document).ready(function() {
 $(document).ready(function() {
 
 	$('#customYear').on('change', function() {
-		$('#customDay a.btn').removeClass('on'); // 날짜 초기화
+		$('#customDayOption a.btn').removeClass('on'); // 날짜 초기화
 	});
+	
+	$('#customDay').on('change', function() {
+		var year = $('#customYear').val();
+		
+		if($(this).val() == "all") {
+			var lastDay = (new Date(year, 12, 0)).getDate();
+			
+			var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 0, 1));
+			var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 11, lastDay));
+		} else {
+			var mon = $(this).val() - 1;
+			var lastDay = (new Date(year, mon + 1, 0)).getDate();
+			
+			var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
+			var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
+		}
+		
+		$("#contractStart").val(startDate);
+		$("#contractEnd").val(endDate);
+	});
+	
+	$('#customDayOption a.btn').on('click', function(i) {
+		var year = $(this).attr('value').substring(0,4);
+		var mon = $(this).attr('value').substring(4,6) - 1;
+		var lastDay = (new Date(year, mon + 1, 0)).getDate();
+		
+		var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
+		var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
 
+		$("#contractStart").val(startDate);
+		$("#contractEnd").val(endDate);
+		$('#customDayOption a.btn').removeClass('on'); // 날짜 초기화
+		$(this).addClass('on');
+
+	});
+	
+	/*
+	 * 원본
 	$('#customDay a.btn').on('click', function(i) {
 		var year = $('#customYear').val();
 		var mon = $(this).parent().index();
@@ -563,6 +600,7 @@ $(document).ready(function() {
 		$(this).addClass('on');
 
 	});
+	*/
 
 	$('#btnaccountSearch').on('click', function() {
 		$("#frmAccountList").submit();

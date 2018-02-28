@@ -66,11 +66,13 @@ $(document).ready(function() {
 		if (validPhone()) {
 			if (confirm("인증번호를 요청하시겠습니까?")) {
 				phone = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
+				var access = $("#access").val(); // 접근 페이지				
 				$.ajax({
 					type : "post",
 					url : "/SendSMS",
 					data : ({
-						tel : phone
+						tel : phone,
+						page: access
 					}),
 					dataType : "json",
 					success : function(data) {

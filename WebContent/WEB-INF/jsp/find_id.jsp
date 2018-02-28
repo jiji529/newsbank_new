@@ -23,7 +23,7 @@
 <title>뉴스뱅크 아이디 찾기</title>
 <link rel="stylesheet" href="css/join.css" />
 <script src="js/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="js/find.js"></script>
+<script type="text/javascript" src="js/find.js?v=20180226"></script>
 </head>
 <body>
 <div class="wrap">
@@ -35,7 +35,7 @@
 	<section class="join">
 		<div class="wrap_tit">
 			<h3 class="tit_join">아이디 찾기</h3>
-			<div class="txt_desc">내 명의(주민등록번호)로 가입한 아이디를 찾을 수 있습니다.</div>
+			<div class="txt_desc">내 휴대폰 번호로 가입한 아이디를 찾을 수 있습니다.</div>
 		</div>
 		<form id="frmFindId" action="/list.find" method="post" >
 			<fieldset class="fld_comm">
@@ -65,6 +65,7 @@
 									<input type="text" id="phone2" size="5"  class="inp_txt"  maxlength="4" required/>
 									<span class=" bar">-</span>
 									<input type="text" id="phone3" size="5"  class="inp_txt"  maxlength="4" required />
+									<input type="hidden" id="access" value="find_id"/>  
 									<a href="javascript:;" class="btn_input1" id="phone_certify" >인증</a> 
 							</dd>
 							<dd class="btn_inp">

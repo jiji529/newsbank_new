@@ -257,7 +257,7 @@
 										</div>
 									</td>
 								</tr>
-								<%-- <c:if test="${MemberInfo.type eq 'M'}"> --%>
+								<c:if test="${MemberInfo.admission eq 'Y'}">
 								<tr>
 									<th>정산 매체</th>	
 									<td>
@@ -271,6 +271,7 @@
 									</c:forEach>
 									</td>
 								</tr>
+								</c:if>
 							</tbody>
 						</table>
 					</c:if>

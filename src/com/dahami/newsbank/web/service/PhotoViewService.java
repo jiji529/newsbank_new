@@ -66,6 +66,7 @@ public class PhotoViewService extends ServiceBase {
 			}
 			
 			request.setAttribute("bookmark", bookmark);
+			request.setAttribute("memberInfo", MemberInfo); // 회원정보 전달
 		}
 	}
 

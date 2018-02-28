@@ -35,7 +35,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
+<script src="js/mypage.js?v=20180229"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -97,6 +97,45 @@
 					<col style="width:;">
 				</colgroup>
 				<tbody>
+				
+					<tr>
+					<th>기간별 조회</th>
+						<td>
+							<select id="customYear" class="inp_txt" class="inp_txt" style="width:100px;">
+								<!-- option value="all" selected="selected">전체(년)</option -->
+								<c:forEach var="i" begin="2007" end="${year}" step="1">
+									<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
+								</c:forEach>
+							</select>
+							<select id="customDay" class="inp_txt" style="width:95px;">
+								<option value="all" selected="selected">전체(월)</option>
+								<option value="1" >1월</option>
+								<option value="2" >2월</option>
+								<option value="3" >3월</option>
+								<option value="4" >4월</option>
+								<option value="5" >5월</option>
+								<option value="6" >6월</option>
+								<option value="7" >7월</option>
+								<option value="8" >8월</option>
+								<option value="9" >9월</option>
+								<option value="10" >10월</option>
+								<option value="11" >11월</option>
+								<option value="12" >12월</option>
+							</select>
+							<ul id="customDayOption" class="period">
+								<c:forEach var="pastMonth" items="${pastMonths}">
+									<li><a href="javascript:;" class="btn" value="${pastMonth}">${fn:substring(pastMonth, 4, 6)}월</a> </li>
+								</c:forEach>
+							</ul>
+							<div class="period">
+								<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${today }" maxlength="10">
+								<span class=" bar">~</span>
+								<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${today }" maxlength="10">
+							</div>
+						</td>
+					</tr>
+					
+					<!-- 
 					<tr>
 						<th>조회기간 선택</th>
 						<td>
@@ -153,6 +192,8 @@
 							</ul>
 						</td>
 					</tr>
+					 -->
+					 
 					<tr>
 						<th>매체</th>
 						<td>
@@ -187,6 +228,7 @@
 						<td>
 							<select name="paytype" class="inp_txt" style="width: 380px;">
 								<option value="">- 선택 -</option>
+								<option value="">전체</option>
 								<option value="SC0010">카드결제</option>
 								<option value="SC0040">무통장입금</option>
 								<option value="SC0030">실시간 계좌이체</option>

@@ -1,8 +1,11 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +78,7 @@ public class MypageAccountList extends NewsbankServletBase {
 				Map<String, Object> params = new HashMap<String, Object>();
 				Calendar cal = Calendar.getInstance();
 				int year = cal.get(Calendar.YEAR);
+				int month = cal.get(Calendar.MONTH);
 
 				params.put("member_seq", MemberInfo.getSeq());
 				params.put("start_date", year+"0101");
@@ -84,6 +88,25 @@ public class MypageAccountList extends NewsbankServletBase {
 				selectTotalPrice = paymentDAO.selectTotalPrice(params); // 회원정보 요청
 				request.setAttribute("totalPrice", selectTotalPrice);
 				
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");
+				String thisMonth = dateFormat.format(cal.getTime());
+				List<String> pastMonths = new ArrayList<String>();
+				pastMonths.add(thisMonth);
+				
+				//String[] pastMonths = { thisMonth };
+				// 최근 6개월 표현
+				for(int i=0; i<5; i++) {
+					
+					cal.add(cal.MONTH, -1);
+					
+					String beforeYear = dateFormat.format(cal.getTime()).substring(0,4);
+					String beforeMonth = dateFormat.format(cal.getTime()).substring(4,6);
+					
+					String beforeDate = beforeYear + beforeMonth;
+					System.out.println("beforeDate : " + beforeDate);
+					pastMonths.add(beforeDate);
+				}
+				request.setAttribute("pastMonths", pastMonths);
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_account_list.jsp");
 				dispatcher.forward(request, response);
@@ -92,6 +115,7 @@ public class MypageAccountList extends NewsbankServletBase {
 		} else {
 			response.sendRedirect("/login");
 		}
+
 
 	}
 

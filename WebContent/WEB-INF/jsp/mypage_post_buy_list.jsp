@@ -82,6 +82,14 @@
 			</div>
 		<div class="table_head">
 			<h3>구매 내역</h3>
+			<div class="cms_search"> <span class="mess">※고객님과 같은 그룹으로 묶인 계정에서 구매한 내역이 모두 공유됩니다.</span>
+				<select>
+					<option selected="selected">전체</option>
+					<option>2018년</option>
+					<option>2017년</option>
+					<option>2016년</option>
+				</select>
+			</div>
 		</div>
 		<section class="order_list">
 			<table cellpadding="0" cellspacing="0" class="tb03" style="border-top:0; margin-bottom:10px;">

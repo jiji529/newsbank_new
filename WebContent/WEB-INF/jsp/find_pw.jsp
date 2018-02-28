@@ -20,7 +20,7 @@
 <title>뉴스뱅크 비밀번호 찾기</title>
 <link rel="stylesheet" href="css/join.css" />
 <script src="js/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="js/find.js"></script>
+<script type="text/javascript" src="js/find.js?v=20180226"></script>
 </head>
 <body>
 	<%
@@ -75,6 +75,7 @@
 									<input type="text" id="phone2" size="5" class="inp_txt" maxlength="4" required />
 									<span class=" bar">-</span>
 									<input type="text" id="phone3" size="5" class="inp_txt" maxlength="4" required />
+									<input type="hidden" id="access" value="find_pw"/>
 									<a href="javascript:;" class="btn_input1" id="phone_certify">인증</a>
 								</dd>
 								<dd class="btn_inp">

@@ -52,10 +52,12 @@ public class SendSMS extends NewsbankServletBase {
 		HttpSession session = request.getSession();
 		String tel = request.getParameter("tel"); // 전화번호 request
 		String token = request.getParameter("token"); // 인증번호 request
+		String access = request.getParameter("page"); // 접근 페이지 request
 		int certifyCount = 1;
 		boolean success = false;
 		String success_msg = "인증번호 오류";
 		
+		System.out.println("휴대폰 번호 : " + tel);
 		if (token != null && tel != null) {
 			// 인증번호 확인 요청
 			success_msg = "인증번호를 확인할 수 없습니다.";
@@ -79,7 +81,7 @@ public class SendSMS extends NewsbankServletBase {
 
 		}
 		
-		if (tel != null && token == null ) {
+		if (tel != null && token == null) {
 			
 			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 			MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
@@ -88,7 +90,7 @@ public class SendSMS extends NewsbankServletBase {
 			memberDTO.setPhone(tel);
 			listMember = memberDAO.listMember(memberDTO); // 회원정보 요청
 			// 회원정보 배열 크기 체크
-			if (listMember.size() > 0) {
+			if (listMember.size() > 0 && access == null) {
 				success_msg = "입력하신 핸드폰번호는 이미 가입되어있습니다.";
 			}else {
 
@@ -117,8 +119,8 @@ public class SendSMS extends NewsbankServletBase {
 					param.put("send_title", "[뉴스뱅크]");
 					param.put("send_memo", sendMemo);
 					System.out.println(param);
-					//String result = URLPost(URL, param); // 주석해제하면 문자로 전송됨
-					String result ="success";
+					String result = URLPost(URL, param); // 주석해제하면 문자로 전송됨
+					//String result ="success";
 					if (result.equalsIgnoreCase("success")) {
 						success = true;
 					}

@@ -60,6 +60,7 @@ public class MypageDownload extends NewsbankServletBase {
 				downList = downloadDAO.downloadList(member_seq);
 				
 				request.setAttribute("downList", downList);
+				request.setAttribute("MemberInfo", MemberInfo);
 				//System.out.println(downList.toString());
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_download.jsp");
