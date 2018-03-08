@@ -440,7 +440,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						</c:forEach>
 					</ul>
 				</li>
-				<li class="filter_title filter_duration"> 검색기간
+				<li class="filter_title filter_duration"> 업로드일
 					<ul class="filter_list">
 						<li value="" selected="selected">전체</li>
 						<li value="1d">1일</li>
@@ -450,10 +450,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<li class="choice">직접 입력
 							<div class="calendar">
 								<div class="cal_input">
-									<input type="text" class="datepicker" id="startDate" title="검색기간 시작일" />
+									<input type="text" class="datepicker" id="startDate" title="업로드 시작일" />
 									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 								<div class="cal_input">
-									<input type="text" class="datepicker" id="endDate" title="검색기간 마지막일" />
+									<input type="text" class="datepicker" id="endDate" title="업로드 마지막일" />
 									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 								<button class="btn_cal" type="button">적용</button>
 							</div>
@@ -483,6 +483,14 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<li value="<%=SearchParameterBean.SIZE_LARGE%>">3,000 px 이상</li>
 						<li value="<%=SearchParameterBean.SIZE_MEDIUM%>">1,000~3,000 px</li>
 						<li value="<%=SearchParameterBean.SIZE_SMALL%>">1,000 px 이하</li>
+					</ul>
+				</li>
+				<li class="filter_title filter_service"> 서비스 상태
+					<ul class="filter_list">
+						<li value="" selected="selected">전체</li>
+						<li value="<%=SearchParameterBean.SALE_STATE_OK%>">정상</li>
+						<li value="<%=SearchParameterBean.SALE_STATE_STOP%>">블라인드</li>
+						<li value="<%=SearchParameterBean.SALE_STATE_DEL_SOLD%>">삭제</li>
 					</ul>
 				</li>
 			</ul>

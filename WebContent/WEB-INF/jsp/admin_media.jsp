@@ -57,22 +57,25 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			if (this.href == window.location.href) {
 				$(this).parent().addClass("on");
 			}
-		});
-		
-		$(".popup_open").click(function() {
-			$("#popup_wrap").css("display", "block");
-			$("#mask").css("display", "block");
-			console.log("팝업 오픈");
-		});
-		$(".popup_close").click(function() {
-			$("#popup_wrap").css("display", "none");
-			$("#mask").css("display", "none");
-		});
+		});		
 		
 		$("#startgo").val(1); // 최초 1페이지로
 		search();
 	});
 	
+	// 팝업창 오픈
+	$(document).on("click", ".popup_open", function() {
+		$("#popup_wrap").css("display", "block");
+		$("#mask").css("display", "block");
+	});
+	
+	// 팝업창 닫기
+	$(document).on("click", ".popup_close", function() {
+		$("#popup_wrap").css("display", "none");
+		$("#mask").css("display", "none");
+	});
+	
+	// 검색 클릭이벤트
 	$(document).on("click", ".btn_input2", function() {
 		$("#startgo").val(1); // 최초 1페이지로
 		search();
@@ -162,6 +165,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				totalCnt = data.totalCnt; // 총 갯수
 				
 				$(data.result).each(function(key, val) {
+					var seq = val.seq;
 					var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
 					var id = val.id; // 아이디
 					var compName = val.compName; // 매체사명
@@ -215,10 +219,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						calc = "피정산<br/>" + "(" + masterID + ")";								
 					}					
 					
-					html += '<tr>';
-					html += '<td><div class="tb_check">';
-					html += '<input id="check" name="check" type="checkbox" value="'+key+'">';
-					html += '<label for="check1">선택</label>';
+					//html += '<tr>';
+					html += '<tr onclick="go_mediaView(\'' + seq + '\')">';
+					html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
+					html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
+					html += '<label for="check' + key + '">선택</label>';
 					html += '</div></td>';
 					html += '<td>' + number + '</td>';
 					html += '<td>' + id + '</td>';
@@ -265,11 +270,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			dataType: "json",
 			data: searchParam,
 			url: "/listMedia.api",
-			success: function(data) { console.log(data);
+			success: function(data) { //console.log(data);
 				pageCnt = data.pageCnt; // 총 페이지 갯수
 				totalCnt = data.totalCnt; // 총 갯수
 				
 				$(data.result).each(function(key, val) {
+					var seq = val.seq;
 					var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
 					var id = val.id; // 아이디
 					var compName = val.compName; // 매체사명
@@ -323,10 +329,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						calc = "피정산<br/>" + "(" + masterID + ")";								
 					}					
 					
-					html += '<tr>';
-					html += '<td><div class="tb_check">';
-					html += '<input id="check" name="check" type="checkbox" value="'+key+'">';
-					html += '<label for="check1">선택</label>';
+					//html += '<tr>';
+					html += '<tr onclick="go_mediaView(\'' + seq + '\')">';
+					html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
+					html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
+					html += '<label for="check' + key + '">선택</label>';
 					html += '</div></td>';
 					html += '<td>' + number + '</td>';
 					html += '<td>' + id + '</td>';
@@ -398,9 +405,52 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			data: searchParam,
 			url: "search",
 			success: function(data) {
-				console.log(data);
+				//console.log(data);
 			}
 		});
+	}
+	
+	function go_mediaView(member_seq) {
+		$("#member_seq").val(member_seq);
+		view_media_manage.submit();
+	}
+	
+	// 정산 매체사 - 선택 승인
+	function check_approve() {
+		var chk_total = $("#mtBody input:checkbox:checked").length;
+		//var arr_seq = new Array();
+		
+		if(chk_total == 0) { // 선택항목 갯수 체크
+			alert("최소 1개 이상을 선택해주세요.");
+		} else {
+			$("#mtBody input:checkbox:checked").each(function(index) {
+				var seq = $(this).val();
+				//arr_seq.push(seq);
+				
+				if(confirm("선택한 항목을 승인하시겠습니까?")) {
+					$.ajax({
+						type: "POST",
+						url: "/admin.member.api",
+						data : ({
+							cmd : 'U',
+							seq : seq,
+							admission : 'Y',
+							type : 'M'
+						}),
+						dataType : "json",
+						success : function(data) {
+							if (data.success) {
+								console.log(index + "번째 승인 처리 완료");
+							} else {
+														
+							}
+						}
+					});	
+				}
+			});	
+			alert("선택 승인 완료");
+			location.href = "/media.manage";
+		}		
 	}
 </script>
 </head>
@@ -432,11 +482,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			</div>
 			<div class="ad_result">
 				<div class="ad_result_btn_area">
-					<a href="admin3-2.html" style="margin-left:0;">정산 매체사 추가</a>
-					<a href="#">선택 승인</a>
+					<a href="/add.media.manage" style="margin-left:0;">정산 매체사 추가</a>
+					<a href="javascript:void(0)" onclick="check_approve()">선택 승인</a>
 					</div>
 				<div class="ad_result_btn_area fr">
-					<select id="sel_pageVol">
+					<select id="sel_pageVol" onchange="search()">
 						<option value="20">20개</option>
 						<option value="50">50개</option>
 						<option value="100">100개</option>
@@ -482,6 +532,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						
 					</tbody>
 				</table>
+				
+				
 				<div id="popup_wrap">
 					<div class="pop_tit">
 						<h2>서비스 설정</h2>
@@ -502,46 +554,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					</div>
 				</div>
 				
-				<!--div id="popup_wrap">
-					<div class="pop_tit">
-						<h2>서비스 설정</h2>
-						<p>
-							<button class="popup_close">닫기</button>
-						</p>
-					</div>
-					<div class="pop_cont">
-						<ul class="group_li">
-							<li>
-								<input type="radio" id="radio_chk1" name="group" />
-								<label for="radio_chk1"> ottffssentottffssent(아이디스무자)</label>
-							</li>
-							<li>
-								<input type="radio" id="radio_chk2" name="group" />
-								<label for="radio_chk2"> ok0526(다하미)</label>
-							</li>
-							<li>
-								<input type="radio" id="radio_chk3" name="group" />
-								<label for="radio_chk3"> ok0526(다하미)</label>
-							</li>
-							<li>
-								<input type="radio" id="radio_chk4" name="group" />
-								<label for="radio_chk4"> ok0526(다하미)</label>
-							</li>
-							<li>
-								<input type="radio" id="radio_chk5" name="group" />
-								<label for="radio_chk5"> ok0526(다하미)</label>
-							</li>
-						</ul>
-					</div>
-					<div class="pop_foot">
-						<p>선택한 ID를 그룹(<span class="color">ottffssentottffssent</span>)으로 묶겠습니까?</p>
-						<div class="pop_btn">
-							<button onclick="location.href='#'";>활성화</button>
-							<button class="popup_close">비활성화</button>
-						</div>
-					</div>
-				</div-->
-				
 				<div id="mask"></div>
 				<input type="hidden" id="totcnt" value="" />
 				<input type="hidden" id="startgo" value="" />
@@ -554,6 +566,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		</div>
 		<div id="loading"><img id="loading-image" src="/images/ajax-loader.gif" alt="loading" /></div>
 	</section>
+	<form method="post" action="/view.media.manage" name="view_media_manage" >
+		<input type="hidden" name="member_seq" id="member_seq"/>
+	</form>
 </div>
 </body>
 </html>

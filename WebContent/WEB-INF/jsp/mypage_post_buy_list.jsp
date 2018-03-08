@@ -13,12 +13,20 @@
   2017. 10. 25.   LEE.GWANGHO    postBuylist
 ---------------------------------------------------------------------------%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+ SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+ int beginYear = Integer.parseInt(yearFormat.format(new Date())) - 2; // 현재 년도 -2
+ int endYear = Integer.parseInt(yearFormat.format(new Date())); // 현재 년도
 %>
+<c:set var="endYear" value="<%=endYear%>"/>
+<c:set var="beginYear" value="<%=beginYear%>"/>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -32,7 +40,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
+<script src="js/mypage.js?v=20180302"></script>
 </head>
 <body>
 <div class="wrap">
@@ -83,11 +91,11 @@
 		<div class="table_head">
 			<h3>구매 내역</h3>
 			<div class="cms_search"> <span class="mess">※고객님과 같은 그룹으로 묶인 계정에서 구매한 내역이 모두 공유됩니다.</span>
-				<select>
-					<option selected="selected">전체</option>
-					<option>2018년</option>
-					<option>2017년</option>
-					<option>2016년</option>
+				<select onchange="select_year(this.value, '/postBuylist.mypage')">
+					<option <c:if test="${year eq '0'}">selected</c:if> value="0">전체</option>
+					<c:forEach var="yearOpt" begin="${beginYear}" end="${endYear}" step="1">
+						<option <c:if test="${year eq (beginYear-yearOpt+endYear)}">selected</c:if> value="${beginYear-yearOpt+endYear}">${beginYear-yearOpt+endYear}년</option>
+					</c:forEach>
 				</select>
 			</div>
 		</div>
@@ -150,5 +158,8 @@
 	</section>
 	<%@include file="footer.jsp"%>
 </div>
+<form id="dateForm" method="post"  target="dateFrame">
+	<input type="hidden" id="year" name="year" />
+</form>
 </body>
 </html>

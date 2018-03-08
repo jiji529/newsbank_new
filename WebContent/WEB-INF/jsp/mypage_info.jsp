@@ -266,6 +266,7 @@
 											<div class="add_line">
 												<a href="javascript:;" class="btn_input1">제호업로드</a>
 												<a href="javascript:;" class="btn_input1">다운로드</a>
+												<a href="javascript:;" class="inp_txt">${media.id}</a>
 											</div>	
 										</c:if>
 									</c:forEach>

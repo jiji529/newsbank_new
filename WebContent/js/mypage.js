@@ -953,3 +953,12 @@ $(function() {
 	});
 
 });
+
+// 다운로드 내역, 구매내역 (년도별 선택 옵션)
+function select_year(year, url) {
+	$("#year").val(year);
+	$("#dateForm").attr("action", url);
+	$("#dateForm").submit();
+	
+	console.log("year : " + year);
+}

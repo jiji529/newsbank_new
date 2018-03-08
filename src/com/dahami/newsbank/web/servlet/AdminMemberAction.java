@@ -3,6 +3,7 @@ package com.dahami.newsbank.web.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,13 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
 import com.dahami.newsbank.web.util.CommonUtil;
+
+import org.json.simple.parser.*;
 
 /**
  * Servlet implementation class AdminMemberAction
@@ -98,11 +104,13 @@ public class AdminMemberAction extends NewsbankServletBase {
 		String taxPhone = null;
 		String taxEmail = null;
 		String taxExtTell = null;
+		String[] media_seq = null; // 정산정보별 회원번호
 
 		/** 관리자 기능 **/
 		String permission = null;
 		String deferred = null;
 		String activate = null;
+		String admission = null; // 승인
 		int master_seq = 0;
 		int group_seq = 0;
 
@@ -188,7 +196,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 			}
 		}
 		
-		if(check && request.getParameter("compExtTel") != null) {
+		if(check && request.getParameter("compExtTel") != null && request.getParameter("compExtTel").length() != 0) {
 			compExtTel = request.getParameter("compExtTel"); // 회사 내선번호
 			check = check && isValidExhTel(compExtTel); 
 			System.out.println("compExtTel => " + compExtTel + " : " + check);
@@ -244,38 +252,39 @@ public class AdminMemberAction extends NewsbankServletBase {
 			contractAuto = request.getParameter("contractAuto"); // 로고 경로 request
 		}
 		
-		if (check && request.getParameterValues("usage") != null && request.getParameterValues("usage").length != 0) {
+		if (check && request.getParameterValues("usage") != null && !ArrayUtils.isEmpty(request.getParameterValues("usage"))) {
 			usage = request.getParameterValues("usage"); // 로고 경로 request
 		}
 		
-		if (check && request.getParameterValues("price") != null && request.getParameterValues("price").length != 0) {
+		if (check && request.getParameterValues("price") != null && !ArrayUtils.isEmpty(request.getParameterValues("price"))) {
 			price = request.getParameterValues("price"); // 로고 경로 request
 		}
 		
-		if (check && request.getParameterValues("usageList_seq") != null && request.getParameterValues("usageList_seq").length != 0) {
+		if (check && request.getParameterValues("usageList_seq") != null && !ArrayUtils.isEmpty(request.getParameterValues("usageList_seq"))) {
 			usageList_seq = request.getParameterValues("usageList_seq"); // 로고 경로 request
 		}
 
-		if (check && request.getParameter("preRate") != null) {
+		if (check && request.getParameter("preRate") != null && request.getParameter("taxName").length() != 0) {
 			preRate = Double.parseDouble(request.getParameter("preRate"));
 		}
 
-		if (check && request.getParameter("postRate") != null) {
+		if (check && request.getParameter("postRate") != null && request.getParameter("taxName").length() != 0) {
 			postRate = Double.parseDouble(request.getParameter("postRate"));
 		}
 
-		if (check && request.getParameter("taxName") != null) {
+		if (check && request.getParameter("taxName") != null && request.getParameter("taxName").length() != 0) {
 			taxName = request.getParameter("taxName"); // 로고 경로 request
 		}
 
-		if (check && request.getParameter("taxPhone") != null) {
+		if (check && request.getParameter("taxPhone") != null && request.getParameter("taxPhone").length() != 0) {
 			taxPhone = request.getParameter("taxPhone"); // 로고 경로 request
 		}
-		if (check && request.getParameter("taxEmail") != null) {
+		if (check && request.getParameter("taxEmail") != null && request.getParameter("taxEmail").length() != 0) {
 			taxEmail = request.getParameter("taxEmail"); // 로고 경로 request
 		}
 		
-		if(check && request.getParameter("taxExtTell") != null) {
+		
+		if(check && request.getParameter("taxExtTell") != null && request.getParameter("taxExtTell").length() != 0) {
 			taxExtTell = request.getParameter("taxExtTell"); // 회사 내선번호
 			check = check && isValidExhTel(taxExtTell); 
 			System.out.println("taxExtTell => " + taxExtTell + " : " + check);
@@ -289,11 +298,15 @@ public class AdminMemberAction extends NewsbankServletBase {
 		}
 
 		if (check && request.getParameter("deferred") != null) {
-			deferred = request.getParameter("deferred"); // 로고 경로 request
+			deferred = request.getParameter("deferred"); 
 		}
 
 		if (check && request.getParameter("activate") != null) {
-			activate = request.getParameter("activate"); // 로고 경로 request
+			activate = request.getParameter("activate"); 
+		}
+		
+		if (check && request.getParameter("admission") != null) {
+			admission = request.getParameter("admission"); 
 		}
 
 		if (check && request.getParameter("master_seq") != null) {
@@ -328,11 +341,97 @@ public class AdminMemberAction extends NewsbankServletBase {
 				check = false;
 			}
 
-		}
-		
+		}	
 		
 		MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 		ArrayList<UsageDTO> usageList = new ArrayList<>(); // 사용용도 리스트
+		ArrayList<MemberDTO> adjustList = new ArrayList<>(); // 정산매체 리스트(Master - Slave)
+		
+		// 정산정보 리스트
+		if(check && request.getParameter("ajdustList") != null) {
+			//System.out.println(request.getParameter("ajdustList"));
+			String json = request.getParameter("ajdustList");
+			Object obj = JSONValue.parse(json);			
+			JSONArray jsonArray = (JSONArray)obj;
+			for(int i=0; i<jsonArray.size(); i++) {
+				JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+				
+				/*
+				System.out.println("compBankName : " + jsonObject.get("compBankName"));
+				System.out.println("compBankAcc : " + jsonObject.get("compBankAcc"));
+				System.out.println("contractStart : " + jsonObject.get("contractStart"));
+				System.out.println("contractEnd : " + jsonObject.get("contractEnd"));
+				System.out.println("preRate : " + jsonObject.get("preRate"));
+				System.out.println("postRate : " + jsonObject.get("postRate"));
+				System.out.println("taxName : " + jsonObject.get("taxName"));
+				System.out.println("taxPhone : " + jsonObject.get("taxPhone"));
+				System.out.println("taxExtTell : " + jsonObject.get("taxExtTell"));
+				System.out.println("taxEmail : " + jsonObject.get("taxEmail"));
+				System.out.println("activate : " + jsonObject.get("activate"));
+				System.out.println("admission : " + jsonObject.get("admission"));
+				System.out.println("media_seq : " + jsonObject.get("media_seq"));
+				System.out.println("===================================\n");
+				*/
+				
+				memberDTO.setType(jsonObject.get("type").toString());
+				
+				if (jsonObject.get("compBankName").toString() != null && !jsonObject.get("compBankName").toString().equals("")) {
+					memberDTO.setCompBankName(jsonObject.get("compBankName").toString());
+				}
+				
+				if (jsonObject.get("compBankAcc").toString() != null && !jsonObject.get("compBankAcc").toString().equals("")) {
+					memberDTO.setCompBankAcc(jsonObject.get("compBankAcc").toString());
+				}
+				
+				if (jsonObject.get("contractStart").toString() != null && !jsonObject.get("contractStart").toString().equals("")) {
+					memberDTO.setContractStart(jsonObject.get("contractStart").toString());
+				}
+				
+				if (jsonObject.get("contractEnd").toString() != null && !jsonObject.get("contractEnd").toString().equals("")) {
+					memberDTO.setContractEnd(jsonObject.get("contractEnd").toString());
+				}
+				
+				if (jsonObject.get("preRate").toString() != null && jsonObject.get("preRate").toString().length() != 0) {
+					memberDTO.setPreRate(Double.parseDouble(jsonObject.get("preRate").toString()));
+				}
+				
+				if (jsonObject.get("postRate").toString() != null && jsonObject.get("postRate").toString().length() != 0) {
+					memberDTO.setPostRate(Double.parseDouble(jsonObject.get("postRate").toString()));
+				}
+				
+				if (jsonObject.get("taxName").toString() != null && !jsonObject.get("taxName").toString().equals("")) {
+					memberDTO.setTaxName(jsonObject.get("taxName").toString());
+				}
+				
+				if (jsonObject.get("taxPhone").toString() != null && !jsonObject.get("taxPhone").toString().equals("")) {
+					memberDTO.setTaxPhone(jsonObject.get("taxPhone").toString());
+				}
+				
+				if (jsonObject.get("taxExtTell").toString() != null && !jsonObject.get("taxExtTell").toString().equals("")) {
+					memberDTO.setTaxExtTell(jsonObject.get("taxExtTell").toString());
+				}
+				
+				if (jsonObject.get("taxEmail").toString() != null && !jsonObject.get("taxEmail").toString().equals("")) {
+					memberDTO.setTaxEmail(jsonObject.get("taxEmail").toString());
+				}
+				
+				if (jsonObject.get("activate").toString() != null && !jsonObject.get("activate").toString().equals("")) {
+					memberDTO.setActivate(jsonObject.get("activate").toString());
+				}
+				
+				if (jsonObject.get("admission").toString() != null && !jsonObject.get("admission").toString().equals("")) {
+					memberDTO.setAdmission(jsonObject.get("admission").toString());
+				}
+				
+				if (jsonObject.get("media_seq").toString() != null && !jsonObject.get("media_seq").toString().equals("")) {
+					memberDTO.setSeq(Integer.parseInt(jsonObject.get("media_seq").toString()));
+				}
+				
+				result = memberDAO.updateMember(memberDTO); // 회원정보 요청
+				message = "회원정보 수정완료";
+			}
+			
+		}
 		
 		if (check) {
 
@@ -370,24 +469,27 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setPermission(permission);
 			memberDTO.setDeferred(deferred);
 			memberDTO.setActivate(activate);
+			memberDTO.setAdmission(admission);
 			memberDTO.setMaster_seq(master_seq);
 			memberDTO.setGroup_seq(group_seq);
 			
-			// 사용 용도 갯수만큼 생성
-			for(int i = 0; i<usage.length; i++) {
-				UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
-				usageDTO.setUsage(usage[i]);
-				usageDTO.setPrice(Integer.parseInt(price[i]));
-				//System.out.println("["+i+"] : "+usageList_seq[i]);
+			// 후불회원만 사용 용도 갯수만큼 생성 (deferred = 2)
+			if(Integer.parseInt(deferred) == 2) {
+				for(int i = 0; i<usage.length; i++) {
+					UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
+					usageDTO.setUsage(usage[i]);
+					usageDTO.setPrice(Integer.parseInt(price[i]));
+					//System.out.println("["+i+"] : "+usageList_seq[i]);
+					
+					if(usageList_seq[i] != null && usageList_seq[i] != "") {
+						usageDTO.setUsageList_seq(Integer.parseInt(usageList_seq[i]));
+					}			
+					
+					usageList.add(i, usageDTO);
+				}
 				
-				if(usageList_seq[i] != null && usageList_seq[i] != "") {
-					usageDTO.setUsageList_seq(Integer.parseInt(usageList_seq[i]));
-				}			
-				
-				usageList.add(i, usageDTO);
+				saveUsageList(seq, usageList); // 사용용도 저장
 			}
-			
-			saveUsageList(seq, usageList); // 사용용도 저장
 			
 			switch (cmd) {
 			case "C":
@@ -403,6 +505,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 			case "U":
 				if (seq > 0) {
 					result = memberDAO.updateMember(memberDTO); // 회원정보 요청
+					//result = true;
 				} else {
 					message = "세션정보가 없습니다. 다시 로그인 해주세요.";
 				}
@@ -420,6 +523,12 @@ public class AdminMemberAction extends NewsbankServletBase {
 				} else {
 					message = "세션정보가 없습니다. 다시 로그인 해주세요.";
 				}
+				break;
+				
+			case "M":
+				// 매체사 정산정보
+				result = true;
+				message = "정산정보가 수정되었습니다.";
 				break;
 			}
 

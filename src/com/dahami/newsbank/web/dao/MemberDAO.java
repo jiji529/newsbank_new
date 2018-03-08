@@ -249,6 +249,30 @@ public class MemberDAO extends DAOBase {
 	}
 	
 	/**
+	 * @methodName : adminAdjustMedia
+	 * @author : LEE,GWAGNHO
+	 * @date : 2018. 03. 05.  오후 16:01:43
+	 * @methodCommet: 관리자 정산정보
+	 * @return
+	 * @returnType : List<MemberDTO>
+	 */
+	public List<MemberDTO> adminAdjustMedia(MemberDTO memberDTO) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Member.adminAdjustMedia", memberDTO);
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	/**
 	 * @methodName : selectMemberList
 	 * @author : Lee, Gwangho
 	 * @date : 2017. 11. 23. 오전 10:27:13

@@ -54,14 +54,15 @@ public class MypageDownload extends NewsbankServletBase {
 				response.sendRedirect("/auth.mypage");
 			} else {
 				int member_seq = MemberInfo.getSeq();
+				int year = request.getParameter("year") == null ? 0 : Integer.parseInt(request.getParameter("year"));
 				List<Map<String, String>> downList = new ArrayList<Map<String, String>>();
 				
 				DownloadDAO downloadDAO = new DownloadDAO();
-				downList = downloadDAO.downloadList(member_seq);
+				downList = downloadDAO.downloadList(member_seq, year);
 				
 				request.setAttribute("downList", downList);
 				request.setAttribute("MemberInfo", MemberInfo);
-				//System.out.println(downList.toString());
+				request.setAttribute("year", year);
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_download.jsp");
 				dispatcher.forward(request, response);

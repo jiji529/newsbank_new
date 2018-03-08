@@ -13,12 +13,21 @@
   2017. 10. 25.   LEE.GWANGHO    download
 ---------------------------------------------------------------------------%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+ SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+ int beginYear = Integer.parseInt(yearFormat.format(new Date())) - 2; // 현재 년도 -2
+ int endYear = Integer.parseInt(yearFormat.format(new Date())); // 현재 년도
 %>
+<c:set var="endYear" value="<%=endYear%>"/>
+<c:set var="beginYear" value="<%=beginYear%>"/>  
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -32,14 +41,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
-<script type="text/javascript">
-	function select_year(year) {
-		$("#year").val(year);
-		$("#dateForm").attr("action", "/download.mypage");
-		$("#dateForm").submit();
-	}
-</script>
+<script src="js/mypage.js?v=20180302"></script>
 </head>
 <body>
 <div class="wrap">
@@ -94,11 +96,11 @@
 					<span class="mess">※고객님과 같은 그룹으로 묶인 계정에서 다운로드 받은 내역이 모두 공유됩니다.</span>
 				</c:if>
 				
-				<select onchange="select_year(this.value)">
-					<option value="" selected="selected">전체</option>
-					<option value="2018">2018년</option>
-					<option value="2017">2017년</option>
-					<option value="2016">2016년</option>
+				<select onchange="select_year(this.value, '/download.mypage')">
+					<option <c:if test="${year eq '0'}">selected</c:if> value="0">전체</option>
+					<c:forEach var="yearOpt" begin="${beginYear}" end="${endYear}" step="1">
+						<option <c:if test="${year eq (beginYear-yearOpt+endYear)}">selected</c:if> value="${beginYear-yearOpt+endYear}">${beginYear-yearOpt+endYear}년</option>
+					</c:forEach>
 				</select>
 			</div>
 		</div>

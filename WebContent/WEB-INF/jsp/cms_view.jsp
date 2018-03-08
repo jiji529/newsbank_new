@@ -445,6 +445,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<div class="cms_rt">
 					<h3 class="info_tit">옵션</h3>
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="cms_table2">
+						<!--
+					 	  숨김 
 						<tr>
 							<th scope="row">게티 노출 / 타 서비스 노출</th>
 							<td><label>
@@ -454,6 +456,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<input type="radio" name="mediaExActive" value="1"/>
 									OFF</label></td>
 						</tr>
+						 -->
 						<tr>
 							<th scope="row">블라인드</th>
 							<td><label>

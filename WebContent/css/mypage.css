@@ -440,14 +440,14 @@
 .admin .table_head .cms_search button {padding:6px 15px; background:#fff;  border:1px #f79320 solid; color:#f79320; border-radius:2px; font-size:15px;}
 .admin .table_head button.btn_head {padding:6px 15px; background:#fff;  border:1px #f79320 solid; color:#f79320; border-radius:2px; font-size:15px; margin-top:-42px;}
 
-.admin .tb01{margin-bottom:25px;}
+.admin .tb01{margin-bottom:20px;}
 .admin .tb01 th { padding:5px 20px; color:#333; font-size: 14px; border-top: 1px solid #e6e9f0; height:50px; }
 .admin .tb01 td { padding: 5px 30px; border-top: 1px solid #e6e9f0; font-size:13px; line-height: 18px; }
 .admin .tb01 td input{  padding: 8px 10px;}
 .admin .tb01 select{margin-right:5px; height:32px; padding:0 5px;}
 .admin .tb01 td textarea{  padding: 8px 10px; width:100%;}
 
-.admin .ad_result{float:left; width:100%; margin-top:50px;}
+.admin .ad_result{float:left; width:100%; margin-top:30px;}
 .admin .ad_result .ad_result_btn_area{ float:left; margin-bottom:10px;}
 .admin .ad_result .ad_result_btn_area select { float:left; border:1px #bbb solid; padding:0 5px; width:70px; height:28px;border-radius:2px;}
 .admin .ad_result .ad_result_btn_area a{ float:left; padding:6px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa; margin-left:8px;}
@@ -458,6 +458,7 @@
 .admin .tb01 .btn_input2{ padding: 5px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; }
 .admin .bar{margin:7px 5px;}
 .admin .bar2{margin:7px 5px 7px 15px;}
+.admin .bar3{margin:0 10px;}
 .admin .tb01 td .my_addr{float:left; width:100%; margin-bottom:5px;}
 .admin .tb01 td input[type=file]{ padding:2px ; border: 1px solid #d9d9d9; border-radius: 2px; width:378px;}
 .admin .tb01 td .file_add{ float:left; margin-left:40px; margin-top:3px; width:24px; height:24px; background:url(../images/mp/add.png) 0 0 no-repeat; text-indent:-9999px;}
@@ -473,8 +474,21 @@
 .tb04 th { padding: 5px 10px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:40px; background:#f6f6f6; }
 .tb04 td { padding: 8px 10px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; color:#666; }
 .admin .mypage .tb04 tr:hover { background-color:#fff8f6;}
+.admin .mypage .tb04 tr:hover a { text-decoration:underline;}
+.admin .mypage .tb04 tr:hover a.table_btn { text-decoration:none;}
 .admin .mypage .tb04 td a{color:#000;}
-						
+
+.admin .tab{float:left; width:100%;}
+.admin .tab .tabs{text-align: center; white-space: nowrap; float:left; width:100%; margin:30px 0;}
+.admin .tab .tabs li{display: inline; margin-right:30px; font-family:"nsb"; font-size:17px; float:left}
+.admin .tab .tabs li a{color:#999; padding:0 3px 7px; text-decoration:}
+.admin .tab .tabs li a.active{color:#f79320; border-bottom:2px #f79320 solid;}
+
+.admin #photo_area{ width:100%; padding-left:500px;  margin-top: 155px;}
+.admin .popular_list{float:left; width:500px; padding-right:20px;}
+.admin .popular_list .cms_search{float:left; position:relative; font-size:15px; margin:10px 0 20px;}
+.admin .popular_list .cms_search input{ margin:0 5px 0 10px; border:1px #ddd solid ; padding:8px; width:320px;}
+.admin .popular_list .cms_search button {padding:6px 15px; background:#fff;  border:1px #f79320 solid; color:#f79320; border-radius:2px; font-size:15px;}
 
 
 .admin .mypage .tb04 td a.file{ float:left;width:30px; height:30px; background:url(../images/admin/clip.png) center no-repeat; overflow:hidden; position:relative; cursor:pointer; text-indent:-9999px;}
@@ -482,13 +496,15 @@
 .admin .mypage .tb04 td .file_edit{float:left; margin-left:5px; position:relative; overflow:hidden;}
 .admin .mypage .tb04 td .file_edit a{display:block; }
 .admin .mypage .tb04 td .file_edit input[type=file]{position: absolute; left:0; opacity:0; cursor:pointer; width:55px; height:32px; top:0;}
-
-
+.admin .mypage .tb04 td a:hover{color:#f58300;}
+.admin .mypage .tb04 tfoot td{background:#fff8f6; border-top:1px #ccc solid; padding:20px 10px; font-size:14px; font-weight:bold; color:#333;}
 .admin .mypage .tb04 td a:hover{color:#f58300;}
 .admin .mypage .noti .tb04 tr:hover { background-color:#fff; color:#666;}
 .admin .mypage .table_btn{padding:6px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa;}
 .admin .mypage .table_btn:hover{color: #f79320; border: 1px solid #f79320;}
 
+.admin .mypage li .btn{ padding:6px 15px;}
+.admin .mypage .calculate_info_area{margin:20px 0 0; height:auto; line-height:25px; padding:12px; }
 
 #popup_wrap {width:400px; height:250px; background:#fff; border: solid 1px #ccc; position:fixed; top:50%; left:50%; margin:-200px 0 0 -200px; z-index:9999; display:none;} 
 #popup_wrap.pop_group {height:330px; margin:-250px 0 0 -200px;} 

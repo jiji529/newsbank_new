@@ -103,7 +103,6 @@ public class MypageAccountList extends NewsbankServletBase {
 					String beforeMonth = dateFormat.format(cal.getTime()).substring(4,6);
 					
 					String beforeDate = beforeYear + beforeMonth;
-					System.out.println("beforeDate : " + beforeDate);
 					pastMonths.add(beforeDate);
 				}
 				request.setAttribute("pastMonths", pastMonths);

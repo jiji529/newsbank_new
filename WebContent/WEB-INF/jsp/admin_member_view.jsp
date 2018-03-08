@@ -34,7 +34,7 @@
 <script src="js/footer.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
-<script src="js/admin.js"></script>
+<script src="js/admin.js?v=20180308"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
@@ -217,7 +217,7 @@
 							
 								<tr>
 									<th>회사/기관명</th>
-									<td><input type="text" id="compName" name="compName" class="inp_txt" size="60" value="㈜다하미커뮤니케이션즈" /></td>
+									<td><input type="text" id="compName" name="compName" class="inp_txt" size="60" value="${MemberDTO.compName}" /></td>
 								</tr>
 								<tr>
 									<th>사업자등록번호</th>

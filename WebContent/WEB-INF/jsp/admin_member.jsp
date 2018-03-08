@@ -553,7 +553,7 @@ function go_memberView(member_seq) {
 					<a href="javascript:void(0)" class="bk" onclick="drop_out()">탈퇴처리</a>
 				</div>
 				<div class="ad_result_btn_area fr">
-					<select id="sel_pageVol">
+					<select id="sel_pageVol" onchange="search()">
 						<option value="20">20개</option>
 						<option value="50">50개</option>
 						<option value="100">100개</option>

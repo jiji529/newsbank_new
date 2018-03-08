@@ -4,7 +4,8 @@ $(document).ready(function() {
 	$("#frmJoin").on("submit", function() {
 		// process form
 		var check = true;
-		var cmd = $("input[name=cmd]").val();
+		var cmd = $("input[name=cmd]").val(); 
+		var deferred = $("select[name=deferred] option:selected").val(); 
 		var message = "";
 		
 		if(cmd == "C") {
@@ -24,26 +25,26 @@ $(document).ready(function() {
 		check = check && validEmail();		
 		check = check && validPhone();
 		// check = check && validCertify(); (인증번호 체크는 관리자 페이지에서 필요 없음.)
+		// M: 매체, P: 개인, C: 제휴업체, S: 자체보유
 		if ($(this).find("[name=type]").val() != "P") {
-			check = check && validCompAddr();
-			check = check && validCompName();
-			check = check && validCompNum();
-			check = check && validCompTel();
-			check = check && validCompExtTel();
+			check = check && validCompAddr();  //console.log("validCompAddr() : " + validCompAddr());
+			check = check && validCompName(); //console.log("validCompName() : " + validCompName());
+			check = check && validCompNum(); //console.log("validCompNum() : " + validCompNum());
+			check = check && validCompTel(); //console.log("validCompTel() : " + validCompTel());
+			check = check && validCompExtTel(); //console.log("validCompExtTel() : " + validCompExtTel());
 			//check = check && validCompDoc();
-			check = check && validUsage();
-			check = check && validUploadFile();
-
-			if ($(this).find("[name=type]").val() == "M") {
-				console.log("언론사 회원");
+			//check = check && validUploadFile(); // 사업자등록증 업로드
+			
+			// 오프라인 회원의 경우 (0 : 온라인, 1: 오프라인결제, 2: 오프라인 별도요금)
+			if(deferred != 0) {
+				check = check && validTaxPhone(); // 세금계산서 담당자		
+				//console.log("validTaxPhone() : " + validTaxPhone());
+				
+				if(deferred == 2){
+					// 사용용도는 오프라인 별도요금 회원의 경우에만 해당
+					check = check && validUsage();
+				}
 			}
-		}
-		
-
-		if($("input[name=deferred]").val() == 1) { 		// 결제 구분 (오프라인 결제)
-			
-		}else if($("input[name=deferred]").val() == 2) { 		// 결제 구분 (오프라인 별도 요금)
-			
 		}
 		
 		if (check) {
@@ -278,12 +279,14 @@ $(document).ready(function() {
 	
 	// 세금계산서 담당자 연락처 체크
 	function validTaxPhone() {
-		var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
-		//var taxPhone = $("#taxPhone1").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
+		//var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+		var telRegex = /^0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 일반전화
+		var phoneRegex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 휴대전화
+		
 		var taxPhone = $("#taxPhone1 option:selected").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
 		// name=phone의 존재여부를 확인하여 없으면 별도로 태그를 추가
 		if($('#frmJoin').find("[name=taxPhone]").length>0){
-			$('#frmJoin').find("[name=taxPhone]").val(phone);
+			$('#frmJoin').find("[name=taxPhone]").val(taxPhone);
 		}else{
 			$('<input>').attr({
 				type : 'hidden',
@@ -292,12 +295,13 @@ $(document).ready(function() {
 			}).appendTo('#frmJoin');
 		}
 		
+		console.log("telRegex : " + telRegex.test(taxPhone));
+		console.log("phoneRegex : " + phoneRegex.test(taxPhone));
+		console.log("length : " + taxPhone.length);
 		
-		if (regex.test(taxPhone) && taxPhone.length > 0) { // 숫자 정규식과 값의 존재여부 확인
-			//$("#phone_message").css("display", "none");
+		if ((telRegex.test(taxPhone) || phoneRegex.test(taxPhone)) && taxPhone.length > 0) { // 숫자 정규식과 값의 존재여부 확인
 			return true;
 		} else {
-			//$("#phone_message").css("display", "block");
 			$("#taxPhone3").focus();
 			return false;
 		}
@@ -316,11 +320,15 @@ $(document).ready(function() {
 	// 회원가입 최종완료
 	function joinAccess() {
 		var cmd = $("input[name=cmd]").val();
+		var path = $(location).attr("pathname"); 
+		var tmpPath = path.split(".");
+		var redirectURL = "/" + tmpPath[1] + "." + tmpPath[2]; 
 		var message = (cmd == "C") ? "정상적으로 추가되었습니다." : "정상적으로 수정되었습니다.";
 		$.post("/admin.member.api", $("#frmJoin").serialize(), function(data) {
 			if (data.success) {
 				alert(message);
-				location.href = "/member.manage";
+				location.href = redirectURL; // 각 목록 URL(회원현황, 정산 매체사관리)을 동적으로 사용
+				//location.href = "/member.manage";
 			} else {
 				alert(data.message);
 

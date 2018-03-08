@@ -102,7 +102,6 @@
 					<th>기간별 조회</th>
 						<td>
 							<select id="customYear" class="inp_txt" class="inp_txt" style="width:100px;">
-								<!-- option value="all" selected="selected">전체(년)</option -->
 								<c:forEach var="i" begin="2007" end="${year}" step="1">
 									<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
 								</c:forEach>
@@ -134,65 +133,6 @@
 							</div>
 						</td>
 					</tr>
-					
-					<!-- 
-					<tr>
-						<th>조회기간 선택</th>
-						<td>
-							<input type="text" size="12" id="contractStart" name="start_date" class="inp_txt" value="${today }" maxlength="10">
-							<span class=" bar">~</span>
-							<input type="text" size="12" id="contractEnd" name="end_date" class="inp_txt" value="${today }" maxlength="10">
-						</td>
-					</tr>
-					<tr>
-						<th>기간별 조회</th>
-						<td>
-							<select id="customYear" class="inp_txt" style="width: 100px;">
-								<c:forEach var="i" begin="2007" end="${year}" step="1">
-									<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}</option>
-								</c:forEach>
-							</select>
-							<ul id="customDay">
-								<li>
-									<a href="javascript:;" class="btn">1월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">2월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">3월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">4월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">5월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">6월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">7월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">8월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">9월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">10월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">11월</a>
-								</li>
-								<li>
-									<a href="javascript:;" class="btn">12월</a>
-								</li>
-							</ul>
-						</td>
-					</tr>
-					 -->
 					 
 					<tr>
 						<th>매체</th>

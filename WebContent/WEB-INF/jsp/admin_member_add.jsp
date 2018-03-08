@@ -35,7 +35,7 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
 <!-- <script src="js/join.js"></script> --> <!-- 기존의 회원가입의 형식과는 다른 부분이 있어서 admin.js를 생성해서 필요한 부분만 커스터마이징 -->
-<script src="js/admin.js"></script>
+<script src="js/admin.js?v=20180308"></script>
 <script>
 
 	$(document).ready(function() {
@@ -306,11 +306,11 @@
 											<option value="019">019</option>
 										</select>
 										<span class=" bar">-</span>
-										<input type="text" name="taxPhone2" id="taxPhone2" size="5"  class="inp_txt" value="" maxlength="4">
+										<input type="text" name="taxPhone2" id="taxPhone2" size="5"  class="inp_txt" maxlength="4">
 										<span class=" bar">-</span>
-										<input type="text" name="taxPhone3" id="taxPhone3" size="5"  class="inp_txt" value="" maxlength="4">
+										<input type="text" name="taxPhone3" id="taxPhone3" size="5"  class="inp_txt" maxlength="4">
 										<span class=" bar2">내선</span>
-										<input type="text" name="taxExtTell" id="taxExtTell" size="5"  class="inp_txt" value="" maxlength="4" /></td>
+										<input type="text" name="taxExtTell" id="taxExtTell" size="5"  class="inp_txt" maxlength="4" /></td>
 								</tr>
 								<tr class="offline_area">
 									<th>세금계산서 담당자 이메일</th>

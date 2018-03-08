@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,20 +9,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.JOptionPane;
 
+import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
- * Servlet implementation class MypagePostBuylist
+ * Servlet implementation class AdminPopular
  */
-@WebServlet("/postBuylist.mypage")
-public class MypagePostBuylist extends NewsbankServletBase {
+@WebServlet("/popular.manage")
+public class AdminPopular extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see NewsbankServletBase#NewsbankServletBase()
      */
-    public MypagePostBuylist() {
+    public AdminPopular() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,28 +36,26 @@ public class MypagePostBuylist extends NewsbankServletBase {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-
+		
 		if (MemberInfo != null) {
 			
-			boolean mypageAuth = false;
-			if (session.getAttribute("mypageAuth") != null) {
-				mypageAuth = (boolean) session.getAttribute("mypageAuth");
-			}
-			if (mypageAuth == false) {
-				// 이전에 my page 비밀번호 입력했는지 체크
-				response.sendRedirect("/auth.mypage");
-			} else {
-				int year = request.getParameter("year") == null ? 0 : Integer.parseInt(request.getParameter("year"));
-				request.setAttribute("year", year);
+			if(MemberInfo.getType().equals("A")) { // 관리자 권한만 접근
+				MemberDAO memberDAO = new MemberDAO();
+				List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+				request.setAttribute("mediaList", mediaList); // 활성 매체사
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_post_buy_list.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_popular.jsp");
 				dispatcher.forward(request, response);
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "해당페이지는 관리자만 접근할 수 있습니다.\n 메인페이지로 이동합니다.");
+				response.sendRedirect("/home");
 			}
-		} else { 
+		
+		} else {
 			response.sendRedirect("/login");
 		}
 	}

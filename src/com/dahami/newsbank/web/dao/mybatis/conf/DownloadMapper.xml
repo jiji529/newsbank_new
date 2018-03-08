@@ -38,7 +38,63 @@
 		INNER JOIN photo B
 		ON A.photo_uciCode = B.uciCode
 		WHERE A.member_seq = #{member_seq}
+		<if test="year != 0">
+			AND YEAR(A.regDate) = #{year}
+		</if>
 		ORDER BY A.regDate DESC
+	</select>
+	
+	<!-- 전체 사용자 다운로드 내역 -->
+	<resultMap id="TotalDownloadDTO" type="java.util.HashMap">
+	    <result javaType="java.lang.String" column="id" property="id"></result>
+	    <result javaType="java.lang.String" column="name" property="name"></result>
+	    <result javaType="java.lang.String" column="compName" property="compName"></result>
+	    <result javaType="java.lang.String" column="media" property="media"></result>
+	    <result javaType="java.lang.String" column="uciCode" property="uciCode"></result>
+	    <result javaType="java.lang.String" column="regDate" property="regDate"></result>
+	</resultMap>
+	
+	<!-- 전체 다운로드 내역  -->
+	<select id="TotalDownlist" parameterType="java.util.Map" resultMap="TotalDownloadDTO">
+	    SELECT 
+	    	A.compName, A.id, A.name, B.photo_uciCode as uciCode, B.regDate, 
+			(SELECT compName FROM member INNER JOIN photo ON member.seq = photo.member_seq WHERE photo.uciCode = B.photo_uciCode) AS media
+		FROM member A
+		INNER JOIN download B ON A.seq = B.member_seq
+		WHERE ( 
+			A.name LIKE CONCAT('%', #{keyword}, '%') 
+			OR A.compName LIKE CONCAT('%', #{keyword}, '%') 
+			OR A.id LIKE CONCAT('%', #{keyword}, '%') 
+			OR B.photo_uciCode LIKE CONCAT('%', #{keyword}, '%') 
+			OR (SELECT compName FROM member INNER JOIN photo ON member.seq = photo.member_seq WHERE photo.uciCode = B.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%') 
+			)
+			
+			<!-- <if test="contractStart != null and contractEnd != null">
+				AND B.regDate BETWEEN Date_Format(#{contractStart},'%Y-%m-%d')  and Date_Format(#{contractEnd},'%Y-%m-%d')
+			</if> -->
+			
+		ORDER BY B.regDate DESC
+		LIMIT #{startPage}, #{pageVol}
+	</select>
+	
+	<select id="totalCnt" parameterType="java.util.Map" resultType="integer">
+	    SELECT 
+	    	count(A.seq) as cnt
+		FROM member A
+		INNER JOIN download B ON A.seq = B.member_seq
+		WHERE 
+			A.name LIKE CONCAT('%', #{keyword}, '%') 
+			OR A.compName LIKE CONCAT('%', #{keyword}, '%') 
+			OR A.id LIKE CONCAT('%', #{keyword}, '%') 
+			OR B.photo_uciCode LIKE CONCAT('%', #{keyword}, '%') 
+			OR (SELECT compName FROM member INNER JOIN photo ON member.seq = photo.member_seq WHERE photo.uciCode = B.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
+			
+			<!-- 
+			<if test="contractStart != null and contractEnd != null">
+				AND B.regDate BETWEEN #{contractStart} AND #{contractEnd} 
+			</if>
+			-->
+		ORDER BY B.regDate DESC
 	</select>
 </mapper>
     
