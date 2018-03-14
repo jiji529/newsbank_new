@@ -11,7 +11,7 @@
 	});
 	
 	// 검색 클릭이벤트
-	$(document).on("click", ".btn_input2", function() {
+	$(document).on("click", "#downTab_Search", function() {
 		$("#startgo").val(1); // 최초 1페이지로
 		search();
 	});
@@ -23,7 +23,16 @@
 		}
 	});
 	
-	function search() {
+	// 페이징 번호 클릭
+	$(document).on("click",".page",function() {
+		var pages = $(this).text();
+		if(pages == "") pages = 1;
+		$("#startgo").val(pages);
+		
+		search("not_paging");
+	});
+	
+	function search(state) {
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
 		var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
 		var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
@@ -53,45 +62,100 @@
 			dataType: "json",
 			data: searchParam,
 			url: "/download.api",
-			success: function(data) { console.log(data);
+			success: function(data) { //console.log(data);
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
 				$("#totalCnt").text(totalCnt);
 				
-				$(data.result).each(function(key, val) {					
-					var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
-					var id = val.id;
-					var name = val.name;
-					var media = val.media;
-					var compName = val.compName;
-					var uciCode = val.uciCode;
-					var regDate = val.regDate;
+				if(data.result.length != 0) {
+					$(data.result).each(function(key, val) {					
+						var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
+						var id = val.id;
+						var name = val.name;
+						var media = val.media;
+						var compName = val.compName;
+						var uciCode = val.uciCode;
+						var regDate = val.regDate;
+						
+						html += '<tr>';
+						html += '<td><div class="tb_check">';
+						html += '<input id="check1" name="check1" type="checkbox"> <label for="check1">선택</label>';
+						html += '</div></td>';
+						html += '<td>' + number + '</td>';
+						html += '<td>' + compName + '</td>';
+						html += '<td>' + id + '</td>';
+						html += '<td>' + name + '</td>';
+						html += '<td>' + media + '</td>';
+						html += '<td><a href="#">' + uciCode + '</a></td>';
+						html += '<td>' + regDate + '</td>';
+						html += '</tr>';
+						
+					});
 					
+				}else {
 					html += '<tr>';
-					html += '<td><div class="tb_check">';
-					html += '<input id="check1" name="check1" type="checkbox"> <label for="check1">선택</label>';
-					html += '</div></td>';
-					html += '<td>' + number + '</td>';
-					html += '<td>' + compName + '</td>';
-					html += '<td>' + id + '</td>';
-					html += '<td>' + name + '</td>';
-					html += '<td>' + media + '</td>';
-					html += '<td><a href="#">' + uciCode + '</a></td>';
-					html += '<td>' + regDate + '</td>';
+					html += '<td colspan="8">검색 결과가 없습니다.</td>';
 					html += '</tr>';
-					
-				});
+				}
 				
 				$(html).appendTo("#mtBody");
 			},
 			complete: function() {
+				if(state == undefined){
+					pagings(pageCnt);	
+				}
+				
 				$("#loading").hide();
 			}
 		});
 	}
+	
+	function pagings(tot){
+		
+		var firval = 1;
+		var realtot = 1;
+		var startpage = $("#startgo").val();
+		$("#lastvalue").val(tot);
+		
+		if($("#totcnt").val() != ""){
+			if(startpage == "1"){
+				firval = parseInt(startpage);
+			}else{
+				firval = parseInt($("#totcnt").val());
+			}
+		}
+		if(tot == "0"){
+			tot = 1;
+		}
+		
+		realtot = parseInt(tot);
+			
+		
+		$('.pagination').empty();
+		$('.pagination').html('<ul id="pagination-demo" class="pagination-sm"></ul>');
+		
+		$('#pagination-demo').twbsPagination({
+			startPage: firval,
+		    totalPages: realtot,
+		    visiblePages: 10,
+		    onPageClick: function (event, page) {
+		    	
+		    	$('#page-content').text('Page ' + page);
+	        }
+		});
+	}
+	
+	function excel() { // 엑셀저장
+		var excelHtml = '<table cellpadding="0" cellspacing="0">' + $("#mTable").html() + "</table>";
+		$("#excelHtml").val(excelHtml);
+		excel_form.submit();
+	}
 </script>
 
 <div class="ad_sch_area">
+	<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
+		<input type="hidden" id="excelHtml" name="excelHtml" />
+	</form>
 	<table class="tb01" cellpadding="0" cellspacing="0">
 		<colgroup>
 			<col style="width: 180px;">
@@ -142,7 +206,7 @@
 		</tbody>
 	</table>
 	<div class="btn_area" style="margin-top: 0;">
-		<a href="#" class="btn_input2">검색</a>
+		<a href="#" id="downTab_Search" class="btn_input2">검색</a>
 	</div>
 </div>
 <div class="calculate_info_area">
@@ -155,9 +219,9 @@
 			<option value="20">20개</option>
 			<option value="50">50개</option>
 			<option value="100">100개</option>
-		</select> <a href="#">엑셀저장</a>
+		</select> <a href="javascript:void(0)" onclick="excel()">엑셀저장</a>
 	</div>
-	<table cellpadding="0" cellspacing="0" class="tb04">
+	<table id="mTable" cellpadding="0" cellspacing="0" class="tb04">
 		<colgroup>
 			<col width="40" />
 			<col width="50" />

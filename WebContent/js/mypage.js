@@ -543,31 +543,37 @@ $(document).ready(function() {
 
 });
 
+// 검색옵션 월별 선택 함수
+function change_customDay() {
+	var year = $('#customYear').val();
+	
+	if($('#customDay').val() == "all") {
+		var lastDay = (new Date(year, 12, 0)).getDate();
+		
+		var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 0, 1));
+		var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 11, lastDay));
+	} else {
+		var mon = $('#customDay').val() - 1;
+		var lastDay = (new Date(year, mon + 1, 0)).getDate();
+		
+		var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
+		var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
+	}
+	
+	$("#contractStart").val(startDate);
+	$("#contractEnd").val(endDate);
+}
 // accountlist.mypage
 $(document).ready(function() {
 
 	$('#customYear').on('change', function() {
 		$('#customDayOption a.btn').removeClass('on'); // 날짜 초기화
+		$('#customDay').val('all');
+		change_customDay(); // 월별 선택
 	});
 	
 	$('#customDay').on('change', function() {
-		var year = $('#customYear').val();
-		
-		if($(this).val() == "all") {
-			var lastDay = (new Date(year, 12, 0)).getDate();
-			
-			var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 0, 1));
-			var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 11, lastDay));
-		} else {
-			var mon = $(this).val() - 1;
-			var lastDay = (new Date(year, mon + 1, 0)).getDate();
-			
-			var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
-			var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
-		}
-		
-		$("#contractStart").val(startDate);
-		$("#contractEnd").val(endDate);
+		change_customDay();
 	});
 	
 	$('#customDayOption a.btn').on('click', function(i) {
@@ -660,6 +666,7 @@ $(document).ready(function() {
 	}
 
 	$("#frmAccountList").on("submit", function() {
+		console.log("frmAccountList 호출");
 		var startDate = $("#contractStart").val(); // 시작일
 		if (startDate == null || startDate.length == 0) {
 			alert("선택한 시작 날짜가 없습니다.");
@@ -961,4 +968,31 @@ function select_year(year, url) {
 	$("#dateForm").submit();
 	
 	console.log("year : " + year);
+}
+
+// 현재날짜 (년월일시분초)
+function getDateTime() {
+	var now = new Date();
+	var year = now.getFullYear();
+	var month = addZeros(now.getMonth() + 1, 2);
+	var day = addZeros(now.getDate(), 2);
+	var hour = addZeros(now.getHours(), 2);
+	var min = addZeros(now.getMinutes(), 2);
+	var second = addZeros(now.getSeconds(), 2);
+	
+	var result = year + "" + month + "" + day + "_" + hour + "" + min + "" + second;
+	
+	return result;
+}
+
+//자릿수 맞춰주기
+function addZeros(num, digit) { 
+	  var zero = '';
+	  num = num.toString();
+	  if (num.length < digit) {
+	    for (i = 0; i < digit - num.length; i++) {
+	      zero += '0';
+	    }
+	  }
+	  return zero + num;
 }

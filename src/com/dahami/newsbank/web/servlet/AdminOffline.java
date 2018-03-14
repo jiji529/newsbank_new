@@ -60,6 +60,8 @@ public class AdminOffline extends NewsbankServletBase {
 				String thisMonth = dateFormat.format(cal.getTime());
 				List<String> pastMonths = new ArrayList<String>();
 				pastMonths.add(thisMonth);				
+				String tabName = request.getParameter("tabName") == null ? "download" : request.getParameter("tabName"); // default (다운로드) 
+				
 				// 최근 6개월 표현
 				for(int i=0; i<5; i++) {
 					
@@ -72,8 +74,7 @@ public class AdminOffline extends NewsbankServletBase {
 					pastMonths.add(beforeDate);
 				}
 				request.setAttribute("pastMonths", pastMonths);
-				//request.setAttribute("year", year);
-				
+				request.setAttribute("tabName", tabName);
 				
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_offline.jsp");

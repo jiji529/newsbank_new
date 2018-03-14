@@ -345,8 +345,274 @@
 		paymentManage_seq =
 		#{paymentManage_seq});
 	</delete>
-
-
-
+	
+	<!-- 전체 사용자 구매내역 -->
+	<select id="selectAllPaymentDetail" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		
+	   SELECT M.`LGD_BUYER`,
+		M.`LGD_OID`,
+		M.`LGD_PAYTYPE`,
+		M.`LGD_PAYDATE`,
+		M.`LGD_PAYSTATUS`,
+		M.`LGD_TID`,
+		D.`photo_uciCode`, D.`price`, D.`status`,
+		U.`usage`,
+		U.`division1`, U.`division2`,
+		U.`division3`, U.`division4`,
+		U.`usageDate`,
+		P.`copyright`,
+		mp.`preRate`,
+		mp.`postRate`,
+		mp.`compName`,
+		mm.`name`,
+		mm.`id`
+		FROM
+		`paymentManage` AS M
+		LEFT JOIN
+		paymentDetail D ON M.seq =
+		D.paymentManage_seq
+		LEFT JOIN usageList U ON
+		U.seq = D.usageList_seq
+		LEFT JOIN photo P ON P.uciCode =
+		D.photo_uciCode
+		LEFT JOIN member mm ON
+		M.member_seq = mm.seq
+		LEFT JOIN
+		member mp ON P.member_seq = mp.seq
+		where
+		M.LGD_PAYSTATUS !='0'	
+		
+		<if test="start_date !=null and end_date !=null">
+			AND M.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}			
+		</if>
+		
+		<if test="keyword !=null">
+			<bind name="keyword" value="'%' + keyword + '%'" />
+			AND (mm.`id` LIKE #{keyword} OR mm.`name` LIKE #{keyword}
+			OR
+			mm.`compName` LIKE #{keyword}
+			OR 
+			D.`photo_uciCode` LIKE #{keyword}
+			OR 
+			M.`LGD_OID` LIKE #{keyword} 
+			)
+		</if>
+		
+		<if test="status !=null">
+			AND D.`status`= #{status}
+		</if>
+		
+		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
+		
+		<if test="startPage !=null and pageVol != null">
+		    LIMIT #{startPage}, #{pageVol}
+	    </if>
+		
+	</select>
+	
+	<!-- 전체 사용자 구매내역 갯수-->
+	<select id="AllPaymentDetailCnt" parameterType="java.util.HashMap"	resultType="integer">
+		
+	   SELECT COUNT(M.`seq`) as cnt
+		FROM
+		`paymentManage` AS M
+		LEFT JOIN
+		paymentDetail D ON M.seq =
+		D.paymentManage_seq
+		LEFT JOIN usageList U ON
+		U.seq = D.usageList_seq
+		LEFT JOIN photo P ON P.uciCode =
+		D.photo_uciCode
+		LEFT JOIN member mm ON
+		M.member_seq = mm.seq
+		LEFT JOIN
+		member mp ON P.member_seq = mp.seq
+		where
+		M.LGD_PAYSTATUS !='0'		
+		
+		<if test="start_date !=null and end_date !=null">
+			AND M.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}			
+		</if>
+		
+		<if test="keyword !=null">
+			<bind name="keyword" value="'%' + keyword + '%'" />
+			AND (mm.`id` LIKE #{keyword} OR mm.`name` LIKE #{keyword}
+			OR
+			mm.`compName` LIKE #{keyword}
+			OR 
+			D.`photo_uciCode` LIKE #{keyword}
+			OR 
+			M.`LGD_OID` LIKE #{keyword} 
+			)
+		</if>
+		
+		<if test="status !=null">
+			AND D.`status`= #{status}
+		</if>
+		
+		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
+	</select>
+	
+	<!-- 전체 사용자 구매내역 판매금액 함계-->
+	<select id="AllPaymentDetailPrice" parameterType="java.util.HashMap"	resultType="integer">
+		
+	   SELECT COALESCE(SUM(D.`price`), 0) as sum
+		FROM
+		`paymentManage` AS M
+		LEFT JOIN
+		paymentDetail D ON M.seq =
+		D.paymentManage_seq
+		LEFT JOIN usageList U ON
+		U.seq = D.usageList_seq
+		LEFT JOIN photo P ON P.uciCode =
+		D.photo_uciCode
+		LEFT JOIN member mm ON
+		M.member_seq = mm.seq
+		LEFT JOIN
+		member mp ON P.member_seq = mp.seq
+		where
+		M.LGD_PAYSTATUS !='0'	
+		
+		<if test="start_date !=null and end_date !=null">
+			AND M.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}			
+		</if>
+		
+		<if test="keyword !=null">
+			<bind name="keyword" value="'%' + keyword + '%'" />
+			AND (mm.`id` LIKE #{keyword} OR mm.`name` LIKE #{keyword}
+			OR
+			mm.`compName` LIKE #{keyword}
+			OR 
+			D.`photo_uciCode` LIKE #{keyword}
+			OR 
+			M.`LGD_OID` LIKE #{keyword} 
+			)
+		</if>
+		
+		<if test="status !=null">
+			AND D.`status`= #{status}
+		</if>
+		
+		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
+	</select>
+	
+	<!-- 온라인 결제관리(관리자)  -->
+	<resultMap id="onlineMap" type="java.util.HashMap">
+	    <result javaType="java.lang.Integer" column="paymentManage_seq" property="paymentManage_seq"></result>
+	    <result javaType="java.lang.String" column="member_seq" property="member_seq"></result>
+	    <result javaType="java.lang.String" column="LGD_BUYER" property="LGD_BUYER"></result>
+	    <result javaType="java.lang.String" column="LGD_BUYERID" property="LGD_BUYERID"></result>
+	    <result javaType="java.lang.String" column="LGD_RESPMSG" property="LGD_RESPMSG"></result>
+	    <result javaType="java.lang.String" column="LGD_OID" property="LGD_OID"></result>
+	    <result javaType="java.lang.String" column="LGD_PAYSTATUS" property="LGD_PAYSTATUS"></result>
+	    <result javaType="java.lang.String" column="LGD_AMOUNT" property="LGD_AMOUNT"></result>
+	    <result javaType="java.lang.String" column="LGD_PAYTYPE" property="LGD_PAYTYPE"></result>
+	    <result javaType="java.lang.String" column="LGD_PAYDATE" property="LGD_PAYDATE"></result>
+	    <result javaType="java.lang.String" column="regDate" property="regDate"></result>
+	</resultMap>
+	
+	<!-- 온라인 결제 (목록) -->
+	<select id="onlinePayResult" parameterType="java.util.HashMap" 
+	    resultMap="onlineMap">
+		SELECT `seq` AS `paymentManage_seq`,
+			`member_seq`, `LGD_BUYER`,
+			`LGD_BUYERID`, 
+			`LGD_RESPMSG`,
+			`LGD_OID`,
+			`LGD_PAYSTATUS`,
+			`LGD_AMOUNT`, 		
+			`LGD_PAYTYPE`,
+			`LGD_PAYDATE`,	
+			`regDate`
+		FROM
+		`paymentManage`
+		<where>	
+		    
+		    <if test="keyword !=null">
+				<bind name="keyword" value="'%' + keyword + '%'" />
+				(`LGD_BUYERID` LIKE #{keyword} 
+					OR `LGD_BUYER` LIKE #{keyword} 
+					OR `LGD_OID` LIKE #{keyword})
+			</if> 	
+			
+			<if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
+				AND LGD_PAYTYPE = #{LGD_PAYTYPE}
+			</if>
+			
+			<if test="LGD_PAYSTATUS !=null and LGD_PAYSTATUS != 'all'">
+				AND LGD_PAYSTATUS = #{LGD_PAYSTATUS}
+			</if>
+			
+			<if test="start_date != null and end_date != null">
+			    AND LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}
+			</if>
+			
+		</where>
+		ORDER BY `regDate` DESC
+		LIMIT #{startPage}, #{pageVol}
+	</select>
+	
+	<!-- 온라인 결제 (총 갯수) -->
+	<select id="onlinePayCount" parameterType="java.util.HashMap" 
+	    resultType="integer">
+		SELECT COUNT(`seq`) as cnt
+		FROM
+		`paymentManage`
+		<where>	
+		    
+		    <if test="keyword !=null">
+				<bind name="keyword" value="'%' + keyword + '%'" />
+				(`LGD_BUYERID` LIKE #{keyword} 
+					OR `LGD_BUYER` LIKE #{keyword} 
+					OR `LGD_OID` LIKE #{keyword})
+			</if> 	
+			
+			<if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
+				AND LGD_PAYTYPE = #{LGD_PAYTYPE}
+			</if>
+			
+			<if test="LGD_PAYSTATUS !=null and LGD_PAYSTATUS != 'all'">
+				AND LGD_PAYSTATUS = #{LGD_PAYSTATUS}
+			</if>
+			
+			<if test="start_date != null and end_date != null">
+			    AND LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}
+			</if>
+			
+		</where>
+		ORDER BY `regDate` DESC
+	</select>
+	
+	<!-- 온라인 결제 (총 합계 금액) -->
+	<select id="onlinePayPrice" parameterType="java.util.HashMap" 
+	    resultType="integer">
+		SELECT SUM(`LGD_AMOUNT`) as sum			
+		FROM
+		`paymentManage`
+		<where>	
+		    
+		    <if test="keyword !=null">
+				<bind name="keyword" value="'%' + keyword + '%'" />
+				(`LGD_BUYERID` LIKE #{keyword} 
+					OR `LGD_BUYER` LIKE #{keyword} 
+					OR `LGD_OID` LIKE #{keyword})
+			</if> 	
+			
+			<if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
+				AND LGD_PAYTYPE = #{LGD_PAYTYPE}
+			</if>
+			
+			<if test="LGD_PAYSTATUS !=null and LGD_PAYSTATUS != 'all'">
+				AND LGD_PAYSTATUS = #{LGD_PAYSTATUS}
+			</if>
+			
+			<if test="start_date != null and end_date != null">
+			    AND LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}
+			</if>
+			
+		</where>
+		ORDER BY `regDate` DESC
+	</select>
 
 </mapper>

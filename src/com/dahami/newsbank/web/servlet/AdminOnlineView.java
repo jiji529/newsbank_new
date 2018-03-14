@@ -1,10 +1,6 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,20 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 
-import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
- * Servlet implementation class AdminOnline
+ * Servlet implementation class AdminOnlineView
  */
-@WebServlet("/online.manage")
-public class AdminOnline extends NewsbankServletBase {
+@WebServlet("/view.online.manage")
+public class AdminOnlineView extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see NewsbankServletBase#NewsbankServletBase()
      */
-    public AdminOnline() {
+    public AdminOnlineView() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,42 +41,16 @@ public class AdminOnline extends NewsbankServletBase {
 		if (MemberInfo != null) {
 			
 			if(MemberInfo.getType().equals("A")) { // 관리자 권한만 접근
-				MemberDAO memberDAO = new MemberDAO();
-				List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
-				request.setAttribute("mediaList", mediaList); // 활성 매체사
 				
-				// 날짜 기간선택 옵션
-				Calendar cal = Calendar.getInstance();
-				int year = cal.get(Calendar.YEAR);
-				int month = cal.get(Calendar.MONTH);
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");
-				String thisMonth = dateFormat.format(cal.getTime());
-				List<String> pastMonths = new ArrayList<String>();
-				pastMonths.add(thisMonth);				
-				String tabName = request.getParameter("tabName") == null ? "download" : request.getParameter("tabName"); // default (다운로드) 
-				
-				// 최근 6개월 표현
-				for(int i=0; i<5; i++) {
-					
-					cal.add(cal.MONTH, -1);
-					
-					String beforeYear = dateFormat.format(cal.getTime()).substring(0,4);
-					String beforeMonth = dateFormat.format(cal.getTime()).substring(4,6);
-					
-					String beforeDate = beforeYear + beforeMonth;
-					pastMonths.add(beforeDate);
-				}
-				request.setAttribute("pastMonths", pastMonths);
-				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_online.jsp");
-				dispatcher.forward(request, response);
-				
-			} else {
+			}else {
 				JOptionPane.showMessageDialog(null, "해당페이지는 관리자만 접근할 수 있습니다.\n 메인페이지로 이동합니다.");
 				response.sendRedirect("/home");
 			}
-		
-		} else {
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_online_view.jsp");
+			dispatcher.forward(request, response);
+			
+		}else {
 			response.sendRedirect("/login");
 		}
 	}

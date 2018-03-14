@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dto.DownloadDTO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 
 public class DownloadDAO extends DAOBase {
 
@@ -101,6 +102,55 @@ public class DownloadDAO extends DAOBase {
 			}
 		}
 		return count;
+	}
+	
+	/**
+	 * @methodName : notBuyList
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 03. 13. 오후 04:35:13
+	 * @methodCommet: 다운로드 후 비구매 계정
+	 * @return
+	 * @returnType : 
+	 */
+	public List<Map<String, Object>> notBuyList(Map<String, Object> searchOpt) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Download.notSellList", searchOpt);
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	
+	/**
+	 * @methodName : notBuyListCount
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 03. 13. 오후 04:35:13
+	 * @methodCommet: 다운로드 후 비구매 계정 갯수
+	 * @return
+	 * @returnType : 
+	 */
+	public int notBuyListCount(Map<String, Object> searchOpt) {
+		SqlSession session = null;		
+		try {
+			session = sf.getSession();
+			return session.selectOne("Download.notSellListCount", searchOpt);
+		} catch (Exception e) {
+			logger.warn("", e);
+			return 0;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
 	}
 
 }

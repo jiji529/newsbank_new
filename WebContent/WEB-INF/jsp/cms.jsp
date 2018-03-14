@@ -440,7 +440,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						</c:forEach>
 					</ul>
 				</li>
-				<li class="filter_title filter_duration"> 업로드일
+				<li class="filter_title filter_duration"> 촬영일
 					<ul class="filter_list">
 						<li value="" selected="selected">전체</li>
 						<li value="1d">1일</li>
@@ -450,10 +450,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<li class="choice">직접 입력
 							<div class="calendar">
 								<div class="cal_input">
-									<input type="text" class="datepicker" id="startDate" title="업로드 시작일" />
+									<input type="text" class="datepicker" id="startDate" title="촬영 시작일" />
 									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 								<div class="cal_input">
-									<input type="text" class="datepicker" id="endDate" title="업로드 마지막일" />
+									<input type="text" class="datepicker" id="endDate" title="촬영 마지막일" />
 									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 								<button class="btn_cal" type="button">적용</button>
 							</div>
@@ -493,6 +493,26 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<li value="<%=SearchParameterBean.SALE_STATE_DEL_SOLD%>">삭제</li>
 					</ul>
 				</li>
+				<li class="filter_title filter_upload"> 업로드일
+					<ul class="filter_list">
+						<li value="" selected="selected">전체</li>
+						<li value="1d">1일</li>
+						<li value="1w">1주</li>
+						<li value="1m">1달</li>
+						<li value="1y">1년</li>
+						<li class="choice">직접 입력
+							<div class="calendar">
+								<div class="cal_input">
+									<input type="text" class="datepicker" title="업로드 시작일" />
+									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
+								<div class="cal_input">
+									<input type="text" class="datepicker" title="업로드 마지막일" />
+									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
+								<button class="btn_cal" type="button">적용</button>
+							</div>
+						</li>
+					</ul>
+				</li>
 			</ul>
 			<div class="filter_rt">
 				<div class="result"><b class="count">0</b>개의 결과</div>
@@ -526,9 +546,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<li class="sort_down" onclick="mutli_download()">다운로드</li>
 				<li class="sort_del">삭제</li>
 				<!-- 1차 제외
-				<li class="sort_menu">블라인드</li>
 				<li class="sort_menu">초상권 해결</li>
 				<li class="sort_menu">관련사진 묶기</li> -->
+				<li class="sort_menu">블라인드</li>
+				<li class="sort_menu">블라인드 해제</li>
 				<li class="sort_up">수동 업로드</li>
 			</ul>
 		</div>

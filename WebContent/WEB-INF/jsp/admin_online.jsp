@@ -23,6 +23,11 @@
 <%
 	String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
+<fmt:formatDate value="${now}" pattern="yyyy" var="year" />
+<fmt:formatDate value="${now}" pattern="MM" var="month" />
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -36,17 +41,200 @@
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
+<script src="js/jquery.twbsPagination.js"></script>
 <script src="js/filter.js"></script>
+<script src="js/mypage.js"></script>
+
 <script type="text/javascript">
+
 	$(document).ready(function() {
 		//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
 		$("[href]").each(function() {
 			if (this.href == window.location.href) {
 				$(this).parent().addClass("on");
 			}
-		});		
+		});
 		
+		$("#startgo").val(1); // 최초 1페이지로
+		search();		
 	});
+	
+	$(document).on("click", "#btn_search", function() {
+		$("#startgo").val(1); // 최초 1페이지로
+		search();
+	});
+	
+	// 페이징 번호 클릭
+	$(document).on("click",".page",function() {
+		var pages = $(this).text();
+		if(pages == "") pages = 1;
+		$("#startgo").val(pages);
+		
+		search("not_paging");
+	});
+	
+	$(document).on("keypress", "#keyword", function(e) {
+		if (e.keyCode == 13) { // 엔터
+			$("#startgo").val(1); // 최초 1페이지로
+			search();
+		}
+	});
+	
+	function search(state) {
+		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
+		var pageVol = parseInt($("#sel_pageVol option:selected").attr("value")); // 페이지 표시 갯수
+		var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
+		var paytype = $("select[name=paytype]").val(); // 결제 방법
+		var paystatus = $("select[name=paystatus]").val(); // 결제 상황
+		var start_date = $("input[name=start_date]").val(); // 시작일
+		var end_date = $("input[name=end_date]").val(); // 종료일
+		var pageCnt = 0; // 전체 페이지 갯수
+		var totalCnt = 0; // 전체 갯수
+		var totalPrice = 0; // 총 판매금액
+		
+		var select_period = start_date + " ~ " + end_date;
+		$("#select_period").text(select_period);
+		
+		var searchParam = {
+			"keyword":keyword
+			, "pageVol":pageVol
+			, "startPage":startPage
+			, "start_date":start_date
+			, "end_date":end_date
+			, "paytype":paytype
+			, "paystatus":paystatus
+		};
+		
+		var html = "";
+		
+		$("#mtBody").empty();
+		
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			data: searchParam,
+			url: "/onlinePay.api",
+			success: function(data) { //console.log(data);
+				totalPrice = data.totalPrice;
+				pageCnt = data.pageCnt;
+				totalCnt = data.totalCnt; 
+				
+				// 검색결과 표시
+				$("#totalPrice").text(totalPrice);
+				$("#totalCnt").text(totalCnt);
+				
+				var data = data.result; 
+				if(data.length != 0) {
+					$(data).each(function(key, val){
+						var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
+						var member_seq = val.member_seq;
+						var LGD_PAYDATE = val.LGD_PAYDATE;
+						var LGD_BUYERID = val.LGD_BUYERID;
+						var LGD_BUYER = val.LGD_BUYER;
+						var LGD_OID = val.LGD_OID;
+						var LGD_PAYTYPE = trans_paytype(val.LGD_PAYTYPE);						
+						var LGD_RESPMSG = val.LGD_RESPMSG;
+						var LGD_AMOUNT = val.LGD_AMOUNT;
+						
+						html += '<tr>';
+						html += '<td> <div class="tb_check"> <input id="check1" name="check1" type="checkbox"> <label for="check1">선택</label> </div> </td>';
+						html += '<td>' + number + '</td>';
+						html += '<td>' + LGD_PAYDATE + '</td>';
+						html += '<td> <a href="javascript:void(0)" onclick="go_memberView(\'' + val.member_seq + '\')">' + LGD_BUYERID + '</a></td>';
+						html += '<td>' + LGD_BUYER + '</td>';
+						html += '<td> <a href="javascript:void(0)" onclick="go_detailView(\'' + LGD_OID + '\')">' + LGD_OID + '</a></td>';
+						html += '<td>' + LGD_PAYTYPE + '</td>';
+						html += '<td>' + LGD_RESPMSG + '</td>';
+						html += '<td>' + LGD_AMOUNT + '</td>';
+						html += '</tr>';
+						
+					});
+				}else {
+					html += '<tr>';
+					html += '<td colspan="9">검색 결과가 없습니다.</td>';
+					html += '</tr>';		
+				}
+				$(html).appendTo("#mtBody");
+			
+			}, complete: function() {
+				if(state == undefined){
+					pagings(pageCnt);	
+				}
+			}
+		});
+	}
+	
+	// 결제방법 코드를 한글로 치환
+	function trans_paytype(type) {
+		var result;
+		switch(type) {
+		
+		case "SC0010":
+			result = "신용카드";
+			break;
+			
+		case "SC0030":
+			result = "계좌이체";
+			break;
+			
+		case "SC0040":
+			result = "무통장입금";
+			break;
+			
+		case "SC9999":
+			result = "후불결제";
+			break;
+		}
+		
+		return result;
+	}
+	
+	function pagings(tot) {
+
+		var firval = 1;
+		var realtot = 1;
+		var startpage = $("#startgo").val();
+		$("#lastvalue").val(tot);
+
+		if ($("#totcnt").val() != "") {
+			if (startpage == "1") {
+				firval = parseInt(startpage);
+			} else {
+				firval = parseInt($("#totcnt").val());
+			}
+		}
+		if (tot == "0") {
+			tot = 1;
+		}
+
+		realtot = parseInt(tot);
+
+		$('.pagination').empty();
+		$('.pagination').html(
+				'<ul id="pagination-demo" class="pagination-sm"></ul>');
+
+		$('#pagination-demo').twbsPagination({
+			startPage : firval,
+			totalPages : realtot,
+			visiblePages : 10,
+			onPageClick : function(event, page) {
+
+				$('#page-content').text('Page ' + page);
+			}
+		});
+	}	
+	
+	// 회원 상세페이지로 이동
+	function go_memberView(member_seq) {
+		$("#member_seq").val(member_seq);
+		view_member_manage.submit();
+	}
+	
+	// 주문번호 상세페이지 이동
+	function go_detailView(LGD_OID) {
+		$("#LGD_OID").val(LGD_OID);
+		view_online_manage.submit();
+	}
 </script>
 
 <title>뉴스뱅크</title>
@@ -69,87 +257,84 @@
 						<tbody>
 							<tr>
 								<th>검색</th>
-								<td><input type="text" class="inp_txt" size="80"
-									placeholder="아이디, 이름, 주문번호" /></td>
+								<td><input type="text" class="inp_txt" size="80" id="keyword" placeholder="아이디, 이름, 주문번호" /></td>
 							</tr>
 							<tr>
 								<th>기간 선택</th>
-								<td><select name="" class="inp_txt" style="width: 100px;">
-										<option value="all" selected="selected">전체(년)</option>
-										<option value="2018">2018년</option>
-										<option value="2017">2017년</option>
-										<option value="2016">2016년</option>
-										<option value="2015">2015년</option>
-								</select> <select name="" class="inp_txt" style="width: 95px;">
+								<td>
+									<select id="customYear" class="inp_txt" class="inp_txt" style="width:100px;">
+										<c:forEach var="i" begin="2015" end="${year}" step="1">
+											<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
+										</c:forEach>
+									</select>
+									<select id="customDay" class="inp_txt" style="width:95px;">
 										<option value="all" selected="selected">전체(월)</option>
-										<option value="1">1월</option>
-										<option value="2">2월</option>
-										<option value="3">3월</option>
-										<option value="4">4월</option>
-										<option value="5">5월</option>
-										<option value="6">6월</option>
-										<option value="7">7월</option>
-										<option value="8">8월</option>
-										<option value="9">9월</option>
-										<option value="10">10월</option>
-										<option value="11">11월</option>
-										<option value="12">12월</option>
-								</select>
-									<ul class="period">
-										<li><a href="#" class="btn">2월</a></li>
-										<li><a href="#" class="btn">1월</a></li>
-										<li><a href="#" class="btn">12월</a></li>
-										<li><a href="#" class="btn">11월</a></li>
-										<li><a href="#" class="btn">10월</a></li>
-										<li><a href="#" class="btn">9월</a></li>
+										<option value="1" >1월</option>
+										<option value="2" >2월</option>
+										<option value="3" >3월</option>
+										<option value="4" >4월</option>
+										<option value="5" >5월</option>
+										<option value="6" >6월</option>
+										<option value="7" >7월</option>
+										<option value="8" >8월</option>
+										<option value="9" >9월</option>
+										<option value="10" >10월</option>
+										<option value="11" >11월</option>
+										<option value="12" >12월</option>
+									</select>
+									<ul id="customDayOption" class="period">
+										<c:forEach var="pastMonth" items="${pastMonths}">
+											<li><a href="javascript:;" class="btn" value="${pastMonth}">${fn:substring(pastMonth, 4, 6)}월</a> </li>
+										</c:forEach>
 									</ul>
 									<div class="period">
-										<input type="text" size="12" class="inp_txt" value="2017-05-01"
-											maxlength="10"> <span class=" bar">~</span> <input
-											type="text" size="12" class="inp_txt" value="2017-05-01"
-											maxlength="10">
-									</div></td>
-							</tr>
+										<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-${month}-01" maxlength="10">
+										<span class=" bar">~</span>
+										<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${today }" maxlength="10">
+									</div>	
+								</td>
+						</tr>
 							<tr>
 								<th>결제 방법</th>
-								<td><select name="" class="inp_txt" style="width: 150px;">
+								<td><select name="paytype" class="inp_txt" style="width: 150px;">
 										<option value="all" selected="selected">전체</option>
-										<option value=" ">신용카드</option>
-										<option value=" ">무통장입금</option>
-										<option value=" ">계좌이체</option>
+										<option value="SC0010">신용카드</option>
+										<option value="SC0040">무통장입금</option>
+										<option value="SC0030">계좌이체</option>
 								</select></td>
 							</tr>
 							<tr>
 								<th>결제 상황</th>
-								<td><select name="select" class="inp_txt"
+								<td><select name="paystatus" class="inp_txt"
 									style="width: 150px;">
 										<option value="all" selected="selected">전체</option>
-										<option value=" ">미입금</option>
-										<option value=" ">결제완료</option>
-										<option value=" ">결제취소</option>
+										<option value="3">미입금</option>
+										<option value="1">결제완료</option>
+										<option value="5">결제취소</option>
 								</select></td>
 							</tr>
 						</tbody>
 					</table>
 					<div class="btn_area" style="margin-top: 0;">
-						<a href="#" class="btn_input2">검색</a>
+						<a href="javascript:void(0)" id="btn_search" class="btn_input2">검색</a>
 					</div>
 				</div>
 				<div class="calculate_info_area">
-					기간 : 2017-01-01 ~ 2017-10-15 <span class="bar3">l</span> 건수 : <span
-						class="color">101</span>건 <span class="bar3">l</span> 총 판매금액 : <span
-						class="color">15,000,000</span>원 <span class="bar3">l</span>
-					<p style="color: #888;">
+					기간 : <span id="select_period"></span> <span class="bar3">l</span> 
+					건수 : <span id="totalCnt" class="color"> </span>건 <span class="bar3">l</span> 
+					총 판매금액 : <span	id="totalPrice" class="color"> </span>원 <span class="bar3">l</span>
+					<p style="color:#888;" id="search_result"></p>
+					<!-- <p style="color: #888;">
 						( 결제 완료 : 20,000,000원/ 90건 <span class="bar3">l</span> 결제 취소 :
 						4,000,000원/ 9건 <span class="bar3">l</span>미입금 : 1,000,000원/ 1건 )
-					</p>
+					</p> -->
 				</div>
 				<div class="ad_result">
 					<div class="ad_result_btn_area fr">
-						<select>
-							<option>20개</option>
-							<option>50개</option>
-							<option>100개</option>
+						<select id="sel_pageVol" onchange="search()">
+							<option value="20">20개</option>
+							<option value="50">50개</option>
+							<option value="100">100개</option>
 						</select> <a href="#">엑셀저장</a>
 					</div>
 					<table cellpadding="0" cellspacing="0" class="tb04">
@@ -183,100 +368,30 @@
 								<th>결제금액</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td><div class="tb_check">
-										<input id="check1" name="check1" type="checkbox"> <label
-											for="check1">선택</label>
-									</div></td>
-								<td>5</td>
-								<td>2017-07-27</td>
-								<td><a href="admin2.html" target="_blank">crk0526</a></td>
-								<td>김기동</td>
-								<td><a href="admin9-1.html">20180227164321-1</a></td>
-								<td>신용카드</td>
-								<td>결제완료</td>
-								<td>167,000</td>
-							</tr>
-							<tr>
-								<td><div class="tb_check">
-										<input id="check1" name="check1" type="checkbox"> <label
-											for="check1">선택</label>
-									</div></td>
-								<td>4</td>
-								<td>2017-07-25</td>
-								<td><a href="admin2.html" target="_blank">influential</a></td>
-								<td>나영환</td>
-								<td><a href="admin9-1.html">20180227164321-1</a></td>
-								<td>무통장입금</td>
-								<td>미입금</td>
-								<td>440,000</td>
-							</tr>
-							<tr>
-								<td><div class="tb_check">
-										<input id="check1" name="check1" type="checkbox"> <label
-											for="check1">선택</label>
-									</div></td>
-								<td>3</td>
-								<td>2017-07-20</td>
-								<td><a href="admin2.html" target="_blank">dolbegae</a></td>
-								<td>다하미</td>
-								<td><a href="admin9-1.html">20180227164321-1</a></td>
-								<td>무통장입금</td>
-								<td>결제완료</td>
-								<td>165,000</td>
-							</tr>
-							<tr>
-								<td><div class="tb_check">
-										<input id="check1" name="check1" type="checkbox"> <label
-											for="check1">선택</label>
-									</div></td>
-								<td>2</td>
-								<td>2017-07-16</td>
-								<td><a href="admin2.html" target="_blank">gaeam</a></td>
-								<td>마동석</td>
-								<td><a href="admin9-1.html">20180227164321-1</a></td>
-								<td>계좌이체</td>
-								<td>결제완료</td>
-								<td>165,000</td>
-							</tr>
-							<tr>
-								<td><div class="tb_check">
-										<input id="check1" name="check1" type="checkbox"> <label
-											for="check1">선택</label>
-									</div></td>
-								<td>1</td>
-								<td>2017-07-07</td>
-								<td><a href="admin2.html" target="_blank">maywood</a></td>
-								<td>박소현</td>
-								<td><a href="admin9-1.html">20180227164321-1</a></td>
-								<td>계좌이체</td>
-								<td>결제완료</td>
-								<td>88,0000</td>
-							</tr>
+						<tbody id="mtBody">
+							<!-- 검색 결과 -->							
 						</tbody>
 					</table>
+					<input type="hidden" id="totcnt" value="" />
+					<input type="hidden" id="startgo" value="" />
 					<div class="pagination">
-						<ul>
-							<li class="first"><a href="#">첫 페이지</a></li>
-							<li class="prev"><a href="#">이전 페이지</a></li>
-							<li><a href="#">1</a></li>
-							<li class="active"><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">6</a></li>
-							<li><a href="#">7</a></li>
-							<li><a href="#">8</a></li>
-							<li><a href="#">9</a></li>
-							<li><a href="#">10</a></li>
-							<li class="next"><a href="#"> 다음 페이지 </a></li>
-							<li class="last"><a href="#"> 마지막 페이지 </a></li>
+						<ul id="pagination-demo" class="pagination-sm">
+							<!-- 페이징 -->
 						</ul>
 					</div>
 				</div>
 			</div>
 		</section>
+		
+		<!-- 회원 상세페이지  -->
+		<form method="post" action="/view.member.manage" name="view_member_manage" >
+			<input type="hidden" name="member_seq" id="member_seq"/>
+		</form>
+		
+		<!-- 주문번호 상세페이지  -->
+		<form method="post" action="/view.online.manage" name="view_online_manage" >
+			<input type="hidden" name="LGD_OID" id="LGD_OID"/>
+		</form>
 	</div>
 </body>
 </html>

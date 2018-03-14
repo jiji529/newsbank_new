@@ -69,9 +69,9 @@
 			OR (SELECT compName FROM member INNER JOIN photo ON member.seq = photo.member_seq WHERE photo.uciCode = B.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%') 
 			)
 			
-			<!-- <if test="contractStart != null and contractEnd != null">
-				AND B.regDate BETWEEN Date_Format(#{contractStart},'%Y-%m-%d')  and Date_Format(#{contractEnd},'%Y-%m-%d')
-			</if> -->
+			<if test="contractStart != null and contractEnd != null">
+				AND B.regDate BETWEEN #{contractStart} AND #{contractEnd}
+			</if>
 			
 		ORDER BY B.regDate DESC
 		LIMIT #{startPage}, #{pageVol}
@@ -82,19 +82,50 @@
 	    	count(A.seq) as cnt
 		FROM member A
 		INNER JOIN download B ON A.seq = B.member_seq
-		WHERE 
+		WHERE (
 			A.name LIKE CONCAT('%', #{keyword}, '%') 
 			OR A.compName LIKE CONCAT('%', #{keyword}, '%') 
 			OR A.id LIKE CONCAT('%', #{keyword}, '%') 
 			OR B.photo_uciCode LIKE CONCAT('%', #{keyword}, '%') 
 			OR (SELECT compName FROM member INNER JOIN photo ON member.seq = photo.member_seq WHERE photo.uciCode = B.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
-			
-			<!-- 
+			)
 			<if test="contractStart != null and contractEnd != null">
 				AND B.regDate BETWEEN #{contractStart} AND #{contractEnd} 
 			</if>
-			-->
 		ORDER BY B.regDate DESC
+	</select>
+	
+	<!-- 비구매 계정 -->
+	<resultMap id="userMap" type="java.util.HashMap">
+	    <result javaType="java.lang.String" column="compName" property="compName"></result>
+	    <result javaType="java.lang.String" column="id" property="id"></result>
+	    <result javaType="java.lang.String" column="name" property="name"></result>
+	    <result javaType="java.lang.String" column="phone" property="phone"></result>
+	</resultMap>
+	
+	<select id="notSellList" parameterType="java.util.Map" resultMap="userMap">
+	    SELECT m.compName, m.name, m.id, m.seq, m.phone FROM download down
+		INNER JOIN member m ON down.member_seq = m.seq
+		WHERE m.deferred = 2
+		AND m.seq NOT IN (SELECT member_seq FROM paymentManage)
+		<if test="keyword !=null">
+			<bind name="keyword" value="'%' + keyword + '%'" />
+			AND (m.compName LIKE #{keyword} OR m.name LIKE #{keyword} OR m.id LIKE #{keyword}) 
+		</if>
+		ORDER BY down.regDate DESC
+		LIMIT #{startPage}, #{pageVol}
+	</select>
+	
+	<select id="notSellListCount" parameterType="java.util.Map" resultType="integer">
+	    SELECT COUNT(m.seq) as cnt FROM download down
+		INNER JOIN member m ON down.member_seq = m.seq
+		WHERE m.deferred = 2
+		AND m.seq NOT IN (SELECT member_seq FROM paymentManage)
+		<if test="keyword !=null">
+			<bind name="keyword" value="'%' + keyword + '%'" />
+			AND (m.compName LIKE #{keyword} OR m.name LIKE #{keyword} OR m.id LIKE #{keyword}) 
+		</if>
+		ORDER BY down.regDate DESC		
 	</select>
 </mapper>
     

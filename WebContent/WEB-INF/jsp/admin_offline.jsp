@@ -42,7 +42,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
-<script src="js/mypage.js"></script>
+<script src="js/mypage.js?v=20180309"></script>
 
 <script src="js/filter.js"></script>
 <script type="text/javascript">
@@ -56,7 +56,7 @@
 		
 	});
 	
-	function tabControl(index) {
+	/* function tabControl(index) {
 		$(".tabs li a").removeClass("active");
 		$(".tab_download").css("display", "none");
 		$(".tab_buylist").css("display", "none");
@@ -80,6 +80,11 @@
 				break;
 		
 		}
+	} */
+	
+	function tabSwitch(tabName) {
+		$("#tabName").val(tabName);
+		offline_form.submit();
 	}
 </script>
 
@@ -94,27 +99,43 @@
 					<h3>오프라인 결제 관리</h3>
 				</div>
 				<div class="tab">
-					<ul class="tabs">
+					<!-- <ul class="tabs">
 						<li><a href="javascript:tabControl(0)" class="active">다운로드 내역</a></li>
 						<li><a href="javascript:tabControl(1)">구매 내역</a></li>
 						<li><a href="javascript:tabControl(2)">다운로드 후 비구매 계정</a></li>
+					</ul> -->
+					<ul class="tabs">
+					
+						<li><a href="javascript:tabSwitch('download')" <c:if test="${tabName eq 'download'}">class="active"</c:if>>다운로드 내역</a></li>
+						<li><a href="javascript:tabSwitch('buylist')" <c:if test="${tabName eq 'buylist'}">class="active"</c:if>>구매 내역</a></li>
+						<li><a href="javascript:tabSwitch('fatsell')" <c:if test="${tabName eq 'fatsell'}">class="active"</c:if>>다운로드 후 비구매 계정</a></li>
 					</ul>
 				</div>
 				
 				<div class="tab_download">
-					<%@include file="admin_tab_download.jsp"%>
+					<c:if test="${tabName eq 'download'}">
+						<%@include file="admin_tab_download.jsp"%>
+					</c:if>				
 				</div>
 				
-				<div class="tab_buylist" style="display:none;">
-					<%@include file="admin_tab_buylist.jsp"%>
+				<div class="tab_buylist">
+					<c:if test="${tabName eq 'buylist'}">
+						<%@include file="admin_tab_buylist.jsp"%>
+					</c:if>
 				</div>
 				
-				<div class="tab_fatsell" style="display:none;">
-					<%@include file="admin_tab_fatsell.jsp"%>
+				<div class="tab_fatsell">
+					<c:if test="${tabName eq 'fatsell'}">
+						<%@include file="admin_tab_fatsell.jsp"%>
+					</c:if>
 				</div>
 				
 			</div>
 		</section>
 	</div>
+	
+	<form method="post" action="/offline.manage" name="offline_form" >
+		<input type="hidden" id="tabName" name="tabName" />
+	</form>
 </body>
 </html>

@@ -38,6 +38,15 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
+		$(".lnb [href]").each(function() {
+			var lng_path = (this.pathname).substr(1, (this.pathname).length);
+			var location_path = (window.location.pathname).substr(1, (window.location.pathname).length);
+			
+			if (location_path.match(lng_path)) {
+				$(this).parent().addClass("on");
+			} 
+		});
+		
 		var deferred = ${MemberDTO.deferred};
 		var memberType = "${MemberDTO.type}"; 
 		

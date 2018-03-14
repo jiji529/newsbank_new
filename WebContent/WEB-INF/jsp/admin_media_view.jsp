@@ -59,6 +59,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 	$(document).ready(function() {
 		setDatepicker();
+		
+		$(".lnb [href]").each(function() {
+			var lng_path = (this.pathname).substr(1, (this.pathname).length);
+			var location_path = (window.location.pathname).substr(1, (window.location.pathname).length);
+			
+			if (location_path.match(lng_path)) {
+				$(this).parent().addClass("on");
+			} 
+		});
 	});
 	
 	//회원정보 수정

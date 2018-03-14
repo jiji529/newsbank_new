@@ -120,13 +120,10 @@ public class PaymentDAO extends DAOBase {
 
 	public List<Map<String, Object>> searchAccountList(Map<String, Object> param) {
 
-		// Map<String, Object> ret = new HashMap<String, Object>();
 		SqlSession session = null;
-		// PaymentManageDTO paymentInfo = null;
 		try {
 
 			session = sf.getSession();
-			// System.out.println(session.getConfiguration().getMappedStatement("payment.selectToTalAccountList").getSqlSource().getBoundSql(param).getSql());
 			return session.selectList("payment.selectToTalAccountList", param);
 
 		} catch (Exception e) {
@@ -148,7 +145,6 @@ public class PaymentDAO extends DAOBase {
 		try {
 
 			session = sf.getSession();
-			// System.out.println(session.getConfiguration().getMappedStatement("payment.selectTotalPrice").getSqlSource().getBoundSql(param).getSql());
 			return session.selectList("payment.selectTotalPrice", param);
 
 		} catch (Exception e) {
@@ -178,7 +174,6 @@ public class PaymentDAO extends DAOBase {
 			session.update("payment.updateDownloadDate", paymentDetailDTO);
 			result = true;
 			session.commit();
-			// result = memberDTO.isMember();
 
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -268,6 +263,165 @@ public class PaymentDAO extends DAOBase {
 			try {session.commit();} catch (Exception e) {}
 			try {session.close();} catch (Exception e) {}
 		}
+	}
+	
+	
+	/**
+	 * @methodName : buyList
+	 * @author : LEE. GWANGHO
+	 * @date : 2018. 03. 09. 오후 10:01:43
+	 * @methodCommet: 관리자 페이지 - 구매내역(전체 사용자)
+	 * @return
+	 * @returnType :  List<Map<String, Object>>
+	 */
+	public List<Map<String, Object>> buyList(Map<String, Object> param) {
+		SqlSession session = null;
+		try {
+
+			session = sf.getSession();
+			return session.selectList("payment.selectAllPaymentDetail", param);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	/**
+	 * @methodName : getBuyCount
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 03. 08. 오후 04:35:13
+	 * @methodCommet: 조건에 따른 구매내역 갯수
+	 * @return
+	 * @returnType : 
+	 */
+	public int getBuyCount(Map<String, Object> searchOpt) {
+		SqlSession session = null;
+		int count = 0;
+		try {
+			session = sf.getSession();
+			count = session.selectOne("payment.AllPaymentDetailCnt", searchOpt);
+			return count;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
+	
+	/**
+	 * @methodName : getBuyPrice
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 03. 13. 오전 09:35:13
+	 * @methodCommet: 조건에 따른 총 판매금액
+	 * @return
+	 * @returnType : 
+	 */
+	public int getBuyPrice(Map<String, Object> searchOpt) {
+		SqlSession session = null;
+		int price = 0;
+		try {
+			session = sf.getSession();
+			price = session.selectOne("payment.AllPaymentDetailPrice", searchOpt);			
+			return price;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return price;
+	}
+	
+	/**
+	 * @methodName : onlinePayList
+	 * @author : LEE. GWANGHO
+	 * @date : 2018. 03. 09. 오후 10:01:43
+	 * @methodCommet: 관리자 페이지 - 온라인 결제 내역
+	 * @return
+	 * @returnType :  List<Map<String, Object>>
+	 */
+	public List<Map<String, Object>> onlinePayList(Map<String, Object> param) {
+		SqlSession session = null;
+		try {
+
+			session = sf.getSession();
+			return session.selectList("payment.onlinePayResult", param);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	/**
+	 * @methodName : getOnlineCount
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 03. 09. 오후 10:01:43
+	 * @methodCommet: 조건에 따른 결제내역 갯수
+	 * @return
+	 * @returnType : 온라인 결제 관리 (총 갯수)
+	 */
+	public int getOnlineCount(Map<String, Object> searchOpt) {
+		SqlSession session = null;
+		int count = 0;
+		try {
+			session = sf.getSession();
+			count = session.selectOne("payment.onlinePayCount", searchOpt);
+			return count;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
+	
+	/**
+	 * @methodName : getOnlinePrice
+	 * @author : Lee, Gwangho
+	 * @date : 2018. 03. 09. 오후 10:01:43
+	 * @methodCommet: 조건에 따른 총 금액 
+	 * @return
+	 * @returnType : 온라인 결제 관리 (총 금액)
+	 */
+	public int getOnlinePrice(Map<String, Object> searchOpt) {
+		SqlSession session = null;
+		int price = 0;
+		try {
+			session = sf.getSession();
+			price = session.selectOne("payment.onlinePayPrice", searchOpt);			
+			return price;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return price;
 	}
 
 }
