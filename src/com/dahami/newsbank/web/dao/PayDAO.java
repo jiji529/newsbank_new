@@ -18,7 +18,7 @@ public class PayDAO extends DAOBase {
 	 * @methodName  : payList
 	 * @author      : HOYADEV
 	 * @date        : 2017. 11. 10. 오후 02:18:35
-	 * @methodCommet: 결제 목록
+	 * @methodCommet: 결제 정보
 	 * @param param
 	 * @return 
 	 */
@@ -28,19 +28,19 @@ public class PayDAO extends DAOBase {
 		try {
 			session = sf.getSession();
 			CartDTO cartDTO = new CartDTO();
-			cartDTO.setUciCode(uciCode);
+			cartDTO.setUciCode(uciCode); // UCI 코드
 			
 			PhotoDAO photoDAO = new PhotoDAO();
 			PhotoDTO photoDTO = photoDAO.read(uciCode);
-			String copyright = photoDTO.getCopyright();
+			String copyright = photoDTO.getCopyright(); // 저작권자(판매자 회사명)
 			cartDTO.setCopyright(copyright);
 			
-			UsageDAO usageDAO = new UsageDAO();
-			List<UsageDTO> usageList = usageDAO.selectOptions(seqArry);
+			UsageDAO usageDAO = new UsageDAO(); // 사용용도
+			List<UsageDTO> usageList = usageDAO.selectOptions(seqArry); // 사용용도 상세정보
 			cartDTO.setUsageList(usageList);
 			UsageDTO usageDTO = new UsageDTO();
 			usageDTO = usageDAO.totalPrice(seqArry);
-			cartDTO.setPrice(usageDTO.getPrice());
+			cartDTO.setPrice(usageDTO.getPrice()); // 총 결제 가격
 			
 			return cartDTO;
 			

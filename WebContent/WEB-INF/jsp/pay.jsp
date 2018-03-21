@@ -105,12 +105,15 @@
 								</div>
 							</div>
 						</td>
+						
+						<fmt:parseNumber var="sell_price" value="${pay.price * 10 / 11}" integerOnly="true" />
+						<fmt:parseNumber var="tax_price" value="${pay.price * 10 / 11 / 10}" integerOnly="true" />
 						<td>
-							<fmt:formatNumber value="${pay.price * 10 / 11}" type="number" />
+							<fmt:formatNumber value="${sell_price}" type="number" />
 							원
 						</td>
 						<td>
-							<fmt:formatNumber value="${pay.price * 10 / 11 / 10}" type="number" />
+							<fmt:formatNumber value="${tax_price}" type="number" />
 							원
 						</td>
 						<td>
@@ -150,15 +153,18 @@
 					<ul>
 						<li>
 							<strong>판매가</strong>
+							<fmt:parseNumber var="sell_sum" value="${sum * 10 / 11}" integerOnly="true" />
+							<fmt:parseNumber var="tax_sum" value="${sum * 10 / 11 / 10}" integerOnly="true" />
+							
 							<p>
-								<fmt:formatNumber value="${sum * 10 / 11}" type="number" />
+								<fmt:formatNumber value="${sell_sum}" type="number" />
 								<em>원</em>
 							</p>
 						</li>
 						<li>
 							<strong>부가세</strong>
 							<p>
-								<fmt:formatNumber value="${sum * 10 / 11 / 10}" type="number" />
+								<fmt:formatNumber value="${tax_sum}" type="number" />
 								<em>원</em>
 							</p>
 						</li>

@@ -41,8 +41,10 @@ public class PaymentDetailDTO implements Serializable {
 	private String downStart;  //다운로드 시작일
 	private String downEnd; //다운로드 종료일
 	private String downCount;  // 다운로드 횟수
+	private String status; // 결제승인 상태(0: 기본값, 1: 결제취소, 2:관리자 승인, 3: 관리자 승인거부)
 	private UsageDTO usageDTO;
 	private PhotoDTO photoDTO;
+	private MemberDTO memberDTO; // 구매사진 매체정보
 	
 	/** 다운기한 종료(혹은 미도래) / downStart, downEnd 세팅시 확인 후 설정함 */
 	private boolean downExpire;
@@ -99,6 +101,12 @@ public class PaymentDetailDTO implements Serializable {
 	public void setDownCount(String downCount) {
 		this.downCount = downCount;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public int getPaymentDetail_seq() {
 		return paymentDetail_seq;
 	}
@@ -113,9 +121,15 @@ public class PaymentDetailDTO implements Serializable {
 	}
 	public PhotoDTO getPhotoDTO() {
 		return photoDTO;
-	}
+	}	
 	public void setPhotoDTO(PhotoDTO photoDTO) {
 		this.photoDTO = photoDTO;
+	}	
+	public MemberDTO getMemberDTO() {
+		return memberDTO;
+	}
+	public void setMemberDTO(MemberDTO memberDTO) {
+		this.memberDTO = memberDTO;
 	}
 	private void checkDownExpire() {
 		try{

@@ -298,7 +298,7 @@
 			
 			// 기존의 옵션 모두 삭제
 			$.ajax({
-				url: "/cart.popOption?action=deleteUsage",
+				url: "/cart.popOption?action=deleteCart",
 				type: "POST",
 				data: {
 					"uciCode" : uciCode
@@ -320,7 +320,7 @@
 				
 				// 선택옵션 새롭게 추가
 				$.ajax({
-					url: "/cart.popOption?action=insertUsage",
+					url: "/cart.popOption?action=insertCart",
 					type: "POST",
 					data: {
 						"uciCode" : uciCode,

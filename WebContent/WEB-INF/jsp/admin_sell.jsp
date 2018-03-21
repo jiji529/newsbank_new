@@ -47,6 +47,68 @@
 		});		
 		
 	});
+	
+	// 정산매체 선택에 따른 피정산 매체 목록
+	$(document).on("change", "#adjMaster", function() {
+		var master = $(this).val();
+		
+		$("#adjSlave").empty();
+		var html = "";
+		html += '<option value="all" selected="selected">피정산 매체 전체</option>';
+		html += '<option value=" ">선택안함</option>';
+		
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			data: {
+				"adjMaster" : master
+			},
+			url: "/adjust.media.api",
+			success: function(data){
+				var result = data.result;
+				
+				$(result).each(function(key, val){
+					html += '<option value="' + val.seq + '">' + val.name + '</option>';
+				});
+			},
+			complete: function() {
+				$(html).appendTo("#adjSlave");
+			}
+		})
+		
+	});
+	
+	// 검색 클릭이벤트
+	$(document).on("click", ".btn_input2", function() {
+		$("#startgo").val(1); // 최초 1페이지로
+		search();
+	});
+	
+	// 정산목록 검색
+	function search() {
+		var adjMaster = $("#adjMaster").val();
+		var param = {
+				"member_seq" : adjMaster,
+				"cmd" : "R"
+		};
+		
+		$.ajax({
+			type: "POST",
+			url: "/calculation.api",
+			data: param,
+			dataType: "json",
+			success: function(data) {
+				console.log(data.result);
+				
+				var json = JSON.parse(data.result);
+				console.log(json);
+			},
+			error:function(request,status,error){
+				console.log(request, error);	
+			}
+		});
+		
+	}
 </script>
 
 <title>뉴스뱅크</title>
@@ -113,16 +175,16 @@
 							</tr>
 							<tr>
 								<th>매체</th>
-								<td><select name="" class="inp_txt" style="width: 150px;">
+								<td><select name="" id="adjMaster" class="inp_txt" style="width: 150px;">
 										<option value="all" selected="selected">정산 매체 전체</option>
-										<option value=" ">-</option>
-										<option value=" ">-</option>
-										<option value=" ">-</option>
-								</select> <select name="" class="inp_txt" style="width: 150px;">
+										<c:forEach var="mediaList" items="${mediaList}" >
+											<option value="${mediaList.seq }">${mediaList.compName }</option>
+										</c:forEach>
+										
+										
+								</select> <select name="" id="adjSlave" class="inp_txt" style="width: 150px;">
 										<option value="all" selected="selected">피정산 매체 전체</option>
-										<option value=" ">-</option>
-										<option value=" ">-</option>
-										<option value=" ">-</option>
+										<option value=" ">선택안함</option>
 								</select></td>
 							</tr>
 							<tr>
@@ -138,7 +200,7 @@
 						</tbody>
 					</table>
 					<div class="btn_area" style="margin-top: 0;">
-						<a href="admin10-1.html" class="btn_input2">검색</a>
+						<a href="javascript:void(0)" class="btn_input2">검색</a>
 					</div>
 				</div>
 				<div class="calculate_info_area">

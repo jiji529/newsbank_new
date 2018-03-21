@@ -474,7 +474,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setGroup_seq(group_seq);
 			
 			// 후불회원만 사용 용도 갯수만큼 생성 (deferred = 2)
-			if(Integer.parseInt(deferred) == 2) {
+			if(deferred != null && deferred.equals("2")) {
 				for(int i = 0; i<usage.length; i++) {
 					UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
 					usageDTO.setUsage(usage[i]);

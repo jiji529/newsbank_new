@@ -46,8 +46,27 @@ public class Pay extends NewsbankServletBase {
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 
 		if (MemberInfo != null) {
+			List<CartDTO> payList = new ArrayList<CartDTO>(); // 결제정보를 저장할 리스트
+			PayDAO payDAO = new PayDAO(); // 결제정보 함수호출
+			
+			String uciCode_array = request.getParameter("uciCode_array"); // 결제할 사진 목록
+			String usage_array = request.getParameter("usage_array"); // 선택한 사용용도
+			
+			if(!uciCode_array.isEmpty() && !usage_array.isEmpty()) {
+				String[] split_uciCode = uciCode_array.split(",");
+				String[] split_usage = usage_array.split(",");
+				
+				for(String uciCode : split_uciCode) {
+					payList.add(payDAO.payList(uciCode, split_usage)); // uci코드별 사용용도를 저장
+				}
+				System.out.println(payList.toArray());
+				request.setAttribute("payList", payList);
+			}
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pay.jsp");
+			dispatcher.forward(request, response);
 
- 			String cartArry = request.getParameter("cartArry");
+ 			/*String cartArry = request.getParameter("cartArry");
 			if (cartArry != null && !cartArry.isEmpty()) {
 				List<CartDTO> payList = new ArrayList<CartDTO>();
 				String[] splitCart = cartArry.split(",");
@@ -55,18 +74,25 @@ public class Pay extends NewsbankServletBase {
 				for (int num = 0; num < splitCart.length; num++) {
 					String[] items = splitCart[num].split("\\|");
 					String[] usageList = new String[items.length - 1];
-					String uciCode = "";
+					String[] uciCode_arr = {};
+					//String uciCode = "";
 
 					for (int idx = 0; idx < items.length; idx++) {
 						if (idx == 0) {
-							uciCode = items[idx];
+							uciCode_arr = items[idx].split(",");
+							//uciCode = items[idx]; // uciCode 배열을 찾아서 payList에 add
 						} else {
 							String usageList_seq = items[idx];
 							usageList[idx - 1] = usageList_seq;
 						}
 					}
 					PayDAO payDAO = new PayDAO();
-					payList.add(payDAO.payList(uciCode, usageList));
+					
+					for(String uciCode : uciCode_arr) {
+						System.out.println(uciCode + " | " + usageList.toString());
+						//payList.add(payDAO.payList(uciCode, usageList));
+					}
+					
 				}
 				request.setAttribute("payList", payList);
 
@@ -74,7 +100,7 @@ public class Pay extends NewsbankServletBase {
 				dispatcher.forward(request, response);
 			} else {
 				response.getWriter().append("<script type=\"text/javascript\">alert('결제할 사진을 선택해 주세요.');history.back(-1);</script>").append(request.getContextPath());
-			}
+			}*/
 
 		} else {
 			response.getWriter().append("<script type=\"text/javascript\">alert('로그인 페이지로 이동합니다.');location.replace('/login');</script>").append(request.getContextPath());

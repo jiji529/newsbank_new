@@ -120,9 +120,10 @@
 		}
 		
 		// #구매 페이지 이동
-		function go_pay() {
+		function go_pay_1() {
 			var cartArry = new Array();
-			var uciCode = "I011-M005775159";
+			var uciCode = $("#uciCode_arr").val(); // 선택한 사진목록
+			
 			var cart = uciCode;
 			if($(".option_result ul li").length>0){
 				$(".option_result ul li").each(function(index) {
@@ -131,10 +132,6 @@
 				});		
 				cartArry.push(cart);
 				
-				var param = {
-					"cart" : cartArry
-				};
-				
 				$("#cartArry").val(cartArry);
 				
 				pay_form.submit();
@@ -142,11 +139,36 @@
 				alert("상품을 선택하세요.");
 			}
 		}
+		
+		function go_pay() {
+			var uciCode_array = $("#uciCode_arr").val();
+			var usage_array = new Array(); // 선택한 사용용도
+			
+			if($(".option_result ul li").length > 0){
+				
+				$(".option_result ul li").each(function(index) {
+					var usage_seq = $(this).children(".op_cont").attr("value");
+					usage_array.push(usage_seq);
+				});						
+				
+				$("#uciCode_array").val(uciCode_array);
+				$("#usage_array").val(usage_array);
+				
+				console.log("uciCode_array : " + uciCode_array);
+				console.log("usage_array : " + usage_array);
+				
+				pay_form.submit();
+			}else{
+				alert("상품을 선택하세요.");
+			}			
+		}
 	</script>
 </head>
 <body>
 	<form class="pay_form" method="post" action="/pay" name="pay_form" >
-		<input type="hidden" name="cartArry" id="cartArry" />
+		<input type="hidden" name="uciCode_array" id="uciCode_array" />
+		<input type="hidden" name="usage_array" id="usage_array" />
+		<!-- <input type="hidden" name="cartArry" id="cartArry" /> -->
 	</form>
 	<div class="wrap_pop">
 		<div class="view_rt_top">
@@ -168,6 +190,7 @@
 		<div class="sum_sec">
 			<div class="total"><span class="tit">총 금액 (수량)</span><span class="price"></span></span></div>
 			<div class="btn_wrap">
+				<input type="hidden" id="uciCode_arr" value="${uciCode_arr}"/>
 				<div class="btn_cart" onclick="javascript:void(0)"><a href="javascript:go_pay()">구매하기</a></div>
 				<div class="btn_down"><a href="javascript:void(0)" onclick="javascript:self.close()">취소</a></div>
 			</div>

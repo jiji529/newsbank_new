@@ -41,7 +41,31 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180302"></script>
+<script src="js/mypage.js"></script>
+<script type="text/javascript">
+	function popup_usage() {
+		var uciCode_arr = new Array();
+		$("#mtBody input:checkbox:checked").each(function(index) {
+			var uciCode = $(this).val();
+			uciCode_arr.push(uciCode);
+		});
+		
+		$("#uciCode_arr").val(uciCode_arr);
+		
+		var frm = download_popOption;
+		window.open('', frm, 'width=420, height=600');
+		frm.action = "/download.popOption";
+		frm.target = frm;
+		frm.method = "post";
+		frm.submit();
+		
+		//download_popOption.submit();
+	}
+	
+	$(document).on("click", ".btn_input2", function() {
+		popup_usage(); // 사용용도 선택
+	});
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -128,12 +152,12 @@
 						<th>다운로드 횟수</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="mtBody">
 					<c:forEach items="${downList}" var="download" varStatus="loop">
 					<tr>
 						<td>
 							<div class="tb_check">
-								<input id="check${loop.index+1}" name="check${loop.index+1}" type="checkbox"> <label
+								<input id="check${loop.index+1}" name="check${loop.index+1}" type="checkbox" value="${download.photo_uciCode }"> <label
 									for="check${loop.index+1}">선택</label>
 							</div>
 						</td>
@@ -163,12 +187,17 @@
 				</tbody>
 			</table>		
 			<div class="btn_area">
-				<a href="main.html" onclick="window.open('/download.popOption','new','resizable=no width=420 height=600');return false" class="btn_input2">구매하기</a>
+				<a href="#" class="btn_input2">구매하기</a>
+				<!-- <a href="main.html" onclick="window.open('/download.popOption','new','resizable=no width=420 height=600');return false" class="btn_input2">구매하기</a> -->
 			</div>
 		</section>
 	</section>
 	<%@include file="footer.jsp"%>
 </div>
+<form method="post" action="/download.popOption" name="download_popOption">
+	<input type="hidden" name=uciCode_arr id="uciCode_arr"/>
+</form>
+	
 <form id="dateForm" method="post"  target="dateFrame">
 	<input type="hidden" id="year" name="year" />
 </form>

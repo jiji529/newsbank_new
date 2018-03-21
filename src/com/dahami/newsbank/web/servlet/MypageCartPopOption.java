@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.web.dao.CartDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
@@ -51,16 +52,17 @@ public class MypageCartPopOption extends NewsbankServletBase {
 		String usageList_seq = request.getParameter("usageList_seq");
 		String price = request.getParameter("price");
 		UsageDAO usageDAO = new UsageDAO();
+		CartDAO cartDAO = new CartDAO();
 		List<UsageDTO> usageOptions = usageDAO.uciCodeOfUsage(uciCode, member_seq);
 		
 		request.setAttribute("page", page);
 		request.setAttribute("usageOptions", usageOptions);
 		request.setAttribute("uciCode", uciCode);
 		
-		if(action.equals("deleteUsage")) {
-			usageDAO.deleteOfUsage(member_seq, uciCode);
-		}else if(action.equals("insertUsage")) {
-			usageDAO.insertOfUsage(member_seq, uciCode, usageList_seq, price);
+		if(action.equals("deleteCart")) {
+			cartDAO.deleteCart(member_seq, uciCode);
+		}else if(action.equals("insertCart")) {
+			cartDAO.insertCart(member_seq, uciCode, usageList_seq, price);
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pop_opt.jsp");

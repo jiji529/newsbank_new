@@ -141,7 +141,20 @@
 	
 	/** DB 삭제함수 */
 	function cartDelete(uciCode) {
-		var param = "action=deleteBookmark";
+		$.ajax({
+			url: "/cart.popOption",
+			type: "POST",
+			data: {
+				"action" : "deleteCart",
+				"uciCode" : uciCode
+			},
+			success: function(data){ }, 
+			error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		});
+		
+		/* var param = "action=deleteBookmark";
 		
 		$.ajax({			
 			url: "/bookmark.api?"+param,
@@ -153,7 +166,7 @@
 			error:function(request,status,error){
 	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	       	}
-		});
+		}); */
 	}
 	
 	// #다중선택 결제 함수

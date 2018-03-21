@@ -12,7 +12,36 @@ import com.dahami.newsbank.web.dto.CartDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
 
 public class CartDAO extends DAOBase {
-
+	
+	
+	/**
+	 * @methodName  : insertCart
+	 * @author      : HOYADEV
+	 * @date        : 2017. 11. 01. 오전 11:204:32
+	 * @methodCommet: 장바구니 - 사용용도별 옵션 추가
+	 * @param param
+	 * @return 
+	 */
+	public void insertCart(String member_seq, String uciCode, String usageList_seq, String price) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			param.put("uciCode", uciCode);
+			param.put("usageList_seq", usageList_seq);
+			param.put("price", price);
+			
+			session.insert("Cart.insert", param);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			session.commit();
+			session.close();
+		}
+	}
+	
 	/**
 	 * @methodName  : cartList
 	 * @author      : HOYADEV

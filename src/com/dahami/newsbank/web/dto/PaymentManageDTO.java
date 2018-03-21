@@ -54,6 +54,7 @@ public class PaymentManageDTO implements Serializable {
 	private String LGD_ACCOUNTNUM; // 입금계좌번호
 	private String regDate; // 등록일
 	private List<PaymentDetailDTO> paymentDetailList; // 구매 상세 목록
+	private MemberDTO memberDTO; // 구매 회원 정보
 
 
 	public int getMember_seq() {
@@ -274,6 +275,15 @@ public class PaymentManageDTO implements Serializable {
 
 	public String getLGD_PAYSTATUS() {
 		return LGD_PAYSTATUS;
+	}
+	
+
+	public MemberDTO getMemberDTO() {
+		return memberDTO;
+	}
+
+	public void setMemberDTO(MemberDTO memberDTO) {
+		this.memberDTO = memberDTO;
 	}
 
 	public void setLGD_PAYSTATUS(int lGD_PAYSTATUS) {

@@ -57,6 +57,35 @@ public class PaymentDAO extends DAOBase {
 		return paymentInfo;
 
 	}
+	
+	/**
+	 * @methodName : selectPaymentManageList
+	 * @author : Lee, Gwang ho
+	 * @date : 2018. 03. 16. 오전 09:24:43
+	 * @methodCommet: 사용자 상세 정보
+	 * @return
+	 * @returnType : PaymentManageDTO
+	 */
+	public PaymentManageDTO selectPaymentManageList(PaymentManageDTO paymentManageDTO) {
+		SqlSession session = null;
+		PaymentManageDTO paymentInfo = null;
+		try {
+
+			session = sf.getSession();
+			paymentInfo = session.selectOne("payment.selectWherePaymentDetail", paymentManageDTO);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return paymentInfo;
+	}
 
 	/**
 	 * @methodName : listPaymentManage
@@ -199,6 +228,34 @@ public class PaymentDAO extends DAOBase {
 		try {
 			session = sf.getSession();
 			session.update("payment.updatePaymentDetail", paymentDetailDTO);
+			result = true;
+			session.commit();
+			// result = memberDTO.isMember();
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param paymentDetailDTO
+	 * @return
+	 * 결제취소 
+	 */
+	public boolean cancelPaymentDetail(PaymentDetailDTO paymentDetailDTO) {
+		boolean result = false;
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			session.update("payment.cancelPaymentDetail", paymentDetailDTO);
 			result = true;
 			session.commit();
 			// result = memberDTO.isMember();
@@ -422,6 +479,7 @@ public class PaymentDAO extends DAOBase {
 			}
 		}
 		return price;
-	}
+	}	
+	
 
 }

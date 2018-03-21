@@ -36,6 +36,38 @@
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
 <script src="js/filter.js"></script>
+<script type="text/javascript">
+	function cancel_payment(refund, down_count, paymentManage_seq, LGD_OID) {	// 결제 취소
+		console.log(paymentManage_seq);
+	
+		if((refund == "true") && (down_count == 0)){
+			if (confirm("결제를 취소하시면 이미지 다운로드가 불가능해집니다. 결제를 취소하시겠습니까?")) {
+				
+				var param = {
+					"paymentManage_seq" : paymentManage_seq,
+					"LGD_OID" : LGD_OID
+				};
+				
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					url: "/cancelPay.api",
+					data: param,
+					success: function(data) {
+						console.log(data);
+					}
+				});
+				alert("결제 취소 완료");
+			}
+		}else{
+			if(down_count > 0) {
+				alert("이미지를 다운로드 받으셔서, 결제 취소가 불가능합니다.");
+			}else if(refund == "false") {
+				alert("환불 가능기간은 결제일로부터 7일 입니다.");
+			}
+		}
+	}
+</script>
 <title>뉴스뱅크</title>
 </head>
 <body>
@@ -58,39 +90,42 @@
 						<tbody>
 							<tr>
 								<th>주문번호</th>
-								<td>20180227164321-1</td>
+								<td>${payInfo.LGD_OID }</td>
 								<th>주문일자</th>
-								<td>2017-07-27 21:46:02</td>
+								<fmt:parseDate value="${payInfo.LGD_PAYDATE}" var="LGD_PAYDATE_STRING" pattern="yyyyMMddhhmmss"/>
+								<fmt:formatDate value="${LGD_PAYDATE_STRING}" var="LGD_PAYDATE_DATE" pattern="yyyy-MM-dd hh:mm:ss"/>
+								<td>${LGD_PAYDATE_DATE }</td>
+								
 							</tr>
 							<tr>
 								<th>구분</th>
-								<td>개인</td>
+								<td>${memberDTO.type }</td>
 								<th>회사/기관명</th>
-								<td>-</td>
+								<td>${memberDTO.compName }</td>
 							</tr>
 							<tr>
 								<th>아이디</th>
-								<td>crk0526</td>
+								<td>${payInfo.LGD_BUYERID }</td>
 								<th>이름</th>
-								<td>김기동</td>
+								<td>${payInfo.LGD_BUYER }</td>
 							</tr>
 							<tr>
 								<th>연락처</th>
-								<td>010-5319-5907</td>
+								<td>${memberDTO.phone }</td>
 								<th>이메일</th>
-								<td><a href="mailto:crk0526@gmail.com">crk0526@gmail.com</a></td>
+								<td><a href="${memberDTO.email }">${memberDTO.email }</a></td>
 							</tr>
 							<tr>
 								<th>결제방법</th>
-								<td>신용카드</td>
+								<td>${payInfo.LGD_PAYTYPE }</td>
 								<th>결제 상태</th>
-								<td>결제 완료</td>
+								<td>${payInfo.LGD_RESPMSG }</td>
 							</tr>
 							<tr>
 								<th>거래번호</th>
-								<td>dahami2017072721455074865</td>
+								<td>${payInfo.LGD_TID }</td>
 								<th>가상계좌번호</th>
-								<td>-</td>
+								<td>${payInfo.LGD_ACCOUNTNUM }</td>
 							</tr>
 						</tbody>
 					</table>
@@ -102,7 +137,6 @@
 						<col width="50" />
 						<col width="60" />
 						<col width="80" />
-						<col width="80" />
 						<col width="120" />
 						<col width="110" />
 						<col width="200" />
@@ -113,7 +147,6 @@
 							<tr>
 								<th>No. </th>
 								<th>이미지</th>
-								<th>상품구분</th>
 								<th>매체</th>
 								<th>UCI 코드</th>
 								<th>매체사 고유 코드</th>
@@ -122,18 +155,34 @@
 								<th>다운로드 횟수</th>
 							</tr>
 						</thead>
-						<tbody id="mtBody">
-							<!-- 결제 사진 목록 -->							
+						<tbody>
+							<!-- 결제 사진 목록 -->
+							<c:set var="totalPrice" value="0" />
+							<c:set var="totalDownCount" value="0"/>
+							<c:forEach var="detail" items="${detailList}" varStatus="status">
+								<c:set var="totalPrice" value="${totalPrice + detail.price}" />
+								<c:set var="totalDownCount" value="${totalDownCount + detail.downCount}"/>	
+								<tr>
+									<td>${status.index+1}</td>
+									<td><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" /></td>
+									<td>${detail.memberDTO.compName }</td>
+									<td>${detail.photo_uciCode }</td>
+									<td>${detail.photoDTO.compCode }</td>
+									<td>${detail.usageDTO.usage } | ${detail.usageDTO.division1 } | ${detail.usageDTO.division2 } | ${detail.usageDTO.division3 }</td>
+									<td>${detail.price }</td>
+									<td>${detail.downCount }</td>
+								</tr>
+							</c:forEach>						
 						</tbody>
 						<tfoot>
 							<tr>
 								<td colspan="6">총 결제 금액</td>
-								<td colspan="4">176,000</td>
+								<td colspan="4"><c:out value="${totalPrice}" /></td>
 							</tr>
 						</tfoot>
 					</table>
 				</div>
-				
+				<div class="btn_area"><a href="javascript:history.go(-1)" class="btn_input1">목록</a><a href="javascrip:void(0)" onclick="cancel_payment('${refund }', '${totalDownCount }', ${payInfo.paymentManage_seq }, '${payInfo.LGD_OID }')" class="btn_input3 fr">결제 취소</a></div>
 			</div>
 		</section>
 	</div>

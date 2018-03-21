@@ -427,16 +427,25 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				var seq = $(this).val();
 				//arr_seq.push(seq);
 				
+				var param = {
+					cmd : 'U',
+					seq : seq,
+					admission : 'Y',
+					type : 'M'
+				};
+				console.log(param);
+				
 				if(confirm("선택한 항목을 승인하시겠습니까?")) {
 					$.ajax({
 						type: "POST",
 						url: "/admin.member.api",
-						data : ({
+						data: param,
+						/* data : ({
 							cmd : 'U',
 							seq : seq,
 							admission : 'Y',
 							type : 'M'
-						}),
+						}), */
 						dataType : "json",
 						success : function(data) {
 							if (data.success) {

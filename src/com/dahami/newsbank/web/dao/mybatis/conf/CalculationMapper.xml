@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="calculation">
+   	<!-- 정산승인 -->
+   	<insert id="insertCalculation" useGeneratedKeys="true" keyProperty="calculation_seq">
+   	    INSERT INTO `calculations` (
+		regDate   	    
+   	    <if test="id != null">, id</if>
+   	    <if test="uciCode != null">, uciCode</if>
+   	    <if test="type != null">, type</if>
+   	    <if test="price != null">, price</if>
+   	    <if test="fees != null">, fees</if>
+   	    <if test="status != null">, status</if>
+   	    `id`, `uciCode`, `usage`, `type`, `price`, `fees`, `status`) 
+		VALUES (#{id}, #{uciCode}, #{usage}, #{type}, #{price}, #{fees}, #{status})
+		<if test="id != null">, #{id}</if>
+		<if test="uciCode != null">, #{uciCode}</if>
+		<if test="type != null">, #{type}</if>
+		<if test="price != null">, #{price}</if>
+		<if test="fees != null">, #{fees}</if>
+		<if test="status != null">, #{status}</if>
+		
+		<selectKey resultType="int" keyProperty="calculation_seq">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+   	</insert>
+   	
+   	<select id="selectCalculation" resultType="com.dahami.newsbank.web.dto.CalculationDTO" 
+   	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 
+   	   SELECT C.seq, C.id, M.name, SM.compName, P.member_seq, C.`payType`, 
+   	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`regDate`
+		FROM calculations C
+		INNER JOIN member M ON C.id = M.id
+		INNER JOIN photo P ON C.uciCode = P.uciCode
+		INNER JOIN member SM ON P.member_seq = SM.seq
+		
+		<!-- <where>
+		    <if test="member_seq != null">
+		    	P.member_seq = #{member_seq}    
+		    </if>
+	    </where> -->
+		
+   	</select>
+   	
+</mapper>
+    

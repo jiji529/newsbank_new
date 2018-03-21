@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -43,8 +44,10 @@ public class AdminSell extends NewsbankServletBase {
 		if (MemberInfo != null) {
 			
 			if(MemberInfo.getType().equals("A")) { // 관리자 권한만 접근
+				
+				MemberDTO memberDTO = new MemberDTO(); // 빈 객체 생성
 				MemberDAO memberDAO = new MemberDAO();
-				List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+				List<MemberDTO> mediaList = memberDAO.adminAdjustMedia(memberDTO); // 활성 매체사 불러오기
 				request.setAttribute("mediaList", mediaList); // 활성 매체사
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_sell.jsp");

@@ -46,6 +46,12 @@ public class MypageDownloadPopOption extends NewsbankServletBase {
 		List<UsageDTO> usageOptions = usageDAO.usageList(MemberInfo.getSeq());
 		request.setAttribute("usageOptions", usageOptions);
 		
+		// 선택항목
+		//String[] uciCode_arr = request.getParameterValues("uciCode_arr");
+		String uciCode_arr = request.getParameter("uciCode_arr");
+		request.setAttribute("uciCode_arr", uciCode_arr);
+		
+		System.out.println(uciCode_arr.toString());
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pop_download.jsp");
 		dispatcher.forward(request, response);
 	}

@@ -57,7 +57,7 @@
 			dataType: "json",
 			data: searchParam,
 			url: "/buy.api",
-			success: function(data) { //console.log(data);
+			success: function(data) { console.log(data);
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
@@ -74,6 +74,7 @@
 					$(data).each(function(key, val){
 						var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
 						
+						var seq = val.paymentDetail_seq
 						var compName = val.compName;
 						var id = val.id;
 						var name = val.name;
@@ -87,8 +88,8 @@
 						
 						html += '<tr>';
 						html += '<td><div class="tb_check">';
-						html += '<input id="check1" name="check1" type="checkbox">';
-						html += '<label for="check1">선택</label>';
+						html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + seq + '">';
+						html += '<label for="check' + key + '">선택</label>';
 						html += '</div></td>';
 						html += '<td>' + number + '</td>';
 						html += '<td>' + compName + '</td>';
@@ -211,6 +212,29 @@
 			}
 		});
 	}
+	
+	// 정산 승인
+	function calc_approve() {
+		var payment_seq = new Array();
+		$("#mtBody input:checkbox:checked").each(function(index) {
+			//var id = $(this).closest("tr").find("td").eq(3).text();
+			//var uciCode = $(this).closest("tr").find("td").eq(9).text();
+			
+			var seq = $(this).val();
+			payment_seq.push(seq);
+		});
+		
+		var param = {
+				"payment_seq" : payment_seq
+		}
+	}
+	
+	// 정산승인 취소
+	function calc_disapprove() {
+		$("#mtBody input:checkbox:checked").each(function(index) {
+			console.log(index + "번째 체크");
+		});
+	}
 </script>
 
 <div class="ad_sch_area">
@@ -285,7 +309,7 @@
 		<p style="color:#888;" id="buy_result"></p>
 	</div>
 	<div class="ad_result">
-		<div class="ad_result_btn_area"><a href="#">정산 승인</a></span> <a href="#">정산 승인 취소</a> </div>
+		<div class="ad_result_btn_area"><a href="javascript:void(0)" onclick="calc_approve()">정산 승인</a></span> <a href="javascript:void(0)" onclick="calc_disapprove()">정산 승인 취소</a> </div>
 		<div class="ad_result_btn_area fr">
 			<select id="sel_pageVol" onchange="searchBuyList()">
 			<option value="20">20개</option>

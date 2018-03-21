@@ -387,7 +387,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					
 					// 선택옵션 새롭게 추가
 					$.ajax({
-						url: "/cart.popOption?action=insertUsage",
+						url: "/cart.popOption?action=insertCart",
 						type: "POST",
 						data: {
 							"uciCode" : uciCode,
