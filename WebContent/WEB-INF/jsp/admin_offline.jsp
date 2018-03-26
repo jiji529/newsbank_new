@@ -99,11 +99,6 @@
 					<h3>오프라인 결제 관리</h3>
 				</div>
 				<div class="tab">
-					<!-- <ul class="tabs">
-						<li><a href="javascript:tabControl(0)" class="active">다운로드 내역</a></li>
-						<li><a href="javascript:tabControl(1)">구매 내역</a></li>
-						<li><a href="javascript:tabControl(2)">다운로드 후 비구매 계정</a></li>
-					</ul> -->
 					<ul class="tabs">
 					
 						<li><a href="javascript:tabSwitch('download')" <c:if test="${tabName eq 'download'}">class="active"</c:if>>다운로드 내역</a></li>

@@ -59,6 +59,35 @@ public class PaymentDAO extends DAOBase {
 	}
 	
 	/**
+	 * @methodName : selectPaymentList
+	 * @author : Lee, Gwang ho
+	 * @date : 2018. 03. 22. 오후 03:45:43
+	 * @methodCommet: 구매내역 리스트
+	 * @return
+	 * @returnType : List<PaymentDetailDTO>
+	 */
+	public List<PaymentDetailDTO> selectPaymentList(PaymentManageDTO paymentManageDTO) {
+		SqlSession session = null;
+		List<PaymentDetailDTO> paylist = null;
+		try {
+
+			session = sf.getSession();
+			paylist = session.selectList("payment.selectPaymentDetailList", paymentManageDTO);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return paylist;
+	}
+	
+	/**
 	 * @methodName : selectPaymentManageList
 	 * @author : Lee, Gwang ho
 	 * @date : 2018. 03. 16. 오전 09:24:43

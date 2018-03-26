@@ -1,7 +1,10 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -44,6 +47,30 @@ public class AdminSell extends NewsbankServletBase {
 		if (MemberInfo != null) {
 			
 			if(MemberInfo.getType().equals("A")) { // 관리자 권한만 접근
+				// 날짜 기간선택 옵션
+				Calendar cal = Calendar.getInstance();
+				int year = cal.get(Calendar.YEAR);
+				int month = cal.get(Calendar.MONTH);
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");
+				String thisMonth = dateFormat.format(cal.getTime());
+				List<String> pastMonths = new ArrayList<String>();
+				pastMonths.add(thisMonth);				
+				String tabName = request.getParameter("tabName") == null ? "byYear" : request.getParameter("tabName"); // default (다운로드) 
+				System.out.println("tabName : " + tabName);
+				
+				// 최근 6개월 표현
+				for(int i=0; i<5; i++) {
+					
+					cal.add(cal.MONTH, -1);
+					
+					String beforeYear = dateFormat.format(cal.getTime()).substring(0,4);
+					String beforeMonth = dateFormat.format(cal.getTime()).substring(4,6);
+					
+					String beforeDate = beforeYear + beforeMonth;
+					pastMonths.add(beforeDate);
+				}
+				request.setAttribute("pastMonths", pastMonths);
+				request.setAttribute("tabName", tabName);
 				
 				MemberDTO memberDTO = new MemberDTO(); // 빈 객체 생성
 				MemberDAO memberDAO = new MemberDAO();

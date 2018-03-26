@@ -41,7 +41,7 @@ public class CalculationAction extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("application/json");
+		response.setContentType("application/json;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		//session = request.getSession();
 		
@@ -51,17 +51,23 @@ public class CalculationAction extends NewsbankServletBase {
 		boolean result = false;
 		String message = null;
 		int seq = 0;
-		String cmd = "";
-		String name = "";
-		String compName = "";
-		String payType = "";
-		String uciCode = "";
+		String cmd = null;
+		String name = null;
+		String compName = null;
+		String payType = null;
+		String uciCode = null;
 		int member_seq = 0; // 판매자 회원 고유번호
 		int usage = 0;
 		int type = 0;
 		int price = 0;
 		int fees = 0;
 		int status = 0;
+		
+		String keyword = null; // 키워드
+		String start_date = null; // 시작 일자
+		String end_date = null; // 마지막 일자
+		String paytype = null; // 결제종류
+		String seqArr = null; // 피정산 매체
 		
 		
 		if (request.getParameter("cmd") != null) { // 구분
@@ -124,6 +130,31 @@ public class CalculationAction extends NewsbankServletBase {
 		}
 		System.out.println("status => " + status);
 		
+		if (request.getParameter("keyword") != null) { // 키워드
+			keyword = request.getParameter("keyword");
+		}
+		System.out.println("keyword => " + keyword);
+		
+		if (request.getParameter("start_date") != null) { // 시작 일자
+			start_date = request.getParameter("start_date");
+		}
+		System.out.println("start_date => " + start_date);
+		
+		if (request.getParameter("end_date") != null) { // 마지막 일자
+			end_date = request.getParameter("end_date");
+		}
+		System.out.println("end_date => " + end_date);
+		
+		if (request.getParameter("paytype") != null) { // 결제방법
+			paytype = request.getParameter("paytype");
+		}
+		System.out.println("paytype => " + paytype);
+		
+		if (request.getParameter("seqArr") != null && !request.getParameter("seqArr").equals("")) { // 피정산 매체
+			seqArr = request.getParameter("seqArr");
+		}
+		System.out.println("seqArr => " + seqArr);
+		
 		CalculationDTO calculationDTO = new CalculationDTO();
 		calculationDTO.setSeq(seq);
 		calculationDTO.setUciCode(uciCode);
@@ -138,6 +169,8 @@ public class CalculationAction extends NewsbankServletBase {
 		calculationDTO.setStatus(status);
 		
 		JSONArray jArray = new JSONArray(); // json 배열
+		JSONArray tempArray = new JSONArray();
+		Map<String, Object> param = new HashMap<String, Object>(); // 전달할 파라미터값
 		
 		switch(cmd) {
 			case "C":
@@ -146,13 +179,26 @@ public class CalculationAction extends NewsbankServletBase {
 				
 			case "R": 
 				// 정산 목록
-				List<CalculationDTO> calcList = calculationDAO.selectCalculation(calculationDTO);
+				String[] member_seqArr = {};
+				if(seqArr != null) {
+					member_seqArr = seqArr.split(","); // 피정산 매체 seq
+				}				
+				
+				param.put("keyword", keyword);
+				param.put("start_date", start_date);
+				param.put("end_date", end_date);
+				param.put("paytype", paytype);
+				param.put("member_seqArr", member_seqArr);
+				
+				List<CalculationDTO> calcList = calculationDAO.selectCalculation(param);
 				result = true;
 								
 				for(CalculationDTO calc : calcList) {
 					JSONObject obj = new JSONObject();
 					obj.put("id", calc.getId());
 					obj.put("name", calc.getName());
+					obj.put("compName", calc.getCompName());
+					obj.put("copyright", calc.getCopyright());
 					obj.put("member_seq", calc.getMember_seq());
 					obj.put("payType", calc.getPayType());
 					obj.put("uciCode", calc.getUciCode());
@@ -168,6 +214,48 @@ public class CalculationAction extends NewsbankServletBase {
 				
 				break;
 				
+			case "S":
+				// 정산 월별통계
+				param.put("keyword", keyword);
+				param.put("start_date", start_date);
+				param.put("end_date", end_date);
+				param.put("paytype", paytype);
+				
+				List<Map<String, Object>> staticsList = calculationDAO.selectOfMonth(param);
+				String year = start_date.substring(0, 4);
+				int sMonth = Integer.parseInt(start_date.substring(start_date.length()-2, start_date.length()));
+				int eMonth = Integer.parseInt(end_date.substring(end_date.length()-2, end_date.length()));
+				
+				// local 배열
+				for(int m=sMonth; m<=eMonth; m++) { // 월별
+					JSONObject obj = new JSONObject();
+					
+					for(int t=0; t<2; t++) { // type = 0, 1 (2가지)
+						String month = String.format("%02d", m);
+						String YearOfMonth = year + "-" + month;
+						
+						obj.put("price", 0);
+						obj.put("YearOfMonth", YearOfMonth);
+						obj.put("type", t);
+						
+						//tempArray.add(obj);
+						jArray.add(obj);
+					}
+				}
+				
+				
+				for(Map<String, Object> statics : staticsList) {
+					JSONObject obj = new JSONObject();
+					obj.put("price", statics.get("price"));
+					obj.put("YearOfMonth", statics.get("YearOfMonth"));
+					obj.put("type", statics.get("type"));
+					
+					//jArray.add(obj);
+					tempArray.add(obj);
+				}
+				
+				break;
+				
 			case "U":
 				// 정산 수정
 				break;
@@ -178,12 +266,7 @@ public class CalculationAction extends NewsbankServletBase {
 		}	
 		
 		JSONObject json = new JSONObject(); // json 객체
-		System.out.println(jArray.toJSONString());
-		
 		json.put("result", jArray);
-		//json.put("success", result);
-		
-		System.out.println(json.toJSONString());
 		
 		response.getWriter().print(json);
 	}

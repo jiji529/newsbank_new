@@ -7,7 +7,8 @@ public class CalculationDTO {
 	private int seq;
 	private String id; // 아이디(구매자)
 	private String name; // 이름(구매자)
-	private String compName; // 매체사(판매자)
+	private String compName; // 기관/회사명
+	private String copyright; // 저작권자(판매자)
 	private int member_seq; // 매체사(회원고유번호)
 	private String payType; // 결제종류
 	private String uciCode; // UCI코드
@@ -16,7 +17,7 @@ public class CalculationDTO {
 	private int price; // 가격
 	private int status; // 정산상태(0: 기본값, 1: 정산 취소)
 	private int fees; // 수수료
-	private Date regDate; // 등록일
+	private String regDate; // 등록일
 	
 	public int getSeq() {
 		return seq;
@@ -67,10 +68,10 @@ public class CalculationDTO {
 	public void setFees(int fees) {
 		this.fees = fees;
 	}
-	public Date getRegDate() {
+	public String getRegDate() {
 		return regDate;
 	}
-	public void setRegDate(Date regDate) {
+	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
 	public String getName() {
@@ -79,6 +80,12 @@ public class CalculationDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getCopyright() {
+		return copyright;
+	}
+	public void setCopyright(String copyright) {
+		this.copyright = copyright;
+	}
 	public String getCompName() {
 		return compName;
 	}
@@ -86,7 +93,43 @@ public class CalculationDTO {
 		this.compName = compName;
 	}
 	public String getPayType() {
-		return payType;
+		String PAYTYPE="";
+		switch (payType) {
+		case "SC0010":
+			PAYTYPE = "신용카드";
+			break;
+		case "SC0030":
+			PAYTYPE = "계좌이체";
+			break;
+		case "SC0040":
+			PAYTYPE = "무통장";
+			break;
+		case "SC0060":
+			PAYTYPE = "휴대폰";
+			break;
+		case "SC0070":
+			PAYTYPE = "유선전화결제";
+			break;
+		case "SC0090":
+			PAYTYPE = "OK캐쉬백";
+			break;
+		case "SC0111":
+			PAYTYPE = "문화상품권";
+			break;
+		case "SC0112":
+			PAYTYPE = "게임문화상품권";
+			break;
+		case "SC0113":
+			PAYTYPE = "도서문화상품권";
+			break;
+		case "SC0220":
+			PAYTYPE = "모바일T머니";
+			break;
+		case "000000":
+			PAYTYPE = "후불";
+			break;
+		}
+		return PAYTYPE;
 	}
 	public void setPayType(String payType) {
 		this.payType = payType;

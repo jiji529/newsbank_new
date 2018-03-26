@@ -262,7 +262,7 @@
 							<tr>
 								<th>기간 선택</th>
 								<td>
-									<select id="customYear" class="inp_txt" class="inp_txt" style="width:100px;">
+									<select id="customYear" class="inp_txt" style="width:100px;">
 										<c:forEach var="i" begin="2015" end="${year}" step="1">
 											<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
 										</c:forEach>

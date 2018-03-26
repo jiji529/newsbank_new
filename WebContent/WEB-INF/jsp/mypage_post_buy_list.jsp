@@ -122,36 +122,42 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><div class="tb_check">
-								<input id="check1" name="check1" type="checkbox">
-								<label for="check1">선택</label>
-							</div></td>
-						<td>1</td>
-						<td><div class="cart_item">
-								<div class="thumb"> <a href="view.html" target="_blank"><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg"></a> </div>
-								<div class="cart_info"> <a href="view.html" target="_blank">
-									<div class="brand">뉴시스</div>
-									<div class="code">E006203286</div>
-									</a>
-									<div class="option_area">
-										<ul class="opt_li">
-											<li>출판용</li>
-											<li>전시,디스플레이</li>
-											<li>오프라인</li>
-											<li>카달로그, 팜플렛, 브로슈어,리플렛, 메뉴얼,샘플북 e-카다로그,전자브로셔 </li>
-											<li>5,000 ~ 10,000부 미만 </li>
-										</ul>
+					<c:set var="totalPrice" value="0"/>
+					<c:forEach items="${listPaymentDetail}" var="PaymentDetail" varStatus="loop">
+						<!-- 합계 -->
+						<c:set var="totalPrice" value="${totalPrice + PaymentDetail.price}"/>
+						<tr>
+							<td>
+								<div class="tb_check">
+									<input id="check${loop.index+1}" name="check${loop.index+1}" type="checkbox">
+									<label for="check${loop.index+1}">선택</label>
+								</div>
+							</td>
+							<td>${loop.index+1}</td>
+							<td>
+								<div class="cart_item">
+									<div class="thumb"> <a href="view.html" target="_blank"><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg"></a> </div>
+									<div class="cart_info"> <a href="view.html" target="_blank">
+										<div class="brand">뉴시스</div>
+										<div class="code">${PaymentDetail.paymentDetail_seq }</div>
+										<div class="code">${PaymentDetail.photo_uciCode }</div>
+										</a>
+										<div class="option_area">
+											<ul class="opt_li">
+												<!-- 후불 회원은 사용용도만 존재 -->
+												<li>${PaymentDetail.usageDTO.usage }</li>
+											</ul>
+										</div>
 									</div>
 								</div>
-							</div>
-							</a></td>
-						<td>\88,000</td>
-						<td>2016-08-04 10:29:19</td>
-					</tr>
+							</td>
+							<td>\ ${PaymentDetail.price }</td>
+							<td>${PaymentDetail.regDate }</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 				<tfoot>
-				<td colspan="6">합계 : \88,000</td>
+				<td colspan="6">합계 : \ ${totalPrice}</td>
 					</tfoot>
 			</table>
 		</section>

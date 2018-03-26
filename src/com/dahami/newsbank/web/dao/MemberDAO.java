@@ -273,6 +273,30 @@ public class MemberDAO extends DAOBase {
 	}
 	
 	/**
+	 * @methodName : adjSlaveMedia
+	 * @author : LEE,GWAGNHO
+	 * @date : 2018. 03. 22.  오후 16:01:43
+	 * @methodCommet: 정산정보(주정산에 따른 피정산 매체목록)
+	 * @return
+	 * @returnType : List<MemberDTO>
+	 */
+	public List<MemberDTO> adjSlaveMedia(MemberDTO memberDTO) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Member.adjSlaveMedia", memberDTO);
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	/**
 	 * @methodName : selectMemberList
 	 * @author : Lee, Gwangho
 	 * @date : 2017. 11. 23. 오전 10:27:13

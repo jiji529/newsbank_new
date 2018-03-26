@@ -27,22 +27,53 @@
 		</selectKey>
    	</insert>
    	
+   	<!-- 정산매체, 피정산매체 선택에 따른 정산결과 -->
    	<select id="selectCalculation" resultType="com.dahami.newsbank.web.dto.CalculationDTO" 
    	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 
-   	   SELECT C.seq, C.id, M.name, SM.compName, P.member_seq, C.`payType`, 
+   	   SELECT C.seq, C.id, M.name, M.compName, SM.name as copyright, P.member_seq, C.`payType`,  
    	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`regDate`
 		FROM calculations C
 		INNER JOIN member M ON C.id = M.id
 		INNER JOIN photo P ON C.uciCode = P.uciCode
 		INNER JOIN member SM ON P.member_seq = SM.seq
 		
-		<!-- <where>
-		    <if test="member_seq != null">
-		    	P.member_seq = #{member_seq}    
+		<where>
+		    <if test="member_seqArr != null and member_seqArr.length != 0">
+		        <foreach item="slaveSeq" collection="member_seqArr" index="idx" open="(" separator="OR" close=")">
+		            P.member_seq = #{slaveSeq} 
+		        </foreach>
 		    </if>
-	    </where> -->
+		    <if test="paytype != null and paytype != 'all'">
+		    	AND C.`payType` = #{paytype}    
+		    </if>		    
+		    <if test="start_date != null and end_date != null">
+		    	AND date_format(C.`regDate`, '%Y-%m-%d') BETWEEN #{start_date} AND #{end_date}     
+		    </if>
+	    </where>
 		
    	</select>
    	
+   	<!-- 월별 정산통계 Result -->
+	<resultMap id="calculationResult" type="java.util.HashMap">
+		<result javaType="java.lang.String" column="YearOfMonth" property="YearOfMonth"></result>
+		<result javaType="java.lang.Integer" column="price" property="price"></result>
+		<result javaType="java.lang.Integer" column="type" property="type"></result>
+	</resultMap>
+   	
+   	<!-- 정산/피정산 전체매체를 대상으로 온/오프라인 월별 통계 -->
+   	<select id="selectOfMonth" resultMap="calculationResult">
+   	    SELECT DATE_FORMAT(regDate, '%Y-%m') AS YearOfMonth, SUM(price) as price, `type`
+		FROM calculations 
+		<where>
+		    <if test="start_date != null and end_date != null">
+		        DATE_FORMAT(regDate, '%Y-%m-%d') BETWEEN #{start_date} AND #{end_date}
+	        </if>		    
+	        <if test="paytype != null and paytype != 'all'">
+	            AND payType = #{paytype}
+	        </if>
+		</where>
+		GROUP BY DATE_FORMAT(regDate, '%Y-%m'), `type`
+		ORDER BY DATE_FORMAT(regDate, '%Y-%m')
+   	</select>
 </mapper>
     

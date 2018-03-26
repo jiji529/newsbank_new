@@ -546,12 +546,23 @@ $(document).ready(function() {
 // 검색옵션 월별 선택 함수
 function change_customDay() {
 	var year = $('#customYear').val();
+	var date = new Date();
 	
 	if($('#customDay').val() == "all") {
-		var lastDay = (new Date(year, 12, 0)).getDate();
+		var thisYear = date.getFullYear();
+		var endDate = "";
+		
+		if(year == thisYear) {
+			// (선택년도 == 올해년도) -> 금일 날짜를 마지막 날로 설정
+			endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, date.getMonth(), date.getDate()));
+		}else {
+			// 아니면 선택년도의 마지막 날짜로 설정
+			var lastDay = (new Date(year, 12, 0)).getDate();
+			endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 11, lastDay));
+		}
 		
 		var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 0, 1));
-		var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 11, lastDay));
+		
 	} else {
 		var mon = $('#customDay').val() - 1;
 		var lastDay = (new Date(year, mon + 1, 0)).getDate();
@@ -563,12 +574,40 @@ function change_customDay() {
 	$("#contractStart").val(startDate);
 	$("#contractEnd").val(endDate);
 }
+
+// 기간선택 (년도에 따른 월별검색 옵션 불러오기)
+function year_of_month_option() {
+	var date = new Date();
+	var thisYear = date.getFullYear(); // 금년
+	var thisMonth = date.getMonth()+1; // 금월
+	var lastMonth; // 마지막 월
+	var year = $('#customYear').val(); // 선택년도
+	var option = '<option value="all" selected="selected">전체(월)</option>';
+	
+	$("#customDay option").remove();
+	
+	if(thisYear == year) { 
+		// 선택년도 == 올해년도 이면 금월까지
+		lastMonth = thisMonth;
+	}else {
+		// 과거년도는 12월까지
+		lastMonth = 12;
+	}
+	
+	for(var m=1; m<=lastMonth; m++) {
+		option += '<option value="' + m + '">' + m +'월</option>';
+	}
+	
+	$(option).appendTo("#customDay");
+}
+
 // accountlist.mypage
 $(document).ready(function() {
 
 	$('#customYear').on('change', function() {
 		$('#customDayOption a.btn').removeClass('on'); // 날짜 초기화
 		$('#customDay').val('all');
+		year_of_month_option(); // 월별 옵션
 		change_customDay(); // 월별 선택
 	});
 	
@@ -995,4 +1034,9 @@ function addZeros(num, digit) {
 	    }
 	  }
 	  return zero + num;
+}
+
+// 천단위 ,(콤마) 넣어주기
+function comma(num){
+	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

@@ -42,9 +42,11 @@ public class PaymentDetailDTO implements Serializable {
 	private String downEnd; //다운로드 종료일
 	private String downCount;  // 다운로드 횟수
 	private String status; // 결제승인 상태(0: 기본값, 1: 결제취소, 2:관리자 승인, 3: 관리자 승인거부)
+	private String regDate; // 결제일
 	private UsageDTO usageDTO;
 	private PhotoDTO photoDTO;
 	private MemberDTO memberDTO; // 구매사진 매체정보
+	
 	
 	/** 다운기한 종료(혹은 미도래) / downStart, downEnd 세팅시 확인 후 설정함 */
 	private boolean downExpire;
@@ -131,6 +133,13 @@ public class PaymentDetailDTO implements Serializable {
 	public void setMemberDTO(MemberDTO memberDTO) {
 		this.memberDTO = memberDTO;
 	}
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+
 	private void checkDownExpire() {
 		try{
 			Date downS = fullDf.parse(this.downStart);

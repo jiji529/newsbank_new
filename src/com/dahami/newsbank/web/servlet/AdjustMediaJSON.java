@@ -44,7 +44,7 @@ public class AdjustMediaJSON extends NewsbankServletBase {
 		memberDTO.setSeq(adjMaster);
 		MemberDAO memberDAO = new MemberDAO();
 		
-		List<MemberDTO> slaveList = memberDAO.adminAdjustMedia(memberDTO);
+		List<MemberDTO> slaveList = memberDAO.adjSlaveMedia(memberDTO); // 주정산 선택매체에 따른 피정산 매체 목록
 		
 		JSONArray jArray = new JSONArray();//배열이 필요할때
 		for(MemberDTO slave : slaveList) {
