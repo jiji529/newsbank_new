@@ -518,7 +518,7 @@ public class DownloadService extends ServiceBase {
 						// 원본파일 전송
 						// TODO 주석제거 원본파일 전송 
 						logger.warn("TODO 주석제거 원본파일 전송");
-//						sendImageFile(response, uciEmbedTmp, this.uciCode + ".jpg");
+						sendImageFile(response, uciEmbedTmp, photo.getUciCode() + ".jpg");
 					} finally {
 					}
 
