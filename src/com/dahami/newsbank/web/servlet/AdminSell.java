@@ -56,7 +56,6 @@ public class AdminSell extends NewsbankServletBase {
 				List<String> pastMonths = new ArrayList<String>();
 				pastMonths.add(thisMonth);				
 				String tabName = request.getParameter("tabName") == null ? "byYear" : request.getParameter("tabName"); // default (다운로드) 
-				System.out.println("tabName : " + tabName);
 				
 				// 최근 6개월 표현
 				for(int i=0; i<5; i++) {

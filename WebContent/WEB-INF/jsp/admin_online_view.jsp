@@ -92,9 +92,10 @@
 								<th>주문번호</th>
 								<td>${payInfo.LGD_OID }</td>
 								<th>주문일자</th>
-								<fmt:parseDate value="${payInfo.LGD_PAYDATE}" var="LGD_PAYDATE_STRING" pattern="yyyyMMddhhmmss"/>
+								<td>${payInfo.LGD_PAYDATE}</td>
+								<%-- <fmt:parseDate value="${payInfo.LGD_PAYDATE}" var="LGD_PAYDATE_STRING" pattern="yyyyMMddhhmmss"/>
 								<fmt:formatDate value="${LGD_PAYDATE_STRING}" var="LGD_PAYDATE_DATE" pattern="yyyy-MM-dd hh:mm:ss"/>
-								<td>${LGD_PAYDATE_DATE }</td>
+								<td>${LGD_PAYDATE_DATE }</td> --%>
 								
 							</tr>
 							<tr>

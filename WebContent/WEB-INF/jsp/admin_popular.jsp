@@ -47,6 +47,11 @@
 		});		
 		
 	});
+	
+	function tabSwitch(tabName) {
+		$("#tabName").val(tabName);
+		popular_form.submit();
+	}
 </script>
 
 <title>뉴스뱅크</title>
@@ -62,83 +67,31 @@
 				</div>
 				<div class="tab">
 					<ul class="tabs">
-						<li><a href="javascript:tabControl(0)" class="active">엄선한
-								사진</a></li>
-						<li><a href="javascript:tabControl(1)">다운로드</a></li>
-						<li><a href="javascript:tabControl(2)">찜</a></li>
-						<li><a href="javascript:tabControl(3)">상세보기</a></li>
+						<li><a href="javascript:tabSwitch('selected')" <c:if test="${tabName eq 'selected'}">class="active"</c:if>>엄선한 사진</a></li>
+						<li><a href="javascript:tabSwitch('download')" <c:if test="${tabName eq 'download'}">class="active"</c:if>>다운로드</a></li>
+						<li><a href="javascript:tabSwitch('zzim')" <c:if test="${tabName eq 'zzim'}">class="active"</c:if>>찜</a></li>
+						<li><a href="javascript:tabSwitch('detail')" <c:if test="${tabName eq 'detail'}">class="active"</c:if>>상세보기</a></li>
 					</ul>
 				</div>
+				
 				<div class="popular_list">
-					<!-- 검색추가는 엄선한 사진에만 있고 다운로드 찜 상세보기에는 없어요-->
-					<div class="cms_search">
-						이미지 추가 <input type="text" placeholder="이미지 검색">
-							<button>검색</button>
-					</div>
-					<table cellpadding="0" cellspacing="0" class="tb04" style="">
-						<colgroup>
-							<col width="80">
-								<col width="80">
-									<col width="40">
-										<col width="40">
-						</colgroup>
-						<thead>
-							<tr>
-								<th>UCI 코드</th>
-								<th>매체사</th>
-								<th>횟수</th>
-								<th>삭제</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>I011-M004974664</td>
-								<td>㈜다하미커뮤니케이션즈</td>
-								<td>12340회</td>
-								<td><a href="#" class="list_btn">삭제</a></td>
-							</tr>
-							<tr>
-								<td>I011-M004948927</td>
-								<td>동아일보</td>
-								<td>9회</td>
-								<td><a href="#" class="list_btn">삭제</a></td>
-							</tr>
-							<tr>
-								<td>I011-M000701299</td>
-								<td>동아일보</td>
-								<td>8회</td>
-								<td><a href="#" class="list_btn">삭제</a></td>
-							</tr>
-							<tr>
-								<td>I011-M004638910</td>
-								<td>동아일보</td>
-								<td>7회</td>
-								<td><a href="#" class="list_btn">삭제</a></td>
-							</tr>
-							<tr>
-								<td>I011-M000936947</td>
-								<td>동아일보</td>
-								<td>6회</td>
-								<td><a href="#" class="list_btn">삭제</a></td>
-							</tr>
-							<tr>
-								<td>I011-M004405317</td>
-								<td>세계일보</td>
-								<td>5회</td>
-								<td><a href="#" class="list_btn">삭제</a></td>
-							</tr>
-							<tr>
-								<td>I011-M004905777</td>
-								<td>뉴시스</td>
-								<td>4회</td>
-								<td><a href="#" class="list_btn">삭제</a></td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="btn_area">
-						<a href="#" class="btn_input2">저장</a><a href="#" class="btn_input1">취소</a>
-					</div>
+					<c:if test="${tabName eq 'selected'}">
+						<%@include file="admin_tab_photo_selected.jsp"%>
+					</c:if>
+					
+					<c:if test="${tabName eq 'download'}">
+						<%@include file="admin_tab_photo_download.jsp"%>
+					</c:if>
+					
+					<c:if test="${tabName eq 'zzim'}">
+						<%@include file="admin_tab_photo_zzim.jsp"%>
+					</c:if>
+					
+					<c:if test="${tabName eq 'detail'}">
+						<%@include file="admin_tab_photo_detail.jsp"%>
+					</c:if>
 				</div>
+				
 				<div id="photo_area">
 					<img
 						src="http://www.dev.newsbank.co.kr/view.down.photo?uciCode=I011-M001047566&amp;dummy=LZsxEkUOqaAHHg14cFQjxA%3D%3D"
@@ -149,5 +102,9 @@
 
 		</section>
 	</div>
+	
+	<form method="post" action="/popular.manage" name="popular_form" >
+		<input type="hidden" id="tabName" name="tabName" />
+	</form>
 </body>
 </html>

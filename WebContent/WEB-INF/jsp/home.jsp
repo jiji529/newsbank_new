@@ -151,9 +151,9 @@
 				<li>
 					<a href="/photo">보도사진</a>
 				</li>
-				<li>
+				<!-- <li>
 					<a href="/collection">컬렉션</a>
-				</li>
+				</li> -->
 				<!-- <li>
 					<a href="javascript:void(0)">뮤지엄</a>
 				</li>

@@ -172,6 +172,11 @@ public class CalculationAction extends NewsbankServletBase {
 		JSONArray tempArray = new JSONArray();
 		Map<String, Object> param = new HashMap<String, Object>(); // 전달할 파라미터값
 		
+		String[] member_seqArr = {};
+		if(seqArr != null) {
+			member_seqArr = seqArr.split(","); // 피정산 매체 seq
+		}
+		
 		switch(cmd) {
 			case "C":
 				// 정산 추가
@@ -179,11 +184,6 @@ public class CalculationAction extends NewsbankServletBase {
 				
 			case "R": 
 				// 정산 목록
-				String[] member_seqArr = {};
-				if(seqArr != null) {
-					member_seqArr = seqArr.split(","); // 피정산 매체 seq
-				}				
-				
 				param.put("keyword", keyword);
 				param.put("start_date", start_date);
 				param.put("end_date", end_date);
@@ -220,38 +220,54 @@ public class CalculationAction extends NewsbankServletBase {
 				param.put("start_date", start_date);
 				param.put("end_date", end_date);
 				param.put("paytype", paytype);
+				param.put("member_seqArr", member_seqArr);
 				
 				List<Map<String, Object>> staticsList = calculationDAO.selectOfMonth(param);
-				String year = start_date.substring(0, 4);
-				int sMonth = Integer.parseInt(start_date.substring(start_date.length()-2, start_date.length()));
-				int eMonth = Integer.parseInt(end_date.substring(end_date.length()-2, end_date.length()));
+				String year = start_date.substring(0, 4);				
+				String[] sDate = start_date.split("-");
+				String[] eDate = end_date.split("-");
+				
+				int sMonth = Integer.parseInt(sDate[1]);
+				int eMonth = Integer.parseInt(eDate[1]);
 				
 				// local 배열
 				for(int m=sMonth; m<=eMonth; m++) { // 월별
-					JSONObject obj = new JSONObject();
-					
 					for(int t=0; t<2; t++) { // type = 0, 1 (2가지)
 						String month = String.format("%02d", m);
 						String YearOfMonth = year + "-" + month;
 						
+						JSONObject obj = new JSONObject();
 						obj.put("price", 0);
 						obj.put("YearOfMonth", YearOfMonth);
 						obj.put("type", t);
+						obj.put("count", 0);
 						
-						//tempArray.add(obj);
 						jArray.add(obj);
-					}
+					}					
+					
 				}
 				
-				
+				// DB에서 받아온 값
 				for(Map<String, Object> statics : staticsList) {
 					JSONObject obj = new JSONObject();
 					obj.put("price", statics.get("price"));
 					obj.put("YearOfMonth", statics.get("YearOfMonth"));
 					obj.put("type", statics.get("type"));
-					
-					//jArray.add(obj);
+					obj.put("count", statics.get("count"));
 					tempArray.add(obj);
+					
+					// local 배열을 돌면서 같은 값은 치환
+					for(int idx = 0; idx < jArray.size(); idx++) {
+						JSONObject object = (JSONObject)jArray.get(idx);
+						
+						String jYearOfMonth = object.get("YearOfMonth").toString();
+						String jType = object.get("type").toString();
+						
+						// year && type이 같으면 price 치환
+						if(jYearOfMonth.equals(statics.get("YearOfMonth").toString()) && jType.equals(statics.get("type").toString())) {
+							jArray.set(idx, obj);
+						}
+					}
 				}
 				
 				break;

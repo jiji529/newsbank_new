@@ -60,6 +60,13 @@
 		search();
 	});
 	
+	// 키워드 엔터 이벤트
+	$(document).on("keypress", "#keyword", function(e) {
+		if (e.keyCode == 13) { // 엔터
+			search();
+		}
+	});
+	
 	// 정산목록 검색(정산매체 선택)
 	function search() {
 		var keyword = $("#keyword").val(); // 키워드

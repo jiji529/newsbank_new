@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 
+import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.MemberDAO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 /**
@@ -46,6 +49,36 @@ public class AdminPopular extends NewsbankServletBase {
 				MemberDAO memberDAO = new MemberDAO();
 				List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
 				request.setAttribute("mediaList", mediaList); // 활성 매체사
+				
+				PhotoDAO photoDAO = new PhotoDAO();
+				List<PhotoDTO> photoList = new ArrayList<>();
+				
+				String tabName = request.getParameter("tabName") == null ? "selected" : request.getParameter("tabName"); // default (다운로드) 
+				
+				switch(tabName) {
+					case "selected":
+						// 엄선한 사진
+						photoList = photoDAO.editorPhotoList();
+						break;
+	
+					case "download":
+						// 다운로드
+						photoList = photoDAO.downloadPhotoList();
+						break;
+						
+					case "zzim":
+						// 찜
+						photoList = photoDAO.basketPhotoList();
+						break;
+						
+					case "detail":
+						// 상세보기
+						photoList = photoDAO.hitsPhotoList();
+						break;
+				}
+				
+				request.setAttribute("tabName", tabName);
+				request.setAttribute("photoList", photoList);
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_popular.jsp");
 				dispatcher.forward(request, response);

@@ -60,15 +60,9 @@ public class CalculationDAO extends DAOBase {
 	public List<Map<String, Object>> selectOfMonth(Map<String, Object> param) {
 		SqlSession session = null;
 		List<Map<String, Object>> result = new ArrayList<>();
-		//String sDate = param.get("start_date").toString();
-		//String eDate = param.get("end_date").toString();
-		
-		//int sMonth = Integer.parseInt(sDate.substring(sDate.length()-2, sDate.length()));
-		//int eMonth = Integer.parseInt(eDate.substring(eDate.length()-2, eDate.length()));
 		
 		try {
 			session = sf.getSession();
-			
 			return session.selectList("calculation.selectOfMonth", param);
 		} catch (Exception e) {
 			logger.warn("", e);

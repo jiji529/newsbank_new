@@ -64,16 +64,17 @@
 
 	<!-- 홈 : 보도사진 -->	
 	<select id="selectPhotoExh" parameterType="string" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.* FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, M.name AS ownerName FROM photo A
 		INNER JOIN photoExhibition B ON A.uciCode = B.photo_uciCode
 		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
+		INNER JOIN member M ON A.member_seq = M.seq 
 		WHERE C.exhName = #{exhName} AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 	</select>
 	
 	<!-- 인기사진 : 다운로드 -->
 	<select id="selectDownloadRank" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount FROM photo A
 		INNER JOIN paymentDetail B ON A.uciCode = B.photo_uciCode
 		WHERE A.saleStat = 1 AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
@@ -83,7 +84,7 @@
 	
 	<!-- 인기사진 : 찜 -->
 	<select id="selectBasketRank" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, COUNT(*) AS count FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, COUNT(*) AS count FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode
 		WHERE A.saleStat = 1 AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)

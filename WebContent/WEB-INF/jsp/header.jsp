@@ -86,9 +86,9 @@
 		<li>
 			<a href="javascript:void(0)">사진</a>
 		</li-->
-		<li>
+		<!-- <li>
 			<a href="/collection">컬렉션</a>
-		</li>
+		</li> -->
 	</ul>
 	<ul class="gnb_right">
 		<c:choose>

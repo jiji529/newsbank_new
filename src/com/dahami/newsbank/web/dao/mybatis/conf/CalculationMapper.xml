@@ -49,6 +49,10 @@
 		    <if test="start_date != null and end_date != null">
 		    	AND date_format(C.`regDate`, '%Y-%m-%d') BETWEEN #{start_date} AND #{end_date}     
 		    </if>
+		    <if test="keyword != null">
+	            <bind name="keyword" value="'%' + keyword + '%'" />
+	            AND (M.`name` LIKE #{keyword} OR M.`compName` LIKE #{keyword} OR M.`id` LIKE #{keyword})
+            </if>
 	    </where>
 		
    	</select>
@@ -58,22 +62,34 @@
 		<result javaType="java.lang.String" column="YearOfMonth" property="YearOfMonth"></result>
 		<result javaType="java.lang.Integer" column="price" property="price"></result>
 		<result javaType="java.lang.Integer" column="type" property="type"></result>
+		<result javaType="java.lang.Integer" column="count" property="count"></result>
 	</resultMap>
    	
    	<!-- 정산/피정산 전체매체를 대상으로 온/오프라인 월별 통계 -->
    	<select id="selectOfMonth" resultMap="calculationResult">
-   	    SELECT DATE_FORMAT(regDate, '%Y-%m') AS YearOfMonth, SUM(price) as price, `type`
-		FROM calculations 
+   	    SELECT DATE_FORMAT(c.regDate, '%Y-%m') AS YearOfMonth, SUM(price) AS price, c.`type`, COUNT(price) AS count
+		FROM calculations c
+		INNER JOIN photo p ON c.uciCode = p.uciCode
+		INNER JOIN member m on c.id = m.id
 		<where>
+		    <if test="member_seqArr != null and member_seqArr.length != 0">
+		        <foreach item="slaveSeq" collection="member_seqArr" index="idx" open="(" separator="OR" close=")">
+		            p.member_seq = #{slaveSeq} 
+		        </foreach>
+		    </if>
 		    <if test="start_date != null and end_date != null">
-		        DATE_FORMAT(regDate, '%Y-%m-%d') BETWEEN #{start_date} AND #{end_date}
+		        AND DATE_FORMAT(c.regDate, '%Y-%m-%d') BETWEEN #{start_date} AND #{end_date}
 	        </if>		    
 	        <if test="paytype != null and paytype != 'all'">
-	            AND payType = #{paytype}
+	            AND c.payType = #{paytype}
+	        </if>
+	        <if test="keyword != null">
+	            <bind name="keyword" value="'%' + keyword + '%'" />
+	            AND (m.`name` LIKE #{keyword} OR m.`compName` LIKE #{keyword} OR m.`id` LIKE #{keyword})
 	        </if>
 		</where>
-		GROUP BY DATE_FORMAT(regDate, '%Y-%m'), `type`
-		ORDER BY DATE_FORMAT(regDate, '%Y-%m')
+		GROUP BY DATE_FORMAT(c.regDate, '%Y-%m'), `type`
+		ORDER BY DATE_FORMAT(c.regDate, '%Y-%m')
    	</select>
 </mapper>
     
