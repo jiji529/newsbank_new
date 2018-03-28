@@ -24,7 +24,6 @@ public class DownloadDTO {
 	private String uciCode;
 	private int memberSeq;
 	private String ipAddress;
-	private String deferUse = "N";
 	private Date regDate;
 	
 	public int getSeq() {
@@ -50,12 +49,6 @@ public class DownloadDTO {
 	}
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
-	}
-	public String getDeferUse() {
-		return deferUse;
-	}
-	public void setDeferUse(String deferUse) {
-		this.deferUse = deferUse;
 	}
 	public Date getRegDate() {
 		return regDate;

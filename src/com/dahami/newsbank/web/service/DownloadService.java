@@ -283,7 +283,6 @@ public class DownloadService extends ServiceBase {
 					MemberDAO mDao = new MemberDAO();
 					memberInfo = mDao.getMember(memberSeq);
 					if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
-						downLog.setDeferUse("Y");
 						downConfirm = true;
 					}
 
@@ -439,7 +438,6 @@ public class DownloadService extends ServiceBase {
 							MemberDAO mDao = new MemberDAO();
 							memberInfo = mDao.getMember(memberSeq);
 							if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
-								downLog.setDeferUse("Y");
 								downConfirm = true;
 							}
 							// 구매여부 체크

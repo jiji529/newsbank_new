@@ -5,9 +5,9 @@
 	<insert id="insDownload" keyColumn="seq" keyProperty="seq" useGeneratedKeys="true" parameterType="com.dahami.newsbank.web.dto.DownloadDTO">
 		insert 
 			into download
-			(photo_uciCode, member_seq, ipAddress, deferUse)
+			(photo_uciCode, member_seq, ipAddress)
 			values
-       		(#{uciCode}, #{memberSeq}, #{ipAddress}, #{deferUse})
+       		(#{uciCode}, #{memberSeq}, #{ipAddress})
     </insert>
 	
 	<select id="selDownloadable" parameterType="java.util.Map" resultType="int">
