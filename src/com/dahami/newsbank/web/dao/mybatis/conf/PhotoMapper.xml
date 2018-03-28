@@ -62,9 +62,30 @@
 	    WHERE uciCode = #{uciCode} 
 	</update>
 
+	<resultMap id="photoExhMap" type="com.dahami.newsbank.web.dto.UsageDTO">
+		<id property="seq" column="seq" />
+		<result property="exhibitionList_seq" column="exhibitionList_seq" />
+		<result property="uciCode" column="uciCode" />
+		<result property="represen" column="represen" />
+		<result property="orderBy" column="orderBy" />
+		<result property="hitCount" column="hitCount" />
+		<result property="ownerName" column="ownerName" />
+		<result property="regDate" column="regDate" />
+	</resultMap>
+	
+	<!-- 홈 : 엄선한 사진(관리자) -->	
+	<select id="selectPhotoExhAdmin" parameterType="string" resultMap="photoExhMap">
+	    SELECT B.seq, B.exhibitionList_seq, A.uciCode, B.represen, B.orderBy, A.hitCount, M.name AS ownerName, B.regDate  FROM photo A
+		INNER JOIN photoExhibition B ON A.uciCode = B.photo_uciCode
+		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
+		INNER JOIN member M ON A.member_seq = M.seq 
+		WHERE C.exhName = #{exhName} AND 
+		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
+	</select>
+	
 	<!-- 홈 : 보도사진 -->	
 	<select id="selectPhotoExh" parameterType="string" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, M.name AS ownerName FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, M.name AS ownerName, B.seq AS mediaExActive FROM photo A
 		INNER JOIN photoExhibition B ON A.uciCode = B.photo_uciCode
 		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
 		INNER JOIN member M ON A.member_seq = M.seq 

@@ -151,7 +151,7 @@ public class AdminMemberView extends NewsbankServletBase {
 				}
 				
 				// 결제구분 (deferred 0: 온라인결제, 1: 오프라인결제(후불 온라인 가격), 2: 오프라인결제(후불 별도가격))
-				if(Integer.parseInt(memberDTO.getDeferred()) == 2) {
+				if(memberDTO.getDeferred() == 2) {
 					UsageDAO usageDAO = new UsageDAO();
 					
 					List<UsageDTO> usageList = new ArrayList<>();

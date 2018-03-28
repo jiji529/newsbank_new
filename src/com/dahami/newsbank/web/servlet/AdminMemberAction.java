@@ -108,7 +108,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 
 		/** 관리자 기능 **/
 		String permission = null;
-		String deferred = null;
+		int deferred = 0;
 		String activate = null;
 		String admission = null; // 승인
 		int master_seq = 0;
@@ -298,7 +298,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 		}
 
 		if (check && request.getParameter("deferred") != null) {
-			deferred = request.getParameter("deferred"); 
+			deferred = Integer.parseInt(request.getParameter("deferred")); 
 		}
 
 		if (check && request.getParameter("activate") != null) {
@@ -474,7 +474,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setGroup_seq(group_seq);
 			
 			// 후불회원만 사용 용도 갯수만큼 생성 (deferred = 2)
-			if(deferred != null && deferred.equals("2")) {
+			if(deferred != 0 && deferred == 2) {
 				for(int i = 0; i<usage.length; i++) {
 					UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
 					usageDTO.setUsage(usage[i]);

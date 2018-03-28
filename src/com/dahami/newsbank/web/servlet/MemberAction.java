@@ -94,7 +94,7 @@ public class MemberAction extends NewsbankServletBase {
 
 		/** 관리자 기능 **/
 		String permission = null;
-		String deferred = null;
+		int deferred = 0;
 		String activate = null;
 		int master_seq = 0;
 		int group_seq = 0;
@@ -265,7 +265,7 @@ public class MemberAction extends NewsbankServletBase {
 		}
 
 		if (check && request.getParameter("deferred") != null) {
-			deferred = request.getParameter("deferred"); // 로고 경로 request
+			deferred = Integer.parseInt(request.getParameter("deferred")); // 로고 경로 request
 		}
 
 		if (check && request.getParameter("activate") != null) {
