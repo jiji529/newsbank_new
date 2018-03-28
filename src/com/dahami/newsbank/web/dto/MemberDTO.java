@@ -27,7 +27,13 @@ public class MemberDTO implements Serializable {
 	public static final String TYPE_COOP = "C";
 	private String type; // 타입 ( 매체사, 개인, 기업)
 	private String permission; // 권한
-	private String deferred; // 후불승인여부
+	/** 후불 : 아님 / 온라인가격 */
+	public static final int DEFERRED_NORMAL = 0;
+	/** 후불 : 온라인가격 적용 */
+	public static final int DEFERRED_ONLINE = 1;
+	/** 후불 : 별도가격 적용 */
+	public static final int DEFERRED_OTHER = 2;
+	private int deferred; // 후불코드
 	private String compNum;// 사업자 등록 번호
 	private String compZipcode;// 우편번호
 	private String compDocPath; // 등록증 경로
@@ -567,11 +573,11 @@ public class MemberDTO implements Serializable {
 		this.compAddDetail = compAddDetail;
 	}
 
-	public String getDeferred() {
+	public int getDeferred() {
 		return deferred;
 	}
 
-	public void setDeferred(String deferred) {
+	public void setDeferred(int deferred) {
 		this.deferred = deferred;
 	}
 

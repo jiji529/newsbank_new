@@ -282,7 +282,7 @@ public class DownloadService extends ServiceBase {
 					int memberSeq = memberInfo.getSeq();
 					MemberDAO mDao = new MemberDAO();
 					memberInfo = mDao.getMember(memberSeq);
-					if (memberInfo.getDeferred() != null && memberInfo.getDeferred().equals("Y")) {
+					if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
 						downLog.setDeferUse("Y");
 						downConfirm = true;
 					}
@@ -438,7 +438,7 @@ public class DownloadService extends ServiceBase {
 							int memberSeq = memberInfo.getSeq();
 							MemberDAO mDao = new MemberDAO();
 							memberInfo = mDao.getMember(memberSeq);
-							if (memberInfo.getDeferred() != null && memberInfo.getDeferred().equals("Y")) {
+							if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
 								downLog.setDeferUse("Y");
 								downConfirm = true;
 							}
