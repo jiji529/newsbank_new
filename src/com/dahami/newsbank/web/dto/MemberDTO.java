@@ -18,7 +18,10 @@ public class MemberDTO implements Serializable {
 	private Set<Integer> groupSeq;	// 속한 그룹의 사용자 전체
 	
 	private String id; // 아이디
-	private String pw; // 패스워드
+	private String pw; // 리뉴뱅 패스워드
+	private String pwCurrent;//신뉴뱅 패스워드
+	private String pwPast ; // 구뉴뱅 패스워드
+	
 	private String email; // 이메일
 	private String name; // 이름
 	private String phone; // 핸드폰번호
@@ -585,6 +588,22 @@ public class MemberDTO implements Serializable {
 	public void setDeferred(int deferred) {
 		this.deferred = deferred;
 	}
+
+	public String getPwPast() {
+		return pwPast;
+	}
+
+	public void setPwPast(String pwPast) {
+		this.pwPast = pwPast;
+	}
+	public String getPwCurrent() {
+		return pwCurrent;
+	}
+
+	public void setPwCurrent(String pwCurrent) {
+		this.pwCurrent = pwCurrent;
+	}
+
 
 
 }
