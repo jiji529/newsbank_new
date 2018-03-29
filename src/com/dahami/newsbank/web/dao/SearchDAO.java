@@ -290,29 +290,29 @@ public class SearchDAO extends DAOBase {
 		}
 		else {
 			StringBuffer buf = new StringBuffer();
-			if((saleState & SearchParameterBean.SALE_STATE_NOT) == SearchParameterBean.SALE_STATE_NOT) {
-				if(buf.length() > 0) {
-					buf.append(" OR ");
-				}
-				buf.append(PhotoDTO.SALE_STATE_NOT);
-			}
+//			if((saleState & SearchParameterBean.SALE_STATE_NOT) == SearchParameterBean.SALE_STATE_NOT) {
+//				if(buf.length() > 0) {
+//					buf.append(" OR ");
+//				}
+//				buf.append(PhotoDTO.SALE_STATE_NOT);
+//			}
 			if((saleState & SearchParameterBean.SALE_STATE_OK) == SearchParameterBean.SALE_STATE_OK) {
 				if(buf.length() > 0) {
 					buf.append(" OR ");
 				}
 				buf.append(PhotoDTO.SALE_STATE_OK);
 			}
-			if((saleState & SearchParameterBean.SALE_STATE_STOP) == SearchParameterBean.SALE_STATE_STOP) {
+			if((saleState & SearchParameterBean.SALE_STATE_BLIND) == SearchParameterBean.SALE_STATE_BLIND) {
 				if(buf.length() > 0) {
 					buf.append(" OR ");
 				}
 				buf.append(PhotoDTO.SALE_STATE_STOP);
 			}
-			if((saleState & SearchParameterBean.SALE_STATE_DEL_SOLD) == SearchParameterBean.SALE_STATE_DEL_SOLD) {
+			if((saleState & SearchParameterBean.SALE_STATE_DEL) == SearchParameterBean.SALE_STATE_DEL) {
 				if(buf.length() > 0) {
 					buf.append(" OR ");
 				}
-				buf.append(PhotoDTO.SALE_STATE_DEL_SOLD);
+				buf.append(PhotoDTO.SALE_STATE_DEL);
 			}
 			query.addFilterQuery("saleState:(" + buf.toString() + ")");
 		}

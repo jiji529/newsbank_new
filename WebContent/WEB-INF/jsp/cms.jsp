@@ -15,6 +15,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
+<%@ page import="com.dahami.newsbank.dto.PhotoDTO" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% 
 String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
@@ -249,6 +250,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value");
 		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
+		var saleState = $(".filter_service .filter_list").find("[selected=selected]").attr("value");
 		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
 		
 		var searchParam = {
@@ -259,6 +261,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				, "duration":duration
 				, "colorMode":colorMode
 				, "horiVertChoice":horiVertChoice
+				, "saleState":saleState
 				, "size":size
 				//, "id":id
 		};
@@ -277,10 +280,22 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			url: "cms.search",
 			success : function(data) { 
 				$(data.result).each(function(key, val) {	
-					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";
+					var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
+					var deleted = (val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) ? "deleted" : "";
 					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";					
+					html += "<ul class=\"thumb_btn\">";
+					if(deleted.length == 0) {
+						html += "<li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>"
+						html += "<li class=\"btn_del " + deleted + "\" value=\"" + val.uciCode + "\"><a>삭제</a></li>";
+						html += "<li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>숨김</a></li>";
+					}
+					else {
+						html += "<li class=\"btn_down hide\"></li>"
+						html += "<li class=\"" + deleted + "\" value=\"" + val.uciCode + "\"></li>";
+						html += "<li class=\"btn_view hide" + blind + "\" value=\"" + val.uciCode + "\"></li>";
+					}
+					html += " </ul>";
 				});
 				$("#cms_list2 ul").html(html);
 				var totalCount = $(data.count)[0];
@@ -304,6 +319,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var uciCode = $(this).attr("value");		
 		var param = "action=deletePhoto";
 		
+		if(!confirm("이미지 삭제 후 복구할 수 없습니다.\n삭제합니까?")) {
+			return;
+		}
+		
 		$.ajax({
 			url: "/cms?"+param,
 			type: "POST",
@@ -311,7 +330,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				"uciCode" : uciCode
 			},
 			success: function(data) {					
-				
+				alert("삭제되었습니다");
+				cms_search();
 			},
 			error : function(request, status, error) {
 				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -325,17 +345,20 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var saleState;
 		if($(this).hasClass("blind")) {
 			$(this).removeClass("blind");
-			saleState = 1;
+			saleState = <%=PhotoDTO.SALE_STATE_OK%>;
 		}else {
 			$(this).addClass("blind");
-			saleState = 2;
+			saleState = <%=PhotoDTO.SALE_STATE_STOP%>;
 		}
-		var param = "action=blindPhoto";
-		
+		changeBlind(uciCode, saleState)
+	});
+	
+	function changeBlind(uciCode, saleState) {
 		$.ajax({
-			url: "/cms?"+param,
+			url: "/cms",
 			type: "POST",
 			data: {
+				"action" : "blindPhoto",
 				"uciCode" : uciCode,
 				"saleState" : saleState
 			},
@@ -349,7 +372,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				//search();
 			}
 		});
-	});
+	}
 	
 	/** 전체선택 */
 	$(document).on("click", "input[name='check_all']", function() {
@@ -369,22 +392,89 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	}
 	
 	function mutli_download() {
-		var uciCode = new Array();
-		if(!confirm("선택파일을 압축파일로 다운로드하시겠습니까?")) {
+		var uciCode = getCheckedList();
+		if(uciCode.length == 0) {
+			alert("선택된 사진이 없습니다.");
 			return;
 		}
-		$("#cms_list2 input:checkbox:checked").each(function(index) {
-			uciCode.push($(this).val());
-		});
+		
+		if(!confirm("선택파일을 압축파일로 다운로드하시겠습니까?\n삭제된 파일은 다운로드 되지 않습니다.")) {
+			return;
+		}
 		
 		var param = uciCode.join("&uciCode=");
 		
 		//var url = "<%=IMG_SERVER_URL_PREFIX%>/zip.down.photo?&type=file&uciCode=";
 		var url = "/zip.down.photo?&type=file&uciCode=";
 		url += param;
-		console.log(url);
 		
 		$("#downFrame").attr("src", url);
+	}
+	
+	function multi_delete() {
+		var uciCode = getCheckedList();
+		if(uciCode.length == 0) {
+			alert("선택된 사진이 없습니다.");
+			return;
+		}
+		
+		if(!confirm("이미지 삭제 후 복구할 수 없습니다.\n삭제합니까?")) {
+			return;
+		}
+		if(uciCode.length > 1) {
+			if(!confirm("여러개의 이미지가 선택되었습니다. 정말 삭제하시겠습니까?")) {
+				return;
+			}
+		}
+		
+		for(var i=0; i < uciCode.length; i++) {
+			$.ajax({
+				url: "/cms",
+				type: "POST",
+				data: {
+					"action" : "deletePhoto"
+					,"uciCode" : uciCode[i]
+				},
+				success: function(data) {					
+				},
+				error : function(request, status, error) {
+					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+				}
+			});
+		}
+		alert("삭제되었습니다");
+		cms_search();
+	}
+	
+	function multi_blind(saleState) {
+		var uciCode = getCheckedList();
+		if(uciCode.length == 0) {
+			alert("선택된 사진이 없습니다.");
+			return;
+		}
+		
+		var msg = "숨김";
+		if(saleState == <%=PhotoDTO.SALE_STATE_OK%>) {
+			msg = "숨김해제";
+		}
+		
+		if(!confirm("선택된 사진을 "+msg+"처리 합니다. 진행합니까?\n이미 "+msg+"상태이거나 삭제된 사진은 적용되지 않습니다.")) {
+			return;
+		}
+		
+		for(var i=0; i < uciCode.length; i++) {
+			changeBlind(uciCode[i], saleState);
+		}
+		alert("처리되었습니다");
+		cms_search();
+	}
+	
+	function getCheckedList() {
+		var uciCode = new Array();
+		$("#cms_list2 input:checkbox:checked").each(function(index) {
+			uciCode.push($(this).val());
+		});
+		return uciCode;
 	}
 	
 </script>
@@ -487,10 +577,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				</li>
 				<li class="filter_title filter_service"> 서비스 상태
 					<ul class="filter_list">
-						<li value="" selected="selected">전체</li>
+						<li value="<%=SearchParameterBean.SALE_STATE_OK_BLIND%>" selected="selected">정상+숨김</li>
 						<li value="<%=SearchParameterBean.SALE_STATE_OK%>">정상</li>
-						<li value="<%=SearchParameterBean.SALE_STATE_STOP%>">블라인드</li>
-						<li value="<%=SearchParameterBean.SALE_STATE_DEL_SOLD%>">삭제</li>
+						<li value="<%=SearchParameterBean.SALE_STATE_BLIND%>">숨김</li>
+						<li value="<%=SearchParameterBean.SALE_STATE_DEL%>">삭제</li>
+						<li value="<%=SearchParameterBean.SALE_STATE_BLIND_DEL%>">숨김 + 삭제</li>
+						<li value="<%=SearchParameterBean.SALE_STATE_ALL%>">전체</li>
 					</ul>
 				</li>
 				<li class="filter_title filter_upload"> 업로드일
@@ -543,14 +635,17 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			<input type="checkbox" name="check_all" />
 			</span>
 			<ul class="button">
-				<li class="sort_down" onclick="mutli_download()">다운로드</li>
-				<li class="sort_del">삭제</li>
+				<li class="sort_down" onclick="mutli_download()">선택 다운로드</li>
+				<li class="sort_del" onclick="multi_delete()">선택 삭제</li>
 				<!-- 1차 제외
 				<li class="sort_menu">초상권 해결</li>
-				<li class="sort_menu">관련사진 묶기</li> -->
-				<li class="sort_menu">블라인드</li>
-				<li class="sort_menu">블라인드 해제</li>
+				<li class="sort_menu">관련사진 묶기</li>
+				-->
+				<li class="sort_blind" onclick="multi_blind(<%=PhotoDTO.SALE_STATE_STOP%>)">블라인드</li>
+				<li class="sort_unblind" onclick="multi_blind(<%=PhotoDTO.SALE_STATE_OK%>)">블라인드 해제</li>
+				<!-- 1차 제외
 				<li class="sort_up">수동 업로드</li>
+				-->
 			</ul>
 		</div>
 		<section id="cms_list2">

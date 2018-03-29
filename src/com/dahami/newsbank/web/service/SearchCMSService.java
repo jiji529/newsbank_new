@@ -26,8 +26,12 @@ public class SearchCMSService extends ServiceBase{
 		Map<String, String[]> params = request.getParameterMap();
 		SearchParameterBean sParam = new SearchParameterBean(params);
 		// 모든 판매상태(삭제/완전삭제 제외) 보기
-		sParam.setSaleState(SearchParameterBean.SALE_STATE_NOT | SearchParameterBean.SALE_STATE_OK | SearchParameterBean.SALE_STATE_STOP | SearchParameterBean.SALE_STATE_DEL_SOLD);
+//		sParam.setSaleState(SearchParameterBean.SALE_STATE_NOT | SearchParameterBean.SALE_STATE_OK | SearchParameterBean.SALE_STATE_STOP | SearchParameterBean.SALE_STATE_DEL_SOLD);
 		
+		// 미지정시 디폴트값 전송
+		if(sParam.getSaleState() == 0) {
+			sParam.setSaleState(SearchParameterBean.SALE_STATE_DEFAULT);
+		}
 		// CMS 검색은 비활성 매체도 가능하도록 함
 		sParam.setMediaInactive(SearchParameterBean.MEDIA_INACTIVE_NO | SearchParameterBean.MEDIA_INACTIVE_YES);
 		

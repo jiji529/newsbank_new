@@ -128,6 +128,8 @@
 .mypage .btn_sort .button li{float:left; border:1px #e2e2e2 solid;height:28px; margin-left:8px; font-size:13px; line-height:28px; padding:0 10px;cursor:pointer; position:relative;}
 .mypage .btn_sort .button li.sort_down{ background:#f8f8f8; font-weight:600;}
 .mypage .btn_sort .button li.sort_del{ font-weight:600; padding-left:26px; margin-left:-1px; background:url(../images/mp/ico_del.png) 8px 6px no-repeat;background-color:#f8f8f8; }
+.mypage .btn_sort .button li.sort_blind{ background:#f8f8f8; font-weight:600;}
+.mypage .btn_sort .button li.sort_unblind{ background:#f8f8f8; font-weight:600;}
 .mypage .btn_sort .button li.sort_up{ background:#f8f8f8; font-weight:600;}
 .mypage .btn_sort .button li.sort_folder{ padding-right:25px;}
 .mypage .btn_sort .button li.sort_folder:after { content: ''; position: absolute; top: 50%; right: 10px; height: 0; width: 0; margin-top: -3px; border: solid transparent; border-top-color: #555; border-width: 5px 4px; -webkit-transition: border 0.3s ease-in-out; transition: border 0.3s ease-in-out; width: auto;}
@@ -177,6 +179,10 @@
 .mypage #cms_list2 .thumb .thumb_btn .btn_view{background:url(../images/mp/btn_view.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_cart{background:url(../images/mp/btn_cart.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .blind{background:url(../images/mp/btn_blind.png) center 6px no-repeat;}
+.mypage #cms_list2 .thumb .thumb_btn .hide{background:none;cursor:default}
+.mypage #cms_list2 .thumb .thumb_btn .hide:hover{background-color:#666;}
+.mypage #cms_list2 .thumb .thumb_btn .deleted{background:url(../images/mp/btn_deleted.png) center 6px no-repeat;cursor:default;}
+.mypage #cms_list2 .thumb .thumb_btn .deleted:hover{background-color:#666;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_likeness{background:url(../images/mp/btn_likeness.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn li:hover{background-color:#4d4d4d;}
 

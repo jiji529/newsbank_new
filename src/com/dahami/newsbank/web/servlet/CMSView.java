@@ -47,8 +47,6 @@ public class CMSView extends NewsbankServletBase {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		response.getWriter().write("Success Data");
 		
 		//SearchDAO searchDAO = new SearchDAO();
 		PhotoDAO photoDAO = new PhotoDAO();
@@ -143,7 +141,7 @@ public class CMSView extends NewsbankServletBase {
 		}else if(columnName.equals("portraitRightState")) {
 			photoDTO.setPortraitRightState(value);
 			photoDAO.update_PortraitRightState(photoDTO);
-		} 		
+		}
 	}
 
 }

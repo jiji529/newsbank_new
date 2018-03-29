@@ -36,10 +36,16 @@ public class SearchParameterBean {
 	
 	/** 판매 상태 1:미판매 / 2:판매중 / 4:판매중지 / 8:삭제(플래그,판매건) */
 	private int saleState;
-	public static final int SALE_STATE_NOT = 1;
+//	public static final int SALE_STATE_NOT = 1;
 	public static final int SALE_STATE_OK = 2;
-	public static final int SALE_STATE_STOP = 4;
-	public static final int SALE_STATE_DEL_SOLD = 8;
+	public static final int SALE_STATE_BLIND = 4;
+	public static final int SALE_STATE_DEL = 8;
+	// 조합
+	public static final int SALE_STATE_ALL = SALE_STATE_OK | SALE_STATE_BLIND | SALE_STATE_DEL;
+	public static final int SALE_STATE_OK_BLIND = SALE_STATE_OK | SALE_STATE_BLIND;
+	public static final int SALE_STATE_BLIND_DEL = SALE_STATE_BLIND | SALE_STATE_DEL;
+	public static final int SALE_STATE_DEFAULT = SALE_STATE_OK_BLIND;	// 기본값
+	
 	
 	/** 미디어 비활성 상태 / 1:비활성 / 2:활성 */
 	private int mediaInactive;
@@ -132,6 +138,7 @@ public class SearchParameterBean {
 		try{this.duration = params.get("duration")[0];}catch(Exception e){}
 		try{this.colorMode = Integer.parseInt(params.get("colorMode")[0]);}catch(Exception e){}
 		try{this.horiVertChoice = Integer.parseInt(params.get("horiVertChoice")[0]);}catch(Exception e){}
+		try{this.saleState = Integer.parseInt(params.get("saleState")[0]);}catch(Exception e){}
 		try{this.size = Integer.parseInt(params.get("size")[0]);}catch(Exception e){}
 		try{this.portRight = Integer.parseInt(params.get("portRight")[0]);}catch(Exception e){}
 		try{this.includePerson = Integer.parseInt(params.get("includePerson")[0]);}catch(Exception e){}

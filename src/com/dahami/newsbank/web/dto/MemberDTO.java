@@ -2,6 +2,7 @@ package com.dahami.newsbank.web.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import com.dahami.newsbank.web.util.CommonUtil;
 
@@ -12,6 +13,7 @@ import com.dahami.newsbank.web.util.CommonUtil;
 
 public class MemberDTO implements Serializable {
 	private int seq; // 시퀀스
+	private Set<Integer> subSeq;	// 소속 사용자 셋
 	private String id; // 아이디
 	private String pw; // 패스워드
 	private String email; // 이메일

@@ -13,12 +13,19 @@
   2017. 10. 17.   hoyadev        view.cms
 ---------------------------------------------------------------------------%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.dahami.newsbank.dto.PhotoDTO" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <% 
 String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+PhotoDTO photoDto = (PhotoDTO)request.getAttribute("photoDTO");
+
+boolean contentBlidF = false;
+if(photoDto.getSaleState() == PhotoDTO.SALE_STATE_DEL) {
+	contentBlidF = true;
+}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -340,13 +347,37 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
 				</div>
 				<div class="cont_area">
-					<h3 class="img_tit"><span class="uci">[${photoDTO.uciCode}]</span>ns696100264</h3>
+					<h3 class="img_tit"><span class="uci">[${photoDTO.uciCode}]</span>
+<%
+if(photoDto.getCompCode() != null) {
+%>
+${photoDTO.compCode }
+<%
+}
+%>
+					</h3>
+<%
+// 삭제 상태가 아니면 출력
+if(!contentBlidF) {
+%>					
 					<h3 class="img_tit hTitle">${photoDTO.titleKor}</h3>
 					<a class="btn_edit">수정</a>
 					<p class="img_cont">
 						${photoDTO.descriptionKor} <br />
 					</p>
+<%
+}
+else {
+%>
+					<h3 class="img_tit hTitle">삭제된 이미지</h3>
+<%
+}
+%>
 				</div>
+<%
+// 삭제 상태가 아니면 출력
+if(!contentBlidF) {
+%>
 				<div class="img_info_area area1">
 					<h3 class="info_tit">사진 정보</h3>
 					<dl>
@@ -390,9 +421,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						</div>
 					</div>
 				</div>
-				
+<%
+}
+%>
 			</div>
 			<div class="view_rt">
+<%
+// 삭제 상태가 아니면 출력
+if(!contentBlidF) {
+%>
 				<div class="btn_down"><a href="javascript:;" onclick="down('${photoDTO.uciCode}')">원본이미지 다운로드</a></div>
 				<!--
 				<div class="cms_rt">
@@ -406,6 +443,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					</div>
 				</div>
 				-->
+<%
+}
+%>
 				<div class="cms_rt">
 					<h3 class="info_tit">통계</h3>
 					<table width="100%" border="0" cellspacing="0" cellpadding="0"  class="cms_table1">
@@ -442,6 +482,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						 -->
 					</table>
 				</div>
+<%
+// 삭제 상태가 아니면 출력
+if(!contentBlidF) {
+%>
 				<div class="cms_rt">
 					<h3 class="info_tit">옵션</h3>
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="cms_table2">
@@ -505,6 +549,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						</c:forEach>
 					</ul>
 				</div>
+<%
+}
+%>
 			</div>
 		</section>
 	</section>

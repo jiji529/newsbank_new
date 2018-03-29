@@ -34,9 +34,11 @@ import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -264,27 +266,29 @@ public class DownloadService extends ServiceBase {
 				boolean isOwner = false;
 				String corp = "nb";
 
-				PhotoDTO[] photoDtos = null;
-				File[] fileFds = null;
-
+				// 후불 체크
+				int memberSeq = memberInfo.getSeq();
+				MemberDAO mDao = new MemberDAO();
+				memberInfo = mDao.getMember(memberSeq);
+				boolean deferredF = false;	// 후불회원 여부
+				if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
+					deferredF = true;
+				}
+				
+				List<PhotoDTO> photoDtoList = new ArrayList<PhotoDTO>();
+				List<File>fileFdList = new ArrayList<File>();
+				
 				// ZIP은 후불 회원 혹은 소유자만 다운로드 가능
 				if (memberInfo != null) {
 					// PhotoDTO 읽기
 					String[] uciCodes = request.getParameterValues("uciCode");
-					photoDtos = new PhotoDTO[uciCodes.length];
 					fileFds = new File[uciCodes.length];
 					for (int i = 0; i < uciCodes.length; i++) {
 						PhotoDTO photo = photoDao.read(uciCodes[i]);
 						photoDtos[i] = photo;
 					}
 
-					// 후불 체크
-					int memberSeq = memberInfo.getSeq();
-					MemberDAO mDao = new MemberDAO();
-					memberInfo = mDao.getMember(memberSeq);
-					if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
-						downConfirm = true;
-					}
+
 
 					// 소유자 체크
 					if (!downConfirm) {
