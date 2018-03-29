@@ -2,6 +2,7 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,12 +57,15 @@ public class Home extends NewsbankServletBase {
 		if (MemberInfo != null) {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("start", 0); // 시작 인덱스
+		params.put("count", 7); // 카운트
 		
 		PhotoDAO photoDAO = new PhotoDAO();
 		List<PhotoDTO> photoList = photoDAO.editorPhotoList(); // 보도사진
-		List<PhotoDTO> downloadList = photoDAO.downloadPhotoList(); // 다운로드
-		List<PhotoDTO> basketList = photoDAO.basketPhotoList(); // 찜
-		List<PhotoDTO> hitsList = photoDAO.hitsPhotoList(); // 상세보기
+		List<PhotoDTO> downloadList = photoDAO.downloadPhotoList(params); // 다운로드
+		List<PhotoDTO> basketList = photoDAO.basketPhotoList(params); // 찜
+		List<PhotoDTO> hitsList = photoDAO.hitsPhotoList(params); // 상세보기
 		
 		MemberDAO memberDAO = new MemberDAO();
 		List<MemberDTO> mediaList = memberDAO.listActiveMedia();

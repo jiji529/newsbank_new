@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="/js/popular.js"></script>
 
 <script type="text/javascript">
 	
@@ -26,26 +27,16 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td>I011-M000936947</td>
-			<td>동아일보</td>
-			<td>6회</td>
-			<td><a href="#" class="list_btn">삭제</a></td>
-		</tr>
-		<tr>
-			<td>I011-M004405317</td>
-			<td>세계일보</td>
-			<td>5회</td>
-			<td><a href="#" class="list_btn">삭제</a></td>
-		</tr>
-		<tr>
-			<td>I011-M004905777</td>
-			<td>뉴시스</td>
-			<td>4회</td>
-			<td><a href="#" class="list_btn">삭제</a></td>
-		</tr>
+		<c:forEach var="photo" items="${photoList}">
+			<tr>
+				<td>${photo.uciCode}</td>
+				<td>${photo.ownerName}</td>
+				<td>${photo.hitCount}회</td>
+				<td><a href="#" id="btn_del" class="list_btn" value="${photo.mediaExActive}">삭제</a></td>
+			</tr>
+		</c:forEach>
 	</tbody>
 </table>
 <div class="btn_area">
-	<a href="#" class="btn_input2">저장</a><a href="#" class="btn_input1">취소</a>
+	<a href="#" id="btn_save" class="btn_input2">저장</a><a href="#" class="btn_input1">취소</a>
 </div>

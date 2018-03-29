@@ -94,35 +94,38 @@
 	</select>
 	
 	<!-- 인기사진 : 다운로드 -->
-	<select id="selectDownloadRank" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount FROM photo A
+	<select id="selectDownloadRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
+	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, M.name AS ownerName FROM photo A
 		INNER JOIN paymentDetail B ON A.uciCode = B.photo_uciCode
+		INNER JOIN member M ON A.member_seq = M.seq
 		WHERE A.saleStat = 1 AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 		ORDER BY B.downCount DESC
-		LIMIT 0, 7
+		LIMIT #{start}, #{count}
 	</select>
 	
 	<!-- 인기사진 : 찜 -->
-	<select id="selectBasketRank" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, COUNT(*) AS count FROM photo A
+	<select id="selectBasketRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
+	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, M.name AS ownerName, COUNT(*) AS count FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode
+		INNER JOIN member M ON A.member_seq = M.seq
 		WHERE A.saleStat = 1 AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 		GROUP BY B.photo_uciCode
 		HAVING count > 0
 		ORDER BY count DESC
-		LIMIT 0, 7
+		LIMIT #{start}, #{count}
     </select>
     
 	<!-- 인기사진 : 상세보기(조회 수) -->
-	<select id="selectHitsRank" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT widthCm, heightCm, uciCode 
-	    FROM photo 
+	<select id="selectHitsRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
+	    SELECT P.widthCm, P.heightCm, P.uciCode, M.name AS ownerName
+	    FROM photo P
+ 		INNER JOIN member M ON P.member_seq = M.seq 
 	    WHERE saleStat = 1 AND 
 	    uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 	    ORDER BY hitCount DESC 
-	    LIMIT 0, 7
+	    LIMIT #{start}, #{count}
     </select>
     
 	<!-- 사진관리 : 통계정보 (찜, 다운로드, 상세보기, 결제, 뮤지엄, 컬렉션) -->
@@ -162,5 +165,26 @@
 		uciStat = '-1'
 		WHERE uciCode = #{uciCode}
 	</update>
+	
+	<select id="selectExhibition" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	    SELECT seq, exhName, exhDes, exhKeyword, exhUpper, exhType, regDate 
+	    FROM exhibitionList 
+	    WHERE exhName = #{exhName}
+	</select>
+	
+	<delete id="deletePhotoExh" parameterType="java.util.HashMap">
+	     DELETE FROM photoExhibition 
+	     WHERE exhibitionList_seq = #{exhibitionList_seq} AND photo_uciCode = #{uciCode} 
+	</delete>
+	
+	<insert id="insertPhotoExh" parameterType="java.util.HashMap">
+	    INSERT INTO photoExhibition (exhibitionList_seq, photo_uciCode, regDate)
+	    VALUES (#{exhibitionList_seq}, #{uciCode}, NOW());
+	</insert>
+	
+	<insert id="insertPhotoBlock" parameterType="java.util.HashMap">
+	    INSERT INTO photoBlock (reason, regDate, photo_uciCode)
+	    VALUES (#{reason}, NOW(), #{uciCode})
+	</insert>
 	
 </mapper>

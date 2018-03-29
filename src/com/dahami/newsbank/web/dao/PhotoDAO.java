@@ -239,13 +239,13 @@ public class PhotoDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public List<PhotoDTO> downloadPhotoList() {
+	public List<PhotoDTO> downloadPhotoList(Map<String, Object> params) {
 		SqlSession session = null;
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 				
 		try {
 			session = sf.getSession();
-			photoList = session.selectList("Photo.selectDownloadRank");
+			photoList = session.selectList("Photo.selectDownloadRank", params);
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
@@ -266,13 +266,13 @@ public class PhotoDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public List<PhotoDTO> basketPhotoList() {
+	public List<PhotoDTO> basketPhotoList(Map<String, Object> params) {
 		SqlSession session = null;
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 				
 		try {
 			session = sf.getSession();
-			photoList = session.selectList("Photo.selectBasketRank");
+			photoList = session.selectList("Photo.selectBasketRank", params);
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
@@ -293,13 +293,13 @@ public class PhotoDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public List<PhotoDTO> hitsPhotoList() {
+	public List<PhotoDTO> hitsPhotoList(Map<String, Object> params) {
 		SqlSession session = null;
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 				
 		try {
 			session = sf.getSession();
-			photoList = session.selectList("Photo.selectHitsRank");
+			photoList = session.selectList("Photo.selectHitsRank", params);
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
@@ -431,5 +431,98 @@ public class PhotoDAO extends DAOBase {
 			try {session.close();} catch (Exception e) {}
 		}
 		return false;
+	}
+	
+	/**
+	 * @methodName  : getExhibition
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2018. 03. 29. 오전 08:26:35
+	 * @methodCommet: 전시 정보
+	 * @param param
+	 * @return 
+	 */
+	public Map<String, Object> getExhibition(Map<String, Object> params) {
+		SqlSession session = null;
+				
+		try {
+			session = sf.getSession();
+			return session.selectOne("Photo.selectExhibition", params);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return null;
+	}
+	
+	/**
+	 * @methodName  : deletePhotoExh
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2018. 03. 29. 오전 08:26:35
+	 * @methodCommet: 엄선한 사진 삭제
+	 * @param param
+	 * @return 
+	 */
+	public void deletePhotoExh(Map<String, Object> params) {
+		SqlSession session = null;
+				
+		try {
+			session = sf.getSession();
+			session.delete("Photo.deletePhotoExh", params);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+	}
+	
+	/**
+	 * @methodName  : insertPhotoExh
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2018. 03. 29. 오전 08:26:35
+	 * @methodCommet: 엄선한 사진 추가
+	 * @param param
+	 * @return 
+	 */
+	public void insertPhotoExh(Map<String, Object> params) {
+		SqlSession session = null;
+				
+		try {
+			session = sf.getSession();
+			session.delete("Photo.insertPhotoExh", params);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+	}
+	
+	/**
+	 * @methodName  : insertPhotoBlock
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2018. 03. 29. 오전 08:26:35
+	 * @methodCommet: 블랙리스트 추가
+	 * @param param
+	 * @return 
+	 */
+	public void insertPhotoBlock(Map<String, Object> params) {
+		SqlSession session = null;
+				
+		try {
+			session = sf.getSession();
+			session.insert("Photo.insertPhotoBlock", params);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
 	}
 }

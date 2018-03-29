@@ -2,7 +2,10 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -52,6 +55,10 @@ public class AdminPopular extends NewsbankServletBase {
 				
 				PhotoDAO photoDAO = new PhotoDAO();
 				List<PhotoDTO> photoList = new ArrayList<>();
+				List uciCodeList = new ArrayList<>();
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("start", 0);
+				params.put("count", 7);
 				
 				String tabName = request.getParameter("tabName") == null ? "selected" : request.getParameter("tabName"); // default (다운로드) 
 				
@@ -63,22 +70,30 @@ public class AdminPopular extends NewsbankServletBase {
 	
 					case "download":
 						// 다운로드
-						photoList = photoDAO.downloadPhotoList();
+						photoList = photoDAO.downloadPhotoList(params);
 						break;
 						
 					case "zzim":
 						// 찜
-						photoList = photoDAO.basketPhotoList();
+						photoList = photoDAO.basketPhotoList(params);
 						break;
 						
 					case "detail":
 						// 상세보기
-						photoList = photoDAO.hitsPhotoList();
+						photoList = photoDAO.hitsPhotoList(params);
 						break;
 				}
 				
 				request.setAttribute("tabName", tabName);
 				request.setAttribute("photoList", photoList);
+				
+				// 엄선한 사진 uci코드배열
+				for(PhotoDTO photo : photoList) {
+					uciCodeList.add(photo.getUciCode());
+				}
+				request.setAttribute("uciCodeList", uciCodeList);
+				//System.out.println(uciCode_list.toString());
+				
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_popular.jsp");
 				dispatcher.forward(request, response);

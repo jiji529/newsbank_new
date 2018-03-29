@@ -37,6 +37,10 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/filter.js"></script>
+<script src="js/unitegallery.min.js"></script>
+<script src="js/ug-theme-tiles.js"></script>
+<link rel="stylesheet" href="css/unite-gallery.css" />
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
@@ -46,6 +50,26 @@
 			}
 		});		
 		
+		// unite 옵션
+		var unite_option = { 
+			gallery_theme: "tiles",			
+			gallery_width:"1218px", // 전체 가로길이
+			
+			tiles_type: "justified", 
+			tile_enable_shadow:true,
+			tile_shadow_color:"#8B8B8B",
+			tile_enable_icons:false, // 아이콘 숨김
+			tile_as_link:true, // 링크처리
+			tile_link_newpage: false, // 링크 새 페이지로 이동
+			
+			tiles_justified_row_height: 200,
+			tiles_justified_space_between: 10,
+			tiles_set_initial_height: true,	
+			tiles_enable_transition: true,
+		};
+		
+		// 미리보기 영역
+		$("#photo_area").unitegallery(unite_option);
 	});
 	
 	function tabSwitch(tabName) {
@@ -67,10 +91,10 @@
 				</div>
 				<div class="tab">
 					<ul class="tabs">
-						<li><a href="javascript:tabSwitch('selected')" <c:if test="${tabName eq 'selected'}">class="active"</c:if>>엄선한 사진</a></li>
-						<li><a href="javascript:tabSwitch('download')" <c:if test="${tabName eq 'download'}">class="active"</c:if>>다운로드</a></li>
-						<li><a href="javascript:tabSwitch('zzim')" <c:if test="${tabName eq 'zzim'}">class="active"</c:if>>찜</a></li>
-						<li><a href="javascript:tabSwitch('detail')" <c:if test="${tabName eq 'detail'}">class="active"</c:if>>상세보기</a></li>
+						<li><a href="javascript:tabSwitch('selected')" value="selected" <c:if test="${tabName eq 'selected'}">class="active"</c:if>>엄선한 사진</a></li>
+						<li><a href="javascript:tabSwitch('download')" value="download" <c:if test="${tabName eq 'download'}">class="active"</c:if>>다운로드</a></li>
+						<li><a href="javascript:tabSwitch('zzim')" value="zzim" <c:if test="${tabName eq 'zzim'}">class="active"</c:if>>찜</a></li>
+						<li><a href="javascript:tabSwitch('detail')" value="detail" <c:if test="${tabName eq 'detail'}">class="active"</c:if>>상세보기</a></li>
 					</ul>
 				</div>
 				
@@ -92,15 +116,24 @@
 					</c:if>
 				</div>
 				
-				<div id="photo_area">
+				<input type="hidden" id="uciCodeList" value="${uciCodeList}"/>
+				<input type="hidden" id="delCnt" value="7"/>
+				<div id="photo_area"> 
+					<c:forEach items="${photoList}" var="photo">						
+						<a href='javascript:go_photoView("${photo.uciCode}")' onclick='go_photoView("${photo.uciCode}")'>
+							<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+						</a>
+					</c:forEach>					
+				 </div>				 
+				<!-- <div id="photo_area">
 					<img
 						src="http://www.dev.newsbank.co.kr/view.down.photo?uciCode=I011-M001047566&amp;dummy=LZsxEkUOqaAHHg14cFQjxA%3D%3D"
 						alt="미리보기인데 제가 구현할 수 없으니 통이미지로 넣었습니다. 이 영역에 미리보기 넣어주세요!"
 						style="float: left; width: 100%;">
-				</div>
+				</div> -->
 			</div>
-
 		</section>
+		
 	</div>
 	
 	<form method="post" action="/popular.manage" name="popular_form" >
