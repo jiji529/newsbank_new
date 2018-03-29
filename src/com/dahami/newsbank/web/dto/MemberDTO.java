@@ -13,7 +13,10 @@ import com.dahami.newsbank.web.util.CommonUtil;
 
 public class MemberDTO implements Serializable {
 	private int seq; // 시퀀스
-	private Set<Integer> subSeq;	// 소속 사용자 셋
+	private Set<Integer> subAdjSeq;	// 소속 사용자 셋 /adjustment
+	private Set<Integer> subRepSeq;	// 소속 사용자 셋 / repPayment
+	private Set<Integer> groupSeq;	// 속한 그룹의 사용자 전체
+	
 	private String id; // 아이디
 	private String pw; // 패스워드
 	private String email; // 이메일

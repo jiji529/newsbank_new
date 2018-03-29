@@ -122,6 +122,27 @@ public class DownloadService extends ServiceBase {
 //		this.uciCode = uciCode;
 //	}
 
+	
+	/** 다운로드 타입 : 원본 */
+	private static final int DOWN_TYPE_ORG = 1;
+	/** 다운로드 타입 : 시안 */
+	private static final int DOWN_TYPE_OUTLINE = 2;
+	
+	/**
+	 * @methodName  : checkDownloadable
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2018. 3. 29. 오후 3:50:56
+	 * @methodCommet: 이미지 다운로드가 가능한지 확인
+	 * @param photo
+	 * @param member
+	 * @return 
+	 * @returnType  : boolean
+	 */
+	private boolean checkDownloadable(PhotoDTO photo, MemberDTO member, int downType) {
+		
+		return true;
+	}
+	
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		CmdClass cmd = CmdClass.getInstance(request);
 		String targetSize = cmd.get3();
@@ -262,50 +283,33 @@ public class DownloadService extends ServiceBase {
 			if (targetSize.equals("zip")) {
 				DownloadDTO downLog = new DownloadDTO();
 				downLog.setIpAddress(ip);
-				boolean downConfirm = false;
-				boolean isOwner = false;
 				String corp = "nb";
-
-				// 후불 체크
-				int memberSeq = memberInfo.getSeq();
-				MemberDAO mDao = new MemberDAO();
-				memberInfo = mDao.getMember(memberSeq);
-				boolean deferredF = false;	// 후불회원 여부
-				if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
-					deferredF = true;
-				}
 				
 				List<PhotoDTO> photoDtoList = new ArrayList<PhotoDTO>();
 				List<File>fileFdList = new ArrayList<File>();
 				
-				// ZIP은 후불 회원 혹은 소유자만 다운로드 가능
+				// ZIP은 후불 회원 / 소유자 / 구매자만 다운로드 가능
 				if (memberInfo != null) {
+					// 후불 체크
+					int memberSeq = memberInfo.getSeq();
+					MemberDAO mDao = new MemberDAO();
+					memberInfo = mDao.getMember(memberSeq);
+					boolean deferredF = false;	// 후불회원 여부
+					if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
+						deferredF = true;
+					}
+					
 					// PhotoDTO 읽기
 					String[] uciCodes = request.getParameterValues("uciCode");
-					fileFds = new File[uciCodes.length];
 					for (int i = 0; i < uciCodes.length; i++) {
 						PhotoDTO photo = photoDao.read(uciCodes[i]);
-						photoDtos[i] = photo;
-					}
-
-
-
-					// 소유자 체크
-					if (!downConfirm) {
-						isOwner = true;
-						for (PhotoDTO cur : photoDtos) {
-							if (cur.getOwnerNo() != memberInfo.getSeq()) {
-								isOwner = false;
-								break;
-							}
-						}
-						if (isOwner) {
-							downConfirm = true;
+						if(checkDownloadable(photo, memberInfo, DOWN_TYPE_ORG)) {
+							photoDtoList.add(photo);
 						}
 					}
 				}
 
-				if (!downConfirm) {
+				if (photoDtoList.size() == 0) {
 					response.sendRedirect(URL_PHOTO_ERROR_VIEW);
 					return;
 				}
@@ -315,8 +319,7 @@ public class DownloadService extends ServiceBase {
 				String serviceName = CORP_NAME_MAP.get(corp); // 뉴스뱅크 / 게티이미지코리아 / 디지털저작권거래소
 
 				try {
-					for (int i = 0; i < photoDtos.length; i++) {
-						PhotoDTO photo = photoDtos[i];
+					for (PhotoDTO photo : photoDtoList) {
 						downLog.setUciCode(photo.getUciCode());
 						photoDao.insDownLog(downLog);
 						// 원본 이미지를 실시간으로 카피 / UCI 임베드 / 다운로드 정보 임베드(메타태그) 하여 전송
@@ -330,7 +333,7 @@ public class DownloadService extends ServiceBase {
 						String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
 						FileUtil.makeDirectory(tmpDir);
 						String uciEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downLog.getSeq() + ".jpg";
-						fileFds[i] = new File(uciEmbedTmp);
+						fileFdList.add(new File(uciEmbedTmp));
 						try {
 							// UCI 코드 임베딩
 							APIHandler.attach(new File(orgPath), new File(uciEmbedTmp), uciCode);
@@ -342,7 +345,7 @@ public class DownloadService extends ServiceBase {
 						}
 
 						// 다운로드 정보 메타정보에 추가
-						if (!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downLog.getSeq(), isOwner, false)) {
+						if (!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downLog.getSeq(), photo.isOwnerGroup(), false)) {
 							// 생성 실패
 							logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downLog.getSeq());
 							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
@@ -353,7 +356,7 @@ public class DownloadService extends ServiceBase {
 					String zipFileName = "newsbank_" + System.currentTimeMillis() + ".zip";
 					String zipPath = PATH_PHOTO_DOWN + "/zip/" + ymDf.format(new Date()) + "/" + zipFileName;
 					ZipUtil zu = new ZipUtil();
-					zu.createZipFile(fileFds, zipPath, true);
+					zu.createZipFile((File[])fileFdList.toArray(), zipPath, true);
 					// 압축파일 전송
 					sendImageFile(response, zipPath, zipFileName);
 				} catch (Exception e) {

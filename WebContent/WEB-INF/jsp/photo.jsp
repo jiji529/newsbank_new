@@ -481,8 +481,8 @@
 						<ul class="filter_list">
 							<li value="" selected="selected">전체</li>
 							<li value="<%=SearchParameterBean.SALE_STATE_OK%>">정상</li>
-							<li value="<%=SearchParameterBean.SALE_STATE_STOP%>">블라인드</li>
-							<li value="<%=SearchParameterBean.SALE_STATE_DEL_SOLD%>">삭제</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_BLIND%>">블라인드</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_DEL%>">삭제</li>
 						</ul>
 					</li>
 				</ul>
