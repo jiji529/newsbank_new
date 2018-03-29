@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,7 @@ public class AdminPopularAction extends NewsbankServletBase {
 		String[] delArr = null; // 삭제할 대상
 		String exhName = "에디터"; // 전시대상
 		String tabName = null; // 탭 이름
+		String cmd = null; // 모드
 		int start = 0; // LIMIT 시작
 		int count = 0; // LIMIT 갯수
 		
@@ -53,6 +55,10 @@ public class AdminPopularAction extends NewsbankServletBase {
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("exhName", exhName);
+		
+		if(check && request.getParameter("cmd") != null) {
+			cmd = request.getParameter("cmd"); // 모드
+		}
 		
 		if(check && request.getParameter("tabName") != null) {
 			tabName = request.getParameter("tabName"); // 탭 이름
@@ -80,7 +86,9 @@ public class AdminPopularAction extends NewsbankServletBase {
 		
 		if(check) {
 			
-			switch(tabName) {
+			if(cmd.equals("U")) { // 수정 
+				
+				switch(tabName) {
 				case "selected": // 엄선한 사진
 					Map<String, Object> exhibition = photoDAO.getExhibition(params);
 					String exhibitionList_seq = exhibition.get("seq").toString();
@@ -150,7 +158,7 @@ public class AdminPopularAction extends NewsbankServletBase {
 					
 				break;
 				
-				case "autoAdd": // 개별항목 삭제에 따른 자동추가
+				/*case "autoAdd": // 개별항목 삭제에 따른 자동추가
 					System.out.println(params.toString());
 					
 					List<PhotoDTO> photoList = photoDAO.downloadPhotoList(params);
@@ -166,9 +174,43 @@ public class AdminPopularAction extends NewsbankServletBase {
 						
 						json.put("list", data);
 					}
-				break;
+				break;*/
 					
+				}
+				
+			}else if(cmd.equals("D")) { // 개별삭제에 따른 자동완성
+				params.put("tabName", tabName);
+				
+				List<PhotoDTO> photoList = new ArrayList<>();
+				switch(tabName) {
+					case "download": // 다운로드
+						photoList = photoDAO.downloadPhotoList(params);
+						break;
+					
+					case "zzim": // 찜
+						photoList = photoDAO.basketPhotoList(params);
+						break;
+						
+					case "detail": // 상세보기
+						photoList = photoDAO.hitsPhotoList(params);
+						break;
+						
+				}
+				
+				if(photoList.size() == 1) {
+					String uciCode = photoList.get(0).getUciCode();
+					String ownerName = photoList.get(0).getOwnerName();
+					String hitCount = String.valueOf(photoList.get(0).getHitCount());
+					
+					Map<String, Object> data = new HashMap<String, Object>();
+					data.put("uciCode", uciCode);
+					data.put("ownerName", ownerName);
+					data.put("hitCount", hitCount);
+					
+					json.put("list", data);
+				}
 			}
+			
 		
 
 			response.getWriter().print(json);

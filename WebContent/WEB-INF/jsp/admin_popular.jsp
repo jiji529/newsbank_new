@@ -98,7 +98,7 @@
 					</ul>
 				</div>
 				
-				<div class="popular_list">
+				<div class="popular_list" style="position: relative; z-index: 200;">
 					<c:if test="${tabName eq 'selected'}">
 						<%@include file="admin_tab_photo_selected.jsp"%>
 					</c:if>

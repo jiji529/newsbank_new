@@ -1,21 +1,27 @@
-// 이미지 삭제
-$(document).on("click",".list_btn",function() {		
+var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+
+// 이미지 삭제(엄선한 사진)
+$(document).on("click","#btn_rm",function() {		
 	this.closest("tr").remove();
+	set_unitegallery(); // 새로고침
 });
 
-// 이미지 개별 삭제
+// 이미지 개별 삭제(다운로드, 찜, 상세보기)
 $(document).on("click","#btn_del",function() {
 	var tabName = $(".tabs li").find("a.active").attr("value");
 	var delCnt = parseInt($("#delCnt").val());
+	var tabName = $(".tabs li").find("a.active").attr("value");
 	var html = "";
 	
 	var param = {
-			"tabName" : "autoAdd",
-			"start" : delCnt,
-			"count" : 1
+			"cmd" : "D"
+			, "start" : delCnt
+			, "count" : 1
+			, "tabName" : tabName
 		};
 	
-	console.log(param);
+	//console.log(param);
+	this.closest("tr").remove();
 	
 	$.ajax({
 		type: "POST",
@@ -33,13 +39,13 @@ $(document).on("click","#btn_del",function() {
 			html += '<td>' + hitCount + '회</td>';
 			html += '<td><a href="#" id="btn_del" class="list_btn">삭제</a></td>';
 			html += '</tr>';
-			
-			console.log(html);
 		},
 		complete: function() {
 			setTimeout(function() {
 				 // 1초 이후에 추가하기
 				$(html).appendTo("tbody");
+				
+				set_unitegallery(); // 새로고침
 			}, 1000);
 			
 			$("#delCnt").val(delCnt+1); // 삭제 카운트 증가
@@ -95,6 +101,7 @@ $(document).on("click", ".btn_add", function() {
 				if(count != 0 && tr_cnt < 7) { // 7개 미만일 때만 추가
 					$(html).appendTo("tbody");	
 					$("#keyword").val("");
+					set_unitegallery(); // 새로고침					
 				}else if(count == 0) {
 					alert("UCI 코드를 정확히 입력해주세요.");
 				}else if(tr_cnt >= 7) {
@@ -128,8 +135,9 @@ $(document).on("click", "#btn_complete", function() {
 		"delArr" : delArr
 		, "insArr" : insArr
 		, "tabName" : "selected"
+		, "cmd" : "U"
 	};
-	console.log(param);
+	//console.log(param);
 	
 	jQuery.ajaxSettings.traditional = true; // 배열 직렬화전달
 	
@@ -170,8 +178,9 @@ $(document).on("click", "#btn_save", function() {
 	var param = {
 		"delArr" : delArr
 		, "tabName" : tabName
+		, "cmd" : "U"
 	};
-	console.log(param);
+	//console.log(param);
 	
 	jQuery.ajaxSettings.traditional = true; // 배열 직렬화전달
 	
@@ -181,7 +190,7 @@ $(document).on("click", "#btn_save", function() {
 		url: "/admin.popular.api",
 		data: param,
 		success: function(data) {
-			console.log(data);
+			//console.log(data);
 		},
 		complete: function() {
 			location.reload();
@@ -199,4 +208,41 @@ function array_diff(a, b) {
 	for(var i=0;i<b.length;i++) { if(tmp[b[i]]) delete tmp[b[i]]; }
 	for(var k in tmp) res.push(k);
 	return res;
+}
+
+function set_unitegallery(){ // 새로고침
+	var photo_area = "";
+	
+	$("tbody tr").each(function(index){
+		var uciCode = $(this).find("td:first").text();
+		
+		photo_area += "<a href='javascript:go_photoView(" + uciCode + ")' onclick='go_photoView(" + uciCode + ")'>";
+		photo_area += '<img alt="image_' + index + '" src="' + IMG_SERVER_URL_PREFIX + '/view.down.photo?uciCode=' + uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">';
+		photo_area += '</a>';
+	});
+	
+	//console.log(photo_area);
+	
+	$("#photo_area").empty();
+	$(photo_area).appendTo("#photo_area");
+	
+	var unite_option = { 
+		gallery_theme: "tiles",			
+		gallery_width:"1218px", // 전체 가로길이
+		
+		tiles_type: "justified", 
+		tile_enable_shadow:true,
+		tile_shadow_color:"#8B8B8B",
+		tile_enable_icons:false, // 아이콘 숨김
+		tile_as_link:true, // 링크처리
+		tile_link_newpage: false, // 링크 새 페이지로 이동
+		
+		tiles_justified_row_height: 200,
+		tiles_justified_space_between: 10,
+		tiles_set_initial_height: true,	
+		tiles_enable_transition: true,
+	};
+	
+	$("#photo_area").unitegallery(unite_option);
+	
 }
