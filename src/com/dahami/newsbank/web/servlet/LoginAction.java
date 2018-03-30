@@ -87,13 +87,15 @@ public class LoginAction extends NewsbankServletBase {
 						memberDAO.updateMember(memberDTO); // 회원정보 업데이트 요청
 						
 						
-					} else if (memberDTO.getPwPast()!=null&& memberDTO.getPwPast().equals(request_pw)) {
+					} else if (memberDTO.getPwPast()!=null) {
 						// 성공 //구뉴뱅
-						pw_success = true;
-						message = "홈페이지 개편으로 기존 뉴스뱅크 패스워드로 로그인을 시도합니다.";
-						memberDTO.setPw(request_pw.toUpperCase());
-						memberDAO.updateMember(memberDTO); // 회원정보 업데이트 요청
+						pw_success = false;
+						message = "홈페이지 개편으로 기존 뉴스뱅크 패스워드가 초기화 되었습니다.\n(주)다하미커뮤니케이션즈 02)593-4174";
+						//memberDTO.setPw(request_pw.toUpperCase());
+						//memberDAO.updateMember(memberDTO); // 회원정보 업데이트 요청
 						
+					}else {
+						message = "아이디 또는 패스워드를 확인하세요.";
 					}
 
 					if (pw_success) {
@@ -112,8 +114,6 @@ public class LoginAction extends NewsbankServletBase {
 							response.addCookie(cookie);
 						}
 						result = true;
-					}else {
-						message = "아이디 또는 패스워드를 확인하세요.";
 					}
 
 				} else { // 탈퇴 회원
