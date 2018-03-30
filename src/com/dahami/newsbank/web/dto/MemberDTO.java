@@ -1,10 +1,7 @@
 package com.dahami.newsbank.web.dto;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
-
-import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
  * @author p153-1706
@@ -12,13 +9,29 @@ import com.dahami.newsbank.web.util.CommonUtil;
  */
 
 public class MemberDTO implements Serializable {
+	private static final long serialVersionUID = 4264810335499478080L;
+
 	private int seq; // 시퀀스
-	private Set<Integer> subAdjSeq;	// 소속 사용자 셋 /adjustment
-	private Set<Integer> subRepSeq;	// 소속 사용자 셋 / repPayment
-	private Set<Integer> groupSeq;	// 속한 그룹의 사용자 전체
+	
+	/*
+		adj : 마스터(매체)가 슬레이브(매체)의 정산을 신청할 수 있음
+		ex) 조선일보가 스포츠조선, 여성조선 사진들도 같이 정산함
+		
+		repPay : 마스터(사용자)가 슬레이브(사용자)의 다운로드 확인, 결제 신청을 할 수 있음
+		ex) 천재교육 마스터 아이디가  각 과목별 아이디들의 다운로드 내역 확인, 결제를 신청할 수 있음 
+		
+		group : 그룹 구성원들은 서로 결제 및 다운로드 내역을 공유함
+		ex) A,B,C가 동일한 그룹 구성원일 때 A가 산 사진을 B와 C가 다운로드 할 수 있음
+	 */
+	private Set<Integer> subAdjSet;	// 소속 사용자 셋 /adjustment
+	private Set<Integer> subRepSet;	// 소속 사용자 셋 / repPayment
+	private Set<Integer> groupSet;	// 속한 그룹의 사용자 전체
 	
 	private String id; // 아이디
-	private String pw; // 패스워드
+	private String pw; // 리뉴뱅 패스워드
+	private String pwCurrent;//신뉴뱅 패스워드
+	private String pwPast ; // 구뉴뱅 패스워드
+	
 	private String email; // 이메일
 	private String name; // 이름
 	private String phone; // 핸드폰번호
@@ -586,5 +599,42 @@ public class MemberDTO implements Serializable {
 		this.deferred = deferred;
 	}
 
+	public Set<Integer> getSubAdjSet() {
+		return subAdjSet;
+	}
 
+	public void setSubAdjSet(Set<Integer> subAdjSet) {
+		this.subAdjSet = subAdjSet;
+	}
+
+	public Set<Integer> getSubRepSet() {
+		return subRepSet;
+	}
+
+	public void setSubRepSet(Set<Integer> subRepSet) {
+		this.subRepSet = subRepSet;
+	}
+
+	public Set<Integer> getGroupSet() {
+		return groupSet;
+	}
+
+	public void setGroupSet(Set<Integer> groupSet) {
+		this.groupSet = groupSet;
+	}
+	
+	public String getPwPast() {
+		return pwPast;
+	}
+
+	public void setPwPast(String pwPast) {
+		this.pwPast = pwPast;
+	}
+	public String getPwCurrent() {
+		return pwCurrent;
+	}
+
+	public void setPwCurrent(String pwCurrent) {
+		this.pwCurrent = pwCurrent;
+	}
 }
