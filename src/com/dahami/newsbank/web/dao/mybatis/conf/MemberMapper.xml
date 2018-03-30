@@ -21,7 +21,7 @@
 	<select id="selectLogin" parameterType="com.dahami.newsbank.web.dto.MemberDTO"
 		resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		SELECT
-		`seq`, `id`, `pw`, `email`, `name`, `phone`, `type`,
+		`seq`, `id`, `pw`,`pwCurrent`,`pwPast`, `email`, `name`, `phone`, `type`,
 		`permission`,
 		`deferred`, `compNum`, `compDocPath`, `compName`,
 		`compAddress`,
@@ -43,7 +43,7 @@
 			AND id = #{id}
 		</if>
 		<if test="pw != null">
-			AND pw = #{pw}
+			AND (pw = #{pw} OR pw = #{pwCurrent} OR pw = #{pwPast})
 		</if>
 		<if test="name != null">
 			AND name = #{name}

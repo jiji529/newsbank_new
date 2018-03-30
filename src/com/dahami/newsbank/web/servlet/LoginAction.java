@@ -41,7 +41,8 @@ public class LoginAction extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("application/json;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
@@ -64,37 +65,65 @@ public class LoginAction extends NewsbankServletBase {
 			MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 			MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 			memberDTO.setId(id);
-			memberDTO.setPw(CommonUtil.sha1(pw));
-			System.out.println(memberDTO.getPw());
+			// memberDTO.setPw();
+			System.out.println(memberDTO.getPwCurrent());
+			
 
 			memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
 			if (memberDTO != null) {
-				
-				if(memberDTO.getWithdraw() == 0) { // 정상회원
-					// 로그인 성공
-					session.setAttribute("MemberInfo", memberDTO); // 회원정보 세션 저장
-					session.setMaxInactiveInterval(60 * 60 * 25 * 7);// 유효기간 7일
 
-					// 자동로그인 쿠키 저장
-					if (login_chk != null && login_chk.trim().equals("on")) {
-						Cookie cookie = new Cookie("id", URLEncoder.encode(id, "UTF-8"));
-						cookie.setMaxAge(60 * 60 * 25 * 7);// 쿠기 유효기간 1주일
-						response.addCookie(cookie);
-					} else {
-						Cookie cookie = new Cookie("id", null);
-						cookie.setMaxAge(0);// 유효기간 0
-						response.addCookie(cookie);
+				if (memberDTO.getWithdraw() == 0) { // 정상회원
+					String request_pw = CommonUtil.sha1(pw);
+					boolean pw_success = false;
+					// 패스워드가 있을때
+					if (memberDTO.getPw() != null && memberDTO.getPw().equals(request_pw)) {
+						// 성공 리뉴뱅
+						pw_success = true;
+					} else if (memberDTO.getPwCurrent()!=null && memberDTO.getPwCurrent().equalsIgnoreCase(request_pw)) {
+						// 성공 신뉴뱅
+						pw_success = true;
+						message = "홈페이지 개편으로 기존 뉴스뱅크 패스워드로 로그인을 시도합니다.";
+						memberDTO.setPw(request_pw.toUpperCase());
+						memberDAO.updateMember(memberDTO); // 회원정보 업데이트 요청
+						
+						
+					} else if (memberDTO.getPwPast()!=null&& memberDTO.getPwPast().equals(request_pw)) {
+						// 성공 //구뉴뱅
+						pw_success = true;
+						message = "홈페이지 개편으로 기존 뉴스뱅크 패스워드로 로그인을 시도합니다.";
+						memberDTO.setPw(request_pw.toUpperCase());
+						memberDAO.updateMember(memberDTO); // 회원정보 업데이트 요청
+						
 					}
-					result = true;
-					
+
+					if (pw_success) {
+						// 로그인 성공
+						session.setAttribute("MemberInfo", memberDTO); // 회원정보 세션 저장
+						session.setMaxInactiveInterval(60 * 60 * 25 * 7);// 유효기간 7일
+
+						// 자동로그인 쿠키 저장
+						if (login_chk != null && login_chk.trim().equals("on")) {
+							Cookie cookie = new Cookie("id", URLEncoder.encode(id, "UTF-8"));
+							cookie.setMaxAge(60 * 60 * 25 * 7);// 쿠기 유효기간 1주일
+							response.addCookie(cookie);
+						} else {
+							Cookie cookie = new Cookie("id", null);
+							cookie.setMaxAge(0);// 유효기간 0
+							response.addCookie(cookie);
+						}
+						result = true;
+					}else {
+						message = "아이디 또는 패스워드를 확인하세요.";
+					}
+
 				} else { // 탈퇴 회원
 					message = "탈퇴 회원입니다.";
 				}
-				
-			}else {
+
+			} else {
 				message = "아이디 또는 패스워드를 확인하세요.";
 			}
-		}else{
+		} else {
 			message = "아이디 또는 패스워드를 확인하세요.";
 		}
 
@@ -110,7 +139,8 @@ public class LoginAction extends NewsbankServletBase {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
