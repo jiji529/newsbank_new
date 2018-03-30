@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="js/admin.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -145,17 +146,9 @@
 		});
 	}
 	
-	function excel() { // 엑셀저장
-		var excelHtml = '<table cellpadding="0" cellspacing="0">' + $("#mTable").html() + "</table>";
-		$("#excelHtml").val(excelHtml);
-		excel_form.submit();
-	}
 </script>
 
 <div class="ad_sch_area">
-	<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
-		<input type="hidden" id="excelHtml" name="excelHtml" />
-	</form>
 	<table class="tb01" cellpadding="0" cellspacing="0">
 		<colgroup>
 			<col style="width: 180px;">
@@ -221,7 +214,7 @@
 			<option value="100">100개</option>
 		</select> <a href="javascript:void(0)" onclick="excel()">엑셀저장</a>
 	</div>
-	<table id="mTable" cellpadding="0" cellspacing="0" class="tb04">
+	<table id="excelTable" cellpadding="0" cellspacing="0" class="tb04">
 		<colgroup>
 			<col width="40" />
 			<col width="50" />
@@ -259,4 +252,9 @@
 		</ul>
 	</div>
 </div>
+
+<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
+	<input type="hidden" id="excelHtml" name="excelHtml" />
+</form>	
+	
 <div id="loading"><img id="loading-image" src="/images/ajax-loader.gif" alt="loading" /></div>

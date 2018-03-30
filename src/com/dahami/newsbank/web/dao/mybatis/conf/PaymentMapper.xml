@@ -653,12 +653,12 @@
 		D.`downStart`,
 		D.`downEnd`, D.`downCount`,
 		R.`compName`, R.`id`, R.`name`,
-		R.`email`, R.`phone`,
+		R.`email`, R.`phone`, R.`type`,
 		U.`seq` as `usageList_seq`,
 		U.`usage`,
 		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
 		U.`usageDate`, U.`price`,
-		P.`uciCode`, P.`copyright`, P.`ownerType`
+		P.`uciCode`, P.`copyright`, P.`ownerType`, P.`compCode`
 		FROM
 		`paymentManage`
 		AS M

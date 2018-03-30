@@ -20,7 +20,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-    
+<%
+	String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+%>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -92,11 +94,9 @@
 								<th>주문번호</th>
 								<td>${payInfo.LGD_OID }</td>
 								<th>주문일자</th>
-								<td>${payInfo.LGD_PAYDATE}</td>
-								<%-- <fmt:parseDate value="${payInfo.LGD_PAYDATE}" var="LGD_PAYDATE_STRING" pattern="yyyyMMddhhmmss"/>
-								<fmt:formatDate value="${LGD_PAYDATE_STRING}" var="LGD_PAYDATE_DATE" pattern="yyyy-MM-dd hh:mm:ss"/>
-								<td>${LGD_PAYDATE_DATE }</td> --%>
-								
+								<fmt:parseDate var="dateString" value="${payInfo.LGD_PAYDATE}" pattern="yyyyMMddHHmmss" />
+								<fmt:formatDate value="${dateString}" var="LGD_PAYDATE_DATE" pattern="yyyy-MM-dd hh:mm:ss"/>
+								<td>${LGD_PAYDATE_DATE}</td>
 							</tr>
 							<tr>
 								<th>구분</th>
@@ -165,12 +165,31 @@
 								<c:set var="totalDownCount" value="${totalDownCount + detail.downCount}"/>	
 								<tr>
 									<td>${status.index+1}</td>
-									<td><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" /></td>
-									<td>${detail.memberDTO.compName }</td>
+									<!-- <td><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" /></td> -->
+									<%-- <td><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${detail.photo_uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"></td> --%>
+									<td><img src="http://www.dev.newsbank.co.kr/list.down.photo?uciCode=${detail.photo_uciCode}" /></td>
+									<td>${detail.photoDTO.copyright }</td>
 									<td>${detail.photo_uciCode }</td>
 									<td>${detail.photoDTO.compCode }</td>
-									<td>${detail.usageDTO.usage } | ${detail.usageDTO.division1 } | ${detail.usageDTO.division2 } | ${detail.usageDTO.division3 }</td>
-									<td>${detail.price }</td>
+									<td>
+										<c:if test="${!empty detail.usageDTO.usage}">
+											${detail.usageDTO.usage}
+										</c:if>
+										
+										<c:if test="${!empty detail.usageDTO.division1}">
+											| ${detail.usageDTO.division1}
+										</c:if>
+										
+										<c:if test="${!empty detail.usageDTO.division2}">
+											 | ${detail.usageDTO.division2}
+										</c:if>
+										
+										<c:if test="${!empty detail.usageDTO.division3}">
+											| ${detail.usageDTO.division3}
+										</c:if>
+										
+									</td>
+									<td><fmt:formatNumber value="${detail.price }" pattern="#,###" /></td>
 									<td>${detail.downCount }</td>
 								</tr>
 							</c:forEach>						
@@ -178,7 +197,7 @@
 						<tfoot>
 							<tr>
 								<td colspan="6">총 결제 금액</td>
-								<td colspan="4"><c:out value="${totalPrice}" /></td>
+								<td colspan="4"><fmt:formatNumber value="${totalPrice}" pattern="#,###" /></td>
 							</tr>
 						</tfoot>
 					</table>

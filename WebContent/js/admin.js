@@ -591,3 +591,9 @@ function setDatepicker() {
      dateFormat: "yymmdd"
   });
 }
+
+function excel() { // 엑셀저장
+	var excelHtml = '<table cellpadding="0" cellspacing="0">' + $("#excelTable").html() + "</table>";
+	$("#excelHtml").val(excelHtml);
+	excel_form.submit();
+}

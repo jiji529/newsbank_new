@@ -307,7 +307,7 @@
 	
 	<!-- 관리자 정산 매체사 목록 -->	
 	<select id="selMediaList" resultMap="MediaDTO" parameterType="java.util.Map">
-	    SELECT (SELECT id FROM member WHERE seq = adjustment.adjMaster) AS masterID, member.seq, id, email, name, phone, compNum, compName, preRate, postRate 
+	    SELECT (SELECT id FROM member WHERE seq = adjustment.adjMaster) AS masterID, member.seq, id, email, name, phone, compNum, compName, preRate, postRate, activate 
 	    FROM member 
 		LEFT JOIN adjustment ON member.seq = adjustment.adjSlave
 		WHERE member.type='M'		
