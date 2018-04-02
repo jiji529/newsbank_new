@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="js/admin.js"></script>
+
 <script type="text/javascript">
 
 	$(document).ready(function() {
@@ -50,6 +52,7 @@
 		
 		var html = "";
 		
+		$("#loading").show();
 		$("#mtBody").empty();
 		
 		$.ajax({
@@ -116,6 +119,7 @@
 			complete: function() {
 				if(state == undefined){
 					pagings(pageCnt);	
+					$("#loading").hide();
 				}
 			}
 			
@@ -318,7 +322,7 @@
 		</select> 
 		<a href="javascript:void(0)" onclick="excel()">엑셀저장</a>
 		</div>
-		<table cellpadding="0" cellspacing="0" class="tb04">
+		<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 			<colgroup>
 			<col width="40" />
 			<col width="50" />
@@ -364,6 +368,10 @@
 			</ul>
 		</div>
 	</div>
-			
-	
 </div>
+
+<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
+	<input type="hidden" id="excelHtml" name="excelHtml" />
+</form>
+
+<div id="loading"><img id="loading-image" src="/images/ajax-loader.gif" alt="loading" /></div>

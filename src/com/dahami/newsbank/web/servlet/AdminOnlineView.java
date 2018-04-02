@@ -24,7 +24,7 @@ import com.dahami.newsbank.web.dto.PaymentManageDTO;
 /**
  * Servlet implementation class AdminOnlineView
  */
-@WebServlet("/view.online.manage")
+@WebServlet(urlPatterns = { "/view.online.manage" }, loadOnStartup = 1)
 public class AdminOnlineView extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        

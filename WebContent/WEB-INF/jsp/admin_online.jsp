@@ -44,6 +44,7 @@
 <script src="js/jquery.twbsPagination.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/mypage.js"></script>
+<script src="js/admin.js"></script>
 
 <script type="text/javascript">
 
@@ -335,9 +336,10 @@
 							<option value="20">20개</option>
 							<option value="50">50개</option>
 							<option value="100">100개</option>
-						</select> <a href="#">엑셀저장</a>
+						</select> 
+						<a href="javascript:void(0)" onclick="excel()">엑셀저장</a>
 					</div>
-					<table cellpadding="0" cellspacing="0" class="tb04">
+					<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 						<colgroup>
 							<col width="40" />
 							<col width="50" />
@@ -382,6 +384,11 @@
 				</div>
 			</div>
 		</section>
+		
+		<!-- Excel 출력 -->
+		<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
+			<input type="hidden" id="excelHtml" name="excelHtml" />
+		</form>
 		
 		<!-- 회원 상세페이지  -->
 		<form method="post" action="/view.member.manage" name="view_member_manage" >

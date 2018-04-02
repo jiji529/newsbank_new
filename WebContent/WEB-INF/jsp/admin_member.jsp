@@ -29,6 +29,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
+<script src="js/admin.js"></script>
 <script> 
 $(document).ready(function(){ 
 	$(".popup_close").click(function(){ 
@@ -472,12 +473,6 @@ function search() { // 검색
 	
 }
 
-function excel() { // 엑셀저장
-	var excelHtml = '<table cellpadding="0" cellspacing="0">' + $("#mTable").html() + "</table>";
-	$("#excelHtml").val(excelHtml);
-	excel_form.submit();
-}
-
 function go_memberView(member_seq) {
 	$("#member_seq").val(member_seq);
 	view_member_manage.submit();
@@ -493,9 +488,6 @@ function go_memberView(member_seq) {
 			<div class="table_head">
 				<h3>회원 현황</h3>
 			</div>
-			<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
-				<input type="hidden" id="excelHtml" name="excelHtml" />
-			</form>
 			<div class="ad_sch_area">
 				<table class="tb01" cellpadding="0" cellspacing="0" >
 					<colgroup>
@@ -560,7 +552,7 @@ function go_memberView(member_seq) {
 					</select> 
 					<a href="javascript:void(0)" onclick="excel()">엑셀저장</a>
 				</div>
-				<table cellpadding="0" cellspacing="0" class="tb04" id="mTable">
+				<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 					<colgroup>
 					<col width="30" />
 					<col width="30" />
@@ -629,9 +621,15 @@ function go_memberView(member_seq) {
 			</div>
 		</div>
 	</section>
+	
+	<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
+		<input type="hidden" id="excelHtml" name="excelHtml" />
+	</form>
+	
 	<form method="post" action="/view.member.manage" name="view_member_manage" >
 		<input type="hidden" name="member_seq" id="member_seq"/>
 	</form>
+	
 </div>
 </body>
 </html>

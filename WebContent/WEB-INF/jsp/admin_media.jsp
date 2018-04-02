@@ -49,6 +49,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
+<script src="js/admin.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -63,17 +64,86 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		search();
 	});
 	
+	// 행 클릭
+	$(document).on("click", ".row", function(e) {
+		var clickTarget = $(e.target);
+		
+		if(clickTarget.is('td')){ // td 태그 클릭했을 때만 상세페이지 이동
+			var seq = $(this).find("input:checkbox:first").val();
+			go_mediaView(seq); // 상세 페이지 이동
+		}
+	});
+	
 	// 팝업창 오픈
 	$(document).on("click", ".popup_open", function() {
+		var seq = $(this).closest("tr").find("input:checkbox:first").val();
+		var compName = $(this).closest("tr").find("td:eq(3)").text();
+		$("#member_seq").val(seq);
+		$("#popup_wrap").find("b").text(compName);
+		
 		$("#popup_wrap").css("display", "block");
 		$("#mask").css("display", "block");
 	});
 	
 	// 팝업창 닫기
 	$(document).on("click", ".popup_close", function() {
+		$("#member_seq").val("");
 		$("#popup_wrap").css("display", "none");
 		$("#mask").css("display", "none");
 	});
+	
+	function activate() { // 매체 활성화
+		var member_seq = $("#member_seq").val();
+		
+		var param = {
+			"cmd" : "U",
+			"type" : "M",
+			"seq" : member_seq,
+			"activate" : 1		
+		};
+		
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			data: param,
+			url: "/admin.member.api",
+			success: function(data) {
+				var result = data.success;
+				if(result) alert("활성화 완료");
+				
+			},
+			complete: function() {
+				$("#popup_wrap").css("display", "none");
+				$("#mask").css("display", "none");
+				location.reload();
+			}
+		});
+	}
+	
+	function deactivate() { // 매체 비활성화
+		var member_seq = $("#member_seq").val();
+		
+		var param = {
+			"cmd" : "U",
+			"type" : "M",
+			"seq" : member_seq,
+			"activate" : 2		
+		};
+		
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			data: param,
+			url: "/admin.member.api",
+			success: function(data) {
+				var result = data.success;
+				if(result) alert("비활성화 완료");
+			},
+			complete: function() {
+				location.reload();
+			}
+		});
+	}
 	
 	// 검색 클릭이벤트
 	$(document).on("click", ".btn_input2", function() {
@@ -171,6 +241,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					var compName = val.compName; // 매체사명
 					var name = val.name; // 이름
 					var phone = val.phone; // 휴대폰 번호
+					var activate = val.activate; // 1: 노출, 2: 비노출
 					
 					if(phone != null && phone.length >= 10) {
 						var phone1, phone2, phone3;
@@ -212,15 +283,16 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					var total = contentCnt[1]; // 전체 수량
 					var contentCnt = blind + " / " + total; // 콘텐츠 수량 (블라인드/전체)
 					//var contentCnt = "-";					
-					var service = "활성"; // 서비스 상태
+					var service = ""; // 서비스 상태
+					if(activate == 1){ service = "활성"; } else if(activate == 2){ service = "비활성"; }
 					var calc = "정산"; // 정산 상태
 					var masterID = val.masterID;
 					if(masterID != null) {
 						calc = "피정산<br/>" + "(" + masterID + ")";								
 					}					
 					
-					//html += '<tr>';
-					html += '<tr onclick="go_mediaView(\'' + seq + '\')">';
+					html += '<tr>';
+					//html += '<tr onclick="go_mediaView(\'' + seq + '\')">';
 					html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
 					html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
 					html += '<label for="check' + key + '">선택</label>';
@@ -281,6 +353,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					var compName = val.compName; // 매체사명
 					var name = val.name; // 이름
 					var phone = val.phone; // 휴대폰 번호
+					var activate = val.activate; // 1: 노출, 2: 비노출
 					
 					if(phone != null && phone.length >= 10) {
 						var phone1, phone2, phone3;
@@ -322,15 +395,16 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					var total = contentCnt[1]; // 전체 수량
 					var contentCnt = blind + " / " + total; // 콘텐츠 수량 (블라인드/전체)
 					//var contentCnt = "-";					
-					var service = "활성"; // 서비스 상태
+					var service = ""; // 서비스 상태
+					if(activate == 1){ service = "활성"; } else if(activate == 2){ service = "비활성"; }
 					var calc = "정산"; // 정산 상태
 					var masterID = val.masterID;
 					if(masterID != null) {
 						calc = "피정산<br/>" + "(" + masterID + ")";								
 					}					
 					
-					//html += '<tr>';
-					html += '<tr onclick="go_mediaView(\'' + seq + '\')">';
+					html += '<tr class="row">';
+					//html += '<tr onclick="go_mediaView(\'' + seq + '\')">';
 					html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
 					html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
 					html += '<label for="check' + key + '">선택</label>';
@@ -500,8 +574,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<option value="50">50개</option>
 						<option value="100">100개</option>
 					</select>
-					<a href="#">엑셀저장</a></div>
-				<table cellpadding="0" cellspacing="0" class="tb04">
+					<a href="javascript:void(0)" onclick="excel()">엑셀저장</a></div>
+				<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 					<colgroup>
 					<col width="30" />
 					<col width="30" />
@@ -552,13 +626,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					</div>
 					<div class="pop_cont">
 
-<p class="alert"><b>뉴시스</b>의 서비스 상태를 변경하시겠습니까?<br /><br />비활성화 시 뉴스뱅크 사이트에서 <br />서비스 매체 노출, 사진 검색, 구매가 모두 제한됩니다.</p>
+<p class="alert"><b>회사/기관명</b>의 서비스 상태를 변경하시겠습니까?<br /><br />비활성화 시 뉴스뱅크 사이트에서 <br />서비스 매체 노출, 사진 검색, 구매가 모두 제한됩니다.</p>
 
 					</div>
 					<div class="pop_foot">
 						<div class="pop_btn">
-							<button onclick="location.href='#'";>활성화</button>
-							<button class="popup_close">비활성화</button>
+							<button onclick="activate()">활성화</button>
+							<button onclick="deactivate()" class="popup_close">비활성화</button>
 						</div>
 					</div>
 				</div>
@@ -575,9 +649,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		</div>
 		<div id="loading"><img id="loading-image" src="/images/ajax-loader.gif" alt="loading" /></div>
 	</section>
+	
+	<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
+		<input type="hidden" id="excelHtml" name="excelHtml" />
+	</form>
+	
 	<form method="post" action="/view.media.manage" name="view_media_manage" >
 		<input type="hidden" name="member_seq" id="member_seq"/>
 	</form>
+	
 </div>
 </body>
 </html>

@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script src="js/admin.js"></script>
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -244,11 +246,11 @@
 </div>
 <div class="ad_result">
 	<div class="ad_result_btn_area fr">
-		<a href="#">엑셀저장</a>
+		<a href="javascript:void(0)" onclick="excel()">엑셀저장</a></div>
 	</div>
 
 	<div id="tb_total">
-		<table cellpadding="0" cellspacing="0" class="tb04" id="sell_table">
+		<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 			<thead id="sell_thead">
 				<!-- 월별 -->
 			</thead>
@@ -261,3 +263,7 @@
 		</table>
 	</div>
 </div>
+
+<form class="excel_form" method="post" action="/excelDown.api" name="excel_form" >
+	<input type="hidden" id="excelHtml" name="excelHtml" />
+</form>
