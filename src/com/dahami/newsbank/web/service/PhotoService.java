@@ -32,7 +32,7 @@ public class PhotoService extends ServiceBase {
 		List<MemberDTO> mediaList = mDao.listActiveMedia();
 		request.setAttribute("mediaList", mediaList); // 활성 매체사
 		
-		String seq = request.getParameter("seq"); // 선택 매체사 고유seq
+		String seq = request.getParameter("seq"); // 선택 매체사 고유seq / 제휴매체 선택해서 검색하는 경우를 위함
 		if(seq == null || seq.isEmpty()) {
 			seq = "0";
 		}

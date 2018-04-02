@@ -31,6 +31,7 @@
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
+<script src="js/search.js.jsp"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/photo.js"></script>

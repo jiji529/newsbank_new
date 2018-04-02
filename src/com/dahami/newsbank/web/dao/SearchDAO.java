@@ -369,10 +369,10 @@ public class SearchDAO extends DAOBase {
 			
 			
 			
-			List<String> targetUserList = params.getTargetUserList();
+			List<Integer> targetUserList = params.getTargetUserList();
 			if(targetUserList != null && targetUserList.size() > 0) {
 				StringBuffer buf = new StringBuffer();
-				for(String targetUser : targetUserList) {
+				for(int targetUser : targetUserList) {
 					if(buf.length() > 0) {
 						buf.append(" OR ");
 					}
@@ -382,44 +382,13 @@ public class SearchDAO extends DAOBase {
 				logger.debug("ownerNo: (" + buf.toString() + ")");
 			}
 			
-			
 			String duration = params.getDuration();
-			if(duration != null && duration.trim().length() > 0) {
-				if(duration.indexOf("~") == -1) {
-					Calendar sCal = Calendar.getInstance();
-					Calendar eCal = Calendar.getInstance();
-					eCal.set(Calendar.HOUR_OF_DAY, 0);
-					eCal.set(Calendar.MINUTE, 0);
-					eCal.set(Calendar.SECOND, 0);
-					eCal.set(Calendar.MILLISECOND, 0);
-					eCal.add(Calendar.DAY_OF_YEAR, 1);
-					if(duration.equals("1d")) {
-						sCal.add(Calendar.DAY_OF_MONTH, -1);
-					}
-					else if(duration.equals("1w")) {
-						sCal.add(Calendar.DAY_OF_MONTH, -7);
-					}
-					else if(duration.equals("1m")) {
-						sCal.add(Calendar.MONTH, -1);
-					}
-					else if(duration.equals("1y")) {
-						sCal.add(Calendar.YEAR, -1);
-					}
-					else {
-						logger.warn("잘못된 기간 형식: " + duration);
-						sCal = null;
-					}
-					
-					if(sCal != null) {
-						query.addFilterQuery("searchDate:[" + fullDf.format(sCal.getTime()) + " TO "+ fullDf.format(eCal.getTime()) +"}");
-					}
-				}
-				else {
-					String[] durationArry = duration.split("~");
-					query.addFilterQuery("searchDate:[" + durationArry[0] + "000000 TO " + durationArry[1] + "000000]");
-				}
-				logger.debug("Duration: " + duration);
-			}
+			String durationReg = params.getDurationReg();
+			String durationTake = params.getDurationTake();
+			
+			setDuration(duration, "searchDate", query);
+			setDuration(durationReg, "regDate", query);
+			setDuration(durationTake, "shotDate", query);
 			
 			if(params.getContentType() != SearchParameterBean.CONTENT_TYPE_ALL) {
 	//			query.addFilterQuery(")
@@ -485,6 +454,45 @@ public class SearchDAO extends DAOBase {
 			query.setRows(pageVol);
 		}
 		return query;
+	}
+	
+	private void setDuration(String duration, String field, SolrQuery query) {
+		if(duration != null && duration.trim().length() > 0) {
+			if(duration.indexOf("~") == -1) {
+				Calendar sCal = Calendar.getInstance();
+				Calendar eCal = Calendar.getInstance();
+				eCal.set(Calendar.HOUR_OF_DAY, 0);
+				eCal.set(Calendar.MINUTE, 0);
+				eCal.set(Calendar.SECOND, 0);
+				eCal.set(Calendar.MILLISECOND, 0);
+				eCal.add(Calendar.DAY_OF_YEAR, 1);
+				if(duration.equals("1d")) {
+					sCal.add(Calendar.DAY_OF_MONTH, -1);
+				}
+				else if(duration.equals("1w")) {
+					sCal.add(Calendar.DAY_OF_MONTH, -7);
+				}
+				else if(duration.equals("1m")) {
+					sCal.add(Calendar.MONTH, -1);
+				}
+				else if(duration.equals("1y")) {
+					sCal.add(Calendar.YEAR, -1);
+				}
+				else {
+//					logger.warn("잘못된 기간 형식: " + duration);
+					sCal = null;
+				}
+				
+				if(sCal != null) {
+					query.addFilterQuery(field + ":[" + fullDf.format(sCal.getTime()) + " TO "+ fullDf.format(eCal.getTime()) +"}");
+				}
+			}
+			else {
+				String[] durationArry = duration.split("~");
+				query.addFilterQuery(field + ":[" + durationArry[0] + "000000 TO " + durationArry[1] + "000000]");
+			}
+			logger.debug(field + ": " + duration);
+		}
 	}
 	
 	protected QueryRequest makeSolrRequest(SolrQuery query) {

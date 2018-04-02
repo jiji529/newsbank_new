@@ -28,39 +28,36 @@ public class Search extends NewsbankServletBase {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
-		request.setCharacterEncoding("UTF-8");
 		CmdClass cmd = CmdClass.getInstance(request);
 		if (cmd.isInvalid()) {
 			response.sendRedirect("/invlidPage.jsp");
 			return;
 		}
+		
+		boolean isCmsSearch = false;
+		
 		try {
 			if(cmd.is2("xml")) {
 				request.setAttribute("exportType", SearchService.EXPORT_TYPE_XML);
+			}
+			if(cmd.is2("cms")) {
+				isCmsSearch = true;
+				if(cmd.is3("xml")) {
+					request.setAttribute("exportType", SearchService.EXPORT_TYPE_XML);	
+				}
 			}
 		}catch(Exception e){
 			request.setAttribute("exportType", SearchService.EXPORT_TYPE_JSON);
 		}
 		
-		SearchService ss = new SearchService();
+		SearchService ss = new SearchService(isCmsSearch);
 		ss.execute(request, response);
 		
-		String jsonStr = (String) request.getAttribute("JSON");
-		String xmlStr = (String) request.getAttribute("XML");
-		if(jsonStr != null) {
-			response.setContentType("text/json; charset=UTF-8");
-			response.getWriter().print(jsonStr);
-		}
-		else if(xmlStr != null) {
-			response.setContentType("text/xml; charset=UTF-8");
-			response.getWriter().print(xmlStr);
-		}
+		String contentType = (String) request.getAttribute("contentType");
+		String result = (String) request.getAttribute("result");
 		
+		response.setContentType(contentType);
+		response.getWriter().print(result);	
 		response.flushBuffer();
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

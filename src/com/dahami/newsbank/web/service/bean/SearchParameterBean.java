@@ -60,11 +60,17 @@ public class SearchParameterBean {
 	public static final int CONTENT_TYPE_PERSONAL = 4;
 	public static final int CONTENT_TYPE_COLLECTION = 8;
 	
-	/** 대상 매체(유저ID) 지정 / 없거나 공백값이면 전체 */
-	private List<String> targetUserList;
+	/** 대상 매체(유저 Seq) 지정 / 없거나 공백값이면 전체 */
+	private List<Integer> targetUserList;
 	
 	/** 검색기간 D일/W주/M달/Y년 내 검색 / yyyyMMdd~yyyyMMdd*/
 	private String duration;
+	
+	/** 등록일 D일/W주/M달/Y년 내 검색 / yyyyMMdd~yyyyMMdd*/
+	private String durationReg;
+	
+	/** 촬영일 D일/W주/M달/Y년 내 검색 / yyyyMMdd~yyyyMMdd*/
+	private String durationTake;
 	
 	/** 색상영역 : 0전체 / 1컬러 / 2모노 */
 	private int colorMode;
@@ -132,10 +138,12 @@ public class SearchParameterBean {
 			String[] mediaArry = params.get("media");
 			for(String cur : mediaArry) {
 				if(cur.trim().length() > 0 && !cur.trim().equals("0"))
-				this.addTargetUser(cur);
+				this.addTargetUser(Integer.parseInt(cur));
 			}
 		}catch(Exception e){}
 		try{this.duration = params.get("duration")[0];}catch(Exception e){}
+		try{this.durationReg = params.get("durationReg")[0];}catch(Exception e){}
+		try{this.durationTake = params.get("durationTake")[0];}catch(Exception e){}
 		try{this.colorMode = Integer.parseInt(params.get("colorMode")[0]);}catch(Exception e){}
 		try{this.horiVertChoice = Integer.parseInt(params.get("horiVertChoice")[0]);}catch(Exception e){}
 		try{this.saleState = Integer.parseInt(params.get("saleState")[0]);}catch(Exception e){}
@@ -203,24 +211,27 @@ public class SearchParameterBean {
 		this.contentType = contentType;
 	}
 
-	public List<String> getTargetUserList() {
+	public List<Integer> getTargetUserList() {
+		if(this.targetUserList == null) {
+			this.targetUserList = new ArrayList<Integer>();
+		}
 		return targetUserList;
 	}
 
-	public void setTargetUserList(List<String> targetUserList) {
+	public void setTargetUserList(List<Integer> targetUserList) {
 		this.targetUserList = targetUserList;
 	}
 	
 	public void resetTargetUserList() {
 		if(this.targetUserList == null) {
-			this.targetUserList = new ArrayList<String>();
+			this.targetUserList = new ArrayList<Integer>();
 		}
 		this.targetUserList.clear();
 	}
 	
-	public void addTargetUser(String targetUser) {
+	public void addTargetUser(Integer targetUser) {
 		if(this.targetUserList == null) {
-			this.targetUserList = new ArrayList<String>();
+			this.targetUserList = new ArrayList<Integer>();
 		}
 		this.targetUserList.add(targetUser);
 	}
@@ -231,6 +242,22 @@ public class SearchParameterBean {
 
 	public void setDuration(String duration) {
 		this.duration = duration;
+	}
+
+	public String getDurationReg() {
+		return durationReg;
+	}
+
+	public void setDurationReg(String durationReg) {
+		this.durationReg = durationReg;
+	}
+
+	public String getDurationTake() {
+		return durationTake;
+	}
+
+	public void setDurationTake(String durationTake) {
+		this.durationTake = durationTake;
 	}
 
 	public int getColorMode() {

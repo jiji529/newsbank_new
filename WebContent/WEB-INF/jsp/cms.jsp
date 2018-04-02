@@ -34,36 +34,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 
+<script src="js/search.js.jsp"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		var cms_keyword = '${cms_keyword}';
-		
-		if(cms_keyword) { // 사진관리 상세페이지에서 이미지 검색 시
-			$("#cms_keyword").val(cms_keyword);
-			cms_search();
-		}else { // 최초 사진 관리 페이지 접근 시
-			search();
-		}
-		
+		cms_search();
 		setDatepicker();
 	});
-	
-	function setDatepicker() {
-		$( ".datepicker" ).datepicker({
-         changeMonth: true, 
-         dayNames: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
-         dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], 
-         monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
-         monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-         showButtonPanel: true, 
-         currentText: '오늘 날짜', 
-         closeText: '닫기', 
-         dateFormat: "yymmdd"
-	  });
-	}
 	
 	$(document).on("click", ".btn_cal", function() {
 		// 기간 : 직접선택
@@ -75,7 +54,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		
 		// 필터 바꾸면 페이지 번호 초기화
 		$("input[name=pageNo]").val("1");
-		search();
+		cms_search();
 	});
 	
 	$(document).on("click", "div .paging a.prev", function() {
@@ -99,7 +78,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			// 키워드 바꾸면 페이지 번호 초기화
 			$("input[name=pageNo]").val("1");
 			
-			search();
+			cms_search();
 		}
 	});
 	
@@ -153,11 +132,19 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		$(this).attr("selected", "selected");
 		
 		if(!$(this).hasClass("choice")){
-			var choice = $(this).text();
-			$(this).attr("selected", "selected");
-			$(this).siblings().removeAttr("selected");
-			var filter_list = "<ul class=\"filter_list\">"+$(this).parents(".filter_list").html()+"</ul>";
-			$(this).parents(".filter_title").children().remove().end().html(choice+filter_list);
+// 			var choice = $(this).text();
+// 			$(this).attr("selected", "selected");
+// 			$(this).siblings().removeAttr("selected");
+// 			var filter_list = "<ul class=\"filter_list\">"+$(this).parents(".filter_list").html()+"</ul>";
+// 			$(this).parents(".filter_title").children().remove().end().html(choice+filter_list);
+			
+			var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
+			var titleTag = $(this).parents(".filter_title").find("span");
+			var titleStr = titleTag.html();
+			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+			titleTag.html(titleStr);
+			
+			$(this).closest(".filter_list").stop().slideUp("fast");		
 			
 			// 필터 바꾸면 페이지 번호 초기화
 			$("input[name=pageNo]").val("1");
@@ -176,138 +163,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}
 		
 	});
-	
-	function search() {
-		var keyword = $("#keyword").val();
-		
-		var pageNo = $("input[name=pageNo]").val();
-		var transPageNo = pageNo.match(/[0-9]/g).join("");
-		if(pageNo != transPageNo) {
-			pageNo = transPageNo;
-			$("input[name=pageNo]").val(pageNo);
-		}
-		
-		var pageVol = $("select[name=pageVol]").val();
-		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
-		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value");
-		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
-		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
-		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
-		
-		var searchParam = {
-				"keyword":keyword
-				, "pageNo":pageNo
-				, "pageVol":pageVol
-				, "media":media
-				, "duration":duration
-				, "colorMode":colorMode
-				, "horiVertChoice":horiVertChoice
-				, "size":size
-				//, "id":id
-		};
-		
-		$("#keyword").val(keyword);
-		
-		var html = "";
-		$.ajax({
-			type: "POST",
-			async: false,
-			dataType: "json",
-			data: searchParam,
-			timeout: 1000000,
-			url: "cms.search",
-			success : function(data) { //console.log(data);
-				$(data.result).each(function(key, val) {	
-					var blind = (val.saleState == 2 || val.saleState == 3) ? "blind" : "";  					
-					html += "<li class=\"thumb\"><a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
-					html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-					html += "<ul class=\"thumb_btn\"> <li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/service.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>	<li class=\"btn_del\" value=\"" + val.uciCode + "\"><a>삭제</a></li> <li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>블라인드</a></li> </ul>";
-				});
-				$("#cms_list2 ul").html(html);
-				var totalCount = $(data.count)[0];
-				var totalPage = $(data.totalPage)[0];
-				$("div .result b").html(totalCount);
-				$("div .paging span.total").html(totalPage);
-			},
-			error : function(request, status, error) {
-				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-			}
-		});
-	}
-	
-	function cms_search() {
-		var keyword = $("#cms_keyword").val();
-		
-		var pageNo = $("input[name=pageNo]").val();
-		var transPageNo = pageNo.match(/[0-9]/g).join("");
-		if(pageNo != transPageNo) {
-			pageNo = transPageNo;
-			$("input[name=pageNo]").val(pageNo);
-		}
-		
-		var pageVol = $("select[name=pageVol]").val();
-		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
-		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value");
-		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
-		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
-		var saleState = $(".filter_service .filter_list").find("[selected=selected]").attr("value");
-		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
-		
-		var searchParam = {
-				"keyword":keyword
-				, "pageNo":pageNo
-				, "pageVol":pageVol
-				, "media":media
-				, "duration":duration
-				, "colorMode":colorMode
-				, "horiVertChoice":horiVertChoice
-				, "saleState":saleState
-				, "size":size
-				//, "id":id
-		};
-		
-		console.log(searchParam);
-		
-		$("#keyword_current").val(keyword);
-		
-		var html = "";
-		$.ajax({
-			type: "POST",
-			async: false,
-			dataType: "json",
-			data: searchParam,
-			timeout: 1000000,
-			url: "cms.search",
-			success : function(data) { 
-				$(data.result).each(function(key, val) {	
-					var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
-					var deleted = (val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) ? "deleted" : "";
-					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_cmsView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";
-					html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-					html += "<ul class=\"thumb_btn\">";
-					if(deleted.length == 0) {
-						html += "<li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>"
-						html += "<li class=\"btn_del " + deleted + "\" value=\"" + val.uciCode + "\"><a>삭제</a></li>";
-						html += "<li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>숨김</a></li>";
-					}
-					else {
-						html += "<li class=\"btn_down hide\"></li>"
-						html += "<li class=\"" + deleted + "\" value=\"" + val.uciCode + "\"></li>";
-						html += "<li class=\"btn_view hide" + blind + "\" value=\"" + val.uciCode + "\"></li>";
-					}
-					html += " </ul>";
-				});
-				$("#cms_list2 ul").html(html);
-				var totalCount = $(data.count)[0];
-				var totalPage = $(data.totalPage)[0];
-				$("div .result b").html(totalCount);
-				$("div .paging span.total").html(totalPage);
-			},
-			error : function(request, status, error) {
-				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-			}
-		});
-	}
 	
 	function go_cmsView(uciCode) {
 		$("#uciCode").val(uciCode);
@@ -522,7 +377,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		<div class="filters">
 			<ul>
 				<li class="filter_title filter_ico">검색필터</li>
-				<li class="filter_title filter_media"> 전체매체
+				<li class="filter_title filter_media">
+					<span>매체 : 전체</span>
 					<ul class="filter_list">
 						<li value="0" selected="selected">전체</li>
 						<c:forEach items="${mediaList}" var="media">
@@ -530,7 +386,29 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						</c:forEach>
 					</ul>
 				</li>
-				<li class="filter_title filter_duration"> 촬영일
+				<li class="filter_title filter_durationReg">
+					<span>업로드일 : 전체</span>
+					<ul class="filter_list">
+						<li value="" selected="selected">전체</li>
+						<li value="1d">1일</li>
+						<li value="1w">1주</li>
+						<li value="1m">1달</li>
+						<li value="1y">1년</li>
+						<li class="choice">직접 입력
+							<div class="calendar">
+								<div class="cal_input">
+									<input type="text" class="datepicker" title="업로드 시작일" />
+									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
+								<div class="cal_input">
+									<input type="text" class="datepicker" title="업로드 마지막일" />
+									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
+								<button class="btn_cal" type="button">적용</button>
+							</div>
+						</li>
+					</ul>
+				</li>
+				<li class="filter_title filter_durationTake">
+					<span>촬영일 : 전체</span>
 					<ul class="filter_list">
 						<li value="" selected="selected">전체</li>
 						<li value="1d">1일</li>
@@ -560,14 +438,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					</ul>
 				</li> --%>
 				<li class="filter_title filter_horizontal">
-					형태
+					<span>가로/세로 : 전체</span>
 					<ul class="filter_list">
 						<li value="<%=SearchParameterBean.HORIZONTAL_ALL%>" selected="selected">전체</li>
 						<li value="<%=SearchParameterBean.HORIZONTAL_YES%>">가로</li>
 						<li value="<%=SearchParameterBean.HORIZONTAL_NO%>">세로</li>
 					</ul>
 				</li>
-				<li class="filter_title filter_size"> 사진크기
+				<li class="filter_title filter_size">
+					<span>사진크기 : 전체</span>
 					<ul class="filter_list">
 						<li value="<%=SearchParameterBean.SIZE_ALL%>" selected="selected">전체</li>
 						<li value="<%=SearchParameterBean.SIZE_LARGE%>">3,000 px 이상</li>
@@ -575,7 +454,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<li value="<%=SearchParameterBean.SIZE_SMALL%>">1,000 px 이하</li>
 					</ul>
 				</li>
-				<li class="filter_title filter_service"> 서비스 상태
+				<li class="filter_title filter_service">
+					<span>서비스 상태 : 정상+숨김</span>
 					<ul class="filter_list">
 						<li value="<%=SearchParameterBean.SALE_STATE_OK_BLIND%>" selected="selected">정상+숨김</li>
 						<li value="<%=SearchParameterBean.SALE_STATE_OK%>">정상</li>
@@ -583,26 +463,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<li value="<%=SearchParameterBean.SALE_STATE_DEL%>">삭제</li>
 						<li value="<%=SearchParameterBean.SALE_STATE_BLIND_DEL%>">숨김 + 삭제</li>
 						<li value="<%=SearchParameterBean.SALE_STATE_ALL%>">전체</li>
-					</ul>
-				</li>
-				<li class="filter_title filter_upload"> 업로드일
-					<ul class="filter_list">
-						<li value="" selected="selected">전체</li>
-						<li value="1d">1일</li>
-						<li value="1w">1주</li>
-						<li value="1m">1달</li>
-						<li value="1y">1년</li>
-						<li class="choice">직접 입력
-							<div class="calendar">
-								<div class="cal_input">
-									<input type="text" class="datepicker" title="업로드 시작일" />
-									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
-								<div class="cal_input">
-									<input type="text" class="datepicker" title="업로드 마지막일" />
-									<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
-								<button class="btn_cal" type="button">적용</button>
-							</div>
-						</li>
 					</ul>
 				</li>
 			</ul>

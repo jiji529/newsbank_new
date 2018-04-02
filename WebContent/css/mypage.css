@@ -116,7 +116,7 @@
 @media (max-width: 1400px){
 .mypage .filters li.filter_title.filter_ico, .mypage .filters li.filter_title.folder_ico{ display:block; border-left:0;}
 .mypage .filters li.filter_title:nth-child(2){margin-left:0; border-left:0;}
-.mypage .filters li.filter_title{max-width:150px}
+.mypage .filters li.filter_title{max-width:200px}
 .mypage .filters li.filter_title:after{right:15px;}}
 
 .mypage .filters .filter_rt{margin-right:10px;}
