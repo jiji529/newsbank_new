@@ -1006,7 +1006,8 @@ function select_year(year, url) {
 	$("#dateForm").attr("action", url);
 	$("#dateForm").submit();
 	
-	console.log("year : " + year);
+	console.log("year : " + year + " / url : " + url);
+	
 }
 
 // 현재날짜 (년월일시분초)

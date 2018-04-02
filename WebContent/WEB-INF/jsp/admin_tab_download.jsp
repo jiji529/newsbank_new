@@ -79,9 +79,9 @@
 						var regDate = val.regDate;
 						
 						html += '<tr>';
-						html += '<td><div class="tb_check">';
-						html += '<input id="check1" name="check1" type="checkbox"> <label for="check1">선택</label>';
-						html += '</div></td>';
+						//html += '<td><div class="tb_check">';
+						//html += '<input id="check1" name="check1" type="checkbox"> <label for="check1">선택</label>';
+						//html += '</div></td>';
 						html += '<td>' + number + '</td>';
 						html += '<td>' + compName + '</td>';
 						html += '<td>' + id + '</td>';
@@ -216,7 +216,7 @@
 	</div>
 	<table id="excelTable" cellpadding="0" cellspacing="0" class="tb04">
 		<colgroup>
-			<col width="40" />
+			<%-- <col width="40" /> --%>
 			<col width="50" />
 			<col width="180" />
 			<col width="150" />
@@ -227,10 +227,10 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th><div class="tb_check">
+				<!-- <th><div class="tb_check">
 						<input id="check_all" name="check_all" type="checkbox"> <label
 							for="check_all">선택</label>
-					</div></th>
+					</div></th> -->
 				<th>No.</th>
 				<th>회사/기관명</th>
 				<th>아이디</th>

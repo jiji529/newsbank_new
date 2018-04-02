@@ -93,7 +93,8 @@ public class CalculationDTO {
 		this.compName = compName;
 	}
 	public String getPayType() {
-		String PAYTYPE="";
+		//String PAYTYPE="";
+		String PAYTYPE = payType;
 		switch (payType) {
 		case "SC0010":
 			PAYTYPE = "신용카드";

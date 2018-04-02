@@ -3,7 +3,37 @@
 
 <mapper namespace="calculation">
    	<!-- 정산승인 -->
-   	<insert id="insertCalculation" useGeneratedKeys="true" keyProperty="calculation_seq">
+   	<insert id="insertCalculation" parameterType="com.dahami.newsbank.web.dto.CalculationDTO" 
+   	    useGeneratedKeys="true" keyProperty="seq">
+   	    INSERT INTO `calculations` (
+		regDate   	    
+   	    <if test="id != null">, `id`</if>
+   	    <if test="uciCode != null">, `uciCode`</if>
+   	    <if test="usage != null">, `usage`</if>
+   	    <if test="type != null">, `type`</if>
+   	    <if test="payType != null">, `payType`</if>
+   	    <if test="price != null">, `price`</if>
+   	    <if test="fees != null">, `fees`</if>
+   	    <if test="status != null">, `status`</if>   	     
+		) VALUES (
+		NOW()
+		<if test="id != null">, #{id}</if>
+		<if test="uciCode != null">, #{uciCode}</if>
+		<if test="usage != null">, #{usage}</if>
+		<if test="type != null">, #{type}</if>
+		<if test="payType != null">, #{payType}</if>
+		<if test="price != null">, #{price}</if>
+		<if test="fees != null">, #{fees}</if>
+		<if test="status != null">, #{status}</if>
+		)
+		
+		<selectKey resultType="int" keyProperty="seq">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+   	</insert>
+   	
+   	<!-- <insert id="insertCalculation" useGeneratedKeys="true" keyProperty="calculation_seq">
    	    INSERT INTO `calculations` (
 		regDate   	    
    	    <if test="id != null">, id</if>
@@ -25,7 +55,7 @@
 			SELECT
 			LAST_INSERT_ID()
 		</selectKey>
-   	</insert>
+   	</insert> -->
    	
    	<!-- 정산매체, 피정산매체 선택에 따른 정산결과 -->
    	<select id="selectCalculation" resultType="com.dahami.newsbank.web.dto.CalculationDTO" 

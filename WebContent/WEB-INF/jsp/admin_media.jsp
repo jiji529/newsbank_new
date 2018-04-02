@@ -109,7 +109,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			url: "/admin.member.api",
 			success: function(data) {
 				var result = data.success;
-				if(result) alert("활성화 완료");
 				
 			},
 			complete: function() {
@@ -137,7 +136,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			url: "/admin.member.api",
 			success: function(data) {
 				var result = data.success;
-				if(result) alert("비활성화 완료");
 			},
 			complete: function() {
 				location.reload();
@@ -492,34 +490,29 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	// 정산 매체사 - 선택 승인
 	function check_approve() {
 		var chk_total = $("#mtBody input:checkbox:checked").length;
-		//var arr_seq = new Array();
 		
 		if(chk_total == 0) { // 선택항목 갯수 체크
 			alert("최소 1개 이상을 선택해주세요.");
 		} else {
-			$("#mtBody input:checkbox:checked").each(function(index) {
-				var seq = $(this).val();
-				//arr_seq.push(seq);
+			
+			if(confirm("선택한 항목을 승인하시겠습니까?")) {
 				
-				var param = {
-					cmd : 'U',
-					seq : seq,
-					admission : 'Y',
-					type : 'M'
-				};
-				console.log(param);
-				
-				if(confirm("선택한 항목을 승인하시겠습니까?")) {
+				$("#mtBody input:checkbox:checked").each(function(index) {
+					var seq = $(this).val();
+					
+					var param = {
+						cmd : 'U',
+						seq : seq,
+						admission : 'Y',
+						type : 'M'
+					};
+					//console.log(param);
+					
+					
 					$.ajax({
 						type: "POST",
 						url: "/admin.member.api",
 						data: param,
-						/* data : ({
-							cmd : 'U',
-							seq : seq,
-							admission : 'Y',
-							type : 'M'
-						}), */
 						dataType : "json",
 						success : function(data) {
 							if (data.success) {
@@ -529,9 +522,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							}
 						}
 					});	
-				}
-			});	
-			alert("선택 승인 완료");
+				});
+				alert("선택 승인 완료");
+			}
 			location.href = "/media.manage";
 		}		
 	}

@@ -33,6 +33,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/filter.js"></script>
+<script src="js/search.js.jsp"></script>
 <script src="js/cms.js.jsp"></script>
 <script> 
 	//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
@@ -140,6 +141,14 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<li value="<%=SearchParameterBean.SIZE_LARGE%>">3,000 px 이상</li>
 							<li value="<%=SearchParameterBean.SIZE_MEDIUM%>">1,000~3,000 px</li>
 							<li value="<%=SearchParameterBean.SIZE_SMALL%>">1,000 px 이하</li>
+						</ul>
+					</li>
+					<li class="filter_title filter_sale_state"> 서비스 상태
+						<ul class="filter_list">
+							<li value="" selected="selected">전체</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_OK%>">정상</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_BLIND%>">블라인드</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_DEL%>">삭제</li>
 						</ul>
 					</li>
 				</ul>

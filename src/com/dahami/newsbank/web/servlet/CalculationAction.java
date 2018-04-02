@@ -18,7 +18,9 @@ import org.json.simple.parser.JSONParser;
 
 import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.MemberDAO;
+import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.CalculationDTO;
+import com.dahami.newsbank.web.dto.PaymentDetailDTO;
 
 /**
  * Servlet implementation class CalculationAction
@@ -53,6 +55,7 @@ public class CalculationAction extends NewsbankServletBase {
 		int seq = 0;
 		String cmd = null;
 		String name = null;
+		String id = null;
 		String compName = null;
 		String payType = null;
 		String uciCode = null;
@@ -66,7 +69,6 @@ public class CalculationAction extends NewsbankServletBase {
 		String keyword = null; // 키워드
 		String start_date = null; // 시작 일자
 		String end_date = null; // 마지막 일자
-		String paytype = null; // 결제종류
 		String seqArr = null; // 피정산 매체
 		
 		
@@ -79,6 +81,11 @@ public class CalculationAction extends NewsbankServletBase {
 			seq = Integer.parseInt(request.getParameter("seq"));
 		}
 		System.out.println("seq => " + seq);
+		
+		if (request.getParameter("id") != null) { // 아이디
+			id = request.getParameter("id");
+		}
+		System.out.println("id => " + id);
 		
 		if (request.getParameter("name") != null) { // 이름
 			name = request.getParameter("name");
@@ -121,12 +128,12 @@ public class CalculationAction extends NewsbankServletBase {
 		System.out.println("price => " + price);
 		
 		if (request.getParameter("fees") != null) { // 빌링수수료
-			fees = Integer.parseInt(request.getParameter("seq"));
+			fees = Integer.parseInt(request.getParameter("fees"));
 		}
 		System.out.println("fees => " + fees);
 		
 		if (request.getParameter("status") != null) { // 정산상태
-			fees = Integer.parseInt(request.getParameter("status"));
+			status = Integer.parseInt(request.getParameter("status"));
 		}
 		System.out.println("status => " + status);
 		
@@ -145,17 +152,13 @@ public class CalculationAction extends NewsbankServletBase {
 		}
 		System.out.println("end_date => " + end_date);
 		
-		if (request.getParameter("paytype") != null) { // 결제방법
-			paytype = request.getParameter("paytype");
-		}
-		System.out.println("paytype => " + paytype);
-		
 		if (request.getParameter("seqArr") != null && !request.getParameter("seqArr").equals("")) { // 피정산 매체
 			seqArr = request.getParameter("seqArr");
 		}
 		System.out.println("seqArr => " + seqArr);
 		
 		CalculationDTO calculationDTO = new CalculationDTO();
+		calculationDTO.setId(id);
 		calculationDTO.setSeq(seq);
 		calculationDTO.setUciCode(uciCode);
 		calculationDTO.setMember_seq(member_seq);
@@ -177,6 +180,8 @@ public class CalculationAction extends NewsbankServletBase {
 			member_seqArr = seqArr.split(","); // 피정산 매체 seq
 		}
 		
+		PaymentDAO paymentDAO = new PaymentDAO();
+		
 		switch(cmd) {
 			case "C":
 				// 정산 추가
@@ -187,7 +192,7 @@ public class CalculationAction extends NewsbankServletBase {
 				param.put("keyword", keyword);
 				param.put("start_date", start_date);
 				param.put("end_date", end_date);
-				param.put("paytype", paytype);
+				param.put("payType", payType);
 				param.put("member_seqArr", member_seqArr);
 				
 				List<CalculationDTO> calcList = calculationDAO.selectCalculation(param);
@@ -219,7 +224,7 @@ public class CalculationAction extends NewsbankServletBase {
 				param.put("keyword", keyword);
 				param.put("start_date", start_date);
 				param.put("end_date", end_date);
-				param.put("paytype", paytype);
+				param.put("payType", payType);
 				param.put("member_seqArr", member_seqArr);
 				
 				List<Map<String, Object>> staticsList = calculationDAO.selectOfMonth(param);
@@ -272,12 +277,20 @@ public class CalculationAction extends NewsbankServletBase {
 				
 				break;
 				
-			case "U":
-				// 정산 수정
-				break;
+			case "U": // 정산 상태 수정(승인/취소)
+				int paymentDetail_seq = Integer.parseInt(request.getParameter("paymentDetail_seq"));
 				
-			case "D":
-				// 정산 취소
+				PaymentDetailDTO paymentDetailDTO = new PaymentDetailDTO();
+				paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq);
+				paymentDetailDTO.setStatus(String.valueOf(status));
+				
+				paymentDAO.updatePaymentDetail(paymentDetailDTO);
+				
+				// 결제 취소건에 대해서는 calculations 테이블에 취소내역 추가
+				if(status == 1) {
+					calculationDAO.insertCalculation(calculationDTO);
+				}
+				
 				break;
 		}	
 		

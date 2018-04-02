@@ -11,6 +11,15 @@
 		searchBuyList();
 	});
 	
+	/** 전체선택 */
+	$(document).on("click", "input[name='check_all']", function() {
+		if($("input[name='check_all']").prop("checked")) {
+			$("#mtBody input:checkbox").prop("checked", true);
+		}else {
+			$("#mtBody input:checkbox").prop("checked", false);
+		}
+	});
+	
 	// 페이징 번호 클릭
 	$(document).on("click",".page",function() {
 		var pages = $(this).text();
@@ -49,6 +58,7 @@
 			, "end_date":end_date
 			, "status":status
 		};
+		//console.log(searchParam);
 		
 		var html = "";
 		
@@ -60,7 +70,7 @@
 			dataType: "json",
 			data: searchParam,
 			url: "/buy.api",
-			success: function(data) { console.log(data);
+			success: function(data) { //console.log(data);
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
@@ -73,7 +83,7 @@
 				
 				var data = data.result;
 				
-				if(data.length != 0) {		//console.log(data);
+				if(data.length != 0) {		console.log(data);
 					$(data).each(function(key, val){
 						var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
 						
@@ -83,11 +93,39 @@
 						var name = val.name;
 						var LGD_OID = val.LGD_OID;
 						var LGD_PAYDATE = val.LGD_PAYDATE;
+						var paydate = LGD_PAYDATE.replace(
+						    /^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
+						    '$1-$2-$3 $4:$5:$6'
+						);
 						var LGD_PAYSTATUS = val.LGD_PAYSTATUS;
+						var status = val.status;
 						var copyright = val.copyright;						
 						var uciCode = val.photo_uciCode;
 						var usage = val.usage;
+						var usageList_seq = val.usageList_seq;
 						var price = val.price;
+						
+						switch(status) {
+						case 0:
+							// 기본값
+							status = "구매 신청";
+							break;
+							
+						case 1:
+							// 결제 취소
+							status = "구매 반려";
+							break;
+							
+						case 2:
+							// 정산 승인
+							status = "정산 승인";
+							break;
+							
+						case 3:
+							// 정산 승인취소
+							status = "승인 취소";
+							break;
+						}
 						
 						html += '<tr>';
 						html += '<td><div class="tb_check">';
@@ -98,12 +136,12 @@
 						html += '<td>' + compName + '</td>';
 						html += '<td>' + id + '</td>';
 						html += '<td>' + name + '</td>';
-						html += '<td>' + LGD_OID + '</td>';
-						html += '<td>' + LGD_PAYDATE + '</td>';
-						html += '<td>' + LGD_PAYSTATUS + '</td>';
+						//html += '<td>' + LGD_OID + '</td>';
+						html += '<td>' + paydate + '</td>';
+						html += '<td>' + status + '</td>';
 						html += '<td>' + copyright + '</td>';
 						html += '<td>' + uciCode + '</td>';
-						html += '<td>' + usage + '</td>';
+						html += '<td seq="' + usageList_seq + '">' + usage + '</td>';
 						html += '<td>' + price + '</td>';
 						html += '</tr>';
 					});
@@ -217,27 +255,60 @@
 		});
 	}
 	
-	// 정산 승인
-	function calc_approve() {
-		var payment_seq = new Array();
-		$("#mtBody input:checkbox:checked").each(function(index) {
-			//var id = $(this).closest("tr").find("td").eq(3).text();
-			//var uciCode = $(this).closest("tr").find("td").eq(9).text();
-			
-			var seq = $(this).val();
-			payment_seq.push(seq);
-		});
+	// 오프라인 구매/정산 상태값 변경 (구매반려 : 1 / 정산 승인: 2 / 정산 승인취소: 3)
+	function update_calculations(status) {
 		
-		var param = {
-				"payment_seq" : payment_seq
+		var count = $("#mtBody input:checkbox:checked").length;
+		
+		if(count != 0){
+			$("#mtBody input:checkbox:checked").each(function(index) {
+				
+				var paymentDetail_seq = $(this).val();
+				
+				var uciCode = $(this).closest("tr").find("td").eq(8).text();
+				var id = $(this).closest("tr").find("td").eq(3).text();
+				var price = $(this).closest("tr").find("td").eq(10).text();
+				var fees = (price * 0.3).toString();
+				var usage = parseInt($(this).closest("tr").find("td").eq(9).attr("seq"));
+				var payType = "SC9999"; // 후불
+				//var usuage = ""; // 사용용도
+				
+				if(status == 1) {
+					price = -(price);
+					fees = -(fees);
+				}
+				
+				var param = {
+						"paymentDetail_seq" : paymentDetail_seq,
+						"cmd" : "U",
+						"status" : status,
+						"id": id,
+						"uciCode": uciCode,
+						"price": price,
+						"fees": fees,
+						"payType": payType,
+						"usage":usage
+				};	
+				console.log(param);
+				
+				$.ajax({
+					type: "POST",
+					url: "/calculation.api",
+					data: param,
+					dataType: "json",
+					success: function(data) { 
+						console.log(data);
+					},
+					complete: function() {
+						searchBuyList();
+					}
+				});
+				
+			});
+		}else {
+			alert("원하는 항목을 체크해주세요");
 		}
-	}
-	
-	// 정산승인 취소
-	function calc_disapprove() {
-		$("#mtBody input:checkbox:checked").each(function(index) {
-			console.log(index + "번째 체크");
-		});
+		
 	}
 </script>
 
@@ -313,7 +384,11 @@
 		<p style="color:#888;" id="buy_result"></p>
 	</div>
 	<div class="ad_result">
-		<div class="ad_result_btn_area"><a href="javascript:void(0)" onclick="calc_approve()">정산 승인</a></span> <a href="javascript:void(0)" onclick="calc_disapprove()">정산 승인 취소</a> </div>
+		<div class="ad_result_btn_area">
+			<a href="javascript:void(0)" onclick="update_calculations(1)">구매 반려</a>
+			<a href="javascript:void(0)" onclick="update_calculations(2)">정산 승인</a> 
+			<a href="javascript:void(0)" onclick="update_calculations(3)">정산 승인 취소</a> 
+		</div>
 		<div class="ad_result_btn_area fr">
 			<select id="sel_pageVol" onchange="searchBuyList()">
 			<option value="20">20개</option>
@@ -329,7 +404,7 @@
 			<col width="120" />
 			<col width="100" />
 			<col width="80" />
-			<col width="150" />
+			<%-- <col width="150" /> --%>
 			<col width="150" />
 			<col width="100" />
 			<col width="100" />
@@ -347,7 +422,7 @@
 					<th>회사/기관명</th>
 					<th>아이디</th>
 					<th>이름</th>
-					<th>주문번호</th>
+					<!-- <th>주문번호</th> -->
 					<th>구매 신청일</th>
 					<th>상태</th>
 					<th>매체</th>

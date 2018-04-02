@@ -279,12 +279,12 @@ public class PaymentDAO extends DAOBase {
 	 * @return
 	 * 결제취소 
 	 */
-	public boolean cancelPaymentDetail(PaymentDetailDTO paymentDetailDTO) {
+	public boolean updatePaymentDetailStatus(PaymentDetailDTO paymentDetailDTO) {
 		boolean result = false;
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-			session.update("payment.cancelPaymentDetail", paymentDetailDTO);
+			session.update("payment.updatePaymentDetailStatus", paymentDetailDTO);
 			result = true;
 			session.commit();
 			// result = memberDTO.isMember();

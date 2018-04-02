@@ -24,7 +24,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 PhotoDTO photoDto = (PhotoDTO)request.getAttribute("photoDTO");
 boolean contentBlidF = false;
 if(photoDto == null || 
-		photoDto.getSaleState() == PhotoDTO.SALE_STATE_NOTEXIST ||
 		photoDto.getSaleState() == PhotoDTO.SALE_STATE_DEL) {
 	contentBlidF = true;
 }

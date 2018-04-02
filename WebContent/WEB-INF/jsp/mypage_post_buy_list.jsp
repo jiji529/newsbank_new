@@ -18,6 +18,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
  SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
@@ -40,7 +41,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180302"></script>
+<script src="js/mypage.js?v=20180402"></script>
 </head>
 <body>
 <div class="wrap">
@@ -102,7 +103,6 @@
 		<section class="order_list">
 			<table cellpadding="0" cellspacing="0" class="tb03" style="border-top:0; margin-bottom:10px;">
 				<colgroup>
-				<col width="30">
 				<col width="70">
 				<col>
 				<col width="120">
@@ -110,11 +110,6 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th scope="col"> <div class="tb_check">
-								<input id="check_all" name="check_all" type="checkbox">
-								<label for="check_all">선택</label>
-							</div>
-						</th>
 						<th>번호</th>
 						<th>구매 이미지 정보</th>
 						<th>콘텐츠가격</th>
@@ -127,19 +122,12 @@
 						<!-- 합계 -->
 						<c:set var="totalPrice" value="${totalPrice + PaymentDetail.price}"/>
 						<tr>
-							<td>
-								<div class="tb_check">
-									<input id="check${loop.index+1}" name="check${loop.index+1}" type="checkbox">
-									<label for="check${loop.index+1}">선택</label>
-								</div>
-							</td>
 							<td>${loop.index+1}</td>
 							<td>
 								<div class="cart_item">
-									<div class="thumb"> <a href="view.html" target="_blank"><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg"></a> </div>
-									<div class="cart_info"> <a href="view.html" target="_blank">
-										<div class="brand">뉴시스</div>
-										<div class="code">${PaymentDetail.paymentDetail_seq }</div>
+									<div class="thumb"> <a href="view.html" target="_blank"><img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PaymentDetail.photo_uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a> </div>
+									<div class="cart_info"> <a href="/view.photo?uciCode=${PaymentDetail.photo_uciCode}" target="_blank">
+										<div class="brand">${PaymentDetail.photoDTO.copyright }</div>
 										<div class="code">${PaymentDetail.photo_uciCode }</div>
 										</a>
 										<div class="option_area">
@@ -151,13 +139,13 @@
 									</div>
 								</div>
 							</td>
-							<td>\ ${PaymentDetail.price }</td>
+							<td>\ <fmt:formatNumber value="${PaymentDetail.price}" pattern="#,###" /></td>
 							<td>${PaymentDetail.regDate }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 				<tfoot>
-				<td colspan="6">합계 : \ ${totalPrice}</td>
+				<td colspan="6">합계 : \ <fmt:formatNumber value="${totalPrice}" pattern="#,###" /></td>
 					</tfoot>
 			</table>
 		</section>

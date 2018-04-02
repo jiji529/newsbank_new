@@ -17,9 +17,15 @@ public class CalculationDAO extends DAOBase {
 		try{
 			session = sf.getSession();
 			session.insert("calculation.insertCalculation", calculationDTO);
-			
+			return calculationDTO.getSeq();
 		} catch(Exception e){
 			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
 		}
 		return 0;
 	}

@@ -105,6 +105,7 @@
 			, "paytype":paytype
 			, "paystatus":paystatus
 		};
+		console.log(searchParam);
 		
 		var html = "";
 		
@@ -115,7 +116,7 @@
 			dataType: "json",
 			data: searchParam,
 			url: "/onlinePay.api",
-			success: function(data) { //console.log(data);
+			success: function(data) { console.log(data);
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
@@ -130,6 +131,10 @@
 						var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
 						var member_seq = val.member_seq;
 						var LGD_PAYDATE = val.LGD_PAYDATE;
+						var paydate = LGD_PAYDATE.replace(
+							    /^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
+							    '$1-$2-$3 $4:$5:$6'
+							);
 						var LGD_BUYERID = val.LGD_BUYERID;
 						var LGD_BUYER = val.LGD_BUYER;
 						var LGD_OID = val.LGD_OID;
@@ -138,9 +143,9 @@
 						var LGD_AMOUNT = val.LGD_AMOUNT;
 						
 						html += '<tr>';
-						html += '<td> <div class="tb_check"> <input id="check1" name="check1" type="checkbox"> <label for="check1">선택</label> </div> </td>';
+						//html += '<td> <div class="tb_check"> <input id="check1" name="check1" type="checkbox"> <label for="check1">선택</label> </div> </td>';
 						html += '<td>' + number + '</td>';
-						html += '<td>' + LGD_PAYDATE + '</td>';
+						html += '<td>' + paydate + '</td>';
 						html += '<td> <a href="javascript:void(0)" onclick="go_memberView(\'' + val.member_seq + '\')">' + LGD_BUYERID + '</a></td>';
 						html += '<td>' + LGD_BUYER + '</td>';
 						html += '<td> <a href="javascript:void(0)" onclick="go_detailView(\'' + LGD_OID + '\')">' + LGD_OID + '</a></td>';
@@ -341,7 +346,7 @@
 					</div>
 					<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 						<colgroup>
-							<col width="40" />
+							<%-- <col width="40" /> --%>
 							<col width="50" />
 							<col width="120" />
 							<col width="100" />
@@ -356,10 +361,10 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th><div class="tb_check">
+								<!-- <th><div class="tb_check">
 										<input id="check_all" name="check_all" type="checkbox">
 											<label for="check_all">선택</label>
-									</div></th>
+									</div></th> -->
 								<th>No.</th>
 								<th>주문일자</th>
 								<th>아이디</th>

@@ -338,7 +338,7 @@
 			<if test="price >0">, price = #{price}</if>
 			<if test="downStart != null">, downStart = #{downStart}</if>
 			<if test="downEnd != null">, downEnd = #{downEnd}</if>
-
+			<if test="status != null">, status = #{status}</if>
 		</set>
 		where `seq`=#{paymentDetail_seq}
 	</update>
@@ -373,7 +373,7 @@
 		M.`LGD_PAYDATE`,
 		M.`LGD_PAYSTATUS`,
 		M.`LGD_TID`,
-		D.`photo_uciCode`, D.`price`, D.`status`,
+		D.`photo_uciCode`, D.`price`, D.`status`, D.`usageList_seq`,
 		U.`usage`,
 		U.`division1`, U.`division2`,
 		U.`division3`, U.`division4`,
@@ -416,7 +416,7 @@
 			)
 		</if>
 		
-		<if test="status !=null">
+		<if test="status !=null and status != 'all'">
 			AND D.`status`= #{status}
 		</if>
 		
@@ -464,7 +464,7 @@
 			)
 		</if>
 		
-		<if test="status !=null">
+		<if test="status !=null and status != 'all'">
 			AND D.`status`= #{status}
 		</if>
 		
@@ -754,7 +754,8 @@
 	</select>
 	
 	<!-- 결제 상세내역 취소 -->
-	<update id="cancelPaymentDetail" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO">
+	<!-- <update id="cancelPaymentDetail" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO"> -->
+    <update id="updatePaymentDetailStatus" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO">
 		update `paymentDetail`
 		<set>
 			<if test="status != null">status = #{status}</if>

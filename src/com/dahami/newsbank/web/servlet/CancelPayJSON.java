@@ -37,6 +37,10 @@ public class CancelPayJSON extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		boolean result = false;
 		
+		// 추가
+		int LGD_PAYSTATUS = Integer.parseInt(request.getParameter("LGD_PAYSTATUS")); // 거래상태
+		String status = request.getParameter("status"); // 
+		
 		int paymentManage_seq = Integer.parseInt(request.getParameter("paymentManage_seq"));
 		String LGD_OID = request.getParameter("LGD_OID");
 
@@ -51,7 +55,7 @@ public class CancelPayJSON extends HttpServlet {
 		
 		PaymentDAO paymentDAO = new PaymentDAO();
 		paymentDAO.updatePaymentManage(paymentManageDTO);
-		result = paymentDAO.cancelPaymentDetail(paymentDetailDTO);
+		result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
 				
 		
 		JSONObject json = new JSONObject();
