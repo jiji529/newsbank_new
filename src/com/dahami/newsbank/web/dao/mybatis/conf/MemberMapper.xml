@@ -17,6 +17,18 @@
 			where seq = #{seq}
 	</select>
 
+	<select id="listSlaveAdj" parameterType="int" resultType="int">
+		select adjSlave from adjustment where adjMaster = #{value}
+	</select>
+	
+	<select id="listSlaveRep" parameterType="int" resultType="int">
+		select repSlave from repPayment where repMaster = #{value}
+	</select>
+	
+	<select id="listGroupMember" parameterType="int" resultType="int">
+		select seq from member where group_seq = #{value}
+	</select>
+
 	<!-- 로그인 체크 및 비밀번호 찾기 -->
 	<select id="selectLogin" parameterType="com.dahami.newsbank.web.dto.MemberDTO"
 		resultType="com.dahami.newsbank.web.dto.MemberDTO">

@@ -118,6 +118,7 @@ public class DownloadService extends ServiceBase {
 		ACCESS_IP_MAP.put("gt", ipSet);
 		ipSet.add("59.27.23.3");
 		ipSet.add("127.0.0.1");
+		ipSet.add("0:0:0:0:0:0:0:1");
 
 		CORP_NAME_MAP = new HashMap<String, String>();
 		CORP_NAME_MAP.put("nb", "뉴스뱅크");
@@ -142,26 +143,67 @@ public class DownloadService extends ServiceBase {
 	 * @methodCommet: 해당 컨텐츠를 다운로드 받을 권한이 있는지 확인해서(소유/구매 모두 확인) 다운받을 타입 리턴<br />
 	 * (참고: 시안요청 이더라도 구매건인 경우 원본으로 리턴)
 	 * (참고: 원본요청 이더라도 미권한 로그인 상태이면 시안으로 리턴)
-	 * 소유자인 경우 PhotoDTO.isOwnerGroup 세팅함
+	 * 소유자인 경우 PhotoDTO.isOwnerGroup 세팅함<br />
+	 * 연계 업체의 경우 DOWN_TYPE_CORP_downType 리턴
 	 * @param photo
 	 * @param member
+	 * @param downType
+	 * @param requestCorp	// 요청 주체(게티 등)
 	 * @return 
 	 * @returnType  : String downType / 권한 축소해서 다운받아야 하면 축소한 권한값	
 	 */
-	private String getSuitableDownType(PhotoDTO photo, MemberDTO member, String downType) {
+	private String getSuitableDownType(PhotoDTO photo, MemberDTO member, String downType, String requestCorp, String ip) {
+		// 연계사 / 허용 IP는 우선 허가
+		if(requestCorp != null) {
+			Set<String> ipSet = ACCESS_IP_MAP.get(requestCorp);
+			if(ipSet != null && ipSet.contains(ip)) {
+				return DOWN_TYPE_CORP + "_" + downType;
+			}
+		}
+		
 		// 1. 정상 이미지
 		if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {
 			// 1-1. 리스트/뷰는 무조건 허가
 			if(downType.equals(DOWN_TYPE_LIST) || downType.equals(DOWN_TYPE_VIEW)) {
 				return downType;
 			}
-			// 1-2. 시안 / 로그인한 경우 허가
+			// 1-2. 시안
 			else if(downType.equals(DOWN_TYPE_OUTLINE)) {
+				// 1-2-1. 비로그인 : 허가거부
 				if(member == null) {
 					return null;
 				}
+				// 1-2-2. 로그인 : 시안 혹은 원본(후불유저/소유자/구매그룹) 다운로드
 				else {
-					return downType;
+					boolean serviceF = false;
+					// 1-2-2-1. 후불회원 원본 다운로드
+					if (member.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
+						serviceF = true;
+					}
+					// 1-2-2-2. 소유자 원본 다운로드
+					if(!serviceF) {
+						int photoOwner = photo.getOwnerNo();
+						List<Integer> ownerSeqList = member.getOwnerGroupList();
+						for(int curSeq : ownerSeqList) {
+							if(photoOwner == curSeq) {
+								serviceF = true;
+								break;
+							}
+						}
+					}
+					// 1-2-2-3. 구매자 원본 다운로드
+					if(!serviceF) {
+						serviceF = checkPayDownloadable(photo.getUciCode(), member.getDownloadGroupList());
+					}
+					
+					if(serviceF) {
+						// 원본 다운로드
+						return DOWN_TYPE_SERVICE;
+					}
+					// 1-2-2-4. 아니면 시안 다운로드
+					else {
+						return downType;
+					}
 				}
 			}
 			// 1-3. 원본이미지
@@ -263,18 +305,18 @@ public class DownloadService extends ServiceBase {
 	}
 	
 	/**
-	 * @methodName : checkDownloadable
+	 * @methodName : checkPayDownloadable
 	 * @author : JEON,HYUNGGUK
 	 * @date : 2017. 11. 21. 오후 5:34:09
 	 * @methodCommet: 이미지의 구매 및 다운로드 기간 내인지 여부 확인
 	 * @param uciCode
-	 * @param memberSeq
+	 * @param memberList
 	 * @return
 	 * @returnType : boolean
 	 */
-	private boolean checkPayDownloadable(String uciCode, int memberSeq) {
+	private boolean checkPayDownloadable(String uciCode, List<Integer> memberList) {
 		PhotoDAO dao = new PhotoDAO();
-		return dao.checkDownloadable(uciCode, memberSeq);
+		return dao.checkPayDownloadable(uciCode, memberList);
 	}
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -409,9 +451,19 @@ public class DownloadService extends ServiceBase {
 			// 로그인 정보
 			HttpSession session = request.getSession();
 			MemberDTO memberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-
+			if (memberInfo != null) {
+				// 멤버정보 현행화
+				memberInfo = new MemberDAO().getMember(memberInfo);
+			}
 			// 접속 IP
 			String ip = HttpUtil.getRequestIpAddr(request);
+			
+			String serviceCode = "nb";	// nb / gt / dt
+			String tmpCorp = request.getParameter("corp");
+			if(tmpCorp != null && tmpCorp.trim().length() > 0) {
+				serviceCode = tmpCorp;
+			}
+			String serviceName = CORP_NAME_MAP.get(serviceCode); // 뉴스뱅크 / 게티이미지코리아 / 디지털저작권거래소
 
 			// 찜이미지 압축전송
 			if (targetSize.equals(DOWN_TYPE_ZIP)) {
@@ -425,9 +477,6 @@ public class DownloadService extends ServiceBase {
 				// ZIP은 후불 회원 / 소유자 / 구매자만 다운로드 가능
 				if (memberInfo != null) {
 					// 후불 체크
-					int memberSeq = memberInfo.getSeq();
-					MemberDAO mDao = new MemberDAO();
-					memberInfo = mDao.getMember(memberSeq);
 					boolean deferredF = false;	// 후불회원 여부
 					if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
 						deferredF = true;
@@ -437,7 +486,7 @@ public class DownloadService extends ServiceBase {
 					String[] uciCodes = request.getParameterValues("uciCode");
 					for (int i = 0; i < uciCodes.length; i++) {
 						PhotoDTO photo = photoDao.read(uciCodes[i]);
-						String newDownType = getSuitableDownType(photo, memberInfo, DOWN_TYPE_SERVICE);
+						String newDownType = getSuitableDownType(photo, memberInfo, DOWN_TYPE_SERVICE, serviceCode, ip);
 						// 원본 다운로드 권한 있을때만 가능
 						if(newDownType != null && newDownType.equals(DOWN_TYPE_SERVICE)) {
 							photoDtoList.add(photo);
@@ -450,9 +499,6 @@ public class DownloadService extends ServiceBase {
 					return;
 				}
 				downLog.setMemberSeq(memberInfo.getSeq());
-
-				String serviceCode = corp; // nb / gt / dt
-				String serviceName = CORP_NAME_MAP.get(corp); // 뉴스뱅크 / 게티이미지코리아 / 디지털저작권거래소
 
 				try {
 					for (PhotoDTO photo : photoDtoList) {
@@ -500,8 +546,9 @@ public class DownloadService extends ServiceBase {
 				} finally {
 
 				}
+			}
 			// 압축본을 제외한 이미지 전송 요청
-			} else {
+			else {
 				PhotoDTO photo = photoDao.read(uciCode);
 				// 사진 정보가 없는 경우
 				if (photo == null || photo.getUciCode().equals(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)) {
@@ -514,13 +561,27 @@ public class DownloadService extends ServiceBase {
 					return;
 				}
 				
-				String newDownType = getSuitableDownType(photo, memberInfo, targetSize);
+				String newDownType = getSuitableDownType(photo, memberInfo, targetSize, serviceCode, ip);
 				if(newDownType == null) {
-					if (targetSize.equals("list")) {
-						response.sendRedirect(URL_PHOTO_ERROR_LIST);
-					} else {
-						response.sendRedirect(URL_PHOTO_ERROR_VIEW);
+					if(photo.getSaleState() != PhotoDTO.SALE_STATE_OK) {
+						if (targetSize.equals("list")) {
+							response.sendRedirect(URL_PHOTO_STOP_LIST);
+						} else {
+							response.sendRedirect(URL_PHOTO_STOP_VIEW);
+						}
 					}
+					else {
+						if (targetSize.equals("list")) {
+							response.sendRedirect(URL_PHOTO_ERROR_LIST);
+						} else {
+							response.sendRedirect(URL_PHOTO_ERROR_VIEW);
+						}
+					}
+					return;
+				}
+				else if(newDownType.startsWith(DOWN_TYPE_CORP + "_")) {
+					memberInfo = new MemberDAO().getMember(CORP_INFO_QUERY_MAP.get(serviceCode));
+					newDownType = newDownType.substring(DOWN_TYPE_CORP.length()+1);
 				}
 				
 				targetSize = newDownType;
@@ -536,16 +597,9 @@ public class DownloadService extends ServiceBase {
 					downLog.setMemberSeq(memberInfo.getSeq());
 					downLog.setUciCode(uciCode);
 
-					String serviceCode = "nb";	// nb / gt / dt
-					String tmpCorp = request.getParameter("corp");
-					if(tmpCorp != null && tmpCorp.trim().length() > 0) {
-						serviceCode = tmpCorp;
-					}
-					String serviceName = CORP_NAME_MAP.get(serviceCode); // 뉴스뱅크 / 게티이미지코리아 / 디지털저작권거래소
-
 					try {
 						// 원본 이미지를 실시간으로 카피 / UCI 임베드 / 다운로드 정보 임베드(메타태그) 하여 전송
-						String orgPath = PATH_PHOTO_BASE + "/" + photo.getOriginPath();
+						String orgPath = PATH_PHOTO_BASE + photo.getOriginPath();
 						if (!new File(orgPath).exists()) {
 							logger.warn("원본이미지 없음: " + orgPath);
 							request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
@@ -609,7 +663,7 @@ public class DownloadService extends ServiceBase {
 		}
 
 		if (downPath != null) {
-			// 대상 파일이 없는경우 (썸네일/뷰 다운로드 요청에 대해서만) / 원본이 있으면 동적 생성 후 전송
+			// 대상 파일이 없는경우 (썸네일/뷰 다운로드 요청에 대해서만)
 			if (!new File(downPath).exists() && (targetSize.equals("list") || targetSize.equals("view"))) {
 				logger.warn("File Not Exist: " + downPath);
 				// 파일 부재(이미지 부재 / 오류) 이미지 전송
@@ -619,23 +673,6 @@ public class DownloadService extends ServiceBase {
 					response.sendRedirect(URL_PHOTO_ERROR_VIEW);
 				}
 				return;
-
-				// // 원본도 없는경우
-				// if(!new File(orgPath).exists()) {
-				// // 파일 부재(이미지 부재 / 오류) 이미지 전송
-				// if(targetSize.equals("list")) {
-				// response.sendRedirect(URL_PHOTO_ERROR_LIST);
-				// }
-				// else {
-				// response.sendRedirect(URL_PHOTO_ERROR_VIEW);
-				// }
-				// return;
-				// }
-				// // 원본이 있는경우
-				// else {
-				// // 리사이즈 이미지 생성
-				// System.out.println();
-				// }
 			}
 
 			if (new File(downPath).exists()) {

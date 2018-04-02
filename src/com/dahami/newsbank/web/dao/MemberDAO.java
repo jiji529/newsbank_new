@@ -78,11 +78,38 @@ public class MemberDAO extends DAOBase {
 		}
 	}
 	
+	/**
+	 * @methodName  : getMember
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2018. 3. 30. 오후 3:01:26
+	 * @methodCommet: 멤버정보를 갱신한다. 마지막 갱신 후 5초 이내인 경우 무시한다
+	 * @param member
+	 * @return 
+	 * @returnType  : MemberDTO
+	 */
+	public MemberDTO getMember(MemberDTO member) {
+		if(member.getLastModifiedTime() + 5000 <= System.currentTimeMillis()) {
+			return getMember(member.getSeq());
+		}
+		return member;
+	}
+	
 	public MemberDTO getMember(int memberSeq) {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
 			MemberDTO member = session.selectOne("Member.selMamberBySeq", memberSeq);
+			member.setLastModifiedTime(System.currentTimeMillis());
+			List<Integer> subAdj = session.selectList("Member.listSlaveAdj", memberSeq);
+			member.getSubAdjSet().addAll(subAdj);
+			
+			List<Integer> subRep = session.selectList("Member.listSlaveRep", memberSeq);
+			member.getSubRepSet().addAll(subRep);
+			
+			if(member.getGroup_seq() > 0) {
+				List<Integer> groupList = session.selectList("Member.listGroupMember", member.getGroup_seq());
+				member.getGroupSet().addAll(groupList);
+			}
 			
 			return member;
 		}catch(Exception e) {

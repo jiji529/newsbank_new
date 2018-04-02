@@ -405,7 +405,7 @@ public class PhotoDAO extends DAOBase {
 	}
 	
 	/**
-	 * @methodName  : checkDownloadable
+	 * @methodName  : checkPayDownloadable
 	 * @author      : JEON,HYUNGGUK
 	 * @date        : 2017. 11. 21. 오후 5:31:10
 	 * @methodCommet: 
@@ -414,10 +414,18 @@ public class PhotoDAO extends DAOBase {
 	 * @return 
 	 * @returnType  : boolean
 	 */
-	public boolean checkDownloadable(String uciCode, int memberSeq) {		SqlSession session = null;
+	public boolean checkPayDownloadable(String uciCode, List<Integer> memberList) {
+		SqlSession session = null;
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("uciCode", uciCode);
-		param.put("memberSeq", memberSeq);
+		String memberListStr = "";
+		for(int cur : memberList) {
+			if(memberListStr.length() > 0) {
+				memberListStr += ",";
+			}
+			memberListStr += cur;
+		}
+		param.put("memberListStr", memberListStr);
 		try {
 			session = sf.getSession();
 			if(session.selectOne("Download.selDownloadable", param) != null) {

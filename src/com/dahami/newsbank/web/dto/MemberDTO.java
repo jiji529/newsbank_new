@@ -1,6 +1,9 @@
 package com.dahami.newsbank.web.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,21 +14,10 @@ import java.util.Set;
 public class MemberDTO implements Serializable {
 	private static final long serialVersionUID = 4264810335499478080L;
 
-	private int seq; // 시퀀스
+	/** 최종 생성시간 / 빈번한 읽기를 피하기 위해서 사용함 */
+	private long lastModifiedTime;
 	
-	/*
-		adj : 마스터(매체)가 슬레이브(매체)의 정산을 신청할 수 있음
-		ex) 조선일보가 스포츠조선, 여성조선 사진들도 같이 정산함
-		
-		repPay : 마스터(사용자)가 슬레이브(사용자)의 다운로드 확인, 결제 신청을 할 수 있음
-		ex) 천재교육 마스터 아이디가  각 과목별 아이디들의 다운로드 내역 확인, 결제를 신청할 수 있음 
-		
-		group : 그룹 구성원들은 서로 결제 및 다운로드 내역을 공유함
-		ex) A,B,C가 동일한 그룹 구성원일 때 A가 산 사진을 B와 C가 다운로드 할 수 있음
-	 */
-	private Set<Integer> subAdjSet;	// 소속 사용자 셋 /adjustment
-	private Set<Integer> subRepSet;	// 소속 사용자 셋 / repPayment
-	private Set<Integer> groupSet;	// 속한 그룹의 사용자 전체
+	private int seq; // 시퀀스
 	
 	private String id; // 아이디
 	private String pw; // 리뉴뱅 패스워드
@@ -85,6 +77,13 @@ public class MemberDTO implements Serializable {
 	private int group_seq; // 그룹 시퀀스
 	private String groupName; // 그룹명
 	
+	public long getLastModifiedTime() {
+		return lastModifiedTime;
+	}
+
+	public void setLastModifiedTime(long lastModifiedTime) {
+		this.lastModifiedTime = lastModifiedTime;
+	}
 
 	/**
 	 * @comment 시퀀스
@@ -600,6 +599,13 @@ public class MemberDTO implements Serializable {
 	}
 
 	public Set<Integer> getSubAdjSet() {
+		if(this.subAdjSet == null) {
+			synchronized(this) {
+				if(this.subAdjSet == null) {
+					this.subAdjSet = new HashSet<Integer>();
+				}
+			}
+		}
 		return subAdjSet;
 	}
 
@@ -608,6 +614,13 @@ public class MemberDTO implements Serializable {
 	}
 
 	public Set<Integer> getSubRepSet() {
+		if(this.subRepSet == null) {
+			synchronized(this) {
+				if(this.subRepSet == null) {
+					this.subRepSet = new HashSet<Integer>();
+				}
+			}
+		}
 		return subRepSet;
 	}
 
@@ -616,6 +629,13 @@ public class MemberDTO implements Serializable {
 	}
 
 	public Set<Integer> getGroupSet() {
+		if(this.groupSet == null) {
+			synchronized(this) {
+				if(this.groupSet == null) {
+					this.groupSet = new HashSet<Integer>();
+				}
+			}
+		}
 		return groupSet;
 	}
 
@@ -636,5 +656,68 @@ public class MemberDTO implements Serializable {
 
 	public void setPwCurrent(String pwCurrent) {
 		this.pwCurrent = pwCurrent;
+	}
+	
+	/*
+	adj : 마스터(매체)가 슬레이브(매체)의 정산을 신청할 수 있음
+	ex) 조선일보가 스포츠조선, 여성조선 사진들도 같이 정산함
+	
+	repPay : 마스터(사용자)가 슬레이브(사용자)의 다운로드 확인, 결제 신청을 할 수 있음
+	ex) 천재교육 마스터 아이디가  각 과목별 아이디들의 다운로드 내역 확인, 결제를 신청할 수 있음 
+	
+	group : 그룹 구성원들은 서로 결제 및 다운로드 내역을 공유함
+	ex) A,B,C가 동일한 그룹 구성원일 때 A가 산 사진을 B와 C가 다운로드 할 수 있음
+	 */
+	private Set<Integer> subAdjSet;	// 소속 사용자 셋 /adjustment : 하위의 소유자로 볼 수 있음
+	private Set<Integer> subRepSet;	// 소속 사용자 셋 / repPayment	: 하위에서 구매한 것의 구매자로 볼 수 있음
+	private Set<Integer> groupSet;	// 속한 그룹의 사용자 전체	: 그룹에서 구매한 것의 구매자로 볼 수 있음
+
+	/**
+	 * @methodName  : getOwnerGroupList
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2018. 3. 30. 오후 2:19:01
+	 * @methodCommet: 소유권을 공유하는 사용자 리스트
+	 * @return 
+	 * @returnType  : List<Integer>
+	 */
+	public List<Integer> getOwnerGroupList() {
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(this.seq);
+		if(subAdjSet != null) {
+			for(int subSeq : subAdjSet) {
+				if(!list.contains(subSeq)) {
+					list.add(subSeq);
+				}
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * @methodName  : getDownloadGroupList
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2018. 3. 30. 오후 2:24:36
+	 * @methodCommet: 다운로드를 공유하는 사용자 리스트
+	 * @return 
+	 * @returnType  : List<Integer>
+	 */
+	public List<Integer> getDownloadGroupList() {
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(this.seq);
+		if(subRepSet != null) {
+			for(int subSeq : subRepSet) {
+				if(!list.contains(subSeq)) {
+					list.add(subSeq);
+				}
+			}
+		}
+		if(groupSet != null) {
+			for(int subSeq : groupSet) {
+				if(!list.contains(subSeq)) {
+					list.add(subSeq);
+				}
+			}
+		}
+		return list;
 	}
 }

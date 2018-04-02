@@ -19,7 +19,7 @@
 				AND downStart <= NOW() 
 				AND downEnd >= NOW() 
 				AND paymentManage_seq IN 
-					(SELECT seq FROM paymentManage WHERE member_seq = #{memberSeq} AND LGD_PAYSTATUS = 1)
+					(SELECT seq FROM paymentManage WHERE member_seq IN (${memberListStr}) AND LGD_PAYSTATUS = 1)
 		]]>
 	</select>
 	
