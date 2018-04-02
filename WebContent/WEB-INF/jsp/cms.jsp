@@ -653,7 +653,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<c:forEach items="${picture}" var="PhotoDTO">
 					<li class="thumb"> 
 						<a href="/view.cms?uciCode=${PhotoDTO.uciCode}">
-							<%-- <img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}"/> --%>
 							<img src="/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 						</a>
 						<div class="thumb_info">

@@ -20,10 +20,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <% 
 String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
-PhotoDTO photoDto = (PhotoDTO)request.getAttribute("photoDTO");
 
+PhotoDTO photoDto = (PhotoDTO)request.getAttribute("photoDTO");
 boolean contentBlidF = false;
-if(photoDto.getSaleState() == PhotoDTO.SALE_STATE_DEL) {
+if(photoDto == null || 
+		photoDto.getSaleState() == PhotoDTO.SALE_STATE_NOTEXIST ||
+		photoDto.getSaleState() == PhotoDTO.SALE_STATE_DEL) {
 	contentBlidF = true;
 }
 %>

@@ -153,7 +153,8 @@ public class DownloadService extends ServiceBase {
 	 * @returnType  : String downType / 권한 축소해서 다운받아야 하면 축소한 권한값	
 	 */
 	private String getSuitableDownType(PhotoDTO photo, MemberDTO member, String downType, String requestCorp, String ip) {
-		// 연계사 / 허용 IP는 우선 허가
+
+		// 1. 연계사 / 허용 IP는 우선 허가
 		if(requestCorp != null) {
 			Set<String> ipSet = ACCESS_IP_MAP.get(requestCorp);
 			if(ipSet != null && ipSet.contains(ip)) {
@@ -161,147 +162,93 @@ public class DownloadService extends ServiceBase {
 			}
 		}
 		
-		// 1. 정상 이미지
-		if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {
-			// 1-1. 리스트/뷰는 무조건 허가
-			if(downType.equals(DOWN_TYPE_LIST) || downType.equals(DOWN_TYPE_VIEW)) {
-				return downType;
-			}
-			// 1-2. 시안
-			else if(downType.equals(DOWN_TYPE_OUTLINE)) {
-				// 1-2-1. 비로그인 : 허가거부
-				if(member == null) {
-					return null;
+		// 2. 비로그인 처리 / 정상이미지에 대한 리스트/뷰만 허용
+		if(member == null) {
+			if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {
+				if(downType.equals(DOWN_TYPE_LIST) || downType.equals(DOWN_TYPE_VIEW)) {
+					return downType;
 				}
-				// 1-2-2. 로그인 : 시안 혹은 원본(후불유저/소유자/구매그룹) 다운로드
-				else {
-					boolean serviceF = false;
-					// 1-2-2-1. 후불회원 원본 다운로드
-					if (member.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
-						serviceF = true;
-					}
-					// 1-2-2-2. 소유자 원본 다운로드
-					if(!serviceF) {
-						int photoOwner = photo.getOwnerNo();
-						List<Integer> ownerSeqList = member.getOwnerGroupList();
-						for(int curSeq : ownerSeqList) {
-							if(photoOwner == curSeq) {
-								serviceF = true;
-								break;
-							}
-						}
-					}
-					// 1-2-2-3. 구매자 원본 다운로드
-					if(!serviceF) {
-						serviceF = checkPayDownloadable(photo.getUciCode(), member.getDownloadGroupList());
-					}
-					
-					if(serviceF) {
-						// 원본 다운로드
-						return DOWN_TYPE_SERVICE;
-					}
-					// 1-2-2-4. 아니면 시안 다운로드
-					else {
-						return downType;
-					}
-				}
-			}
-			// 1-3. 원본이미지
-			else if(downType.equals(DOWN_TYPE_SERVICE)){
-				logger.warn("TODO");
-				return null;
-			}
-			else {
-				logger.warn("TODO 요청내용 확인 필요: " + downType + " / " + photo.getUciCode());
-				return null;
-			}
-		}
-		// 2. 블라인드 이미지
-		else if(photo.getSaleState() == PhotoDTO.SALE_STATE_STOP) {
-			// 2-1 소유 권한이 있는 경우에는 모두 허용
-			
-			logger.warn("TODO");
-			return downType;
-		}
-		// 3. 삭제 이미지 : 소유 권한이 있는 경우 리스트만 허가
-		else if(photo.getSaleState() == PhotoDTO.SALE_STATE_DEL){
-			if(downType.equals(DOWN_TYPE_LIST)) {
-				logger.warn("TODO");
-				return downType;
 			}
 			return null;
 		}
 		
-		// 리스트나 상세페이지 이미지 권한확인
-		if(downType.equals(DOWN_TYPE_LIST) || downType.equals(DOWN_TYPE_VIEW)) {
-			// 1. 서비스중인 경우 무조건 허가됨
-			if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {
+		// 3. 정상 이미지
+		if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {
+			// 3-1. 리스트 / 뷰 요청은 그대로 허용
+			if(downType.equals(DOWN_TYPE_LIST) || downType.equals(DOWN_TYPE_VIEW)) {
 				return downType;
 			}
-			// 2. 삭제된 이미지
-			else if(photo.getSaleState() == PhotoDTO.SALE_STATE_DEL){
-				// 2-1. 상세페이지는 무조건 거부됨
-				if(downType.equals(DOWN_TYPE_VIEW)) {
-					return null;
+			// 3-2. 시안 / 원본
+			else if(downType.equals(DOWN_TYPE_OUTLINE) || downType.equals(DOWN_TYPE_SERVICE)) {
+				// 시안 혹은 원본(후불유저/소유자/구매그룹) 다운로드
+				boolean serviceF = false;
+				// 3-2-1. 후불회원 원본 다운로드
+				if (member.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
+					serviceF = true;
 				}
-				// 2-2. 리스트
+				// 3-2-2. 소유자 원본 다운로드
 				else {
-					
+					int photoOwner = photo.getOwnerNo();
+					List<Integer> ownerSeqList = member.getOwnerGroupList();
+					for(int curSeq : ownerSeqList) {
+						if(photoOwner == curSeq) {
+							serviceF = true;
+							break;
+						}
+					}
+				}
+				// 3-2-3. 구매자 원본 다운로드
+				if(!serviceF) {
+					serviceF = checkPayDownloadable(photo.getUciCode(), member.getDownloadGroupList());
+				}
+				
+				if(serviceF) {
+					// 원본 다운로드
+					return DOWN_TYPE_SERVICE;
+				}
+				// 3-2-4. 아니면 시안요청은 시안 다운로드 / 원본요청은 비정상 접근 처리
+				else {
+					if(downType.equals(DOWN_TYPE_OUTLINE)) {
+						return downType;
+					}
+					else {
+						return null;
+					}
 				}
 			}
-			// 3. 블라인드 이미지
-			else if(photo.getSaleState() == PhotoDTO.SALE_STATE_STOP) {
-				// 3-1. 소유권한 있는 경우만 허가
-				// 3-2. 이외는 거부
-			}
-			// 4. 있으면 안되는 상태
 			else {
-				logger.warn("상태이상: " + photo.getUciCode());
+				logger.warn(" 요청 다운로드 타입(" + downType + ") 확인 필요: " + " / " + photo.getUciCode());
+				return null;
 			}
 		}
+		// 4. 블라인드 이미지
+		else if(photo.getSaleState() == PhotoDTO.SALE_STATE_STOP) {
+			// 4-1 소유 권한이 있는 경우에는 모두 허용
+			int photoOwner = photo.getOwnerNo();
+			List<Integer> ownerSeqList = member.getOwnerGroupList();
+			for(int curSeq : ownerSeqList) {
+				if(photoOwner == curSeq) {
+					return downType;
+				}
+			}
+			return null;
+		}
+		// 5. 삭제 이미지 : 소유 권한이 있는 경우 리스트만 허가
+		else if(photo.getSaleState() == PhotoDTO.SALE_STATE_DEL){
+			if(downType.equals(DOWN_TYPE_LIST)) {
+				int photoOwner = photo.getOwnerNo();
+				List<Integer> ownerSeqList = member.getOwnerGroupList();
+				for(int curSeq : ownerSeqList) {
+					if(photoOwner == curSeq) {
+						return downType;
+					}
+				}
+			}
+			return null;
+		}
 		
-//		// 서비스중이거나
-//		if (photo.getSaleState() == PhotoDTO.SALE_STATE_OK
-//				// 소유자일 때 이미지 전송
-//				|| (memberInfo != null && photo.getOwnerNo() == memberInfo.getSeq())) {
-		
-		
-//		if (!downConfirm) {
-//			// 연계 이외에는 로그인한 경우만 다운로드 가능
-//			if (memberInfo != null) {
-//				// 후불 체크
-//				int memberSeq = memberInfo.getSeq();
-//				MemberDAO mDao = new MemberDAO();
-//				memberInfo = mDao.getMember(memberSeq);
-//				if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
-//					downConfirm = true;
-//				}
-//				// 구매여부 체크
-//				else {
-//					if (checkDownloadable(uciCode, memberSeq)) {
-//						downConfirm = true;
-//					}
-//				}
-//			}
-//		}
-		
-//		// 다운로드 권한 없는 경우 / 제휴업체 특별 인증 IP 여부 확인
-//		String corp = request.getParameter("corp");
-//		boolean downConfirm = false;
-//		// 다운로드 가능 여부 확인(연계 / IP 제한)
-//		if (corp != null && corp.trim().length() > 0) {
-//			Set<String> ipSet = ACCESS_IP_MAP.get(corp);
-//			if (ipSet != null && ipSet.size() > 0) {
-//				if (ipSet.contains(ip)) {
-//					// 연계계정 정보 읽기(ex. 게티)
-//					MemberDAO mDao = new MemberDAO();
-//					memberInfo = mDao.getMember(CORP_INFO_QUERY_MAP.get(corp));
-//					downConfirm = true;
-//				}
-//			}
-//		}
-		
-		return downType;
+		logger.warn("확인필요: " + downType + " / " + photo.getUciCode());
+		return null;
 	}
 	
 	/**

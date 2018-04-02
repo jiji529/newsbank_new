@@ -30,6 +30,7 @@ public class PhotoDAO extends DAOBase {
 			if(dto == null) {
 				dto = new PhotoDTO();
 				dto.setUciCode(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI);
+				dto.setSaleState(PhotoDTO.SALE_STATE_DEL);
 			}
 			return dto;
 		} catch (Exception e) {

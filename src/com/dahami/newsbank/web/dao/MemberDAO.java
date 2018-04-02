@@ -99,18 +99,19 @@ public class MemberDAO extends DAOBase {
 		try {
 			session = sf.getSession();
 			MemberDTO member = session.selectOne("Member.selMamberBySeq", memberSeq);
-			member.setLastModifiedTime(System.currentTimeMillis());
-			List<Integer> subAdj = session.selectList("Member.listSlaveAdj", memberSeq);
-			member.getSubAdjSet().addAll(subAdj);
-			
-			List<Integer> subRep = session.selectList("Member.listSlaveRep", memberSeq);
-			member.getSubRepSet().addAll(subRep);
-			
-			if(member.getGroup_seq() > 0) {
-				List<Integer> groupList = session.selectList("Member.listGroupMember", member.getGroup_seq());
-				member.getGroupSet().addAll(groupList);
+			if(member != null) {
+				member.setLastModifiedTime(System.currentTimeMillis());
+				List<Integer> subAdj = session.selectList("Member.listSlaveAdj", memberSeq);
+				member.getSubAdjSet().addAll(subAdj);
+				
+				List<Integer> subRep = session.selectList("Member.listSlaveRep", memberSeq);
+				member.getSubRepSet().addAll(subRep);
+				
+				if(member.getGroup_seq() > 0) {
+					List<Integer> groupList = session.selectList("Member.listGroupMember", member.getGroup_seq());
+					member.getGroupSet().addAll(groupList);
+				}
 			}
-			
 			return member;
 		}catch(Exception e) {
 			logger.warn("", e);

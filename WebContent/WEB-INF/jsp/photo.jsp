@@ -475,16 +475,6 @@
 							<li value="<%=SearchParameterBean.SIZE_SMALL%>">1,000 px 이하</li>
 						</ul>
 					</li>	
-					
-					<li class="filter_title filter_service">
-						<span>서비스 : 전체</span>
-						<ul class="filter_list">
-							<li value="" selected="selected">전체</li>
-							<li value="<%=SearchParameterBean.SALE_STATE_OK%>">정상</li>
-							<li value="<%=SearchParameterBean.SALE_STATE_BLIND%>">블라인드</li>
-							<li value="<%=SearchParameterBean.SALE_STATE_DEL%>">삭제</li>
-						</ul>
-					</li>
 				</ul>
 				<div class="filter_rt">
 					<div class="result">

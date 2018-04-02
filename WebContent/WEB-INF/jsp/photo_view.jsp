@@ -1,10 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.dahami.newsbank.dto.PhotoDTO" %>
+
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+
+PhotoDTO photoDto = (PhotoDTO)request.getAttribute("photoDTO");
+boolean contentBlidF = false;
+if(photoDto == null || 
+		photoDto.getSaleState() == PhotoDTO.SALE_STATE_NOTEXIST ||
+		photoDto.getSaleState() == PhotoDTO.SALE_STATE_DEL) {
+	contentBlidF = true;
+}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -552,7 +561,18 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
 			</div>
 			<div class="cont_area">
-				<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> ${photoDTO.titleKor}</h3>
+				<h3 class="img_tit"><span class="uci">${photoDTO.uciCode}</span> 
+<%
+if(!contentBlidF) {
+%>
+				${photoDTO.titleKor}
+<%
+}
+%>
+				</h3>
+<%
+if(!contentBlidF) {
+%>
 				<c:if test="${bookmark.seq eq null || bookmark.seq eq ''}">
 					<a href="javascript:void(0)" class="btn_wish">찜하기 X</a>	
 				</c:if>
@@ -560,7 +580,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					<a href="javascript:;" class="btn_wish on">찜하기 O</a>
 				</c:if>
 				<p class="img_cont">${photoDTO.descriptionKor}</p>
+<%
+}
+%>
 			</div>
+<%
+if(!contentBlidF) {
+%>
 			<div class="img_info_area">
 				<h3 class="info_tit">사진 정보</h3>
 				<dl>
@@ -604,7 +630,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					</div>
 				</div>
 			</div>
+<%
+}
+%>
 		</div>
+<%
+if(!contentBlidF) {
+%>
 		<div class="view_rt">
 			<div class="view_rt_top">
 				<h3>이미지 구매하기</h3>
@@ -656,6 +688,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				</c:if>
 			</div>
 		</div>
+<%
+}
+%>
 	</section>
 	<%@include file="footer.jsp"%>
 </div>
