@@ -101,7 +101,7 @@ public class DownloadService extends ServiceBase {
 
 	private static final String URL_PHOTO_ERROR_LIST = "/images/error/list_image_processError.jpg";
 	private static final String URL_PHOTO_ERROR_VIEW = "/images/error/view_image_processError.jpg";
-	private static final String URL_PHOTO_ERROR_SERVICE = "/downloadError.jsp";
+	private static final String URL_PHOTO_ERROR_SERVICE = "/WEB-INF/jsp/error/downloadError.jsp";
 	private static final String URL_PHOTO_STOP_LIST = "/images/error/list_image_stopSale.jpg";
 	private static final String URL_PHOTO_STOP_VIEW = "/images/error/view_image_stopSale.jpg";
 
@@ -449,7 +449,7 @@ public class DownloadService extends ServiceBase {
 						if (!new File(orgPath).exists()) {
 							logger.warn("원본이미지 없음: " + orgPath);
 							request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
-							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
+							forward(request, response, URL_PHOTO_ERROR_SERVICE);
 							return;
 						}
 						String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
@@ -478,7 +478,9 @@ public class DownloadService extends ServiceBase {
 					String zipFileName = "newsbank_" + System.currentTimeMillis() + ".zip";
 					String zipPath = PATH_PHOTO_DOWN + "/zip/" + ymDf.format(new Date()) + "/" + zipFileName;
 					ZipUtil zu = new ZipUtil();
-					zu.createZipFile((File[])fileFdList.toArray(), zipPath, true);
+					File[] fdArry = new File[fileFdList.size()];
+					fileFdList.toArray(fdArry);
+					zu.createZipFile(fdArry, zipPath, true);
 					// 압축파일 전송
 					sendImageFile(response, zipPath, zipFileName);
 				} catch (Exception e) {
