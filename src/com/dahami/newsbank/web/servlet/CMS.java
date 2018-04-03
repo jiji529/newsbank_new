@@ -47,10 +47,12 @@ public class CMS extends NewsbankServletBase {
 		
 		// 마이페이지 비밀번호 중복확인 체크
 		boolean mypageAuth = false;
+		boolean isAdmin = memberInfo.getType().equals(MemberDTO.TYPE_ADMIN);
 		if (session.getAttribute("mypageAuth") != null) {
 			mypageAuth = (boolean) session.getAttribute("mypageAuth");
 		}
-		if (!mypageAuth) {
+		// 관리자는 중복체크 필요없음
+		if (!mypageAuth && !isAdmin) {
 			response.sendRedirect("/auth.mypage");
 			return;
 		}
@@ -58,10 +60,10 @@ public class CMS extends NewsbankServletBase {
 		// 요청사항 처리
 		CMSService cs = null;
 		if(cmd.is2("view")) {
-			cs = new CMSService(true);
+			cs = new CMSService(true, isAdmin);
 		}
 		else {
-			cs = new CMSService(false);
+			cs = new CMSService(false, isAdmin);
 		}
 		cs.execute(request, response);
 	}

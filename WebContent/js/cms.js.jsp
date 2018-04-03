@@ -154,6 +154,7 @@ $(document).on("click", ".btn_del", function() {
 
 	// 상세화면 블라인드 변경
 	$(document).on("change", "input[type=radio][name=blind]", function() {
+	alert("x");
 		var saleState = $('input[type=radio][name=blind]:checked').val();
 		changeOption("${photoDTO.uciCode}", "saleState", saleState);
 	});
@@ -318,4 +319,8 @@ $(document).on("click", ".btn_del", function() {
 	       	}
 			
 		});
+	}
+	
+	function isNotEmpty(value) { // 배열 빈값 제외
+		return value != "";
 	}

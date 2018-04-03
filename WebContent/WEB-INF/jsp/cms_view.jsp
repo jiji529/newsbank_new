@@ -27,6 +27,7 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/cms.js.jsp"></script>
+<script src="js/cms_view.js"></script>
 <script src="js/search.js.jsp"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
@@ -63,53 +64,7 @@
 		}
 		
 		relation_photo();
-	});	
-	
-	
-	
-	function isNotEmpty(value) { // 배열 빈값 제외
-		return value != "";
-	}
-	
-	$(document).on("click", ".btn_edit", function() {
-		var title = $(".img_tit").last().text();
-		var content = $(".img_cont").text();		
-		
-		if($(".btn_edit").hasClass("complete")) {
-			// DB에 기사 제목, 내용을 수정 기능 필요
-			var titleKor = $(".hTitle").val(); 
-			var descriptionKor = $(".img_cont").text();
-			var uciCode = "${photoDTO.uciCode}";
-			
-			$(".btn_edit").text("수정");		
-			$(".btn_edit").removeClass("complete");
-			$(".img_tit").last().replaceWith("<h3 class=\"img_tit\">"+titleKor+"</h3>");
-			$(".img_cont").replaceWith("<p class=\"img_cont\">"+descriptionKor+"</p>");
-			
-			$.ajax({
-				type: "POST",
-				url: "/view.cms?action=updateCMS",
-				data: {
-					"uciCode" : uciCode,
-					"titleKor" : titleKor,
-					"descriptionKor" : descriptionKor
-				},
-				success: function(data){
-					
-				}, error:function(request,status,error){
-		        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		       	}
-				
-			});
-		}else {
-			$(".img_tit").last().replaceWith("<textarea class=\"img_tit hTitle\" style=\"width:100%; font-size:14px; line-height:22px; color:#666;\">"+title+"</textarea>");
-			$(".img_cont").replaceWith("<textarea class=\"img_cont\" style=\"height:300px; width:100%; font-size:14px; line-height:22px; color:#666;\">"+content+"</textarea>");	
-			$(".btn_edit").text("수정 완료");		
-			$(".btn_edit").addClass("complete");
-		}
-		
-		
-	});	
+	});
 	
 	$(document).on("click", ".in_prev", function() {
 	    var slide_width = $(".cfix").width();

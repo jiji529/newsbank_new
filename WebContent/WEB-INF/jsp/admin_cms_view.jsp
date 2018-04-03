@@ -70,53 +70,6 @@
 		relation_photo(); // 연관사진
 	});
 	
-	function isNotEmpty(value) { // 배열 빈값 제외
-		return value != "";
-	}
-	
-	$(document).on("click", ".btn_edit", function() {
-		var title = $(".img_tit").last().text();
-		var content = $(".img_cont").text();		
-		
-		if($(".btn_edit").hasClass("complete")) {
-			
-		}else {
-			$(".btn_edit").text("수정 완료");		
-			$(".btn_edit").addClass("complete");
-			$(".img_tit").last().replaceWith("<textarea class=\"img_tit\" style=\"width:100%; font-size:14px; line-height:22px; color:#666;\">"+title+"</textarea>");
-			$(".img_cont").replaceWith("<textarea class=\"img_cont\" style=\"height:300px; width:100%; font-size:14px; line-height:22px; color:#666;\">"+content+"</textarea>");	
-		}
-		
-		
-	});
-	
-	$(document).on("click", ".complete", function() {
-		// DB에 기사 제목, 내용을 수정 기능 필요
-		var titleKor = $(".img_tit").last().text();
-		var descriptionKor = $(".img_cont").text();
-		var uciCode = "${photoDTO.uciCode}";
-		
-		$(".btn_edit").text("수정");		
-		$(".btn_edit").removeClass("complete");
-		$(".img_tit").last().replaceWith("<h3 class=\"img_tit\">"+titleKor+"</h3>");
-		$(".img_cont").replaceWith("<p class=\"img_cont\">"+descriptionKor+"</p>");
-		
-		$.ajax({
-			type: "POST",
-			url: "/view.cms.manage?action=updateCMS",
-			data: {
-				"uciCode" : uciCode,
-				"titleKor" : titleKor,
-				"descriptionKor" : descriptionKor
-			},
-			success: function(data){
-				
-			}, error:function(request,status,error){
-	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       	}
-			
-		});
-	});
 </script>
 <title>뉴스뱅크</title>
 </head>
