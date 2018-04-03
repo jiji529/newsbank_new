@@ -20,8 +20,8 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 
 public abstract class NewsbankServletBase extends HttpServlet {
 	
-	public static final String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-//	public static final String IMG_SERVER_URL_PREFIX = "";
+//	public static final String IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
+	public static final String IMG_SERVER_URL_PREFIX = "";
 	
 	private static final long serialVersionUID = 4745659834372195390L;
 	protected Logger logger;
