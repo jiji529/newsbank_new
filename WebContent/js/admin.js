@@ -27,18 +27,18 @@ $(document).ready(function() {
 		// check = check && validCertify(); (인증번호 체크는 관리자 페이지에서 필요 없음.)
 		// M: 매체, P: 개인, C: 제휴업체, S: 자체보유
 		if ($(this).find("[name=type]").val() != "P") {
-			check = check && validCompAddr();  //console.log("validCompAddr() : " + validCompAddr());
-			check = check && validCompName(); //console.log("validCompName() : " + validCompName());
-			check = check && validCompNum(); //console.log("validCompNum() : " + validCompNum());
-			check = check && validCompTel(); //console.log("validCompTel() : " + validCompTel());
-			check = check && validCompExtTel(); //console.log("validCompExtTel() : " + validCompExtTel());
+			check = check && validCompAddr();  console.log("validCompAddr() : " + validCompAddr());
+			check = check && validCompName(); console.log("validCompName() : " + validCompName());
+			check = check && validCompNum(); console.log("validCompNum() : " + validCompNum());
+			check = check && validCompTel(); console.log("validCompTel() : " + validCompTel());
+			check = check && validCompExtTel(); console.log("validCompExtTel() : " + validCompExtTel());
 			//check = check && validCompDoc();
 			//check = check && validUploadFile(); // 사업자등록증 업로드
 			
 			// 오프라인 회원의 경우 (0 : 온라인, 1: 오프라인결제, 2: 오프라인 별도요금)
 			if(deferred != 0) {
 				check = check && validTaxPhone(); // 세금계산서 담당자		
-				//console.log("validTaxPhone() : " + validTaxPhone());
+				console.log("validTaxPhone() : " + validTaxPhone());
 				
 				if(deferred == 2){
 					// 사용용도는 오프라인 별도요금 회원의 경우에만 해당
@@ -281,7 +281,7 @@ $(document).ready(function() {
 	function validTaxPhone() {
 		//var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
 		var telRegex = /^0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 일반전화
-		var phoneRegex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 휴대전화
+		//var phoneRegex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 휴대전화
 		
 		var taxPhone = $("#taxPhone1 option:selected").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
 		// name=phone의 존재여부를 확인하여 없으면 별도로 태그를 추가
@@ -296,10 +296,10 @@ $(document).ready(function() {
 		}
 		
 		console.log("telRegex : " + telRegex.test(taxPhone));
-		console.log("phoneRegex : " + phoneRegex.test(taxPhone));
+		//console.log("phoneRegex : " + phoneRegex.test(taxPhone));
 		console.log("length : " + taxPhone.length);
 		
-		if ((telRegex.test(taxPhone) || phoneRegex.test(taxPhone)) && taxPhone.length > 0) { // 숫자 정규식과 값의 존재여부 확인
+		if (telRegex.test(taxPhone) && taxPhone.length > 0) { // 숫자 정규식과 값의 존재여부 확인
 			return true;
 		} else {
 			$("#taxPhone3").focus();

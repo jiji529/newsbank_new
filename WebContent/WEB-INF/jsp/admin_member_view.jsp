@@ -34,7 +34,7 @@
 <script src="js/footer.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
-<script src="js/admin.js?v=20180308"></script>
+<script src="js/admin.js?v=20180403"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
@@ -230,12 +230,15 @@
 								</tr>
 								<tr>
 									<th>사업자등록번호</th>
-									<td><input type="text" id="compNum1" name="compNum1"  size="3"  class="inp_txt" value="${compNum1}" maxlength="3">
+									<td>
+										<input type="text" id="compNum1" name="compNum1"  size="3"  class="inp_txt" value="${compNum1}" maxlength="3">
 										<span class=" bar">-</span>
 										<input type="text" id="compNum2" name="compNum2" size="2"  class="inp_txt" value="${compNum2}" maxlength="2">
 										<span class=" bar">-</span>
 										<input type="text" id="compNum3" name="compNum3" size="5"  class="inp_txt" value="${compNum3}" maxlength="6" />
-										<a href="#" class="btn_input1">사업자등록증 업로드</a> <a href="#" class="btn_input1">사업자등록증 다운로드</a></td>
+										<a href="#" class="btn_input1">사업자등록증 업로드</a> <a href="#" class="btn_input1">사업자등록증 다운로드</a>
+										<p class="txt_message" id="compNum_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
+									</td>
 								</tr>
 								<tr>
 									<th>회사/기관 전화</th>
@@ -273,7 +276,9 @@
 										<input type="text" id="compTel3" name="compTel3" size="5"  class="inp_txt" value="${compTel3}" maxlength="4">
 										<span class=" bar2">내선</span>
 										<input type="text" id="compExtTel" name="compExtTel" size="5"  class="inp_txt" value="${compExtTel}" maxlength="4" />
-										<p class="txt_message" id="compExtTel_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p><br/>
+										
+										<p class="txt_message" id="compTel_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p><br/>
+										<p class="txt_message" id="compExtTel_message" style="display: none;">형식이 올바르지 않은 내선번호입니다.</p>
 									</td>
 										
 								</tr>
