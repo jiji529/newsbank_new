@@ -93,12 +93,14 @@ $(document).on("click", ".filter_list li", function() {
 	$(this).siblings().removeAttr("selected");
 	$(this).attr("selected", "selected");
 	
-	if(!$(this).hasClass("choice")){
-		var choice = $(this).text();
-		$(this).attr("selected", "selected");
-		$(this).siblings().removeAttr("selected");
-		var filter_list = "<ul class=\"filter_list\">"+$(this).parents(".filter_list").html()+"</ul>";
-		$(this).parents(".filter_title").children().remove().end().html(choice+filter_list);
+	if(!$(this).hasClass("choice")){			
+		var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
+		var titleTag = $(this).parents(".filter_title").find("span");
+		var titleStr = titleTag.html();
+		titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+		titleTag.html(titleStr);
+		
+		$(this).closest(".filter_list").stop().slideUp("fast");		
 		
 		// 필터 바꾸면 페이지 번호 초기화
 		$("input[name=pageNo]").val("1");
@@ -108,12 +110,6 @@ $(document).on("click", ".filter_list li", function() {
 		var endDate = $("#endDate").val();
 		var choice = startDate + "~" + endDate;
 		var duration = $(".filter_duration").text();
-		//console.log(duration);
-		/* var titleTag = $(this).parents(".filter_title").find("span");
-		var titleStr = titleTag.html();
-		console.log(titleStr);
-		titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
-		titleTag.html(titleStr); */
 	}
 	
 });

@@ -416,19 +416,12 @@ public class DownloadService extends ServiceBase {
 			if (targetSize.equals(DOWN_TYPE_ZIP)) {
 				DownloadDTO downLog = new DownloadDTO();
 				downLog.setIpAddress(ip);
-				String corp = "nb";
 				
 				List<PhotoDTO> photoDtoList = new ArrayList<PhotoDTO>();
 				List<File>fileFdList = new ArrayList<File>();
 				
 				// ZIP은 후불 회원 / 소유자 / 구매자만 다운로드 가능
 				if (memberInfo != null) {
-					// 후불 체크
-					boolean deferredF = false;	// 후불회원 여부
-					if (memberInfo.getDeferred() > MemberDTO.DEFERRED_NORMAL) {
-						deferredF = true;
-					}
-					
 					// PhotoDTO 읽기
 					String[] uciCodes = request.getParameterValues("uciCode");
 					for (int i = 0; i < uciCodes.length; i++) {
