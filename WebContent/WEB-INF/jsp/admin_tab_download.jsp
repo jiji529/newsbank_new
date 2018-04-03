@@ -87,7 +87,7 @@
 						html += '<td>' + id + '</td>';
 						html += '<td>' + name + '</td>';
 						html += '<td>' + media + '</td>';
-						html += '<td><a href="#">' + uciCode + '</a></td>';
+						html += '<td><a href="/view.photo?uciCode=' + uciCode + '" target="_blank">' + uciCode + '</a></td>';
 						html += '<td>' + regDate + '</td>';
 						html += '</tr>';
 						

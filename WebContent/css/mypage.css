@@ -80,8 +80,11 @@
 .mypage .edit_phone_txt{ width:100px; color:#666; font-size:12px; line-height:40px;}
 .mypage .edit_phone div{width:100%; margin-top:10px;}
 
-.mypage .btn_area{width:100%; float:left; height:50px; margin-top:40px;}
+.mypage .btn_area{width:100%; float:left; margin-top:40px;}
 .mypage .btn_area a{padding:14px 50px; font-size:15px; font-weight:600; border-radius:4px;}
+.mypage .btn_area ul.precautions{width:100%; padding:20px 200px 20px 20px; background:#f6f6f6; border:1px #ccc solid; float:left; margin-bottom:40px;}
+.mypage .btn_area ul.precautions li{width:50%; float:left; text-align:left; font-size:12px; line-height:20px; color:#666;}
+.mypage .btn_area a.precautions_btn{float:right; margin-top:-105px; margin-right:15px; }
 
 .mypage .media_all{ font-size:14px; text-align:center;display:inline-block;}
 .mypage .media_all input{margin:3px 5px; float:left;}
@@ -116,7 +119,7 @@
 @media (max-width: 1400px){
 .mypage .filters li.filter_title.filter_ico, .mypage .filters li.filter_title.folder_ico{ display:block; border-left:0;}
 .mypage .filters li.filter_title:nth-child(2){margin-left:0; border-left:0;}
-.mypage .filters li.filter_title{max-width:200px}
+.mypage .filters li.filter_title{max-width:150px}
 .mypage .filters li.filter_title:after{right:15px;}}
 
 .mypage .filters .filter_rt{margin-right:10px;}
@@ -128,8 +131,6 @@
 .mypage .btn_sort .button li{float:left; border:1px #e2e2e2 solid;height:28px; margin-left:8px; font-size:13px; line-height:28px; padding:0 10px;cursor:pointer; position:relative;}
 .mypage .btn_sort .button li.sort_down{ background:#f8f8f8; font-weight:600;}
 .mypage .btn_sort .button li.sort_del{ font-weight:600; padding-left:26px; margin-left:-1px; background:url(../images/mp/ico_del.png) 8px 6px no-repeat;background-color:#f8f8f8; }
-.mypage .btn_sort .button li.sort_blind{ background:#f8f8f8; font-weight:600;}
-.mypage .btn_sort .button li.sort_unblind{ background:#f8f8f8; font-weight:600;}
 .mypage .btn_sort .button li.sort_up{ background:#f8f8f8; font-weight:600;}
 .mypage .btn_sort .button li.sort_folder{ padding-right:25px;}
 .mypage .btn_sort .button li.sort_folder:after { content: ''; position: absolute; top: 50%; right: 10px; height: 0; width: 0; margin-top: -3px; border: solid transparent; border-top-color: #555; border-width: 5px 4px; -webkit-transition: border 0.3s ease-in-out; transition: border 0.3s ease-in-out; width: auto;}
@@ -179,17 +180,13 @@
 .mypage #cms_list2 .thumb .thumb_btn .btn_view{background:url(../images/mp/btn_view.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_cart{background:url(../images/mp/btn_cart.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .blind{background:url(../images/mp/btn_blind.png) center 6px no-repeat;}
-.mypage #cms_list2 .thumb .thumb_btn .hide{background:none;cursor:default}
-.mypage #cms_list2 .thumb .thumb_btn .hide:hover{background-color:#666;}
-.mypage #cms_list2 .thumb .thumb_btn .deleted{background:url(../images/mp/btn_deleted.png) center 6px no-repeat;cursor:default;}
-.mypage #cms_list2 .thumb .thumb_btn .deleted:hover{background-color:#666;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_likeness{background:url(../images/mp/btn_likeness.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn li:hover{background-color:#4d4d4d;}
 
-.mypage .view .view_lt a.btn_edit{ position:absolute; right:0; top:0; height:28px; padding:0 15px; line-height:28px; color:#f79320; border:1px #f79320 solid; border-radius:14px; font-size:13px;}
-.mypage .view .view_lt .btn_edit{ position:absolute; right:0; top:0; height:28px;font-size:13px;}
-.mypage .view .view_lt .btn_edit a{ float:left;height:28px; padding:0 15px; line-height:28px; color:#f79320; border:1px #f79320 solid; border-radius:14px; margin-left:5px;}
+.mypage .view .view_lt .btn_edit{ float:right;}
+.mypage .view .view_lt .btn_edit a{ float:left; height:28px; padding:0 15px; line-height:28px; color:#f79320; border:1px #f79320 solid; border-radius:14px; font-size:13px; margin-left:5px;}
 .mypage .view .view_lt .cont_area{ padding-bottom:30px; border-bottom:1px #eee solid;}
+.mypage .view .view_lt .cont_area input[type=file]{ width:100%; border:1px #ccc solid; margin-bottom:15px;}
 .mypage .view .view_lt .img_info_area.area1{ width:280px; border-right:1px #eee solid; padding-right:20px; margin-top:30px; border-top:0;}
 .mypage .view .view_lt .img_info_area.area2{width:520px; margin-left:20px; margin-top:30px; border-top:0;}
 .mypage .view .view_lt .img_info_area.area1 .info_tit, .mypage .view .view_lt .img_info_area.area2 .info_tit{margin-top:0;}
@@ -200,7 +197,8 @@
 .mypage .view .view_lt .img_info_area.area2 dl dd{ width:28%;}
 .mypage .view .view_lt .img_info_area.area2 dl dt:nth-child(4n-1){ width:20%;}
 .mypage .view .view_lt .img_info_area.area2 dl dd:nth-child(4n){ width:36%;}
-
+.mypage .view .view_lt input.edit_tit{ float:left; width:100%; padding:5px 10px; font-size:14px; }
+.mypage .view .view_lt textarea.edit_tit{ float:left; width:100%; padding:5px 10px; font-size:14px; font-size:13px; line-height:20px; }
 
 /*.mypage .view .view_lt .img_info_area.area1 dl{grid-template-columns:28% 72%; -ms-grid-columns:28% 72%;}
 .mypage .view .view_lt .img_info_area.area2 dl{grid-template-columns:18% 30% 15% 34%;-ms-grid-columns:18% 30% 15% 34%;}
@@ -232,6 +230,7 @@
 
 
 /*장바구니*/
+.order_list {float:left; width:100%;}
 .order_list .tb03 th{padding:10px;}
 .order_list .tb03 td{padding:10px; font-size:14px;}
 .order_list .tb03 th:first-child, .order_list .tb03 td:first-child{padding:10px 20px;}
@@ -515,13 +514,15 @@
 #popup_wrap {width:400px; height:250px; background:#fff; border: solid 1px #ccc; position:fixed; top:50%; left:50%; margin:-200px 0 0 -200px; z-index:9999; display:none;} 
 #popup_wrap.pop_group {height:330px; margin:-250px 0 0 -200px;} 
 #popup_wrap.wd {width:900px; height:640px;margin:-320px 0 0 -450px; } 
+#popup_wrap.wd2 {width:600px; height:350px;margin:-200px 0 0 -300px; } 
 #popup_wrap .pop_tit{width:100%; height:50px; padding: 18px 25px 12px;border-bottom:1px #ccc solid;}
 #popup_wrap .pop_tit h2{float:left; font-size:16px; text-align:left;}
 #popup_wrap .pop_tit p{float:right;  }
 #popup_wrap .pop_tit p .popup_close{width:20px; height:20px; background:url(../images/pop_close.png) 0 0 no-repeat;text-indent:-9999px; border:0; position:absolute; right:15px; top:15px;}
 #popup_wrap .pop_cont{ width:100%; float:left; overflow:hidden; height:120px;}
 #popup_wrap.pop_group .pop_cont{ height:185px; overflow-y:auto; overflow-x:hidden;}
-
+#popup_wrap.pop_group.wd2 .pop_cont{ height:235px; overflow-y:auto; overflow-x:hidden;}
+#popup_wrap.pop_group.wd2 table{width:100%;}
 #popup_wrap.wd .pop_cont{height:588px;}
 #popup_wrap .pop_cont .group_li{width:100%; float:left;}
 #popup_wrap .pop_cont .group_li li {width:100%; float:left; height:50px;}

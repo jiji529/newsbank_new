@@ -42,6 +42,7 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
+<script src="js/photo.js"></script>
 <script type="text/javascript">
 	function popup_usage() {
 		var uciCode_arr = new Array();
@@ -65,6 +66,7 @@
 	$(document).on("click", ".btn_input2", function() {
 		popup_usage(); // 사용용도 선택
 	});
+	
 </script>
 </head>
 <body>
@@ -137,7 +139,6 @@
 				<col width="120">
 				<col width="60">
 				<col width="220">
-				<col width="130">
 				</colgroup>
 				<thead>
 					<tr>
@@ -149,7 +150,6 @@
 						<th>번호</th>
 						<th>다운로드 이미지 정보</th>
 						<th>다운로드 날짜</th>
-						<th>다운로드 횟수</th>
 					</tr>
 				</thead>
 				<tbody id="mtBody">
@@ -170,7 +170,7 @@
 									</a>
 								</div>
 								<div class="cart_info">
-									<a href="view.html" target="_blank">
+									<a href="/view.photo?uciCode=${download.photo_uciCode}" target="_blank">
 										<div class="brand">${download.copyright}</div>
 										<div class="code">${download.photo_uciCode}</div>
 									</a>
@@ -178,10 +178,10 @@
 							</div> </a>
 						</td>
 						<td>${download.regDate}</td>
-						<td>0회<br />
+						<%-- <td>0회<br />
 							<div class="btn_group">
-								<button type="button" class="btn_o" name="btn_down">다운로드</button>
-							</div></td>
+								<button type="button" class="btn_o" name="btn_down" onclick="down('${download.photo_uciCode}')">다운로드</button>
+							</div></td> --%>
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -201,5 +201,15 @@
 <form id="dateForm" method="post"  target="dateFrame">
 	<input type="hidden" id="year" name="year" />
 </form>
+
+<form id="downForm" method="post"  target="downFrame">
+	<input type="hidden" id="downUciCode" name="uciCode" />
+	<input type="hidden" id="downType" name="type" />
+	<input type="hidden" name="dummy" value="<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+	<input type="hidden" id="group_seq" name="group_seq" value="${memberInfo.group_seq}" />
+</form>
+<iframe id="downFrame" style="display:none" >
+</iframe>
+
 </body>
 </html>

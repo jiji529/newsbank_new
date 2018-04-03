@@ -285,5 +285,7 @@ function mutli_download() {
 	var url = "<%= IMG_SERVER_URL_PREFIX%>/zip.down.photo?&type=file&uciCode=";
 	url += param;
 	
+	console.log(url);
+	
 	$("#downFrame").attr("src", url);
 }

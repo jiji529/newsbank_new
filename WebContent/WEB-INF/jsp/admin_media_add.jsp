@@ -58,7 +58,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	$(document).ready(function(){
 		setDatepicker();
 		
-		var id = "trello3";
+		/* var id = "trello3";
 		var pw = "ekgkal4174!";
 		var name = "트렐로1";
 		var phone = "010-112-5647";
@@ -113,7 +113,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		$("#taxPhone2").val(tmpTaxPhone[1]);
 		$("#taxPhone3").val(tmpTaxPhone[2]);
 		$("#taxEmail").val(taxEmail);
-		$("#taxExtTell").val(taxExtTell);
+		$("#taxExtTell").val(taxExtTell); */
 	});
 	
 	//언론사 회원 추가 버튼 클릭
