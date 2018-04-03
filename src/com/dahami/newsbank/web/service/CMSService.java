@@ -16,12 +16,17 @@ import com.dahami.newsbank.web.dao.TagDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.StatsDTO;
 
-public class CMSService extends ServiceBase {	
-
+public class CMSService extends ServiceBase {
 	private boolean isViewMode;
+	private boolean isAdmin;
 	
 	public CMSService(boolean isViewMode) {
+		this(isViewMode, false);
+	}
+	
+	public CMSService(boolean isViewMode, boolean isAdmin) {
 		this.isViewMode = isViewMode;
+		this.isAdmin = isAdmin;
 	}
 	
 	@Override
@@ -49,14 +54,16 @@ public class CMSService extends ServiceBase {
 					}
 				}
 				
-				if(!ownerF) {
+				// 관리자가 아닌경우 소유자이어야 함
+				if(!isAdmin && !ownerF) {
 					errorF = true;
 				}
 				else {
 					StatsDTO statsDTO = photoDAO.getStats(uciCode);
 					List<PhotoTagDTO> photoTagList = new TagDAO().select_PhotoTag(uciCode);
 					
-					photoDAO.hit(uciCode);
+					// CMS 는 히트 안함
+//					photoDAO.hit(uciCode);
 					request.setAttribute("photoDTO", photoDTO);
 					request.setAttribute("statsDTO", statsDTO);
 					request.setAttribute("photoTagList", photoTagList);
@@ -117,7 +124,13 @@ public class CMSService extends ServiceBase {
 			
 		}
 		else {
-			List<MemberDTO> mediaList = mDao.listAdjustMedia(memberInfo);
+			List<MemberDTO> mediaList = null;
+			if(isAdmin) {
+				mediaList = mDao.listActiveMedia();	
+			}
+			else {
+				mediaList = mDao.listAdjustMedia(memberInfo);	
+			}
 			request.setAttribute("mediaList", mediaList);	
 		}
 		
@@ -126,10 +139,20 @@ public class CMSService extends ServiceBase {
 			// TODO 잘못된 접근에 대한 처리
 		}
 		else if(isViewMode) {
-			forward = "/WEB-INF/jsp/cms_view.jsp";
+			if(isAdmin) {
+				forward = "/WEB-INF/jsp/admin_cms_view.jsp";
+			}
+			else {
+				forward = "/WEB-INF/jsp/cms_view.jsp";
+			}
 		}
 		else {
-			forward = "/WEB-INF/jsp/cms.jsp";
+			if(isAdmin) {
+				forward = "/WEB-INF/jsp/admin_cms.jsp";
+			}
+			else {
+				forward = "/WEB-INF/jsp/cms.jsp";
+			}
 		}
 		forward(request, response, forward);
 	}

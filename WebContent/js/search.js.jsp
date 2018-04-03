@@ -62,7 +62,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			dataType: "json",
 			data: searchParam,
 			timeout: 1000000,
-			url: "cms.search",
+			url: searchTarget,
 			success : function(data) { 
 				$(data.result).each(function(key, val) {	
 					var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
@@ -87,6 +87,60 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				var totalPage = $(data.totalPage)[0];
 				$("div .result b").html(totalCount);
 				$("div .paging span.total").html(totalPage);
+			},
+			error : function(request, status, error) {
+				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
+	
+	//#연관사진
+	function relation_photo() {
+		var keyword = "";
+		keyword = $.trim(keyword);
+		var pageNo = "1";
+		var pageVol = "10";
+		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
+		var media = 0;
+		var duration = "";
+		var colorMode = "0";
+		var horiVertChoice = "0";
+		var size = "0";
+		var portRight = $(".filter_portRight .filter_list").find("[selected=selected]").attr("value");
+		var includePerson = $(".filter_incPerson .filter_list").find("[selected=selected]").attr("value");
+		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
+
+		var searchParam = {
+				"uciCode":"${photoDTO.uciCode}"
+				,"keyword":keyword
+				, "pageNo":pageNo
+				, "pageVol":pageVol
+				, "contentType":contentType
+				, "media":media
+				, "duration":duration
+				, "colorMode":colorMode
+				, "horiVertChoice":horiVertChoice
+				, "size":size
+				, "portRight":portRight
+				, "includePerson":includePerson
+				, "group":group
+		};
+		
+		$("#keyword").val($("#keyword_current").val());
+		console.log(searchParam);
+		var html = "";
+		$.ajax({
+			type: "POST",
+			async: false,
+			dataType: "json",
+			data: searchParam,
+			timeout: 1000000,
+			url: "search",
+			success : function(data) {
+				$(data.result).each(function(key, val) {
+					html += '<li><a href="javascript:void(0)"><img src="<%= IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+				});
+				$(html).appendTo(".cfix");
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);

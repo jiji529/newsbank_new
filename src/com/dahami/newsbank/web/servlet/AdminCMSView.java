@@ -17,11 +17,12 @@ import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.TagDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.StatsDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class CMSViewManage
  */
-@WebServlet("/view.cms.manage")
+@WebServlet("/view2.cms.manage")
 public class AdminCMSView extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
@@ -30,17 +31,14 @@ public class AdminCMSView extends NewsbankServletBase {
      */
     public AdminCMSView() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		super.doGet(request, response);
+		CmdClass cmd = CmdClass.getInstance(request);
 		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
@@ -108,14 +106,6 @@ public class AdminCMSView extends NewsbankServletBase {
 			response.sendRedirect("/login");
 		}
 		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 	
 	private void insertTag(String uciCode, String tagName) {

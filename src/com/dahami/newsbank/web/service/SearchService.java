@@ -37,16 +37,19 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 public class SearchService extends ServiceBase {
-
 	private static final SimpleDateFormat regDf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	public static final int SEARCH_MODE_USER = 0;
+	public static final int SEARCH_MODE_OWNER = 1;
+	public static final int SEARCH_MODE_ADMIN = 2;
 	
 	public static final int EXPORT_TYPE_JSON = 0;
 	public static final int EXPORT_TYPE_XML = 1;
 	
-	private boolean isCmsMode;
+	private int searchMode;
 	
-	public SearchService(boolean isCmsMode) {
-		this.isCmsMode = isCmsMode;
+	public SearchService(int searchMode) {
+		this.searchMode = searchMode;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -57,40 +60,50 @@ public class SearchService extends ServiceBase {
 		
 		boolean searchable = true;
 		
-		if(isCmsMode) {
-			// CMS 검색은 비활성 매체도 가능하도록 함
+		if(searchMode > SEARCH_MODE_USER) {
+			// 비활성 매체도 가능하도록 함
 			sParam.setMediaInactive(SearchParameterBean.MEDIA_INACTIVE_NO | SearchParameterBean.MEDIA_INACTIVE_YES);
-			// CMS 검색은 판매상태 지정 가능 / 미지정시 기본값 세팅
+			// 판매상태 지정 가능 / 미지정시 기본값 세팅
 			if(sParam.getSaleState() == 0) {
 				sParam.setSaleState(SearchParameterBean.SALE_STATE_DEFAULT);
 			}
 			
-			// CMS 검색은 로그인 사용자 기준으로 검색조건 검증
 			HttpSession session = request.getSession();
 			MemberDTO memberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 			if(memberInfo != null) {
+				List<Integer> tgtUsrList = sParam.getTargetUserList();
 				memberInfo = new MemberDAO().getMember(memberInfo);
 				List<Integer> ownerList = memberInfo.getOwnerGroupList();
-				List<Integer> tgtUsrList = sParam.getTargetUserList();
+				
+				// 타겟 지정이 되지 않은 경우
 				if(tgtUsrList.size() == 0) {
-					tgtUsrList.addAll(ownerList);
+					// CMS는 자기 매체만
+					if(this.searchMode == SEARCH_MODE_OWNER) {
+						tgtUsrList.addAll(ownerList);	
+					}
+					// 관리자는 전체 매체
 				}
+				// 타겟 지정이 된 경우
 				else {
-					for(int i = 0; i < tgtUsrList.size(); i++) {
-						int curTgt = tgtUsrList.get(i);
-						boolean findF = false;
-						for(int j = 0; j < ownerList.size(); j++) {
-							if(curTgt == ownerList.get(j)) {
-								findF = true;
-								break;
+					if(this.searchMode == SEARCH_MODE_OWNER) {
+						// CMS 검색은 로그인 사용자 기준으로 검색조건 검증
+						for(int i = 0; i < tgtUsrList.size(); i++) {
+							int curTgt = tgtUsrList.get(i);
+							boolean findF = false;
+							for(int j = 0; j < ownerList.size(); j++) {
+								if(curTgt == ownerList.get(j)) {
+									findF = true;
+									break;
+								}
 							}
-						}
-						if(!findF) {
-							logger.warn("잘못된 매체 요청 / USR: " + memberInfo.getSeq() + " / REQ: " + curTgt);
-							tgtUsrList.remove(i--);
+							if(!findF) {
+								logger.warn("잘못된 매체 요청 / USR: " + memberInfo.getSeq() + " / REQ: " + curTgt);
+								tgtUsrList.remove(i--);
+							}
 						}
 					}
 				}
+				
 			}
 			else {
 				searchable = false;

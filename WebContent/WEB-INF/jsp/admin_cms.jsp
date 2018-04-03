@@ -32,10 +32,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
+
 <script src="js/filter.js"></script>
 <script src="js/search.js.jsp"></script>
 <script src="js/cms.js.jsp"></script>
 <script> 
+	var searchTarget = "admin.search";
 	//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
 	$(document).ready(function() {
 		$("[href]").each(function() {
@@ -59,14 +61,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			$("#mask").css("display", "none");
 		});
 		
-		var cms_keyword = '${cms_keyword}';
-		
-		if(cms_keyword) { // 사진관리 상세페이지에서 이미지 검색 시
-			$("#cms_keyword").val(cms_keyword);
-			cms_search();
-		}else { // 최초 사진 관리 페이지 접근 시
-			search();
-		}
+		cms_search();
 		setDatepicker();
 	});
 </script>
@@ -90,7 +85,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			<div class="filters">
 				<ul>
 					<li class="filter_title filter_ico">검색필터</li>
-					<li class="filter_title filter_media"> 전체매체
+					<li class="filter_title filter_media">
+						<span>매체 : 전체</span>
 						<ul class="filter_list">
 							<li value="0" selected="selected">전체</li>
 							<c:forEach items="${mediaList}" var="media">
@@ -98,7 +94,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							</c:forEach>
 						</ul>
 					</li>
-					<li class="filter_title filter_duration"> 검색기간
+					<li class="filter_title filter_durationReg">
+						<span>업로드일 : 전체</span>
 						<ul class="filter_list">
 							<li value="" selected="selected">전체</li>
 							<li value="1d">1일</li>
@@ -118,6 +115,27 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							</li>
 						</ul>
 					</li>
+					<li class="filter_title filter_durationTake">
+						<span>촬영일 : 전체</span>
+						<ul class="filter_list">
+							<li value="" selected="selected">전체</li>
+							<li value="1d">1일</li>
+							<li value="1w">1주</li>
+							<li value="1m">1달</li>
+							<li value="1y">1년</li>
+							<li class="choice">직접 입력
+								<div class="calendar">
+									<div class="cal_input">
+										<input type="text" class="datepicker" id="startDate" title="촬영 시작일" />
+										<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
+									<div class="cal_input">
+										<input type="text" class="datepicker" id="endDate" title="촬영 마지막일" />
+										<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
+									<button class="btn_cal" type="button">적용</button>
+								</div>
+							</li>
+						</ul>
+					</li>
 					<%-- 1차제외
 					<li class="filter_title filter_color">
 						색상
@@ -128,14 +146,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						</ul>
 					</li> --%>
 					<li class="filter_title filter_horizontal">
-						형태
+						<span>가로/세로 : 전체</span>
 						<ul class="filter_list">
 							<li value="<%=SearchParameterBean.HORIZONTAL_ALL%>" selected="selected">전체</li>
 							<li value="<%=SearchParameterBean.HORIZONTAL_YES%>">가로</li>
 							<li value="<%=SearchParameterBean.HORIZONTAL_NO%>">세로</li>
 						</ul>
 					</li>
-					<li class="filter_title filter_size"> 사진크기
+					<li class="filter_title filter_size">
+						<span>사진크기 : 전체</span>
 						<ul class="filter_list">
 							<li value="<%=SearchParameterBean.SIZE_ALL%>" selected="selected">전체</li>
 							<li value="<%=SearchParameterBean.SIZE_LARGE%>">3,000 px 이상</li>
@@ -143,12 +162,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<li value="<%=SearchParameterBean.SIZE_SMALL%>">1,000 px 이하</li>
 						</ul>
 					</li>
-					<li class="filter_title filter_sale_state"> 서비스 상태
+					<li class="filter_title filter_service">
+						<span>서비스 상태 : 정상+숨김</span>
 						<ul class="filter_list">
-							<li value="" selected="selected">전체</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_OK_BLIND%>" selected="selected">정상+숨김</li>
 							<li value="<%=SearchParameterBean.SALE_STATE_OK%>">정상</li>
-							<li value="<%=SearchParameterBean.SALE_STATE_BLIND%>">블라인드</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_BLIND%>">숨김</li>
 							<li value="<%=SearchParameterBean.SALE_STATE_DEL%>">삭제</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_BLIND_DEL%>">숨김 + 삭제</li>
+							<li value="<%=SearchParameterBean.SALE_STATE_ALL%>">전체</li>
 						</ul>
 					</li>
 				</ul>

@@ -41,3 +41,4 @@ function go_cms() {
 	$("#cms_keyword_current").val(keyword);
 	view_form.submit();
 }
+

@@ -41,6 +41,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
 <script type="text/javascript">
+	var searchTarget = "cms.search";
+
 	$(document).ready(function() {
 		cms_search();
 		setDatepicker();
@@ -184,64 +186,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		url += param;
 		
 		$("#downFrame").attr("src", url);
-	}
-	
-	function multi_delete() {
-		var uciCode = getCheckedList();
-		if(uciCode.length == 0) {
-			alert("선택된 사진이 없습니다.");
-			return;
-		}
-		
-		if(!confirm("이미지 삭제 후 복구할 수 없습니다.\n삭제합니까?")) {
-			return;
-		}
-		if(uciCode.length > 1) {
-			if(!confirm("여러개의 이미지가 선택되었습니다. 정말 삭제하시겠습니까?")) {
-				return;
-			}
-		}
-		
-		for(var i=0; i < uciCode.length; i++) {
-			$.ajax({
-				url: "/view.cms",
-				type: "POST",
-				data: {
-					"action" : "deletePhoto"
-					,"uciCode" : uciCode[i]
-				},
-				success: function(data) {					
-				},
-				error : function(request, status, error) {
-					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-				}
-			});
-		}
-		alert("삭제되었습니다");
-		cms_search();
-	}
-	
-	function multi_blind(saleState) {
-		var uciCode = getCheckedList();
-		if(uciCode.length == 0) {
-			alert("선택된 사진이 없습니다.");
-			return;
-		}
-		
-		var msg = "숨김";
-		if(saleState == <%=PhotoDTO.SALE_STATE_OK%>) {
-			msg = "숨김해제";
-		}
-		
-		if(!confirm("선택된 사진을 "+msg+"처리 합니다. 진행합니까?\n이미 "+msg+"상태이거나 삭제된 사진은 적용되지 않습니다.")) {
-			return;
-		}
-		
-		for(var i=0; i < uciCode.length; i++) {
-			changeBlind(uciCode[i], saleState);
-		}
-		alert("처리되었습니다");
-		cms_search();
 	}
 	
 	function getCheckedList() {

@@ -80,7 +80,7 @@ public class CmdClass {
 	}
 	
 	public boolean is3(String cmd) {
-		return is(cmd2, cmd);
+		return is(cmd3, cmd);
 	}
 	
 	private  boolean is(String cmd, String tgtCmd) {

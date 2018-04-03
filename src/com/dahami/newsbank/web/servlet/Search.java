@@ -35,13 +35,20 @@ public class Search extends NewsbankServletBase {
 		}
 		
 		boolean isCmsSearch = false;
+		boolean isAdminSearch = false;
 		
 		try {
 			if(cmd.is2("xml")) {
 				request.setAttribute("exportType", SearchService.EXPORT_TYPE_XML);
 			}
-			if(cmd.is2("cms")) {
+			else if(cmd.is2("cms")) {
 				isCmsSearch = true;
+				if(cmd.is3("xml")) {
+					request.setAttribute("exportType", SearchService.EXPORT_TYPE_XML);	
+				}
+			}
+			else if(cmd.is2("admin")) {
+				isAdminSearch = true;
 				if(cmd.is3("xml")) {
 					request.setAttribute("exportType", SearchService.EXPORT_TYPE_XML);	
 				}
@@ -50,7 +57,16 @@ public class Search extends NewsbankServletBase {
 			request.setAttribute("exportType", SearchService.EXPORT_TYPE_JSON);
 		}
 		
-		SearchService ss = new SearchService(isCmsSearch);
+		SearchService ss = null;
+		if(isCmsSearch) {
+			ss = new SearchService(SearchService.SEARCH_MODE_OWNER);
+		}
+		else if(isAdminSearch) {
+			ss = new SearchService(SearchService.SEARCH_MODE_ADMIN);
+		}
+		else {
+			ss = new SearchService(SearchService.SEARCH_MODE_USER);
+		}
 		ss.execute(request, response);
 		
 		String contentType = (String) request.getAttribute("contentType");
