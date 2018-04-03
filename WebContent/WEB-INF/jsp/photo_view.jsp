@@ -9,9 +9,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 PhotoDTO photoDto = (PhotoDTO)request.getAttribute("photoDTO");
 boolean contentBlidF = false;
-if(photoDto == null || 
-		photoDto.getSaleState() == PhotoDTO.SALE_STATE_DEL) {
-	contentBlidF = true;
+// 사진보기에서는 정상 판매상태여야함
+if(photoDto == null
+	|| photoDto.getSaleState() != PhotoDTO.SALE_STATE_OK) {
+		contentBlidF = true;
 }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

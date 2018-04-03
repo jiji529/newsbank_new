@@ -71,7 +71,7 @@ public class MypageAccountList extends NewsbankServletBase {
 				request.setAttribute("MemberInfo", MemberInfo);
 				
 				
-				CMSService cs = new CMSService(); //매체목록
+				CMSService cs = new CMSService(false); //매체목록
 				cs.execute(request, response);
 				
 				List<Map<String, Object>> selectTotalPrice = new ArrayList<Map<String, Object>>();

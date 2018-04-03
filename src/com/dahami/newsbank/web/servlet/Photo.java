@@ -34,7 +34,6 @@ public class Photo extends NewsbankServletBase {
     	new SearchDAO().init();
     }
     
-    private static int idx = 0;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
 		CmdClass cmd = CmdClass.getInstance(request);
@@ -42,7 +41,6 @@ public class Photo extends NewsbankServletBase {
 			response.sendRedirect("/invlidPage.jsp");
 			return;
 		}
-		Map<String, String[]> params = request.getParameterMap();
 		
 		if(cmd.is2("down")) {
 			DownloadService ds = new DownloadService();

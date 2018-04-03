@@ -46,7 +46,7 @@ public class JoinForm extends NewsbankServletBase {
 		request.setAttribute("type", type);
 		
 
-		CMSService cs = new CMSService(); //매체목록
+		CMSService cs = new CMSService(false); //매체목록
 		cs.execute(request, response);
 		
 		if (type == null) {

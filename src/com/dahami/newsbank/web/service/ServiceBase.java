@@ -18,6 +18,8 @@ package com.dahami.newsbank.web.service;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,5 +39,12 @@ public abstract class ServiceBase {
 		logger = LoggerFactory.getLogger(this.getClass());
 	}
 	
-	public abstract void execute(HttpServletRequest request, HttpServletResponse response) throws IOException ;
+	public abstract void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+	
+	protected void forward(HttpServletRequest request, HttpServletResponse response, String forward) throws ServletException, IOException {
+		if(forward != null) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
+			dispatcher.forward(request, response);
+		}
+	}
 }

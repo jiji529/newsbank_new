@@ -265,43 +265,51 @@ $(document).on("click", ".btn_del", function() {
 	});
 });
 
-// #사진관리 블라인드 처리
-$(document).on("click", ".btn_view", function() {
-	var uciCode = $(this).attr("value");
-	var saleState;
-	if($(this).hasClass("blind")) {
-		$(this).removeClass("blind");
-		saleState = 1;
-	}else {
-		$(this).addClass("blind");
-		saleState = 2;
-	}
-	var param = "action=blindPhoto";
-	
-	$.ajax({
-		url: "/cms?"+param,
-		type: "POST",
-		data: {
-			"uciCode" : uciCode,
-			"saleState" : saleState
-		},
-		success: function(data) {					
-			
-		},
-		error : function(request, status, error) {
-			console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-		}, 
-		complete: function() {
-			//search();
+
+
+	/** 전체선택 */
+	$(document).on("click", "input[name='check_all']", function() {
+		if($("input[name='check_all']").prop("checked")) {
+			$("#cms_list2 input:checkbox").prop("checked", true);
+		}else {
+			$("#cms_list2 input:checkbox").prop("checked", false);
 		}
 	});
-});
 
-/** 전체선택 */
-$(document).on("click", "input[name='check_all']", function() {
-	if($("input[name='check_all']").prop("checked")) {
-		$("#cms_list2 input:checkbox").prop("checked", true);
-	}else {
-		$("#cms_list2 input:checkbox").prop("checked", false);
+
+	/** 블라인드/삭제 초상권 변경 */
+	function changeOption(uciCode, name, value) {	
+		$.ajax({
+			type: "POST",
+			url: "/view.cms?action=updateOne",
+			data: {
+				"uciCode" : uciCode,
+				"columnName" : name,
+				"columnValue" : value
+			},
+			success: function(data){
+				
+			}, error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		});
 	}
-});
+	
+	/** 블라인드/해제 버튼 클릭 */
+	$(document).on("click", ".btn_view", function() {
+		var uciCode = $(this).attr("value");
+		var saleState;
+		if($(this).hasClass("blind")) {
+			$(this).removeClass("blind");
+			saleState = <%=PhotoDTO.SALE_STATE_OK%>;
+		}else {
+			$(this).addClass("blind");
+			saleState = <%=PhotoDTO.SALE_STATE_STOP%>;
+		}
+		changeBlind(uciCode, saleState)
+	});
+	
+	/** 블라인드/삭제 변경 */
+	function changeBlind(uciCode, saleState) {
+		changeOption(uciCode, "saleState", saleState);
+	}

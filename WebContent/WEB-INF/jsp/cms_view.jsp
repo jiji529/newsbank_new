@@ -20,9 +20,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <% 
 String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
-
 PhotoDTO photoDto = (PhotoDTO)request.getAttribute("photoDTO");
 boolean contentBlidF = false;
+// CMS에서는 삭제상태가 아니어야 함
 if(photoDto == null || 
 		photoDto.getSaleState() == PhotoDTO.SALE_STATE_DEL) {
 	contentBlidF = true;
@@ -38,6 +38,7 @@ if(photoDto == null ||
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/cms.js.jsp"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/photo.js"></script>
@@ -77,7 +78,7 @@ if(photoDto == null ||
 	
 	$(document).on("change", "input[type=radio][name=blind]", function() {
 		var saleState = $('input[type=radio][name=blind]:checked').val();
-		changeOption("saleState", saleState);
+		changeOption("${photoDTO.uciCode}", "saleState", saleState);
 	});
 	
 	/*
@@ -87,25 +88,6 @@ if(photoDto == null ||
 		changeOption("portraitRightState", portraitRightState);
 	});
 	*/
-	
-	function changeOption(name, value) {	
-		var uciCode = "${photoDTO.uciCode}";
-		
-		$.ajax({
-			type: "POST",
-			url: "/view.cms?action=updateOne",
-			data: {
-				"uciCode" : uciCode,
-				"columnName" : name,
-				"columnValue" : value
-			},
-			success: function(data){
-				
-			}, error:function(request,status,error){
-	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       	}
-		});
-	}
 	
 	$(document).on("click", ".tag_remove", function() {
 		$(this).parent().remove();

@@ -101,7 +101,7 @@ public class MypageAccountInfo extends NewsbankServletBase {
 				}
 				*/
 				
-				CMSService cs = new CMSService(); //매체목록
+				CMSService cs = new CMSService(false); //매체목록
 				cs.execute(request, response);
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_account_info.jsp");

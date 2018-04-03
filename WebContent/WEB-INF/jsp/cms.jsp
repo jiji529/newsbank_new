@@ -34,6 +34,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 
+<script src="js/cms.js.jsp"></script>
 <script src="js/search.js.jsp"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
@@ -179,7 +180,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}
 		
 		$.ajax({
-			url: "/cms?"+param,
+			url: "/view.cms?"+param,
 			type: "POST",
 			data: {
 				"uciCode" : uciCode
@@ -192,50 +193,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 			}
 		});
-	});
-	
-	// #사진관리 블라인드 처리
-	$(document).on("click", ".btn_view", function() {
-		var uciCode = $(this).attr("value");
-		var saleState;
-		if($(this).hasClass("blind")) {
-			$(this).removeClass("blind");
-			saleState = <%=PhotoDTO.SALE_STATE_OK%>;
-		}else {
-			$(this).addClass("blind");
-			saleState = <%=PhotoDTO.SALE_STATE_STOP%>;
-		}
-		changeBlind(uciCode, saleState)
-	});
-	
-	function changeBlind(uciCode, saleState) {
-		$.ajax({
-			url: "/cms",
-			type: "POST",
-			data: {
-				"action" : "blindPhoto",
-				"uciCode" : uciCode,
-				"saleState" : saleState
-			},
-			success: function(data) {					
-				
-			},
-			error : function(request, status, error) {
-				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-			}, 
-			complete: function() {
-				//search();
-			}
-		});
-	}
-	
-	/** 전체선택 */
-	$(document).on("click", "input[name='check_all']", function() {
-		if($("input[name='check_all']").prop("checked")) {
-			$("#cms_list2 input:checkbox").prop("checked", true);
-		}else {
-			$("#cms_list2 input:checkbox").prop("checked", false);
-		}
 	});
 	
 	function down(uciCode) {
@@ -284,7 +241,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		
 		for(var i=0; i < uciCode.length; i++) {
 			$.ajax({
-				url: "/cms",
+				url: "/view.cms",
 				type: "POST",
 				data: {
 					"action" : "deletePhoto"
