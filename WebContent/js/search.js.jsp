@@ -71,7 +71,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
 					html += "<ul class=\"thumb_btn\">";
 					if(deleted.length == 0) {
-						html += "<li class=\"btn_down\"><a href=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "\" download>다운로드</a></li>"
+						html += "<li class=\"btn_down\" value=\"" + val.uciCode + "\"><a>다운로드</a></li>"
 						html += "<li class=\"btn_del " + deleted + "\" value=\"" + val.uciCode + "\"><a>삭제</a></li>";
 						html += "<li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>숨김</a></li>";
 					}
@@ -111,7 +111,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
 
 		var searchParam = {
-				"uciCode":"${photoDTO.uciCode}"
+				"uciCode":$('#uciCode').val()
 				,"keyword":keyword
 				, "pageNo":pageNo
 				, "pageVol":pageVol

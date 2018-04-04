@@ -28,9 +28,12 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/filter.js"></script>
-<script src="js/cms_view.js"></script>
+
 <script src="js/cms.js.jsp"></script>
+<script src="js/cms_view.js.jsp"></script>
 <script src="js/search.js.jsp"></script>
+<script src="js/cms_view.js"></script>
+
 <script> 
 	//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
 	$(document).ready(function() {
@@ -90,7 +93,7 @@
 			<form class="view_form" method="post" action="/cms.manage" name="view_form" >
 				<input type="hidden" id="cms_keyword_current" name="cms_keyword_current" />
 			</form>
-<%@include file="content_view.jsp" %>
+<%@include file="cms_content.jsp" %>
 		</section>
 	</div>
 </body>

@@ -338,52 +338,6 @@ public class PhotoDAO extends DAOBase {
 	}
 	
 	/**
-	 * @methodName  : delete
-	 * @author      : HOYADEV
-	 * @date        : 2017. 11. 14. 오후 07:54:35
-	 * @methodCommet: CMS 사진 삭제
-	 * @param param
-	 * @return 
-	 */
-	public void delete(PhotoDTO photoDTO) {
-		SqlSession session = null;
-				
-		try {
-			session = sf.getSession();
-			session.update("Photo.deletePhoto", photoDTO);
-			
-		} catch (Exception e) {
-			logger.warn("", e);
-		} finally {
-			try {session.commit();} catch (Exception e) {}
-			try {session.close();} catch (Exception e) {}
-		}
-	}
-	
-	/**
-	 * @methodName  : blind
-	 * @author      : HOYADEV
-	 * @date        : 2017. 11. 14. 오후 07:54:35
-	 * @methodCommet: CMS 사진 블라인드 on/off
-	 * @param param
-	 * @return 
-	 */
-	public void blind(PhotoDTO photoDTO) {
-		SqlSession session = null;
-				
-		try {
-			session = sf.getSession();
-			session.update("Photo.blindPhoto", photoDTO);
-			
-		} catch (Exception e) {
-			logger.warn("", e);
-		} finally {
-			try {session.commit();} catch (Exception e) {}
-			try {session.close();} catch (Exception e) {}
-		}
-	}
-	
-	/**
 	 * @methodName  : insDownLog
 	 * @author      : JEON,HYUNGGUK
 	 * @date        : 2017. 11. 21. 오전 11:26:03

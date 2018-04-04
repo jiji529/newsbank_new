@@ -120,8 +120,6 @@ public class CMSService extends ServiceBase {
 					}
 				}
 			}
-			
-			
 		}
 		else {
 			List<MemberDTO> mediaList = null;

@@ -263,29 +263,6 @@ function insertMultiBasket() {
 	}
 }
 
-function down(uciCode) {
-	if(!confirm("원본을 다운로드 하시겠습니까?")) {
-		return;
-	}
-	var url = "<%= IMG_SERVER_URL_PREFIX%>/service.down.photo?uciCode="+uciCode+"&type=file";
-	$("#downFrame").attr("src", url);
-}	
 
-function mutli_download() {
-	var uciCode = new Array();
-	if(!confirm("선택파일을 압축파일로 다운로드하시겠습니까?")) {
-		return;
-	}
-	$("#wish_list2 input:checkbox:checked").each(function(index) {
-		uciCode.push($(this).val());
-	});
-	
-	var param = uciCode.join("&uciCode=");
-	
-	var url = "<%= IMG_SERVER_URL_PREFIX%>/zip.down.photo?&type=file&uciCode=";
-	url += param;
-	
-	console.log(url);
-	
-	$("#downFrame").attr("src", url);
-}
+
+

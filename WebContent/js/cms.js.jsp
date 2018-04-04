@@ -116,92 +116,36 @@ $(document).on("click", ".filter_list li", function() {
 
 
 
-function go_cmsView(uciCode) {
-	$("#uciCode").val(uciCode);
-	view_form.submit();
-}
+	function go_cmsView(uciCode) {
+		$("#uciCode").val(uciCode);
+		view_form.submit();
+	}
 
-// #사진관리 삭제
-$(document).on("click", ".btn_del", function() {
-	var uciCode = $(this).attr("value");		
-	var param = "action=deletePhoto";
 	
-	$.ajax({
-		url: "/cms?"+param,
-		type: "POST",
-		data: {
-			"uciCode" : uciCode
-		},
-		success: function(data) {					
-			
-		},
-		error : function(request, status, error) {
-			console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-		}
-	});
-});
 
 
 
-	/** 전체선택 */
-	$(document).on("click", "input[name='check_all']", function() {
-		if($("input[name='check_all']").prop("checked")) {
-			$("#cms_list2 input:checkbox").prop("checked", true);
-		}else {
-			$("#cms_list2 input:checkbox").prop("checked", false);
-		}
-	});
-
-	// 상세화면 블라인드 변경
-	$(document).on("change", "input[type=radio][name=blind]", function() {
-	alert("x");
-		var saleState = $('input[type=radio][name=blind]:checked').val();
-		changeOption("${photoDTO.uciCode}", "saleState", saleState);
-	});
-	// 상세화면 초상권 변경
-	$(document).on("change", "input[type=radio][name=likeness]", function() {
-		var portraitRightState = $('input[type=radio][name=likeness]:checked').val();
-		changeOption("${photoDTO.uciCode}", "portraitRightState", portraitRightState);
-	});
-
-	/** 리스트화면 블라인드/해제 버튼 클릭 */
-	$(document).on("click", ".btn_view", function() {
-		var uciCode = $(this).attr("value");
-		var saleState;
-		if($(this).hasClass("blind")) {
-			$(this).removeClass("blind");
-			saleState = <%=PhotoDTO.SALE_STATE_OK%>;
-		}else {
-			$(this).addClass("blind");
-			saleState = <%=PhotoDTO.SALE_STATE_STOP%>;
-		}
-		changeOption(uciCode, "saleState", saleState);
-	});
 	
-	/** 선택 블라인드 */
-	function multi_blind(saleState) {
-		var uciCode = getCheckedList();
-		if(uciCode.length == 0) {
-			alert("선택된 사진이 없습니다.");
-			return;
-		}
-		
-		var msg = "숨김";
-		if(saleState == <%=PhotoDTO.SALE_STATE_OK%>) {
-			msg = "숨김해제";
-		}
-		
-		if(!confirm("선택된 사진을 "+msg+"처리 합니다. 진행합니까?\n이미 "+msg+"상태이거나 삭제된 사진은 적용되지 않습니다.")) {
-			return;
-		}
-		
-		for(var i=0; i < uciCode.length; i++) {
-			changeOption(uciCode[i], "saleState", saleState);
-		}
-		alert("처리되었습니다");
-		cms_search();
+	function isNotEmpty(value) { // 배열 빈값 제외
+		return value != "";
 	}
 	
+	
+// ################################################################################
+// 리스트/뷰 공통
+// ################################################################################
+
+	function down(uciCode) {
+		if(!confirm("원본을 다운로드 하시겠습니까?")) {
+			return;
+		}
+		
+		$("#downUciCode").val(uciCode);
+		$("#downType").val("file");
+		$("#downForm").attr("action", "/service.down.photo");
+		$("#downForm").submit();
+	}
+
 	/** 블라인드/삭제 초상권 변경 */
 	function changeOption(uciCode, name, value) {	
 		$.ajax({
@@ -220,107 +164,4 @@ $(document).on("click", ".btn_del", function() {
 		});
 	}
 	
-	/** 선택 삭제 */
-	function multi_delete() {
-		var uciCode = getCheckedList();
-		if(uciCode.length == 0) {
-			alert("선택된 사진이 없습니다.");
-			return;
-		}
-		
-		if(!confirm("이미지 삭제 후 복구할 수 없습니다.\n삭제합니까?")) {
-			return;
-		}
-		if(uciCode.length > 1) {
-			if(!confirm("여러개의 이미지가 선택되었습니다. 정말 삭제하시겠습니까?")) {
-				return;
-			}
-		}
-		
-		for(var i=0; i < uciCode.length; i++) {
-			$.ajax({
-				url: "/view.cms",
-				type: "POST",
-				data: {
-					"action" : "deletePhoto"
-					,"uciCode" : uciCode[i]
-				},
-				success: function(data) {					
-				},
-				error : function(request, status, error) {
-					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-				}
-			});
-		}
-		alert("삭제되었습니다");
-		cms_search();
-	}
 	
-	// 태그삭제
-	$(document).on("click", ".tag_remove", function() {
-		$(this).parent().remove();
-		var uciCode = "${photoDTO.uciCode}";
-		var tagName = $(this).parent().text().replace("×", "");
-		
-		deleteTag(uciCode, tagName)
-	});
-
-	function deleteTag(uciCode, tagName) {
-		$.ajax({
-			type: "POST",
-			url: "/view.cms?action=deleteTag",
-			data: {
-				"uciCode" : uciCode,
-				"tagName" : tagName
-			},
-			dataType: "text",
-			success: function(data){
-				
-			}, error:function(request,status,error){
-	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       	}
-			
-		});
-	}
-	
-	// 태그 입력
-	$(document).on("click", ".add_tag > button", function() {
-		var uciCode = "${photoDTO.uciCode}";
-		var tagName = $(this).prev().val();
-		
-		var tag_list = $(".tag_list").children().text(); 
-		tag_list = tag_list.split("×");
-		tag_list = tag_list.filter(isNotEmpty);		
-		
-		if(tag_list.indexOf(tagName) != -1) {
-			alert("이미 존재하는 태그입니다.");
-		}else {
-			var html = "<li class=\"tag_self\"><span class=\"tag_remove\">×</span>"+tagName+"</li>";
-			$(html).appendTo(".tag_list");
-			$(this).prev().val("");
-			
-			insertTag(uciCode, tagName);
-		}
-	});
-	
-	function insertTag(uciCode, tagName) {
-		$.ajax({
-			type: "POST",
-			url: "/view.cms?action=insertTag",
-			data: {
-				"uciCode" : uciCode,
-				"tagName" : tagName
-			},
-			dataType: "text",
-			success: function(data){
-				
-			}, error:function(request,status,error){
-	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       	}
-			
-		});
-	}
-	
-	function isNotEmpty(value) { // 배열 빈값 제외
-		return value != "";
-	}

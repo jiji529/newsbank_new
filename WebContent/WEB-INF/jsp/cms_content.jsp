@@ -1,16 +1,16 @@
 <%---------------------------------------------------------------------------
-  Copyright ⓒ 2017 DAHAMI COMMUNICATIONS
+  Copyright ⓒ 2018 DAHAMI COMMUNICATIONS
   All rights reserved.
   -----------------------------------------------------------------------------
-  @fileName : FileName
+  @fileName : cms_content.jsp
   @author   : JEON,HYUNGGUK
-  @date     : 2017. 10. 17. 오전 10:48:12
+  @date     : 2018. 04. 03.
   @comment   : 
  
   @revision history
   date            author         comment
   ----------      ---------      ----------------------------------------------
-  2017. 10. 17.   hoyadev        view.cms
+2018. 04. 03. 
 ---------------------------------------------------------------------------%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -29,6 +29,7 @@ if(photoDto == null ||
 	contentBlidF = true;
 }
 %>
+		<input id="uciCode" type="hidden" value="${photoDTO.uciCode}" />
 		<section class="view">
 			<div class="view_lt">
 				<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
@@ -118,7 +119,7 @@ if(!contentBlidF) {
 // 삭제 상태가 아니면 출력
 if(!contentBlidF) {
 %>
-				<div class="btn_down"><a href="javascript:;" onclick="down('${photoDTO.uciCode}')">원본이미지 다운로드</a></div>
+				<div class="btn_down" value="${photoDTO.uciCode}"><a>원본이미지 다운로드</a></div>
 				<!--
 				<div class="cms_rt">
 					<h3 class="info_tit">다운로드</h3>
@@ -242,3 +243,4 @@ if(!contentBlidF) {
 %>
 			</div>
 		</section>
+<%@include file="down_frame.jsp" %>

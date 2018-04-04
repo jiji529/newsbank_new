@@ -171,6 +171,12 @@ public class DownloadService extends ServiceBase {
 			}
 			return null;
 		}
+		else if(member.getType().equals(MemberDTO.TYPE_ADMIN)) {
+			if(downType.equals(DOWN_TYPE_OUTLINE)) {
+				downType = DOWN_TYPE_SERVICE;
+			}
+			return downType;
+		}
 		
 		// 3. 정상 이미지
 		if(photo.getSaleState() == PhotoDTO.SALE_STATE_OK) {

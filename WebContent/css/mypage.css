@@ -208,7 +208,7 @@
 .mypage .view .view_lt .img_info_area.area2 dl{grid-template-columns:18% 30% 15% 34%;-ms-grid-columns:18% 30% 15% 34%;}
 */
 .mypage .view .view_rt{ padding-top:25px; padding-left:20px; }
-.mypage .view .view_rt .btn_down a{float:left; width:100%; background:#f79320; color:#fff;display:block;text-align:center;height:50px; line-height:50px; font-weight:600; margin-bottom:30px;}
+.mypage .view .view_rt .btn_down a{float:left; width:100%; background:#f79320; color:#fff;display:block;text-align:center;height:50px; line-height:50px; font-weight:600; margin-bottom:30px; cursor:pointer;}
 .mypage .view .view_rt .cms_rt{ float:left; width:100%; }
 .mypage .view .view_rt .cms_rt .info_tit {float:left; width:100%; margin:0 0 15px; font-size:15px; color:#f79320; }
 .mypage .view .view_rt .cms_rt .cms_table1{width:100%; border-top:1px #dfdfdf solid; font-size:13px; color:#333;}
