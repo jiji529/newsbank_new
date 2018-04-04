@@ -5,6 +5,46 @@
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
+
+// ################################################################################
+// 페이지 로딩 완료시 실행
+// 화면초기화 : 숨김처리, 초상권, 외부연계 관련
+// 연관이미지 검색
+// ################################################################################
+
+	$(document).ready(function(key, val){
+		var saleState = ${photoDTO.saleState};
+		var portraitRightState = ${photoDTO.portraitRightState};
+		var mediaExActive = ${photoDTO.mediaExActive};
+		
+		if(saleState == 1) { // 판매중
+			$('input:radio[name="blind"][value="1"]').attr('checked', true);
+		}else if(saleState == 2) { // 판매중지
+			$('input:radio[name="blind"][value="2"]').attr('checked', true);
+		}else {
+			$('input:radio[name="blind"][value="2"]').attr('checked', true);
+		}
+		
+		/*
+		# 항목 숨기기 처리   -- 2018.02.20. hoyadev 
+		if(portraitRightState == 1) {
+			$('input:radio[name="likeness"][value="1"]').attr('checked', true);
+		}else if(portraitRightState == 2) {
+			$('input:radio[name="likeness"][value="2"]').attr('checked', true);
+		}
+		*/
+		
+		if(mediaExActive == 0) {
+			$('input:radio[name="mediaExActive"][value="0"]').attr('checked', true);
+		}else if(mediaExActive == 1) {
+			$('input:radio[name="mediaExActive"][value="1"]').attr('checked', true);
+		}else{
+			$('input:radio[name="mediaExActive"][value="0"]').attr('checked', true);
+		}
+		
+		relation_photo();
+	});
+
 // ################################################################################
 // 검색 관련
 // ################################################################################

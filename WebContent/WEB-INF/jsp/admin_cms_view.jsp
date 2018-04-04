@@ -32,7 +32,6 @@
 <script src="js/cms.js.jsp"></script>
 <script src="js/cms_view.js.jsp"></script>
 <script src="js/search.js.jsp"></script>
-<script src="js/cms_view.js"></script>
 
 <script> 
 	//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
@@ -58,21 +57,6 @@
 			$("#mask").css("display", "none");
 		});
 	});
-	
-	$(document).ready(function() {
-		// 블라인드 옵션
-		var saleState = ${photoDTO.saleState};
-		var portraitRightState = ${photoDTO.portraitRightState};
-		
-		if(saleState == 1) { // 판매중
-			$('input:radio[name="blind"][value="1"]').attr('checked', true);
-		}else if(saleState == 2) { // 판매중지
-			$('input:radio[name="blind"][value="2"]').attr('checked', true);
-		}
-		
-		relation_photo(); // 연관사진
-	});
-	
 </script>
 <title>뉴스뱅크</title>
 </head>
