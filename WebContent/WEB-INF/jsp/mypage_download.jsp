@@ -63,6 +63,15 @@
 		//download_popOption.submit();
 	}
 	
+	/** 전체선택 */
+	$(document).on("click", "input[name='check_all']", function() {
+		if($("input[name='check_all']").prop("checked")) {
+			$("#mtBody input:checkbox").prop("checked", true);
+		}else {
+			$("#mtBody input:checkbox").prop("checked", false);
+		}
+	});
+	
 	$(document).on("click", ".btn_input2", function() {
 		popup_usage(); // 사용용도 선택
 	});

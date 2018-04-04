@@ -53,6 +53,8 @@ $(document).ready(function() {
 		check = check && validPlatform();
 
 		if (check) {
+			console.log(JSON.stringify($(this).serializeObject()));
+			
 			$.ajax({
 				type : "post",
 				url : "/purchase.api",

@@ -82,7 +82,8 @@ public class PurchaseJSON extends NewsbankServletBase {
 			String orderJson = request.getParameter("orderJson"); // json
 
 			UsageDAO usageDAO = new UsageDAO();
-			List<UsageDTO> usageList = usageDAO.usageList(0); // 주문 가능 제품 전체
+			//List<UsageDTO> usageList = usageDAO.usageList(0); // 주문 가능 제품 전체
+			List<UsageDTO> usageList = usageDAO.usageList(); // 주문 가능 제품 전체 (사용용도: 일반회원+후불회원)
 
 			try {
 				JSONParser jsonParser = new JSONParser();
@@ -115,7 +116,10 @@ public class PurchaseJSON extends NewsbankServletBase {
 						System.out.println("" + (i + 1) + "usage : " + tempObj.get("usage"));
 						System.out.println("----------------------------");
 						System.out.println(LGD_AMOUNT + " : " + usageList.get(index - 1).getPrice());
-						if (AMOUNT != usageList.get(index - 1).getPrice()) {
+						
+						int usagePrice = getUsagePrice(usageList, index);
+						
+						if (AMOUNT != usagePrice) {
 							result = false;
 							message = "요청한 금액이 올바르지 않습니다.";
 						}
@@ -265,6 +269,19 @@ public class PurchaseJSON extends NewsbankServletBase {
 
 		response.getWriter().print(json);
 
+	}
+	
+	// usageList_seq에 대한 price 반환
+	public static int getUsagePrice(List<UsageDTO> usageList, int index) {
+		int price = 0;
+		
+		for(UsageDTO usage : usageList) {
+			if(usage.getUsageList_seq() == index) {
+				price = usage.getPrice();
+			}
+		}
+		
+		return price;
 	}
 
 	/**

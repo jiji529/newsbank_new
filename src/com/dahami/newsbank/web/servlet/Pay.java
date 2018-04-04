@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import com.dahami.newsbank.web.dao.PayDAO;
 import com.dahami.newsbank.web.dto.CartDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -46,7 +51,7 @@ public class Pay extends NewsbankServletBase {
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 
 		if (MemberInfo != null) {
-			List<CartDTO> payList = new ArrayList<CartDTO>(); // 결제정보를 저장할 리스트
+			/*List<CartDTO> payList = new ArrayList<CartDTO>(); // 결제정보를 저장할 리스트
 			PayDAO payDAO = new PayDAO(); // 결제정보 함수호출
 			
 			String uciCode_array = request.getParameter("uciCode_array"); // 결제할 사진 목록
@@ -61,7 +66,34 @@ public class Pay extends NewsbankServletBase {
 				}
 				System.out.println(payList.toArray());
 				request.setAttribute("payList", payList);
+			}*/
+			
+			List<CartDTO> payList = new ArrayList<CartDTO>(); // 결제정보를 저장할 리스트
+			PayDAO payDAO = new PayDAO(); // 결제정보 함수호출
+			String orderJson = request.getParameter("orderJson");
+			
+			try {
+				JSONParser jsonParser = new JSONParser();
+				JSONObject jsonObj;
+				jsonObj = (JSONObject) jsonParser.parse(orderJson);				
+				JSONArray orderArray = (JSONArray) jsonObj.get("order");
+				
+				for (int i = 0; i < orderArray.size(); i++) {
+					JSONObject tempObj = (JSONObject) orderArray.get(i);
+					String uciCode = tempObj.get("uciCode").toString();
+					JSONArray usageArray = (JSONArray) tempObj.get("usage");
+					
+					//System.out.println(uciCode);
+					//System.out.println(usageArray.toJSONString());
+					//System.out.println(toStringArray(usageArray));
+					payList.add(payDAO.payList(uciCode, toStringArray(usageArray)));
+				}
+				request.setAttribute("payList", payList);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pay.jsp");
 			dispatcher.forward(request, response);
@@ -106,6 +138,19 @@ public class Pay extends NewsbankServletBase {
 			response.getWriter().append("<script type=\"text/javascript\">alert('로그인 페이지로 이동합니다.');location.replace('/login');</script>").append(request.getContextPath());
 		}
 
+	}
+	
+	// JSONArray를 String Array로 변환
+	public static String[] toStringArray(JSONArray array) {
+	    if(array==null)
+	        return null;
+
+	    String[] arr=new String[array.size()];
+	    for(int i=0; i<arr.length; i++) {
+	        arr[i]=array.get(i).toString();
+	        System.out.println("arr[" + i + "] : " + array.get(i).toString());
+	    }
+	    return arr;
 	}
 
 	/**

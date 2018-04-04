@@ -120,54 +120,39 @@
 		}
 		
 		// #구매 페이지 이동
-		function go_pay_1() {
-			var cartArry = new Array();
-			var uciCode = $("#uciCode_arr").val(); // 선택한 사진목록
-			
-			var cart = uciCode;
-			if($(".option_result ul li").length>0){
-				$(".option_result ul li").each(function(index) {
-					var usage_seq = $(this).children(".op_cont").attr("value");
-					cart = cart + "|" + usage_seq;
-				});		
-				cartArry.push(cart);
-				
-				$("#cartArry").val(cartArry);
-				
-				pay_form.submit();
-			}else{
-				alert("상품을 선택하세요.");
-			}
-		}
-		
 		function go_pay() {
-			var uciCode_array = $("#uciCode_arr").val();
-			var usage_array = new Array(); // 선택한 사용용도
 			
-			if($(".option_result ul li").length > 0){
+			var jsonArray = new Array();
+			var uciCode_array = ($("#uciCode_arr").val()).split(",");
+			
+			for(var i=0; i<uciCode_array.length; i++) {
+				var jsonObject = new Object(); // 선택항목 객체
+				var usageArray = new Array(); // 사용용도 객체
 				
 				$(".option_result ul li").each(function(index) {
 					var usage_seq = $(this).children(".op_cont").attr("value");
-					usage_array.push(usage_seq);
-				});						
-				
-				$("#uciCode_array").val(uciCode_array);
-				$("#usage_array").val(usage_array);
-				
-				console.log("uciCode_array : " + uciCode_array);
-				console.log("usage_array : " + usage_array);
-				
-				pay_form.submit();
-			}else{
-				alert("상품을 선택하세요.");
-			}			
+					usageArray.push(usage_seq);// 사용용도
+					
+					jsonObject.uciCode = uciCode_array[i];				 
+					jsonObject.usage = usageArray;
+				});
+				jsonArray.push(jsonObject);
+			}
+			
+			var resultObject = new Object(); // 최종 JSON Object
+			resultObject.order = jsonArray;
+			
+			$("#orderJson").val(JSON.stringify(resultObject));
+			pay_form.submit();
 		}
 	</script>
 </head>
 <body>
 	<form class="pay_form" method="post" action="/pay" name="pay_form" >
-		<input type="hidden" name="uciCode_array" id="uciCode_array" />
-		<input type="hidden" name="usage_array" id="usage_array" />
+		<input type="hidden" name="orderJson" id="orderJson" />
+		<!-- <input type="hidden" name="uciCode_array" id="uciCode_array" />
+		<input type="hidden" name="usage_array" id="usage_array" /> -->
+		
 		<!-- <input type="hidden" name="cartArry" id="cartArry" /> -->
 	</form>
 	<div class="wrap_pop">

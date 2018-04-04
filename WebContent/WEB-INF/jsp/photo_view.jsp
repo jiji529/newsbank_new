@@ -477,24 +477,31 @@ if(photoDto == null
 	// #구매 페이지 이동
 	function go_pay() {
 		var login_state = login_chk();
+		var jsonArray = new Array();
 		
 		if(login_state) {
-			var cartArry = new Array();
-			var uciCode = "${photoDTO.uciCode}";
-			var cart = uciCode;
-			if($(".option_result ul li").length>0){
+			
+			if($(".option_result ul li").length>0) {
+				
+				var jsonObject = new Object(); // 결제대상 객체
+				var usageArray = new Array(); // 사용용도 객체
+				
+				var uciCode = "${photoDTO.uciCode}";
+				
 				$(".option_result ul li").each(function(index) {
 					var usage_seq = $(this).children(".op_cont").attr("value");
-					cart = cart + "|" + usage_seq;
-				});		
-				cartArry.push(cart);
+					usageArray.push(usage_seq);// 사용용도
+					
+					jsonObject.uciCode = uciCode;				 
+					jsonObject.usage = usageArray;
+				});					
+				jsonArray.push(jsonObject);
 				
-				var param = {
-					"cart" : cartArry
-				};
+				var resultObject = new Object(); // 최종 JSON Object
+				resultObject.order = jsonArray;
 				
-				$("#cartArry").val(cartArry);
-				
+				$("#orderJson").val(JSON.stringify(resultObject));
+			
 				pay_form.submit();
 			}else{
 				alert("상품을 선택하세요.");
@@ -530,7 +537,8 @@ if(photoDto == null
 <div class="wrap">
 	<%@include file="header.jsp" %>
 	<form class="pay_form" method="post" action="/pay" name="pay_form" >
-		<input type="hidden" name="cartArry" id="cartArry" />
+		<input type="hidden" name="orderJson" id="orderJson" />
+		<!-- <input type="hidden" name="cartArry" id="cartArry" /> -->
 	</form>
 	<form method="post" action="/photo" name="list_form" >
 		<input type="hidden" id="seq" name="seq"/>		

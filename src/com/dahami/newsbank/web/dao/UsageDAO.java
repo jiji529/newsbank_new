@@ -45,6 +45,36 @@ public class UsageDAO extends DAOBase {
 	}
 	
 	/**
+	 * @methodName  : usageList
+	 * @author      : HOYADEV
+	 * @date        : 2018. 04. 03. 오전 11:12:32
+	 * @methodCommet: 사용용도 옵션(전체)
+	 * @param param : individual
+	 * @return 
+	 */
+	public List<UsageDTO> usageList() {
+		SqlSession session = null;
+		List<UsageDTO> usageList = new ArrayList<UsageDTO>();
+				
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			
+			usageList = session.selectList("Usage.selectList", param);
+					
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return usageList;
+	}
+	
+	/**
 	 * @methodName  : uciCodeOfUsage
 	 * @author      : HOYADEV
 	 * @date        : 2017. 10. 31. 오후 04:12:32

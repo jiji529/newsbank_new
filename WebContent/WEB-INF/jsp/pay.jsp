@@ -36,7 +36,7 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script language="javascript" src="http://xpay.uplus.co.kr/xpay/js/xpay_crossplatform.js" type="text/javascript"></script>
-<script src="js/order.js"></script>
+<script src="js/order.js?v=20180403"></script>
 <script type="text/javascript">
 	
 </script>

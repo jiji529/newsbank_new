@@ -171,38 +171,44 @@
 	
 	// #다중선택 결제 함수
 	function multi_pay() {
-		var cartArry = new Array();
+		var jsonArray = new Array();
 		
 		$(".order_list input:checkbox:checked:not(#check_all)").each(function(index) {
-			var uciCode = $(this).val();
-			var cart = uciCode;
+			var uciCode = $(this).val();			
+			var jsonObject = new Object(); // 장바구니 객체
+			var usageArray = new Array(); // 사용용도 객체
 			
 			 $(this).closest("td").next().find(".opt_li").each(function(index) {
 				 var usage_seq = $(this).attr("value");
-				 cart = cart + "|" + usage_seq;
+				 usageArray.push(usage_seq);// 사용용도
+				 
+				 jsonObject.uciCode = uciCode;				 
+				 jsonObject.usage = usageArray;
 			 });
 			
-			 cartArry.push(cart);
+			 jsonArray.push(jsonObject);
 		});
-		$("#cartArry").val(cartArry);
 		
+		var resultObject = new Object(); // 최종 JSON Object
+		resultObject.order = jsonArray;
+		
+		$("#orderJson").val(JSON.stringify(resultObject));
 		cart_form.submit();
 	}
-	
 	
 	
 	/** 바로 구매 */
 	$(document).on("click", ".btn_o", function() {
 		var uciCode = $(this).closest("tr").find(".code").text();
 		var cart ="";
-		var cartArry = new Array();
+		var uciCode_array = new Array();
 		 $(this).closest("tr").find(".opt_li").each(function(index) {
 			 var usage_seq = $(this).attr("value");
 			
 			 cart += uciCode + "|" + usage_seq;
 		 });
-		 cartArry.push(cart);
-		$("#cartArry").val(cartArry);
+		 uciCode_array.push(cart);
+		$("#uciCode_array").val(uciCode_array);
 		cart_form.submit();
 		
 	});
@@ -218,9 +224,12 @@
 <body>
 	<div class="wrap">
 		<%@include file="header.jsp" %>
+		<!-- <form class="cart_form" method="post" action="/pay" name="cart_form" >
+			<input type="hidden" name="uciCode_array" id="uciCode_array" />
+			<input type="hidden" name="usage_array" id="usage_array" />
+		</form> -->
 		<form class="cart_form" method="post" action="/pay" name="cart_form" >
-			<input type="hidden" name="orderType" id="orderType" value="cart" />
-			<input type="hidden" name="cartArry" id="cartArry" />
+			<input type="hidden" name="orderJson" id="orderJson" />
 		</form>
 		<section class="mypage">
 			<div class="head">
