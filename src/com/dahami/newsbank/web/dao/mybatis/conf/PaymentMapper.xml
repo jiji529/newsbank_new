@@ -311,6 +311,7 @@
 			<if test="LGD_TID != null">, LGD_TID = #{LGD_TID}</if>
 			<if test="LGD_PAYSTATUS != null">, LGD_PAYSTATUS = #{LGD_PAYSTATUS}</if>
 			<if test="LGD_FINANCENAME != null">, LGD_FINANCENAME = #{LGD_FINANCENAME}</if>
+			<if test="LGD_RESPCODE != null">, LGD_RESPCODE = #{LGD_RESPCODE}</if>
 			<if test="LGD_ACCOUNTNUM != null">, LGD_ACCOUNTNUM = #{LGD_ACCOUNTNUM}</if>
 
 		</set>
@@ -334,7 +335,8 @@
 	<update id="updatePaymentDetail" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO">
 		update `paymentDetail`
 		<set>
-			downCount = #{downCount}
+		    regDate = NOW()
+			<!-- <if test="downCount != null">, downCount = #{downCount}</if> -->
 			<if test="price >0">, price = #{price}</if>
 			<if test="downStart != null">, downStart = #{downStart}</if>
 			<if test="downEnd != null">, downEnd = #{downEnd}</if>
@@ -343,7 +345,16 @@
 		where `seq`=#{paymentDetail_seq}
 	</update>
 
-
+	<!-- 결제상세사진 다운로드 수 증가 -->
+	<update id="paymentDetailDownCount" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO">
+	    update `paymentDetail`
+	    
+	    <set>
+	        downCount = downCount + 1
+	    </set>
+	    where `seq`=#{paymentDetail_seq}
+    </update>
+	
 	<!-- 결제 이미지 날짜 갱신 -->
 	<update id="updateDownloadDate" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO">
 		update `paymentDetail`

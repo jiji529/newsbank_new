@@ -57,8 +57,6 @@ public class MypageBuyList extends NewsbankServletBase {
 
 				request.setAttribute("type", MemberInfo.getType());
 				
-				
-				//selectPaymentManage
 				PaymentManageDTO paymentManageDTO = new PaymentManageDTO(); // 객체 생성
 				paymentManageDTO.setMember_seq(MemberInfo.getSeq());
 				
@@ -67,8 +65,6 @@ public class MypageBuyList extends NewsbankServletBase {
 				listPaymentManage = paymentDAO.listPaymentManage(paymentManageDTO); // 회원정보 요청
 				
 				request.setAttribute("listPaymentManage", listPaymentManage);
-				
-				
 
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_buy_list.jsp");
 				dispatcher.forward(request, response);

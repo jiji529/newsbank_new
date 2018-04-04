@@ -199,16 +199,27 @@
 	
 	/** 바로 구매 */
 	$(document).on("click", ".btn_o", function() {
+		
+		var jsonArray = new Array();
 		var uciCode = $(this).closest("tr").find(".code").text();
-		var cart ="";
-		var uciCode_array = new Array();
-		 $(this).closest("tr").find(".opt_li").each(function(index) {
+		
+		var jsonObject = new Object(); // 결제대상 객체
+		var usageArray = new Array(); // 사용용도 객체
+		
+		$(this).closest("tr").find(".opt_li").each(function(index) {
 			 var usage_seq = $(this).attr("value");
-			
-			 cart += uciCode + "|" + usage_seq;
+			 usageArray.push(usage_seq);// 사용용도
+			 
+			 jsonObject.uciCode = uciCode;				 
+			 jsonObject.usage = usageArray;
 		 });
-		 uciCode_array.push(cart);
-		$("#uciCode_array").val(uciCode_array);
+		
+		jsonArray.push(jsonObject);
+		
+		var resultObject = new Object(); // 최종 JSON Object
+		resultObject.order = jsonArray;
+		
+		$("#orderJson").val(JSON.stringify(resultObject));
 		cart_form.submit();
 		
 	});
@@ -224,10 +235,6 @@
 <body>
 	<div class="wrap">
 		<%@include file="header.jsp" %>
-		<!-- <form class="cart_form" method="post" action="/pay" name="cart_form" >
-			<input type="hidden" name="uciCode_array" id="uciCode_array" />
-			<input type="hidden" name="usage_array" id="usage_array" />
-		</form> -->
 		<form class="cart_form" method="post" action="/pay" name="cart_form" >
 			<input type="hidden" name="orderJson" id="orderJson" />
 		</form>

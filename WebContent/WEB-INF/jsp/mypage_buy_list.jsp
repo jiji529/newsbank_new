@@ -96,15 +96,25 @@
 							<td>${paymentManage.getPayType()}</td>
 							<td>${paymentManage.getLGD_AMOUNT_Str()}</td>
 							<c:choose>
+								<c:when test="${paymentManage.LGD_PAYSTATUS eq '0'}">
+									<td>결제 실패</td>
+								</c:when>
 								<c:when test="${paymentManage.LGD_PAYSTATUS eq '1'}">
 									<td>결제 성공</td>
+								</c:when>
+								<c:when test="${paymentManage.LGD_PAYSTATUS eq '2'}">
+									<td>결제 대기</td>
 								</c:when>
 								<c:when test="${paymentManage.LGD_PAYSTATUS eq '3'}">
 									<td>입금 대기중</td>
 								</c:when>
-								<c:otherwise>
-									<td>결제 실패</td>
-								</c:otherwise>
+								<c:when test="${paymentManage.LGD_PAYSTATUS eq '4'}">
+									<td>후불 결제</td>
+								</c:when>
+								<c:when test="${paymentManage.LGD_PAYSTATUS eq '5'}">
+									<td>결제 취소</td>
+								</c:when>
+								
 							</c:choose>
 						</tr>
 					</c:forEach>

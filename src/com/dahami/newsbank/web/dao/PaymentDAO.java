@@ -277,6 +277,33 @@ public class PaymentDAO extends DAOBase {
 	 * 
 	 * @param paymentDetailDTO
 	 * @return
+	 * 사용자별 결제 이미지 다운로드 횟수 증가 
+	 */
+	public boolean updateDownloadCount(PaymentDetailDTO paymentDetailDTO) {
+		boolean result = false;
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			session.update("payment.paymentDetailDownCount", paymentDetailDTO);
+			result = true;
+			session.commit();
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param paymentDetailDTO
+	 * @return
 	 * 결제취소 
 	 */
 	public boolean updatePaymentDetailStatus(PaymentDetailDTO paymentDetailDTO) {

@@ -47,13 +47,14 @@
 				
 				var param = {
 					"paymentManage_seq" : paymentManage_seq,
-					"LGD_OID" : LGD_OID
+					"LGD_OID" : LGD_OID,
+					"cmd" : "C"
 				};
 				
 				$.ajax({
 					type: "POST",
 					dataType: "json",
-					url: "/cancelPay.api",
+					url: "/payment.api",
 					data: param,
 					success: function(data) {
 						console.log(data);

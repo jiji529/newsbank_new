@@ -292,6 +292,7 @@ public class CalculationAction extends NewsbankServletBase {
 				}
 				
 				break;
+				
 		}	
 		
 		JSONObject json = new JSONObject(); // json 객체

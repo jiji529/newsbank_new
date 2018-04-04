@@ -536,7 +536,28 @@ $(document).ready(function() {
 	$(".btn_group [name=btn_down]").on("click", function() {
 		var uciCode = $(this).val();
 		var imgPath = "/service.down.photo?uciCode=" + uciCode + "&type=file";
-
+		
+		var paymentDetail_seq = $(this).parent().find("input[name='paymentDetail_seq']").val(); // 상세내역 SEQ
+		
+		var param = {
+			"paymentDetail_seq" : paymentDetail_seq,
+			"cmd" : "D"
+		};
+		
+		console.log(param);
+		
+		$.ajax({
+			type: "POST",
+			url: "/payment.api",
+			dataType: "json",
+			data: param,
+			success: function(data) {
+				console.log(data);
+			},
+			complete: function() {
+			}
+		});
+		
 		var link = document.createElement("a");
 		link.download = uciCode; link.href = imgPath; link.click();
 	});
@@ -1039,4 +1060,44 @@ function addZeros(num, digit) {
 // 천단위 ,(콤마) 넣어주기
 function comma(num){
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 결제취소
+function cancelPay(LGD_OID, paymentManage_seq, LGD_PAYDATE, totalDownCount) {
+	/*
+	 * 취소가능 조건
+	 * 1. 결제일로부터 7일 이내.
+	 * 2. 이미지 다운로드 이력이 없어야 됨.
+	 */
+	
+	if(!confirm("정말로 결제를 취소하시겠습니까?")) {
+		return;
+	}
+	var today = getDateTime().substr(0, 8); // 금일날짜
+	var paydate = LGD_PAYDATE.substr(0, 8); // 결제일자
+	var gap = today - paydate; // 소요기간
+	
+	if(gap <= 7 && totalDownCount == 0) { // 7일 이내
+		
+		var param = {
+			"paymentManage_seq" : paymentManage_seq,
+			"LGD_OID" : LGD_OID,
+			"cmd" : "C"
+		};
+			
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			data: param,
+			url: "/payment.api",
+			success: function(data) {
+				console.log(data);
+			}, complete: function() {
+				alert("결제 취소 완료");
+				location.replace("/buylist.mypage");
+			}
+		});
+	}else {
+		alert("다운로드 받은 내역이 있을 시, 환불이 불가능합니다.\n (환불가능기간은 결제일로부터 7일 이내입니다.)")
+	}
 }

@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
+<script src="js/mypage.js?v=20180405"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -98,11 +98,23 @@
 				<td>${paymentManageDTO.getPayType() }</td>
 				
 				<c:choose>
+					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '0'}">
+						<td>결제 실패</td>
+					</c:when>
 					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '1'}">
 						<td>결제 성공</td>
 					</c:when>
+					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '2'}">
+						<td>결제 대기</td>
+					</c:when>
 					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '3'}">
-						<td>입금 대기중</td>
+						<td>무통장 입금</td>
+					</c:when>
+					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '4'}">
+						<td>후불 결제</td>
+					</c:when>
+					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '5'}">
+						<td>결제 취소</td>
 					</c:when>
 					<c:otherwise>
 						<td>결제 실패 ${paymentManageDTO.LGD_PAYSTATUS }</td>
@@ -136,7 +148,9 @@
 				</tr>
 			</thead>
 			<tbody>
+				<c:set var="totalDownCount" value="0"/>
 				<c:forEach items="${paymentManageDTO.paymentDetailList}" var="paymentDetailList">
+					<c:set var="totalDownCount" value="${totalDownCount + paymentDetailList.downCount}"></c:set>
 					<tr>
 						<c:choose>
 							<c:when test="${paymentDetailList.photoDTO.ownerType eq 'M'}">
@@ -180,7 +194,7 @@
 										</ul>
 									</div>
 								</div>
-								<div class="message">상세용도 : 상세용도 표시되는 영역인데 이번에는 빼고 간대요. 영역 잡아만 놓을게요.</div>
+								<!-- <div class="message">상세용도 : 상세용도 표시되는 영역인데 이번에는 빼고 간대요. 영역 잡아만 놓을게요.</div> -->
 							</div>
 							</a>
 						</td>
@@ -191,15 +205,14 @@
 							${paymentDetailList.downEnd }
 						</td>
 						<td>
-							<c:if test="${paymentManage.LGD_PAYSTATUS eq '1'}">
+							<c:if test="${paymentManageDTO.LGD_PAYSTATUS eq '1'}">
 							${paymentDetailList.downCount }회
 							<br />
 								<div class="btn_group">
 									<c:if test="${paymentDetailList.downExpire eq false}">
+										<input type="hidden" name="paymentDetail_seq" value="${paymentDetailList.paymentDetail_seq}" />
 										<button type="button" class="btn_o" name="btn_down" value="${paymentDetailList.photo_uciCode }">다운로드</button>
 									</c:if>
-									<button type="button" class="btn_g" name="btn_cancle" value="${paymentDetailList.photo_uciCode }">결제취소</button>
-									<!-- 다운로드 0일때만 가능-->
 								</div>
 							</c:if>
 						</td>
@@ -210,6 +223,20 @@
 				<td colspan="10">합계 : ${paymentManageDTO.getLGD_AMOUNT_Str() }</td>
 			</tfoot>
 		</table>
+		
+		<!-- 결제상태 조건 (1: 결제승인, 2: 결제대기, 3: 무통장입금) -->
+		<c:if test="${paymentManageDTO.LGD_PAYSTATUS eq '1' or paymentManageDTO.LGD_PAYSTATUS eq '2' or paymentManageDTO.LGD_PAYSTATUS eq '3'}">
+			<div class="btn_area">
+				<ul class="precautions">
+					<li>- 환불 가능 기간은 결제일로부터 7일입니다. </li>
+					<li>- 환불가능 기간이 지난 건에 대해서는 결제 취소 요청을 하실 수 없습니다.</li>
+					<li>- 이미지 다운로드 이력이 없으신 경우에 한하여 해당 기간 내에 결제 취소 요청이 가능합니다.</li>
+					<li>- 이미지를 다운로드 하시면 이미지를 사용하지 않으시더라도 결제 취소를 하실 수 없습니다.</li>
+				</ul>
+				<a href="javascript:;" onclick="cancelPay('${paymentManageDTO.LGD_OID}', ${paymentManageDTO.paymentManage_seq }, '${paymentManageDTO.LGD_PAYDATE}', ${totalDownCount})" class="btn_input1 precautions_btn">결제 취소</a>
+			</div>
+		</c:if>
+		
 		<a href="buylist.mypage" class="mp_btn">목록</a> </section> </section>
 		<%@include file="footer.jsp"%>
 	</div>
