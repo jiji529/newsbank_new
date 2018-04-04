@@ -113,18 +113,6 @@ $(document).on("click", ".filter_list li", function() {
 	}
 	
 });
-
-
-
-	function go_cmsView(uciCode) {
-		$("#uciCode").val(uciCode);
-		view_form.submit();
-	}
-
-	
-
-
-
 	
 	function isNotEmpty(value) { // 배열 빈값 제외
 		return value != "";
@@ -135,6 +123,39 @@ $(document).on("click", ".filter_list li", function() {
 // 리스트/뷰 공통
 // ################################################################################
 
+	/** 검색에서 넘어온 파라메터로 화면 초기화 */
+	function initSearchParam() {
+		$("#cms_keyword").val(view_form.keyword.value);
+		
+		if($(".page").length > 0) {
+			if(view_form.pageNo.value > 1) {
+				$(".page").val(view_form.pageNo.value);
+			}
+		}
+		
+		if($("select[name=pageVol]").length > 0) {
+			if(view_form.pageVol.value > 1) {
+				var options = $("select[name=pageVol]").find("option");
+				for(var i=0; i < options.length; i++) {
+					if(options[i].val() == view_form.pageVol.value) {
+						options[i].attr("selected", "selected");
+					}
+					else {
+						options[i].removeAttr("selected");
+					}
+				}
+			}
+		}
+		// 
+		
+	}
+
+	function go_cmsView(uciCode) {
+		view_form.uciCode.value = uciCode;
+		view_form.submit();
+	}
+
+	/** 한건 다운로드 */
 	function down(uciCode) {
 		if(!confirm("원본을 다운로드 하시겠습니까?")) {
 			return;

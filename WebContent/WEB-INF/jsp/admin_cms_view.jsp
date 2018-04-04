@@ -33,7 +33,9 @@
 <script src="js/cms_view.js.jsp"></script>
 <script src="js/search.js.jsp"></script>
 
-<script> 
+<script>
+	var searchTarget = "admin.search";
+	
 	//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
 	$(document).ready(function() {
 		$("[href]").each(function() {
@@ -62,22 +64,12 @@
 </head>
 <body>
 	<div class="wrap admin">
-		<%@include file="header_admin.jsp" %>
+<%@include file="header_admin.jsp" %>
 		<section class="wide">
-			<%@include file="sidebar.jsp" %>
-			<div class="mypage">
-			<div class="table_head">
-				<h3>사진관리</h3>
-				<div class="cms_search">
-					이미지 검색 <input id="cms_keyword" type="text" />
-					<button id="cms_searchBtn">검색</button>
-				</div>
-
-			</div>
-			<form class="view_form" method="post" action="/cms.manage" name="view_form" >
-				<input type="hidden" id="cms_keyword_current" name="cms_keyword_current" />
-			</form>
+<%@include file="sidebar.jsp" %>
+			<section class="mypage">
 <%@include file="cms_content.jsp" %>
+			<section class="mypage">
 		</section>
 	</div>
 </body>

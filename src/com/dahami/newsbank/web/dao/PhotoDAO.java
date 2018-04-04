@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dto.ActionLogDTO;
 import com.dahami.newsbank.web.dto.DownloadDTO;
 import com.dahami.newsbank.web.dto.StatsDTO;
 
@@ -480,6 +481,21 @@ public class PhotoDAO extends DAOBase {
 		try {
 			session = sf.getSession();
 			session.insert("Photo.insertPhotoBlock", params);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+	}
+	
+	public void insertActionLog(ActionLogDTO dto) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			session.insert("Photo.insertActionLog", dto);
 			
 		} catch (Exception e) {
 			logger.warn("", e);

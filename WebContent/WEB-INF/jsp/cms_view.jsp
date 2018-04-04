@@ -34,6 +34,9 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 
+<script>
+var searchTarget = "cms.search";
+</script>
 </head>
 <body> 
 <div class="wrap">
@@ -52,16 +55,6 @@
 				<li><a href="/cart.myPage">장바구니</a></li>
 				<li><a href="/buylist.mypage">구매내역</a></li>
 			</ul>
-		</div>
-		<form class="view_form" method="post" action="/cms" name="view_form" >
-			<input type="hidden" id="cms_keyword_current" name="cms_keyword_current" />
-		</form>
-		<div class="table_head">
-			<h3>사진 관리</h3>
-			<div class="cms_search">이미지 검색
-				<input id="cms_keyword" type="text" />
-				<button id="cms_searchBtn">검색</button>
-			</div>
 		</div>
 <%@include file="cms_content.jsp" %>
 		</section>

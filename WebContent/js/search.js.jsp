@@ -20,6 +20,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	  });
 	}
 	
+	// 다른 페이지에서 검색 시
+	function go_cmsSearch_from_cmsView() {
+		view_form.action = "/cms" + $("#manage").val();
+		view_form.target="_self";
+		view_form.submit();
+	}
+	
 	function cms_search() {
 		var keyword = $("#cms_keyword").val();
 		
@@ -38,6 +45,17 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
 		var saleState = $(".filter_service .filter_list").find("[selected=selected]").attr("value");
 		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
+		
+		view_form.keyword.value = keyword;
+		view_form.pageNo.value = pageNo;
+		view_form.pageVol.value = pageVol;
+		view_form.media.value = media;
+		view_form.durationReg.value = durationReg;
+		view_form.durationTake.value = durationTake;
+		view_form.colorMode.value = colorMode;
+		view_form.horiVertChoice.value = horiVertChoice;
+		view_form.saleState.value = saleState;
+		view_form.size.value = size;
 		
 		var searchParam = {
 				"keyword":keyword

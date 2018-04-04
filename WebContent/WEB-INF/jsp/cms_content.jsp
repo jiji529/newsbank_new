@@ -13,6 +13,7 @@
 2018. 04. 03. 
 ---------------------------------------------------------------------------%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.dto.PhotoDTO" %>
 
@@ -28,11 +29,40 @@ if(photoDto == null ||
 		photoDto.getSaleState() == PhotoDTO.SALE_STATE_DEL) {
 	contentBlidF = true;
 }
+
+SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
 %>
 		<input id="uciCode" type="hidden" value="${photoDTO.uciCode}" />
+		<input id="saleState" type="hidden" value="${photoDTO.saleState}" />
+		<input id="portraitRightState" type="hidden" value="${photoDTO.portraitRightState}" />
+		<input id="mediaExActive" type="hidden" value="${photoDTO.mediaExActive}" />
+		
+		<div class="table_head">
+			<h3>사진 관리</h3>
+			<div class="cms_search">
+				<input id="cms_keyword" type="text" placeholder="이미지 검색" />
+				<button id="cms_searchBtn">검색</button>
+			</div>
+		</div>
+		
 		<section class="view">
 			<div class="view_lt">
-				<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
+				<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" />
+<%
+// 삭제 상태가 아니면 출력
+if(!contentBlidF) {
+%>
+					<div class="btn_edit">
+<!-- 					<span id="popup_open"><a href="#none">수정 이력 보기</a></span> -->
+						<span id="open_edit"><a href="#">수정하기</a></span>
+						<span id="save_edit" style="display:none;"><a href="#">저장</a></span>
+						<span id="close_edit" style="display:none;"><a href="#">취소</a></span> 
+						<span id="open_del"><a href="#">삭제</a></span>
+					</div>
+<%
+}
+%>
+				</h2>
 				<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
 				</div>
 				<div class="cont_area">
@@ -44,16 +74,23 @@ ${photoDTO.compCode }
 <%
 }
 %>
-					</h3>
+					<span class="img_date">업로드 : 
+<%
+if(photoDto.getRegDate() != null) {
+	out.print(df.format(photoDto.getRegDate()));
+}
+%>
+					</span></h3>
 <%
 // 삭제 상태가 아니면 출력
 if(!contentBlidF) {
 %>					
-					<h3 class="img_tit hTitle">${photoDTO.titleKor}</h3>
-					<a class="btn_edit">수정</a>
-					<p class="img_cont">
-						${photoDTO.descriptionKor} <br />
-					</p>
+					<h3 class="img_tit hTitle viewTitle">${photoDTO.titleKor}</h3>
+					<h3 class="img_tit hTitle orgTitle" style="display:none;">${photoDTO.titleKor}</h3>
+					<textarea class="editTitle" style="width:100%; font-size:14px; line-height:22px; color:#666; display:none;"></textarea>
+					<p class="img_cont viewCont">${photoDTO.descriptionKor} <br /></p>
+					<p class="img_cont orgCont" style="display:none;">${photoDTO.descriptionKor}</p>
+					<textarea class="editCont" style="height:300px; width:100%; font-size:14px; line-height:22px; color:#666; display:none"></textarea>
 <%
 }
 else {
@@ -244,3 +281,4 @@ if(!contentBlidF) {
 			</div>
 		</section>
 <%@include file="down_frame.jsp" %>
+<%@include file="view_form.jsp" %>

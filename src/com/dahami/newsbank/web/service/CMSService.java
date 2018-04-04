@@ -1,18 +1,22 @@
 package com.dahami.newsbank.web.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.common.util.HttpUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.dto.PhotoTagDTO;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.TagDAO;
+import com.dahami.newsbank.web.dto.ActionLogDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.StatsDTO;
 
@@ -27,6 +31,16 @@ public class CMSService extends ServiceBase {
 	public CMSService(boolean isViewMode, boolean isAdmin) {
 		this.isViewMode = isViewMode;
 		this.isAdmin = isAdmin;
+	}
+	
+	private Map<String, String> makeSearchParamMap(Map<String, String[]> params) {
+		Map<String, String> ret = new HashMap<String, String>();
+		for(String key : params.keySet()) {
+			try {
+				ret.put(key, params.get(key)[0]);
+			}catch(Exception e){}
+		}
+		return ret;
 	}
 	
 	@Override
@@ -78,8 +92,13 @@ public class CMSService extends ServiceBase {
 					TagDAO tagDAO = null;
 					
 					if(action.length() > 0) {
+						ActionLogDTO log = new ActionLogDTO();
+						log.setMemberSeq(memberInfo.getSeq());
+						log.setUciCode(photoDTO.getUciCode());
+						log.setIp(HttpUtil.getRequestIpAddr(request));
+						
 						tagDAO = new TagDAO();
-						if(action.equals("insertTag")){		
+						if(action.equals("insertTag")){
 							boolean exist = false;
 							for(PhotoTagDTO photoTagDTO : photoTagList) {
 								if(tagName.equals(photoTagDTO.getTag_tagName())) {
@@ -94,29 +113,83 @@ public class CMSService extends ServiceBase {
 								phototagDTO.setPhoto_uciCode(uciCode);
 								phototagDTO.setTag_tagName(tagName);
 										
-								
-								tagDAO.insert_Tag(uciCode, tagName);
+								if(tagName.length() > 0) {
+									tagDAO.insert_Tag(uciCode, tagName);
+									log.setActionType(ActionLogDTO.ACTION_TYPE_MOD_ADDTAG);
+									log.setDescription(tagName);
+								}
 							}			
 							
 						}else if(action.equals("deleteTag")) {
 							tagDAO.delete_PhotoTag(uciCode, tagName);
+							log.setActionType(ActionLogDTO.ACTION_TYPE_MOD_DELTAG);
+							log.setDescription(tagName);
 						}else if(action.equals("updateCMS")){
 							photoDTO.setUciCode(uciCode);
+							int actionType = 0;
+							String logDescription = "";
+							if(!photoDTO.getTitleKor().equals(titleKor)) {
+								actionType |= ActionLogDTO.ACTION_TYPE_MOD_TITLE;
+								logDescription += photoDTO.getTitleKor();
+							}
 							photoDTO.setTitleKor(titleKor);
+							
+							if(!photoDTO.getDescriptionKor().equals(descriptionKor)) {
+								actionType |= ActionLogDTO.ACTION_TYPE_MOD_CONTENT;
+								if(logDescription.length() > 0) {
+									logDescription += "\n\n##\n\n";
+								}
+								logDescription += photoDTO.getDescriptionKor();
+							}
 							photoDTO.setDescriptionKor(descriptionKor);
-							photoDAO.update(photoDTO);
+							
+							// 실제 변경이 된 경우만 디비 업데이트
+							if(actionType > 0) {
+								photoDAO.update(photoDTO);
+								log.setActionType(actionType);
+								log.setDescription(logDescription);
+							}
 						}else if(action.equals("updateOne")){
 							// 블라인드, 초상권 해결
 							if(columnName.equals("saleState")) {
+								int actionType = 0;
+								int curSaleState = photoDTO.getSaleState();
+								int newSaleState = Integer.parseInt(columnValue);
+								if(newSaleState == PhotoDTO.SALE_STATE_DEL) {
+									actionType = ActionLogDTO.ACTION_TYPE_MOD_DELETE;
+								}
+								else if(newSaleState == PhotoDTO.SALE_STATE_STOP) {
+									actionType = ActionLogDTO.ACTION_TYPE_MOD_BLIND;
+								}
+								else {	// OK
+									if(curSaleState == PhotoDTO.SALE_STATE_STOP) {
+										actionType = ActionLogDTO.ACTION_TYPE_MOD_UNBLIND;	
+									}
+									else if(curSaleState == PhotoDTO.SALE_STATE_DEL) {
+										actionType = ActionLogDTO.ACTION_TYPE_MOD_UNDELETE;
+									}
+								}
+								if(actionType == 0) {
+									System.out.println();
+								}
 								photoDTO.setSaleState(Integer.parseInt(columnValue));
 								photoDAO.update_SaleState(photoDTO);
+								log.setActionType(actionType);
 							}else if(columnName.equals("portraitRightState")) {
 								photoDTO.setPortraitRightState(columnValue);
 								photoDAO.update_PortraitRightState(photoDTO);
+								if(columnValue.equals(PhotoDTO.PORTRAITRIGHTSTATE_ACQUIRE)) {
+									log.setActionType(ActionLogDTO.ACTION_TYPE_MOD_PRIGHT);
+								}
+								else {
+									log.setActionType(ActionLogDTO.ACTION_TYPE_MOD_UNPRIGHT);
+								}
 							}
 						}else{
 							//System.out.println("ACTION parameter null or empty");
 						}
+						
+						photoDAO.insertActionLog(log);
 					}
 				}
 			}
@@ -152,6 +225,8 @@ public class CMSService extends ServiceBase {
 				forward = "/WEB-INF/jsp/cms.jsp";
 			}
 		}
+		
+		request.setAttribute("sParam", makeSearchParamMap(request.getParameterMap()));
 		forward(request, response, forward);
 	}
 }

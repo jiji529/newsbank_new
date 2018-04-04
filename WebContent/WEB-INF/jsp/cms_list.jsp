@@ -23,7 +23,7 @@
 	<div class="table_head">
 		<h3>사진 관리</h3>
 		<div class="cms_search">
-			<input id="cms_keyword" type="text" placeholder="이미지 검색" />
+			<input id="cms_keyword" type="text" placeholder="이미지 검색"  value=""/>
 			<button id="cms_searchBtn">검색</button>
 		</div>
 	</div>
@@ -142,9 +142,6 @@
 		</div>
 	</div>
 	<!-- 필터끝 -->
-	<form class="view_form" method="post" action="/view.cms" name="view_form" >
-		<input type="hidden" name="uciCode" id="uciCode"/>
-	</form>
 	<div class="btn_sort"><span class="task_check">
 		<input type="checkbox" name="check_all" />
 		</span>
@@ -168,3 +165,4 @@
 	</section>
 	<div class="more"><a href="javascript:void(0)" name="nextPage">다음 페이지</a></div>
 <%@include file="down_frame.jsp" %>
+<%@include file="view_form.jsp" %>

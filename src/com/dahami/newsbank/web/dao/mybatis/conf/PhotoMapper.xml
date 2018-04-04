@@ -187,4 +187,11 @@
 	    VALUES (#{reason}, NOW(), #{uciCode})
 	</insert>
 	
+	<insert id="insertActionLog" parameterType="com.dahami.newsbank.web.dto.ActionLogDTO">
+		insert into actionLog
+			(uciCode, memberSeq, actionType, description, ip) 
+			values
+			(#{uciCode}, #{memberSeq}, #{actionType}, #{description}, #{ip})
+	</insert>
+	
 </mapper>

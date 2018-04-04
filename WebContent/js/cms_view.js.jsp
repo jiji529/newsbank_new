@@ -13,9 +13,10 @@
 // ################################################################################
 
 	$(document).ready(function(key, val){
-		var saleState = ${photoDTO.saleState};
-		var portraitRightState = ${photoDTO.portraitRightState};
-		var mediaExActive = ${photoDTO.mediaExActive};
+		initSearchParam();
+		var saleState = $("#saleState").val();
+		var portraitRightState = $("#portraitRightState").val();
+		var mediaExActive = $("#mediaExActive").val();
 		
 		if(saleState == 1) { // 판매중
 			$('input:radio[name="blind"][value="1"]').attr('checked', true);
@@ -46,25 +47,19 @@
 	});
 
 // ################################################################################
-// 검색 관련
+// 상세화면에서 검색 관련
 // ################################################################################
 	
 	$(document).on("keypress", "#cms_keyword", function(e) {
 		if(e.keyCode == 13) {	// 엔터
-			go_cms();
+			go_cmsSearch_from_cmsView();
 		}
 	});
 	
 	$(document).on("click", "#cms_searchBtn", function() {
-		go_cms();
+		go_cmsSearch_from_cmsView();
 	});
 	
-	function go_cms() {
-		var keyword = $("#cms_keyword").val();
-		$("#cms_keyword_current").val(keyword);
-		view_form.submit();
-	}
-
 // ################################################################################
 // 연관사진 검색 관련
 // ################################################################################
@@ -153,7 +148,10 @@
 	$(document).on("click", ".add_tag > button", function() {
 		var uciCode = $('#uciCode').val();
 		var tagName = $(this).prev().val();
-		
+		if($.trim(tagName).length == 0) {
+			alert("공백은 입력할 수 없습니다.");
+			return
+		}
 		var tag_list = $(".tag_list").children().text(); 
 		tag_list = tag_list.split("×");
 		tag_list = tag_list.filter(isNotEmpty);		
@@ -188,42 +186,99 @@
 	}
 	
 // ################################################################################
-// 수정기능 처리
+// 삭제 / 수정버튼 처리
 // ################################################################################
-$(document).on("click", ".btn_edit", function() {
-	var title = $(".img_tit").last().text();
-	var content = $(".img_cont").text();		
+
+	/** 삭제버튼 클릭 */
+	$(document).on("click", "#open_del", function() {
+		var uciCode = $("#uciCode").val();		
+		if(!confirm("이미지 삭제 후 복구할 수 없습니다.\n삭제합니까?")) {
+			return;
+		}
+		changeOption(uciCode, "saleState", <%=PhotoDTO.SALE_STATE_DEL %>);
+		alert("삭제되었습니다");
+		go_cmsView(uciCode);
+	});
+
+$(document).on("click", "#open_edit", function() {
+	$("#open_edit").hide();
+	$("#save_edit").show();
+	$("#close_edit").show();
+	$("#open_del").hide();
 	
-	if($(".btn_edit").hasClass("complete")) {
-		// DB에 기사 제목, 내용을 수정 기능 필요
-		var titleKor = $(".hTitle").val(); 
-		var descriptionKor = $(".img_cont").text();
-		var uciCode = "${photoDTO.uciCode}";
-		
-		$(".btn_edit").text("수정");		
-		$(".btn_edit").removeClass("complete");
-		$(".img_tit").last().replaceWith("<h3 class=\"img_tit\">"+titleKor+"</h3>");
-		$(".img_cont").replaceWith("<p class=\"img_cont\">"+descriptionKor+"</p>");
-		
-		$.ajax({
-			type: "POST",
-			url: "/view.cms?action=updateCMS",
-			data: {
-				"uciCode" : uciCode,
-				"titleKor" : titleKor,
-				"descriptionKor" : descriptionKor
-			},
-			success: function(data){
-				
-			}, error:function(request,status,error){
-	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       	}
-			
-		});
-	}else {
-		$(".img_tit").last().replaceWith("<textarea class=\"img_tit hTitle\" style=\"width:100%; font-size:14px; line-height:22px; color:#666;\">"+title+"</textarea>");
-		$(".img_cont").replaceWith("<textarea class=\"img_cont\" style=\"height:300px; width:100%; font-size:14px; line-height:22px; color:#666;\">"+content+"</textarea>");	
-		$(".btn_edit").text("수정 완료");		
-		$(".btn_edit").addClass("complete");
+	$(".viewTitle").hide();
+	$(".viewCont").hide();
+	$(".editTitle").text($(".orgTitle").text());
+	$(".editTitle").show();
+	$(".editCont").text($(".orgCont").text());
+	$(".editCont").show();
+	
+	$(".editTitle").focus()
+});
+
+$(document).on("click", "#close_edit", function() {
+	if(!confirm("수정사항 반영하지 않고 취소합니다.")) {
+		return;
 	}
+	$("#open_edit").show();
+	$("#save_edit").hide();
+	$("#close_edit").hide();
+	$("#open_del").show();
+	
+	$(".viewTitle").show();
+	$(".viewCont").show();
+	$(".editTitle").text("");
+	$(".editTitle").hide();
+	$(".editCont").text("");
+	$(".editCont").hide();
+});
+
+$(document).on("click", "#save_edit", function() {
+	if(!confirm("수정사항을 저장합니다.")) {
+		return;
+	}
+	var uciCode = $('#uciCode').val();
+	var newTitle = $(".editTitle").text();
+	var newCont = $(".editCont").text();
+	
+	$.ajax({
+		type: "POST",
+		url: "/view.cms",
+		data: {
+			"action" : "updateCMS",
+			"uciCode" : uciCode,
+			"titleKor" : newTitle,
+			"descriptionKor" : newCont
+		},
+		success: function(data){
+			// 저장 성공 후 화면 정리
+		
+			// 버튼 갱신
+			$("#open_edit").show();
+			$("#save_edit").hide();
+			$("#close_edit").hide();
+			$("#open_del").show();
+			
+			// 표시 텍스트 수정/보임
+			$(".viewTitle").text(newTitle);
+			$(".viewCont").text(newCont);
+			$(".viewTitle").show();
+			$(".viewCont").show();
+			
+			// 에디트폼 숨김
+			$(".editTitle").hide();
+			$(".editCont").hide();
+			$(".editTitle").text("");
+			$(".editCont").text("");
+			
+			// 원본 데이터 수정
+			$(".orgTitle").text(newTitle);
+			$(".orgCont").text(newCont);
+//			go_cmsView(uciCode);
+			alert("저장했습니다");
+		}, error:function(request,status,error){
+			alert("저장중 오류가 발생했습니다. " + error);
+	       	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	    }
+	});
 });
