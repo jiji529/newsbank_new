@@ -115,14 +115,14 @@ public class CMSService extends ServiceBase {
 										
 								if(tagName.length() > 0) {
 									tagDAO.insert_Tag(uciCode, tagName);
-									log.setActionType(ActionLogDTO.ACTION_TYPE_MOD_ADDTAG);
+									log.setActionType(ActionLogDTO.ACTION_TYPE_ADD_TAG);
 									log.setDescription(tagName);
 								}
 							}			
 							
 						}else if(action.equals("deleteTag")) {
 							tagDAO.delete_PhotoTag(uciCode, tagName);
-							log.setActionType(ActionLogDTO.ACTION_TYPE_MOD_DELTAG);
+							log.setActionType(ActionLogDTO.ACTION_TYPE_DEL_TAG);
 							log.setDescription(tagName);
 						}else if(action.equals("updateCMS")){
 							photoDTO.setUciCode(uciCode);
@@ -156,17 +156,17 @@ public class CMSService extends ServiceBase {
 								int curSaleState = photoDTO.getSaleState();
 								int newSaleState = Integer.parseInt(columnValue);
 								if(newSaleState == PhotoDTO.SALE_STATE_DEL) {
-									actionType = ActionLogDTO.ACTION_TYPE_MOD_DELETE;
+									actionType = ActionLogDTO.ACTION_TYPE_SET_DELETE;
 								}
 								else if(newSaleState == PhotoDTO.SALE_STATE_STOP) {
-									actionType = ActionLogDTO.ACTION_TYPE_MOD_BLIND;
+									actionType = ActionLogDTO.ACTION_TYPE_SET_BLIND;
 								}
 								else {	// OK
 									if(curSaleState == PhotoDTO.SALE_STATE_STOP) {
-										actionType = ActionLogDTO.ACTION_TYPE_MOD_UNBLIND;	
+										actionType = ActionLogDTO.ACTION_TYPE_UNSET_BLIND;	
 									}
 									else if(curSaleState == PhotoDTO.SALE_STATE_DEL) {
-										actionType = ActionLogDTO.ACTION_TYPE_MOD_UNDELETE;
+										actionType = ActionLogDTO.ACTION_TYPE_UNSET_DELETE;
 									}
 								}
 								if(actionType == 0) {
@@ -179,10 +179,10 @@ public class CMSService extends ServiceBase {
 								photoDTO.setPortraitRightState(columnValue);
 								photoDAO.update_PortraitRightState(photoDTO);
 								if(columnValue.equals(PhotoDTO.PORTRAITRIGHTSTATE_ACQUIRE)) {
-									log.setActionType(ActionLogDTO.ACTION_TYPE_MOD_PRIGHT);
+									log.setActionType(ActionLogDTO.ACTION_TYPE_SET_PRIGHT);
 								}
 								else {
-									log.setActionType(ActionLogDTO.ACTION_TYPE_MOD_UNPRIGHT);
+									log.setActionType(ActionLogDTO.ACTION_TYPE_UNSET_PRIGHT);
 								}
 							}
 						}else{

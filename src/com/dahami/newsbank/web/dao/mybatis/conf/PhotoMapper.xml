@@ -194,4 +194,9 @@
 			(#{uciCode}, #{memberSeq}, #{actionType}, #{description}, #{ip})
 	</insert>
 	
+	<select id="listActionLog" parameterType="string" resultType="com.dahami.newsbank.web.dto.ActionLogDTO">
+		select * from actionLog
+			where uciCode = #{value}
+			order by seq desc
+	</select>
 </mapper>
