@@ -58,7 +58,7 @@
 		
 		if(memberType == "P") { // 개인 회원
 			$(".corp_area").hide();
-			$(".corp_area").children().find("input").attr("disabled", true);
+			//$(".corp_area").children().find("input").attr("disabled", true);
 		}
 		
 		setDatepicker();
@@ -89,26 +89,29 @@
 	}	
 	
 	// 회원구분 선택
-	function member_choice() {
-		var type = $("select[name=type]").val();
-		
-		switch(type) {
+	$(document).on("change", ".mtype", function() {
+		 var type = $(this).val();
+		 var tName = $(".mtype option:selected").text();
+		 
+		 switch(type) {
 			case 'P': // 개인
 				$(".media_only").hide();
 				$(".corp_area").hide();
 				break;
 				
 			case 'C': // 법인
+				$("#tName").text(tName);
 				$(".media_only").hide();
 				$(".corp_area").show();
 				break;
 				
 			case 'M': // 언론사
+				$("#tName").text(tName);
 				$(".media_only").show();
 				$(".corp_area").show();
 				break;
 		}
-	}
+	});
 	
 	// 회원정보 수정
 	function member_update() {
@@ -204,7 +207,7 @@
 						<tr>
 							<th>회원구분</th>
 							<td>
-								<select name="type" class="inp_txt" style="width: 120px;" onchange="member_choice()">
+								<select name="type" class="inp_txt mtype" style="width: 120px;" >
 									<option value="P" <c:if test="${MemberDTO.type eq 'P'}">selected</c:if>>개인</option>
 									<option value="C" <c:if test="${MemberDTO.type eq 'C'}">selected</c:if>>법인</option>
 									<option value="M" <c:if test="${MemberDTO.type eq 'M'}">selected</c:if>>언론사</option>
@@ -216,7 +219,7 @@
 				<!--여기부터 법인-->
 				<%-- <c:if test="${MemberDTO.type eq 'C' || MemberDTO.type eq 'M'}"> --%>
 				<div class="corp_area">
-					<h4>법인 회원 추가 정보</h4>
+					<h4> <span id="tName"> </span> 회원 추가 정보</h4>
 					<table class="tb01" cellpadding="0" cellspacing="0">
 						<colgroup>
 						<col style="width:240px;">

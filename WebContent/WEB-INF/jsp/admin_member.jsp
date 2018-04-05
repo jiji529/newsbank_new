@@ -152,7 +152,8 @@ $(document).on("click", "input[name='check_all']", function() {
 // 그룹묶기 팝업창, 옵션선택에 따른 알림문구 변경
 $(document).on("click", ".group_li input[type='radio']", function() {
 	var id = $(this).val();
-	$(".pop_foot > p").html('선택한 ID를 그룹(<span class="color">' + id + '</span>)으로 묶겠습니까?');
+	$(".pop_foot > p").html('(<span class="color">' + id + '</span>) 아이디를 그룹명으로 하여 그룹을 묶습니다.');
+	//$(".pop_foot > p").html('선택한 ID를 그룹(<span class="color">' + id + '</span>)으로 묶겠습니까?');
 });
 
 /** 그룹묶기 팝업  */
@@ -169,7 +170,7 @@ function popup_group() {
 			$("#popup_wrap").css("display", "block"); 
 			$("#mask").css("display", "block"); 
 			$(".group_li").empty();
-			$(".pop_foot > p").text('그룹명으로 지정할 항목을 선택해주세요');
+			$(".pop_foot > p").text('그룹명으로 지정할 아이디를 선택해주세요');
 			
 			$("#mtBody input:checkbox:checked").each(function(index) {
 				var id = $(this).closest("tr").find("td:eq(2)").text().trim();
@@ -332,7 +333,7 @@ function listJson() {
 				var type = val.type;
 				if(type == "P") type = "개인";
 				if(type == "C") type = "법인";
-				if(type == "M") type = "매체사";
+				if(type == "M") type = "언론사";
 				
 				var group = val.group_seq;
 				var groupName = val.groupName;
@@ -421,7 +422,7 @@ function search() { // 검색
 				var type = val.type;
 				if(type == "P") type = "개인";
 				if(type == "C") type = "법인";
-				if(type == "M") type = "매체사";
+				if(type == "M") type = "언론사";
 				
 				var group = val.group_seq;
 				var groupName = val.groupName;
@@ -603,7 +604,7 @@ function go_memberView(member_seq) {
 						</ul>
 					</div>
 					<div class="pop_foot">
-						<p>그룹명으로 지정할 항목을 선택해주세요.</p>
+						<p>그룹명으로 지정할 아이디를 선택해주세요.</p>
 						<div class="pop_btn">
 							<button onclick="make_group()">확인</button>
 							<button class="popup_close">취소</button>
