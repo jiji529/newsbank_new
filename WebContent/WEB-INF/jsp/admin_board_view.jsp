@@ -53,6 +53,7 @@
 			}
 			
 			$('input[type=file]').bind('change', function() {
+				var page = (location.pathname).split(".")[1];
 				var seq = $("input[name='seq']").val(); console.log("seq : " + seq);
 				var uType = $(this).attr("name");				
 				var tmpFile = $(this)[0].files[0];
@@ -67,6 +68,7 @@
 					var formData = new FormData();
 					//첫번째 파일태그
 					formData.append("uploadFile", tmpFile);
+					formData.append("page", page); // 접근페이지: 회원현황(member), 정산매체사(media), 공지사항(board)
 
 					$.ajax({
 						url : '/'+uType+'.upload?seq='+seq,

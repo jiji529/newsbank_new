@@ -597,3 +597,73 @@ function excel() { // 엑셀저장
 	$("#excelHtml").val(excelHtml);
 	excel_form.submit();
 }
+
+//등록증 업로드
+$(function() {
+
+	var fileTypes = [ 'image/jpeg', 'image/pjpeg', 'image/png', 'application/pdf'
+
+	]
+	//확장자 검사
+	function validFileType(file) {
+		for (var i = 0; i < fileTypes.length; i++) {
+			if (file.type === fileTypes[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	$('input[type=file]').bind('change', function() {
+		var page = (location.pathname).split(".")[1];
+		var seq = $("input[name='seq']").val();
+				
+		var uType = $(this).attr("name");	
+		//console.log(uType);
+		var tmpFile = $(this)[0].files[0];
+		var sizeLimit = 1024 * 1024 * 15;
+		if (tmpFile.size > sizeLimit) {
+			alert("파일 용량이 15MB를 초과했습니다");
+			$(this).val("");
+			return;
+		}
+
+		if (validFileType(tmpFile)) {
+			var formData = new FormData();
+			//첫번째 파일태그
+			formData.append("uploadFile", tmpFile);
+			formData.append("seq", seq); // 회원현황, 정산매체사(member_seq) / 공지사항(notice_seq)
+			formData.append("page", page); // 접근페이지: 회원현황(member), 정산매체사(media), 공지사항(board)
+
+			$.ajax({
+				url : '/'+uType+'.upload',
+				data : formData,
+				dataType : "json",
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					console.log(data);
+					if (data.success) {
+						alert(data.message);
+					} else {
+						alert(data.message);
+					}
+					location.reload();
+				},
+				error : function(data) {
+					console.log("Error: " + data.statusText);
+					alert("잘못된 접근입니다.");
+				},
+
+			});
+
+		} else {
+			alert("파일 형식이 올바르지 않습니다.");
+			$(this).val("");
+		}
+
+	});
+
+});
