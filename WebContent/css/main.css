@@ -55,3 +55,5 @@ section.media .media_list li { border-right:1px #f3f4f8 solid;border-bottom:1px 
 section.media .media_list li:nth-child(9n){ border-right:0;}
 section.media .media_list li a{ display:table-cell; width:133px; height:132px; vertical-align:middle; line-height:132px; }
 section.media .media_list li a img{max-width:110px; max-height:30px;}
+
+

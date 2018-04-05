@@ -113,7 +113,7 @@
 .view .view_lt .cont_area .img_tit .uci{color:#f79320; margin-right:8px;}
 .view .view_lt .cont_area .btn_wish{ position:absolute; right:0; top:-5px; width:32px; height:32px; background:url(../images/view/heart1.png) 0 0 no-repeat; text-indent:-9999px;}
 .view .view_lt .cont_area .btn_wish.on{ background:url(../images/view/heart2.png) 0 0 no-repeat;}
-.view .view_lt .cont_area .img_cont{ float:left; width:100%; font-size:14px; line-height:22px; color:#666;}
+.view .view_lt .cont_area .img_cont{ float:left; width:100%; font-size:14px; line-height:24px; color:#666;}
 
 .view .view_lt .img_info_area{float:left; width:100%; border-top:1px #eee solid; margin-top:20px; padding-bottom:10px;}
 .view .view_lt .img_info_area .info_tit{ float:left; width:100%; margin:30px 0 10px; font-size:14px; color:#f79320; }
