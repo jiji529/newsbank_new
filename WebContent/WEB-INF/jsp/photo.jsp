@@ -329,17 +329,10 @@
 				$("#search_list ul").html(html);
 				$(window).scrollTop(0);
 				
-				var totalCount = data.count;
-				if(totalCount.length > 3) {
-					totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마	
-				}
+				var totalCount = data.count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
+				var totalPage = data.totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
 				
-				var totalPage = data.totalPage;
-				if(totalPage.length > 3) {
-					totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마	
-				}
-				
-				$("div .result b").html(totalCount);
+				$("div .result b").text(totalCount);
 				$("div .paging span.total").html(totalPage);
 				
 				if("${loginInfo}" != ""){ // 로그인 시, 찜 목록을 불러오기
