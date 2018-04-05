@@ -168,11 +168,13 @@ $(document).on("click", ".filter_list li", function() {
 	}
 
 	/** 블라인드/삭제 초상권 변경 */
-	function changeOption(uciCode, name, value) {	
+	function changeOption(uciCode, name, value) {
+		var url = "/view.cms" + $("#manage").val();	
 		$.ajax({
 			type: "POST",
-			url: "/view.cms?action=updateOne",
+			url: url,
 			data: {
+				"action" : "updateOne",
 				"uciCode" : uciCode,
 				"columnName" : name,
 				"columnValue" : value

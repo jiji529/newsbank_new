@@ -171,10 +171,12 @@
 	});
 
 	function deleteTag(uciCode, tagName) {
+		var url = "/view.cms" + $("#manage").val();
 		$.ajax({
 			type: "POST",
-			url: "/view.cms?action=deleteTag",
+			url: url,
 			data: {
+				"action" : "deleteTag",
 				"uciCode" : uciCode,
 				"tagName" : tagName
 			},
@@ -212,10 +214,12 @@
 	});
 	
 	function insertTag(uciCode, tagName) {
+		var url = "/view.cms" + $("#manage").val();
 		$.ajax({
 			type: "POST",
-			url: "/view.cms?action=insertTag",
+			url: url,
 			data: {
+				"action" : "insertTag",
 				"uciCode" : uciCode,
 				"tagName" : tagName
 			},
@@ -244,85 +248,86 @@
 		go_cmsView(uciCode);
 	});
 
-$(document).on("click", "#open_edit", function() {
-	$("#open_edit").hide();
-	$("#save_edit").show();
-	$("#close_edit").show();
-	$("#open_del").hide();
-	
-	$(".viewTitle").hide();
-	$(".viewCont").hide();
-	$(".editTitle").text($(".orgTitle").text());
-	$(".editTitle").show();
-	$(".editCont").text($(".orgCont").text());
-	$(".editCont").show();
-	
-	$(".editTitle").focus()
-});
-
-$(document).on("click", "#close_edit", function() {
-	if(!confirm("수정사항 반영하지 않고 취소합니다.")) {
-		return;
-	}
-	$("#open_edit").show();
-	$("#save_edit").hide();
-	$("#close_edit").hide();
-	$("#open_del").show();
-	
-	$(".viewTitle").show();
-	$(".viewCont").show();
-	$(".editTitle").text("");
-	$(".editTitle").hide();
-	$(".editCont").text("");
-	$(".editCont").hide();
-});
-
-$(document).on("click", "#save_edit", function() {
-	if(!confirm("수정사항을 저장합니다.")) {
-		return;
-	}
-	var uciCode = $('#uciCode').val();
-	var newTitle = $(".editTitle").text();
-	var newCont = $(".editCont").text();
-	
-	$.ajax({
-		type: "POST",
-		url: "/view.cms",
-		data: {
-			"action" : "updateCMS",
-			"uciCode" : uciCode,
-			"titleKor" : newTitle,
-			"descriptionKor" : newCont
-		},
-		success: function(data){
-			// 저장 성공 후 화면 정리
+	$(document).on("click", "#open_edit", function() {
+		$("#open_edit").hide();
+		$("#save_edit").show();
+		$("#close_edit").show();
+		$("#open_del").hide();
 		
-			// 버튼 갱신
-			$("#open_edit").show();
-			$("#save_edit").hide();
-			$("#close_edit").hide();
-			$("#open_del").show();
-			
-			// 표시 텍스트 수정/보임
-			$(".viewTitle").text(newTitle);
-			$(".viewCont").text(newCont);
-			$(".viewTitle").show();
-			$(".viewCont").show();
-			
-			// 에디트폼 숨김
-			$(".editTitle").hide();
-			$(".editCont").hide();
-			$(".editTitle").text("");
-			$(".editCont").text("");
-			
-			// 원본 데이터 수정
-			$(".orgTitle").text(newTitle);
-			$(".orgCont").text(newCont);
-//			go_cmsView(uciCode);
-			alert("저장했습니다");
-		}, error:function(request,status,error){
-			alert("저장중 오류가 발생했습니다. " + error);
-	       	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	    }
+		$(".viewTitle").hide();
+		$(".viewCont").hide();
+		$(".editTitle").text($(".orgTitle").text());
+		$(".editTitle").show();
+		$(".editCont").text($(".orgCont").text());
+		$(".editCont").show();
+		
+		$(".editTitle").focus()
 	});
-});
+	
+	$(document).on("click", "#close_edit", function() {
+		if(!confirm("수정사항 반영하지 않고 취소합니다.")) {
+			return;
+		}
+		$("#open_edit").show();
+		$("#save_edit").hide();
+		$("#close_edit").hide();
+		$("#open_del").show();
+		
+		$(".viewTitle").show();
+		$(".viewCont").show();
+		$(".editTitle").text("");
+		$(".editTitle").hide();
+		$(".editCont").text("");
+		$(".editCont").hide();
+	});
+	
+	$(document).on("click", "#save_edit", function() {
+		if(!confirm("수정사항을 저장합니다.")) {
+			return;
+		}
+		var uciCode = $('#uciCode').val();
+		var newTitle = $(".editTitle").text();
+		var newCont = $(".editCont").text();
+		
+		var url = "/view.cms" + $("#manage").val();
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: {
+				"action" : "updateCMS",
+				"uciCode" : uciCode,
+				"titleKor" : newTitle,
+				"descriptionKor" : newCont
+			},
+			success: function(data){
+				// 저장 성공 후 화면 정리
+			
+				// 버튼 갱신
+				$("#open_edit").show();
+				$("#save_edit").hide();
+				$("#close_edit").hide();
+				$("#open_del").show();
+				
+				// 표시 텍스트 수정/보임
+				$(".viewTitle").text(newTitle);
+				$(".viewCont").text(newCont);
+				$(".viewTitle").show();
+				$(".viewCont").show();
+				
+				// 에디트폼 숨김
+				$(".editTitle").hide();
+				$(".editCont").hide();
+				$(".editTitle").text("");
+				$(".editCont").text("");
+				
+				// 원본 데이터 수정
+				$(".orgTitle").text(newTitle);
+				$(".orgCont").text(newCont);
+	//			go_cmsView(uciCode);
+				alert("저장했습니다");
+			}, error:function(request,status,error){
+				alert("저장중 오류가 발생했습니다. " + error);
+		       	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
+		});
+	});

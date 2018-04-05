@@ -17,6 +17,7 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 //import com.oreilly.servlet.MultipartRequest;
 //import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.dahami.newsbank.web.service.CMSService;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class MypageAuth
@@ -38,16 +39,14 @@ public class JoinForm extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		String type = request.getParameter("type"); // 회원 구분
+		super.doGet(request, response);
+		CmdClass cmd = CmdClass.getInstance(request);
 		
+		String type = request.getParameter("type"); // 회원 구분
 		request.setAttribute("type", type);
 		
-
-		CMSService cs = new CMSService(false); //매체목록
-		cs.execute(request, response);
+		//매체목록 세팅
+//		request.setAttribute("mediaList", new MemberDAO().listActiveMedia());
 		
 		if (type == null) {
 			response.sendRedirect("/kind.join");
@@ -55,7 +54,6 @@ public class JoinForm extends NewsbankServletBase {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/join_form.jsp");
 			dispatcher.forward(request, response);
 		}
-
 	}
 
 	/**
