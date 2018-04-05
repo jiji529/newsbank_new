@@ -53,7 +53,7 @@ SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
 if(!contentBlidF) {
 %>
 					<div class="btn_edit">
-<!-- 					<span id="popup_open"><a href="#none">수정 이력 보기</a></span> -->
+					<span id="history_open"><a href="#none">수정 이력 보기</a></span>
 						<span id="open_edit"><a href="#">수정하기</a></span>
 						<span id="save_edit" style="display:none;"><a href="#">저장</a></span>
 						<span id="close_edit" style="display:none;"><a href="#">취소</a></span> 
@@ -282,3 +282,4 @@ if(!contentBlidF) {
 		</section>
 <%@include file="down_frame.jsp" %>
 <%@include file="view_form.jsp" %>
+<%@include file="history_popup.jsp"%>

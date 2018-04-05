@@ -184,5 +184,3 @@ $(document).on("click", ".filter_list li", function() {
 	       	}
 		});
 	}
-	
-	

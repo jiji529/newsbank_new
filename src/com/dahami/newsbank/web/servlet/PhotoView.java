@@ -48,9 +48,4 @@ public class PhotoView extends NewsbankServletBase {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/photo_view.jsp");
 		dispatcher.forward(request, response);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

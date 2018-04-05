@@ -56,6 +56,7 @@ public class ActionLogDTO {
 	private int seq;
 	private String uciCode;
 	private int memberSeq;
+	private String memberId;
 	private String memberName;
 	private int actionType;
 	private String actionTypeStr;
@@ -80,6 +81,12 @@ public class ActionLogDTO {
 	}
 	public void setMemberSeq(int memberSeq) {
 		this.memberSeq = memberSeq;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 	public String getMemberName() {
 		return memberName;

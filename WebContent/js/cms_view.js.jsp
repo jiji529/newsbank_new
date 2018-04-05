@@ -13,6 +13,18 @@
 // ################################################################################
 
 	$(document).ready(function(key, val){
+		// 수정기록 읽어오기
+		$("#history_open").click(function(){ 
+			setModLog();
+			$("#popup_wrap").css("display", "block"); 
+			$("#mask").css("display", "block");
+		}); 
+		$(".popup_close").click(function(){ 
+			$("#popup_wrap").css("display", "none"); 
+			$("#mask").css("display", "none");
+			$(".pop_history .pop_cont tbody").html(""); 
+		});
+		
 		initSearchParam();
 		var saleState = $("#saleState").val();
 		var portraitRightState = $("#portraitRightState").val();
@@ -45,6 +57,38 @@
 		
 		relation_photo();
 	});
+	
+// ################################################################################
+// 수정기록 읽어오기
+// ################################################################################
+	
+	function setModLog() {
+		var url = "modLog.cms" + $("#manage").val();
+		$.ajax({
+			type: "POST",
+			url: url,
+			async: false,
+			data: {
+				"uciCode" : $("#uciCode").val()
+			},
+			dataType: "json",
+			success: function(data){
+				var html = "";
+				$(data.result).each(function(key, val) {
+					html += "<tr>"
+						+ "<td>" + val.no + "</td>"
+						+ "<td>" + val.regDateStr + "</td>"
+						+ "<td>" + val.memberId + "</td>"
+						+ "<td>" + val.memberName + "</td>"
+						+ "<td>" + val.actionTypeStr + "</td>"
+						+ "</tr>";
+				});
+				$(".pop_history .pop_cont tbody").html(html); 
+			}, error:function(request,status,error){
+	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	       	}
+		});
+	}
 
 // ################################################################################
 // 상세화면에서 검색 관련

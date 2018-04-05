@@ -17,7 +17,7 @@ import com.dahami.newsbank.web.servlet.bean.CmdClass;
  * Servlet implementation class CMSManage
  */
 @WebServlet(
-		urlPatterns = {"/cms.manage", "/view.cms.manage"},
+		urlPatterns = {"/cms2.manage", "/view2.cms.manage"},
 		loadOnStartup = 1
 		)
 public class AdminCMS extends NewsbankServletBase {
@@ -61,19 +61,6 @@ public class AdminCMS extends NewsbankServletBase {
 				cs = new CMSService(false, true);
 			}
 			cs.execute(request, response);
-//			
-//			MemberDAO mDao = new MemberDAO();
-//			MemberDTO memberDTO = new MemberDTO();
-//			List<MemberDTO> mediaList = mDao.listActiveMedia();
-//			request.setAttribute("mediaList", mediaList);
-//			
-//			SearchParameterBean parameterBean = new SearchParameterBean();
-//			String cms_keyword = request.getParameter("cms_keyword_current") == null ? "" : request.getParameter("cms_keyword_current");
-//			parameterBean.setPageVol(40);
-//			request.setAttribute("cms_keyword", cms_keyword);
-//			
-//			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_cms.jsp");
-//			dispatcher.forward(request, response);
 		}
 	}
 }

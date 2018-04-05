@@ -27,7 +27,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ServiceBase {
+public abstract class ServiceBase implements IService {
 	protected Logger logger;
 	private static boolean loggerConfInitF;
 	
@@ -38,8 +38,6 @@ public abstract class ServiceBase {
 		}
 		logger = LoggerFactory.getLogger(this.getClass());
 	}
-	
-	public abstract void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 	
 	protected void forward(HttpServletRequest request, HttpServletResponse response, String forward) throws ServletException, IOException {
 		if(forward != null) {
