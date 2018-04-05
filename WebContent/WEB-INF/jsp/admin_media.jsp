@@ -228,7 +228,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			dataType: "json",
 			data: searchParam,
 			url: "/listMedia.api",
-			success: function(data) { //console.log(data);
+			success: function(data) { console.log(data);
 				pageCnt = data.pageCnt; // 총 페이지 갯수
 				totalCnt = data.totalCnt; // 총 갯수
 				
@@ -340,7 +340,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			dataType: "json",
 			data: searchParam,
 			url: "/listMedia.api",
-			success: function(data) { //console.log(data);
+			success: function(data) { console.log(data);
 				pageCnt = data.pageCnt; // 총 페이지 갯수
 				totalCnt = data.totalCnt; // 총 갯수
 				

@@ -648,7 +648,7 @@ if(!contentBlidF) {
 		<div class="view_rt">
 			<div class="view_rt_top">
 				<h3>이미지 구매하기</h3>
-				<a href="/price.info" class="price_info">가격확인</a>
+				<a href="/price.info" class="price_info" target="_blank">가격확인</a>
 			</div>
 			<c:if test="${loginInfo == null || loginInfo.deferred == 0}">
 				<div class="option_choice">

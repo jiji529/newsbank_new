@@ -131,6 +131,7 @@ $(document).on("click", "#btn_complete", function() {
 	var delArr = array_diff(existList, editList); // 삭제될 대상
 	var insArr = array_diff(editList, existList); // 추가될 대상
 	
+	
 	var param = {
 		"delArr" : delArr
 		, "insArr" : insArr
@@ -163,6 +164,7 @@ $(document).on("click", "#btn_save", function() {
 	existList = existList.replace("[", "");
 	existList = existList.replace("]", "");
 	existList = existList.split(", ");
+	//console.log("기존 리스트 : " + existList);
 	
 	// 편진된 리스트
 	var editList = [];
@@ -170,8 +172,10 @@ $(document).on("click", "#btn_save", function() {
 		var uciCode = $(this).find("td:first").text();
 		editList.push(uciCode);
 	});
+	//console.log("편집 리스트 : " + editList);
 	
 	var delArr = array_diff(existList, editList); // 삭제될 대상
+	//console.log("삭제 리스트 : " + delArr);
 	
 	var tabName = $(".tabs li").find("a.active").attr("value");
 	
@@ -196,7 +200,6 @@ $(document).on("click", "#btn_save", function() {
 			location.reload();
 		}
 	});
-	
 	
 });
 

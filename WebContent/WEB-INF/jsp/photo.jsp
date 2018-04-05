@@ -327,6 +327,7 @@
 					html += "</li>";
 				});
 				$("#search_list ul").html(html);
+				$(window).scrollTop(0);
 				
 				var totalCount = data.count;
 				if(totalCount.length > 3) {
