@@ -382,11 +382,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					var totalRate;
 					// 온/오프라인 요율
 					if(preRate != null && postRate != null) {
-						totalRate = "온라인<br/>" + preRate + "%<br/> 오프라인<br/>" + postRate + "%";	
+						totalRate = "온라인" + preRate + "%<br/> 오프라인" + postRate + "%";	
 					}else {
 						preRate = (preRate == null) ? "" : preRate;
 						postRate = (postRate == null) ? "" : postRate;
-						totalRate = "온라인<br/>" + preRate + " - <br/> 오프라인<br/>" + postRate + "-";
+						totalRate = "온라인" + preRate + " - <br/> 오프라인" + postRate + "-";
 					}
 					var contentCnt = (val.contentCnt).split("|");
 					var blind = contentCnt[0]; // 블라인드 수량
@@ -571,16 +571,16 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 					<colgroup>
 					<col width="30" />
-					<col width="30" />
+					<col width="50" />
 					<col width="100" />
 					<col width="100"  />
 					<col width="80" />
 					<col width="130" />
 					<col/>
 					<col width="120" />
-					<col width="100" />
+					<col width="150" />
 					<col width="120" />
-					<col width="80" />
+					<col width="100" />
 					<col width="100" />
 					<col width="100" />
 					</colgroup>

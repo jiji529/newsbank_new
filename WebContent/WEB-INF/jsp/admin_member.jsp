@@ -491,8 +491,8 @@ function go_memberView(member_seq) {
 			<div class="ad_sch_area">
 				<table class="tb01" cellpadding="0" cellspacing="0" >
 					<colgroup>
-					<col style="width:240px;">
-					<col style="width:;">
+					<col style="width:240px;" />
+					<col style="width:;" />
 					</colgroup>
 					<tbody>
 						<tr>
@@ -570,7 +570,7 @@ function go_memberView(member_seq) {
 					<thead>
 						<tr>
 							<th><div class="tb_check">
-									<input id="check_all" name="check_all" type="checkbox">
+									<input id="check_all" name="check_all" type="checkbox" />
 									<label for="check_all">선택</label>
 								</div></th>
 							<th>No. </th>
