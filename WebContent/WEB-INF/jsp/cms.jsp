@@ -87,21 +87,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}
 	});
 	
-	$(document).on("keypress", "#cms_keyword", function(e) {
-		if(e.keyCode == 13) {	// 엔터
-			//$("#keyword_current").val($("#keyword").val());
-
-			// 키워드 바꾸면 페이지 번호 초기화
-			$("input[name=pageNo]").val("1");
-			cms_search();
-		}
-	});
-	
-	$(document).on("click", "#cms_searchBtn", function() {
-		$("input[name=pageNo]").val("1");
-		cms_search();
-	});
-	
 	function checkNumber(event) {
 		event = event || window.event;
 		var keyID = (event.which) ? event.which : event.keyCode;

@@ -40,8 +40,8 @@ SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
 		<div class="table_head">
 			<h3>사진 관리</h3>
 			<div class="cms_search">
-				<input id="cms_keyword" type="text" placeholder="이미지 검색" />
-				<button id="cms_searchBtn">검색</button>
+				<input id="cms_keywordFV" type="text" placeholder="이미지 검색" />
+				<button id="cms_searchFVBtn">검색</button>
 			</div>
 		</div>
 		

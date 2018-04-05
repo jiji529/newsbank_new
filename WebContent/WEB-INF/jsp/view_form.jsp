@@ -34,9 +34,8 @@ if(request.getRequestURI().startsWith("/WEB-INF/jsp/admin_")) {
 	<input type="hidden" name="media"  value="${sParam.media}"/>
 	<input type="hidden" name="durationReg"  value="${sParam.durationReg}"/>
 	<input type="hidden" name="durationTake"  value="${sParam.durationTake}"/>
-	<input type="hidden" name="colorMode"  value="${sParam.colorMode}"/>
-	<input type="hidden" name="horiVertChoice"  value="${sParam.horivertChoice}"/>
-	<input type="hidden" name="saleState"  value="${sParam.saleState}"/>
+	<input type="hidden" name="horiVertChoice"  value="${sParam.horiVertChoice}"/>
 	<input type="hidden" name="size"  value="${sParam.size}"/>
-	
+	<input type="hidden" name="colorMode"  value="${sParam.colorMode}"/>
+	<input type="hidden" name="saleState"  value="${sParam.saleState}"/>
 </form>

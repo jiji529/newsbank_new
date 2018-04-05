@@ -20,13 +20,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	  });
 	}
 	
-	// 다른 페이지에서 검색 시
-	function go_cmsSearch_from_cmsView() {
-		view_form.action = "/cms" + $("#manage").val();
-		view_form.target="_self";
-		view_form.submit();
-	}
-	
 	function cms_search() {
 		var keyword = $("#cms_keyword").val();
 		
