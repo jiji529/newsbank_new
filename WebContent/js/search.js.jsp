@@ -95,7 +95,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				});
 				$("#cms_list2 ul").html(html);
 				var totalCount = $(data.count)[0];
-					totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마;
+					totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마; 
 				var totalPage = $(data.totalPage)[0];
 					totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마;
 				$("div .result b").html(totalCount);
