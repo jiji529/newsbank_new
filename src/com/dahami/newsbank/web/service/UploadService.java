@@ -123,6 +123,15 @@ public class UploadService extends ServiceBase {
 					MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit, "UTF-8", new DefaultFileRenamePolicy());
 					fileName = multi.getFilesystemName("uploadFile"); // 파일의 이름 얻기
 					
+					String seq = multi.getParameter("seq"); // seq 얻기
+					String page = multi.getParameter("page"); // 접근 page 얻기
+					
+					if(seq != null && page != null) {
+						request.setAttribute("seq", seq);
+						request.setAttribute("page", page);
+					}
+					
+					
 					files = multi.getFileNames();
 					String name = (String) files.nextElement();
 					file = multi.getFile(name);

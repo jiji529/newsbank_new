@@ -34,7 +34,7 @@
 <script src="js/footer.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
-<script src="js/admin.js?v=20180403"></script>
+<script src="js/admin.js?v=20180405"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
@@ -236,7 +236,14 @@
 										<input type="text" id="compNum2" name="compNum2" size="2"  class="inp_txt" value="${compNum2}" maxlength="2">
 										<span class=" bar">-</span>
 										<input type="text" id="compNum3" name="compNum3" size="5"  class="inp_txt" value="${compNum3}" maxlength="6" />
-										<a href="#" class="btn_input1">사업자등록증 업로드</a> <a href="#" class="btn_input1">사업자등록증 다운로드</a>
+										<!-- <a href="#" class="btn_input1">사업자등록증 업로드</a> --> 
+										
+										<div class="upload-btn-wrapper">
+											<button class="btn">사업자등록증 업로드</button>
+											<input type="file" name="doc" accept="application/pdf, image/*" required />
+										</div>
+										
+										<a href="#" class="btn_input1">사업자등록증 다운로드</a>
 										<p class="txt_message" id="compNum_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
 									</td>
 								</tr>

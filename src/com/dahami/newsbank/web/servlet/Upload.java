@@ -57,7 +57,13 @@ public class Upload extends NewsbankServletBase {
 		int notice_seq = 0;
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = null;
+		MemberDTO memberDTO = null;
 		BoardDTO NoticeInfo = null;
+		
+		String page = null; // 접근 페이지
+		String seq = null; // 고유번호
+		
+		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 
 		request.setAttribute("pathType", cmd.get2());
 
@@ -75,42 +81,65 @@ public class Upload extends NewsbankServletBase {
 				
 				if (session.getAttribute("MemberInfo") != null) {
 					MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-					NoticeInfo = new BoardDTO();
+					
+					if(MemberInfo.getType().equals("A")) { // 관리자페이지 : 선택한 회원정보 불러오기
+						page = (String) request.getAttribute("page"); // 접근 페이지
+						seq = (String) request.getAttribute("seq"); // 고유번호
+						
+						if(page.equals("board")) { // 공지사항 관리
+							NoticeInfo = new BoardDTO();
+						}else{ // 회원현황, 정산매체사 관리
+							int memberSeq = Integer.parseInt((String)request.getAttribute("seq"));
+							memberDTO = memberDAO.getMember(memberSeq); // 선택한 회원정보 불러오기
+						}
+						
+					}else { // 사용자 페이지(로그인 회원정보)
+						memberDTO = MemberInfo;
+					}
+					
+					
 					switch (cmd.get2()) {
 					case "doc":
-						MemberInfo.setComDocPath(fileFullPath);
+						memberDTO.setComDocPath(fileFullPath);
 						break;
 					case "bank":
-						MemberInfo.setCompBankPath(fileFullPath);
+						memberDTO.setCompBankPath(fileFullPath);
 						break;
 					case "logo":
-						MemberInfo.setLogo(fileFullPath);
+						memberDTO.setLogo(fileFullPath);
 						break;
 					case "contract":
-						MemberInfo.setContractPath(fileFullPath);
+						memberDTO.setContractPath(fileFullPath);
 						break;
 					case "notice":
 						NoticeInfo.setFileName(fileFullPath);
 						break;
 					}
-					MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
-					memberDAO.updateMember(MemberInfo); // 회원정보 업데이트 요청
 					
-					if(MemberInfo.getType().equals("A")) { // 관리자 회원만 업로드
-						BoardDAO boardDAO = new BoardDAO(); // 공지사항 정보 연결
+					
+					if(MemberInfo.getType().equals("A")) { // 관리자 페이지
 						
-						if(request.getParameter("seq") == null || request.getParameter("seq").equals("")){ 
-							// 공지사항 신규 첨부파일 추가
-							notice_seq = boardDAO.insertNotice(NoticeInfo); 
+						BoardDAO boardDAO = new BoardDAO(); // 공지사항 정보 연결						
+						
+						if(page.equals("board")) { // 공지사항 관리
+							if(seq == null || seq.equals("")){ 
+								// 공지사항 신규 첨부파일 추가
+								notice_seq = boardDAO.insertNotice(NoticeInfo); 
+							} else {
+								// 공지사항 정보 업데이트 요청(파일 경로 변경)
+								notice_seq = Integer.parseInt(seq);
+								NoticeInfo.setSeq(notice_seq); // 공지사항 고유번호
+								boardDAO.updateNotice(NoticeInfo); 
+							}
 							
-						} else {
-							// 공지사항 정보 업데이트 요청(파일 경로 변경)
-							notice_seq = Integer.parseInt(request.getParameter("seq"));
-							NoticeInfo.setSeq(notice_seq); // 공지사항 고유번호
-							boardDAO.updateNotice(NoticeInfo); 
+						}else { //회원현황, 정산매체사 관리
+							memberDAO.updateMember(memberDTO);
 						}
 						
+					}else { // 사용자 페이지
+						memberDAO.updateMember(memberDTO);
 					}
+					
 				} 
 			}
 
