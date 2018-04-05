@@ -13,18 +13,7 @@
 // ################################################################################
 
 	$(document).ready(function(key, val){
-		// 수정기록 읽어오기
-		$("#history_open").click(function(){ 
-			setModLog();
-			$("#popup_wrap").css("display", "block"); 
-			$("#mask").css("display", "block");
-		}); 
-		$(".popup_close").click(function(){ 
-			$("#popup_wrap").css("display", "none"); 
-			$("#mask").css("display", "none");
-			$(".pop_history .pop_cont tbody").html(""); 
-		});
-		
+			
 		initSearchParam();
 		var saleState = $("#saleState").val();
 		var portraitRightState = $("#portraitRightState").val();
@@ -94,15 +83,23 @@
 // 상세화면에서 검색 관련
 // ################################################################################
 	
-	$(document).on("keypress", "#cms_keyword", function(e) {
+	$(document).on("keypress", "#cms_keywordFV", function(e) {
 		if(e.keyCode == 13) {	// 엔터
 			go_cmsSearch_from_cmsView();
 		}
 	});
 	
-	$(document).on("click", "#cms_searchBtn", function() {
+	$(document).on("click", "#cms_searchFVBtn", function() {
 		go_cmsSearch_from_cmsView();
 	});
+	
+	// 다른 페이지에서 검색 시
+	function go_cmsSearch_from_cmsView() {
+		view_form.action = "/cms" + $("#manage").val();
+		view_form.target="_self";
+		view_form.keyword.value = $("#cms_keywordFV").val();
+		view_form.submit();
+	}
 	
 // ################################################################################
 // 연관사진 검색 관련
@@ -331,3 +328,20 @@
 		    }
 		});
 	});
+
+	
+// ################################################################################
+// 수정 히스토리 읽기
+// ################################################################################
+
+			// 수정기록 읽어오기
+		$("#history_open").click(function(){ 
+			setModLog();
+			$("#popup_wrap").css("display", "block"); 
+			$("#mask").css("display", "block");
+		}); 
+		$(".popup_close").click(function(){ 
+			$("#popup_wrap").css("display", "none"); 
+			$("#mask").css("display", "none");
+			$(".pop_history .pop_cont tbody").html(""); 
+		});
