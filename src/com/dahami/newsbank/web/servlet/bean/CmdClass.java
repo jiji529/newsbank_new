@@ -72,7 +72,7 @@ public class CmdClass {
 	}
 	
 	public boolean is1(String cmd) {
-		return is(cmd2, cmd);
+		return is(cmd1, cmd);
 	}
 	
 	public boolean is2(String cmd) {

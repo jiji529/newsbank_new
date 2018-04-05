@@ -18,7 +18,6 @@ package com.dahami.newsbank.web.dao;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,30 +26,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.servlet.ServletConfig;
-
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrRequest.METHOD;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.QueryRequest;
-import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.json.simple.JSONObject;
 
-import com.dahami.common.util.ObjectUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
+@SuppressWarnings("deprecation")
 public class SearchDAO extends DAOBase {
 	
 	private static final SimpleDateFormat fullDf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -156,7 +149,7 @@ public class SearchDAO extends DAOBase {
 		else if(solr instanceof CloudSolrClient) {
 			httpClient = ((CloudSolrClient)solr).getLbClient().getHttpClient();
 		}
-		HttpClientUtil.setBasicAuth((DefaultHttpClient)httpClient, this.solrId, this.solrPw);
+		HttpClientUtil.setBasicAuth((DefaultHttpClient)httpClient, solrId, solrPw);
 	}
 
 	private void loadProperties() {

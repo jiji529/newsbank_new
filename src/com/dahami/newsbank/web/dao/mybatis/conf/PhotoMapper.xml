@@ -195,8 +195,9 @@
 	</insert>
 	
 	<select id="listActionLog" parameterType="string" resultType="com.dahami.newsbank.web.dto.ActionLogDTO">
-		select * from actionLog
-			where uciCode = #{value}
+		select A.seq seq, A.uciCode, A.memberSeq, B.id memberId, B.name memberName, A.actionType, A.ip, A.description, A.regDate
+			from actionLog A, member B
+			where uciCode = #{value} AND A.memberSeq = B.seq
 			order by seq desc
 	</select>
 </mapper>

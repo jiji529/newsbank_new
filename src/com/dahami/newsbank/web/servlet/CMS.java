@@ -7,16 +7,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.JOptionPane;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.CMSService;
+import com.dahami.newsbank.web.service.IService;
+import com.dahami.newsbank.web.service.LogService;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class CMS
  */
 @WebServlet(
-		urlPatterns = {"/cms", "/view.cms"},
+		urlPatterns = {"/cms", "/view.cms", "/modLog.cms", "/cms.manage", "/view.cms.manage", "/modLog.cms.manage"},
 		loadOnStartup = 1
 		)
 public class CMS extends NewsbankServletBase {
@@ -45,26 +48,54 @@ public class CMS extends NewsbankServletBase {
 			return;
 		}
 		
-		// 마이페이지 비밀번호 중복확인 체크
-		boolean mypageAuth = false;
-		boolean isAdmin = memberInfo.getType().equals(MemberDTO.TYPE_ADMIN);
-		if (session.getAttribute("mypageAuth") != null) {
-			mypageAuth = (boolean) session.getAttribute("mypageAuth");
+		boolean isView = false;
+		boolean isModLog = false;
+		boolean isAdmin = false;
+		
+		// 관리자 CMS
+		if(cmd.is1("manage")) {
+			if(!memberInfo.getType().equals(MemberDTO.TYPE_ADMIN)) {
+				JOptionPane.showMessageDialog(null, "해당페이지는 관리자만 접근할 수 있습니다.\n 메인 페이지로 이동합니다.");
+				response.sendRedirect("/home");
+				return;
+			}
+			isAdmin = true;
+			if(cmd.is3("view")) {
+				isView = true;
+			}
+			else if(cmd.is3("modLog")) {
+				isModLog = true;
+			}
 		}
-		// 관리자는 중복체크 필요없음
-		if (!mypageAuth && !isAdmin) {
-			response.sendRedirect("/auth.mypage");
-			return;
+		// 사용자 CMS
+		else {
+			// 마이페이지 비밀번호 중복확인 체크
+			boolean mypageAuth = false;
+			if (session.getAttribute("mypageAuth") != null) {
+				mypageAuth = (boolean) session.getAttribute("mypageAuth");
+			}
+			if (!mypageAuth) {
+				JOptionPane.showMessageDialog(null, "해당페이지는 로그인 하여야 접근할 수 있습니다.\n메인 페이지로 이동합니다.");
+				response.sendRedirect("/auth.mypage");
+				return;
+			}
+			if(cmd.is2("view")) {
+				isView = true;
+			}
+			else if(cmd.is2("modLog")) {
+				isModLog = true;
+			}
 		}
 		
 		// 요청사항 처리
-		CMSService cs = null;
-		if(cmd.is2("view")) {
-			cs = new CMSService(true, isAdmin);
+		IService service = null;
+		
+		if(isModLog) {
+			service = new LogService();
 		}
 		else {
-			cs = new CMSService(false, isAdmin);
+			service = new CMSService(isView, isAdmin);
 		}
-		cs.execute(request, response);
+		service.execute(request, response);
 	}
 }

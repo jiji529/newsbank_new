@@ -48,20 +48,20 @@ SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
 		<section class="view">
 			<div class="view_lt">
 				<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" />
+					<div class="btn_edit">
+						<span id="history_open"><a href="#none">수정 이력 보기</a></span>
 <%
 // 삭제 상태가 아니면 출력
 if(!contentBlidF) {
 %>
-					<div class="btn_edit">
-<!-- 					<span id="popup_open"><a href="#none">수정 이력 보기</a></span> -->
 						<span id="open_edit"><a href="#">수정하기</a></span>
 						<span id="save_edit" style="display:none;"><a href="#">저장</a></span>
 						<span id="close_edit" style="display:none;"><a href="#">취소</a></span> 
 						<span id="open_del"><a href="#">삭제</a></span>
-					</div>
 <%
 }
 %>
+					</div>
 				</h2>
 				<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
 				</div>
@@ -282,3 +282,4 @@ if(!contentBlidF) {
 		</section>
 <%@include file="down_frame.jsp" %>
 <%@include file="view_form.jsp" %>
+<%@include file="history_popup.jsp"%>

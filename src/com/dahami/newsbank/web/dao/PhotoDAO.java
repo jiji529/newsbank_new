@@ -504,4 +504,20 @@ public class PhotoDAO extends DAOBase {
 			try {session.close();} catch (Exception e) {}
 		}
 	}
+	
+	public List<ActionLogDTO> listActionLog(String uciCode) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			return session.selectList("Photo.listActionLog", uciCode);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return new ArrayList<ActionLogDTO>();
+	}
 }

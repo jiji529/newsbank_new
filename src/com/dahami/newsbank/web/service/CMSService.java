@@ -200,7 +200,7 @@ public class CMSService extends ServiceBase {
 				mediaList = mDao.listActiveMedia();	
 			}
 			else {
-				mediaList = mDao.listAdjustMedia(memberInfo);	
+				mediaList = mDao.listAdjustMedia(memberInfo);
 			}
 			request.setAttribute("mediaList", mediaList);	
 		}
