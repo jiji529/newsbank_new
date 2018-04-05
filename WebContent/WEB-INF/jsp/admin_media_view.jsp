@@ -224,7 +224,14 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 								<input type="text" id="compNum2" name="compNum2" size="2"  class="inp_txt" value="${compNum2}" maxlength="2">
 								<span class=" bar">-</span>
 								<input type="text" id="compNum3" name="compNum3" size="5"  class="inp_txt" value="${compNum3}" maxlength="6" />
-								<a href="#" class="btn_input1">사업자등록증 업로드</a> <a href="#" class="btn_input1">사업자등록증 다운로드</a></td>
+								
+								<div class="upload-btn-wrapper">
+									<a href="#" class="btn_input1">사업자등록증 업로드</a>
+									<input type="file" name="doc" accept="application/pdf, image/*" required />
+								</div>
+								<c:if test="${!empty MemberDTO.compDocPath}">
+									<a class="btn_input1" href="/doc.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">사업자등록증 다운로드</a>
+								</c:if>
 						</tr>
 						<tr>
 							<th>회사/기관 전화</th>
@@ -331,7 +338,14 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<td><input type="text" name="compBankName" id="compBankName_${status.index}" class="inp_txt" size="14" value="${media.compBankName}" />
 								<span class=" bar"></span>
 								<input type="text" name="compBankAcc" id="compBankAcc_${status.index}" class="inp_txt" size="26" value="${media.compBankAcc}" />
-								<a href="#" class="btn_input1">통장사본 업로드</a><a href="#" class="btn_input1">통장사본 다운로드</a></td>
+								
+								<div class="upload-btn-wrapper">
+									<a href="#" class="btn_input1">통장사본 업로드</a>
+									<input type="file" name="bank" accept="application/pdf, image/*" required />
+								</div>
+								<c:if test="${!empty MemberDTO.compBankPath}">
+									<a class="btn_input1" href="/bank.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">통장사본 다운로드</a>
+								</c:if>
 						</tr>
 						<tr>
 							<fmt:parseDate value="${media.contractStart}" var="contractStart" pattern="yyyy-MM-dd"/>
@@ -341,7 +355,14 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<td><input type="text" name="contractStart" id="contractStart_${status.index}" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractStart}" pattern="yyyy-MM-dd"/>" />
 								<span class=" bar">~</span>
 								<input type="text" name="contractEnd" id="contractEnd_${status.index}" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractEnd}" pattern="yyyy-MM-dd"/>" />
-								<a href="#" class="btn_input1">계약서 업로드</a> <a href="#" class="btn_input1">계약서 다운로드</a></td>
+								
+								<div class="upload-btn-wrapper">
+									<a href="#" class="btn_input1">계약서 업로드</a>
+									<input type="file" name="contract" accept="application/pdf, image/*" required />
+								</div>
+								<c:if test="${!empty MemberDTO.contractPath}">
+									<a class="btn_input1" href="/contract.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
+								</c:if>
 						</tr>
 						<tr>
 							<th>정산요율</th>
@@ -428,8 +449,17 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						</tr>
 						<tr>
 							<th>제호</th>
-							<td><span class="bar">${media.logo}</span><a href="#" class="btn_input1">업로드</a> <a href="#" class="btn_input1">다운로드</a></td>
-	
+							<td>
+								<span class="bar">${media.logo}</span>
+								
+								<div class="upload-btn-wrapper">
+									<a href="#" class="btn_input1">업로드</a>
+									<input type="file" name="logo" accept="application/pdf, image/*" required />
+								</div>
+								<c:if test="${!empty MemberDTO.logo}">
+									<a class="btn_input1" href="/logo.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+								</c:if>
+							</td>
 						</tr>
 						<tr>
 							<th>서비스 상태</th>

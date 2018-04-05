@@ -239,14 +239,14 @@
 										<input type="text" id="compNum2" name="compNum2" size="2"  class="inp_txt" value="${compNum2}" maxlength="2">
 										<span class=" bar">-</span>
 										<input type="text" id="compNum3" name="compNum3" size="5"  class="inp_txt" value="${compNum3}" maxlength="6" />
-										<!-- <a href="#" class="btn_input1">사업자등록증 업로드</a> --> 
 										
 										<div class="upload-btn-wrapper">
-											<button class="btn">사업자등록증 업로드</button>
+											<a href="#" class="btn_input1">사업자등록증 업로드</a>
 											<input type="file" name="doc" accept="application/pdf, image/*" required />
 										</div>
-										
-										<a href="#" class="btn_input1">사업자등록증 다운로드</a>
+										<c:if test="${!empty MemberDTO.compDocPath}">
+											<a class="btn_input1" href="/doc.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">사업자등록증 다운로드</a>
+										</c:if>
 										<p class="txt_message" id="compNum_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
 									</td>
 								</tr>
@@ -326,7 +326,14 @@
 										<input type="text" name="contractStart" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractStart}" pattern="yyyy-MM-dd"/>" maxlength="10"/>
 										<span class=" bar">~</span>
 										<input type="text" name="contractEnd" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractEnd}" pattern="yyyy-MM-dd"/>" maxlength="10"/>
-										<a href="#" class="btn_input1">계약서 업로드</a> <a href="#" class="btn_input1">계약서 다운로드</a>
+										
+										<div class="upload-btn-wrapper">
+											<a href="#" class="btn_input1">계약서 업로드</a>
+											<input type="file" name="contract" accept="application/pdf, image/*" required />
+										</div>
+										<c:if test="${!empty MemberDTO.contractPath}">
+											<a class="btn_input1" href="/contract.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
+										</c:if>
 									</td>
 								</tr>
 								<tr class="offline_area photoUsage" style="display: none;">
