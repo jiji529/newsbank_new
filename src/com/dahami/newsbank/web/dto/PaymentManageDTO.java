@@ -45,7 +45,7 @@ public class PaymentManageDTO implements Serializable {
 	private String LGD_RESPMSG; // 응답메시지
 	private String LGD_OID; // 상점주문번호
 	private int LGD_AMOUNT; // 결제금액
-	private String LGD_PAYSTATUS;// 상태값 /1:결제성공 0:결제실패 2:결제대기중 3:무통장입금 대기중 
+	private String LGD_PAYSTATUS;// 상태값 /0:결제실패  1:결제성공  2:결제대기중  3:무통장입금 대기중, 4: 후불결제, 5: 결제취소
 	private String LGD_TID; // 거래 번호
 	private String LGD_PAYTYPE; // 결제수단 코드
 	private String LGD_PAYDATE; // 결제 일시

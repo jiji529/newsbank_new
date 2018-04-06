@@ -199,6 +199,7 @@
 		<result property="downEnd" column="downEnd" />
 		<result property="downCount" column="downCount" />
 		<result property="regDate" column="regDate" />
+		<result property="paystatus" column="LGD_PAYSTATUS" />
 		<association property="usageDTO" column="usageList_seq"
 			javaType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageListResult" />
 		<association property="photoDTO" column="photo_uciCode"

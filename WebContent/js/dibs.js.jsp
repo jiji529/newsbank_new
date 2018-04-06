@@ -182,6 +182,7 @@ $(document).on("click", "input[name='checkAll']", function() {
 
 function go_photoView(uciCode) {
 	$("#uci_code").val(uciCode);
+	view_form.target = '_blank';
 	view_form.submit();
 }
 

@@ -114,6 +114,7 @@
 						<th>구매 이미지 정보</th>
 						<th>콘텐츠가격</th>
 						<th>구매일</th>
+						<th>구매상태</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -141,6 +142,7 @@
 							</td>
 							<td>\ <fmt:formatNumber value="${PaymentDetail.price}" pattern="#,###" /></td>
 							<td>${PaymentDetail.regDate }</td>
+							<td>${PaymentDetail.paystatus }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
