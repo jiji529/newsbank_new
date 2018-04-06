@@ -50,6 +50,17 @@
 .filters .filter_rt .viewbox .size .square{ background-position:-22px 2px;}
 .filters .filter_rt .viewbox select { float:left; padding:1px 4px; border-color:#999;}
 
+.filters.sml li.filter_title.filter_ico{ display:none;}
+.filters.sml li.filter_title, .mypage .filters.sml li.filter_title{padding:0 24px 0 12px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size:13px;}
+.filters.sml li.filter_title:after{right:10px;}
+.filters.sml .filter_rt{font-size:13px;}
+
+.filters.sml li.filter_title.filter_ico{ display:none;}
+.filters.sml li.filter_title, .mypage .filters.sml li.filter_title{padding:0 24px 0 12px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size:13px;}
+.filters.sml li.filter_title:after{right:10px;}
+.filters.sml .filter_rt{font-size:13px;}
+
+
 @media (max-width: 1200px) { .search_list.grid { -moz-column-count: 4; -webkit-column-count: 4; column-count: 4; }}
 @media (max-width: 1000px) { .search_list.grid { -moz-column-count: 3; -webkit-column-count: 3; column-count: 3; }}
 @media (max-width: 800px) { .search_list.grid { -moz-column-count: 2; -webkit-column-count: 2; column-count: 2; }}
@@ -174,7 +185,6 @@ display: block; width: 50px; height:30px; line-height:30px; font-size:13px; bord
 .pop_folder ul li  fieldset{ border:0;margin: 10px 5px; }
 .pop_folder ul li  legend{display:none;}
 .pop_folder ul li  input{ color: #999; border: 1px solid #ddd; vertical-align: middle; height: 30px; float:left; width:240px;}
-
 
 .collection{width:1240px; margin:0 auto; padding-bottom:100px;}
 .head{float:left; width:100%; padding-top:80px;}

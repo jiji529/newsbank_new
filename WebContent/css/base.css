@@ -24,7 +24,7 @@ a img{border:none;}
 /*
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;}
 */
-#mask {width:100%; height:100%; position:fixed; background:rgba(0,0,0,0.7) repeat; top:0; left:0; z-index:2000; display:none;} 
+.mask {width:100%; height:100%; position:fixed; background:rgba(0,0,0,0.7) repeat; top:0; left:0; z-index:2000; display:none;} 
 
 .wrap{min-height: 100%; position: relative;}
 nav.gnb_light{height: 90px; width: 100%; margin: 0 auto; -webkit-transition: 0.1s box-shadow ease-in-out; -moz-transition: 0.1s box-shadow ease-in-out; transition: 0.1s box-shadow ease-in-out; position: absolute; z-index: 1000; -webkit-transform: translate3d(0, 0, 0); -moz-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(transparent)); background: -webkit-linear-gradient(rgba(0,0,0,0.5), transparent); background: -moz-linear-gradient(rgba(0,0,0,0.5), transparent); background: linear-gradient(rgba(0,0,0,0.5), transparent); top: 0; padding-top:10px;}
