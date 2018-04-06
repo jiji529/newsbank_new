@@ -577,7 +577,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					<col width="30" />
 					<col width="50" />
 					<col width="100" />
-					<col width="100"  />
+					<col width="130"  />
 					<col width="80" />
 					<col width="130" />
 					<col/>
@@ -586,7 +586,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					<col width="120" />
 					<col width="100" />
 					<col width="100" />
-					<col width="100" />
+					<col width="130" />
 					</colgroup>
 					<thead>
 						<tr>
