@@ -75,7 +75,7 @@
 		var end_date = $("input[name=end_date]").val(); // 종료일
 		var adjMaster = $("#adjMaster").val(); // 정산매체
 		var adjSlave = $("#adjSlave").val(); // 피정산매체
-		var paytype = $("#paytype").val(); // 결제 상황
+		var paytype = $("#paytype").val(); // 결제방법
 		var seqArr = 0; // 피정산 매체
 		
 		// 피정산 매체 선택여부 확인
@@ -257,7 +257,7 @@
 				</select> <input type="hidden" id="adjSlave_arr" value=""></td>
 			</tr>
 			<tr>
-				<th>결제 상황</th>
+				<th>결제방법</th>
 				<td><select name="select" class="inp_txt" id="paytype"
 					style="width: 200px;">
 						<option value="all" selected="selected">전체</option>

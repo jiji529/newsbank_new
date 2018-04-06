@@ -128,7 +128,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		</div>
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
-				<c:if test="${MemberInfo.type eq 'M'}">
+				<c:if test="${MemberInfo.type eq 'M' && MemberInfo.admission eq 'Y'}">
 						<li>
 							<a href="/accountlist.mypage">정산 관리</a>
 						</li>
