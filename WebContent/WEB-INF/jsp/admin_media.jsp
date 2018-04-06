@@ -602,7 +602,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<th>이메일</th>
 							<th>사업자등록번호</th>
 							<th>정산요율</th>
-							<th>콘텐츠 수량</th>
+							<th>콘텐츠 수량<br/>(블라인드/전체)</th>
 							<th>서비스 상태</th>
 							<th>정산</th>
 							<th>제호</th>
