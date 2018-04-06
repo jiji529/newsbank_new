@@ -71,11 +71,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		goPage(next);
 	});
 	
-	$(document).on("click", "a[name=nextPage]", function() {
-		var next = $("input[name=pageNo]").val() - (-1);
-		goPage(next);
-	});
-	
 	$(document).on("keypress", "#keyword", function(e) {
 		if(e.keyCode == 13) {	// 엔터
 			//$("#keyword_current").val($("#keyword").val());
