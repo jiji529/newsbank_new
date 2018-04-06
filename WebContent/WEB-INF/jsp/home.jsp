@@ -214,7 +214,7 @@
 			<section class="photo">
 			<div class="center">
 				<h2>뉴스뱅크가 엄선한 사진</h2>
-				<p>수백명의 보도사진 작가가 현장을 누비며 대한민국의 역사를 담고 있습니다.</p>
+				<p>수백명의 보도사진 작가가 현장을 누비며 대한민국의 오늘을 담고 있습니다.</p>
 				<div class="tab">
 					<ul class="tabs">
 						<li>

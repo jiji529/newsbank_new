@@ -91,10 +91,10 @@
 		</section>
 		<footer>
 			<ul>
-				<li>
-					<a href="javascript:void(0)">뉴스뱅크 소개</a>
-				</li>
-				<li class="bar"></li>
+<!-- 				<li> -->
+<!-- 					<a href="javascript:void(0)">뉴스뱅크 소개</a> -->
+<!-- 				</li> -->
+<!-- 				<li class="bar"></li> -->
 				<li>
 					<a href="/policy.intro">이용약관</a>
 				</li>
