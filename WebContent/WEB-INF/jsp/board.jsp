@@ -135,6 +135,9 @@
 					<c:forEach items="${boardList}" var="board" varStatus="status">
 						<dt id="dt${status.index}" style="cursor: pointer;"><a onClick="evt('${status.index}', '${board.seq}')"><span class="faq_tit noti">${board.title}</span><span class="faq_date">${board.regDate}</span><span class="faq_ico"></span></a></dt>
 						<dd id="${status.index}">
+							<c:if test="${!empty board.fileName}">
+								<img src="/notice.down.photo?seq=${board.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+							</c:if>
 							<p>${board.description}</p>
 						</dd>
 					</c:forEach>
