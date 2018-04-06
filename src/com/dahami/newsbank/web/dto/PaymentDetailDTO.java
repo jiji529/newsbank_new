@@ -41,7 +41,8 @@ public class PaymentDetailDTO implements Serializable {
 	private String downStart;  //다운로드 시작일
 	private String downEnd; //다운로드 종료일
 	private String downCount;  // 다운로드 횟수
-	private String status; // 결제승인 상태(0: 기본값, 1: 결제취소, 2:관리자 승인, 3: 관리자 승인거부)
+	private String status; // 결제승인 상태(0: 기본값, 1: 결제취소, 2:관리자 승인, 3: 관리자 승인거부) 
+	private String paystatus; // 상태값 (0:결제실패 1:결제성공 2:결제대기중 3:무통장입금 대기중, 4: 후불결제, 5: 결제취소)
 	private String regDate; // 결제일
 	private UsageDTO usageDTO;
 	private PhotoDTO photoDTO;
@@ -155,5 +156,40 @@ public class PaymentDetailDTO implements Serializable {
 			this.downExpire = true;
 		}
 	}
+
+	public String getPaystatus() {
+		return paystatus;
+	}
+
+	public void setPaystatus(String paystatus) {
+		// 상태값 (0:결제실패 1:결제성공 2:결제대기중 3:무통장입금 대기중, 4: 후불결제, 5: 결제취소)
+		switch (paystatus){
+		case "0":
+			paystatus = "결제실패";
+			break;
+		case "1":
+			paystatus = "결제성공";
+			break;
+		case "2":
+			paystatus = "결제대기중";
+			break;
+		case "3":
+			paystatus = "무통장입금 대기중";
+			break;
+		case "4":
+			paystatus = "후불결제";
+			break;
+		case "5":
+			paystatus = "결제취소";
+			break;
+		default:
+			paystatus = "예외상태";
+			break;
+		};
+		
+		this.paystatus = paystatus;
+	}
+	
+	
 	
 }

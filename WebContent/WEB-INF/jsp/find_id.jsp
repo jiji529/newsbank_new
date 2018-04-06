@@ -35,7 +35,8 @@
 	<section class="join">
 		<div class="wrap_tit">
 			<h3 class="tit_join">아이디 찾기</h3>
-			<div class="txt_desc">내 휴대폰 번호로 가입한 아이디를 찾을 수 있습니다.</div>
+			<div class="txt_desc"> 가입한 아이디를 휴대전화 번호로 찾을 수 있습니다.<br />
+									번호가 기억이 나지 않거나 궁금하신 사항이 있다면, 고객센터(02-593-4174)로 문의해 주세요.</div>
 		</div>
 		<form id="frmFindId" action="/list.find" method="post" >
 			<fieldset class="fld_comm">

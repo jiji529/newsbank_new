@@ -21,15 +21,21 @@ public class DownloadDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public List<Map<String, String>> downloadList(int member_seq, int year) {
+	public List<Map<String, String>> downloadList(int member_seq, Map<String,String[]> paramMaps) {
 		SqlSession session = null;
 		List<Map<String, String>> downList = new ArrayList<Map<String, String>>();
+		
+		int startPage = Integer.parseInt(paramMaps.get("page")[0]) - 1;
+		int pageVol = Integer.parseInt(paramMaps.get("bundle")[0]);
+		startPage = startPage*pageVol; 
 		
 		try {
 			session = sf.getSession();
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("member_seq", member_seq);
-			param.put("year", year);
+			param.put("year", paramMaps.get("year")[0] == null ? 0 : Integer.parseInt(paramMaps.get("year")[0]));
+			param.put("startPage", startPage);
+			param.put("pageVol", pageVol);
 			
 			downList = session.selectList("Download.selDownList", param);
 			
@@ -45,6 +51,40 @@ public class DownloadDAO extends DAOBase {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * @methodName  : downloadList
+	 * @author      : JEAWOOLEE
+	 * @date        : 2018. 04. 06. 오전 11:38:40
+	 * @methodCommet: 사용자별 다운로드 목록 총합
+	 * @param param
+	 * @return 
+	 */
+	public int downloadListTotal(int member_seq, Map<String,String[]> paramMaps) {
+		SqlSession session = null;
+		int count=0;
+		
+		try {
+			session = sf.getSession();
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			param.put("year", paramMaps.get("year")[0] == null ? 0 : Integer.parseInt(paramMaps.get("year")[0]));
+			
+			count = session.selectOne("Download.selDownListTotalCnt", param);
+			
+			return count;
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return 0;
 	}
 	
 	/**

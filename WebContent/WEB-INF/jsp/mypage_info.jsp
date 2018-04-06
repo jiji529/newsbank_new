@@ -56,7 +56,7 @@
 				<h2>마이페이지</h2>
 				<div class="mypage_ul">
 					<ul class="mp_tab1">
-						<c:if test="${MemberInfo.type eq 'M'}">
+						<c:if test="${MemberInfo.type eq 'M' && MemberInfo.admission eq 'Y'}">
 							<li>
 								<a href="/accountlist.mypage">정산 관리</a>
 							</li>
@@ -102,7 +102,7 @@
 							<tr>
 								<th>
 									아이디
-									<em class="ico ico_require">필수항목</em>
+<!-- 									<em class="ico ico_require">필수항목</em> -->
 								</th>
 								<td>${MemberInfo.id}</td>
 							</tr>
@@ -265,15 +265,8 @@
 									<td>
 									<c:forEach items="${mediaList}" var="media" varStatus="status">
 										<c:if test="${media.type eq 'M'}">
-											<%-- <div class="add_line">
-												<a href="javascript:;" class="btn_input1">제호업로드</a>
-												<a href="javascript:;" class="btn_input1">다운로드</a>
-												<a href="javascript:;" class="inp_txt">${media.id}</a>
-											</div> --%>
-
 											<div class="add_line">
-												<input type="file"> <a href="#" class="btn_input1">매체선택</a>
-												
+												<span class="name"> ${media.name}(${media.id})</span>												
 												<div class="upload-btn-wrapper">
 													<a href="#" class="btn_input1">제호업로드</a>
 													<input type="file" name="logo" accept="application/pdf, image/*" required />
@@ -281,11 +274,6 @@
 												<c:if test="${!empty MemberInfo.logo}">
 													<a class="btn_input1" href="/logo.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
 												</c:if>
-								
-												<!-- <a href="#" class="btn_input1">제호업로드</a>
-												<a href="#"	class="btn_input1">다운로드</a>  -->
-												<a class="file_add">파일 추가</a>
-												<a class="file_del">파일 삭제</a>
 											</div>
 										</c:if>
 									</c:forEach>
