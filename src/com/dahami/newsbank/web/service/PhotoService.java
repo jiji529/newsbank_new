@@ -16,34 +16,61 @@
 
 package com.dahami.newsbank.web.service;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.MemberDAO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 public class PhotoService extends ServiceBase {
+	private boolean isViewMode;
 	
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public PhotoService(boolean isViewMode) {
+		this.isViewMode = isViewMode;
+	}
+	
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 활성 매체사 세팅
 		MemberDAO mDao = new MemberDAO();
 		List<MemberDTO> mediaList = mDao.listActiveMedia();
-		request.setAttribute("mediaList", mediaList); // 활성 매체사
+		request.setAttribute("mediaList", mediaList);
 		
-		String seq = request.getParameter("seq"); // 선택 매체사 고유seq / 제휴매체 선택해서 검색하는 경우를 위함
-		if(seq == null || seq.isEmpty()) {
-			seq = "0";
-		}
-		request.setAttribute("seq", seq);
-	
-		String keyword = request.getParameter("keyword");
-		if(keyword != null && keyword.trim().length() > 0) {
-			request.setAttribute("keyword", keyword.trim());
+		// 넘어온 파라메터 세팅
+		request.setAttribute("sParam", makeSearchParamMap(request.getParameterMap()));
+		
+		String forward = null;
+		if(isViewMode) {
+			PhotoDAO photoDAO = new PhotoDAO();
+			String uciCode = request.getParameter("uciCode");
+			PhotoDTO photoDTO = photoDAO.read(uciCode);
+			request.setAttribute("photoDTO", photoDTO);
+			
+			// photoDTO 있음
+			if(!photoDTO.getUciCode().equals(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)) {
+				photoDAO.hit(uciCode);
+				
+				HttpSession session = request.getSession();
+				MemberDTO memberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+				if(memberInfo != null) {
+					request.setAttribute("bookmakr", new BookmarkDAO().select(memberInfo.getSeq(), uciCode));
+				}
+			}
+			forward = "/WEB-INF/jsp/photo_view.jsp";
 		}
 		else {
-			request.setAttribute("keyword", "");
+			// 필터에서 관리자/소유자용 항목 표시 안하기 위해
+			request.setAttribute("serviceMode", true);
+						
+			forward = "/WEB-INF/jsp/photo.jsp";
 		}
+		forward(request, response, forward);
 	}
 }

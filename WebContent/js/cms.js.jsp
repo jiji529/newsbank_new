@@ -108,69 +108,6 @@ $(document).on("click", ".filter_list li", function() {
 // 리스트/뷰 공통
 // ################################################################################
 
-	/** 검색에서 넘어온 파라메터로 화면 초기화 */
-	function initSearchParam() {
-		// 리스트와 상세화면의 키워드폼 이름이 다름
-		if($("#cms_keyword").length > 0) {
-			$("#cms_keyword").val(view_form.keyword.value);
-		}
-		if($("#cms_keywordFV").length > 0) {
-			$("#cms_keywordFV").val(view_form.keyword.value);
-		}
-		
-		// 필터가 존재할때만
-		if($(".filters").length > 0) {
-			// 페이징값
-			if(view_form.pageNo.value > 1) {
-				$(".page").val(view_form.pageNo.value);
-			}
-			
-			// 페이지볼륨
-			if(view_form.pageVol.value > 1) {
-				var options = $("select[name=pageVol]").find("option");
-				for(var i=0; i < options.length; i++) {
-					if($(options[i]).attr("value") == view_form.pageVol.value) {
-						$(options[i]).attr("selected", "selected");
-					}
-					else {
-						$(options[i]).removeAttr("selected");
-					}
-				}
-			}
-			
-			setFilter(view_form.media.value, $("li.filter_media"));
-			setFilter(view_form.horiVertChoice.value, $("li.filter_horizontal"));
-			setFilter(view_form.size.value, $("li.filter_size"));
-			setFilter(view_form.saleState.value, $("li.filter_service"));
-			//setFilter(view_form.durationReg.value, $("li.filter_durationReg"));
-		}
-	}
-
-	function setFilter(value, filterForm) {
-		var findF = false;
-		filterForm.find("li").each(function(index) {
-			if($(this).attr("value") == value) {
-				findF = true;
-			}
-		});
-	
-		if(findF) {
-			var itemName = "";
-			filterForm.find("li").each(function(index) {
-				if($(this).attr("value") == value) {
-					$(this).attr("selected", "selected");
-					itemName = $(this).text();
-				}
-				else {
-					$(this).removeAttr("selected");
-				}
-			});
-			var titleStr = filterForm.find("span").text();
-			var header = titleStr.substring(0, titleStr.indexOf(":")+2);
-			filterForm.find("span").text(header + itemName);
-		}
-	}
-
 	function go_cmsView(uciCode) {
 		view_form.uciCode.value = uciCode;
 		view_form.submit();

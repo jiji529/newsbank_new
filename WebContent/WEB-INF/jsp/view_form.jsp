@@ -19,15 +19,26 @@
 <%
 // CMS / 관리자 페이지에 따라 뷰화면 타겟을 달리 함
 String manage = "";
-if(request.getRequestURI().startsWith("/WEB-INF/jsp/admin_")) {
+String cms = ".cms";
+String reqUri = request.getRequestURI();
+if(reqUri.startsWith("/WEB-INF/jsp/admin_")) {
 	manage += ".manage";
+}
+else if(reqUri.contains("photo")) {
+	cms = ".photo";
 }
 %>
 
-<form class="view_form" method="post" action="/view.cms<%=manage %>" name="view_form" >
+<script>
+function go_View(uciCode) {
+	view_form.uciCode.value = uciCode;
+	view_form.submit();
+}
+</script>
+
+<form class="view_form" method="post" action="/view<%=cms %><%=manage %>" name="view_form" >
 	<input type="hidden" name="uciCode"  />
 	<input type="hidden" id="manage" value="<%=manage%>" />
-	
 	<input type="hidden" name="keyword" value="${sParam.keyword}"/>
 	<input type="hidden" name="pageNo"  value="${sParam.pageNo}"/>
 	<input type="hidden" name="pageVol" value="${sParam.pageVol}"/>

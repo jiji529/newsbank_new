@@ -17,6 +17,8 @@
 package com.dahami.newsbank.web.service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,5 +46,15 @@ public abstract class ServiceBase implements IService {
 			RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
 			dispatcher.forward(request, response);
 		}
+	}
+	
+	protected Map<String, String> makeSearchParamMap(Map<String, String[]> params) {
+		Map<String, String> ret = new HashMap<String, String>();
+		for(String key : params.keySet()) {
+			try {
+				ret.put(key, params.get(key)[0]);
+			}catch(Exception e){}
+		}
+		return ret;
 	}
 }

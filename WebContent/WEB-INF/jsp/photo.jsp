@@ -25,7 +25,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
-<link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css">
+<link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css" />
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 
@@ -37,9 +37,9 @@
 <script src="js/photo.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		initSearchParam();
 		search();
-		setDatepicker();	
-		checkForHash(); 
+// 		checkForHash(); 
 	});	
 	
 	function checkForHash() { // hash 유무에 따른 검색옵션 불러오기
@@ -305,6 +305,17 @@
 				, "includePerson":includePerson
 				, "group":group
 		};
+		
+		view_form.keyword.value = keyword;
+		view_form.pageNo.value = pageNo;
+		view_form.pageVol.value = pageVol;
+		view_form.media.value = media;
+		view_form.durationReg.value = durationReg;
+		view_form.durationTake.value = durationTake;
+		view_form.colorMode.value = colorMode;
+		view_form.horiVertChoice.value = horiVertChoice;
+		view_form.size.value = size;
+		
 		//console.log(searchParam);
 		$("#keyword").val($("#keyword_current").val());
 		
@@ -318,7 +329,7 @@
 			url: "search",
 			success : function(data) { //console.log(data);
 				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_photoView('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
+					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
 					html += "<div class=\"info\">";
 					html += "<div class=\"photo_info\">" + val.ownerName + "</div>";
 					html += "<div class=\"right\">";
@@ -383,124 +394,11 @@
 <body class="fixed">
 	<div class="wrap">
 		<div class="fixed_layer">
-			<%@include file="header.jsp" %>
-			<!-- 필터시작 -->
-			<div class="filters">
-				<ul>
-					<li class="filter_title filter_ico">검색필터</li>
-					<li class="filter_title filter_media">
-						<c:if test="${seq eq '0'}">
-							<span>매체 :전체</span>
-						</c:if>
-						<c:if test="${seq ne '0'}">
-							<c:forEach items="${mediaList}" var="media">
-								<c:if test="${seq eq media.seq}">
-									<span>매체 :${media.compName}</span>
-								</c:if>
-							</c:forEach>
-						</c:if>
-						<ul class="filter_list">
-							<c:if test="${seq eq '0'}">
-								<li value="0" selected="selected">전체</li>
-							</c:if>
-							<c:if test="${seq ne '0'}">
-								<li value="0">전체</li>
-							</c:if>
-							
-							<c:forEach items="${mediaList}" var="media">
-							
-								<c:if test="${seq eq media.seq}">
-									<li value="${media.seq }" selected="selected">${media.compName}</li>
-								</c:if>
-								
-								<c:if test="${seq ne media.seq}">
-									<li value="${media.seq }">${media.compName}</li>
-								</c:if>
-																
-							</c:forEach>
-						</ul>
-					</li>
-					<li class="filter_title filter_duration">
-						<span>기간 : 전체</span>
-						<ul class="filter_list">
-							<li value="" selected="selected">전체</li>
-							<li value="1d">1일</li>
-							<li value="1w">1주</li>
-							<li value="1m">1달</li>
-							<li value="1y">1년</li>
-							<li value="choice" class="choice">
-								직접 입력
-								<div class="calendar">
-									<div class="cal_input">
-										<input type="text" class="datepicker" id="startDate" title="검색기간 시작일" placeholder="시작날짜"/>
-										<a href="javascript:void(0)" class="ico_cal">달력</a>
-									</div>
-									<div class="cal_input">
-										<input type="text" class="datepicker" id="endDate" title="검색기간 마지막일" placeholder="마지막날짜"/>
-										<a href="javascript:void(0)" class="ico_cal">달력</a>
-									</div>
-									<button class="btn_cal" type="button">적용</button>
-								</div>
-							</li>
-						</ul>
-					</li>
-					<%-- 1차 제외 
-					<li class="filter_title filter_color">
-						<span>컬러/흑백 :전체</span>
-						<ul class="filter_list">
-							<li value="<%=SearchParameterBean.COLOR_ALL%>" selected="selected">전체</li>
-							<li value="<%=SearchParameterBean.COLOR_YES%>">컬러</li>
-							<li value="<%=SearchParameterBean.COLOR_NO%>">흑백</li>
-						</ul>
-					</li> --%>
-					<li class="filter_title filter_horizontal">
-						<span>가로/세로 : 전체</span>
-						<ul class="filter_list">
-							<li value="<%=SearchParameterBean.HORIZONTAL_ALL%>" selected="selected">전체</li>
-							<li value="<%=SearchParameterBean.HORIZONTAL_YES%>">가로</li>
-							<li value="<%=SearchParameterBean.HORIZONTAL_NO%>">세로</li>
-						</ul>
-					</li>
-					<li class="filter_title filter_size">
-						<span>크기 : 전체</span>
-						<ul class="filter_list">
-							<li value="<%=SearchParameterBean.SIZE_ALL%>" selected="selected">전체</li>
-							<li value="<%=SearchParameterBean.SIZE_LARGE%>">3,000 px 이상</li>
-							<li value="<%=SearchParameterBean.SIZE_MEDIUM%>">1,000~3,000 px</li>
-							<li value="<%=SearchParameterBean.SIZE_SMALL%>">1,000 px 이하</li>
-						</ul>
-					</li>	
-				</ul>
-				<div class="filter_rt">
-					<div class="result">
-						<b class="count">0</b>
-						개의 결과
-					</div>
-					<div class="paging">
-						<a href="javascript:void(0)" class="prev" title="이전페이지"></a>
-						<input type="text" name="pageNo" class="page" value="1"  onkeydown="return checkNumber(event);" onblur="search()"/>
-						<span>/</span>
-						<span class="total">0</span>
-						<a href="javascript:void(0)" class="next" title="다음페이지"></a>
-					</div>
-					<div class="viewbox">
-						<div class="size">
-							<span class="grid on">가로맞춤보기</span>
-							<span class="square">사각형보기</span>
-						</div>
-						<select name="pageVol" onchange="search()">
-							<option value="40" selected="selected">40</option>
-							<option value="80">80</option>
-							<option value="120">120</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			<!-- 필터끝 -->
+<%@include file="header.jsp" %>
+		<!-- 필터시작 -->
+<%@include file="search_filter.jsp" %>
+		<!-- 필터끝 -->
 		</div>
-		<form class="view_form" method="post" action="/view.photo" name="view_form" >
-			<input type="hidden" name="uciCode" id="uciCode"/>
-		</form>
 		<section id="search_list" class="search_list grid">
 		<ul>
 
@@ -519,5 +417,6 @@
 </form>
 <iframe id="downFrame" name="downFrame" style="display:none" >
 </iframe>
+<%@include file="view_form.jsp"%>
 </body>
 </html>

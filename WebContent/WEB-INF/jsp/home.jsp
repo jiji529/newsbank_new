@@ -130,7 +130,7 @@
 	}
 	
 	function media_submit(member_seq) {
-		$("#seq").val(member_seq);
+		$("#media").val(member_seq);
 		$("#keyword").val("");
 		search_form.submit();
 	}
@@ -198,7 +198,7 @@
 				<p>대한민국의 근현대사를 담은 26개 언론사의 보도사진을 만나보세요.</p>
 				<div class="search main_search">
 					<form class="search_form" method="post" action="/photo" name="search_form" >
-						<input type="hidden" id="seq" name="seq"/>
+						<input type="hidden" id="media" name="media"/>
 						<div class="search_area">
 							<input type="text" class="search_bar"  id="keyword" name="keyword" placeholder="검색어를 입력해주세요." />
 							<a href="javascript:void(0)" class="btn_search">검색</a>

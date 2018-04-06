@@ -3,15 +3,22 @@
    $(this).parent(".filter_list").css("width", $(this).parent(".filter_list").parent(".filter_title").width()+60);
    $(this).css("width", $(this).parent(".filter_list").parent(".filter_title").width()+60);
   });
-  $(".filter_title").click(function(){
-   $(this).children(".filter_list").stop().slideDown("fast");
-  }).mouseleave(function(){
-	  if(!$(this).closest(".filter_title").hasClass("filter_duration")) {
- 		  // 기간 (직접선택)을 제외한 나머지 검색옵션만 slide up 이벤트 적용
+//  var calOpenF = false;
+  $(".filter_title")
+  	.click(function(){
+  		// 이웃들 다 닫아주고 자기 열기
+  		$(this).siblings().each(function() {
+  			$(this).children(".filter_list").stop().slideUp("fast");
+  		});
+  		$(this).children(".filter_list").stop().slideDown("fast");
+  	})
+  	.mouseleave(function(){
+  		// 날짜 피커가 없으면 지움
+  		if($(".ui-datepicker").css("display") == "none") {
  		  $(".filter_duration .filter_list").stop().slideUp("fast");
  		  $(this).children(".filter_list").stop().slideUp("fast");
  		  $(".ui-datepicker-close").trigger("click");
- 	  }
+  		}
   });;
  });
  

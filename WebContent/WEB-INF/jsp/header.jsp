@@ -6,30 +6,21 @@
 <script type="text/javascript">
 	$(document).on("keypress", "#keyword", function(e) {
 		if (e.keyCode == 13) { // 엔터
-			var keyword = $("#keyword").val();
-			keyword = $.trim(keyword);
-			$("#keyword_current").val(keyword);
-
-			if (keyword != "") {
-				location.href = "/photo?keyword=" + keyword;
-			} else {
-				location.href = "/photo";
-			}
+			searchTop();
 		}
 	});
 	
 	$(document).on("click", "#btn_search", function(e) { // 검색 버튼
+		searchTop();
+	});
+
+	function searchTop() {
 		var keyword = $("#keyword").val();
 		keyword = $.trim(keyword);
 		$("#keyword_current").val(keyword);
-
-		if (keyword != "") {
-			location.href = "/photo?keyword=" + keyword;
-		} else {
-			location.href = "/photo";
-		}
-	});
-
+		searchform.submit();
+	}
+	
 	// 로그인 페이지 이동시 매개변수 넘기기
 	$(document).ready(function() {
 		var param = "${param}".replace(/, /gi, '&').slice(0, -1).slice(1);
@@ -117,8 +108,8 @@
 	</ul>
 </div>
 <div class="gnb_srch">
-	<form id="searchform">
-		<input type="text" id="keyword" value="${keyword}" placeholder="검색어를 입력해주세요." />
+	<form id="searchform" action="/photo" method="post">
+		<input type="text" id="keyword" name="keyword" value="${keyword}" placeholder="검색어를 입력해주세요." />
 		<input type="text" id="keyword_current" value="${keyword}" style="display: none;" />
 		<a href="javascript:void(0)" id="btn_search" class="btn_search">검색</a>
 	</form>

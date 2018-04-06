@@ -46,7 +46,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 	$(document).ready(function() {
 		cms_search();
-		setDatepicker();
 	});
 	
 	$(document).on("click", ".btn_cal", function() {

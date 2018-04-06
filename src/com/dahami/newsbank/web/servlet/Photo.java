@@ -1,9 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
-import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.dahami.newsbank.web.dao.SearchDAO;
 import com.dahami.newsbank.web.service.DownloadService;
+import com.dahami.newsbank.web.service.IService;
 import com.dahami.newsbank.web.service.PhotoService;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
@@ -19,7 +18,7 @@ import com.dahami.newsbank.web.servlet.bean.CmdClass;
  * Servlet implementation class Photo
  */
 @WebServlet(
-		urlPatterns = {"/photo", "*.photo"},
+		urlPatterns = {"/photo", "/view.photo", "*.photo"},
 		loadOnStartup = 1
 		)
 public class Photo extends NewsbankServletBase {
@@ -42,14 +41,17 @@ public class Photo extends NewsbankServletBase {
 			return;
 		}
 		
+		IService service = null;
 		if(cmd.is2("down")) {
-			DownloadService ds = new DownloadService();
-			ds.execute(request, response);
+			service = new DownloadService();
 		} else {
-			PhotoService ps = new PhotoService();
-			ps.execute(request, response);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/photo.jsp");
-			dispatcher.forward(request, response);
+			if(cmd.is2("view")) {
+				service = new PhotoService(true);
+			}
+			else {
+				service = new PhotoService(false);
+			}
 		}
+		service.execute(request, response);
 	}
 }

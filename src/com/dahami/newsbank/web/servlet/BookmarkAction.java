@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dto.BookmarkDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class BookmarkPhotoJSON
@@ -29,16 +30,14 @@ public class BookmarkAction extends NewsbankServletBase {
      */
     public BookmarkAction() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		CmdClass cmd = CmdClass.getInstance(request);
 		
 		// 로그인 여부에 따라서 북마크 목록 가져오기
 		HttpSession session = request.getSession();
@@ -129,13 +128,4 @@ public class BookmarkAction extends NewsbankServletBase {
 
 		response.getWriter().print(json);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 }
