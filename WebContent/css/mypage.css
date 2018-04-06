@@ -47,6 +47,7 @@
 .mypage li .btn.on{ color: #fff; border: 1px solid #f58018; background:#f79320; margin-left:-1px;}
 
 .mypage .add_line{width:100%; margin-bottom:8px;}
+.mypage .add_line .name{line-height:40px; font-size:14px; margin-right:10px;}
 .mypage .add_line:last-child{margin-bottom:0;}
 .mypage .tb01 {border-bottom:1px #bbb solid; text-align:left; }
 .mypage .tb01 tfoot td{background:#f6f6f6; font-weight:bold;}
@@ -77,6 +78,7 @@
 .mypage .txt_mess{ font-size:11px; color:#666;}
 .mypage .btn_input1{ padding: 10px 20px; color: #666; border: 1px solid #aaa; background:#fff; border-radius: 2px; margin-left:10px; }
 .mypage .btn_input2{ padding: 10px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; border-radius: 2px; margin-left:10px; }
+.mypage .btn_input3{ padding: 10px 20px; color: #aaa; border: 1px solid #ddd; background:#fff; border-radius: 2px; margin-left:10px; }
 .mypage .edit_phone{width:100%; margin-top:10px; border-top:1px #ddd solid;  background:#f9f9f9; padding:10px 20px;}
 .mypage .edit_phone_txt{ width:100px; color:#666; font-size:12px; line-height:40px;}
 .mypage .edit_phone div{width:100%; margin-top:10px;}
@@ -186,18 +188,8 @@
 
 .mypage .view .view_lt .btn_edit{ float:right;}
 .mypage .view .view_lt .btn_edit a{ float:left; height:28px; padding:0 15px; line-height:28px; color:#f79320; border:1px #f79320 solid; border-radius:14px; font-size:13px; margin-left:5px;}
-.mypage .view .view_lt .cont_area{ padding-bottom:30px; border-bottom:1px #eee solid;}
+.mypage .view .view_lt .cont_area{ padding-bottom:30px;}
 .mypage .view .view_lt .cont_area input[type=file]{ width:100%; border:1px #ccc solid; margin-bottom:15px;}
-.mypage .view .view_lt .img_info_area.area1{ width:280px; border-right:1px #eee solid; padding-right:20px; margin-top:30px; border-top:0;}
-.mypage .view .view_lt .img_info_area.area2{width:520px; margin-left:20px; margin-top:30px; border-top:0;}
-.mypage .view .view_lt .img_info_area.area1 .info_tit, .mypage .view .view_lt .img_info_area.area2 .info_tit{margin-top:0;}
-.mypage .view .view_lt .img_info_area.area1 dl{grid-template-columns:28% 72%; -ms-grid-columns:28% 72%;}
-.mypage .view .view_lt .img_info_area.area1 dl dt{ width:28%;}
-.mypage .view .view_lt .img_info_area.area1 dl dd{ width:72%;}
-.mypage .view .view_lt .img_info_area.area2 dl dt{ width:16%;}
-.mypage .view .view_lt .img_info_area.area2 dl dd{ width:28%;}
-.mypage .view .view_lt .img_info_area.area2 dl dt:nth-child(4n-1){ width:20%;}
-.mypage .view .view_lt .img_info_area.area2 dl dd:nth-child(4n){ width:36%;}
 .mypage .view .view_lt input.edit_tit{ float:left; width:100%; padding:5px 10px; font-size:14px; }
 .mypage .view .view_lt textarea.edit_tit{ float:left; width:100%; padding:5px 10px; font-size:14px; font-size:13px; line-height:20px; }
 
@@ -242,7 +234,7 @@
 .order_list .cart_item{ }
 .order_list .cart_item .thumb{display: table-cell; width: 120px; vertical-align: top; position: relative; padding-top:5px;}
 .order_list .cart_item .thumb a{}
-.order_list .cart_item .thumb img{ width: 100%; vertical-align: top;}
+.order_list .cart_item .thumb img{ max-width: 120px; vertical-align: top; max-height:120px;}
 .order_list .cart_item .cart_info{ display: table-cell; padding-left: 20px; line-height: 22px; vertical-align: top;}
 .order_list .cart_item .cart_info a { text-align:left;}
 .order_list .cart_item .cart_info .brand{color:#000; font-weight:600;}
