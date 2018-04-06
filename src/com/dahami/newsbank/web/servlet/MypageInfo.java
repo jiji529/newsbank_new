@@ -112,7 +112,6 @@ public class MypageInfo extends NewsbankServletBase {
 				MemberDAO memberDAO = new MemberDAO();
 				List<MemberDTO> mediaList = memberDAO.listAdjustMedia(MemberInfo); // 정산 매체
 				request.setAttribute("mediaList", mediaList);
-				//System.out.println(mediaList);
 
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_info.jsp");
 				dispatcher.forward(request, response);

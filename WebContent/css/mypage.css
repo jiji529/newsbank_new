@@ -231,7 +231,7 @@
 
 
 /*장바구니*/
-.order_list {float:left; width:100%;}
+.order_list {float:left; width:100%; margin-bottom:50px;}
 .order_list .tb03 th{padding:10px;}
 .order_list .tb03 td{padding:10px; font-size:14px;}
 .order_list .tb03 th:first-child, .order_list .tb03 td:first-child{padding:10px 20px;}
@@ -268,7 +268,7 @@
 .rules .rule_list li{ float:left;  height:45px; line-height:45px; width:50%;}
 .rules .rule_list li a{ display:block; color:#666; font-size:16px;text-align:left;}
 .rules .rule_list li a:hover{ color:#f79320;}
-.rules .rule_cont{ float:left; width:100%; text-align:left;}
+.rules .rule_cont{ float:left; width:100%; text-align:left; margin-bottom:50px;}
 .rules .rule_cont p{position: relative; font-size:15px; color:#333; line-height:1.8; margin-bottom:10px; float:left;  width:100%;}
 .rules .rule_cont h3{ color: #333; margin: 20px 0 10px 0; font-size:17px; margin:30px 0 10px; float:left;  width:100%;}
 .rules .rule_cont ol{float:left; padding-left:30px; width:100%;}
@@ -287,6 +287,9 @@
 .rules .rule_cont .contact{float:left; width:100%; border:1px #ccc solid; background:#f9f9f9; padding:30px;}
 .rules .rule_cont dt{font-size:14px; font-weight:bold; margin-bottom:5px; margin-top:10px;}
 .rules .rule_cont dd{font-size:14px; line-height:22px;}
+.rules .past_priv{float:left; width:100%; padding:20px; border:1px #ddd solid; background:#f6f6f6;}
+.rules .past_priv select{ height:36px; float:left; margin-right:8px;}
+.rules .past_priv a{ width:80px; line-height:36px; background:#666; color:#fff; height:36px; display:block; float:left; text-align:center; font-size:14px;}
 
 /* 직접 문의하기 */
 .call th{background:#f6f6f6; height:45px; border-bottom:1px #ddd solid; border-left:1px #ddd solid; font-size:14px; color:#333;}
@@ -314,7 +317,7 @@
 .call .call_box .call_send a{display:inline-block; background:#f79320; color:#fff; font-size:15px; font-weight:500; border:none; width:140px; height:40px; line-height:40px; cursor:pointer;}
 
 /*faq*/
-.faq{width:100%; float:left; }
+.faq{width:100%; float:left; margin-bottom:50px; }
 .faq dl{border-top:1px #ccc solid;width:100%; float:left;}
 .faq dl dt{width:100%; height:50px;font-size:15px; line-height:50px; border-bottom:1px #ddd solid; padding:0 30px;  text-align:left; float:left;} 
 .faq dl dt a{ text-decoration:none; color:#333; } 

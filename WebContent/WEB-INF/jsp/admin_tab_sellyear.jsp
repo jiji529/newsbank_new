@@ -73,7 +73,7 @@
 	//정산목록 전체검색(기간변 온라인/오프라인 목록)
 	function search() {
 		var keyword = $("#keyword").val(); // 키워드
-		var paytype = $("#paytype").val(); // 결제 상황
+		var paytype = $("#paytype").val(); // 결제방법
 		var start_date = $("input[name=start_date]").val(); // 시작일
 		var end_date = $("input[name=end_date]").val(); // 종료일
 		var totalCount = 0; // 총 갯수 
@@ -224,7 +224,7 @@
 				</select> <input type="hidden" id="adjSlave_arr" value=""></td>
 			</tr>
 			<tr>
-				<th>결제 상황</th>
+				<th>결제방법</th>
 				<td><select name="select" class="inp_txt" id="paytype"
 					style="width: 200px;">
 						<option value="all" selected="selected">전체</option>

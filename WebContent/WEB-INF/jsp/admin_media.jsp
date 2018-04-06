@@ -306,7 +306,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += '<td>' + contentCnt + '</td>';
 					html += '<td><span class="popup_open"><a href="#none" class="table_btn">' + service + '</a></span></td>';
 					html += '<td>' + calc + '</td>';
-					html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" /></a></div></td>';
+					//html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" /></a></div></td>';
+					
+					html += '<td><a class="file" href="/images/logo_b.svg" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file"></a></div></td>';
 					html += '</tr>';
 					
 				});
@@ -382,11 +384,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					var totalRate;
 					// 온/오프라인 요율
 					if(preRate != null && postRate != null) {
-						totalRate = "온라인<br/>" + preRate + "%<br/> 오프라인<br/>" + postRate + "%";	
+						totalRate = "온라인" + preRate + "%<br/> 오프라인" + postRate + "%";	
 					}else {
 						preRate = (preRate == null) ? "" : preRate;
 						postRate = (postRate == null) ? "" : postRate;
-						totalRate = "온라인<br/>" + preRate + " - <br/> 오프라인<br/>" + postRate + "-";
+						totalRate = "온라인" + preRate + " - <br/> 오프라인" + postRate + "-";
 					}
 					var contentCnt = (val.contentCnt).split("|");
 					var blind = contentCnt[0]; // 블라인드 수량
@@ -418,7 +420,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += '<td>' + contentCnt + '</td>';
 					html += '<td><span class="popup_open"><a href="#none" class="table_btn">' + service + '</a></span></td>';
 					html += '<td>' + calc + '</td>';
-					html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" /></a></div></td>';
+					//html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" /></a></div></td>';
+					
+					html += '<td><a class="file" href="/images/logo_b.svg" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file"></a></div></td>';
 					html += '</tr>';
 					
 				});
@@ -487,7 +491,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		view_media_manage.submit();
 	}
 	
-	// 정산 매체사 - 선택 승인
+	// 정산 매체사 - 선택 활성화
 	function check_approve() {
 		var chk_total = $("#mtBody input:checkbox:checked").length;
 		
@@ -495,7 +499,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			alert("최소 1개 이상을 선택해주세요.");
 		} else {
 			
-			if(confirm("선택한 항목을 승인하시겠습니까?")) {
+			if(confirm("선택한 항목을 활성화하시겠습니까?")) {
 				
 				$("#mtBody input:checkbox:checked").each(function(index) {
 					var seq = $(this).val();
@@ -523,9 +527,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						}
 					});	
 				});
-				alert("선택 승인 완료");
-			}
-			location.href = "/media.manage";
+				alert("선택 활성화 완료");
+				location.href = "/media.manage";
+			}			
 		}		
 	}
 </script>
@@ -559,7 +563,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			<div class="ad_result">
 				<div class="ad_result_btn_area">
 					<a href="/add.media.manage" style="margin-left:0;">정산 매체사 추가</a>
-					<a href="javascript:void(0)" onclick="check_approve()">선택 승인</a>
+					<a href="javascript:void(0)" onclick="check_approve()">선택 활성화</a>
 					</div>
 				<div class="ad_result_btn_area fr">
 					<select id="sel_pageVol" onchange="search()">
@@ -571,16 +575,16 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 					<colgroup>
 					<col width="30" />
-					<col width="30" />
+					<col width="50" />
 					<col width="100" />
 					<col width="100"  />
 					<col width="80" />
 					<col width="130" />
 					<col/>
 					<col width="120" />
-					<col width="100" />
+					<col width="150" />
 					<col width="120" />
-					<col width="80" />
+					<col width="100" />
 					<col width="100" />
 					<col width="100" />
 					</colgroup>
