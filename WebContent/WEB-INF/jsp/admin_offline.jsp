@@ -56,32 +56,6 @@
 		
 	});
 	
-	/* function tabControl(index) {
-		$(".tabs li a").removeClass("active");
-		$(".tab_download").css("display", "none");
-		$(".tab_buylist").css("display", "none");
-		$(".tab_fatsell").css("display", "none");
-		
-		switch(index) {
-		
-			case 0:
-				$(".tab_download").css("display", "block");	
-				$(".tabs li a:eq("+index+")").addClass("active");
-				break;
-				
-			case 1:
-				$(".tab_buylist").css("display", "block");
-				$(".tabs li a:eq("+index+")").addClass("active");
-				break;
-				
-			case 2:
-				$(".tab_fatsell").css("display", "block");
-				$(".tabs li a:eq("+index+")").addClass("active");
-				break;
-		
-		}
-	} */
-	
 	function tabSwitch(tabName) {
 		$("#tabName").val(tabName);
 		offline_form.submit();

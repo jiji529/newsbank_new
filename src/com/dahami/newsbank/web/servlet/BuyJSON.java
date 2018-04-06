@@ -51,6 +51,7 @@ public class BuyJSON extends NewsbankServletBase {
 		String message = "";
 		String start_date = request.getParameter("start_date");
 		String end_date = request.getParameter("end_date");
+		String keywordType = request.getParameter("keywordType"); // 키워드 검색 타입
 		String keyword = request.getParameter("keyword");
 		String status = request.getParameter("status");
 		String media_code = request.getParameter("media_code");
@@ -82,6 +83,11 @@ public class BuyJSON extends NewsbankServletBase {
 				params.put("end_date", end_date);
 				totalParams.put("end_date", end_date);
 			}
+			
+			if (keywordType != null && keywordType.length() > 0) {
+				params.put("keywordType", keywordType);
+				totalParams.put("keywordType", keywordType);
+			}
 
 			if (keyword != null && keyword.length() > 0) {
 				params.put("keyword", keyword);
@@ -97,7 +103,6 @@ public class BuyJSON extends NewsbankServletBase {
 			params.put("startPage", startPage);
 
 			PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
-			
 			
 			searchList = paymentDAO.buyList(params); 
 			totalList = paymentDAO.buyList(totalParams);

@@ -34,6 +34,7 @@
 	});
 	
 	function search(state) {
+		var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
 		var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
 		var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
@@ -46,7 +47,8 @@
 		$("#select_period").text(select_period);
 		
 		var searchParam = {
-			"keyword":keyword
+			"keywordType":keywordType
+			,"keyword":keyword
 			, "pageVol":pageVol
 			, "startPage":startPage
 			, "contractStart":contractStart
@@ -76,6 +78,7 @@
 						var media = val.media;
 						var compName = val.compName;
 						var uciCode = val.uciCode;
+						var compCode = val.compCode;
 						var regDate = val.regDate;
 						
 						html += '<tr>';
@@ -88,6 +91,7 @@
 						html += '<td>' + name + '</td>';
 						html += '<td>' + media + '</td>';
 						html += '<td><a href="/view.photo?uciCode=' + uciCode + '" target="_blank">' + uciCode + '</a></td>';
+						html += '<td>' + compCode + '</td>';
 						html += '<td>' + regDate + '</td>';
 						html += '</tr>';
 						
@@ -157,8 +161,14 @@
 		<tbody>
 			<tr>
 				<th>검색</th>
-				<td><input type="text" id="keyword" class="inp_txt" size="80"
-					placeholder="회사/기관명, 아이디, 이름, UCI코드, 언론사 사진번호" /></td>
+				<td>
+					<select name="keywordType" class="inp_txt" style="width:200px;">
+						<option value="member" selected="selected">회사/기관명, 아이디, 이름</option>
+						<option value="photo">UCI코드, 언론사 사진번호</option>
+					</select>					
+					<input type="text" id="keyword" class="inp_txt" size="80"
+						placeholder="회사/기관명, 아이디, 이름, UCI코드, 언론사 사진번호" />
+				</td>
 			</tr>
 			 
 			<tr>
@@ -223,6 +233,7 @@
 			<col width="80" />
 			<col width="150" />
 			<col width="150" />
+			<col width="150" />
 			<col width="250" />
 		</colgroup>
 		<thead>
@@ -231,12 +242,13 @@
 						<input id="check_all" name="check_all" type="checkbox"> <label
 							for="check_all">선택</label>
 					</div></th> -->
-				<th>No.</th>
+				<th>No. </th>
 				<th>회사/기관명</th>
 				<th>아이디</th>
 				<th>이름</th>
 				<th>매체</th>
 				<th>UCI코드</th>
+				<th>언론사 사진번호</th>
 				<th>다운로드일</th>
 			</tr>
 		</thead>

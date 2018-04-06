@@ -37,6 +37,7 @@
 	});
 	
 	function searchBuyList(state) {		
+		var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
 		var pageVol = parseInt($("#sel_pageVol option:selected").attr("value")); // 페이지 표시 갯수
 		var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
@@ -51,7 +52,8 @@
 		$("#select_period").text(select_period);
 		
 		var searchParam = {
-			"keyword":keyword
+			"keywordType":keywordType
+			,"keyword":keyword
 			, "pageVol":pageVol
 			, "startPage":startPage
 			, "start_date":start_date
@@ -70,7 +72,7 @@
 			dataType: "json",
 			data: searchParam,
 			url: "/buy.api",
-			success: function(data) { //console.log(data);
+			success: function(data) { console.log(data);
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
@@ -101,6 +103,7 @@
 						var status = val.status;
 						var copyright = val.copyright;						
 						var uciCode = val.photo_uciCode;
+						var compCode = val.compCode;
 						var usage = val.usage;
 						var usageList_seq = val.usageList_seq;
 						var price = val.price;
@@ -141,6 +144,7 @@
 						html += '<td>' + status + '</td>';
 						html += '<td>' + copyright + '</td>';
 						html += '<td>' + uciCode + '</td>';
+						html += '<td>' + compCode + '</td>';
 						html += '<td seq="' + usageList_seq + '">' + usage + '</td>';
 						html += '<td>' + price + '</td>';
 						html += '</tr>';
@@ -322,8 +326,14 @@
 			<tbody>
 				<tr>
 					<th>검색</th>
-					<td><input type="text" name="keyword" id="keyword" class="inp_txt" size="80"
-						placeholder="회사/기관명, 아이디, 이름, UCI코드, 주문번호,  언론사 사진번호" /></td>
+					<td>
+						<select name="keywordType" class="inp_txt" style="width:200px;">
+							<option value="member" selected="selected">회사/기관명, 아이디, 이름</option>
+							<option value="photo">UCI코드, 언론사 사진번호</option>
+						</select>					
+						<input type="text" id="keyword" class="inp_txt" size="80"
+							placeholder="회사/기관명, 아이디, 이름, UCI코드, 언론사 사진번호" />
+					</td>
 				</tr>
 				<tr>
 					<th>기간 선택</th>
@@ -411,6 +421,7 @@
 			<col width="150" />
 			<col width="80" />
 			<col width="80" />
+			<col width="80" />
 			</colgroup>
 			<thead>
 				<tr>
@@ -427,6 +438,7 @@
 					<th>상태</th>
 					<th>매체</th>
 					<th>UCI코드</th>
+					<th>언론사 사진번호</th>
 					<th>용도</th>
 					<th>금액</th>
 				</tr>

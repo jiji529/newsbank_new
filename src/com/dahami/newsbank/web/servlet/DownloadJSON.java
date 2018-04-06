@@ -40,6 +40,7 @@ public class DownloadJSON extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		
+		String keywordType = request.getParameter("keywordType"); // 키워드 검색 타입
 		String keyword = request.getParameter("keyword"); // 키워드
 		int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표시 갯수
 		int startPage = Integer.parseInt(request.getParameter("startPage")); // 시작 페이지
@@ -47,6 +48,7 @@ public class DownloadJSON extends HttpServlet {
 		String contractEnd = request.getParameter("contractEnd"); // 마감일자
 		
 		Map<Object, Object> searchOpt = new HashMap<Object, Object>();
+		searchOpt.put("keywordType", keywordType);
 		searchOpt.put("keyword", keyword);
 		searchOpt.put("pageVol", pageVol);
 		searchOpt.put("startPage", startPage);
@@ -71,6 +73,7 @@ public class DownloadJSON extends HttpServlet {
 			arr.put("compName", downlist.get(idx).get("compName"));
 			arr.put("media", downlist.get(idx).get("media"));
 			arr.put("uciCode", downlist.get(idx).get("uciCode"));
+			arr.put("compCode", downlist.get(idx).get("compCode"));
 			arr.put("regDate", downlist.get(idx).get("regDate"));
 			
 			jArray.add(arr);

@@ -64,49 +64,55 @@
 	    <result javaType="java.lang.String" column="compName" property="compName"></result>
 	    <result javaType="java.lang.String" column="media" property="media"></result>
 	    <result javaType="java.lang.String" column="uciCode" property="uciCode"></result>
+	    <result javaType="java.lang.String" column="compCode" property="compCode"></result>
 	    <result javaType="java.lang.String" column="regDate" property="regDate"></result>
 	</resultMap>
 	
 	<!-- 전체 다운로드 내역  -->
 	<select id="TotalDownlist" parameterType="java.util.Map" resultMap="TotalDownloadDTO">
-	    SELECT 
-	    	A.compName, A.id, A.name, B.photo_uciCode as uciCode, B.regDate, 
-			(SELECT compName FROM member INNER JOIN photo ON member.seq = photo.member_seq WHERE photo.uciCode = B.photo_uciCode) AS media
-		FROM member A
-		INNER JOIN download B ON A.seq = B.member_seq
-		WHERE ( 
-			A.name LIKE CONCAT('%', #{keyword}, '%') 
-			OR A.compName LIKE CONCAT('%', #{keyword}, '%') 
-			OR A.id LIKE CONCAT('%', #{keyword}, '%') 
-			OR B.photo_uciCode LIKE CONCAT('%', #{keyword}, '%') 
-			OR (SELECT compName FROM member INNER JOIN photo ON member.seq = photo.member_seq WHERE photo.uciCode = B.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%') 
-			)
-			
-			<if test="contractStart != null and contractEnd != null">
-				AND B.regDate BETWEEN #{contractStart} AND #{contractEnd}
-			</if>
-			
-		ORDER BY B.regDate DESC
-		LIMIT #{startPage}, #{pageVol}
-	</select>
-	
-	<select id="totalCnt" parameterType="java.util.Map" resultType="integer">
-	    SELECT 
-	    	count(A.seq) as cnt
-		FROM member A
-		INNER JOIN download B ON A.seq = B.member_seq
+	    SELECT M.compName, M.id, M.name,
+		(SELECT name FROM member WHERE seq = P.member_seq) AS media, 
+		P.uciCode, P.compCode, D.regDate  FROM download D
+		INNER JOIN member M ON D.member_seq = M.seq
+		INNER JOIN photo P ON D.photo_uciCode = P.uciCode
+		
 		WHERE (
-			A.name LIKE CONCAT('%', #{keyword}, '%') 
-			OR A.compName LIKE CONCAT('%', #{keyword}, '%') 
-			OR A.id LIKE CONCAT('%', #{keyword}, '%') 
-			OR B.photo_uciCode LIKE CONCAT('%', #{keyword}, '%') 
-			OR (SELECT compName FROM member INNER JOIN photo ON member.seq = photo.member_seq WHERE photo.uciCode = B.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
-			)
-			<if test="contractStart != null and contractEnd != null">
-				AND B.regDate BETWEEN #{contractStart} AND #{contractEnd} 
+			<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+			     M.id LIKE CONCAT('%', #{keyword}, '%')
+				 OR M.name LIKE CONCAT('%', #{keyword}, '%')
+				 OR M.compName LIKE CONCAT('%', #{keyword}, '%')
 			</if>
-		ORDER BY B.regDate DESC
-	</select>
+			
+			<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+			    P.uciCode LIKE CONCAT('%', #{keyword}, '%')
+				OR (SELECT compCode FROM photo WHERE uciCode = D.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+		)
+		ORDER BY D.regDate DESC
+		LIMIT #{startPage}, #{pageVol}
+    </select>
+    
+	<!-- 전체 다운로드 내역 갯수 -->
+	<select id="totalCnt" parameterType="java.util.Map" resultType="integer">
+	    SELECT COUNT(D.seq) AS cnt
+	    FROM download D
+		INNER JOIN member M ON D.member_seq = M.seq
+		INNER JOIN photo P ON D.photo_uciCode = P.uciCode
+		
+		WHERE (
+			<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+			     M.id LIKE CONCAT('%', #{keyword}, '%')
+				 OR M.name LIKE CONCAT('%', #{keyword}, '%')
+				 OR M.compName LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			
+			<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+			    P.uciCode LIKE CONCAT('%', #{keyword}, '%')
+				OR (SELECT compCode FROM photo WHERE uciCode = D.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+		)
+		ORDER BY D.regDate DESC 
+    </select>
 	
 	<!-- 비구매 계정 -->
 	<resultMap id="userMap" type="java.util.HashMap">
