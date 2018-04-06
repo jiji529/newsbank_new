@@ -26,7 +26,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크</title>
 
-<link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css">
+<link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css" />
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
