@@ -40,6 +40,10 @@ function setDatepicker() {
   });
 }
 </script>
+<%--사용자 검색 화면 확인을 위한 폼값 / 상단 검색어 연동(search / searchTop) --%>
+<c:if test="${serviceMode eq true}">
+	<input type="hidden" id="serviceMode" />
+</c:if>
 	<div class="filters">
 		<ul>
 			<li class="filter_title filter_ico">검색필터</li>

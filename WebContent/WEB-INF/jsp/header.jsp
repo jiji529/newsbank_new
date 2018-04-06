@@ -15,10 +15,16 @@
 	});
 
 	function searchTop() {
-		var keyword = $("#keyword").val();
-		keyword = $.trim(keyword);
-		$("#keyword_current").val(keyword);
-		searchform.submit();
+		if($("#serviceMode").length > 0) {
+			$("#keyword_current").val($("#keyword").val());
+			search();
+		}
+		else {
+			var keyword = $("#keyword").val();
+			keyword = $.trim(keyword);
+			$("#keyword_current").val(keyword);
+			searchform.submit();
+		}
 	}
 	
 	// 로그인 페이지 이동시 매개변수 넘기기

@@ -40,7 +40,7 @@
 		initSearchParam();
 		search();
 // 		checkForHash(); 
-	});	
+	});
 	
 	function checkForHash() { // hash 유무에 따른 검색옵션 불러오기
 	    if(document.location.hash){ // hash 정보가 있을 때
@@ -283,7 +283,8 @@
 		var pageVol = $("select[name=pageVol]").val();
 		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
-		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value");
+		var durationReg = $(".filter_durationReg .filter_list").find("[selected=selected]").attr("value");
+		var durationTake = $(".filter_durationTake .filter_list").find("[selected=selected]").attr("value");
 		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
 		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
@@ -297,7 +298,8 @@
 				, "pageVol":pageVol
 				, "contentType":contentType
 				, "media":media
-				, "duration":duration
+				, "durationReg":durationReg
+				, "durationTake":durationTake
 				, "colorMode":colorMode
 				, "horiVertChoice":horiVertChoice
 				, "size":size
