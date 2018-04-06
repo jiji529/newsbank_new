@@ -1027,6 +1027,9 @@ function select_year(year, url) {
 	$("#dateForm").attr("action", url);
 	$("#dateForm").submit();
 	
+	
+	
+	console.log($("#dateForm").length);
 	console.log("year : " + year + " / url : " + url);
 }
 

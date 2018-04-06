@@ -42,6 +42,19 @@
 			AND YEAR(A.regDate) = #{year}
 		</if>
 		ORDER BY A.regDate DESC
+		LIMIT #{startPage}, #{pageVol}
+	</select>
+	
+	<select id="selDownListTotalCnt" parameterType="java.util.Map" resultType="integer">
+	    SELECT COUNT(A.seq) as cnt
+			FROM `download` A
+		INNER JOIN photo B
+		ON A.photo_uciCode = B.uciCode
+		WHERE A.member_seq = #{member_seq}
+		<if test="year != 0">
+			AND YEAR(A.regDate) = #{year}
+		</if>
+		ORDER BY A.regDate DESC
 	</select>
 	
 	<!-- 전체 사용자 다운로드 내역 -->

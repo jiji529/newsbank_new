@@ -78,6 +78,16 @@
 		popup_usage(); // 사용용도 선택
 	});
 	
+	function pageMove(page){
+		$("#pagingForm input[name=page]").val(page);
+		$("#pagingForm input[name=year]").val($('#selectYear option:selected').val());
+		
+		$("#pagingForm").attr("action","/download.mypage");
+		$("#pagingForm").attr("method","post");
+		
+		$("#pagingForm").submit();
+	}
+	
 </script>
 </head>
 <body>
@@ -133,10 +143,11 @@
 					<span class="mess">※고객님과 같은 그룹으로 묶인 계정에서 다운로드 받은 내역이 모두 공유됩니다.</span>
 				</c:if>
 				
-				<select onchange="select_year(this.value, '/download.mypage')">
-					<option <c:if test="${year eq '0'}">selected</c:if> value="0">전체</option>
+				<select onchange="select_year(this.value, '/download.mypage')" id="selectYear">
+<%-- 					<option <c:if test="${year eq '0'}">selected</c:if> value="0">전체</option> --%>
+					<option <c:if test="${returnMap['year'][0] eq '0'}">selected</c:if> value="0">전체</option>
 					<c:forEach var="yearOpt" begin="${beginYear}" end="${endYear}" step="1">
-						<option <c:if test="${year eq (beginYear-yearOpt+endYear)}">selected</c:if> value="${beginYear-yearOpt+endYear}">${beginYear-yearOpt+endYear}년</option>
+						<option <c:if test="${returnMap['year'][0] eq (beginYear-yearOpt+endYear)}">selected</c:if> value="${beginYear-yearOpt+endYear}">${beginYear-yearOpt+endYear}년</option>
 					</c:forEach>
 				</select>
 			</div>
@@ -196,7 +207,31 @@
 					</tr>
 					</c:forEach>
 				</tbody>
-			</table>		
+			</table>
+			<c:if test="${returnMap['total'][0]%returnMap['bundle'][0] == 0 }">
+				<c:set value="${returnMap['total'][0]/returnMap['bundle'][0] }" var="lastPage" />
+			</c:if>
+			<c:if test="${returnMap['total'][0]%returnMap['bundle'][0] != 0 }">
+				<c:set value="${returnMap['total'][0]/returnMap['bundle'][0]+1 }" var="lastPage" />
+			</c:if>	
+			<fmt:parseNumber var="lp" value="${lastPage}" integerOnly="true"/>
+			<c:if test="${lp > 0}">
+			<div class="pagination">
+				<ul style="margin-bottom:0;">
+					<li class="first"> <a href="javascript:pageMove('1');">첫 페이지</a> </li>
+					<c:if test="${returnMap['page'][0] > 1 }">
+					<li class="prev"> <a href="javascript:pageMove('${returnMap['page'][0] - 1 }');">이전 페이지</a> </li>
+					</c:if>
+					<c:forEach  begin="${(returnMap['page'][0]/10)*10}" end="${((returnMap['page'][0]/10)*10 + 10) > lastPage ? lastPage:((returnMap['page'][0]/10)*10 + 10)}" var="i" >
+						<li class="active"> <a href="javascript:;" onclick="pageMove('${i}');">${i}</a> </li>
+					</c:forEach>
+					<c:if test="${returnMap['page'][0] < lp }">
+					<li class="next"> <a href="javascript:pageMove('${returnMap['page'][0] + 1 }');"> 다음 페이지 </a> </li>
+					</c:if>
+					<li class="last"> <a href="javascript:pageMove('${lp}');"> 마지막 페이지 </a> </li>
+				</ul>
+			</div>
+			</c:if>	
 			<div class="btn_area">
 				<a href="#" class="btn_input2">구매하기</a>
 				<!-- <a href="main.html" onclick="window.open('/download.popOption','new','resizable=no width=420 height=600');return false" class="btn_input2">구매하기</a> -->
@@ -207,6 +242,12 @@
 </div>
 <form method="post" action="/download.popOption" name="download_popOption">
 	<input type="hidden" name=uciCode_arr id="uciCode_arr"/>
+</form>
+
+<form id="pagingForm">
+	<input type="hidden" name="year" />
+	<input type="hidden" name="page" value="${returnMap['page'][0]}"/>
+	<input type="hidden" name="bundle" value="20"/>
 </form>
 	
 <form id="dateForm" method="post"  target="dateFrame">

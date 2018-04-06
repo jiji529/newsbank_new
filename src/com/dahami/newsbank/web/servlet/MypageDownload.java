@@ -2,6 +2,7 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,15 +55,30 @@ public class MypageDownload extends NewsbankServletBase {
 				response.sendRedirect("/auth.mypage");
 			} else {
 				int member_seq = MemberInfo.getSeq();
-				int year = request.getParameter("year") == null ? 0 : Integer.parseInt(request.getParameter("year"));
+				Map<String,String[]> paramMaps = new HashMap<String,String[]>(request.getParameterMap());
+				
+				if(!paramMaps.containsKey("year")){
+					paramMaps.put("year", new String[]{"0"});
+				}
+				if(!paramMaps.containsKey("page")){
+					paramMaps.put("page", new String[]{"1"});
+				}
+				if(!paramMaps.containsKey("bundle")){
+					paramMaps.put("bundle", new String[]{"20"});
+				}
+				
 				List<Map<String, String>> downList = new ArrayList<Map<String, String>>();
 				
 				DownloadDAO downloadDAO = new DownloadDAO();
-				downList = downloadDAO.downloadList(member_seq, year);
+				downList = downloadDAO.downloadList(member_seq, paramMaps);
+				
+				//dataList 총합 가지고 온다.
+				int total = downloadDAO.downloadListTotal(member_seq, paramMaps);
+				paramMaps.put("total", new String[]{String.valueOf(total)});
 				
 				request.setAttribute("downList", downList);
 				request.setAttribute("MemberInfo", MemberInfo);
-				request.setAttribute("year", year);
+				request.setAttribute("returnMap", paramMaps);
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_download.jsp");
 				dispatcher.forward(request, response);
