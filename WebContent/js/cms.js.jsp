@@ -44,21 +44,6 @@ $(document).on("keypress", "#keyword", function(e) {
 	}
 });
 
-$(document).on("keypress", "#cms_keyword", function(e) {
-	if(e.keyCode == 13) {	// 엔터
-		//$("#keyword_current").val($("#keyword").val());
-
-		// 키워드 바꾸면 페이지 번호 초기화
-		$("input[name=pageNo]").val("1");
-		cms_search();
-	}
-});
-
-$(document).on("click", "#cms_searchBtn", function() {
-	$("input[name=pageNo]").val("1");
-	cms_search();
-});
-
 function checkNumber(event) {
 	event = event || window.event;
 	var keyID = (event.which) ? event.which : event.keyCode;
@@ -125,29 +110,65 @@ $(document).on("click", ".filter_list li", function() {
 
 	/** 검색에서 넘어온 파라메터로 화면 초기화 */
 	function initSearchParam() {
-		$("#cms_keyword").val(view_form.keyword.value);
+		// 리스트와 상세화면의 키워드폼 이름이 다름
+		if($("#cms_keyword").length > 0) {
+			$("#cms_keyword").val(view_form.keyword.value);
+		}
+		if($("#cms_keywordFV").length > 0) {
+			$("#cms_keywordFV").val(view_form.keyword.value);
+		}
 		
-		if($(".page").length > 0) {
+		// 필터가 존재할때만
+		if($(".filters").length > 0) {
+			// 페이징값
 			if(view_form.pageNo.value > 1) {
 				$(".page").val(view_form.pageNo.value);
 			}
-		}
-		
-		if($("select[name=pageVol]").length > 0) {
+			
+			// 페이지볼륨
 			if(view_form.pageVol.value > 1) {
 				var options = $("select[name=pageVol]").find("option");
 				for(var i=0; i < options.length; i++) {
-					if(options[i].val() == view_form.pageVol.value) {
-						options[i].attr("selected", "selected");
+					if($(options[i]).attr("value") == view_form.pageVol.value) {
+						$(options[i]).attr("selected", "selected");
 					}
 					else {
-						options[i].removeAttr("selected");
+						$(options[i]).removeAttr("selected");
 					}
 				}
 			}
+			
+			setFilter(view_form.media.value, $("li.filter_media"));
+			setFilter(view_form.horiVertChoice.value, $("li.filter_horizontal"));
+			setFilter(view_form.size.value, $("li.filter_size"));
+			setFilter(view_form.saleState.value, $("li.filter_service"));
+			//setFilter(view_form.durationReg.value, $("li.filter_durationReg"));
 		}
-		// 
-		
+	}
+
+	function setFilter(value, filterForm) {
+		var findF = false;
+		filterForm.find("li").each(function(index) {
+			if($(this).attr("value") == value) {
+				findF = true;
+			}
+		});
+	
+		if(findF) {
+			var itemName = "";
+			filterForm.find("li").each(function(index) {
+				if($(this).attr("value") == value) {
+					$(this).attr("selected", "selected");
+					itemName = $(this).text();
+				}
+				else {
+					$(this).removeAttr("selected");
+				}
+			});
+			var titleStr = filterForm.find("span").text();
+			var header = titleStr.substring(0, titleStr.indexOf(":")+2);
+			filterForm.find("span").text(header + itemName);
+		}
 	}
 
 	function go_cmsView(uciCode) {

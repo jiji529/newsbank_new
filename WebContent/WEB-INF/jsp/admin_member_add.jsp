@@ -129,7 +129,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th> 비밀번호 변경 </th>
+								<th> 비밀번호 </th>
 								<td>
 									<input type="password" name="pw" id="pw" class="inp_txt" size="40">
 									<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>

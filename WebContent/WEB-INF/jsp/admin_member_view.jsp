@@ -58,7 +58,7 @@
 		
 		if(memberType == "P") { // 개인 회원
 			$(".corp_area").hide();
-			$(".corp_area").children().find("input").attr("disabled", true);
+			//$(".corp_area").children().find("input").attr("disabled", true);
 		}
 		
 		setDatepicker();
@@ -89,26 +89,29 @@
 	}	
 	
 	// 회원구분 선택
-	function member_choice() {
-		var type = $("select[name=type]").val();
-		
-		switch(type) {
+	$(document).on("change", ".mtype", function() {
+		 var type = $(this).val();
+		 var tName = $(".mtype option:selected").text();
+		 
+		 switch(type) {
 			case 'P': // 개인
 				$(".media_only").hide();
 				$(".corp_area").hide();
 				break;
 				
 			case 'C': // 법인
+				$("#tName").text(tName);
 				$(".media_only").hide();
 				$(".corp_area").show();
 				break;
 				
 			case 'M': // 언론사
+				$("#tName").text(tName);
 				$(".media_only").show();
 				$(".corp_area").show();
 				break;
 		}
-	}
+	});
 	
 	// 회원정보 수정
 	function member_update() {
@@ -204,7 +207,7 @@
 						<tr>
 							<th>회원구분</th>
 							<td>
-								<select name="type" class="inp_txt" style="width: 120px;" onchange="member_choice()">
+								<select name="type" class="inp_txt mtype" style="width: 120px;" >
 									<option value="P" <c:if test="${MemberDTO.type eq 'P'}">selected</c:if>>개인</option>
 									<option value="C" <c:if test="${MemberDTO.type eq 'C'}">selected</c:if>>법인</option>
 									<option value="M" <c:if test="${MemberDTO.type eq 'M'}">selected</c:if>>언론사</option>
@@ -216,7 +219,7 @@
 				<!--여기부터 법인-->
 				<%-- <c:if test="${MemberDTO.type eq 'C' || MemberDTO.type eq 'M'}"> --%>
 				<div class="corp_area">
-					<h4>법인 회원 추가 정보</h4>
+					<h4> <span id="tName"> </span> 회원 추가 정보</h4>
 					<table class="tb01" cellpadding="0" cellspacing="0">
 						<colgroup>
 						<col style="width:240px;">
@@ -236,14 +239,14 @@
 										<input type="text" id="compNum2" name="compNum2" size="2"  class="inp_txt" value="${compNum2}" maxlength="2">
 										<span class=" bar">-</span>
 										<input type="text" id="compNum3" name="compNum3" size="5"  class="inp_txt" value="${compNum3}" maxlength="6" />
-										<!-- <a href="#" class="btn_input1">사업자등록증 업로드</a> --> 
 										
 										<div class="upload-btn-wrapper">
-											<button class="btn">사업자등록증 업로드</button>
+											<a href="#" class="btn_input1">사업자등록증 업로드</a>
 											<input type="file" name="doc" accept="application/pdf, image/*" required />
 										</div>
-										
-										<a href="#" class="btn_input1">사업자등록증 다운로드</a>
+										<c:if test="${!empty MemberDTO.compDocPath}">
+											<a class="btn_input1" href="/doc.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">사업자등록증 다운로드</a>
+										</c:if>
 										<p class="txt_message" id="compNum_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
 									</td>
 								</tr>
@@ -323,7 +326,14 @@
 										<input type="text" name="contractStart" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractStart}" pattern="yyyy-MM-dd"/>" maxlength="10"/>
 										<span class=" bar">~</span>
 										<input type="text" name="contractEnd" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractEnd}" pattern="yyyy-MM-dd"/>" maxlength="10"/>
-										<a href="#" class="btn_input1">계약서 업로드</a> <a href="#" class="btn_input1">계약서 다운로드</a>
+										
+										<div class="upload-btn-wrapper">
+											<a href="#" class="btn_input1">계약서 업로드</a>
+											<input type="file" name="contract" accept="application/pdf, image/*" required />
+										</div>
+										<c:if test="${!empty MemberDTO.contractPath}">
+											<a class="btn_input1" href="/contract.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
+										</c:if>
 									</td>
 								</tr>
 								<tr class="offline_area photoUsage" style="display: none;">
