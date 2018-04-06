@@ -53,10 +53,12 @@
 		
 		$("#uciCode_arr").val(uciCode_arr);
 		
-		var frm = download_popOption;
-		window.open('', frm, 'width=420, height=600');
-		frm.action = "/download.popOption";
-		frm.target = frm;
+		var frm = document.download_popOption;
+// 		window.open('', frm, 'width=420, height=600');
+// 		frm.action = "/download.popOption";
+// 		frm.target = frm;
+		
+		frm.action = "/postBuylist.mypage";
 		frm.method = "post";
 		frm.submit();
 		
