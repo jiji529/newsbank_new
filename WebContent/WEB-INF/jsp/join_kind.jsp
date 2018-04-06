@@ -55,12 +55,12 @@
 					<a href="javascript:void(0)">기업회원</a>
 				</form>
 			</li>
-			<li class="join3">
-				<form>
-					<input type="hidden" name="type" value="M" />
-					<a href="javascript:void(0)">언론사회원</a>
-				</form>
-			</li>
+<!-- 			<li class="join3"> -->
+<!-- 				<form> -->
+<!-- 					<input type="hidden" name="type" value="M" /> -->
+<!-- 					<a href="javascript:void(0)">언론사회원</a> -->
+<!-- 				</form> -->
+<!-- 			</li> -->
 		</ul>
 		</section>
 		<footer>
