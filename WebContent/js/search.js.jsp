@@ -75,6 +75,14 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			filterForm.find("span").text(header + itemName);
 		}
 	}
+	//날짜 입력 오늘 날짜, 입력되도록 해둠 2017.04.06 이재우
+	$(document).on('click', ".datepicker" , function(){
+		var elmnt = $(this);
+		$("button.ui-datepicker-current").on('click', function(){
+			$(elmnt).datepicker('setDate',new Date());
+			$(".ui-datepicker-close").click();
+		});
+	});
 	
 	function cms_search() {
 		var keyword = $("#cms_keyword").val();
