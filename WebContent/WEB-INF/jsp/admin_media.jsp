@@ -49,8 +49,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
-<script src="js/admin.js"></script>
-
 <script>
 	$(document).ready(function() {
 		//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
@@ -62,6 +60,72 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		
 		$("#startgo").val(1); // 최초 1페이지로
 		search();
+		
+	});
+	
+	//확장자 검사(admin.js에 중복)
+	function validFileType(file) {
+		var fileTypes = [ 'image/jpeg', 'image/pjpeg', 'image/png', 'application/pdf'
+
+			];
+		
+		for (var i = 0; i < fileTypes.length; i++) {
+			if (file.type === fileTypes[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	// 파일 업로드 (admin.js와 중복 - 목록을 ajax 후처리로 불러와서)
+	$(document).on("change", 'input[type=file]', function() {
+		var page = (location.pathname).split(".")[0];
+		var seq = $(this).parents("tr").find("input[type=checkbox]").val();
+		
+		var uType = $(this).attr("name");	
+		var tmpFile = $(this)[0].files[0];
+		var sizeLimit = 1024 * 1024 * 15;
+		if (tmpFile.size > sizeLimit) {
+			alert("파일 용량이 15MB를 초과했습니다");
+			$(this).val("");
+			return;
+		}
+
+		if (validFileType(tmpFile)) {
+			var formData = new FormData();
+			//첫번째 파일태그
+			formData.append("uploadFile", tmpFile);
+			formData.append("seq", seq); // 회원현황, 정산매체사(member_seq) / 공지사항(notice_seq)
+			formData.append("page", page); // 접근페이지: 회원현황(member), 정산매체사(media), 공지사항(board)
+
+			$.ajax({
+				url : '/'+uType+'.upload',
+				data : formData,
+				dataType : "json",
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					console.log(data);
+					if (data.success) {
+						alert(data.message);
+					} else {
+						alert(data.message);
+					}
+					location.reload();
+				},
+				error : function(data) {
+					console.log("Error: " + data.statusText);
+					alert("잘못된 접근입니다.");
+				},
+
+			});
+
+		} else {
+			alert("파일 형식이 올바르지 않습니다.");
+			$(this).val("");
+		}
 	});
 	
 	// 행 클릭
@@ -311,9 +375,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += '<td>' + calc + '</td>';
 					
 					if(logo) {
-						html += '<td><a class="file" href="/logo.down.photo?seq=' + seq + '" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file"></a></div></td>';
+						html += '<td><a class="file" href="/logo.down.photo?seq=' + seq + '" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" name="logo" accept="application/pdf, image/*" required /></a></div></td>';
 					}else {
-						html += '<td><div class="file_edit upload-btn-wrapper"><a href="#" class="table_btn">추가<input type="file" name="logo" accept="application/pdf, image/*" required /></a></div></td>';						
+						html += '<td><div class="upload-btn-wrapper file_edit"><a href="#" class="table_btn btn_input1">추가</a><input type="file" name="logo" accept="application/pdf, image/*" required /></div></td>';						
 					}
 					html += '</tr>';
 					
@@ -388,13 +452,19 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	// 정산 매체사 - 선택 활성화
 	function check_approve() {
 		var chk_total = $("#mtBody input:checkbox:checked").length;
-		/* var chk_values = $("input:checkbox:checked").map(function() {
-			return this.value;
-		}).get(); */
+		var chk_logo = $("input:checkbox:checked").map(function() {
+			return $(this).closest("tr").find("td").eq(12).text();
+			//return this.value;
+		}).get();
+		console.log(chk_logo);
+		
+		
 		
 		if(chk_total == 0) { // 선택항목 갯수 체크
 			alert("최소 1개 이상을 선택해주세요.");
-		} else {
+		}else if($.inArray("추가", chk_logo) != -1) {
+			alert("제호(로고)파일이 업로드 되어 있어야 서비스 사이트에 정상 적용됩니다.\n제호(로고) 파일을 업로드 해주세요.");
+		}else {
 			
 			if(confirm("언론사의 서비스 상태를 활성으로 변경하시겠습니까?\n 서비스 상태가 활성이면 뉴스뱅크 서비스 사이트에서 사진 노출 및 검색, 구매가 가능합니다.")) {
 				
@@ -407,8 +477,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						admission : 'Y',
 						type : 'M'
 					};
-					//console.log(param);
-					
 					
 					$.ajax({
 						type: "POST",
@@ -422,14 +490,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 														
 							}
 						}
-					});	
+					});
 				});
 				alert("선택 활성화 완료");
 				location.href = "/media.manage";
-			}			
+			}
 		}		
 	}
 </script>
+<script src="js/admin.js?v=20180408"></script>
 </head>
 
 <body>

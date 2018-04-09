@@ -618,6 +618,7 @@ $(function() {
 	$('input[type=file]').bind('change', function() {
 		var page = (location.pathname).split(".")[1];
 		var seq = $("input[name='seq']").val();
+		//console.log(page, seq);
 				
 		var uType = $(this).attr("name");	
 		//console.log(uType);
