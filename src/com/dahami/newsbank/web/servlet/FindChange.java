@@ -198,6 +198,6 @@ public class FindChange extends NewsbankServletBase {
 
 		}
 		return err;
-	}
+	}	
 
 }

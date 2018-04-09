@@ -153,6 +153,21 @@ $(document).ready(function() {
 				return true;
 			}
 		} else {
+			
+			var numRegex =/[0-9]/; // 숫자
+			var charRegex = /[a-zA-Z]/; // 영어 대소문자
+			var specialRegex = /[~!@\#$%<>^&*\()\-=+_\’]/; // 특수문자
+			var message = "";			
+			
+			if(!numRegex.test(pw)) {
+				message = "숫자가 포함되어야 합니다.";
+			}else if(!charRegex.test(pw)) {
+				message = "영어 대소문자가 포함되어야 합니다.";
+			}else if(!specialRegex.test(pw)) {
+				message = "특수문자가 포함되어야 합니다.";
+			}
+			
+			$("#pw_message").text(message);
 			$("#pw_message").css("display", "block");
 			$("#pw").focus();
 			return false;
@@ -209,7 +224,7 @@ $(document).ready(function() {
 					if (data.success) {
 						alert(data.message);location.replace('/login');
 					}else{
-						alert(data.message);history.back(-1);
+						alert(data.message);//history.back(-1);
 					}
 					// alert(data);
 				},

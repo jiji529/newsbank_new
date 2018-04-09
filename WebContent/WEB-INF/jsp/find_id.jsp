@@ -90,10 +90,6 @@
 	<footer>
 		<ul>
 				<li>
-					<a href="/newsbank.intro">뉴스뱅크 소개</a>
-				</li>
-				<li class="bar"></li>
-				<li>
 					<a href="/policy.intro">이용약관</a>
 				</li>
 				<li class="bar"></li>
