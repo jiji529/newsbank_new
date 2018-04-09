@@ -240,16 +240,17 @@ public class DownloadService extends ServiceBase {
 			return null;
 		}
 		// 5. 삭제 이미지 : 소유 권한이 있는 경우 리스트만 허가
+		// => 관리자 이외에 전송 안하도록 변경 (2018-04-09)
 		else if(photo.getSaleState() == PhotoDTO.SALE_STATE_DEL){
-			if(downType.equals(DOWN_TYPE_LIST)) {
-				int photoOwner = photo.getOwnerNo();
-				List<Integer> ownerSeqList = member.getOwnerGroupList();
-				for(int curSeq : ownerSeqList) {
-					if(photoOwner == curSeq) {
-						return downType;
-					}
-				}
-			}
+//			if(downType.equals(DOWN_TYPE_LIST)) {
+//				int photoOwner = photo.getOwnerNo();
+//				List<Integer> ownerSeqList = member.getOwnerGroupList();
+//				for(int curSeq : ownerSeqList) {
+//					if(photoOwner == curSeq) {
+//						return downType;
+//					}
+//				}
+//			}
 			return null;
 		}
 		

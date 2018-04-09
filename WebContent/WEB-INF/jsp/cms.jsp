@@ -60,15 +60,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		$("input[name=pageNo]").val("1");
 		cms_search();
 	});
-	
-	$(document).on("click", "div .paging a.prev", function() {
-		var prev = $("input[name=pageNo]").val() - 1;
-		goPage(prev);
-	});
-	$(document).on("click", "div .paging a.next", function() {
-		var next = $("input[name=pageNo]").val() - (-1);
-		goPage(next);
-	});
 	 
 	$(document).on("keypress", "#keyword", function(e) {
 		if(e.keyCode == 13) {	// 엔터
