@@ -158,8 +158,6 @@
 				<col width="30">
 				<col width="70">
 				<col>
-				<col width="120">
-				<col width="60">
 				<col width="220">
 				</colgroup>
 				<thead>
