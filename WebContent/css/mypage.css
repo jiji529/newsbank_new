@@ -118,13 +118,13 @@
 
 .mypage .filters li.filter_title{float:left; padding:0 40px 0 20px; height:50px; border-right:1px #e5e5e5 solid; line-height:50px; position:relative; font-size:14px; cursor:pointer;}
 .mypage .filters li.filter_title.filter_ico,.mypage .filters li.filter_title.folder_ico{ margin-left:0; }
-
+/*
 @media (max-width: 1400px){
 .mypage .filters li.filter_title.filter_ico, .mypage .filters li.filter_title.folder_ico{ display:block; border-left:0;}
 .mypage .filters li.filter_title:nth-child(2){margin-left:0; border-left:0;}
 .mypage .filters li.filter_title{max-width:150px}
 .mypage .filters li.filter_title:after{right:15px;}}
-
+*/
 .mypage .filters .filter_rt{margin-right:10px;}
 
 .mypage .btn_sort{float:left; width:100%; margin:20px 0; font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif; letter-spacing:-1px; }
