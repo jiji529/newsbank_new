@@ -103,7 +103,7 @@ function dibsList() {
 				html += '<input type="checkbox" value="'+val.uciCode+'"/>';
 				html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
 				html += '<ul class="thumb_btn">';
-				html += '<li class="btn_down" onclick="downDiferred(\''+ val.uciCode +'\')">다운로드</li>';
+				html += '<li class="btn_down" onclick="down(\''+ val.uciCode +'\')">다운로드</li>';
 				html += '<li class="btn_del">삭제</li>';
 				html += '</ul></li>';					
 			});			
