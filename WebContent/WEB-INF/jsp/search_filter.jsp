@@ -48,7 +48,7 @@ function setDatepicker() {
 <c:if test="${serviceMode eq true}">
 	<input type="hidden" id="serviceMode" />
 </c:if>
-	<div class="filters">
+	<div class="filters sml">
 		<ul>
 			<li class="filter_title filter_ico">검색필터</li>
 			<li class="filter_title filter_media">
