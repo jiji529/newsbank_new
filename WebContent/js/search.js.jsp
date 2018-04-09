@@ -12,11 +12,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var keywordSetF = false;
 		if($("#cms_keyword").length > 0) {
 			$("#cms_keyword").val(view_form.keyword.value);
-			keywordSetf = true;
+			$("#cms_keyword_current").val(view_form.keyword.value);
+			keywordSetF = true;
 		}
 		if($("#cms_keywordFV").length > 0) {
 			$("#cms_keywordFV").val(view_form.keyword.value);
-			keywordSetf = true;
+			keywordSetF = true;
 		}
 		if(!keywordSetF && $("#keyword").length > 0) {
 			$("#keyword").val(view_form.keyword.value);
@@ -47,7 +48,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			setFilter(view_form.horiVertChoice.value, $("li.filter_horizontal"));
 			setFilter(view_form.size.value, $("li.filter_size"));
 			setFilter(view_form.saleState.value, $("li.filter_service"));
-			//setFilter(view_form.durationReg.value, $("li.filter_durationReg"));
+			setFilter(view_form.durationReg.value, $("li.filter_durationReg"));
+			setFilter(view_form.durationTake.value, $("li.filter_durationTake"));
 		}
 	}
 
@@ -74,6 +76,24 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			var header = titleStr.substring(0, titleStr.indexOf(":")+2);
 			filterForm.find("span").text(header + itemName);
 		}
+		else {
+			if(value.charAt(0) == 'C') {
+				value = value.substring(1);
+				filterForm.find("li").each(function(index) {
+					if($(this).hasClass("choice")) {
+						$(this).attr("selected", "selected");
+						$(this).attr("value", "C"+value);
+					}
+					else {
+						$(this).removeAttr("selected");
+					}
+				});
+				var titleStr = filterForm.find("span").text();
+				var header = titleStr.substring(0, titleStr.indexOf(":")+2);
+				filterForm.find("span").text(header + value);
+			}
+			console.log(value);
+		}
 	}
 /*
 	//날짜 입력 오늘 날짜, 입력되도록 해둠 2017.04.06 이재우
@@ -87,25 +107,63 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	});
 */
 	
-	function cms_search() {
-		var keyword = $("#cms_keyword").val();
+	function userBookmarkList() { // 사용자가 찜한 북마크 목록
+		var param = "action=list";
+		$.ajax({
+			type: "POST",
+			url: "bookmark.api?"+param,
+			dataType: "json",
+			success : function(data) { 
+				$(data.result).each(function(key, val) {
+					var uciCode = val.uciCode;
+					$("#search_list ul .over_wish").each(function(idx, value) { // 가로맞춤 보기
+						var list_uci = $("#search_list ul .over_wish").eq(idx).attr("value");
+						
+						if(list_uci == uciCode) {
+							$("#search_list ul .over_wish").eq(idx).addClass("on");
+						}
+					});
+
+				});
+			}
+		});
+	}
+	
+	<%-- 상황에 따른 서비스 CMS용 검색 호출 --%>
+	function search() {
+		searchInternal($("#serviceMode").length == 0);
+	}
+	
+	<%-- 통합(서비스/CMS) 검색 --%>
+	function searchInternal(cmsMode) {
+		var keyword = "";
+		if(cmsMode) {
+			keyword = $("#cms_keyword_current").val();
+		}
+		else {
+			keyword = $("#keyword_current").val();
+		}
 		
+		keyword = $.trim(keyword);
 		var pageNo = $("input[name=pageNo]").val();
 		var transPageNo = pageNo.match(/[0-9]/g).join("");
 		if(pageNo != transPageNo) {
 			pageNo = transPageNo;
 			$("input[name=pageNo]").val(pageNo);
 		}
-		
 		var pageVol = $("select[name=pageVol]").val();
+		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
 		var durationReg = $(".filter_durationReg .filter_list").find("[selected=selected]").attr("value");
 		var durationTake = $(".filter_durationTake .filter_list").find("[selected=selected]").attr("value");
 		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
+		var portRight = $(".filter_portRight .filter_list").find("[selected=selected]").attr("value");
+		var includePerson = $(".filter_incPerson .filter_list").find("[selected=selected]").attr("value");
+		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
 		var saleState = $(".filter_service .filter_list").find("[selected=selected]").attr("value");
 		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
-		
+
 		view_form.keyword.value = keyword;
 		view_form.pageNo.value = pageNo;
 		view_form.pageVol.value = pageVol;
@@ -121,17 +179,26 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				"keyword":keyword
 				, "pageNo":pageNo
 				, "pageVol":pageVol
+				, "contentType":contentType
 				, "media":media
 				, "durationReg":durationReg
 				, "durationTake":durationTake
 				, "colorMode":colorMode
 				, "horiVertChoice":horiVertChoice
+				, "portRight":portRight
+				, "includePerson":includePerson
+				, "group":group
 				, "saleState":saleState
 				, "size":size
-				//, "id":id
 		};
 		
-		$("#keyword_current").val(keyword);
+		<%-- 키워드 변경 후 반영 없이 필터 등의 변경으로 인해 재검색 하면 기존 검색어를 키워드로 사용  --%>
+		if(cmsMode) {
+			$("#cms_keyword").val(keyword);
+		}
+		else {
+			$("#keyword").val(keyword);
+		}
 		
 		var html = "";
 		$.ajax({
@@ -141,32 +208,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			data: searchParam,
 			timeout: 1000000,
 			url: searchTarget,
-			success : function(data) { 
-				$(data.result).each(function(key, val) {	
-					var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
-					var deleted = (val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) ? "deleted" : "";
-					html += "<li class=\"thumb\"> <a href=\"#\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";
-					html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-					html += "<ul class=\"thumb_btn\">";
-					if(deleted.length == 0) {
-						html += "<li class=\"btn_down\" value=\"" + val.uciCode + "\"><a>다운로드</a></li>"
-						html += "<li class=\"btn_del " + deleted + "\" value=\"" + val.uciCode + "\"><a>삭제</a></li>";
-						html += "<li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>숨김</a></li>";
-					}
-					else {
-						html += "<li class=\"btn_down hide\"></li>"
-						html += "<li class=\"" + deleted + "\" value=\"" + val.uciCode + "\"></li>";
-						html += "<li class=\"btn_view hide" + blind + "\" value=\"" + val.uciCode + "\"></li>";
-					}
-					html += " </ul>";
-				});
-				$("#cms_list2 ul").html(html);
-				var totalCount = $(data.count)[0];
-					totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마; 
-				var totalPage = $(data.totalPage)[0];
-					totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마;
-				$("div .result b").html(totalCount);
-				$("div .paging span.total").html(totalPage);
+			success : function(data) {
+				if(cmsMode) {
+					makeCmsList(data);
+				}
+				else {
+					makeServiceList(data);
+				}
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -174,7 +222,70 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		});
 	}
 	
-	//#연관사진
+	<%--검색 결과 생성 / 서비스 --%>
+	function makeServiceList(data) {
+	 	var html = "";
+		$(data.result).each(function(key, val) {
+			html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
+			html += "<div class=\"info\">";
+			html += "<div class=\"photo_info\">" + val.ownerName + "</div>";
+			html += "<div class=\"right\">";
+			html += "<a class=\"over_wish\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">시안 다운로드</a> </div>";
+			html += "</div>";
+			html += "</li>";
+		});
+		$("#search_list ul").html(html);
+		$(window).scrollTop(0);
+		
+		var totalCount = data.count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
+		var totalPage = data.totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
+		
+		$("div .result b").text(totalCount);
+		$("div .paging span.total").html(totalPage);
+		
+		if(loginInfo != ""){ // 로그인 시, 찜 목록을 불러오기
+			userBookmarkList();
+		}
+	}
+	
+	<%--검색 결과 생성 / CMS --%>
+	function makeCmsList(data) {
+		var html = "";
+		$(data.result).each(function(key, val) {
+			var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
+			var deleted = (val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) ? "deleted" : "";
+			var coverClass = "";
+			if(val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) {
+				coverClass = "img_blind";
+			}
+			else if(val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) {
+				coverClass = "img_del";
+			}
+			html += "<li class=\"thumb " + coverClass + "\"> <a href=\"#\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";
+			html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
+			html += "<ul class=\"thumb_btn\">";
+			if(deleted.length == 0) {
+				html += "<li class=\"btn_down\" value=\"" + val.uciCode + "\"><a>다운로드</a></li>"
+				html += "<li class=\"btn_del " + deleted + "\" value=\"" + val.uciCode + "\"><a>삭제</a></li>";
+				html += "<li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>숨김</a></li>";
+			}
+			else {
+				html += "<li class=\"btn_down hide\"></li>"
+				html += "<li class=\"" + deleted + "\" value=\"" + val.uciCode + "\"></li>";
+				html += "<li class=\"btn_view hide" + blind + "\" value=\"" + val.uciCode + "\"></li>";
+			}
+			html += " </ul>";
+		});
+		$("#cms_list2 ul").html(html);
+		var totalCount = $(data.count)[0];
+			totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마; 
+		var totalPage = $(data.totalPage)[0];
+			totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마;
+		$("div .result b").html(totalCount);
+		$("div .paging span.total").html(totalPage)
+	}
+	
+	<%-- 연관사진 검색 --%>
 	function relation_photo() {
 		var keyword = "";
 		keyword = $.trim(keyword);

@@ -20,17 +20,14 @@
 
 	$(document).on("keypress", "#cms_keyword", function(e) {
 		if(e.keyCode == 13) {	// 엔터
-			//$("#keyword_current").val($("#keyword").val());
-	
-			// 키워드 바꾸면 페이지 번호 초기화
-			$("input[name=pageNo]").val("1");
-			cms_search();
+			$("#cms_searchBtn").click();
 		}
 	});
 	
 	$(document).on("click", "#cms_searchBtn", function() {
+		$("#cms_keyword_current").val($("#cms_keyword").val());
 		$("input[name=pageNo]").val("1");
-		cms_search();
+		search();
 	});
 
 // ################################################################################
@@ -104,7 +101,7 @@
 			changeOption(uciCode[i], "saleState", saleState);
 		}
 		alert("처리되었습니다");
-		cms_search();
+		search();
 	}
 	
 	/** 선택 삭제 */
@@ -128,7 +125,7 @@
 			changeOption(uciCode[i], "saleState", <%=PhotoDTO.SALE_STATE_DEL %>);
 		}
 		alert("삭제되었습니다");
-		cms_search();
+		search();
 	}
 	
 // ################################################################################
@@ -136,7 +133,7 @@
 // ################################################################################
 	/** 다운로드 버튼 클릭 */
 	$(document).on("click", ".btn_down", function() {
-		down($(this).attr("value"));
+		cmsDown($(this).attr("value"));
 	});
 
 	/** 블라인드/해제 버튼 클릭 */
@@ -161,5 +158,5 @@
 		}
 		changeOption(uciCode, "saleState", <%=PhotoDTO.SALE_STATE_DEL %>);
 		alert("삭제되었습니다");
-		cms_search();
+		search();
 	});

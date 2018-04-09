@@ -115,8 +115,8 @@
 </div>
 <div class="gnb_srch">
 	<form id="searchform" action="/photo" method="post">
-		<input type="text" id="keyword" name="keyword" value="${keyword}" placeholder="검색어를 입력해주세요." />
-		<input type="text" id="keyword_current" value="${keyword}" style="display: none;" />
+		<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." />
+		<input type="text" id="keyword_current" style="display: none;" />
 		<a href="javascript:void(0)" id="btn_search" class="btn_search">검색</a>
 	</form>
 </div>

@@ -36,126 +36,24 @@
 <script src="js/footer.js"></script>
 <script src="js/photo.js"></script>
 <script type="text/javascript">
+	var loginInfo = "${loginInfo}";
+	var searchTarget = "search";
+	
 	$(document).ready(function() {
 		initSearchParam();
 		search();
-// 		checkForHash(); 
 	});
 	
-	function checkForHash() { // hash 유무에 따른 검색옵션 불러오기
-	    if(document.location.hash){ // hash 정보가 있을 때
-	        var vars = [], hash;
-	        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('#');
-	        for(var i = 0; i < hashes.length; i++)
-		    {
-		        hash = hashes[i].split('=');
-		        var name = hash[0]; // 옵션이름
-		        var opt = hash[1]; // 옵션 값
-		        var filter; // 필터이름
-		        		        
-		        if(name == "media") {
-		        	filter = ".filter_media"; 
-		        }else if(name == "duration") {
-		        	filter = ".filter_duration";
-		        }else if(name == "horizontal") {
-		        	filter = ".filter_horizontal";
-		        }else if(name == "size") {
-		        	filter = ".filter_size";
-		        }
-		        
-		        $(filter + " .filter_list").find("li").removeAttr("selected");
-	        	$(filter + " .filter_list").find("li[value='" + opt + "']").attr("selected", "selected");
-	        	var choice; 
-	        	
-	        	var regx = /[~]/gi; // 기간 옵션 예외
-	        	if(regx.test(opt)){
-	        		choice = opt;	
-	        	} else {
-	        		choice = $(filter + " .filter_list").find("li[value='" + opt + "']").text();
-	        	}
-	        	
-	        	var titleTag = $(filter).find("span");
-	        	var titleStr = titleTag.text();
-	        	titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
-				titleTag.html(titleStr);
-		        
-		        vars.push(hash[0]);
-		        vars[hash[0]] = hash[1];
-		    }
-	        
-	        var keyword_current = $("#keyword_current").val();
-		    if(keyword_current) {
-		    	var url = location.href;
-		    	var split_url = url.split("?");
-		    	split_url = split_url[0] + "?keyword=" + keyword_current;
-		    	history.replaceState({}, null, split_url);
-		    } else {
-		    	history.replaceState({}, null, location.pathname);
-		    }
-		    search();
-		    
-	    } else {
-	        
-	    }    
-	}
-	
+	// 보기 변경 / 스퀘어, 그리드
 	$(document).on("click", ".square", function() {
 		$(".viewbox > .size > span.grid").removeClass("on");
 		$(".viewbox > .size > span.square").addClass("on");
 		$("#search_list").addClass("square").removeClass("grid"); 
 	});
-
 	$(document).on("click", ".grid", function() {
 		$(".viewbox > .size > span.square").removeClass("on"); 
 		$(".viewbox > .size > span.grid").addClass("on");
 		$("#search_list").addClass("grid").removeClass("square");
-	});
-
-	$(document).on("click", ".filter_list li", function() { // 검색 옵션 선택
-		var choice = $(this).text();
-		$(this).siblings().removeAttr("selected");
-		$(this).attr("selected", "selected");
-		
-		if(!$(this).hasClass("choice")){ // 직접 선택을 제외한 나머지는 slide up 이벤트 적용
-			var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
-			var titleTag = $(this).parents(".filter_title").find("span");
-			var titleStr = titleTag.html();
-			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
-			titleTag.html(titleStr);
-			
-			$(this).closest(".filter_list").stop().slideUp("fast");		
-			// 필터 바꾸면 페이지 번호 초기화
-			$("input[name=pageNo]").val("1");
-			search();
-		}else {
-			var startDate = $("#startDate").val();
-			var endDate = $("#endDate").val();
-			var choice = startDate + "~" + endDate;
-			var titleTag = $(this).parents(".filter_title").find("span");
-			var titleStr = titleTag.html();
-			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
-			titleTag.html(titleStr);
-		}
-	});
-	
-	$(document).on("click", ".btn_cal", function() {
-		// 기간 : 직접선택
-		var startDate = $("#startDate").val();
-		var endDate = $("#endDate").val();
-		
-		if(startDate != "" && endDate != "") {
-			var choice = startDate + "~" + endDate;
-			$(".choice").attr("value", choice);
-			$(this).closest(".filter_list").stop().slideUp("fast");
-			
-			// 필터 바꾸면 페이지 번호 초기화
-			$("input[name=pageNo]").val("1");
-			search();	
-			
-		} else {
-			alert("시작날짜, 마지막날짜를 정확히 기입해주세요.");
-		}
-		
 	});
 
 	$(document).on("click", "div .paging a.prev", function() {
@@ -265,127 +163,6 @@
 		{
 			return false;
 		}
-	}
-	
-	function search() {
-		var keyword = $("#keyword_current").val();
-		keyword = $.trim(keyword);
-		var pageNo = $("input[name=pageNo]").val();
-		var transPageNo = pageNo.match(/[0-9]/g).join("");
-		if(pageNo != transPageNo) {
-			pageNo = transPageNo;
-			$("input[name=pageNo]").val(pageNo);
-		}
-		var pageVol = $("select[name=pageVol]").val();
-		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
-		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
-		var durationReg = $(".filter_durationReg .filter_list").find("[selected=selected]").attr("value");
-		var durationTake = $(".filter_durationTake .filter_list").find("[selected=selected]").attr("value");
-		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
-		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
-		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
-		var portRight = $(".filter_portRight .filter_list").find("[selected=selected]").attr("value");
-		var includePerson = $(".filter_incPerson .filter_list").find("[selected=selected]").attr("value");
-		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
-
-		var searchParam = {
-				"keyword":keyword
-				, "pageNo":pageNo
-				, "pageVol":pageVol
-				, "contentType":contentType
-				, "media":media
-				, "durationReg":durationReg
-				, "durationTake":durationTake
-				, "colorMode":colorMode
-				, "horiVertChoice":horiVertChoice
-				, "size":size
-				, "portRight":portRight
-				, "includePerson":includePerson
-				, "group":group
-		};
-		
-		view_form.keyword.value = keyword;
-		view_form.pageNo.value = pageNo;
-		view_form.pageVol.value = pageVol;
-		view_form.media.value = media;
-		view_form.durationReg.value = durationReg;
-		view_form.durationTake.value = durationTake;
-		view_form.colorMode.value = colorMode;
-		view_form.horiVertChoice.value = horiVertChoice;
-		view_form.size.value = size;
-		
-		//console.log(searchParam);
-		$("#keyword").val($("#keyword_current").val());
-		
-		var html = "";
-		$.ajax({
-			type: "POST",
-			async: false,
-			dataType: "json",
-			data: searchParam,
-			timeout: 1000000,
-			url: "search",
-			success : function(data) { //console.log(data);
-				$(data.result).each(function(key, val) {
-					html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
-					html += "<div class=\"info\">";
-					html += "<div class=\"photo_info\">" + val.ownerName + "</div>";
-					html += "<div class=\"right\">";
-					html += "<a class=\"over_wish\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">시안 다운로드</a> </div>";
-					html += "</div>";
-					html += "</li>";
-				});
-				$("#search_list ul").html(html);
-				$(window).scrollTop(0);
-				
-				var totalCount = data.count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
-				var totalPage = data.totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
-				
-				$("div .result b").text(totalCount);
-				$("div .paging span.total").html(totalPage);
-				
-				if("${loginInfo}" != ""){ // 로그인 시, 찜 목록을 불러오기
-					userBookmarkList();
-				}
-			},
-			error : function(request, status, error) {
-				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-			}
-		});
-	}
-	
-	function userBookmarkList() { // 사용자가 찜한 북마크 목록
-		var param = "action=list";
-		$.ajax({
-			type: "POST",
-			url: "bookmark.api?"+param,
-			dataType: "json",
-			success : function(data) { 
-				$(data.result).each(function(key, val) {
-					var uciCode = val.uciCode;
-					$("#search_list ul .over_wish").each(function(idx, value) { // 가로맞춤 보기
-						var list_uci = $("#search_list ul .over_wish").eq(idx).attr("value");
-						
-						if(list_uci == uciCode) {
-							$("#search_list ul .over_wish").eq(idx).addClass("on");
-						}
-					});
-
-				});
-			}
-		});
-	}
-	
-	function go_photoView(uciCode) {
-		// 상세페이지에서 [뒤로가기]로 목록페이지 이동 시, 기존의 검색옵션값을 유지하기 위해서 hash 설정
-		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value"); // 매체
-		var duration = $(".filter_duration .filter_list").find("[selected=selected]").attr("value"); // 기간
-		var horizontal = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value"); // 가로,세로
-		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value"); // 크기
-		document.location.hash = "#media=" + media + "#duration=" + duration + "#horizontal=" + horizontal + "#size=" + size; // 검색옵션 hash 설정
-		
-		$("#uciCode").val(uciCode);
-		view_form.submit();
 	}
 </script>
 </head>

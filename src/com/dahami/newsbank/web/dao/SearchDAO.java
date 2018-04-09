@@ -375,11 +375,11 @@ public class SearchDAO extends DAOBase {
 				logger.debug("ownerNo: (" + buf.toString() + ")");
 			}
 			
-			String duration = params.getDuration();
+//			String duration = params.getDuration();
 			String durationReg = params.getDurationReg();
 			String durationTake = params.getDurationTake();
 			
-			setDuration(duration, "searchDate", query);
+//			setDuration(duration, "searchDate", query);
 			setDuration(durationReg, "regDate", query);
 			setDuration(durationTake, "shotDate", query);
 			
@@ -451,7 +451,7 @@ public class SearchDAO extends DAOBase {
 	
 	private void setDuration(String duration, String field, SolrQuery query) {
 		if(duration != null && duration.trim().length() > 0) {
-			if(duration.indexOf("~") == -1) {
+			if(!duration.startsWith("C")) {
 				Calendar sCal = Calendar.getInstance();
 				Calendar eCal = Calendar.getInstance();
 				eCal.set(Calendar.HOUR_OF_DAY, 0);
@@ -481,8 +481,8 @@ public class SearchDAO extends DAOBase {
 				}
 			}
 			else {
-				String[] durationArry = duration.split("~");
-				query.addFilterQuery(field + ":[" + durationArry[0] + "000000 TO " + durationArry[1] + "000000]");
+				String[] durationArry = duration.substring(1).split("~");
+				query.addFilterQuery(field + ":[" + durationArry[0] + "000000 TO " + durationArry[1] + "235959]");
 			}
 			logger.debug(field + ": " + duration);
 		}

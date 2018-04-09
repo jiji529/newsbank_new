@@ -45,31 +45,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	var searchTarget = "cms.search";
 
 	$(document).ready(function() {
-		cms_search();
-	});
-	
-	$(document).on("click", ".btn_cal", function() {
-		// 기간 : 직접선택
-		var startDate = $("#startDate").val();
-		var endDate = $("#endDate").val();
-		var choice = startDate + "~" + endDate;
-		$(".choice").attr("value", choice);
-		$(this).closest(".filter_list").stop().slideUp("fast");
-		
-		// 필터 바꾸면 페이지 번호 초기화
-		$("input[name=pageNo]").val("1");
-		cms_search();
-	});
-	 
-	$(document).on("keypress", "#keyword", function(e) {
-		if(e.keyCode == 13) {	// 엔터
-			//$("#keyword_current").val($("#keyword").val());
-
-			// 키워드 바꾸면 페이지 번호 초기화
-			$("input[name=pageNo]").val("1");
-			
-			cms_search();
-		}
+		search();
 	});
 	
 	function checkNumber(event) {
@@ -82,7 +58,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			return;
 		}
 		else if(keyID == 13) {
-			cms_search();
+			search();
 		}
 		else
 		{
@@ -98,7 +74,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			pageNo = $("div .paging span.total").html();
 		}
 		$("input[name=pageNo]").val(pageNo);
-		cms_search();
+		search();
 	}
 	
 </script>

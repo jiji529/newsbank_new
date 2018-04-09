@@ -690,7 +690,7 @@ if(!contentBlidF) {
 				<c:if test="${loginInfo != null && loginInfo.deferred != 0}">
 					<div class="btn_wrap">
 						<div class="btn_buy" id="btnDown">
-							<a href="javascript:;" onclick="down('${photoDTO.uciCode}')">다운로드</a>
+							<a href="javascript:;" onclick="downDiferred('${photoDTO.uciCode}')">다운로드</a>
 						</div>
 					</div>
 				</c:if>

@@ -42,6 +42,52 @@ function setDatepicker() {
 	$(document).on("click", ".ico_cal", function() { // 달력 아이콘 클릭에 따른 datepicker 활성화
 		$(this).parent().find("input").focus();
 	});
+	
+	$(document).on("click", ".filter_list li", function() { // 검색 옵션 선택
+		var choice = $(this).text();
+		$(this).siblings().removeAttr("selected");
+		$(this).attr("selected", "selected");
+		
+		if(!$(this).hasClass("choice")){ // 직접 선택을 제외한 나머지는 slide up 이벤트 적용
+			var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
+			var titleTag = $(this).parents(".filter_title").find("span");
+			var titleStr = titleTag.html();
+			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+			titleTag.html(titleStr);
+			
+			$(this).closest(".filter_list").stop().slideUp("fast");		
+			// 필터 바꾸면 페이지 번호 초기화
+			$("input[name=pageNo]").val("1");
+			search();
+		}
+	});
+	
+	$(document).on("click", ".btn_cal", function() {
+		// 기간 : 직접선택
+		var startDate = $(this).parent().find("input[name=startDate]").val();
+		var endDate = $(this).parent().find("input[name=endDate]").val();
+		
+		if(startDate != "" && endDate != "") {
+			var choice = startDate + "~" + endDate;
+			
+			var titleTag = $(this).parents(".filter_title").find("span");
+			var titleStr = titleTag.html();
+			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+			titleTag.html(titleStr);
+			
+			var choiceTag = $(this).parents(".choice");
+			choiceTag.attr("value", "C" + choice);
+			
+			$(this).closest(".filter_list").stop().slideUp("fast");
+			// 필터 바꾸면 페이지 번호 초기화
+			$("input[name=pageNo]").val("1");
+			search();	
+			
+		} else {
+			alert("시작날짜, 마지막날짜를 정확히 기입해주세요.");
+		}
+		
+	});
 }
 </script>
 <%--사용자 검색 화면 확인을 위한 폼값 / 상단 검색어 연동(search / searchTop) --%>
@@ -74,10 +120,10 @@ function setDatepicker() {
 					<li class="choice">직접 입력
 						<div class="calendar">
 							<div class="cal_input">
-								<input type="text" class="datepicker" title="업로드 시작일" />
+								<input type="text" class="datepicker" name="startDate" title="업로드 시작일" />
 								<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 							<div class="cal_input">
-								<input type="text" class="datepicker" title="업로드 마지막일" />
+								<input type="text" class="datepicker" name="endDate" title="업로드 마지막일" />
 								<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 							<button class="btn_cal" type="button">적용</button>
 						</div>
@@ -95,10 +141,10 @@ function setDatepicker() {
 					<li class="choice">직접 입력
 						<div class="calendar">
 							<div class="cal_input">
-								<input type="text" class="datepicker" id="startDate" title="촬영 시작일" />
+								<input type="text" class="datepicker" name="startDate" title="촬영 시작일" />
 								<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 							<div class="cal_input">
-								<input type="text" class="datepicker" id="endDate" title="촬영 마지막일" />
+								<input type="text" class="datepicker" name="endDate" title="촬영 마지막일" />
 								<a href="javascript:void(0)" class="ico_cal">달력</a> </div>
 							<button class="btn_cal" type="button">적용</button>
 						</div>
@@ -158,7 +204,7 @@ function setDatepicker() {
 				<div class="size">
 <c:if test="${serviceMode eq true}">
 					<span class="grid on">가로맞춤보기</span>
-					<span class="square on">사각형보기</span>
+					<span class="square">사각형보기</span>
 </c:if>
 				</div>
 				<select name="pageVol" onchange="cms_search()">

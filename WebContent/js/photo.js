@@ -21,3 +21,19 @@ function down(uciCode) {
 	$("#downForm").submit();
 //	$("#downFrame").attr("src", url);
 }
+
+
+function downDiferred(uciCode) {
+	if(!confirm("고객님과 같은 그룹으로 묶인 계정에서 다운로드 받은 \n내역이 모두 공유됩니다.\n\n이미지를 다운로드 하시겠습니까?")) {
+		return;
+	}
+	
+	downInternal(uciCode);
+}
+
+function downInternal(uciCode) {
+	$("#downUciCode").val(uciCode);
+	$("#downType").val("file");
+	$("#downForm").attr("action", "/outline.down.photo");
+	$("#downForm").submit();
+}

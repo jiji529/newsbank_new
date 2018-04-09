@@ -54,7 +54,7 @@ function checkNumber(event) {
 		return;
 	}
 	else if(keyID == 13) {
-		cms_search();
+		search();
 	}
 	else
 	{
@@ -70,34 +70,8 @@ function goPage(pageNo) {
 		pageNo = $("div .paging span.total").html();
 	}
 	$("input[name=pageNo]").val(pageNo);
-	cms_search();
+	search();
 }
-
-$(document).on("click", ".filter_list li", function() {
-	var choice = $(this).text();
-	$(this).siblings().removeAttr("selected");
-	$(this).attr("selected", "selected");
-	
-	if(!$(this).hasClass("choice")){			
-		var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
-		var titleTag = $(this).parents(".filter_title").find("span");
-		var titleStr = titleTag.html();
-		titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
-		titleTag.html(titleStr);
-		
-		$(this).closest(".filter_list").stop().slideUp("fast");		
-		
-		// 필터 바꾸면 페이지 번호 초기화
-		$("input[name=pageNo]").val("1");
-		cms_search();
-	}else {
-		var startDate = $("#startDate").val();
-		var endDate = $("#endDate").val();
-		var choice = startDate + "~" + endDate;
-		var duration = $(".filter_duration").text();
-	}
-	
-});
 	
 	function isNotEmpty(value) { // 배열 빈값 제외
 		return value != "";
@@ -114,7 +88,7 @@ $(document).on("click", ".filter_list li", function() {
 	}
 
 	/** 한건 다운로드 */
-	function down(uciCode) {
+	function cmsDown(uciCode) {
 		if(!confirm("원본을 다운로드 하시겠습니까?")) {
 			return;
 		}
