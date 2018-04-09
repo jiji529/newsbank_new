@@ -70,6 +70,7 @@ public class CalculationAction extends NewsbankServletBase {
 		String start_date = null; // 시작 일자
 		String end_date = null; // 마지막 일자
 		String seqArr = null; // 피정산 매체
+		String keywordType = null;
 		
 		
 		if (request.getParameter("cmd") != null) { // 구분
@@ -157,6 +158,11 @@ public class CalculationAction extends NewsbankServletBase {
 		}
 		System.out.println("seqArr => " + seqArr);
 		
+		if (request.getParameter("keywordType") != null) { // 키워드
+			keywordType = request.getParameter("keywordType");
+		}
+		System.out.println("keywordType => " + keywordType);
+		
 		CalculationDTO calculationDTO = new CalculationDTO();
 		calculationDTO.setId(id);
 		calculationDTO.setSeq(seq);
@@ -189,6 +195,7 @@ public class CalculationAction extends NewsbankServletBase {
 				
 			case "R": 
 				// 정산 목록
+				param.put("keywordType", keywordType);
 				param.put("keyword", keyword);
 				param.put("start_date", start_date);
 				param.put("end_date", end_date);
@@ -221,6 +228,7 @@ public class CalculationAction extends NewsbankServletBase {
 				
 			case "S":
 				// 정산 월별통계
+				param.put("keywordType", keywordType);
 				param.put("keyword", keyword);
 				param.put("start_date", start_date);
 				param.put("end_date", end_date);

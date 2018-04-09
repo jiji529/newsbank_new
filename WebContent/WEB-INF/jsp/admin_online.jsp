@@ -82,6 +82,7 @@
 	});
 	
 	function search(state) {
+		var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
 		var pageVol = parseInt($("#sel_pageVol option:selected").attr("value")); // 페이지 표시 갯수
 		var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
@@ -97,7 +98,8 @@
 		$("#select_period").text(select_period);
 		
 		var searchParam = {
-			"keyword":keyword
+			"keywordType":keywordType
+			, "keyword":keyword
 			, "pageVol":pageVol
 			, "startPage":startPage
 			, "start_date":start_date
@@ -263,7 +265,14 @@
 						<tbody>
 							<tr>
 								<th>검색</th>
-								<td><input type="text" class="inp_txt" size="80" id="keyword" placeholder="아이디, 이름, 주문번호" /></td>
+								<td>
+								<select name="keywordType" class="inp_txt" style="width:200px;">
+									<option value="member" selected="selected">회사/기관명, 아이디, 이름</option>
+									<option value="photo">UCI코드, 언론사 사진번호</option>
+								</select>	
+								<input type="text" class="inp_txt" size="80" id="keyword" placeholder="회사/기관명, 아이디, 이름, UCI코드, 언론사 사진번호" />
+								
+								</td>
 							</tr>
 							<tr>
 								<th>기간 선택</th>

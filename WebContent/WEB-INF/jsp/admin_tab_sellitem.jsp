@@ -70,6 +70,7 @@
 	
 	// 정산목록 검색(정산매체 선택)
 	function search() {
+		var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
 		var keyword = $("#keyword").val(); // 키워드
 		var start_date = $("input[name=start_date]").val(); // 시작일
 		var end_date = $("input[name=end_date]").val(); // 종료일
@@ -88,6 +89,7 @@
 		}
 		
 		var param = {
+				"keywordType":keywordType,
 				"seqArr" : seqArr,
 				"cmd" : "R",
 				"start_date" : start_date,
@@ -210,8 +212,14 @@
 		<tbody>
 			<tr>
 				<th>검색</th>
-				<td><input type="text" class="inp_txt" size="80" id="keyword"
-					placeholder="아이디, 이름, 회사명" /></td>
+				<td>
+					<select name="keywordType" class="inp_txt" style="width:200px;">
+					    <option value="member" selected="selected">회사/기관명, 아이디, 이름</option>
+					    <option value="photo">UCI코드, 언론사 사진번호</option>
+					</select>
+					<input type="text" class="inp_txt" size="80" id="keyword"
+					placeholder="아이디, 이름, 회사명" />
+				</td>
 			</tr>
 			<tr>
 				<th>기간 선택</th>
@@ -264,6 +272,7 @@
 						<option value="SC0040">무통장 입금</option>
 						<option value="SC0030">실시간 계좌이체</option>
 						<option value="SC9999">오프라인 세금계산서 발행</option>
+						<option value="SC0010">신용카드</option>
 				</select></td>
 			</tr>
 		</tbody>

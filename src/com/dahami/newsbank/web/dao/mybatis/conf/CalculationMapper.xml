@@ -79,7 +79,16 @@
 		    <if test="start_date != null and end_date != null">
 		    	AND date_format(C.`regDate`, '%Y-%m-%d') BETWEEN #{start_date} AND #{end_date}     
 		    </if>
-		    <if test="keyword != null">
+		    <if test="keyword != null and keyword != ''">
+		    	<if test="keywordType == 'member2'"> <!-- 회사/기관명, 아이디, 이름 -->
+				 AND M.id LIKE CONCAT('%', #{keyword}, '%')
+				     OR M.name LIKE CONCAT('%', #{keyword}, '%')
+				     OR M.compName LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+				 AND P.uciCode LIKE CONCAT('%', #{keyword}, '%')
+				    OR (SELECT compCode FROM photo WHERE uciCode = C.uciCode) LIKE CONCAT('%', #{keyword}, '%')
+				</if>
 	            <bind name="keyword" value="'%' + keyword + '%'" />
 	            AND (M.`name` LIKE #{keyword} OR M.`compName` LIKE #{keyword} OR M.`id` LIKE #{keyword})
             </if>
@@ -113,7 +122,16 @@
 	        <if test="paytype != null and paytype != 'all'">
 	            AND c.payType = #{paytype}
 	        </if>
-	        <if test="keyword != null">
+	        <if test="keyword != null and keyword != ''">
+		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+				 AND m.id LIKE CONCAT('%', #{keyword}, '%')
+				     OR m.name LIKE CONCAT('%', #{keyword}, '%')
+				     OR m.compName LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+				 AND p.uciCode LIKE CONCAT('%', #{keyword}, '%')
+				    OR (SELECT compCode FROM photo WHERE uciCode = c.uciCode) LIKE CONCAT('%', #{keyword}, '%')
+				</if>
 	            <bind name="keyword" value="'%' + keyword + '%'" />
 	            AND (m.`name` LIKE #{keyword} OR m.`compName` LIKE #{keyword} OR m.`id` LIKE #{keyword})
 	        </if>

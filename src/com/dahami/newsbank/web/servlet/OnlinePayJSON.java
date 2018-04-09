@@ -49,6 +49,7 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		String message = "";
 		String start_date = request.getParameter("start_date");
 		String end_date = request.getParameter("end_date");
+		String keywordType = request.getParameter("keywordType");
 		String keyword = request.getParameter("keyword");
 		String paytype = request.getParameter("paytype"); // 결제방법
 		String paystatus = request.getParameter("paystatus"); // 결제상황
@@ -71,6 +72,9 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			if (end_date != null && end_date.length() > 0) {
 				end_date = end_date.replaceAll("-", "");
 				params.put("end_date", end_date);
+			}
+			if(keywordType != null && keywordType.length() > 0){
+				params.put("keywordType", keywordType);
 			}
 			if (keyword != null && keyword.length() > 0) {
 				params.put("keyword", keyword);
