@@ -82,6 +82,7 @@ public class ListMediaJSON extends HttpServlet {
 			arr.put("regDate", listMember.get(idx).get("regDate"));
 			arr.put("masterID", listMember.get(idx).get("masterID"));
 			arr.put("activate", listMember.get(idx).get("activate"));
+			arr.put("logo", listMember.get(idx).get("logo"));
 			//arr.put("blind", listMember.get(idx).get("blind"));
 			//arr.put("total", listMember.get(idx).get("total"));
 			jArray.add(arr);

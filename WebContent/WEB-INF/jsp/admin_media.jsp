@@ -171,7 +171,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		if(pages == "") pages = 1;
 		$("#startgo").val(pages);
 		
-		listJson();
+		search("not_paging");
 	});
 
 	// 첫번쨰 페이지
@@ -179,7 +179,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var pages = "1";
 		$("#startgo").val(pages);
 		
-		listJson();
+		search("not_paging");
 	});
 
 	// 마지막 페이지
@@ -187,7 +187,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var pages = $("#lastvalue").val();
 		$("#startgo").val(pages);
 		
-		listJson();
+		search("not_paging");
 	});
 
 	// 이전 페이지
@@ -195,7 +195,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var pages = $("#pagination-demo .page.active").text();
 		$("#startgo").val(pages);
 		
-		listJson();
+		search("not_paging");
 	});
 
 	// 다음 페이지
@@ -203,124 +203,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var pages = $("#pagination-demo .page.active").text();
 		$("#startgo").val(pages);
 		
-		listJson();
+		search("not_paging");
 	});
 	
-	function listJson() {
-		var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
-		var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
-		var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
-		var pageCnt = 0; // 전체 페이지 갯수
-		var totalCnt = 0; // 전체 갯수
-		
-		var searchParam = {
-			"keyword":keyword
-			, "pageVol":pageVol
-			, "startPage":startPage
-		};
-		
-		var html = "";		
-		$("#loading").show();
-		$("#mtBody").empty();
-		
-		$.ajax({
-			type: "POST",
-			dataType: "json",
-			data: searchParam,
-			url: "/listMedia.api",
-			success: function(data) { console.log(data);
-				pageCnt = data.pageCnt; // 총 페이지 갯수
-				totalCnt = data.totalCnt; // 총 갯수
-				
-				$(data.result).each(function(key, val) {
-					var seq = val.seq;
-					var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
-					var id = val.id; // 아이디
-					var compName = val.compName; // 매체사명
-					var name = val.name; // 이름
-					var phone = val.phone; // 휴대폰 번호
-					var activate = val.activate; // 1: 노출, 2: 비노출
-					
-					if(phone != null && phone.length >= 10) {
-						var phone1, phone2, phone3;
-						phone1 = phone.substring(0, 3);
-						if(phone.length == 11) {
-							phone2 = phone.substring(3, 7);
-						}else {
-							phone2 = phone.substring(3, 6);
-						}
-						phone3 = phone.substring(phone.length-4, phone.length);
-						phone = phone1 + "-" + phone2 + "-" + phone3;
-					}
-					
-					var email = val.email; // 이메일
-					var compNum = val.compNum; // 사업자등록번호
-					if(compNum != null && compNum.length == 10) {
-						var comp1, comp2, comp3;					
-						var comp1 = compNum.substring(0, 3);
-						var comp2 = compNum.substring(3, 5);
-						var comp3 = compNum.substring(compNum.length-5, compNum.length);
-						compNum = comp1 + "-" + comp2 + "-" + comp3;	
-					}else {
-						compNum = "-";
-					}
-					
-					var preRate = val.preRate; // 온라인 요율
-					var postRate = val.postRate; // 오프라인 요율
-					var totalRate;
-					// 온/오프라인 요율
-					if(preRate != null && postRate != null) {
-						totalRate = "온라인<br/>" + preRate + "%<br/> 오프라인<br/>" + postRate + "%";	
-					}else {
-						preRate = (preRate == null) ? "" : preRate;
-						postRate = (postRate == null) ? "" : postRate;
-						totalRate = "온라인<br/>" + preRate + " - <br/> 오프라인<br/>" + postRate + "-";
-					}
-					var contentCnt = (val.contentCnt).split("|");
-					var blind = contentCnt[0]; // 블라인드 수량
-					var total = contentCnt[1]; // 전체 수량
-					var contentCnt = blind + " / " + total; // 콘텐츠 수량 (블라인드/전체)
-					//var contentCnt = "-";					
-					var service = ""; // 서비스 상태
-					if(activate == 1){ service = "활성"; } else if(activate == 2){ service = "비활성"; }
-					var calc = "정산"; // 정산 상태
-					var masterID = val.masterID;
-					if(masterID != null) {
-						calc = "피정산<br/>" + "(" + masterID + ")";								
-					}					
-					
-					html += '<tr>';
-					//html += '<tr onclick="go_mediaView(\'' + seq + '\')">';
-					html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
-					html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
-					html += '<label for="check' + key + '">선택</label>';
-					html += '</div></td>';
-					html += '<td>' + number + '</td>';
-					html += '<td>' + id + '</td>';
-					html += '<td>' + compName + '</td>';					
-					html += '<td>' + name + '</td>';
-					html += '<td>' + phone + '</td>';
-					html += '<td>' + email + '</td>';
-					html += '<td>' + compNum + '</td>';
-					html += '<td>' + totalRate + '</td>';
-					html += '<td>' + contentCnt + '</td>';
-					html += '<td><span class="popup_open"><a href="#none" class="table_btn">' + service + '</a></span></td>';
-					html += '<td>' + calc + '</td>';
-					//html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" /></a></div></td>';
-					
-					html += '<td><a class="file" href="/images/logo_b.svg" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file"></a></div></td>';
-					html += '</tr>';
-					
-				});
-				$(html).appendTo("#mtBody");
-			},
-			complete: function() {
-				$("#loading").hide();
-			}
-		});
-	}
 	
-	function search() {
+	
+	function search(state) {
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
 		var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
 		var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
@@ -402,6 +290,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					if(masterID != null) {
 						calc = "피정산<br/>" + "(" + masterID + ")";								
 					}					
+					var logo = val.logo; // 로고 파일경로
 					
 					html += '<tr class="row">';
 					//html += '<tr onclick="go_mediaView(\'' + seq + '\')">';
@@ -420,16 +309,21 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += '<td>' + contentCnt + '</td>';
 					html += '<td><span class="popup_open"><a href="#none" class="table_btn">' + service + '</a></span></td>';
 					html += '<td>' + calc + '</td>';
-					//html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" /></a></div></td>';
 					
-					html += '<td><a class="file" href="/images/logo_b.svg" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file"></a></div></td>';
+					if(logo) {
+						html += '<td><a class="file" href="/logo.down.photo?seq=' + seq + '" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file"></a></div></td>';
+					}else {
+						html += '<td><div class="file_edit upload-btn-wrapper"><a href="#" class="table_btn">추가<input type="file" name="logo" accept="application/pdf, image/*" required /></a></div></td>';						
+					}
 					html += '</tr>';
 					
 				});
 				$(html).appendTo("#mtBody");
 			},
 			complete: function() {			
-				pagings(pageCnt);		
+				if(state == undefined){
+					pagings(pageCnt);		
+				}
 				$("#loading").hide();
 			}
 		});
@@ -494,12 +388,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	// 정산 매체사 - 선택 활성화
 	function check_approve() {
 		var chk_total = $("#mtBody input:checkbox:checked").length;
+		/* var chk_values = $("input:checkbox:checked").map(function() {
+			return this.value;
+		}).get(); */
 		
 		if(chk_total == 0) { // 선택항목 갯수 체크
 			alert("최소 1개 이상을 선택해주세요.");
 		} else {
 			
-			if(confirm("선택한 항목을 활성화하시겠습니까?")) {
+			if(confirm("언론사의 서비스 상태를 활성으로 변경하시겠습니까?\n 서비스 상태가 활성이면 뉴스뱅크 서비스 사이트에서 사진 노출 및 검색, 구매가 가능합니다.")) {
 				
 				$("#mtBody input:checkbox:checked").each(function(index) {
 					var seq = $(this).val();
