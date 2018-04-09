@@ -157,18 +157,6 @@ if(!contentBlidF) {
 if(!contentBlidF) {
 %>
 				<div class="btn_down" value="${photoDTO.uciCode}"><a>원본이미지 다운로드</a></div>
-				<!--
-				<div class="cms_rt">
-					<h3 class="info_tit">다운로드</h3>
-					<div class="sum_sec">
-						<div class="btn_wrap">
-							<div class="btn_buy" id="btnDown">
-								<a href="javascript:;" onclick="down('${photoDTO.uciCode}')">원본이미지 다운로드</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				-->
 <%
 }
 %>

@@ -16,6 +16,7 @@
 ---------------------------------------------------------------------------%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
+<%@page import="com.dahami.newsbank.web.dto.MemberDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
@@ -125,16 +126,13 @@
 	
 	// #다운로드
 	$(document).on("click", ".over_down", function() {
-		var login_state = login_chk();
-		
-		if(login_state) { // 로그인 시
-			var uciCode = $(this).attr("value");
-			down(uciCode); // 다운로드
-			
-		} else { // 비회원
-			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
-				$(".gnb_right li").first().children("a").click();	
-			}
+		var uciCode = $(this).attr("value");
+		<%-- 후불 여부에 따른 다운로드 --%>
+		if(login_isDeferred()) {
+			downDiferred(uciCode); // 후불 다운로드	
+		}
+		else {
+			downOutline(uciCode); // 시안 다운로드
 		}
 	});
 	
@@ -145,6 +143,15 @@
 			login_state = true;
 		}
 		return login_state;
+	}
+	
+	function login_isDeferred() {
+		if(login_chk()) {
+			if("${loginInfo.deferred}" != "<%=MemberDTO.DEFERRED_NORMAL%>") {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	function checkNumber(event) {

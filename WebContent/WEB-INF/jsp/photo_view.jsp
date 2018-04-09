@@ -72,16 +72,7 @@ if(photoDto == null
 	});
 	
 	$(document).on("click", ".btn_down", function() {
-		var login_state = login_chk();
-		var uciCode = '${photoDTO.uciCode}';
-		
-		if(login_state) {
-			down(uciCode);
-		} else {
-			if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
-				$(".gnb_right li").first().children("a").click();	
-			}
-		}
+		downOutline("${photoDTO.uciCode}");
 	});
 	
 	$(document).on("click", ".in_prev", function() {
