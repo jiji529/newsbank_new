@@ -50,6 +50,7 @@
 .filters .filter_rt .viewbox .size .square{ background-position:-22px 2px;}
 .filters .filter_rt .viewbox select { float:left; padding:1px 4px; border-color:#999;}
 
+.filters.sml li .filter_list{ position:fixed;}
 .filters.sml li.filter_title.filter_ico{ display:none;}
 .filters.sml li.filter_title, .mypage .filters.sml li.filter_title{padding:0 24px 0 12px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size:13px;}
 .filters.sml li.filter_title:after{right:10px;}
