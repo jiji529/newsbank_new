@@ -176,7 +176,7 @@
 									</a>
 								</div>
 								<div class="cart_info">
-									<a href="<%=IMG_SERVER_URL_PREFIX %>/view.cms?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
+									<a href="<%=IMG_SERVER_URL_PREFIX %>/view.photo?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
 										<div class="brand">${paymentDetailList.photoDTO.copyright }</div>
 										<div class="code">${paymentDetailList.photo_uciCode }</div>
 									</a>
@@ -211,6 +211,7 @@
 									<c:if test="${paymentDetailList.downExpire eq false}">
 										<input type="hidden" name="paymentDetail_seq" value="${paymentDetailList.paymentDetail_seq}" />
 										<button type="button" class="btn_o" name="btn_down" value="${paymentDetailList.photo_uciCode }">다운로드</button>
+										<button type="button" class="btn_g" name="btn_cancel">결제 취소</button>
 									</c:if>
 								</div>
 							</c:if>
@@ -225,15 +226,26 @@
 		
 		<!-- 결제상태 조건 (1: 결제승인, 2: 결제대기, 3: 무통장입금) -->
 		<c:if test="${paymentManageDTO.LGD_PAYSTATUS eq '1' or paymentManageDTO.LGD_PAYSTATUS eq '2' or paymentManageDTO.LGD_PAYSTATUS eq '3'}">
-			<div class="btn_area">
+				<div class="btn_area prec">
+				<p>이미지 다운로드 이력이 없으신 경우에 한하여 결제일로부터 7일 이내에 결제 취소 요청이 가능합니다.</p>
+				<a href="javascript:;" onclick="cancelPay('${paymentManageDTO.LGD_OID}', ${paymentManageDTO.paymentManage_seq }, '${paymentManageDTO.LGD_PAYDATE}', ${totalDownCount})" class="btn_input1 precautions_btn">전체 결제 취소</a>
 				<ul class="precautions">
-					<li>- 환불 가능 기간은 결제일로부터 7일입니다. </li>
-					<li>- 환불가능 기간이 지난 건에 대해서는 결제 취소 요청을 하실 수 없습니다.</li>
-					<li>- 이미지 다운로드 이력이 없으신 경우에 한하여 해당 기간 내에 결제 취소 요청이 가능합니다.</li>
-					<li>- 이미지를 다운로드 하시면 이미지를 사용하지 않으시더라도 결제 취소를 하실 수 없습니다.</li>
+					<li>※ 결제 취소/환불 유의사항</li>
+					<li>• 환불신청 기간(결제 후 7일 이내)이 지난 결제 건은 다운로드 내역이 없더라도 결제 취소를 신청하실 수 없습니다.</li>
+					<li>• 다운로드 내역이 있는 결제 건은 환불신청 기간 이내여도 결제 취소를 신청하실 수 없습니다.</li>
+					<li>• 부분 취소를 한 주문 건에 대한 전체 결제 취소는 불가능합니다.</li>
 				</ul>
-				<a href="javascript:;" onclick="cancelPay('${paymentManageDTO.LGD_OID}', ${paymentManageDTO.paymentManage_seq }, '${paymentManageDTO.LGD_PAYDATE}', ${totalDownCount})" class="btn_input1 precautions_btn">결제 취소</a>
+				<ul class="precautions ">
+					<li>□ 신용카드 결제 취소: </li>
+					<li>-	해외카드의 경우, 승인취소(매입전취소)가 불가능합니다.</li>
+					<li>-	단, 해외 VISA카드만 당일 결제 건에 한하여 취소가 가능합니다.</li></ul>
+				<ul class="precautions ">
+					<li>□ 실시간 계좌이체 및 무통장입금 결제 취소:</li>
+					<li>-	고객센터(02-593-4174)로 문의 부탁드립니다. </li>
+				</ul>
 			</div>
+			
+			
 		</c:if>
 		
 		<a href="buylist.mypage" class="mp_btn">목록</a> </section> </section>

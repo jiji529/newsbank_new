@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
  * Servlet implementation class Findpw
@@ -66,7 +67,7 @@ public class FindChange extends NewsbankServletBase {
 				if (session.getAttribute("findMemberDTO") != null) {
 					
 					memberDTO = (MemberDTO) session.getAttribute("findMemberDTO");
-					memberDTO.setPw(pw);
+					memberDTO.setPw(CommonUtil.sha1(pw));
 					result = memberDAO.updateMember(memberDTO); // 회원정보 요청
 					if(result) {
 						message = "수정되었습니다.";

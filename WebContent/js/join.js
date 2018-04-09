@@ -364,9 +364,12 @@ $(document).ready(function() {
 	
 	// 회사 전화번호 체크
 	function validCompTel() {
-		var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+		var telRegex = /^0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 일반전화
+		var phoneRegex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 휴대전화
+		
 		var compTel = $("#compTel1").val() + $("#compTel2").val() + $("#compTel3").val();
-		if (regex.test(compTel) && compTel.length > 0) {
+		
+		if(compTel.length > 0 && (telRegex.test(compTel) || phoneRegex.test(compTel)) ) {
 			if($('#frmJoin').find("[name=compTel]").length>0){
 				$('#frmJoin').find("[name=compTel]").val(compTel);
 			}else{

@@ -317,6 +317,7 @@
 
 		</set>
 		where LGD_OID = #{LGD_OID}
+		<if test="member_seq != null">AND member_seq = #{member_seq} </if>
 
 	</update>
 	
