@@ -38,6 +38,10 @@ function setDatepicker() {
      closeText: '닫기', 
      dateFormat: "yymmdd"
   });
+	
+	$(document).on("click", ".ico_cal", function() { // 달력 아이콘 클릭에 따른 datepicker 활성화
+		$(this).parent().find("input").focus();
+	});
 }
 </script>
 <%--사용자 검색 화면 확인을 위한 폼값 / 상단 검색어 연동(search / searchTop) --%>

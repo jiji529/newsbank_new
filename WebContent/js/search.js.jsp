@@ -75,7 +75,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			filterForm.find("span").text(header + itemName);
 		}
 	}
+/*
 	//날짜 입력 오늘 날짜, 입력되도록 해둠 2017.04.06 이재우
+	// 익스플로러에서 비정상 동작하여 사용안함 / 오늘로 이동으로 변경함
 	$(document).on('click', ".datepicker" , function(){
 		var elmnt = $(this);
 		$("button.ui-datepicker-current").on('click', function(){
@@ -83,6 +85,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			$(".ui-datepicker-close").click();
 		});
 	});
+*/
 	
 	function cms_search() {
 		var keyword = $("#cms_keyword").val();

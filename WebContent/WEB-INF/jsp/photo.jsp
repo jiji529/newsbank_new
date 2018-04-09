@@ -157,10 +157,6 @@
 		}
 		
 	});
-	
-	$(document).on("click", ".ico_cal", function() { // 달력 아이콘 클릭에 따른 datepicker 활성화
-		console.log("달력 아이콘");
-	});
 
 	$(document).on("click", "div .paging a.prev", function() {
 		var prev = $("input[name=pageNo]").val() - 1;

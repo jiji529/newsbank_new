@@ -183,6 +183,10 @@
 .mypage #cms_list2 .thumb .thumb_btn .btn_view{background:url(../images/mp/btn_view.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_cart{background:url(../images/mp/btn_cart.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn .blind{background:url(../images/mp/btn_blind.png) center 6px no-repeat;}
+.mypage #cms_list2 .thumb .thumb_btn .hide{background:none;cursor:default}
+.mypage #cms_list2 .thumb .thumb_btn .hide:hover{background-color:#666;}
+.mypage #cms_list2 .thumb .thumb_btn .deleted{background:url(../images/mp/btn_deleted.png) center 6px no-repeat;cursor:default;}
+.mypage #cms_list2 .thumb .thumb_btn .deleted:hover{background-color:#666;}
 .mypage #cms_list2 .thumb .thumb_btn .btn_likeness{background:url(../images/mp/btn_likeness.png) center 6px no-repeat;}
 .mypage #cms_list2 .thumb .thumb_btn li:hover{background-color:#4d4d4d;}
 
