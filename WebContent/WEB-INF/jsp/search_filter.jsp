@@ -47,8 +47,11 @@ function setDatepicker() {
 <%--사용자 검색 화면 확인을 위한 폼값 / 상단 검색어 연동(search / searchTop) --%>
 <c:if test="${serviceMode eq true}">
 	<input type="hidden" id="serviceMode" />
+	<div class="filters">
 </c:if>
+<c:if test="${serviceMode ne true}">
 	<div class="filters sml">
+</c:if>
 		<ul>
 			<li class="filter_title filter_ico">검색필터</li>
 			<li class="filter_title filter_media">
@@ -153,7 +156,10 @@ function setDatepicker() {
 			</div>
 			<div class="viewbox">
 				<div class="size">
+<c:if test="${serviceMode eq true}">
+					<span class="grid on">가로맞춤보기</span>
 					<span class="square on">사각형보기</span>
+</c:if>
 				</div>
 				<select name="pageVol" onchange="cms_search()">
 					<option value="40" selected="selected">40</option>
