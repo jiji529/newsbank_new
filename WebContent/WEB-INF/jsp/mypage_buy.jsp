@@ -176,7 +176,7 @@
 									</a>
 								</div>
 								<div class="cart_info">
-									<a href="<%=IMG_SERVER_URL_PREFIX %>/view.cms?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
+									<a href="<%=IMG_SERVER_URL_PREFIX %>/view.photo?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
 										<div class="brand">${paymentDetailList.photoDTO.copyright }</div>
 										<div class="code">${paymentDetailList.photo_uciCode }</div>
 									</a>

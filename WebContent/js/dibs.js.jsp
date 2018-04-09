@@ -80,6 +80,8 @@ function dibsList() {
 	var pageVol = $("select[name=limit]").val(); // 페이지당 표현 갯수
 	var pageNo = $("input[name=pageNo]").val(); // 현재 페이지
 	
+	console.log("bookmark_seq : " + bookmark_seq + " / pageVol : " + pageVol + " / pageNo : " + pageNo);
+	
 	var html = "";
 	$.ajax({
 		url: "/DibsJSON",
