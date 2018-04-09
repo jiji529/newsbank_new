@@ -25,7 +25,6 @@ if(photoDto == null
 <link rel="stylesheet" href="css/sub.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/photo.js?v=20180226"></script>
 <script type="text/javascript">
 	$(document).ready(function(key, val){
 		relation_photo();
@@ -691,15 +690,8 @@ if(!contentBlidF) {
 }
 %>
 	</section>
-	<%@include file="footer.jsp"%>
+<%@include file="footer.jsp"%>
 </div>
-<form id="downForm" method="post"  target="downFrame">
-	<input type="hidden" id="downUciCode" name="uciCode" />
-	<input type="hidden" id="downType" name="type" />
-	<input type="hidden" name="dummy" value="<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
-	<input type="hidden" id="group_seq" name="group_seq" value="${memberInfo.group_seq}" />
-</form>
-<iframe id="downFrame" style="display:none" >
-</iframe>
+<%@include file="down_frame.jsp" %>
 </body>
 </html>

@@ -191,9 +191,8 @@
 			</section>
 			<div class="more"><a href="javascript:void(0)" name="nextPage">다음 페이지</a></div>
 		</section>
-		<%@include file="footer.jsp"%>
+<%@include file="footer.jsp"%>
 	</div>
-<iframe id="downFrame" style="display:none" >
-</iframe>
+<%@include file="down_frame.jsp" %>
 </body>
 </html>

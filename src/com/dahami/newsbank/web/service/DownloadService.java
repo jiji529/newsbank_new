@@ -430,7 +430,7 @@ public class DownloadService extends ServiceBase {
 				// ZIP은 후불 회원 / 소유자 / 구매자만 다운로드 가능
 				if (memberInfo != null) {
 					// PhotoDTO 읽기
-					String[] uciCodes = request.getParameterValues("uciCode");
+					String[] uciCodes = request.getParameter("uciCode").split("\\$\\$");
 					for (int i = 0; i < uciCodes.length; i++) {
 						PhotoDTO photo = photoDao.read(uciCodes[i]);
 						String newDownType = getSuitableDownType(photo, memberInfo, DOWN_TYPE_SERVICE, serviceCode, ip);

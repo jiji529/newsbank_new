@@ -60,26 +60,6 @@
 		return uciCode;
 	}
 	
-	/** 선택 다운로드 */
-	function mutli_download() {
-		var uciCode = getCheckedList();
-		if(uciCode.length == 0) {
-			alert("선택된 사진이 없습니다.");
-			return;
-		}
-		
-		if(!confirm("선택파일을 압축파일로 다운로드하시겠습니까?\n삭제된 파일은 다운로드 되지 않습니다.")) {
-			return;
-		}
-		
-		var param = uciCode.join("&uciCode=");
-		
-		var url = "<%=IMG_SERVER_URL_PREFIX%>/zip.down.photo?&type=file&uciCode=";
-		url += param;
-		
-		$("#downFrame").attr("src", url);
-	}
-	
 	/** 선택 블라인드/해제 */
 	function multi_blind(saleState) {
 		var uciCode = getCheckedList();

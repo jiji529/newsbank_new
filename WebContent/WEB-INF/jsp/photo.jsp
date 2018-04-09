@@ -35,7 +35,6 @@
 <script src="js/search.js.jsp"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/photo.js"></script>
 <script type="text/javascript">
 	var loginInfo = "${loginInfo}";
 	var searchTarget = "search";
@@ -190,15 +189,9 @@
 		<div class="more">
 			<a href="javascript:void(0)" name="nextPage">다음 페이지</a>
 		</div>
-		<%@include file="footer.jsp"%>
+<%@include file="footer.jsp"%>
 	</div>
-<form id="downForm" method="post"  target="downFrame">
-	<input type="hidden" id="downUciCode" name="uciCode" />
-	<input type="hidden" id="downType" name="type" />
-	<input type="hidden" name="dummy" value="<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
-</form>
-<iframe id="downFrame" name="downFrame" style="display:none" >
-</iframe>
 <%@include file="view_form.jsp"%>
+<%@include file="down_frame.jsp" %>
 </body>
 </html>

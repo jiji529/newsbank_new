@@ -42,7 +42,6 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
-<script src="js/photo.js"></script>
 <script type="text/javascript">
 	function popup_usage() {
 		var uciCode_arr = new Array();
@@ -251,15 +250,6 @@
 <form id="dateForm" method="post"  target="dateFrame">
 	<input type="hidden" id="year" name="year" />
 </form>
-
-<form id="downForm" method="post"  target="downFrame">
-	<input type="hidden" id="downUciCode" name="uciCode" />
-	<input type="hidden" id="downType" name="type" />
-	<input type="hidden" name="dummy" value="<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
-	<input type="hidden" id="group_seq" name="group_seq" value="${memberInfo.group_seq}" />
-</form>
-<iframe id="downFrame" style="display:none" >
-</iframe>
-
+<%@include file="down_frame.jsp" %>
 </body>
 </html>
