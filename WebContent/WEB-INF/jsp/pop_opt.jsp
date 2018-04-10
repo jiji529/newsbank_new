@@ -296,8 +296,10 @@
 		function updateUsageOption() {
 			var uciCode = "${uciCode}";
 			
+			console.log(uciCode);
+			
 			// 기존의 옵션 모두 삭제
-			$.ajax({
+			/* $.ajax({
 				url: "/cart.popOption?action=deleteCart",
 				type: "POST",
 				data: {
@@ -307,14 +309,20 @@
 					insertUsageOption(uciCode);
 				}
 				
-			});
+			}); */
 		}
 		
 		// #장바구니 옵션 추가하기
 		function insertUsageOption(uciCode) {
+			// 1. 선택사진 배열 가져오기 (uciCodes)
+			// 2. 사용용도, 가격 배열 가져오기 (usageList_seq, price)
+			
+			
+		}
+		/* function insertUsageOption(uciCode) {
 			//var uciCode = "${uciCode}";
 			
-			$(".op_cont").each(function(index){
+			$(".op_cont").each(function(index){ // 선택된 사용용도 리스트 갯수대로 시행
 				var usageList_seq = $(".op_cont").eq(index).attr("value");
 				var price = $(".op_price").eq(index).attr("value");
 				
@@ -334,10 +342,65 @@
 					}
 				});
 			});
-		}
+		} */
 		
 		// #찜관리 - 다중선택에 따른 장바구니 담기
-		function insertMultiCart() {
+		function insertMultiCart() {			
+			var uciCodeArr = ("${uciCode}").split(","); // uciCode 배열
+			var cartArray = new Array(); // 장바구니 배열
+			
+			$.each(uciCodeArr, function(key, value) {
+				var uciCode = value;
+				
+				$(".op_cont").each(function(index){ // 선택된 사용용도 리스트 갯수대로 시행
+					var usageList_seq = $(".op_cont").eq(index).attr("value"); // 사용용도 고유번호
+					var price = $(".op_price").eq(index).attr("value"); // 사용용도 가격
+					
+					var obj = new Object(); // 객체
+					obj.uciCode = uciCode;
+					obj.usageList_seq = usageList_seq;
+					obj.price = price;
+					
+					cartArray.push(obj);
+					console.log(obj);
+				});
+			});
+			
+			console.log(cartArray);
+			
+			// 선택옵션 새롭게 추가
+			$.ajax({
+				url: "/cart.popOption?action=insertCart",
+				type: "POST",
+				/* data: {
+					"cartArray" : cartArray					
+				}, */
+				data : ({
+					cartArray : JSON.stringify(cartArray)
+				}),
+				success: function(data) {
+					alert("장바구니에 추가되었습니다.");
+					window.close();
+					opener.parent.location.reload();						
+				}
+			});
+			
+			/* $(".op_cont").each(function(index){ // 선택된 사용용도 리스트 갯수대로 시행
+				var usage = new Object(); // 사용용도 객체
+				var seq = $(".op_cont").eq(index).attr("value");
+				var price = $(".op_price").eq(index).attr("value");
+				
+				usage.seq = seq;
+				usage.price = price;
+				
+				usageArray.push(usage);
+			});
+			
+			console.log(uciCode);
+			console.log(usageArray); */
+		}
+		
+		/* function insertMultiCart() {
 			var uciCode = "${uciCode}";
 			var result = "";
 			if(uciCode.indexOf("|")) {
@@ -350,7 +413,7 @@
 			}else {
 				console.log(uciCode);
 			}
-		}
+		} */
 		
 		// #옵션 추가/삭제에 따른 총 금액(수량) 후처리
 		function setTotalCount() {

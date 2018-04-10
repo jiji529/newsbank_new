@@ -47,9 +47,12 @@
 			data: {
 				"uciCode" : uciCode
 			},
-			success: function(data){ 
+			success: function(data){  console.log(data);
+				var result = data.result;
 				var success = data.success;
 				var message = data.message;
+				
+				console.log(result + " / " + success + " / " + message);
 				
 				if(success) {
 					alert("찜목록에 추가되었습니다.");	

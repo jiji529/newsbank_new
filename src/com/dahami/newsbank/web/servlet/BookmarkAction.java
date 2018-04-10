@@ -36,7 +36,9 @@ public class BookmarkAction extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		super.doGet(request, response);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		//super.doGet(request, response);
 		CmdClass cmd = CmdClass.getInstance(request);
 		
 		// 로그인 여부에 따라서 북마크 목록 가져오기

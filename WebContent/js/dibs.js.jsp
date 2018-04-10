@@ -152,7 +152,10 @@ $(document).on("click", ".btn_del", function() {
 
 /** 다중선택 삭제 */
 $(document).on("click", ".sort_del", function() {
+	var total = $(".count").text();
 	var chk_total = $("#wish_list2 input:checkbox:checked").length;
+	
+	var rest = total - chk_total;
 				
 	if(chk_total == 0) {
 		alert("최소 1개 이상을 선택해주세요.");
@@ -167,8 +170,7 @@ $(document).on("click", ".sort_del", function() {
 		});
 		
 		$("input:checkbox[name='checkAll']").attr("checked", false);
-		var count = $("#wish_list2 .thumb").length;
-		$(".count").text(count);
+		$(".count").text(rest);
 	}
 	
 });
@@ -198,8 +200,6 @@ function change_folder(bookmark_seq, bookmark_name) {
 		alert("최소 1개 이상을 선택해주세요.");
 	} else {
 		$("#wish_list2 input:checkbox:checked").each(function(index) {
-			//var uciCode = $(this).val();
-			//dibsUpdate(uciCode, bookmark_seq);
 			uciCode.push($(this).val());
 			
 			if(filter_title == "찜한 사진 전체" || filter_title == "") { 
@@ -242,7 +242,7 @@ function dibsUpdate(uciCode, bookmark_seq) {
 function insertBasket(uciCode) {
 	//window.open('/cart.popOption?page=dibs.myPage&uciCode=' + uciCode,'new','resizable=no width=420 height=600');
 	$("#page").val("dibs.myPage");
-	$("#uciCode").val(uciCode);
+	$("#uciCode").val(uciCode); // 선택 uciCode 배열로 전달
 	
 	window.open("", "openWin", "toolbar=no, resizable=no, width=420, height=600, directories=no, status=no, scrollbars=no");
 	cart_form.method = "post";
@@ -262,7 +262,7 @@ function insertMultiBasket() {
 		$("#wish_list2 input:checkbox:checked").each(function(index) {
 			uciCode.push($(this).val());
 		});
-		insertBasket(uciCode.join("|"));
+		insertBasket(uciCode);		
 	}
 }
 

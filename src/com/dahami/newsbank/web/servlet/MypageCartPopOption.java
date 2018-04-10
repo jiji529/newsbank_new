@@ -2,6 +2,7 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -11,6 +12,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.dahami.newsbank.web.dao.CartDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
@@ -49,8 +55,10 @@ public class MypageCartPopOption extends NewsbankServletBase {
 		String member_seq = (MemberInfo != null) ? String.valueOf(MemberInfo.getSeq()) : "0";
 		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
 		String uciCode = request.getParameter("uciCode");
-		String usageList_seq = request.getParameter("usageList_seq");
-		String price = request.getParameter("price");
+		//String usageList_seq = request.getParameter("usageList_seq");
+		//String price = request.getParameter("price");
+		String cartArray = request.getParameter("cartArray");
+		
 		UsageDAO usageDAO = new UsageDAO();
 		CartDAO cartDAO = new CartDAO();
 		List<UsageDTO> usageOptions = usageDAO.uciCodeOfUsage(uciCode, member_seq);
@@ -61,13 +69,48 @@ public class MypageCartPopOption extends NewsbankServletBase {
 		
 		if(action.equals("deleteCart")) {
 			cartDAO.deleteCart(member_seq, uciCode);
-		}else if(action.equals("insertCart")) {
-			cartDAO.insertCart(member_seq, uciCode, usageList_seq, price);
+			
+		}else if(action.equals("insertCart")) {		
+			
+			try {
+				JSONParser jsonParser = new JSONParser();
+				JSONArray jsonArray = (JSONArray) jsonParser.parse(cartArray);
+				
+				if(jsonArray != null) {
+					
+					for(int i=0; i<jsonArray.size(); i++) {
+						JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+						String uci = jsonObj.get("uciCode").toString();
+						String usageList_seq = jsonObj.get("usageList_seq").toString();
+						String price = jsonObj.get("price").toString();
+						
+						cartDAO.insertCart(member_seq, uci, usageList_seq, price);
+					}
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			//cartDAO.insertCart(member_seq, uciCode, usageList_seq, price);
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pop_opt.jsp");
 		dispatcher.forward(request, response);
 	}	
+	
+	// JSONArray를 String Array로 변환
+	public static String[] toStringArray(JSONArray array) {
+	    if(array==null)
+	        return null;
+
+	    String[] arr=new String[array.size()];
+	    for(int i=0; i<arr.length; i++) {
+	        arr[i]=array.get(i).toString();
+	        System.out.println("arr[" + i + "] : " + array.get(i).toString());
+	    }
+	    return arr;
+	}
 	
 	private List<String> makeSelectOption(String select, List<UsageDTO> usageList) {
 		// 옵션 선택값에 따른 추가 옵션리스트 불러오기
