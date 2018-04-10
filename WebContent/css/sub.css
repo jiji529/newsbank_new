@@ -133,7 +133,7 @@
 .view .view_lt .conn .cfix{ float:left; width:max-content; height:100px; padding:0 30px;}
 .view .view_lt .conn .cfix li { float:left; margin:0 8px; width:136px; height:100px;}
 .view .view_lt .conn .cfix li a{display:table-cell;width:136px; height:100px; vertical-align:middle; border:1px #ddd solid; text-align:center; }
-.view .view_lt .conn .cfix li a img{max-width:136px; max-height:100px; width:auto; }
+.view .view_lt .conn .cfix li a img{max-width:136px; max-height:98px; width:auto; }
 .view .view_lt .conn .btn_conn{ position:relative;}
 .view .view_lt .conn .btn_conn button{position: absolute; width: 30px;height: 100px;top: 0; border:0; text-indent:-9999px;}
 .view .view_lt .conn .btn_conn button.in_prev{background:url(../images/mp/btn_prev.png) 0 0 no-repeat; left: 0}

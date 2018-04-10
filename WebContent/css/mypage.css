@@ -178,6 +178,7 @@
 .mypage #cms_list2 ul{width:100%; float:left;}
 .mypage #cms_list2 .thumb{border:1px #e6e6e6 solid; float:left; margin:0 10px 10px 0;width:198px; position:relative; }
 .mypage #cms_list2 .thumb:nth-child(6n){ margin-right:0;}
+.wide .mypage #cms_list2 .thumb:nth-child(6n){ margin-right:10px;}
 .mypage #cms_list2 .thumb a{display:table-cell;width:196px; height:196px; vertical-align:middle; background:#f6f6f6; }
 .mypage #cms_list2 .thumb img{max-width:196px; max-height:196px; }
 .mypage #cms_list2 .thumb .thumb_info{width:100%; float:left; border-top:1px #e6e6e6 solid; padding:8px 8px 4px 34px; font-size:13px; }
