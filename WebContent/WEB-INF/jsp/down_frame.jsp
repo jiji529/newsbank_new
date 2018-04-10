@@ -62,13 +62,31 @@ function mutli_download() {
 		return;
 	}
 	
-	if(!confirm("선택파일을 압축파일로 다운로드하시겠습니까?\n삭제된 파일은 다운로드 되지 않습니다.")) {
+	if(!confirm("선택하신 이미지를 압축파일로 다운로드하시겠습니까?\n판매 중지된 이미지는 다운로드 되지 않습니다.")) {
 		return;
 	}
 
 	$("#downUciCode").val(uciCode.join("$$"));
 	$("#downForm").attr("action", "/zip.down.photo");
 	$("#downForm").submit();
+}
+
+/** 선택된 사진 리스트 읽기 */
+function getCheckedList() {
+	var uciCode = new Array();
+	
+	var container = null;
+	if($("#wish_list2").length > 0) {
+		container = $("#wish_list2");
+	}
+	else if($("#cms_list2").length > 0) {
+		container = $("#cms_list2");
+	}
+	
+	container.find("input:checkbox:checked").each(function(index) {
+		uciCode.push($(this).val());
+	});
+	return uciCode;
 }
 </script>
 <form id="downForm" method="post"  target="downFrame">

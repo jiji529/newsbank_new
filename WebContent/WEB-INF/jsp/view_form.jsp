@@ -30,7 +30,20 @@ else if(reqUri.contains("photo")) {
 %>
 
 <script>
-function go_View(uciCode) {
+function go_View(uciCode, action, target) {
+	if(action == null) {
+		view_form.action = "/view<%=cms %><%=manage %>";
+	}
+	else {
+		view_form.action = action
+	}
+	
+	if(target == null) {
+		view_form.target = "";
+	}
+	else {
+		view_form.target = target;	
+	}
 	view_form.uciCode.value = uciCode;
 	view_form.submit();
 }

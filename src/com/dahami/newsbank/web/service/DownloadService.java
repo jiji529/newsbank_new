@@ -441,13 +441,14 @@ public class DownloadService extends ServiceBase {
 					}
 				}
 
-				if (photoDtoList.size() == 0) {
-					response.sendRedirect(URL_PHOTO_ERROR_VIEW);
-					return;
-				}
-				downLog.setMemberSeq(memberInfo.getSeq());
-
 				try {
+					if (photoDtoList.size() == 0) {
+						logger.warn("다운로드 가능한 이미지 없음");
+						request.setAttribute("ErrorMSG", "다운로드 가능한 이미지가 없습니다.\\n선택하신 이미지 상태를 확인해 주세요");
+						forward(request, response, URL_PHOTO_ERROR_SERVICE);
+						return;
+					}
+					downLog.setMemberSeq(memberInfo.getSeq());
 					for (PhotoDTO photo : photoDtoList) {
 						downLog.setUciCode(photo.getUciCode());
 						photoDao.insDownLog(downLog);
@@ -455,7 +456,7 @@ public class DownloadService extends ServiceBase {
 						String orgPath = PATH_PHOTO_BASE + "/" + photo.getOriginPath();
 						if (!new File(orgPath).exists()) {
 							logger.warn("원본이미지 없음: " + orgPath);
-							request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
+							request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\\n관리자에게 문의해 주세요");
 							forward(request, response, URL_PHOTO_ERROR_SERVICE);
 							return;
 						}

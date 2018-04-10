@@ -184,12 +184,12 @@
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
-									<a href="view.html" target="_blank">
+									<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_target')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${download.photo_uciCode}"/>
 									</a>
 								</div>
 								<div class="cart_info">
-									<a href="/view.photo?uciCode=${download.photo_uciCode}" target="_blank">
+									<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_blank')">
 										<div class="brand">${download.copyright}</div>
 										<div class="code">${download.photo_uciCode}</div>
 									</a>
@@ -251,5 +251,6 @@
 	<input type="hidden" id="year" name="year" />
 </form>
 <%@include file="down_frame.jsp" %>
+<%@include file="view_form.jsp" %>
 </body>
 </html>
