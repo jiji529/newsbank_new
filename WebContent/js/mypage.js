@@ -1061,14 +1061,17 @@ $(document).ready(function() {
 		}
 		var today = getDateTime().substr(0, 8); // 금일날짜
 		var paydate = payAllCancelForm.find('input[name=LGD_PAYDATE]').val().substr(0, 8); // 결제일자
+		var totalDownCount  = payAllCancelForm.find('input[name=totalDownCount]').val();
+		var LGD_OID  = payAllCancelForm.find('input[name=LGD_OID]').val();
 		var gap = today - paydate; // 소요기간
-		
+		console.log(gap);
 		if(gap <= 7 && totalDownCount == 0) { // 7일 이내
 			
 			var param = {
 				"LGD_OID" : LGD_OID,
 				"cmd" : "C"
 			};
+			console.log(param);
 				
 			$.ajax({
 				type: "POST",
@@ -1076,10 +1079,17 @@ $(document).ready(function() {
 				data: param,
 				url: "/payment.api",
 				success: function(data) {
-					console.log(data);
-				}, complete: function() {
-					//alert("결제 취소 완료");
-					//location.replace("/buylist.mypage");
+					
+					if(data.result){
+						alert("결제 취소 완료");
+						location.replace("/buylist.mypage");
+					}else if(data.message){
+						alert(data.message);
+					}else{
+						alert("요청에 실패하였습니다.\다시 시도하여 주세요.");
+						location.reload();
+					}
+					
 				}
 			});
 		}else {
@@ -1148,10 +1158,16 @@ $(document).ready(function() {
 					data: param,
 					url: "/payment.api",
 					success: function(data) {
+						if(data.result){
+							//alert("결제 취소 완료");
+							//location.replace("/buylist.mypage");
+						}else if(data.message){
+							alert(data.message);
+						}else{
+							alert("요청에 실패하였습니다.\n고객센터(02-593-4174)로 문의 부탁드립니다.");
+							location.reload();
+						}
 						console.log(data);
-					}, complete: function() {
-						//alert("결제 취소 완료");
-						//location.replace("/buylist.mypage");
 					}
 				});
 			

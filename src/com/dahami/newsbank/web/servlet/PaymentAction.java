@@ -74,21 +74,22 @@ public class PaymentAction extends NewsbankServletBase {
 			if (request.getParameter("cmd") != null) { // 구분
 				cmd = request.getParameter("cmd"); // api 구분 crud
 			}
-			System.out.println("cmd => " + cmd);
 
 			if (request.getParameter("paymentManage_seq") != null) { // 구매기록 고유번호
 				paymentManage_seq = Integer.parseInt(request.getParameter("paymentManage_seq"));
 			}
-			System.out.println("paymentManage_seq => " + paymentManage_seq);
 
 			if (request.getParameter("paymentDetail_seq") != null) { // 구매기록 상세 고유번호
 				paymentDetail_seq = Integer.parseInt(request.getParameter("paymentDetail_seq"));
 			}
-			System.out.println("paymentManage_seq => " + paymentManage_seq);
 
 			if (request.getParameter("LGD_OID") != null) { // 주문번호
 				LGD_OID = request.getParameter("LGD_OID");
 			}
+			
+			System.out.println("cmd => " + cmd);
+			System.out.println("paymentManage_seq => " + paymentManage_seq);
+			System.out.println("paymentManage_seq => " + paymentManage_seq);
 			System.out.println("LGD_OID => " + LGD_OID);
 
 			PaymentManageDTO paymentManageDTO = new PaymentManageDTO();
@@ -101,15 +102,12 @@ public class PaymentAction extends NewsbankServletBase {
 				paymentManageDTO.setLGD_OID(LGD_OID);
 				paymentManageDTO = paymentDAO.selectPaymentManage(paymentManageDTO);
 				if (paymentManageDTO.getPaymentManage_seq() > 0) {
-					long time = System.currentTimeMillis();
-					SimpleDateFormat dayTime = new SimpleDateFormat("yyyymmdd");
-					String today = dayTime.format(new Date(time));
-					String paydate = paymentManageDTO.getLGD_PAYDATE();
-					int gap = Integer.parseInt(today) - Integer.parseInt(paydate); // 소요기간
+					SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMdd");
+					String today = dayTime.format(new Date());
+					String paydate = paymentManageDTO.getLGD_PAYDATE().substring(0, 8);
+					int gap = Integer.parseInt(today) - Integer.parseInt(paydate); // 소요기간 7일 이내 확인
 					if (gap <= 7) {
-						/**
-						 * 결제 취소 모듈
-						 */
+						//결제 취소 모듈
 						XPayClient xpay = new XPayClient();
 						xpay.Init(configPath, CST_PLATFORM);
 						xpay.Init_TX(LGD_MID);
@@ -124,11 +122,13 @@ public class PaymentAction extends NewsbankServletBase {
 
 							paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
 							paymentDetailDTO.setStatus("1"); // 결제취소
-							if (paymentDetail_seq > 0) {
-								// 개별 결제 취소건
-								paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소
-							}
+							/*
+							 * if (paymentDetail_seq > 0) { // 개별 결제 취소건
+							 * paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소 }
+							 */
 							result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+							
+							System.out.println(result);
 
 						} else {
 							// 2)API 요청 실패 화면처리

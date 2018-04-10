@@ -213,7 +213,7 @@
 										<input type="hidden" name="paymentDetail_seq" value="${paymentDetailList.paymentDetail_seq}" />
 										<input type="hidden" name="photo_uciCode" value="${paymentDetailList.photo_uciCode}" />
 										<button type="button" class="btn_o" name="btn_down">다운로드</button>
-										<c:if test="${paymentDetailList.downCount eq 0 && paymentManageDTO.getPayType() eq '신용카드'}">
+										<c:if test="${paymentDetailList.downCount eq 0 && paymentManageDTO.getPayType() eq '신용카드' && paymentManageDTO.getDetailSize()>1 }">
 											<button type="button" class="btn_g" name="btn_cancel">결제 취소</button>
 										</c:if>
 									</form>
