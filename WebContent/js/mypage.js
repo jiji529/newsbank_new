@@ -1142,7 +1142,7 @@ $(document).ready(function() {
 			if(!confirm("정말로 결제를 취소하시겠습니까?")) {
 				return;
 			}
-			var uciCode = detail.find('input[name=photo_uciCode]').val();
+			var LGD_OID = detail.find('input[name=LGD_OID]').val();
 			var paymentDetail_seq = detail.find("input[name='paymentDetail_seq']").val(); // 상세내역 SEQ
 			
 			
@@ -1159,8 +1159,8 @@ $(document).ready(function() {
 					url: "/payment.api",
 					success: function(data) {
 						if(data.result){
-							//alert("결제 취소 완료");
-							//location.replace("/buylist.mypage");
+							alert("결제 취소 완료");
+							location.reload();
 						}else if(data.message){
 							alert(data.message);
 						}else{

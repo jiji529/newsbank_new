@@ -204,7 +204,7 @@
 							${paymentDetailList.downEnd }
 						</td>
 						<td>
-							<c:if test="${paymentManageDTO.LGD_PAYSTATUS eq '1'}">
+							<c:if test="${paymentManageDTO.LGD_PAYSTATUS eq '1'  and paymentDetailList.status ne '1'}">
 							${paymentDetailList.downCount }회
 							<br />
 								<div class="btn_group">
@@ -212,6 +212,7 @@
 									<form name="payDetailForm">
 										<input type="hidden" name="paymentDetail_seq" value="${paymentDetailList.paymentDetail_seq}" />
 										<input type="hidden" name="photo_uciCode" value="${paymentDetailList.photo_uciCode}" />
+										<input type="hidden" name="LGD_OID" value="${paymentManageDTO.LGD_OID}" />
 										<button type="button" class="btn_o" name="btn_down">다운로드</button>
 										<c:if test="${paymentDetailList.downCount eq 0 && paymentManageDTO.getPayType() eq '신용카드' && paymentManageDTO.getDetailSize()>1 }">
 											<button type="button" class="btn_g" name="btn_cancel">결제 취소</button>

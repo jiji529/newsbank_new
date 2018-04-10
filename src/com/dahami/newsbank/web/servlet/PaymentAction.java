@@ -51,10 +51,6 @@ public class PaymentAction extends NewsbankServletBase {
 		if (MemberInfo != null) {
 
 			boolean result = false;
-			String cmd = null;
-			int paymentManage_seq = 0;
-			int paymentDetail_seq = 0;
-			String LGD_OID = null;
 			String message = "";
 
 			/**
@@ -71,11 +67,13 @@ public class PaymentAction extends NewsbankServletBase {
 																						// 상점아이디(자동생성)
 			/********************************/
 
-			if (request.getParameter("cmd") != null) { // 구분
-				cmd = request.getParameter("cmd"); // api 구분 crud
-			}
+			
+			String cmd = ( request.getParameter("cmd")  == null )?"":request.getParameter("cmd") ; // api 구분 crud
+			int paymentManage_seq = ( request.getParameter("paymentManage_seq")  == null )?0:Integer.parseInt(request.getParameter("paymentManage_seq")) ; // 구매기록 고유번호
+			int paymentDetail_seq = ( request.getParameter("cmd")  == null )?0:Integer.parseInt(request.getParameter("paymentDetail_seq"));// 구매기록 상세 고유번호
+			String LGD_OID = ( request.getParameter("LGD_OID")  == null )?"":request.getParameter("LGD_OID") ; // 주문번호
 
-			if (request.getParameter("paymentManage_seq") != null) { // 구매기록 고유번호
+			/*if (request.getParameter("paymentManage_seq") != null) { // 구매기록 고유번호
 				paymentManage_seq = Integer.parseInt(request.getParameter("paymentManage_seq"));
 			}
 
@@ -85,7 +83,7 @@ public class PaymentAction extends NewsbankServletBase {
 
 			if (request.getParameter("LGD_OID") != null) { // 주문번호
 				LGD_OID = request.getParameter("LGD_OID");
-			}
+			}*/
 			
 			System.out.println("cmd => " + cmd);
 			System.out.println("paymentManage_seq => " + paymentManage_seq);
@@ -111,32 +109,78 @@ public class PaymentAction extends NewsbankServletBase {
 						XPayClient xpay = new XPayClient();
 						xpay.Init(configPath, CST_PLATFORM);
 						xpay.Init_TX(LGD_MID);
-						xpay.Set("LGD_TXNAME", "Cancel");
+						
 						xpay.Set("LGD_TID", paymentManageDTO.getLGD_TID());
-						if (xpay.TX()) {
-							// 1)결제취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
-
-							paymentManageDTO.setLGD_RESPCODE("0000"); // 완료코드
-							paymentManageDTO.setLGD_PAYSTATUS(5); // 결제취소
-							paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
-
-							paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
-							paymentDetailDTO.setStatus("1"); // 결제취소
-							/*
-							 * if (paymentDetail_seq > 0) { // 개별 결제 취소건
-							 * paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소 }
-							 */
-							result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+						if (paymentDetail_seq > 0) { // 개별 결제 취소건
+							paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq);
+							paymentDetailDTO = paymentManageDTO.getPaymentDetailItem(paymentDetailDTO);
 							
-							System.out.println(result);
+							String LGD_CANCELAMOUNT 	= ( paymentDetailDTO.getPrice()>0 )?"":Integer.toString(paymentDetailDTO.getPrice()); 
+							String LGD_REMAINAMOUNT = Integer.toString(paymentManageDTO.getLGD_AMOUNT()-paymentDetailDTO.getPrice());
+							xpay.Set("LGD_TXNAME", "PartialCancel");
+							xpay.Set("LGD_CANCELAMOUNT", LGD_CANCELAMOUNT);//부분취소 금액
+						    xpay.Set("LGD_REMAINAMOUNT", LGD_REMAINAMOUNT); //남은 금액
+						    
+						    if (xpay.TX()) {
+						        //1)결제 부분취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
+						    	System.out.println("결제 부분취소 요청이 완료되었습니다.  <br>");
+						    	System.out.println( "TX Response_code = " + xpay.m_szResCode + "<br>");
+						    	System.out.println( "TX Response_msg = " + xpay.m_szResMsg + "<p>");
+						        
+						        /*for (int i = 0; i < xpay.ResponseNameCount(); i++)
+						        {
+						        	System.out.println(xpay.ResponseName(i) + " = ");
+						            for (int j = 0; j < xpay.ResponseCount(); j++)
+						            {
+						            	System.out.println("\t" + xpay.Response(xpay.ResponseName(i), j) + "<br>");
+						            }
+						        }*/
+						        System.out.println("<p>");
+						        
+						        
+						        paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
+								paymentDetailDTO.setStatus("1"); // 결제취소
+								paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소
+								result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+						        
+						    }else {
+						        //2)API 요청 실패 화면처리
+						    	System.out.println("결제 부분취소 요청이 실패하였습니다.  <br>");
+						    	System.out.println( "TX Response_code = " + xpay.m_szResCode + "<br>");
+						    	System.out.println( "TX Response_msg = " + xpay.m_szResMsg + "<p>");
+						    	message = "결제 부분취소 요청이 실패하였습니다. ";
+						    }
+						    
 
-						} else {
-							// 2)API 요청 실패 화면처리
-							System.out.println("결제 취소요청이 실패하였습니다.  <br>");
-							System.out.println("TX Response_code = " + xpay.m_szResCode + "<br>");
-							System.out.println("TX Response_msg = " + xpay.m_szResMsg + "<p>");
-							message = "결제 취소요청이 실패하였습니다. ";
+						}else {
+							xpay.Set("LGD_TXNAME", "Cancel");
+							if (xpay.TX()) {
+								// 1)결제취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
+
+								paymentManageDTO.setLGD_RESPCODE("0000"); // 완료코드
+								paymentManageDTO.setLGD_PAYSTATUS(5); // 결제취소
+								paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
+
+								paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
+								paymentDetailDTO.setStatus("1"); // 결제취소
+								/*
+								 * if (paymentDetail_seq > 0) { // 개별 결제 취소건
+								 * paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소 }
+								 */
+								result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+								
+								System.out.println(result);
+
+							} else {
+								// 2)API 요청 실패 화면처리
+								System.out.println("결제 취소요청이 실패하였습니다.  <br>");
+								System.out.println("TX Response_code = " + xpay.m_szResCode + "<br>");
+								System.out.println("TX Response_msg = " + xpay.m_szResMsg + "<p>");
+								message = "결제 취소요청이 실패하였습니다. ";
+							}
 						}
+						
+						
 
 					} else {
 						message = "다운로드 받은 내역이 있을 시, 환불이 불가능합니다.\n (환불가능기간은 결제일로부터 7일 이내입니다.)";

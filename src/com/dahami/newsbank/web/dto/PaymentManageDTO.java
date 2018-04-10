@@ -294,6 +294,15 @@ public class PaymentManageDTO implements Serializable {
 		return paymentDetailList.size();
 	}
 	
+	public PaymentDetailDTO getPaymentDetailItem(PaymentDetailDTO paymentDetailDTO) {
+		for(PaymentDetailDTO detail : paymentDetailList) {
+	        if(detail.getPaymentDetail_seq()==paymentDetailDTO.getPaymentDetail_seq()) {
+	            return detail;
+	        }
+	    }
+		return null;
+	}
+	
 	
 
 }

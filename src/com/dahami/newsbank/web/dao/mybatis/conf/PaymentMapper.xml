@@ -131,6 +131,7 @@
 		D.`usageList_seq`,
 		D.`photo_uciCode`, D.`price`,
 		D.`downStart`,
+		D.`status`,
 		D.`downEnd`, D.`downCount`,
 		U.`seq` as `usageList_seq`,
 		U.`usage`,
@@ -195,6 +196,7 @@
 		<result property="usageList_seq" column="usageList_seq" />
 		<result property="photo_uciCode" column="photo_uciCode" />
 		<result property="price" column="price" />
+		<result property="status" column="status" />
 		<result property="downStart" column="downStart" />
 		<result property="downEnd" column="downEnd" />
 		<result property="downCount" column="downCount" />
@@ -710,6 +712,7 @@
 		D.`usageList_seq`,
 		D.`photo_uciCode`, D.`price`,
 		D.`downStart`,
+		D.`status`,
 		D.`downEnd`, D.`downCount`,
 		R.`compName`, R.`id`, R.`name`,
 		R.`email`, R.`phone`, R.`type`,
@@ -768,6 +771,7 @@
 		M.`regDate`,
 		D.`seq` as `paymentDetail_seq`,
 		D.`usageList_seq`,
+		D.`status`,
 		D.`photo_uciCode`, D.`price`,
 		D.`downStart`,
 		D.`downEnd`, D.`downCount`,
