@@ -317,7 +317,7 @@
 
 		</set>
 		where LGD_OID = #{LGD_OID}
-		<if test="member_seq != null">AND member_seq = #{member_seq} </if>
+		<if test="member_seq != null and member_seq>0 ">AND member_seq = #{member_seq} </if>
 
 	</update>
 	
@@ -820,7 +820,7 @@
 			<if test="status != null">status = #{status}</if>
 		</set>
 		where paymentManage_seq = #{paymentManage_seq}
-		<if test="seq !=null">
+		<if test="seq !=null and seq>0">
 				AND seq = #{paymentDetail_seq}
 			</if>
 
