@@ -31,7 +31,7 @@
 <%@include file="search_filter.jsp" %>
 	<!-- 필터끝 -->
 	<div class="btn_sort"><span class="task_check">
-		<input type="checkbox" name="check_all" />
+		<input type="checkbox" name="check_all" id="check_all"/>
 		</span>
 		<ul class="button">
 			<li class="sort_down" onclick="mutli_download()">선택 다운로드</li>

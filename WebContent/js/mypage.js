@@ -15,6 +15,27 @@ $(document).ready(function() {
 
 })
 
+// mypage 체크박스 전체선택
+$(document).on("click", "input[name='check_all']", function() {
+	if($("input[name='check_all']").prop("checked")) {
+		$(".order_list input:checkbox").prop("checked", true);
+	}else {
+		$(".order_list input:checkbox").prop("checked", false);
+	}
+});
+
+// mypage 체크 해제시, 전체선택 해제 
+$(document).on("click", ".tb_check", function() {
+	var chkTotal = $(".tb_check input[type=checkbox]:not(#check_all)").length;
+	var chkCount = $(".tb_check input[type=checkbox]:checked:not(#check_all)").length;
+	
+	if(chkTotal == chkCount) {
+		$("input[name='check_all']").prop("checked", true);
+	}else {
+		$("input[name='check_all']").prop("checked", false);
+	}
+});
+
 // form.join 우편번호
 $(document).ready(function() {
 	function execDaumPostcode() {

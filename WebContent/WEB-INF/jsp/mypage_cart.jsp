@@ -33,7 +33,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
+<script src="js/mypage.js?v=20180410"></script>
 <script type="text/javascript">
 	
 	/** 찜하기 */
@@ -97,15 +97,6 @@
 				});
 				recalculate();
 			}
-		}
-	});
-	
-	/** 전체선택 */
-	$(document).on("click", "input[name='check_all']", function() {
-		if($("input[name='check_all']").prop("checked")) {
-			$(".order_list input:checkbox").prop("checked", true);
-		}else {
-			$(".order_list input:checkbox").prop("checked", false);
 		}
 	});
 	
@@ -175,28 +166,36 @@
 	// #다중선택 결제 함수
 	function multi_pay() {
 		var jsonArray = new Array();
+		var checkCnt = $(".order_list input:checkbox:checked").length; // 체크박스 선택 갯수
 		
-		$(".order_list input:checkbox:checked:not(#check_all)").each(function(index) {
-			var uciCode = $(this).val();			
-			var jsonObject = new Object(); // 장바구니 객체
-			var usageArray = new Array(); // 사용용도 객체
+		if(checkCnt > 0) {
+			$(".order_list input:checkbox:checked:not(#check_all)").each(function(index) {
+				var uciCode = $(this).val();			
+				var jsonObject = new Object(); // 장바구니 객체
+				var usageArray = new Array(); // 사용용도 객체
+				
+				 $(this).closest("td").next().find(".opt_li").each(function(index) {
+					 var usage_seq = $(this).attr("value");
+					 usageArray.push(usage_seq);// 사용용도
+					 
+					 jsonObject.uciCode = uciCode;				 
+					 jsonObject.usage = usageArray;
+				 });
+				
+				 jsonArray.push(jsonObject);
+			});
 			
-			 $(this).closest("td").next().find(".opt_li").each(function(index) {
-				 var usage_seq = $(this).attr("value");
-				 usageArray.push(usage_seq);// 사용용도
-				 
-				 jsonObject.uciCode = uciCode;				 
-				 jsonObject.usage = usageArray;
-			 });
+			var resultObject = new Object(); // 최종 JSON Object
+			resultObject.order = jsonArray;
 			
-			 jsonArray.push(jsonObject);
-		});
+			$("#orderJson").val(JSON.stringify(resultObject));
+			cart_form.submit();
+			
+		}else {
+			alert("결제할 항목을 선택해주세요");
+		}
 		
-		var resultObject = new Object(); // 최종 JSON Object
-		resultObject.order = jsonArray;
 		
-		$("#orderJson").val(JSON.stringify(resultObject));
-		cart_form.submit();
 	}
 	
 	

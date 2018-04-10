@@ -41,7 +41,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
+<script src="js/mypage.js?v=20180410"></script>
 <script type="text/javascript">
 	function popup_usage() {
 		var uciCode_arr = new Array();
@@ -63,15 +63,6 @@
 		
 		//download_popOption.submit();
 	}
-	
-	/** 전체선택 */
-	$(document).on("click", "input[name='check_all']", function() {
-		if($("input[name='check_all']").prop("checked")) {
-			$("#mtBody input:checkbox").prop("checked", true);
-		}else {
-			$("#mtBody input:checkbox").prop("checked", false);
-		}
-	});
 	
 	$(document).on("click", ".btn_input2", function() {
 		popup_usage(); // 사용용도 선택

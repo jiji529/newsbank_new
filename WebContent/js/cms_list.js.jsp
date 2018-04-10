@@ -42,6 +42,18 @@
 		}
 	});
 	
+	// 체크해제 시, 전체선택 해제
+	$(document).on("click", "input[type=checkbox]", function() {
+		var chkTotal = $("input[type=checkbox]:not(#check_all)").length;
+		var chkCount = $("input[type=checkbox]:checked:not(#check_all)").length;
+		
+		if(chkTotal == chkCount) {
+			$("input[name='check_all']").prop("checked", true);
+		}else {
+			$("input[name='check_all']").prop("checked", false);
+		}
+	});
+	
 	/** 선택된 사진 리스트 읽기 */
 	function getCheckedList() {
 		var uciCode = new Array();
