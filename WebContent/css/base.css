@@ -89,7 +89,7 @@ footer a.clean{ float:right; margin:-2px 0 0 20px; }
 .foot_banner li{ float:left; margin-bottom:20px; width:200px;font-size:11px; text-align:left; line-height:16px;}
 .foot_banner li a{ display:block; padding-left:80px;  color:#777;}
 .foot_banner li.uci a{ background:url(../images/foot_uci.jpg) 0 2px no-repeat; }
-.foot_banner li.cleansite a{background:url(../images/foot_clean.jpg) 0 0 no-repeat; }
+.foot_banner li.cleansite a{background:url(../images/foot_clean.png) 0 0 no-repeat; }
 
 
 /* 팝업 */
