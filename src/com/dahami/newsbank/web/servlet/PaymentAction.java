@@ -83,6 +83,9 @@ public class PaymentAction extends NewsbankServletBase {
 					if(paymentManageDTO.getPaymentManage_seq() >0) {
 						paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
 						paymentDetailDTO.setStatus("1"); // 결제취소
+						if(paymentDetail_seq>0) {
+							paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소
+						}
 						result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
 					}
 					

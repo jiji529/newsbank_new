@@ -820,6 +820,9 @@
 			<if test="status != null">status = #{status}</if>
 		</set>
 		where paymentManage_seq = #{paymentManage_seq}
+		<if test="seq !=null">
+				AND seq = #{paymentDetail_seq}
+			</if>
 
 	</update>
 </mapper>

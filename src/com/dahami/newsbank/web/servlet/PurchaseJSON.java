@@ -180,7 +180,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 			String LGD_HASHDATA = md5(LGD_MID + LGD_OID + LGD_AMOUNT + LGD_TIMESTAMP + LGD_MERTKEY);
 			
 			//String SERVER_HOST  ="www.dev.newsbank.co.kr";//"localhost:8080";//www.newsbank.co.kr//www.dev.newsbank.co.kr
-			String SERVER_HOST  =request.getServerName()+":"+request.getServerPort();
+			String SERVER_HOST  =request.getServerName();
 
 			/*
 			 * 가상계좌(무통장) 결제 연동을 하시는 경우 아래 LGD_CASNOTEURL 을 설정하여 주시기 바랍니다.
