@@ -184,7 +184,7 @@
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
-									<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_target')">
+									<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_blank')">
 										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${download.photo_uciCode}"/>
 									</a>
 								</div>

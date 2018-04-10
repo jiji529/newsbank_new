@@ -126,8 +126,8 @@
 							<td>${loop.index+1}</td>
 							<td>
 								<div class="cart_item">
-									<div class="thumb"> <a href="view.html" target="_blank"><img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PaymentDetail.photo_uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a> </div>
-									<div class="cart_info"> <a href="/view.photo?uciCode=${PaymentDetail.photo_uciCode}" target="_blank">
+									<div class="thumb"> <a href="javascript:void(0);" onclick="go_View('${PaymentDetail.photo_uciCode}', '/view.photo', '_blank')"><img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PaymentDetail.photo_uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a> </div>
+									<div class="cart_info"> <a href="javascript:void(0);" onclick="go_View('${PaymentDetail.photo_uciCode}', '/view.photo', '_blank')">
 										<div class="brand">${PaymentDetail.photoDTO.copyright }</div>
 										<div class="code">${PaymentDetail.photo_uciCode }</div>
 										</a>
@@ -157,5 +157,6 @@
 <form id="dateForm" method="post"  target="dateFrame">
 	<input type="hidden" id="year" name="year" />
 </form>
+<%@include file="view_form.jsp" %>
 </body>
 </html>
