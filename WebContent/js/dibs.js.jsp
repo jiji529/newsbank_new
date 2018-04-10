@@ -111,6 +111,11 @@ function dibsList() {
 			
 			$("div .result b").html(totalCount);
 			$("div .paging span.total").html(totalPage);
+			
+			console.log(pageVol + " / " + data.result.length);
+			if(pageVol > data.result.length) { // 총 갯수가 표현단위보다 작을 때, [다음 페이지] 숨김
+				$(".more").hide();
+			}
 		}, 
 		error:function(request,status,error){
         	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);

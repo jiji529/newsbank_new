@@ -34,11 +34,16 @@
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
 <!-- <script src="js/cms.js.jsp"></script> -->
-<script src="js/dibs.js.jsp?v=20180404"></script>
+<script src="js/dibs.js.jsp?v=20180405"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(key, val){
+		var totalCnt = ${fn:length(dibsPhotoList)};
+		var limit = parseInt($("select[name='limit'] option:selected").val());
 		
+		if(totalCnt < limit) { // 총 갯수가 표현단위보다 작을 때, [다음 페이지] 숨김
+			$(".more").hide();
+		} 
 	});
 </script>
 </head>

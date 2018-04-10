@@ -64,7 +64,6 @@ public class ListMediaJSON extends HttpServlet {
 		for(int idx=0; idx<listMember.size(); idx++) {
 			JSONObject arr = new JSONObject(); // json 배열에 들어갈 객체
 			arr.put("seq", listMember.get(idx).get("seq"));
-			//System.out.println(getContentCnt(String.valueOf(listMember.get(idx).get("seq"))));
 			arr.put("contentCnt", getContentCnt(String.valueOf(listMember.get(idx).get("seq")))); // 콘텐츠 수량 (블라인드 / 전체)
 			arr.put("id", listMember.get(idx).get("id"));
 			arr.put("compNum", listMember.get(idx).get("compNum"));
@@ -83,30 +82,8 @@ public class ListMediaJSON extends HttpServlet {
 			arr.put("masterID", listMember.get(idx).get("masterID"));
 			arr.put("activate", listMember.get(idx).get("activate"));
 			arr.put("logo", listMember.get(idx).get("logo"));
-			//arr.put("blind", listMember.get(idx).get("blind"));
-			//arr.put("total", listMember.get(idx).get("total"));
 			jArray.add(arr);
 		}
-		/*for (MemberDTO member : listMember) {
-			JSONObject arr = new JSONObject(); // json 배열에 들어갈 객체
-			arr.put("seq", member.getSeq());
-			arr.put("id", member.getId());
-			arr.put("compNum", member.getCompNum());
-			arr.put("compName", member.getCompName());
-			arr.put("preRate", member.getPreRate());
-			arr.put("postRate", member.getPostRate());			
-			arr.put("type", member.getType());
-			arr.put("name", member.getName());
-			arr.put("email", member.getEmail());
-			arr.put("phone", member.getPhone());			
-			arr.put("group_seq", member.getGroup_seq());
-			arr.put("groupName", member.getGroupName());
-			arr.put("contractStart", member.getContractStart());
-			arr.put("contractEnd", member.getContractEnd());
-			arr.put("regDate", member.getRegDate());
-			jArray.add(arr);
-			
-		}*/
 		
 		JSONObject json = new JSONObject();
 		

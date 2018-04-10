@@ -324,7 +324,7 @@
 	    id, email, name, phone, compNum, compName, preRate, postRate, activate, logo 
 	    FROM member 
 		LEFT JOIN adjustment ON member.seq = adjustment.adjSlave
-		WHERE member.type='M'		
+		WHERE member.type='M' AND member.admission = 'Y'
 	        
         <if test="keyword != null"> 
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
@@ -399,7 +399,7 @@
 	<select id="mediaCnt" resultType="integer" parameterType="java.util.Map">	    
 	    SELECT count(seq) as cnt 
 	    FROM member 
-	    WHERE `type` = 'M'
+	    WHERE `type` = 'M' AND admission = 'Y'
 	        
         <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
