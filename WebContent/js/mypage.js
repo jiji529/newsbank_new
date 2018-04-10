@@ -1057,8 +1057,8 @@ $(document).ready(function() {
 				success: function(data) {
 					console.log(data);
 				}, complete: function() {
-					alert("결제 취소 완료");
-					location.replace("/buylist.mypage");
+					//alert("결제 취소 완료");
+					//location.replace("/buylist.mypage");
 				}
 			});
 		}else {
@@ -1066,6 +1066,57 @@ $(document).ready(function() {
 		}
 		
 	});
+});
+
+//buy.mypage
+$(document).ready(function() {
+	/** 개별 다운로드 */
+	var payDetailForm = $('form[name=payDetailForm]');
+	payDetailForm.each(function(index){
+		var detail = $(this);
+		console.log(detail);
+		
+		detail.find('button[name=btn_down]').on("click", function() {
+			if(!confirm("이미지를 다운로드 하시면 이미지를 사용하지 않으시더라도\n결제 취소를 하실 수 없습니다.\n\n이미지를 다운로드 하시겠습니까?")) {
+				return;
+			}
+			var uciCode = detail.find('input[name=photo_uciCode]').val();
+			var paymentDetail_seq = detail.find("input[name='paymentDetail_seq']").val(); // 상세내역 SEQ
+			var imgPath = "/service.down.photo?uciCode=" + uciCode + "&type=file";
+			var param = {
+					"paymentDetail_seq" : paymentDetail_seq,
+					"cmd" : "D"
+				};
+				
+				console.log(param);
+				
+				$.ajax({
+					type: "POST",
+					url: "/payment.api",
+					dataType: "json",
+					data: param,
+					success: function(data) {
+						console.log(data);
+					},
+					complete: function() {
+					}
+				});
+				
+				var link = document.createElement("a");
+				link.download = uciCode; link.href = imgPath; link.click();
+			
+		});
+		
+		detail.find('button[name=btn_cancel]').on("click", function() {
+			if(!confirm("정말로 결제를 취소하시겠습니까?")) {
+				return;
+			}
+			var uciCode = detail.find('input[name=photo_uciCode]').val();
+			var paymentDetail_seq = detail.find("input[name='paymentDetail_seq']").val(); // 상세내역 SEQ
+		});
+		
+	});
+
 });
 
 // 결제취소

@@ -209,9 +209,14 @@
 							<br />
 								<div class="btn_group">
 									<c:if test="${paymentDetailList.downExpire eq false}">
+									<form name="payDetailForm">
 										<input type="hidden" name="paymentDetail_seq" value="${paymentDetailList.paymentDetail_seq}" />
-										<button type="button" class="btn_o" name="btn_down" onclick="downBuy('${paymentDetailList.photo_uciCode }');">다운로드</button>
-										<button type="button" class="btn_g" name="btn_cancel">결제 취소</button>
+										<input type="hidden" name="photo_uciCode" value="${paymentDetailList.photo_uciCode}" />
+										<button type="button" class="btn_o" name="btn_down">다운로드</button>
+										<c:if test="${paymentDetailList.downCount eq 0 && paymentManageDTO.getPayType() eq '신용카드'}">
+											<button type="button" class="btn_g" name="btn_cancel">결제 취소</button>
+										</c:if>
+									</form>
 									</c:if>
 								</div>
 							</c:if>
@@ -228,7 +233,16 @@
 		<c:if test="${paymentManageDTO.LGD_PAYSTATUS eq '1' or paymentManageDTO.LGD_PAYSTATUS eq '2' or paymentManageDTO.LGD_PAYSTATUS eq '3'}">
 				<div class="btn_area prec">
 				<p>이미지 다운로드 이력이 없으신 경우에 한하여 결제일로부터 7일 이내에 결제 취소 요청이 가능합니다.</p>
-				<a href="javascript:;" onclick="cancelPay('${paymentManageDTO.LGD_OID}', ${paymentManageDTO.paymentManage_seq }, '${paymentManageDTO.LGD_PAYDATE}', ${totalDownCount})" class="btn_input1 precautions_btn">전체 결제 취소</a>
+				<c:if test="${paymentManageDTO.getPayType() eq '신용카드'}">
+				<form name="payAllCancel">
+					<input type="hidden" name="LGD_OID" value="${paymentManageDTO.LGD_OID}" />
+					<input type="hidden" name="LGD_PAYDATE" value="${paymentManageDTO.LGD_PAYDATE}" />
+					<input type="hidden" name="totalDownCount" value="${totalDownCount}" />
+					<a href="javascript:;" class="btn_input1 precautions_btn">전체 결제 취소</a>
+					<%-- <a href="javascript:;" onclick="cancelPay('${paymentManageDTO.LGD_OID}', ${paymentManageDTO.paymentManage_seq }, '${paymentManageDTO.LGD_PAYDATE}', ${totalDownCount})" class="btn_input1 precautions_btn">전체 결제 취소</a> --%>
+				</form>
+				
+				</c:if>
 				<ul class="precautions">
 					<li>※ 결제 취소/환불 유의사항</li>
 					<li>• 환불신청 기간(결제 후 7일 이내)이 지난 결제 건은 다운로드 내역이 없더라도 결제 취소를 신청하실 수 없습니다.</li>
