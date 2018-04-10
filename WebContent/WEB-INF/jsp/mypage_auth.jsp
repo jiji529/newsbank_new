@@ -23,10 +23,12 @@
 <link rel="stylesheet" href="css/sub.css" />
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/footer.js"></script>
+<script>
+</script>
 </head>
 <body>
 	<div class="wrap">
-		<%@include file="header.jsp" %>
+<%@include file="header.jsp" %>
 		<section class="mypage">
 		<div class="head">
 			<h2>마이페이지</h2>

@@ -62,7 +62,11 @@ function mutli_download() {
 		return;
 	}
 	
-	if(!confirm("선택하신 이미지를 압축파일로 다운로드하시겠습니까?\n판매 중지된 이미지는 다운로드 되지 않습니다.")) {
+	var msg = "선택하신 이미지를 압축파일로 다운로드하시겠습니까?";
+	if($("#cms_keyword").length == 0) {
+		msg += "\n\n판매 중지된 이미지는 다운로드 되지 않습니다.";
+	}
+	if(!confirm(msg)) {
 		return;
 	}
 

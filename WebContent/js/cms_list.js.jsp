@@ -128,6 +128,8 @@
 			saleState = <%=PhotoDTO.SALE_STATE_STOP%>;
 		}
 		changeOption(uciCode, "saleState", saleState);
+		alert("변경되었습니다");
+		search();
 	});
 	
 	/** 삭제버튼 클릭 */
