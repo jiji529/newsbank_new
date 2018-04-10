@@ -63,7 +63,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		
 	});
 	
-	//확장자 검사(admin.js에 중복)
+	//확장자 검사(admin.js와 중복 - 목록을 ajax 후처리로 불러와서 중복으로 추가)
 	function validFileType(file) {
 		var fileTypes = [ 'image/jpeg', 'image/pjpeg', 'image/png', 'application/pdf'
 
@@ -78,7 +78,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		return false;
 	}
 	
-	// 파일 업로드 (admin.js와 중복 - 목록을 ajax 후처리로 불러와서)
+	// 파일 업로드 (admin.js와 중복 - 목록을 ajax 후처리로 불러와서 중복으로 추가)
 	$(document).on("change", 'input[type=file]', function() {
 		var page = (location.pathname).split(".")[0];
 		var seq = $(this).parents("tr").find("input[type=checkbox]").val();
@@ -345,7 +345,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					var contentCnt = (val.contentCnt).split("|");
 					var blind = contentCnt[0]; // 블라인드 수량
 					var total = contentCnt[1]; // 전체 수량
-					var contentCnt = blind + " / " + total; // 콘텐츠 수량 (블라인드/전체)
+					var contentCnt = comma(blind) + " / " + comma(total); // 콘텐츠 수량 (블라인드/전체)
 					//var contentCnt = "-";					
 					var service = ""; // 서비스 상태
 					if(activate == 1){ service = "활성"; } else if(activate == 2){ service = "비활성"; }
@@ -498,7 +498,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}		
 	}
 </script>
-<script src="js/admin.js?v=20180408"></script>
+<script src="js/admin.js?v=20180409"></script>
 </head>
 
 <body>

@@ -618,12 +618,10 @@ $(function() {
 	$('input[type=file]').bind('change', function() {
 		var page = (location.pathname).split(".")[1];
 		var seq = $("input[name='seq']").val();
-		//console.log(page, seq);
-				
 		var uType = $(this).attr("name");	
-		//console.log(uType);
 		var tmpFile = $(this)[0].files[0];
 		var sizeLimit = 1024 * 1024 * 15;
+		
 		if (tmpFile.size > sizeLimit) {
 			alert("파일 용량이 15MB를 초과했습니다");
 			$(this).val("");
@@ -668,3 +666,8 @@ $(function() {
 	});
 
 });
+
+//천단위 ,(콤마) 넣어주기
+function comma(num){
+	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
