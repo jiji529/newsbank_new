@@ -290,6 +290,9 @@ public class PaymentManageDTO implements Serializable {
 		
 		LGD_PAYSTATUS = Integer.toString(lGD_PAYSTATUS);
 	}
+	public int getDetailSize() {
+		return paymentDetailList.size();
+	}
 	
 	
 
