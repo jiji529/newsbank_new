@@ -86,7 +86,7 @@
 					</li>
 					<li class="cleansite">
 						<a href="https://www.copyrightok.kr/" target="_blank">
-							클린사이트
+							저작권오케이
 							<br />
 							한국저작권보호원
 						</a>
