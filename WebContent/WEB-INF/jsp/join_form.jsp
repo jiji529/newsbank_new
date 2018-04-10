@@ -25,7 +25,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src='js/jquery.form.min.js'></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript" src="js/join.js"></script>
 <script>
 

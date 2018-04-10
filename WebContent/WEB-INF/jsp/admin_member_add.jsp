@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css" />
 <script src="js/footer.js"></script>
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
 <!-- <script src="js/join.js"></script> --> <!-- 기존의 회원가입의 형식과는 다른 부분이 있어서 admin.js를 생성해서 필요한 부분만 커스터마이징 -->
 <script src="js/admin.js?v=20180308"></script>

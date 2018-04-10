@@ -48,7 +48,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	 z-index: 100; } 
 </style>
 
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
@@ -57,63 +57,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 	$(document).ready(function(){
 		setDatepicker();
-		
-		/* var id = "trello3";
-		var pw = "ekgkal4174!";
-		var name = "트렐로1";
-		var phone = "010-112-5647";
-		var tmpPhone = phone.split("-");
-		var email = "trello1@dahami.com";
-		var compName = "주식회사 트렐로";
-		var compNum = "123-55-12343";
-		var tmpcompNum = compNum.split("-");
-		var compTel = "123-56-54298";
-		var tmpcompTel = compTel.split("-");
-		var compExtTel = "123";
-		var compZipcode = "41806";
-		var compAddress = "대구 서구 국채보상로 438 (내당동)";
-		var compAddDetail = "350-12번지 2층";
-		var compBankName = "기업은행";
-		var compBankAcc = "110-23-42141";
-		var contractStart = "2017-02-25";
-		var contractEnd = "2017-12-25";
-		var preRate = "20";
-		var postRate = "30";
-		var taxName = "홍길동";
-		var taxPhone = "010-3123-3141";
-		var tmpTaxPhone = taxPhone.split("-");
-		var taxEmail = "hong@dahami.com";
-		var taxExtTell = "200";
-		
-		$("#id").val(id);
-		$("#pw").val(pw);
-		$("#pw_check").val(pw);
-		$("#name").val(name);
-		$("#phone2").val(tmpcompNum[1]);
-		$("#phone3").val(tmpcompNum[2]);
-		$("#email").val(email);
-		$("#compName").val(compName);
-		$("#compNum1").val(tmpcompTel[0]);
-		$("#compNum2").val(tmpcompTel[1]);
-		$("#compNum3").val(tmpcompTel[2]);
-		$("#compTel2").val(tmpcompTel[1]);
-		$("#compTel3").val(tmpcompTel[2]);
-		$("#compExtTel").val(compExtTel);
-		$("#compZipcode").val(compZipcode);
-		$("#compAddress").val(compAddress);
-		$("#compAddDetail").val(compAddDetail);
-		$("#compBankName").val(compBankName);
-		$("#compBankAcc").val(compBankAcc);
-		$("#contractStart").val(contractStart);
-		$("#contractEnd").val(contractEnd);
-		$("#preRate").val(preRate);
-		$("#postRate").val(postRate);
-		$("#taxName").val(taxName);
-		$("#taxPhone1").val(tmpTaxPhone[0]);
-		$("#taxPhone2").val(tmpTaxPhone[1]);
-		$("#taxPhone3").val(tmpTaxPhone[2]);
-		$("#taxEmail").val(taxEmail);
-		$("#taxExtTell").val(taxExtTell); */
 	});
 	
 	//언론사 회원 추가 버튼 클릭
