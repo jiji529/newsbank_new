@@ -1031,6 +1031,43 @@ function comma(num){
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+
+$(document).ready(function() {
+	var payAllCancelForm = $('form[name=payAllCancel]');
+	payAllCancelForm.find('a.precautions_btn').on("click", function() {
+		if(!confirm("정말로 결제를 취소하시겠습니까?")) {
+			return;
+		}
+		var today = getDateTime().substr(0, 8); // 금일날짜
+		var paydate = payAllCancelForm.find('input[name=LGD_PAYDATE]').val().substr(0, 8); // 결제일자
+		var gap = today - paydate; // 소요기간
+		
+		if(gap <= 7 && totalDownCount == 0) { // 7일 이내
+			
+			var param = {
+				"LGD_OID" : LGD_OID,
+				"cmd" : "C"
+			};
+				
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				data: param,
+				url: "/payment.api",
+				success: function(data) {
+					console.log(data);
+				}, complete: function() {
+					alert("결제 취소 완료");
+					location.replace("/buylist.mypage");
+				}
+			});
+		}else {
+			alert("다운로드 받은 내역이 있을 시, 환불이 불가능합니다.\n (환불가능기간은 결제일로부터 7일 이내입니다.)")
+		}
+		
+	});
+});
+
 // 결제취소
 function cancelPay(LGD_OID, paymentManage_seq, LGD_PAYDATE, totalDownCount) {
 	/*
