@@ -136,6 +136,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	
 	<%-- 통합(서비스/CMS) 검색 --%>
 	function searchInternal(cmsMode) {
+	
+	$("#searchProgress").css("display", "block");
+	$("#searchProgressImg").css("display", "block");
+	
+		$(".loader").css("display", "block");
+		$(".progress").css("display", "block");
+		
 		var keyword = "";
 		if(cmsMode) {
 			keyword = $("#cms_keyword_current").val();
@@ -215,9 +222,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				else {
 					makeServiceList(data);
 				}
+				//$(".loader").css("display", "none");
+				//$(".progress").css("display", "none");
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+//				$(".loader").css("display", "none");
+	//			$(".progress").css("display", "none");
 			}
 		});
 	}

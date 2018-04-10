@@ -119,5 +119,9 @@
 		<input type="text" id="keyword_current" style="display: none;" />
 		<a href="javascript:void(0)" id="btn_search" class="btn_search">검색</a>
 	</form>
+<%--프로그레시브 바 --%>
+<div id="searchProgress" class="progress">
+	<div id="searchProgressImg" class="loader"></div>
+</div>
 </div>
 </nav>

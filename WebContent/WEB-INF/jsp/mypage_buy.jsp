@@ -171,12 +171,12 @@
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
-									<a href="<%=IMG_SERVER_URL_PREFIX %>/view.photo?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
+									<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
 										<img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${paymentDetailList.photo_uciCode }">
 									</a>
 								</div>
 								<div class="cart_info">
-									<a href="<%=IMG_SERVER_URL_PREFIX %>/view.photo?uciCode=${paymentDetailList.photo_uciCode }" target="_blank">
+									<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
 										<div class="brand">${paymentDetailList.photoDTO.copyright }</div>
 										<div class="code">${paymentDetailList.photo_uciCode }</div>
 									</a>
@@ -210,7 +210,7 @@
 								<div class="btn_group">
 									<c:if test="${paymentDetailList.downExpire eq false}">
 										<input type="hidden" name="paymentDetail_seq" value="${paymentDetailList.paymentDetail_seq}" />
-										<button type="button" class="btn_o" name="btn_down" value="${paymentDetailList.photo_uciCode }">다운로드</button>
+										<button type="button" class="btn_o" name="btn_down" onclick="downBuy('${paymentDetailList.photo_uciCode }');">다운로드</button>
 										<button type="button" class="btn_g" name="btn_cancel">결제 취소</button>
 									</c:if>
 								</div>
@@ -249,7 +249,9 @@
 		</c:if>
 		
 		<a href="buylist.mypage" class="mp_btn">목록</a> </section> </section>
-		<%@include file="footer.jsp"%>
+<%@include file="footer.jsp"%>
 	</div>
+<%@include file="view_form.jsp" %>
+<%@include file="down_frame.jsp" %>
 </body>
 </html>

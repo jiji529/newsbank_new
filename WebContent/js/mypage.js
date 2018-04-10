@@ -530,40 +530,6 @@ $(document).ready(function() {
 
 });
 
-// buy.mypage
-$(document).ready(function() {
-	/** 개별 다운로드 */
-	$(".btn_group [name=btn_down]").on("click", function() {
-		var uciCode = $(this).val();
-		var imgPath = "/service.down.photo?uciCode=" + uciCode + "&type=file";
-		
-		var paymentDetail_seq = $(this).parent().find("input[name='paymentDetail_seq']").val(); // 상세내역 SEQ
-		
-		var param = {
-			"paymentDetail_seq" : paymentDetail_seq,
-			"cmd" : "D"
-		};
-		
-		console.log(param);
-		
-		$.ajax({
-			type: "POST",
-			url: "/payment.api",
-			dataType: "json",
-			data: param,
-			success: function(data) {
-				console.log(data);
-			},
-			complete: function() {
-			}
-		});
-		
-		var link = document.createElement("a");
-		link.download = uciCode; link.href = imgPath; link.click();
-	});
-
-});
-
 // 검색옵션 월별 선택 함수
 function change_customDay() {
 	var year = $('#customYear').val();
