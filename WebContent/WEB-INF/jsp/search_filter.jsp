@@ -195,7 +195,7 @@ function setDatepicker() {
 			<div class="result"><b class="count">0</b>개의 결과</div>
 			<div class="paging">
 				<a href="javascript:void(0)" class="prev" title="이전페이지"></a>
-				<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="cms_search()"/>
+				<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="search()"/>
 				<span>/</span>
 				<span class="total">0</span>
 				<a href="javascript:void(0)" class="next" title="다음페이지"></a>
@@ -207,7 +207,7 @@ function setDatepicker() {
 					<span class="square">사각형보기</span>
 </c:if>
 				</div>
-				<select name="pageVol" onchange="cms_search()">
+				<select name="pageVol" onchange="search()">
 					<option value="40" selected="selected">40</option>
 					<option value="80">80</option>
 					<option value="120">120</option>

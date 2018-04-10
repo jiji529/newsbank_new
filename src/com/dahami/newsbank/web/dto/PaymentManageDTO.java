@@ -36,7 +36,7 @@ public class PaymentManageDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int  paymentManage_seq; // seq
+	private int  paymentManage_seq = 0; // seq
 	private int member_seq; // member 시퀀스
 	private String LGD_BUYER; // 구매자명
 	private String LGD_BUYERID; // 구매자 아이디

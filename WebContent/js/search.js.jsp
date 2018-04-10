@@ -137,11 +137,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	<%-- 통합(서비스/CMS) 검색 --%>
 	function searchInternal(cmsMode) {
 	
-	$("#searchProgress").css("display", "block");
-	$("#searchProgressImg").css("display", "block");
-	
-		$(".loader").css("display", "block");
-		$(".progress").css("display", "block");
+		$("#searchProgress").css("display", "block");
 		
 		var keyword = "";
 		if(cmsMode) {
@@ -210,7 +206,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var html = "";
 		$.ajax({
 			type: "POST",
-			async: false,
+			async: true,
 			dataType: "json",
 			data: searchParam,
 			timeout: 1000000,
@@ -222,13 +218,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				else {
 					makeServiceList(data);
 				}
-				//$(".loader").css("display", "none");
-				//$(".progress").css("display", "none");
+				$("#searchProgress").css("display", "none");
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-//				$(".loader").css("display", "none");
-	//			$(".progress").css("display", "none");
+				$("#searchProgress").css("display", "none");
 			}
 		});
 	}
@@ -273,7 +267,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				coverClass = "img_del";
 			}
 			html += "<li class=\"thumb " + coverClass + "\"> <a href=\"#\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";
-			html += "<div class=\"thumb_info\"><input type=\"checkbox\" value=\""+ val.uciCode +"\"/><span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
+			html += "<div class=\"thumb_info\">";
+			if(val.saleState != <%=PhotoDTO.SALE_STATE_DEL%>) {
+				html += "<input type=\"checkbox\" value=\""+ val.uciCode +"\"/>";
+			}
+			html += "<span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
 			html += "<ul class=\"thumb_btn\">";
 			if(deleted.length == 0) {
 				html += "<li class=\"btn_down\" value=\"" + val.uciCode + "\"><a>다운로드</a></li>"
