@@ -257,7 +257,7 @@
 		$(".editTitle").show();
 		$(".editCont").text($(".orgCont").text());
 		$(".editCont").show();
-		
+		$("#btnChangePic").show();
 		$(".editTitle").focus()
 	});
 	
@@ -276,6 +276,7 @@
 		$(".editTitle").hide();
 		$(".editCont").text("");
 		$(".editCont").hide();
+		$("#btnChangePic").hide();
 	});
 	
 	$(document).on("click", "#save_edit", function() {
@@ -316,6 +317,7 @@
 				$(".editCont").hide();
 				$(".editTitle").text("");
 				$(".editCont").text("");
+				$("#btnChangePic").hide();
 				
 				// 원본 데이터 수정
 				$(".orgTitle").text(newTitle);
@@ -328,3 +330,75 @@
 		    }
 		});
 	});
+	
+// ################################################################################
+// 사진변경(업로드) 처리
+// ################################################################################
+
+	$(document).on("click", "#btnChangePic", function() {
+		if(!confirm("사진 변경은 즉시 반영됩니다. 업로드 하시겠습니까?")) {
+			return;
+		}
+		
+		$("#fileChangePic").click();
+	});
+	
+	$(document).on("change", "#fileChangePic", function() {
+		var tmpFile = this.files[0]
+		var sizeLimit = 1024 * 1024 * 100;
+		
+		if (tmpFile.size > sizeLimit) {
+			alert("파일 용량이 100MB를 초과했습니다");
+			$(this).val("");
+			return;
+		}
+		
+		if (!validPicType(tmpFile)) {
+			alert("JPG/JPEG 형식만 업로드 가능합니다.");
+			return;
+		}
+		
+		var updData = new FormData();
+		updData.append("uploadFile", tmpFile);
+		updData.append("uciCode", $("#uciCode").val());
+		updData.append("action", "updatePic");
+		
+		var url = "/upload.cms" + $("#manage").val();
+		
+		$.ajax({
+				url : url,
+				async : false,
+				data : updData,
+				dataType : "json",
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					console.log(data);
+					if (data.success) {
+						alert(data.message);
+					} else {
+						alert(data.message);
+					}
+					location.reload();
+				},
+				error : function(data) {
+					console.log("Error: " + data.statusText);
+					alert("잘못된 접근입니다.");
+				},
+
+			});
+		
+	});
+	
+	var picType = [ 'image/jpeg' ];
+	//확장자 검사
+	function validPicType(file) {
+		for (var i = 0; i < picType.length; i++) {
+			if (file.type === picType[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}

@@ -20,6 +20,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%
+	String headerSplitChar = "<br>";
+	try {
+		if((boolean)request.getAttribute("serviceMode")) {
+			headerSplitChar = " : ";
+		}
+	}catch(Exception e){}
+%>
+
 <script>
 $(document).ready(function() {
 	setDatepicker();
@@ -52,7 +62,7 @@ function setDatepicker() {
 			var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
 			var titleTag = $(this).parents(".filter_title").find("span");
 			var titleStr = titleTag.html();
-			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+			titleStr = titleStr.substring(0, titleStr.indexOf("<%=headerSplitChar%>")) + "<%=headerSplitChar%> " + choice;
 			titleTag.html(titleStr);
 			
 			$(this).closest(".filter_list").stop().slideUp("fast");		
@@ -72,7 +82,7 @@ function setDatepicker() {
 			
 			var titleTag = $(this).parents(".filter_title").find("span");
 			var titleStr = titleTag.html();
-			titleStr = titleStr.substring(0, titleStr.indexOf(":")) + ": " + choice;
+			titleStr = titleStr.substring(0, titleStr.indexOf("<%=headerSplitChar%>")) + "<%=headerSplitChar%> " + choice;
 			titleTag.html(titleStr);
 			
 			var choiceTag = $(this).parents(".choice");
@@ -101,7 +111,7 @@ function setDatepicker() {
 		<ul>
 			<li class="filter_title filter_ico">검색필터</li>
 			<li class="filter_title filter_media">
-				<span>매체 : 전체</span>
+				<span><font>매체</font><%=headerSplitChar%>전체</span>
 				<ul class="filter_list">
 					<li value="0" selected="selected">전체</li>
 					<c:forEach items="${mediaList}" var="media">
@@ -110,7 +120,7 @@ function setDatepicker() {
 				</ul>
 			</li>
 			<li class="filter_title filter_durationReg">
-				<span>업로드일 : 전체</span>
+				<span><font>업로드일</font><%=headerSplitChar%>전체</span>
 				<ul class="filter_list">
 					<li value="" selected="selected">전체</li>
 					<li value="1d">1일</li>
@@ -131,7 +141,7 @@ function setDatepicker() {
 				</ul>
 			</li>
 			<li class="filter_title filter_durationTake">
-				<span>촬영일 : 전체</span>
+				<span><font>촬영일</font><%=headerSplitChar%>전체</span>
 				<ul class="filter_list">
 					<li value="" selected="selected">전체</li>
 					<li value="1d">1일</li>
@@ -161,7 +171,7 @@ function setDatepicker() {
 				</ul>
 			</li> --%>
 			<li class="filter_title filter_horizontal">
-				<span>가로/세로 : 전체</span>
+				<span><font>가로/세로</font><%=headerSplitChar%>전체</span>
 				<ul class="filter_list">
 					<li value="<%=SearchParameterBean.HORIZONTAL_ALL%>" selected="selected">전체</li>
 					<li value="<%=SearchParameterBean.HORIZONTAL_YES%>">가로</li>
@@ -169,7 +179,7 @@ function setDatepicker() {
 				</ul>
 			</li>
 			<li class="filter_title filter_size">
-				<span>사진크기 : 전체</span>
+				<span><font>사진크기</font><%=headerSplitChar%>전체</span>
 				<ul class="filter_list">
 					<li value="<%=SearchParameterBean.SIZE_ALL%>" selected="selected">전체</li>
 					<li value="<%=SearchParameterBean.SIZE_LARGE%>">3,000 px 이상</li>
@@ -179,7 +189,7 @@ function setDatepicker() {
 			</li>
 <c:if test="${serviceMode eq null || serviceMode ne true}">
 			<li class="filter_title filter_service">
-				<span>${serviceMode}서비스 상태 : 정상+숨김</span>
+				<span><font>서비스 상태</font><%=headerSplitChar%>정상+숨김</span>
 				<ul class="filter_list">
 					<li value="<%=SearchParameterBean.SALE_STATE_OK_BLIND%>" selected="selected">정상+숨김</li>
 					<li value="<%=SearchParameterBean.SALE_STATE_OK%>">정상</li>
