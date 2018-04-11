@@ -87,10 +87,10 @@ if(!contentBlidF) {
 %>					
 					<h3 class="img_tit hTitle viewTitle">${photoDTO.titleKor}</h3>
 					<h3 class="img_tit hTitle orgTitle" style="display:none;">${photoDTO.titleKor}</h3>
-					<textarea class="editTitle" style="width:100%; font-size:14px; line-height:22px; color:#666; display:none;"></textarea>
+					<textarea class="editTitle" style="display:none;"></textarea>
 					<p class="img_cont viewCont">${photoDTO.descriptionKor} <br /></p>
 					<p class="img_cont orgCont" style="display:none;">${photoDTO.descriptionKor}</p>
-					<textarea class="editCont" style="height:300px; width:100%; font-size:14px; line-height:22px; color:#666; display:none"></textarea>
+					<textarea class="editCont" rows="5" style="display:none;"></textarea>
 <%
 }
 else {
