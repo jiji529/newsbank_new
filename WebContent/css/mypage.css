@@ -152,6 +152,8 @@
 .mypage .btn_sort .button li.sort_folder .folder_item .box_add legend{display:none;}
 .mypage .btn_sort .button li.sort_folder .folder_item .box_add input{ color: #999; border: 1px solid #c5c5c5; vertical-align: middle; height: 22px; float:left;}
 .mypage .btn_sort .button li.sort_folder .folder_item .box_add button{ height: 22px; border: 1px solid #c3c3c3; color: #333; padding: 0 8px; background:#fff; float:left; margin-left:5px; font-size:11px;}
+.mypage .btn_sort .excel_down{ float:right; padding:6px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa;}
+.mypage .btn_sort .excel_down:hover{border:1px #f79320 solid; color:#f79320;}
 
 .mypage .thumb.img_del:before {content: ''; width: 196px; height: 196px; background: rgba(0,0,0,0.5); position: absolute; left: 0; top: 0;}
 .mypage .thumb.img_del:after {content: ''; position: absolute; left: -40px; top: 97px; border-top: 3px solid #fff; width: 276px; -moz-transform:rotate(-45deg); -o-transform:rotate(-45deg); -webkit-transform:rotate(-45deg); -ms-transform:rotate(-45deg); transform: rotate(-45deg);}

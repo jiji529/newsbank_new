@@ -46,6 +46,7 @@
 			<li class="sort_up">수동 업로드</li>
 			-->
 		</ul>
+		<a href="#" class="excel_down">엑셀저장</a>
 	</div>
 	<section id="cms_list2">
 		<ul>
