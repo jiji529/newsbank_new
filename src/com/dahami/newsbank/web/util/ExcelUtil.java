@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,7 @@ import com.dahami.newsbank.web.servlet.NewsbankServletBase;
 
 public class ExcelUtil {
 
-	 public static void xlsWiter(HttpServletRequest request, HttpServletResponse response, List<MemberDTO> list, String orgFileName) {
+	 public static void xlsWiter(HttpServletRequest request, HttpServletResponse response, List<String> headList, List<Integer> columnSize, List<String> columnList, List<Map<String, Object>> mapList, String orgFileName) {
 		// 워크북 생성
         HSSFWorkbook workbook = new HSSFWorkbook();
         // 워크시트 생성
@@ -36,78 +37,40 @@ public class ExcelUtil {
         HSSFCell cell;
 
         // 헤더 정보 구성
-        cell = row.createCell(0);
-        cell.setCellValue("아이디");
-        
-        cell = row.createCell(1);
-        cell.setCellValue("회사명");
-        
-        cell = row.createCell(2);
-        cell.setCellValue("회원구분");
-        
-        cell = row.createCell(3);
-        cell.setCellValue("이름");
-        
-        cell = row.createCell(4);
-        cell.setCellValue("이메일");
-        
-        cell = row.createCell(5);
-        cell.setCellValue("연락처");
-        
-        cell = row.createCell(6);
-        cell.setCellValue("결제구분");
-        
-        cell = row.createCell(7);
-        cell.setCellValue("그룹구분");
-        
-        cell = row.createCell(8);
-        cell.setCellValue("계약기간");
-        
-        cell = row.createCell(9);
-        cell.setCellValue("가입일자");
+        for(int idx=0; idx<headList.size(); idx++) {
+        	// 전달된 컬럼 갯수만큼 생성
+        	//sheet.autoSizeColumn(idx);
+        	//sheet.setColumnWidth(idx, (sheet.getColumnWidth(idx))+(short)1024);
+        	int width = columnSize.get(idx); // 전달받은 컬럼 길이
+        	sheet.setColumnWidth(idx, width*256);        	
+        	
+        	String cellName = headList.get(idx); // 헤더 셀 이름
+        	cell = row.createCell(idx);
+        	cell.setCellValue(cellName);
+        }
 
 	     // 리스트의 size 만큼 row를 생성
-	    MemberDTO memberDTO;
-	    for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
-	        memberDTO = list.get(rowIdx);
-	        
-	        // 행 생성
+	    for(int rowIdx=0; rowIdx < mapList.size(); rowIdx++) {
+	    	Map<String, Object> obj = mapList.get(rowIdx);
+	    	
+	    	// 행 생성
 	        row = sheet.createRow(rowIdx+1);
 	        
-	        cell = row.createCell(0);
-	        cell.setCellValue(memberDTO.getId());
-	        
-	        cell = row.createCell(1);
-	        cell.setCellValue(memberDTO.getCompName());
-	        
-	        cell = row.createCell(2);
-	        cell.setCellValue(memberDTO.getType());
-	        
-	        cell = row.createCell(3);
-	        cell.setCellValue(memberDTO.getName());
-	        
-	        cell = row.createCell(4);
-	        cell.setCellValue(memberDTO.getEmail());
-	        
-	        cell = row.createCell(5);
-	        cell.setCellValue(memberDTO.getPhone());
-	        
-	        cell = row.createCell(6);
-	        cell.setCellValue(memberDTO.getDeferred());
-	        
-	        cell = row.createCell(7);
-	        cell.setCellValue(memberDTO.getGroupName());
-	        
-	        cell = row.createCell(8);
-	        cell.setCellValue(memberDTO.getContractStart() + " ~ " + memberDTO.getContractEnd());
-	        
-	        cell = row.createCell(9);
-	        cell.setCellValue(memberDTO.getRegDate());
-	        
+	        // 셀 넣기
+	        for(int num=0; num<columnList.size(); num++) {
+	        	String key = columnList.get(num); // 컬럼명
+	        	String value = ""; // 컬럼명에 대한 값
+	        	if(mapList.get(rowIdx).get(key) != null) {
+	        		value = mapList.get(rowIdx).get(key).toString();
+	        	}
+	        	//System.out.println(key+ " / " + value);
+	        	cell = row.createCell(num) ;
+	        	cell.setCellValue(value);
+	    	}
 	    }
 	    
-	 // 입력된 내용 파일로 쓰기
-	    File file = new File("/data/newsbank/serviceTemp/excel/회원현황.xls");
+	    // 입력된 내용 파일로 쓰기
+	    File file = new File("/data/newsbank/serviceTemp/excel/" + orgFileName);
         FileOutputStream fos = null;
         
         String fileName = orgFileName; // 파일 이름
@@ -147,7 +110,7 @@ public class ExcelUtil {
 
 	 }
 	 
-	 public void xlsxWiter(List<String> columnList, List<String> sizeList, String title, String fileName) {
+	 public void xlsxWiter(List<String> headList, List<String> sizeList, String title, String fileName) {
 		// 워크북 생성
         XSSFWorkbook workbook = new XSSFWorkbook();
         // 워크시트 생성

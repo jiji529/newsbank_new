@@ -1,9 +1,14 @@
 package com.dahami.newsbank.web.dto;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -719,5 +724,30 @@ public class MemberDTO implements Serializable {
 			}
 		}
 		return list;
+	}
+	
+	/**
+	 * @methodName  : convertToMap
+	 * @author      : LEE, GWAGNHO
+	 * @date        : 2018. 04. 11. 오전 09:28:03
+	 * @methodCommet: 
+	 * @return
+	 * @throws Exception 
+	 * @returnType  : Map<String,Object>
+	 */
+	public Map<String, Object> convertToMap() throws Exception {
+		Field[] fields = this.getClass().getDeclaredFields();
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		for(Field cur : fields) {
+			int modifier = cur.getModifiers();
+			if((modifier & Modifier.STATIC) == Modifier.STATIC) {
+				continue;
+			}	
+			
+			result.put(cur.getName(), cur.get(this));
+			
+		}
+		return result;
 	}
 }

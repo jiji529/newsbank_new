@@ -1,7 +1,10 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,8 +76,25 @@ public class ListMemberJSON extends NewsbankServletBase {
 			
 			listMember = memberDAO.selectMemberList(searchOpt);
 			
-			String orgFileName = "회원현황.xls";
-			ExcelUtil.xlsWiter(request, response, listMember, orgFileName);
+			List<String> headList = Arrays.asList("아이디", "회사명", "회원구분", "이름", "이메일", "연락처", "결제구분", "그룹구분", "계약기간", "가입일자"); //  테이블 상단 제목
+			List<Integer> columnSize = Arrays.asList(10, 15, 8, 10, 30, 20, 10, 10, 20, 20); //  컬럼별 길이정보
+			List<String> columnList = Arrays.asList("id", "compName", "type", "name", "email", "phone", "deferred", "groupName", "contractStart", "regDate"); // 컬럼명
+			
+			
+			List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+			for(MemberDTO dto : listMember) {
+				try {
+					mapList.add(dto.convertToMap());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			Date today = new Date();
+		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+			String orgFileName = "회원현황_" + dateforamt.format(today) + ".xls"; // 파일명
+			ExcelUtil.xlsWiter(request, response, headList, columnSize, columnList, mapList, orgFileName);
+			
 		}else {
 			// 회원 목록 json
 			Map<Object, Object> searchOpt = new HashMap<Object, Object>();
@@ -84,12 +104,6 @@ public class ListMemberJSON extends NewsbankServletBase {
 			searchOpt.put("group", group);
 			searchOpt.put("pageVol", pageVol);
 			searchOpt.put("startPage", startPage);
-			
-			/*MemberDTO memberDTO = new MemberDTO(); // 객체 생성
-			memberDTO.setType(type);
-			memberDTO.setDeferred(deferred);
-			memberDTO.setGroup_seq(group_seq);*/
-			
 			
 			int totalCnt = 0; // 총 갯수
 			int pageCnt = 0; // 페이지 갯수
