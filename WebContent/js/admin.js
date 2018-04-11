@@ -598,6 +598,29 @@ function excel() { // 엑셀저장
 	excel_form.submit();
 }
 
+function member_excel() {
+	var searchParam = {
+		"pageVol":1000
+		, "startPage":0
+	};
+	console.log(searchParam);
+	
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		data: searchParam,
+		url: "/excel.listMember.api",
+		success: function(data) { console.log(data);
+			
+			//console.log(JSON.stringify(data.result));
+			
+		},
+		complete: function() {	
+			
+		}
+	});
+}
+
 //등록증 업로드
 $(function() {
 

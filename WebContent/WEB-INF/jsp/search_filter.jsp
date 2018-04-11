@@ -86,7 +86,16 @@ function setDatepicker() {
 			titleTag.html(titleStr);
 			
 			var choiceTag = $(this).parents(".choice");
+			$(this).parents(".filter_title").find("li").each(function() {
+				if(this == choiceTag[0]) {
+					$(this).attr("selected", "selected");
+				}
+				else {
+					$(this).removeAttr("selected");
+				}
+			});
 			choiceTag.attr("value", "C" + choice);
+			console.log(choice);
 			
 			$(this).closest(".filter_list").stop().slideUp("fast");
 			// 필터 바꾸면 페이지 번호 초기화
