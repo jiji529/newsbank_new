@@ -158,6 +158,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
 		var durationReg = $(".filter_durationReg .filter_list").find("[selected=selected]").attr("value");
+		console.log("xx"+durationReg);
 		var durationTake = $(".filter_durationTake .filter_list").find("[selected=selected]").attr("value");
 		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
