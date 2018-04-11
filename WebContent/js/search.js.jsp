@@ -254,8 +254,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	}
 	
 	<%--검색 결과 생성 / CMS --%>
-	function makeCmsList(data) {
+	function makeCmsList(data) { console.log(data);
 		var html = "";
+		var count = data.count; // 총 갯수
+		var viewCnt = data.result.length; // 현재 페이지에 보여지는 목록 갯수
 		$(data.result).each(function(key, val) {
 			var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
 			var deleted = (val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) ? "deleted" : "";
@@ -291,7 +293,16 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var totalPage = $(data.totalPage)[0];
 			totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마;
 		$("div .result b").html(totalCount);
-		$("div .paging span.total").html(totalPage)
+		$("div .paging span.total").html(totalPage);
+		
+		var pageVol = parseInt($("select[name='pageVol'] option:selected").val()); // 페이지당 표현단위
+		
+		if(count < pageVol || viewCnt < pageVol) { 
+		// 총 갯수 혹은 현재 페이지 목록갯수가 표현단위보다 작을 때, [다음 페이지] 숨김
+			$(".more").hide();
+		}else{
+			$(".more").show();
+		}	
 	}
 	
 	<%-- 연관사진 검색 --%>

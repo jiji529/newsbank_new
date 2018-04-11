@@ -43,6 +43,8 @@
 		
 		if(totalCnt < limit) { // 총 갯수가 표현단위보다 작을 때, [다음 페이지] 숨김
 			$(".more").hide();
+		}else {
+			$(".more").show();
 		} 
 	});
 </script>
