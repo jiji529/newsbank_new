@@ -211,7 +211,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			data: searchParam,
 			timeout: 1000000,
 			url: searchTarget,
-			success : function(data) {
+			success : function(data) { 
+				var count = data.count; // 총 갯수
+				var viewCnt = data.result.length; // 현재 페이지에 보여지는 목록 갯수
+				
 				if(cmsMode) {
 					makeCmsList(data);
 				}
@@ -219,6 +222,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					makeServiceList(data);
 				}
 				$("#searchProgress").css("display", "none");
+				
+				var pageVol = parseInt($("select[name='pageVol'] option:selected").val()); // 페이지당 표현단위
+		
+				if(count < pageVol || viewCnt < pageVol) { 
+				// 총 갯수 혹은 현재 페이지 목록갯수가 표현단위보다 작을 때, [다음 페이지] 숨김
+					$(".more").hide();
+				}else{
+					$(".more").show();
+				}	
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -242,8 +254,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		$("#search_list ul").html(html);
 		$(window).scrollTop(0);
 		
-		var totalCount = data.count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
-		var totalPage = data.totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
+		var totalCount = data.count;
+		if(totalCount > 1000) 
+			totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마; 
+		
+		var totalPage = data.totalPage;
+		if(totalPage > 1000)	
+			totalPage = data.totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마
 		
 		$("div .result b").text(totalCount);
 		$("div .paging span.total").html(totalPage);
@@ -254,10 +271,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	}
 	
 	<%--검색 결과 생성 / CMS --%>
-	function makeCmsList(data) { console.log(data);
+	function makeCmsList(data) { 
 		var html = "";
-		var count = data.count; // 총 갯수
-		var viewCnt = data.result.length; // 현재 페이지에 보여지는 목록 갯수
+		
 		$(data.result).each(function(key, val) {
 			var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
 			var deleted = (val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) ? "deleted" : "";
@@ -288,21 +304,14 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			html += " </ul>";
 		});
 		$("#cms_list2 ul").html(html);
-		var totalCount = $(data.count)[0];
+		var totalCount = data.count;
+		if(totalCount > 1000) 
 			totalCount = totalCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마; 
-		var totalPage = $(data.totalPage)[0];
+		var totalPage = data.totalPage;
+		if(totalPage > 1000)
 			totalPage = totalPage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천단위 콤마;
 		$("div .result b").html(totalCount);
 		$("div .paging span.total").html(totalPage);
-		
-		var pageVol = parseInt($("select[name='pageVol'] option:selected").val()); // 페이지당 표현단위
-		
-		if(count < pageVol || viewCnt < pageVol) { 
-		// 총 갯수 혹은 현재 페이지 목록갯수가 표현단위보다 작을 때, [다음 페이지] 숨김
-			$(".more").hide();
-		}else{
-			$(".more").show();
-		}	
 	}
 	
 	<%-- 연관사진 검색 --%>

@@ -207,7 +207,7 @@ function setDatepicker() {
 					<span class="square">사각형보기</span>
 </c:if>
 				</div>
-				<select name="pageVol" onchange="search()">
+				<select name="pageVol" onchange="goPage(1)">
 					<option value="40" selected="selected">40</option>
 					<option value="80">80</option>
 					<option value="120">120</option>
