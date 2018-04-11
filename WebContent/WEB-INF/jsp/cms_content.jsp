@@ -66,6 +66,7 @@ if(!contentBlidF) {
 				<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
 				</div>
 				<div class="cont_area">
+				<input type="file" style="display:none;" />
 					<h3 class="img_tit"><span class="uci">[${photoDTO.uciCode}]</span>
 <%
 if(photoDto.getCompCode() != null) {

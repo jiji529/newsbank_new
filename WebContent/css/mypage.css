@@ -204,7 +204,7 @@
 .mypage .view .view_lt .cont_area{ padding-bottom:30px;}
 .mypage .view .view_lt .cont_area input[type=file]{ width:100%; border:1px #ccc solid; margin-bottom:15px;}
 .mypage .view .view_lt input.editCont{ float:left; width:100%; padding:5px 10px; font-size:14px;  color:#666;resize: vertical;}
-.mypage .view .view_lt textarea.editCont, .mypage .view .view_lt textarea.editTitle{ float:left; width:100%; padding:5px 10px; font-size:14px;  line-height:20px; color:#666; resize: vertical; }
+.mypage .view .view_lt textarea.editCont, .mypage .view .view_lt textarea.editTitle{ float:left; width:100%; padding:5px 10px; font-size:14px;  line-height:20px; color:#666; resize: vertical; margin-bottom:10px;}
 
 
 /*.mypage .view .view_lt .img_info_area.area1 dl{grid-template-columns:28% 72%; -ms-grid-columns:28% 72%;}
