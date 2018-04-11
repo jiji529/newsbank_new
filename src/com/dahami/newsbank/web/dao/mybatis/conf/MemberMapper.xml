@@ -280,11 +280,11 @@
 	            AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
             </if>
             	        
-	        <if test="type != ''"> <!-- 회원구분 -->
+	        <if test="type != '' and type != null"> <!-- 회원구분 -->
 	            AND `type` = #{type}
             </if>
             
-			<if test="deferred != ''"> <!-- 결제구분 -->
+			<if test="deferred != '' and deferred != null"> <!-- 결제구분 -->
 				AND `deferred` = #{deferred}    
 			</if>
 			

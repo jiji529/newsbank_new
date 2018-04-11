@@ -29,7 +29,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
-<script src="js/admin.js"></script>
+<script src="js/admin.js?v=20180411"></script>
 <script> 
 $(document).ready(function(){ 
 	$(".popup_close").click(function(){ 
@@ -478,6 +478,13 @@ function go_memberView(member_seq) {
 	$("#member_seq").val(member_seq);
 	view_member_manage.submit();
 }
+
+function downInternal() {
+	$("#pageVol").val(1000);
+	$("#startPage").val(0);
+	$("#downForm").attr("action", "/excel.listMember.api");
+	$("#downForm").submit();
+}
 </script>
 </head>
 <body>
@@ -551,7 +558,7 @@ function go_memberView(member_seq) {
 						<option value="50">50개</option>
 						<option value="100">100개</option>
 					</select> 
-					<a href="javascript:void(0)" onclick="excel()">엑셀저장</a>
+					<a href="javascript:void(0)" onclick="downInternal()">엑셀저장</a>
 				</div>
 				<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 					<colgroup>
@@ -631,6 +638,11 @@ function go_memberView(member_seq) {
 		<input type="hidden" name="member_seq" id="member_seq"/>
 	</form>
 	
+	<form id="downForm" method="post"  target="downFrame">
+		<input type="hidden" id="pageVol" name="pageVol" />
+		<input type="hidden" id="startPage" name="startPage" value="file" />
+	</form>
+	<iframe id="downFrame" name="downFrame" style="display:none"></iframe>
 </div>
 </body>
 </html>
