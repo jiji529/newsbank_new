@@ -335,12 +335,12 @@
 // ################################################################################
 
 			// 수정기록 읽어오기
-		$("#history_open").click(function(){ 
+		$(document).on("click", "#history_open", function() {
 			setModLog();
 			$("#popup_wrap").css("display", "block"); 
 			$("#mask").css("display", "block");
-		}); 
-		$(".popup_close").click(function(){ 
+		});
+		$(document).on("click", "#popup_close", function() { 
 			$("#popup_wrap").css("display", "none"); 
 			$("#mask").css("display", "none");
 			$(".pop_history .pop_cont tbody").html(""); 
