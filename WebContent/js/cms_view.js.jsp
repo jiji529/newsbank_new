@@ -328,20 +328,3 @@
 		    }
 		});
 	});
-
-	
-// ################################################################################
-// 수정 히스토리 읽기
-// ################################################################################
-
-			// 수정기록 읽어오기
-		$(document).on("click", "#history_open", function() {
-			setModLog();
-			$("#popup_wrap").css("display", "block"); 
-			$("#mask").css("display", "block");
-		});
-		$(document).on("click", "#popup_close", function() { 
-			$("#popup_wrap").css("display", "none"); 
-			$("#mask").css("display", "none");
-			$(".pop_history .pop_cont tbody").html(""); 
-		});
