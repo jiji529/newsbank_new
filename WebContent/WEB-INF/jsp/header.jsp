@@ -101,9 +101,18 @@
 				<li>
 					<a href="/logout">로그아웃</a>
 				</li>
-				<li>
-					<a href="/info.mypage">마이페이지</a>
-				</li>
+				
+				<c:if test="${MemberInfo.type eq 'M'}">
+					<li>
+						<a href="/cms">마이페이지</a>
+					</li>
+				</c:if>
+				<c:if test="${MemberInfo.type ne 'M'}">
+					<li>
+						<a href="/info.mypage">마이페이지</a>
+					</li>
+				</c:if>
+				
 				<c:if test="${MemberInfo.type == 'A'}">
 					<li class="go_admin">
 						<a href="/cms.manage">관리자페이지</a>

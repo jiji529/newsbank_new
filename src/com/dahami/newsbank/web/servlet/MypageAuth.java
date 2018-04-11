@@ -52,13 +52,18 @@ public class MypageAuth extends NewsbankServletBase {
 		if (MemberInfo == null) {
 			// 이전에 로그인이 안된경우
 			response.sendRedirect("/login");
-
+			
 		} else {
 			// 이미 로그인 되어있는지 체크
 			if (mypageAuth) {
 				// 이전에 my page 비밀번호 입력했는지 체크
-				response.sendRedirect("/info.mypage");
-
+				if(MemberInfo.getType().equals("M")) {
+					// 매체사 회원은 사진관리로 이동
+					response.sendRedirect("/cms"); 
+				}else {
+					// 나머지 회원은 회원정보 관리로 이동
+					response.sendRedirect("/info.mypage");
+				}
 			} else {
 				if (pw == null) {
 					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_auth.jsp");
@@ -81,7 +86,14 @@ public class MypageAuth extends NewsbankServletBase {
 					if (memberDTO != null) {
 						// 로그인 성공
 						session.setAttribute("mypageAuth", true);
-						response.sendRedirect("/info.mypage");
+						
+						if(memberDTO.getType().equals("M")) {
+							// 매체사 회원은 사진관리로 이동
+							response.sendRedirect("/cms"); 
+						}else {
+							// 나머지 회원은 회원정보 관리로 이동
+							response.sendRedirect("/info.mypage");
+						}
 					} else {
 						// 로그인 실패
 						session.setAttribute("mypageAuth", false);
