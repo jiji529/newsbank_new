@@ -451,14 +451,15 @@ public class SearchDAO extends DAOBase {
 	
 	private void setDuration(String duration, String field, SolrQuery query) {
 		if(duration != null && duration.trim().length() > 0) {
+			System.out.println(duration);
 			if(!duration.startsWith("C")) {
 				Calendar sCal = Calendar.getInstance();
-				Calendar eCal = Calendar.getInstance();
-				eCal.set(Calendar.HOUR_OF_DAY, 0);
-				eCal.set(Calendar.MINUTE, 0);
-				eCal.set(Calendar.SECOND, 0);
-				eCal.set(Calendar.MILLISECOND, 0);
-				eCal.add(Calendar.DAY_OF_YEAR, 1);
+				sCal.add(Calendar.DAY_OF_YEAR, 1);
+				sCal.set(Calendar.HOUR_OF_DAY, 0);
+				sCal.set(Calendar.MINUTE, 0);
+				sCal.set(Calendar.SECOND, 0);
+				sCal.set(Calendar.MILLISECOND, 0);
+				Calendar eCal = (Calendar) sCal.clone();
 				if(duration.equals("1d")) {
 					sCal.add(Calendar.DAY_OF_MONTH, -1);
 				}

@@ -158,6 +158,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
 		var durationReg = $(".filter_durationReg .filter_list").find("[selected=selected]").attr("value");
+		console.log("xx"+durationReg);
 		var durationTake = $(".filter_durationTake .filter_list").find("[selected=selected]").attr("value");
 		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
@@ -194,7 +195,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				, "saleState":saleState
 				, "size":size
 		};
-		
+		searchKeyword = keyword; //검색결과 없는 페이지를 만들기 위한 검색어 셋팅
 		<%-- 키워드 변경 후 반영 없이 필터 등의 변경으로 인해 재검색 하면 기존 검색어를 키워드로 사용  --%>
 		if(cmsMode) {
 			$("#cms_keyword").val(keyword);
@@ -238,19 +239,30 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			}
 		});
 	}
-	
+	var searchKeyword = '';
 	<%--검색 결과 생성 / 서비스 --%>
 	function makeServiceList(data) {
 	 	var html = "";
-		$(data.result).each(function(key, val) {
-			html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
-			html += "<div class=\"info\">";
-			html += "<div class=\"photo_info\">" + val.ownerName + "</div>";
-			html += "<div class=\"right\">";
-			html += "<a class=\"over_wish\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">시안 다운로드</a> </div>";
-			html += "</div>";
+	 	if(data.result.length > 0){
+			$(data.result).each(function(key, val) {
+				html += "<li class=\"thumb\"><a href=\"javascript:void(0)\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\"></a>";
+				html += "<div class=\"info\">";
+				html += "<div class=\"photo_info\">" + val.ownerName + "</div>";
+				html += "<div class=\"right\">";
+				html += "<a class=\"over_wish\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">찜</a> <a class=\"over_down\" href=\"javascript:void(0)\" value=\"" + val.uciCode + "\">시안 다운로드</a> </div>";
+				html += "</div>";
+				html += "</li>";
+			});
+		}else{
+			html += "<li style='height:500px; width:1400px; line-height: 100% !important; text-align:left;'>";
+			html += "<p style='margin-left:47%;'>";
+			html += "<span style='font-size:30px;'>"+searchKeyword+" <b>에 대한 검색 결과가 없습니다.</b></span><br><br>";
+			html += "- 검색어의 단어수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.<br>";
+			html += "- 두 단어 이상의 키워드로 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해 보세요.<br>";
+			html += "- 키워드에 있는 특수문자를 뺀 후에 검색해 보세요.";
+			html += "</p>";
 			html += "</li>";
-		});
+		}
 		$("#search_list ul").html(html);
 		$(window).scrollTop(0);
 		
@@ -274,35 +286,46 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	function makeCmsList(data) { 
 		var html = "";
 		
-		$(data.result).each(function(key, val) {
-			var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
-			var deleted = (val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) ? "deleted" : "";
-			var coverClass = "";
-			if(val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) {
-				coverClass = "img_blind";
-			}
-			else if(val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) {
-				coverClass = "img_del";
-			}
-			html += "<li class=\"thumb " + coverClass + "\"> <a href=\"#\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";
-			html += "<div class=\"thumb_info\">";
-			if(val.saleState != <%=PhotoDTO.SALE_STATE_DEL%>) {
-				html += "<input type=\"checkbox\" value=\""+ val.uciCode +"\"/>";
-			}
-			html += "<span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
-			html += "<ul class=\"thumb_btn\">";
-			if(deleted.length == 0) {
-				html += "<li class=\"btn_down\" value=\"" + val.uciCode + "\"><a>다운로드</a></li>"
-				html += "<li class=\"btn_del " + deleted + "\" value=\"" + val.uciCode + "\"><a>삭제</a></li>";
-				html += "<li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>숨김</a></li>";
-			}
-			else {
-				html += "<li class=\"btn_down hide\"></li>"
-				html += "<li class=\"" + deleted + "\" value=\"" + val.uciCode + "\"></li>";
-				html += "<li class=\"btn_view hide" + blind + "\" value=\"" + val.uciCode + "\"></li>";
-			}
-			html += " </ul>";
-		});
+		if(data.result.length > 0){
+			$(data.result).each(function(key, val) {
+				var blind = (val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) ? "blind" : "";
+				var deleted = (val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) ? "deleted" : "";
+				var coverClass = "";
+				if(val.saleState == <%=PhotoDTO.SALE_STATE_STOP%>) {
+					coverClass = "img_blind";
+				}
+				else if(val.saleState == <%=PhotoDTO.SALE_STATE_DEL%>) {
+					coverClass = "img_del";
+				}
+				html += "<li class=\"thumb " + coverClass + "\"> <a href=\"#\" onclick=\"go_View('" + val.uciCode + "')\"><img src=\"<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=" + val.uciCode + "&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>\" /></a>";
+				html += "<div class=\"thumb_info\">";
+				if(val.saleState != <%=PhotoDTO.SALE_STATE_DEL%>) {
+					html += "<input type=\"checkbox\" value=\""+ val.uciCode +"\"/>";
+				}
+				html += "<span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
+				html += "<ul class=\"thumb_btn\">";
+				if(deleted.length == 0) {
+					html += "<li class=\"btn_down\" value=\"" + val.uciCode + "\"><a>다운로드</a></li>"
+					html += "<li class=\"btn_del " + deleted + "\" value=\"" + val.uciCode + "\"><a>삭제</a></li>";
+					html += "<li class=\"btn_view " + blind + "\" value=\"" + val.uciCode + "\"><a>숨김</a></li>";
+				}
+				else {
+					html += "<li class=\"btn_down hide\"></li>"
+					html += "<li class=\"" + deleted + "\" value=\"" + val.uciCode + "\"></li>";
+					html += "<li class=\"btn_view hide" + blind + "\" value=\"" + val.uciCode + "\"></li>";
+				}
+				html += " </ul>";
+			});
+		}else{
+			html += "<li style='height:500px; width:1000px; line-height: 100% !important; text-align:left;'>";
+			html += "<p style='margin-left:40%;'>";
+			html += "<span style='font-size:20px;'>"+searchKeyword+" <b>에 대한 검색 결과가 없습니다.</b></span><br><br>";
+			html += "- 검색어의 단어수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.<br>";
+			html += "- 두 단어 이상의 키워드로 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해 보세요.<br>";
+			html += "- 키워드에 있는 특수문자를 뺀 후에 검색해 보세요.";
+			html += "</p>";
+			html += "</li>";
+		}
 		$("#cms_list2 ul").html(html);
 		var totalCount = data.count;
 		if(totalCount > 1000) 

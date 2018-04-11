@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.dahami.common.util.FileUtil;
 import com.dahami.common.util.HttpUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.dto.PhotoTagDTO;
@@ -17,18 +20,29 @@ import com.dahami.newsbank.web.dao.TagDAO;
 import com.dahami.newsbank.web.dto.ActionLogDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.StatsDTO;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class CMSService extends ServiceBase {
-	private boolean isViewMode;
-	private boolean isAdmin;
 	
-	public CMSService(boolean isViewMode) {
-		this(isViewMode, false);
+	private static final String PATH_TEMP_PIC_UPLOAD = "/data/newsbank/serviceTemp/picUpload";
+	
+	static {
+		FileUtil.makeDirectory(PATH_TEMP_PIC_UPLOAD);
 	}
 	
-	public CMSService(boolean isViewMode, boolean isAdmin) {
+	private boolean isViewMode;
+	private boolean isAdmin;
+	private boolean isUpload;
+	
+	public CMSService(boolean isViewMode) {
+		this(isViewMode, false, false);
+	}
+	
+	public CMSService(boolean isViewMode, boolean isAdmin, boolean isUpload) {
 		this.isViewMode = isViewMode;
 		this.isAdmin = isAdmin;
+		this.isUpload = isUpload;
 	}
 	
 	@Override
@@ -39,10 +53,24 @@ public class CMSService extends ServiceBase {
 		MemberDTO memberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		memberInfo = mDao.getMember(memberInfo);
 		
-		if(isViewMode) {
-			PhotoDAO photoDAO = new PhotoDAO();
-			String uciCode = request.getParameter("uciCode");
-			PhotoDTO photoDTO = photoDAO.read(uciCode);
+		String uciCode = null;
+		String action = null;
+		PhotoDTO photoDTO = null;
+		String forward = null;
+		MultipartRequest multi = null;
+		
+		if(isUpload) {
+			multi = new MultipartRequest(request, PATH_TEMP_PIC_UPLOAD, 100*1024*1024, "UTF-8", new DefaultFileRenamePolicy());
+			uciCode = multi.getParameter("uciCode");
+			action = multi.getParameter("action");
+		}
+		else if(isViewMode) {
+			uciCode = request.getParameter("uciCode");
+			action = request.getParameter("action") == null ? "" : request.getParameter("action");
+		}
+		
+		if(isViewMode || isUpload) {
+			photoDTO = new PhotoDAO().read(uciCode);
 			
 			if(photoDTO == null) {
 				errorF = true;
@@ -60,26 +88,36 @@ public class CMSService extends ServiceBase {
 				if(!isAdmin && !ownerF) {
 					errorF = true;
 				}
-				else {
-					StatsDTO statsDTO = photoDAO.getStats(uciCode);
-					List<PhotoTagDTO> photoTagList = new TagDAO().select_PhotoTag(uciCode);
-					
-					// CMS 는 히트 안함
-//					photoDAO.hit(uciCode);
-					request.setAttribute("photoDTO", photoDTO);
-					request.setAttribute("statsDTO", statsDTO);
-					request.setAttribute("photoTagList", photoTagList);
-					
-					String action = request.getParameter("action") == null ? "" : request.getParameter("action");
-					String titleKor = request.getParameter("titleKor");
-					String descriptionKor = request.getParameter("descriptionKor");
-					String tagName = request.getParameter("tagName");
-					String columnName = request.getParameter("columnName");
-					String columnValue = request.getParameter("columnValue");
-					
-					TagDAO tagDAO = null;
-					
-					if(action.length() > 0) {
+			}
+			
+			if(!errorF) {
+				if(isViewMode) {
+					PhotoDAO photoDAO = new PhotoDAO();
+					TagDAO tagDAO = new TagDAO();
+					if(action.length() == 0) {
+						StatsDTO statsDTO = photoDAO.getStats(uciCode);
+						List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);
+						
+						// CMS 는 히트 안함
+	//					photoDAO.hit(uciCode);
+						request.setAttribute("photoDTO", photoDTO);
+						request.setAttribute("statsDTO", statsDTO);
+						request.setAttribute("photoTagList", photoTagList);
+						
+						if(isAdmin) {
+							forward = "/WEB-INF/jsp/admin_cms_view.jsp";
+						}
+						else {
+							forward = "/WEB-INF/jsp/cms_view.jsp";
+						}
+					}
+					else {
+						String titleKor = request.getParameter("titleKor");
+						String descriptionKor = request.getParameter("descriptionKor");
+						String tagName = request.getParameter("tagName");
+						String columnName = request.getParameter("columnName");
+						String columnValue = request.getParameter("columnValue");
+						
 						ActionLogDTO log = new ActionLogDTO();
 						log.setMemberSeq(memberInfo.getSeq());
 						log.setUciCode(photoDTO.getUciCode());
@@ -88,6 +126,7 @@ public class CMSService extends ServiceBase {
 						tagDAO = new TagDAO();
 						if(action.equals("insertTag")){
 							boolean exist = false;
+							List<PhotoTagDTO> photoTagList = tagDAO.select_PhotoTag(uciCode);
 							for(PhotoTagDTO photoTagDTO : photoTagList) {
 								if(tagName.equals(photoTagDTO.getTag_tagName())) {
 									exist = exist | true;
@@ -174,10 +213,19 @@ public class CMSService extends ServiceBase {
 								}
 							}
 						}else{
-							//System.out.println("ACTION parameter null or empty");
+							errorF = true;
 						}
 						
 						photoDAO.insertActionLog(log);
+					}
+				}
+				else if(isUpload) {
+					if(action.equals("updatePic")) {
+						photoDTO.getListPath();
+						System.out.println();
+					}
+					else {
+						errorF = true;
 					}
 				}
 			}
@@ -190,22 +238,8 @@ public class CMSService extends ServiceBase {
 			else {
 				mediaList = mDao.listAdjustMedia(memberInfo);
 			}
-			request.setAttribute("mediaList", mediaList);	
-		}
-		
-		String forward = null;
-		if(errorF) {
-			// TODO 잘못된 접근에 대한 처리
-		}
-		else if(isViewMode) {
-			if(isAdmin) {
-				forward = "/WEB-INF/jsp/admin_cms_view.jsp";
-			}
-			else {
-				forward = "/WEB-INF/jsp/cms_view.jsp";
-			}
-		}
-		else {
+			request.setAttribute("mediaList", mediaList);
+			
 			if(isAdmin) {
 				forward = "/WEB-INF/jsp/admin_cms.jsp";
 			}
@@ -214,7 +248,13 @@ public class CMSService extends ServiceBase {
 			}
 		}
 		
-		request.setAttribute("sParam", makeSearchParamMap(request.getParameterMap()));
-		forward(request, response, forward);
+		if(errorF) {
+			// TODO 잘못된 접근에 대한 처리
+		}
+		
+		if(!StringUtils.isBlank(forward)) {
+			request.setAttribute("sParam", makeSearchParamMap(request.getParameterMap()));
+			forward(request, response, forward);
+		}
 	}
 }
