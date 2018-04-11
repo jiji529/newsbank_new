@@ -250,11 +250,17 @@ public class CMSService extends ServiceBase {
 		
 		if(errorF) {
 			// TODO 잘못된 접근에 대한 처리
+			return;
 		}
 		
 		if(!StringUtils.isBlank(forward)) {
 			request.setAttribute("sParam", makeSearchParamMap(request.getParameterMap()));
 			forward(request, response, forward);
 		}
+		else {
+			response.getWriter().write("OK");
+			response.getWriter().flush();
+		}
+		
 	}
 }

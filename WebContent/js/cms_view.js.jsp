@@ -372,6 +372,7 @@
 				dataType : "json",
 				processData : false,
 				contentType : false,
+				timeout: 60000,
 				type : 'POST',
 				success : function(data) {
 					console.log(data);
