@@ -35,6 +35,7 @@ $(document).on("click", ".popup_close", function() {
    <div id="popup_wrap" class="pop_group wd2 pop_history">
 		<div class="pop_tit">
 			<h2>수정 이력 보기</h2>
+			<a href="javascript:void(0)" onclick="excel()" class="pop_tit_btn">엑셀저장</a>
 			<p>
 				<button class="popup_close">닫기</button>
 			</p>
