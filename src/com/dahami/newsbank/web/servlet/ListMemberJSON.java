@@ -17,7 +17,7 @@ import org.json.simple.JSONObject;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
-//import com.dahami.newsbank.web.util.ExcelUtil;
+import com.dahami.newsbank.web.util.ExcelUtil;
 
 /**
  * Servlet implementation class ListMemberJSON
@@ -74,7 +74,7 @@ public class ListMemberJSON extends NewsbankServletBase {
 			listMember = memberDAO.selectMemberList(searchOpt);
 			
 			String orgFileName = "회원현황.xls";
-			//ExcelUtil.xlsWiter(request, response, listMember, orgFileName);
+			ExcelUtil.xlsWiter(request, response, listMember, orgFileName);
 		}else {
 			// 회원 목록 json
 			Map<Object, Object> searchOpt = new HashMap<Object, Object>();
