@@ -19,7 +19,7 @@ import com.dahami.newsbank.web.servlet.bean.CmdClass;
  * Servlet implementation class CMS
  */
 @WebServlet(
-		urlPatterns = {"/cms", "/view.cms", "/modLog.cms", "/cms.manage", "/view.cms.manage", "/modLog.cms.manage"},
+		urlPatterns = {"/cms", "/view.cms", "/modLog.cms", "/upload.cms", "/cms.manage", "/view.cms.manage", "/modLog.cms.manage", "/upload.cms.manage"},
 		loadOnStartup = 1
 		)
 public class CMS extends NewsbankServletBase {
@@ -51,6 +51,7 @@ public class CMS extends NewsbankServletBase {
 		boolean isView = false;
 		boolean isModLog = false;
 		boolean isAdmin = false;
+		boolean isUpload = false;
 		
 		// 관리자 CMS
 		if(cmd.is1("manage")) {
@@ -65,6 +66,9 @@ public class CMS extends NewsbankServletBase {
 			}
 			else if(cmd.is3("modLog")) {
 				isModLog = true;
+			}
+			else if(cmd.is3("upload")) {
+				isUpload = true;
 			}
 		}
 		// 사용자 CMS
@@ -85,6 +89,9 @@ public class CMS extends NewsbankServletBase {
 			else if(cmd.is2("modLog")) {
 				isModLog = true;
 			}
+			else if(cmd.is2("upload")) {
+				isUpload = true;
+			}
 		}
 		
 		// 요청사항 처리
@@ -94,7 +101,7 @@ public class CMS extends NewsbankServletBase {
 			service = new LogService();
 		}
 		else {
-			service = new CMSService(isView, isAdmin);
+			service = new CMSService(isView, isAdmin, isUpload);
 		}
 		service.execute(request, response);
 	}

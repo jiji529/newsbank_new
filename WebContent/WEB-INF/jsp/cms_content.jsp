@@ -63,7 +63,10 @@ if(!contentBlidF) {
 %>
 					</div>
 				</h2>
-				<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
+				<div class="img_area">
+					<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
+					<button class="btn" id="btnChangePic" style="display:none;">사진 변경</button>
+					<input type="file" id="fileChangePic" name="fileChangePic" accept="image/jpeg"  required style="display:none;"/>
 				</div>
 				<div class="cont_area">
 				<input type="file" style="display:none;" />
@@ -75,7 +78,9 @@ ${photoDTO.compCode }
 <%
 }
 %>
-					<span class="img_date">업로드 : 
+					<span class="img_date">
+					
+					업로드 : 
 <%
 if(photoDto.getRegDate() != null) {
 	out.print(df.format(photoDto.getRegDate()));
