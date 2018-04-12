@@ -109,14 +109,14 @@
 							<tr>
 								<th>비밀번호 변경</th>
 								<td>
-									<input type="password" name="pw" id="pw" class="inp_txt" size="50" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)">
+									<input type="password" name="pw" id="pw" class="inp_txt" size="60" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)">
 									<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
 								</td>
 							</tr>
 							<tr>
 								<th>비밀번호 재확인</th>
 								<td>
-									<input type="password" name="pw_check" id="pw_check" class="inp_txt" size="50" maxlength="16" placeholder="비밀번호 재확인">
+									<input type="password" name="pw_check" id="pw_check" class="inp_txt" size="60" maxlength="16" placeholder="비밀번호 재확인">
 									<p class="txt_message" id="pw_check_message" style="display: none;">비밀번호가 일치하지 않습니다.</p>
 								</td>
 							</tr>

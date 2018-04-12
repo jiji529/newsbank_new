@@ -131,7 +131,7 @@ function setDatepicker() {
 			<li class="filter_title filter_durationReg">
 				<span><font>업로드일</font><%=headerSplitChar%>전체</span>
 				<ul class="filter_list">
-					<li value="" selected="selected">전체</li>
+					<li value="1" selected="selected">전체</li>
 					<li value="1d">1일</li>
 					<li value="1w">1주</li>
 					<li value="1m">1달</li>
@@ -152,7 +152,7 @@ function setDatepicker() {
 			<li class="filter_title filter_durationTake">
 				<span><font>촬영일</font><%=headerSplitChar%>전체</span>
 				<ul class="filter_list">
-					<li value="" selected="selected">전체</li>
+					<li value="1" selected="selected">전체</li>
 					<li value="1d">1일</li>
 					<li value="1w">1주</li>
 					<li value="1m">1달</li>

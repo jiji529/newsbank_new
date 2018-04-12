@@ -562,6 +562,6 @@
 .btn { padding: 12px 20px; color: #666; border: 1px solid #aaa; background: #fff; border-radius: 2px; margin-left: 10px;}
 .upload-btn-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0;}
 
-.wide .filters.sml li.filter_title span{line-height:50px;}
+
 .filters.sml li.filter_title span{line-height:17px; float:left; text-align:left; padding-top:5px;}
 .filters.sml li.filter_title span font{ font-size:12px; font-weight:600;}
