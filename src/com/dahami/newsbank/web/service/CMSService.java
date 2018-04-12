@@ -1,5 +1,7 @@
 package com.dahami.newsbank.web.service;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +15,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.dahami.common.util.FileUtil;
 import com.dahami.common.util.HttpUtil;
+import com.dahami.common.util.ImageUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.dto.PhotoTagDTO;
+import com.dahami.newsbank.util.NBImageUtil;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.TagDAO;
@@ -223,8 +227,19 @@ public class CMSService extends ServiceBase {
 				else if(isUpload) {
 					if(action.equals("updatePic")) {
 						photoDTO.getListPath();
-//						multi.getFileNames().nextElement()
-//						multi.getFile("uploadFile")
+						File upFile = multi.getFile("uploadFile");
+						
+						BufferedImage bImg = ImageUtil.getBufferedImage(upFile).get(0);
+						short colorBit = (short)bImg.getColorModel().getPixelSize();
+						if(colorBit != 24) {
+							logger.info("NOT 24bit: " + upFile.getAbsolutePath());
+						}
+						
+						// 뷰용 이미지 생성
+						BufferedImage viewBImg = NBImageUtil.resizeToViewSize(bImg);
+						// 리스트용 이미지 생성
+						BufferedImage listBImg = NBImageUtil.resizeToListSize(viewBImg);
+						
 //						multi.getOriginalFileName("uploadFile")
 						System.out.println();
 					}

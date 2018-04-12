@@ -374,13 +374,7 @@
 				timeout: 60000,
 				type : 'POST',
 				success : function(data) {
-					console.log(data);
-					if (data.success) {
-						alert(data.message);
-					} else {
-						alert(data.message);
-					}
-					location.reload();
+					alert("현재 개발 진행중입니다.")
 				},
 				error : function(data) {
 					console.log("Error: " + data.statusText);
