@@ -95,7 +95,7 @@
 	
 	<!-- 인기사진 : 다운로드 -->
 	<select id="selectDownloadRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, M.name AS ownerName FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode, B.downCount, M.name AS ownerName FROM photo A
 		INNER JOIN paymentDetail B ON A.uciCode = B.photo_uciCode
 		INNER JOIN member M ON A.member_seq = M.seq
 		WHERE A.saleStat = 1 AND 
@@ -106,14 +106,14 @@
 	
 	<!-- 인기사진 : 찜 -->
 	<select id="selectBasketRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, M.name AS ownerName, COUNT(*) AS count FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode, M.name AS ownerName, COUNT(*) AS zzimCount FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode
 		INNER JOIN member M ON A.member_seq = M.seq
 		WHERE A.saleStat = 1 AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 		GROUP BY B.photo_uciCode
-		HAVING count > 0
-		ORDER BY count DESC
+		HAVING zzimCount > 0
+		ORDER BY zzimCount DESC
 		LIMIT #{start}, #{count}
     </select>
     

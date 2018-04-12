@@ -27,7 +27,7 @@
 			<tr>
 				<td>${photo.uciCode}</td>
 				<td>${photo.ownerName}</td>
-				<td>${photo.hitCount}회</td>
+				<td>${photo.downCount}회</td>
 				<td><a href="#" id="btn_del" class="list_btn" value="${photo.mediaExActive}">삭제</a></td>
 			</tr>
 		</c:forEach>
