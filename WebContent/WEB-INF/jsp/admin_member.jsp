@@ -538,15 +538,6 @@ function downInternal() {
 				<div class="btn_area" style="margin-top:0;"><a href="javascript:void(0)" class="btn_input2">검색</a></div>
 			</div>
 			<div class="ad_result">
-				<!-- <div class="ad_result_btn_area">
-					<select id="sel_pageVol">
-						<option value="20">20개</option>
-						<option value="50">50개</option>
-						<option value="100">100개</option>
-					</select> <span id="popup_open"><a href="javascript:void(0)"
-						onclick="popup_group()">그룹묶기</a></span><a href="javascript:void(0)"
-						onclick="excel()">엑셀저장</a>
-				</div> -->
 				<div class="ad_result_btn_area">
 					<a href="/add.member.manage" style="margin-left: 0;">회원추가</a> 
 					<span id="popup_open"><a href="javascript:void(0)" onclick="popup_group()">그룹묶기</a></span> 

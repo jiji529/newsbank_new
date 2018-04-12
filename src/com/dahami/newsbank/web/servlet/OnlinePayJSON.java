@@ -1,7 +1,10 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +19,16 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
+import com.dahami.newsbank.web.util.ExcelUtil;
 
 /**
  * Servlet implementation class OnlinePayJSON
  */
-@WebServlet("/onlinePay.api")
+@WebServlet(
+		urlPatterns = {"/onlinePay.api", "/excel.onlinePay.api"},
+		loadOnStartup = 1
+		)
 public class OnlinePayJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
@@ -95,11 +103,32 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			totalPrice = payDAO.getOnlinePrice(params);
 			pageCnt = (totalCnt / pageVol) + 1; 
 			
-			if (searchList != null) {
-				success = true;
-			} else {
-				message = "데이터가 없습니다.";
+			CmdClass cmd = CmdClass.getInstance(request);
+			if (cmd.isInvalid()) {
+				response.sendRedirect("/invlidPage.jsp");
+				return;
 			}
+			
+			if(cmd.is3("excel")) {
+				// 목록 엑셀다운로드
+				
+				List<String> headList = Arrays.asList("주문일자", "아이디", "이름", "주문번호", "결제방법", "결제상황", "결제금액"); //  테이블 상단 제목
+				List<Integer> columnSize = Arrays.asList(25, 10, 10, 25, 10, 10, 15); //  컬럼별 길이정보
+				List<String> columnList = Arrays.asList("LGD_PAYDATE", "LGD_BUYERID", "LGD_BUYER", "LGD_BUYERID", "LGD_PAYTYPE", "LGD_PAYSTATUS", "LGD_AMOUNT"); // 컬럼명
+				
+				Date today = new Date();
+			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+				String orgFileName = "온라인결제관리_" + dateforamt.format(today); // 파일명
+				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
+			
+			}else {
+				if (searchList != null) {
+					success = true;
+				} else {
+					message = "데이터가 없습니다.";
+				}
+			}
+			
 			
 		} else { // 세션값이 없을 때 
 			message = "다시 로그인해주세요.";

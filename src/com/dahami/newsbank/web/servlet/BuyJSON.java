@@ -1,7 +1,10 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +20,16 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
+import com.dahami.newsbank.web.util.ExcelUtil;
 
 /**
  * Servlet implementation class BuyJSON
  */
-@WebServlet("/buy.api")
+@WebServlet(
+		urlPatterns = {"/buy.api", "/excel.buy.api"},
+		loadOnStartup = 1
+		)
 public class BuyJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
@@ -110,13 +118,34 @@ public class BuyJSON extends NewsbankServletBase {
 			totalPrice = paymentDAO.getBuyPrice(params); 
 			totalCnt = paymentDAO.getBuyCount(params);
 			pageCnt = (totalCnt / pageVol) + 1;	
-
-			if (searchList != null) {
-				success = true;
-			} else {
-				message = "데이터가 없습니다.";
-
+			
+			CmdClass cmd = CmdClass.getInstance(request);
+			if (cmd.isInvalid()) {
+				response.sendRedirect("/invlidPage.jsp");
+				return;
 			}
+			
+			if(cmd.is3("excel")) {
+				// 목록 엑셀다운로드
+				
+				List<String> headList = Arrays.asList("회사/기관명", "아이디", "이름", "구매 신청일", "상태", "매체", "UCI코드", "언론사 사진번호", "용도", "금액"); //  테이블 상단 제목
+				List<Integer> columnSize = Arrays.asList(10, 10, 10, 25, 10, 15, 20, 25, 10, 10); //  컬럼별 길이정보
+				List<String> columnList = Arrays.asList("compName", "id", "name", "LGD_PAYDATE", "LGD_PAYSTATUS", "copyright", "uciCode", "compCode", "usuage", "price"); // 컬럼명
+				
+				Date today = new Date();
+			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+				String orgFileName = "구매 내역_오프라인결제_" + dateforamt.format(today); // 파일명
+				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
+			}else {
+				
+				if (searchList != null) {
+					success = true;
+				} else {
+					message = "데이터가 없습니다.";
+
+				}
+			}
+			
 		} else {
 			message = "다시 로그인해주세요.";
 		}

@@ -95,9 +95,9 @@ public class DownloadDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public List<Map<String, String>> totalDownloadList(Map<Object, Object> searchOpt) {
+	public List<Map<String, Object>> totalDownloadList(Map<Object, Object> searchOpt) {
 		SqlSession session = null;
-		List<Map<String, String>> downList = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> downList = new ArrayList<Map<String, Object>>();
 		System.out.println(searchOpt);
 		
 		try {

@@ -339,10 +339,6 @@
 					건수 : <span id="totalCnt" class="color"> </span>건 <span class="bar3">l</span> 
 					총 판매금액 : <span	id="totalPrice" class="color"> </span>원 <span class="bar3">l</span>
 					<p style="color:#888;" id="search_result"></p>
-					<!-- <p style="color: #888;">
-						( 결제 완료 : 20,000,000원/ 90건 <span class="bar3">l</span> 결제 취소 :
-						4,000,000원/ 9건 <span class="bar3">l</span>미입금 : 1,000,000원/ 1건 )
-					</p> -->
 				</div>
 				<div class="ad_result">
 					<div class="ad_result_btn_area fr">
@@ -351,11 +347,10 @@
 							<option value="50">50개</option>
 							<option value="100">100개</option>
 						</select> 
-						<a href="javascript:void(0)" onclick="excel()">엑셀저장</a>
+						<a href="javascript:void(0)" onclick="saveExcel('/excel.onlinePay.api')">엑셀저장</a>
 					</div>
 					<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 						<colgroup>
-							<%-- <col width="40" /> --%>
 							<col width="50" />
 							<col width="120" />
 							<col width="100" />
@@ -370,10 +365,6 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<!-- <th><div class="tb_check">
-										<input id="check_all" name="check_all" type="checkbox">
-											<label for="check_all">선택</label>
-									</div></th> -->
 								<th>No.</th>
 								<th>주문일자</th>
 								<th>아이디</th>
@@ -413,6 +404,12 @@
 		<form method="post" action="/view.online.manage" name="view_online_manage" >
 			<input type="hidden" name="LGD_OID" id="LGD_OID"/>
 		</form>
+		
+		<form id="downForm" method="post"  target="downFrame">
+			<input type="hidden" id="pageVol" name="pageVol" />
+			<input type="hidden" id="startPage" name="startPage" value="file" />
+		</form>
+		<iframe id="downFrame" name="downFrame" style="display:none"></iframe>
 	</div>
 </body>
 </html>

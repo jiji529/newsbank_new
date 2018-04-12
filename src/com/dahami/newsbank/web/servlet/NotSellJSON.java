@@ -1,7 +1,10 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +19,16 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.DownloadDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
+import com.dahami.newsbank.web.util.ExcelUtil;
 
 /**
  * Servlet implementation class NotSellJSON
  */
-@WebServlet("/notSell.api")
+@WebServlet(
+		urlPatterns = {"/notSell.api", "/excel.notSell.api"},
+		loadOnStartup = 1
+		)
 public class NotSellJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
@@ -72,10 +80,30 @@ public class NotSellJSON extends NewsbankServletBase {
 			totalCnt = downloadDAO.notBuyListCount(params);
 			pageCnt = (totalCnt / pageVol) + 1;
 			
-			if (searchList != null) {
-				success = true;
-			} else {
-				message = "데이터가 없습니다.";
+			CmdClass cmd = CmdClass.getInstance(request);
+			if (cmd.isInvalid()) {
+				response.sendRedirect("/invlidPage.jsp");
+				return;
+			}
+			
+			if(cmd.is3("excel")) {
+				// 목록 엑셀다운로드
+				List<String> headList = Arrays.asList("회사/기관명", "아이디", "전화번호"); //  테이블 상단 제목
+				List<Integer> columnSize = Arrays.asList(15, 10, 10, 20); //  컬럼별 길이정보
+				List<String> columnList = Arrays.asList("compName", "id", "name", "phone"); // 컬럼명
+				
+				Date today = new Date();
+			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+				String orgFileName = "비구매계정_오프라인결제_" + dateforamt.format(today); // 파일명
+				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
+				
+			}else {
+				// 회원 목록 json
+				if (searchList != null) {
+					success = true;
+				} else {
+					message = "데이터가 없습니다.";
+				}
 			}
 			
 		}else {

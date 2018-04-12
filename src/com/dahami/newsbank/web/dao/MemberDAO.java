@@ -437,7 +437,7 @@ public class MemberDAO extends DAOBase {
 	 * @return
 	 * @returnType : List<MemberDTO>
 	 */
-	public List<Map<String, String>> selectMediaList(Map<Object, Object> searchOpt) {
+	public List<Map<String, Object>> selectMediaList(Map<Object, Object> searchOpt) {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();

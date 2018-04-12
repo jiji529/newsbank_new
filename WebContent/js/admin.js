@@ -598,27 +598,19 @@ function excel() { // 엑셀저장
 	excel_form.submit();
 }
 
-function member_excel() {
-	var searchParam = {
-		"pageVol":1000
-		, "startPage":0
-	};
-	console.log(searchParam);
-	
-	$.ajax({
-		type: "POST",
-		dataType: "json",
-		data: searchParam,
-		url: "/excel.listMember.api",
-		success: function(data) { console.log(data);
-			
-			//console.log(JSON.stringify(data.result));
-			
-		},
-		complete: function() {	
-			
-		}
-	});
+function saveExcel(apiUrl) { // form, iframe을 이용한 엑셀저장
+	$("#pageVol").val(1000);
+	$("#startPage").val(0);
+	$("#downForm").attr("action", apiUrl);
+	$("#downForm").submit();
+}
+
+function saveExcel(apiUrl, cmd) { // 정산관리(년도별 총 판매금액, 결제건별 상세내역)의 엑셀저장
+	$("#pageVol").val(1000);
+	$("#startPage").val(0);
+	$("#cmd").val(cmd);
+	$("#downForm").attr("action", apiUrl);
+	$("#downForm").submit();
 }
 
 //등록증 업로드

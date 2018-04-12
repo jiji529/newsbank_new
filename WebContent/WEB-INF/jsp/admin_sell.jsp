@@ -98,5 +98,12 @@
 	<form method="post" action="/sell.manage" name="sell_form" >
 		<input type="hidden" id="tabName" name="tabName" />
 	</form>
+	
+	<form id="downForm" method="post"  target="downFrame">
+		<input type="hidden" id="cmd" name="cmd" />
+		<input type="hidden" id="pageVol" name="pageVol" />
+		<input type="hidden" id="startPage" name="startPage" value="file" />
+	</form>
+	<iframe id="downFrame" name="downFrame" style="display:none"></iframe>
 </body>
 </html>

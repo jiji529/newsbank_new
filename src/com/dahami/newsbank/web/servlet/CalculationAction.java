@@ -1,7 +1,10 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +24,17 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.CalculationDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
+import com.dahami.newsbank.web.util.ExcelUtil;
 
 /**
  * Servlet implementation class CalculationAction
  */
-@WebServlet("/calculation.api")
+//@WebServlet("/calculation.api")
+@WebServlet(
+		urlPatterns = {"/calculation.api", "/excel.calculation.api"},
+		loadOnStartup = 1
+		)
 public class CalculationAction extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 	//private static HttpSession session = null;
@@ -187,6 +196,7 @@ public class CalculationAction extends NewsbankServletBase {
 		}
 		
 		PaymentDAO paymentDAO = new PaymentDAO();
+		CmdClass sep = CmdClass.getInstance(request);
 		
 		switch(cmd) {
 			case "C":
@@ -194,7 +204,7 @@ public class CalculationAction extends NewsbankServletBase {
 				break;
 				
 			case "R": 
-				// 정산 목록
+				// 결제건별 상세내역(정산관리)
 				param.put("keywordType", keywordType);
 				param.put("keyword", keyword);
 				param.put("start_date", start_date);
@@ -204,30 +214,61 @@ public class CalculationAction extends NewsbankServletBase {
 				
 				List<CalculationDTO> calcList = calculationDAO.selectCalculation(param);
 				result = true;
-								
-				for(CalculationDTO calc : calcList) {
-					JSONObject obj = new JSONObject();
-					obj.put("id", calc.getId());
-					obj.put("name", calc.getName());
-					obj.put("compName", calc.getCompName());
-					obj.put("copyright", calc.getCopyright());
-					obj.put("member_seq", calc.getMember_seq());
-					obj.put("payType", calc.getPayType());
-					obj.put("uciCode", calc.getUciCode());
-					obj.put("usage", calc.getUsage());
-					obj.put("type", calc.getType());
-					obj.put("price", calc.getPrice());
-					obj.put("status", calc.getStatus());
-					obj.put("fees", calc.getFees());
-					obj.put("regDate", calc.getRegDate());
+				
+				
+				if (sep.isInvalid()) {
+					response.sendRedirect("/invlidPage.jsp");
+					return;
+				}
+				
+				if(sep.is3("excel")) {
+					// 목록 엑셀 다운로드
+					List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+					for(CalculationDTO dto : calcList) {
+						try {
+							mapList.add(dto.convertToMap());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "판매자	결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+					List<Integer> columnSize = Arrays.asList(20, 15, 15, 25, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
+					List<String> columnList = Arrays.asList("regDate", "id", "compName", "uciCode", "copyright", "payType", "price", "fees", "price", "fees", "price", "fees", "price", "fees", "price"); // 컬럼명
 					
-					jArray.add(obj);					
-				}				
+					Date today = new Date();
+				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+					String orgFileName = "결제건별 상세내역_" + dateforamt.format(today); // 파일명
+					ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, mapList, orgFileName);
+				
+				}else {
+					// 목록 JSON
+					for(CalculationDTO calc : calcList) {
+						JSONObject obj = new JSONObject();
+						obj.put("id", calc.getId());
+						obj.put("name", calc.getName());
+						obj.put("compName", calc.getCompName());
+						obj.put("copyright", calc.getCopyright());
+						obj.put("member_seq", calc.getMember_seq());
+						obj.put("payType", calc.getPayType());
+						obj.put("uciCode", calc.getUciCode());
+						obj.put("usage", calc.getUsage());
+						obj.put("type", calc.getType());
+						obj.put("price", calc.getPrice());
+						obj.put("status", calc.getStatus());
+						obj.put("fees", calc.getFees());
+						obj.put("regDate", calc.getRegDate());
+						
+						jArray.add(obj);					
+					}	
+				}
+								
+							
 				
 				break;
 				
 			case "S":
-				// 정산 월별통계
+				// 년도별 총 판매금액(정산관리)
 				param.put("keywordType", keywordType);
 				param.put("keyword", keyword);
 				param.put("start_date", start_date);
@@ -236,49 +277,70 @@ public class CalculationAction extends NewsbankServletBase {
 				param.put("member_seqArr", member_seqArr);
 				
 				List<Map<String, Object>> staticsList = calculationDAO.selectOfMonth(param);
-				String year = start_date.substring(0, 4);				
-				String[] sDate = start_date.split("-");
-				String[] eDate = end_date.split("-");
 				
-				int sMonth = Integer.parseInt(sDate[1]);
-				int eMonth = Integer.parseInt(eDate[1]);
-				
-				// local 배열
-				for(int m=sMonth; m<=eMonth; m++) { // 월별
-					for(int t=0; t<2; t++) { // type = 0, 1 (2가지)
-						String month = String.format("%02d", m);
-						String YearOfMonth = year + "-" + month;
-						
-						JSONObject obj = new JSONObject();
-						obj.put("price", 0);
-						obj.put("YearOfMonth", YearOfMonth);
-						obj.put("type", t);
-						obj.put("count", 0);
-						
-						jArray.add(obj);
-					}					
-					
+				if (sep.isInvalid()) {
+					response.sendRedirect("/invlidPage.jsp");
+					return;
 				}
 				
-				// DB에서 받아온 값
-				for(Map<String, Object> statics : staticsList) {
-					JSONObject obj = new JSONObject();
-					obj.put("price", statics.get("price"));
-					obj.put("YearOfMonth", statics.get("YearOfMonth"));
-					obj.put("type", statics.get("type"));
-					obj.put("count", statics.get("count"));
-					tempArray.add(obj);
+				if(sep.is3("excel")) {
+					// 목록 엑셀 다운로드
+					// 기간에 따라 동적으로 테이블 항목이 생성
+					/*List<String> headList = Arrays.asList(); //  테이블 상단 제목
+					List<Integer> columnSize = Arrays.asList(); //  컬럼별 길이정보
+					List<String> columnList = Arrays.asList(); // 컬럼명
 					
-					// local 배열을 돌면서 같은 값은 치환
-					for(int idx = 0; idx < jArray.size(); idx++) {
-						JSONObject object = (JSONObject)jArray.get(idx);
+					Date today = new Date();
+				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+					String orgFileName = "년도별 총 판매금액_" + dateforamt.format(today); // 파일명
+					ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, staticsList, orgFileName);*/
+				
+				}else {
+					// 목록 JSON
+					String year = start_date.substring(0, 4);				
+					String[] sDate = start_date.split("-");
+					String[] eDate = end_date.split("-");
+					
+					int sMonth = Integer.parseInt(sDate[1]);
+					int eMonth = Integer.parseInt(eDate[1]);
+					
+					// local 배열
+					for(int m=sMonth; m<=eMonth; m++) { // 월별
+						for(int t=0; t<2; t++) { // type = 0, 1 (2가지)
+							String month = String.format("%02d", m);
+							String YearOfMonth = year + "-" + month;
+							
+							JSONObject obj = new JSONObject();
+							obj.put("price", 0);
+							obj.put("YearOfMonth", YearOfMonth);
+							obj.put("type", t);
+							obj.put("count", 0);
+							
+							jArray.add(obj);
+						}					
 						
-						String jYearOfMonth = object.get("YearOfMonth").toString();
-						String jType = object.get("type").toString();
+					}
+					
+					// DB에서 받아온 값
+					for(Map<String, Object> statics : staticsList) {
+						JSONObject obj = new JSONObject();
+						obj.put("price", statics.get("price"));
+						obj.put("YearOfMonth", statics.get("YearOfMonth"));
+						obj.put("type", statics.get("type"));
+						obj.put("count", statics.get("count"));
+						tempArray.add(obj);
 						
-						// year && type이 같으면 price 치환
-						if(jYearOfMonth.equals(statics.get("YearOfMonth").toString()) && jType.equals(statics.get("type").toString())) {
-							jArray.set(idx, obj);
+						// local 배열을 돌면서 같은 값은 치환
+						for(int idx = 0; idx < jArray.size(); idx++) {
+							JSONObject object = (JSONObject)jArray.get(idx);
+							
+							String jYearOfMonth = object.get("YearOfMonth").toString();
+							String jType = object.get("type").toString();
+							
+							// year && type이 같으면 price 치환
+							if(jYearOfMonth.equals(statics.get("YearOfMonth").toString()) && jType.equals(statics.get("type").toString())) {
+								jArray.set(idx, obj);
+							}
 						}
 					}
 				}

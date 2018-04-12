@@ -25,8 +25,6 @@ import com.dahami.newsbank.web.util.ExcelUtil;
 /**
  * Servlet implementation class ListMemberJSON
  */
-//@WebServlet("/listMember.api")
-
 @WebServlet(
 		urlPatterns = {"/listMember.api", "/excel.listMember.api"},
 		loadOnStartup = 1
@@ -92,8 +90,8 @@ public class ListMemberJSON extends NewsbankServletBase {
 			}
 			Date today = new Date();
 		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
-			String orgFileName = "회원현황_" + dateforamt.format(today) + ".xls"; // 파일명
-			ExcelUtil.xlsWiter(request, response, headList, columnSize, columnList, mapList, orgFileName);
+			String orgFileName = "회원현황_" + dateforamt.format(today); // 파일명
+			ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, mapList, orgFileName);
 			
 		}else {
 			// 회원 목록 json
