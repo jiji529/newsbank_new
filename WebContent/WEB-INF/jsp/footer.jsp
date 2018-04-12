@@ -15,9 +15,6 @@
 		<div class="foot_ct">
 			<dl>
 				<dt>서비스 소개</dt>
-				<!-- <dd>
-					<a href="/newsbank.intro">뉴스뱅크 소개</a>
-				</dd> -->
 				<dd>
 					<a href="/uci.intro">UCI 소개</a>
 				</dd>

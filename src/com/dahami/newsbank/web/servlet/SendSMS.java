@@ -90,9 +90,10 @@ public class SendSMS extends NewsbankServletBase {
 			memberDTO.setPhone(tel);
 			listMember = memberDAO.listMember(memberDTO); // 회원정보 요청
 			// 회원정보 배열 크기 체크
-			if (listMember.size() > 0 && access == null) {
-				success_msg = "입력하신 핸드폰번호는 이미 가입되어있습니다.";
-			}else {
+			// 기존 DB에 중복된 핸드폰번호가 존재하여 주석처리
+//			if (listMember.size() > 0 && access == null) {
+//				success_msg = "입력하신 핸드폰번호는 이미 가입되어있습니다.";
+//			}else {
 
 				// 전화번호 인증 요청
 				success_msg = "인증번호를 입력하신 휴대폰번호에 전송했습니다.";
@@ -127,7 +128,7 @@ public class SendSMS extends NewsbankServletBase {
 				} else {
 					success_msg = "더이상 인증번호를 요청할수 없습니다.";
 				}
-			}
+//			}
 			
 
 		}

@@ -51,9 +51,6 @@
 			</div>
 			<div class="mypage_ul" style="display:none;">
 				<ul class="mp_tab1 si">
-					<li>
-						<a href="/newsbank.intro">뉴스뱅크 소개</a>
-					</li>
 					<li class="on">
 						<a href="/uci.intro">UCI 소개</a>
 					</li>
