@@ -588,6 +588,8 @@ if(!contentBlidF) {
 			<div class="img_info_area">
 				<h3 class="info_tit">사진 정보</h3>
 				<dl>
+					<dt>업로드일</dt>
+					<dd><fmt:formatDate value="${photoDTO.regDate}" pattern="yyyy년 MM월 dd일  HH시 mm분 ss초"/></dd>
 					<dt>촬영일</dt>
 					<dd><fmt:formatDate value="${photoDTO.shotDate}" pattern="yyyy년 MM월 dd일  HH시 mm분 ss초"/></dd>
 					<dt>픽셀수</dt>
