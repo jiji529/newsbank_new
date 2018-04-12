@@ -66,6 +66,7 @@ import com.dahami.common.util.HttpUtil;
 import com.dahami.common.util.ImageUtil;
 import com.dahami.common.util.ZipUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.util.NBImageUtil;
 import com.dahami.newsbank.web.dao.BoardDAO;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
@@ -563,7 +564,7 @@ public class DownloadService extends ServiceBase {
 						if(targetSize.equals(DOWN_TYPE_OUTLINE)) {
 							// 워터마크본 생성
 							String watermarkEmbedTmp = tmpDir + "/" + photo.getUciCode() + "." + serviceCode + "." + downLog.getSeq() + ".wm.jpg";
-							makeWatermarkImage(orgPath, watermarkEmbedTmp);
+							NBImageUtil.makeWatermarkOutlineImage(orgPath, watermarkEmbedTmp);
 							orgPath = watermarkEmbedTmp;
 						}
 
@@ -820,42 +821,6 @@ public class DownloadService extends ServiceBase {
 				logger.warn("", e);
 			}
 		}
-	}
-
-
-	private static BufferedImage watermarkBimg;
-	private static int wImgWidth;
-	private static int wImgHeight;
-	static {
-		watermarkBimg = ImageUtil.getBufferedImage(MethodHandles.lookup().lookupClass().getClassLoader().getResource("com/dahami/newsbank/web/service/resources/watermarkTemplate.png").getFile()).get(0);
-		wImgWidth = watermarkBimg.getWidth();
-		wImgHeight = watermarkBimg.getHeight();
-	}
-
-	private boolean makeWatermarkImage(String orgPath, String outPath) {
-		File inputFd = new File(orgPath);
-		BufferedImage bImg = ImageUtil.getBufferedImage(inputFd).get(0);
-		short colorBit = (short) bImg.getColorModel().getPixelSize();
-		if (colorBit != 24) {
-			logger.info("NOT 24bit: " + inputFd.getAbsolutePath());
-		}
-		Graphics g = bImg.getGraphics();
-		int width = bImg.getWidth();
-		int height = bImg.getHeight();
-
-		// 이미지 높이에 맞춰서 워터마크 반복
-		int startY = 0;
-		do {
-			// 이미지 넓이에 맞춰서 워터마크 반복
-			int startX = 0;
-			do {
-				g.drawImage(watermarkBimg, startX, startY, null);
-				startX += wImgWidth;
-			} while (startX < width);
-			g.drawImage(watermarkBimg, 0, startY, null);
-			startY += wImgHeight;
-		} while (startY < height);
-		return ImageUtil.saveImage(bImg, outPath, ImageUtil.IMAGE_FORMAT_JPEG, colorBit);
 	}
 
 	private boolean makeLogoFile(String mdName, String tgtPath) {

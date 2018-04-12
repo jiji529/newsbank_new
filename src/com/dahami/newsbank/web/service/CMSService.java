@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -222,6 +223,9 @@ public class CMSService extends ServiceBase {
 				else if(isUpload) {
 					if(action.equals("updatePic")) {
 						photoDTO.getListPath();
+//						multi.getFileNames().nextElement()
+//						multi.getFile("uploadFile")
+//						multi.getOriginalFileName("uploadFile")
 						System.out.println();
 					}
 					else {

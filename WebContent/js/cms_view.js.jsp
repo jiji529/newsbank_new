@@ -369,7 +369,6 @@
 				url : url,
 				async : false,
 				data : updData,
-				dataType : "json",
 				processData : false,
 				contentType : false,
 				timeout: 60000,
