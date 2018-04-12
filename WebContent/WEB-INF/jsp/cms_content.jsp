@@ -19,6 +19,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <% 
 String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 
@@ -113,12 +114,14 @@ if(!contentBlidF) {
 				<div class="img_info_area area1">
 					<h3 class="info_tit">사진 정보</h3>
 					<dl>
+						<dt>업로드일</dt>
+						<dd><fmt:formatDate value="${photoDTO.regDate}" pattern="yyyy년 MM월 dd일  HH시 mm분 ss초"/></dd>
 						<dt>촬영일</dt>
-						<dd>${photoDTO.shotDate}</dd>
+						<dd><fmt:formatDate value="${photoDTO.shotDate}" pattern="yyyy년 MM월 dd일  HH시 mm분 ss초"/></dd>
 						<dt>픽셀수</dt>
 						<dd>${photoDTO.widthPx} X ${photoDTO.heightPx}(pixel)</dd>
 						<dt>출력사이즈</dt>
-						<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
+						<dd>${photoDTO.getWidthCmStr()} x ${photoDTO.getHeightCmStr()} (cm)</dd>
 						<dt>파일용량</dt>
 						<dd>${photoDTO.fileSize}MB</dd>
 						<dt>파일포멧</dt>

@@ -595,7 +595,7 @@ if(!contentBlidF) {
 					<dt>픽셀수</dt>
 					<dd>${photoDTO.widthPx} X ${photoDTO.heightPx}(pixel)</dd>
 					<dt>출력사이즈</dt>
-					<dd>${photoDTO.widthCm} x ${photoDTO.heightCm} (cm)</dd>
+					<dd>${photoDTO.getWidthCmStr()} x ${photoDTO.getHeightCmStr()} (cm)</dd>
 					<dt>파일용량</dt>
 					<dd>${photoDTO.getFileSizeMBStr()}MB</dd>
 					<dt>파일포맷</dt>
