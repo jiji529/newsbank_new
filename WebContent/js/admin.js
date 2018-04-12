@@ -637,6 +637,8 @@ $(function() {
 		var tmpFile = $(this)[0].files[0];
 		var sizeLimit = 1024 * 1024 * 15;
 		
+		console.log("seq : " + seq);
+		
 		if (tmpFile.size > sizeLimit) {
 			alert("파일 용량이 15MB를 초과했습니다");
 			$(this).val("");

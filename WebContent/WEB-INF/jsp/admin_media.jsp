@@ -270,6 +270,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		search("not_paging");
 	});
 	
+	// 제호 (추가/수정) 버튼 클릭시
+	$(document).on("click", ".logo", function() {
+		var seq = $(this).closest("tr").find("[type=checkbox]").val();
+		$("input[name='seq']").val(seq);
+	});
 	
 	
 	function search(state) {
@@ -371,13 +376,20 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += '<td>' + compNum + '</td>';
 					html += '<td>' + totalRate + '</td>';
 					html += '<td>' + contentCnt + '</td>';
-					html += '<td><span class="popup_open"><a href="#none" class="table_btn">' + service + '</a></span></td>';
+					
+					if(logo) {
+						// 제호가 있을 떄
+						html += '<td><span class="popup_open"><a href="#none" class="table_btn">' + service + '</a></span></td>';
+					}else {
+						// 없을 때는 버튼 보여주지 않기
+						html += '<td><span>제호 업로드</td>';
+					}
 					html += '<td>' + calc + '</td>';
 					
 					if(logo) {
-						html += '<td><a class="file" href="/logo.down.photo?seq=' + seq + '" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" name="logo" accept="application/pdf, image/*" required /></a></div></td>';
+						html += '<td><a class="file" href="/logo.down.photo?seq=' + seq + '" download="">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" name="logo" class="logo" accept="application/pdf, image/*" required /></a></div></td>';
 					}else {
-						html += '<td><div class="upload-btn-wrapper file_edit"><a href="#" class="table_btn btn_input1">추가</a><input type="file" name="logo" accept="application/pdf, image/*" required /></div></td>';						
+						html += '<td><div class="upload-btn-wrapper file_edit"><a href="#" class="table_btn btn_input1">추가</a><input type="file" name="logo" class="logo" accept="application/pdf, image/*" required /></div></td>';						
 					}
 					html += '</tr>';
 					
@@ -604,6 +616,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				<input type="hidden" id="totcnt" value="" />
 				<input type="hidden" id="startgo" value="" />
 				<input type="hidden" id="lastvalue" value="" />
+				<input type="hidden" name="seq" value="" /> <!-- 제호 업로드 시 선택한 회원 고유번호 값 전달용도 -->
 				<div class="pagination">
 					<ul id="pagination-demo" class="pagination-sm">
 					</ul>

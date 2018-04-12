@@ -119,7 +119,7 @@
     
 	<!-- 인기사진 : 상세보기(조회 수) -->
 	<select id="selectHitsRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT P.widthCm, P.heightCm, P.uciCode, M.name AS ownerName
+	    SELECT P.widthCm, P.heightCm, P.uciCode, P.hitCount, M.name AS ownerName
 	    FROM photo P
  		INNER JOIN member M ON P.member_seq = M.seq 
 	    WHERE saleStat = 1 AND 

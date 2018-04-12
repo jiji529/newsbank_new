@@ -70,7 +70,7 @@ $(document).on("click",".page",function() {
 	if(pages == "") pages = 1;
 	$("#startgo").val(pages);
 	
-	listJson();
+	search("not_paging");
 });
 
 // 첫번쨰 페이지
@@ -78,7 +78,7 @@ $(document).on("click",".first",function() {
 	var pages = "1";
 	$("#startgo").val(pages);
 	
-	listJson();
+	search("not_paging");
 });
 
 // 마지막 페이지
@@ -86,7 +86,7 @@ $(document).on("click",".last",function() {
 	var pages = $("#lastvalue").val();
 	$("#startgo").val(pages);
 	
-	listJson();
+	search("not_paging");
 });
 
 // 이전 페이지
@@ -94,7 +94,7 @@ $(document).on("click",".prev",function() {
 	var pages = $("#pagination-demo .page.active").text();
 	$("#startgo").val(pages);
 	
-	listJson();
+	search("not_paging");
 });
 
 // 다음 페이지
@@ -102,7 +102,7 @@ $(document).on("click",".next",function() {
 	var pages = $("#pagination-demo .page.active").text();
 	$("#startgo").val(pages);
 	
-	listJson();
+	search("not_paging");
 });
 
 function pagings(tot){
@@ -166,7 +166,7 @@ function popup_group() {
 		
 	} else {
 		
-		if((!check_existGroup()) && check_corp()) { // 선택항목 중에 그룹이 포함되었는지 여부 확인 & 법인회원인지 유무 확인
+		if((!check_existGroup()) && check_corp() && check_payType()) { // 선택항목 중에 그룹이 포함되었는지 여부 확인 & 법인회원인지 유무 확인 & 오프라인 회원 유무 확인
 			$("#popup_wrap").css("display", "block"); 
 			$("#mask").css("display", "block"); 
 			$(".group_li").empty();
@@ -261,6 +261,22 @@ function check_corp() { // 법인 회원유무 확인
 	return result;
 }
 
+function check_payType() { // 결제구분 확인
+	var result = true;
+	$("#mtBody input:checkbox:checked").each(function(index) {
+		var payType = $(this).closest("tr").children().eq(8).text(); // 결제구분
+		
+		if(payType == "온라인 결제") {
+			result = false;
+		}
+	});
+	
+	if(!result) {
+		alert("오프라인 결제 회원만 그룹묶기가 지원됩니다");
+	}
+	return result;
+}
+
 // 그룹 생성
 function make_group() {
 	var chk_total = $(".group_li input:radio:checked").length;
@@ -290,102 +306,17 @@ function make_group() {
 				$("#mask").css("display", "none"); 
 				
 			}, complete: function() {
-				listJson();
+				search("not_paging");
 			}
 		});
 	}
-}
-
-function listJson() {
-	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
-	var type = $("#sel_type option:selected").attr("value"); // 회원구분
-	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
-	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
-	var pageVol = $("#sel_pageVol option:selected").attr("value"); // 페이지 표시 갯수
-	var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
-	var pageCnt = 0; // 전체 페이지 갯수
-	var totalCnt = 0; // 전체 갯수
-	
-	var searchParam = {
-			"keyword":keyword
-			, "type":type
-			, "deferred":deferred
-			, "group":group
-			, "pageVol":pageVol
-			, "startPage":startPage
-	};
-	
-	var html = "";
-	$("#mtBody").empty();
-	
-	$.ajax({
-		type: "POST",
-		cache : false,
-		dataType: "json",
-		data: searchParam,
-		url: "/listMember.api",
-		success: function(data) { //console.log(data);
-			pageCnt = data.pageCnt; // 총 페이지 갯수
-			totalCnt = data.totalCnt; // 총 갯수
-			
-			$(data.result).each(function(key, val) {				
-				var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
-				var type = val.type;
-				if(type == "P") type = "개인";
-				if(type == "C") type = "법인";
-				if(type == "M") type = "언론사";
-				
-				var group = val.group_seq;
-				var groupName = val.groupName;
-				if(group == 0){ 
-					group = "개별";  
-				}else{
-					group = "그룹("+groupName+")";  
-				}
-				
-				var deferred = val.deferred;
-				if(deferred == '0') deferred = "온라인 결제";
-				if(deferred == '1') deferred = "오프라인 결제<br/>(온라인 가격)";
-				if(deferred == '2') deferred = "오프라인 결제<br/>(별도 가격)";	
-				
-				var contractStart = val.contractStart;
-				var contractEnd = val.contractEnd;
-				var duration = "";
-				if(contractStart == null || contractEnd == null) duration = "정보 미기재"; // 둘 중 하나라도 null이면 표시 
-				if(contractStart != null && contractEnd != null) duration = contractStart.split(" ")[0] + " ~ " + contractEnd.split(" ")[0]; // 모든 정보가 있을 때 표시
-				
-				var regDate = val.regDate;
-				regDate = regDate.substring(0, 10);
-				
-				html += '<tr onclick="go_memberView(\'' + val.seq + '\')">';
-				html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
-				//html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
-				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
-				html += '<label for="check' + key + '">선택</label>';
-				html += '</div></td>';
-				html += '<td>' + number + '</td>';
-				html += '<td>' + val.id + '</td>';
-				html += '<td>' + val.compName + '</td>';
-				html += '<td>' + type +'</td>';
-				html += '<td>' + val.name + '</td>';
-				html += '<td>' + val.email + '</td>';
-				html += '<td>' + makePhoneNumber(val.phone) + '</td>';
-				html += '<td>' + deferred + '</td>';
-				html += '<td>' + group + '</td>';
-				html += '<td>' + duration + '</td>';
-				html += '<td>' + regDate + '</td>';
-				html += '</tr>';
-			});
-			$(html).appendTo("#mtBody");
-		}
-	});
 }
 
 function makePhoneNumber(phoneNumber) { // 휴대폰 번호로 표현
 	return phoneNumber.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
 }
 
-function search() { // 검색
+function search(state) { // 검색
 	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
 	var type = $("#sel_type option:selected").attr("value"); // 회원구분
 	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
@@ -448,7 +379,6 @@ function search() { // 검색
 				
 				html += '<tr onclick="go_memberView(\'' + val.seq + '\')">';
 				html += '<td onclick="event.cancelBubble = true"><div class="tb_check">';
-				//html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="'+val.id+'(' + val.compName + ')">';
 				html += '<input id="check' + key + '" name="check' + key + '" type="checkbox" value="' + val.seq + '">';
 				html += '<label for="check' + key + '">선택</label>';
 				html += '</div></td>';
@@ -468,10 +398,12 @@ function search() { // 검색
 			$(html).appendTo("#mtBody");
 		},
 		complete: function() {			
-			pagings(pageCnt);		
+			if(state == undefined){
+				pagings(pageCnt);		
+			}
+			$("#loading").hide();		
 		}
 	});
-	
 }
 
 function go_memberView(member_seq) {
