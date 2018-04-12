@@ -254,14 +254,16 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				html += "</li>";
 			});
 		}else{
-			html += "<li style='height:500px; width:1400px; line-height: 100% !important; text-align:left;'>";
-			html += "<p style='margin-left:47%;'>";
-			html += "<span style='font-size:30px;'>"+searchKeyword+" <b>에 대한 검색 결과가 없습니다.</b></span><br><br>";
-			html += "- 검색어의 단어수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.<br>";
-			html += "- 두 단어 이상의 키워드로 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해 보세요.<br>";
-			html += "- 키워드에 있는 특수문자를 뺀 후에 검색해 보세요.";
+			html += "<div class='no_result'>";
+			html += "<p>";
+			html += "<em>"+searchKeyword+"</em>에 대한 검색 결과가 없습니다.";
 			html += "</p>";
-			html += "</li>";
+			html += "<ul>";
+			html += "<li>검색어의 단어수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.</li>";
+			html += "<li>두 단어 이상의 키워드로 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해 보세요.</li>";
+			html += "<li>키워드에 있는 특수문자를 뺀 후에 검색해 보세요.</li>";
+			html += "</ul>";
+			html += "</div>";
 		}
 		$("#search_list ul").html(html);
 		$(window).scrollTop(0);
@@ -317,14 +319,16 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				html += " </ul>";
 			});
 		}else{
-			html += "<li style='height:500px; width:1000px; line-height: 100% !important; text-align:left;'>";
-			html += "<p style='margin-left:40%;'>";
-			html += "<span style='font-size:20px;'>"+searchKeyword+" <b>에 대한 검색 결과가 없습니다.</b></span><br><br>";
-			html += "- 검색어의 단어수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.<br>";
-			html += "- 두 단어 이상의 키워드로 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해 보세요.<br>";
-			html += "- 키워드에 있는 특수문자를 뺀 후에 검색해 보세요.";
+			html += "<div class='no_result'>";
+			html += "<p>";
+			html += "<em>"+searchKeyword+"</em>에 대한 검색 결과가 없습니다.";
 			html += "</p>";
-			html += "</li>";
+			html += "<ul>";
+			html += "<li>검색어의 단어수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.</li>";
+			html += "<li>두 단어 이상의 키워드로 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해 보세요.</li>";
+			html += "<li>키워드에 있는 특수문자를 뺀 후에 검색해 보세요.</li>";
+			html += "</ul>";
+			html += "</div>";
 		}
 		$("#cms_list2 ul").html(html);
 		var totalCount = data.count;
