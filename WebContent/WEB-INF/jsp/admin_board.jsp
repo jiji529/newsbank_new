@@ -202,15 +202,12 @@
 							</div>
 							<div class="pop_cont">
 								<div class="pop_noti_tit"> ${board.title} </div>
-								<c:if test="${!empty board.fileName}">
-									<div class="pop_noti_txt">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/notice.down.photo?seq=${board.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/>	
-									</div>
-								</c:if>
-								<c:if test="${empty board.fileName}">
-									<%-- <div class="pop_noti_txt"> ${board.description} </div> --%>
-									<div class="pop_noti_txt"> ${fn:replace(board.description, LF, BR)} </div>
-								</c:if>								
+								<div class="pop_noti_txt" style="overflow:scroll;">
+									<c:if test="${!empty board.fileName}">
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/notice.down.photo?seq=${board.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/>
+									</c:if>
+									${fn:replace(board.description, LF, BR)}	
+								</div>
 							</div>
 						</div>
 					</c:forEach>
