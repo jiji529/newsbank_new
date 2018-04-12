@@ -3,7 +3,7 @@ package com.dahami.newsbank.web.service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.dahami.common.util.FileUtil;
 import com.dahami.common.util.HttpUtil;
 import com.dahami.common.util.ImageUtil;
+import com.dahami.newsbank.dto.ExifDTO;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.dto.PhotoTagDTO;
 import com.dahami.newsbank.util.NBImageUtil;
@@ -179,7 +180,7 @@ public class CMSService extends ServiceBase {
 							
 							// 실제 변경이 된 경우만 디비 업데이트
 							if(actionType > 0) {
-								photoDAO.update(photoDTO);
+								photoDAO.updateTitDesc(photoDTO);
 								log.setActionType(actionType);
 								log.setDescription(logDescription);
 							}
@@ -231,6 +232,44 @@ public class CMSService extends ServiceBase {
 						photoDTO.getListPath();
 						File upFile = multi.getFile("uploadFile");
 						
+						ExifDTO exif = null;
+						try {
+							exif = NBImageUtil.getExif(upFile);
+						}catch(Exception e) {
+							logger.warn("Fail to extract EXIF("+photoDTO.getUciCode()+"): " + upFile.getAbsolutePath(), e);
+						}
+						
+						if(exif != null && exif.isInitialized()) {
+							photoDTO.setExif(exif.toString());
+							photoDTO.setWidthPx(exif.getWidth());
+							photoDTO.setHeightPx(exif.getHeight());
+							photoDTO.setWidthCm(exif.getWidthCm());
+							photoDTO.setHeightCm(exif.getHeightCm());
+							photoDTO.setDpi(exif.getWidthDpi());
+							
+							Date shotDate = exif.getShotDate();
+							if(shotDate != null) {
+								photoDTO.setShotDate(shotDate);
+							}
+						}
+						
+						if(exif == null || !exif.isInitialized() || photoDTO.getWidthPx() == 0 || photoDTO.getHeightPx() == 0) {
+							// EXIF 없는경우 사진크기 가져와야함
+							if(photoDTO.getWidthPx() == 0 || photoDTO.getHeightPx() == 0) {
+								BufferedImage imgBuf = null;
+								try {
+									imgBuf = ImageUtil.getBufferedImage(upFile).get(0);
+									photoDTO.setWidthPx(imgBuf.getWidth());
+									photoDTO.setHeightPx(imgBuf.getHeight());
+									photoDTO.setDpi(72);
+									photoDTO.setWidthCm((float) (photoDTO.getWidthPx()*2.54/photoDTO.getDpi()));
+									photoDTO.setHeightCm((float) (photoDTO.getHeightPx()*2.54/photoDTO.getDpi()));
+								}catch(Exception e){}
+							}
+						}
+						long imgSize = upFile.length();
+						photoDTO.setFileSize((int)imgSize);
+						
 						BufferedImage bImg = ImageUtil.getBufferedImage(upFile).get(0);
 						short colorBit = (short)bImg.getColorModel().getPixelSize();
 						if(colorBit != 24) {
@@ -258,8 +297,24 @@ public class CMSService extends ServiceBase {
 							logger.warn("", e);
 						}
 						
-//						multi.getOriginalFileName("uploadFile")
-						System.out.println();
+						// TODO 사진 교체
+						// 기존 원본은 _timestamp 붙여서 복사해 둘 것.
+						String bakOrg = ""; 
+						
+						// TODO 임시파일 삭제
+						
+						// 사진 관련 항목만 업데이트
+						PhotoDAO photoDAO = new PhotoDAO();
+						photoDAO.updatePic(photoDTO);
+						
+						// 로그 기록
+						ActionLogDTO log = new ActionLogDTO();
+						log.setMemberSeq(memberInfo.getSeq());
+						log.setUciCode(photoDTO.getUciCode());
+						log.setIp(HttpUtil.getRequestIpAddr(request));
+						log.setActionType(ActionLogDTO.ACTION_TYPE_CHANGE_PHOTO);
+						log.setDescription(multi.getOriginalFileName("uploadFile") + " / ORG: " + bakOrg);
+						photoDAO.insertActionLog(log);
 					}
 					else {
 						errorF = true;

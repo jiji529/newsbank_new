@@ -3,7 +3,16 @@
 
 <mapper namespace="Photo">
 	<!-- 사진 정보 수정 -->
-	<update id="updatePhoto" parameterType="com.dahami.newsbank.dto.PhotoDTO">
+	<update id="updatePhotoTitDesc" parameterType="com.dahami.newsbank.dto.PhotoDTO">
+		UPDATE photo SET
+		titleKr = #{titleKor},
+		descriptionKr = #{descriptionKor},
+		uciStat = '-1'
+		WHERE uciCode = #{uciCode}
+	</update>
+	
+	<!-- 사진 정보 수정 -->
+	<update id="updatePhotoPic" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 		UPDATE photo SET
 		titleKr = #{titleKor},
 		descriptionKr = #{descriptionKor},

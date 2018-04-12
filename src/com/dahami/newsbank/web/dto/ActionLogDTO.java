@@ -33,9 +33,10 @@ public class ActionLogDTO {
 	public static final int ACTION_TYPE_UNSET_DELETE = 128;
 	public static final int ACTION_TYPE_SET_PRIGHT = 256;
 	public static final int ACTION_TYPE_UNSET_PRIGHT = 512;
+	public static final int ACTION_TYPE_CHANGE_PHOTO = 1024;
 	
 	/** 세팅 최고값(메시지 생성 자동화(루프)를 위해 필요) */
-	private static final int ACTION_TYPE_MAX = ACTION_TYPE_UNSET_PRIGHT;
+	private static final int ACTION_TYPE_MAX = ACTION_TYPE_CHANGE_PHOTO;
 	private static final Map<Integer, String> ACTION_TYPE_MSG;
 	
 	static {
@@ -51,6 +52,7 @@ public class ActionLogDTO {
 		ACTION_TYPE_MSG.put(ACTION_TYPE_UNSET_DELETE, "삭제 복구");
 		ACTION_TYPE_MSG.put(ACTION_TYPE_SET_PRIGHT, "초상권 획득");
 		ACTION_TYPE_MSG.put(ACTION_TYPE_UNSET_PRIGHT, "초상권 상실");
+		ACTION_TYPE_MSG.put(ACTION_TYPE_CHANGE_PHOTO, "사진 변경");
 	}
 	
 	private int seq;

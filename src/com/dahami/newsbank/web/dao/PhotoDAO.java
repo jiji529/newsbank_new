@@ -51,12 +51,28 @@ public class PhotoDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public void update(PhotoDTO photoDTO) {
+	public void updateTitDesc(PhotoDTO photoDTO) {
 		SqlSession session = null;
 				
 		try {
 			session = sf.getSession();
-			session.update("Photo.updatePhoto", photoDTO);
+			session.update("Photo.updatePhotoTitDesc", photoDTO);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+	}
+	
+	public void updatePic(PhotoDTO photoDTO) {
+		
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			// TODO 쿼리 생성
+//			session.update("Photo.updatePhotoPic", photoDTO);
 			
 		} catch (Exception e) {
 			logger.warn("", e);
