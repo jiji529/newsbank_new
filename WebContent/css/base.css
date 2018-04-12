@@ -121,3 +121,11 @@ footer a.clean{ float:right; margin:-2px 0 0 20px; }
 	0%    { transform: rotate(0deg); }
 	100%  { transform: rotate(360deg); }
 }
+
+.no_result{width:100%;-webkit-column-span:all;-moz-column-span:all;column-span:all; padding:100px 0; margin:0 auto; font-family:nanum;}
+.no_result p{font-weight: 600; font-size: 24px; word-wrap: break-word; word-break: break-all; color: #333; margin-bottom:40px; }
+.no_result p em{ font-style:normal; color: #000; }
+.no_result ul{ width:600px; margin:0 auto; padding-left:20px;}
+.no_result ul li{ color: #333; float:left; width:100%; font-size:15px; line-height:28px; text-align:left; list-style:disc}
+
+

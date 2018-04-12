@@ -26,9 +26,7 @@ font-style: normal;
 @font-face {
 font-family: 'nanum';
 src: url('font/NanumGothic-Regular.ttf') format('truetype');
+src: url('font/NanumGothic-Regular.eot?#iefix') format('embedded-opentype'), url('font/NanumGothic-Regular.woff') format('woff'), url('font/NanumGothic-Regular.ttf') format('truetype'), url('font/NanumGothic-Regular.svg#NanumGothic-Regular') format('svg');
 font-weight: normal;
 font-style: normal;
 }
-
-
-
