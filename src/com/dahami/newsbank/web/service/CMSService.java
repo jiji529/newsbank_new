@@ -28,6 +28,8 @@ import com.dahami.newsbank.web.dto.StatsDTO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import kr.or.uci.dist.api.APIHandler;
+
 public class CMSService extends ServiceBase {
 	
 	private static final String PATH_TEMP_PIC_UPLOAD = "/data/newsbank/serviceTemp/picUpload";
@@ -235,10 +237,26 @@ public class CMSService extends ServiceBase {
 							logger.info("NOT 24bit: " + upFile.getAbsolutePath());
 						}
 						
-						// 뷰용 이미지 생성
+						// 이미지 파일 생성 경로(임시)
+						String viewFile = upFile.getAbsolutePath() + ".view.jpg";
+						String listFile = upFile.getAbsolutePath() + ".list.jpg";
+						
+						// 뷰용 이미지 리사이즈
 						BufferedImage viewBImg = NBImageUtil.resizeToViewSize(bImg);
-						// 리스트용 이미지 생성
+						// 리스트용 이미지 리사이즈
 						BufferedImage listBImg = NBImageUtil.resizeToListSize(viewBImg);
+						
+						// 각 이미지 워터마크 삽입해서 저장
+						NBImageUtil.makeWatermarkViewImage(viewBImg, viewFile);
+						NBImageUtil.makeWatermarkListImage(listBImg, listFile);
+						
+						// UCI 코드 임베드
+						try {
+							APIHandler.attach(new File(viewFile), new File(viewFile + ".jpg"), uciCode);
+							APIHandler.attach(new File(listFile), new File(listFile + ".jpg"), uciCode);
+						} catch (Exception e) {
+							logger.warn("", e);
+						}
 						
 //						multi.getOriginalFileName("uploadFile")
 						System.out.println();

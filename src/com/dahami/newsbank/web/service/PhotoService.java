@@ -60,7 +60,7 @@ public class PhotoService extends ServiceBase {
 				HttpSession session = request.getSession();
 				MemberDTO memberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 				if(memberInfo != null) {
-					request.setAttribute("bookmakr", new BookmarkDAO().select(memberInfo.getSeq(), uciCode));
+					request.setAttribute("bookmark", new BookmarkDAO().select(memberInfo.getSeq(), uciCode));
 				}
 			}
 			forward = "/WEB-INF/jsp/photo_view.jsp";
