@@ -63,7 +63,14 @@
 					$(this).val("");
 					return;
 				}
-
+				// 일단 이미지 파일만 확인하도록 했다.
+				var fileType = $(this).val();
+				var type = ['JPG','PNG','GIF'];
+				if(type.indexOf(fileType.substring((fileType.lastIndexOf(".")+1)).toUpperCase()) == -1){
+					$(this).val("");
+					return alert("알맞지 않은 파일 형식입니다!");
+				}
+				
 				if (validFileType(tmpFile)) {
 					var formData = new FormData();
 					//첫번째 파일태그
@@ -102,6 +109,9 @@
 			});
 
 		});
+		
+		var description = $("textarea[name='desc']").val();
+		$("textarea[name='desc']").val(removeHTMLTag(description));
 	});
 	
 	function register() { // 공지사항 등록
@@ -174,6 +184,11 @@
 			alert("제목을 입력해주세요.");
 		}
 	}
+	function removeHTMLTag(text){
+		text = text.replace(/<br\/>/ig, "\n"); 
+		text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
+		return text;
+	}
 </script>
 
 <title>뉴스뱅크</title>
@@ -207,7 +222,7 @@
 							</tr>
 							<tr>
 								<th>내용</th>
-								<td><textarea name="desc" class="inp_txt" rows="20"> ${boardDTO.description} </textarea></td>
+								<td><textarea name="desc" class="inp_txt" rows="20"> ${fn:replace(boardDTO.description, LF, BR)}</textarea></td>
 							</tr>
 							<tr>
 								<th>파일 첨부</th>

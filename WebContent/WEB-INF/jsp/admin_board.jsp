@@ -73,27 +73,34 @@
 	}
 	
 	function fn_delete(seq) { // 공지사항 삭제
+		var tf = false;
 		$.ajax({
 			url: "/board.manage?action=deleteNotice",
 			type: "POST",
 			data: {
 				"seq" : seq
 			},
+			async: false,	//비동기 할건지 설정사항
 			success: function(data) {
 				$(".tr_"+seq).remove();
 				resort();
+				tf = true;
 			},
 			error : function(request, status, error) {
 				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+				tf = false;
 			}
-		}); 
+		});
+		return tf;
 	}
 	
 	function delete_board(seq) { // 개별삭제
 		var chk = confirm("정말로 삭제하시겠습니까?");
 	
 		if(chk == true) {
-			fn_delete(seq);
+			var tf = false;
+			tf = fn_delete(seq);
+			if(tf) alert("성공적으로 삭제되었습니다.");
 		}
 	}
 	
@@ -105,10 +112,13 @@
 			var chk = confirm("정말로 삭제하시겠습니까?");
 			
 			if(chk == true) {
+				var tf = false;
 				$(".noti input:checkbox:checked").each(function(index) {
 					var seq = $(this).val();
-					fn_delete(seq);
+					tf = fn_delete(seq);
+					if(!tf) return false;
 				});
+				if(tf) alert("성공적으로 삭제되었습니다.");
 			}
 		}
 	}
