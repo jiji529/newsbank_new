@@ -239,33 +239,16 @@ public class CMSService extends ServiceBase {
 							logger.warn("Fail to extract EXIF("+photoDTO.getUciCode()+"): " + upFile.getAbsolutePath(), e);
 						}
 						
-						if(exif != null && exif.isInitialized()) {
-							photoDTO.setExif(exif.toString());
-							photoDTO.setWidthPx(exif.getWidth());
-							photoDTO.setHeightPx(exif.getHeight());
-							photoDTO.setWidthCm(exif.getWidthCm());
-							photoDTO.setHeightCm(exif.getHeightCm());
-							photoDTO.setDpi(exif.getWidthDpi());
-							
-							Date shotDate = exif.getShotDate();
-							if(shotDate != null) {
-								photoDTO.setShotDate(shotDate);
-							}
-						}
-						
-						if(exif == null || !exif.isInitialized() || photoDTO.getWidthPx() == 0 || photoDTO.getHeightPx() == 0) {
-							// EXIF 없는경우 사진크기 가져와야함
-							if(photoDTO.getWidthPx() == 0 || photoDTO.getHeightPx() == 0) {
-								BufferedImage imgBuf = null;
-								try {
-									imgBuf = ImageUtil.getBufferedImage(upFile).get(0);
-									photoDTO.setWidthPx(imgBuf.getWidth());
-									photoDTO.setHeightPx(imgBuf.getHeight());
-									photoDTO.setDpi(72);
-									photoDTO.setWidthCm((float) (photoDTO.getWidthPx()*2.54/photoDTO.getDpi()));
-									photoDTO.setHeightCm((float) (photoDTO.getHeightPx()*2.54/photoDTO.getDpi()));
-								}catch(Exception e){}
-							}
+						photoDTO.setExif(exif);
+						if(photoDTO.getWidthPx() == 0 || photoDTO.getHeightPx() == 0) {
+							BufferedImage imgBuf = null;
+							try {
+								imgBuf = ImageUtil.getBufferedImage(upFile).get(0);
+								photoDTO.setWidthPx(imgBuf.getWidth());
+								photoDTO.setHeightPx(imgBuf.getHeight());
+								photoDTO.setWidthCm((float) (photoDTO.getWidthPx()*2.54/photoDTO.getDpi()));
+								photoDTO.setHeightCm((float) (photoDTO.getHeightPx()*2.54/photoDTO.getDpi()));
+							}catch(Exception e){}
 						}
 						long imgSize = upFile.length();
 						photoDTO.setFileSize((int)imgSize);

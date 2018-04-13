@@ -71,9 +71,7 @@ public class PhotoDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-			// TODO 쿼리 생성
-//			session.update("Photo.updatePhotoPic", photoDTO);
-			
+			session.update("Photo.updatePhotoPic", photoDTO);
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {

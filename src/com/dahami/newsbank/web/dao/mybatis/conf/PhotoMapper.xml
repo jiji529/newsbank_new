@@ -13,11 +13,17 @@
 	
 	<!-- 사진 정보 수정 -->
 	<update id="updatePhotoPic" parameterType="com.dahami.newsbank.dto.PhotoDTO">
-		UPDATE photo SET
-		titleKr = #{titleKor},
-		descriptionKr = #{descriptionKor},
-		uciStat = '-1'
-		WHERE uciCode = #{uciCode}
+		UPDATE photo 
+			SET
+				widthPixel = #{widthPx}
+				, heightPixel = #{heightPx}
+				, widthCm = #{widthCm}
+				, heightCm = #{heightCm}
+				, dpi = #{dpi}
+				, fileSize = #{fileSize}
+				, exif = #{exif}
+				, uciStat = '-1'
+			WHERE uciCode = #{uciCode}
 	</update>
     
     <update id="updateSaleState" parameterType="com.dahami.newsbank.dto.PhotoDTO">
