@@ -46,7 +46,7 @@
 			<li class="sort_up">수동 업로드</li>
 			-->
 		</ul>
-		<a href="#" class="excel_down">엑셀저장</a>
+		<a href="javascript:void(0)" onclick="excel()" class="excel_down">엑셀저장</a>
 	</div>
 	<section id="cms_list2">
 		<ul>
@@ -55,3 +55,4 @@
 	<div class="more"><a href="javascript:void(0)" name="nextPage">다음 페이지</a></div>
 <%@include file="down_frame.jsp" %>
 <%@include file="view_form.jsp" %>
+<%@include file="excel_frame.jsp" %>

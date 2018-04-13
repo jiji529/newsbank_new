@@ -19,6 +19,7 @@ package com.dahami.newsbank.web.service;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.SearchDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
+import com.dahami.newsbank.web.util.ExcelUtil;
 
 public class SearchService extends ServiceBase {
 	private static final SimpleDateFormat regDf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -207,6 +209,28 @@ public class SearchService extends ServiceBase {
 			
 			request.setAttribute("contentType", "text/xml; charset=UTF-8");
 			request.setAttribute("result", XmlUtil.MapToXmlString(root));
+		}
+		else if(exportType == EXPORT_TYPE_EXCEL) {
+			List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+			if(photoList != null && list != null && list.size() > 0) {
+				for(PhotoDTO dto : list){
+					try {
+						jsonList.add(dto.convertToFullMap());
+					} catch (Exception e) {
+						logger.warn("", e);
+					}
+				}
+			}
+			
+			List<String> headList = Arrays.asList("언론사명", "UCI코드", "언론사코드", "사진상태", "업로드 날짜"); //  테이블 상단 제목
+			List<Integer> columnSize = Arrays.asList(10, 20, 20, 10, 15); //  컬럼별 길이정보
+			List<String> columnList = Arrays.asList("ownerName", "uciCode", "compCode", "saleState", "publishDate"); // 컬럼명
+			
+			Date today = new Date();
+		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+			String orgFileName = "사진관리_" + dateforamt.format(today); // 파일명
+			ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, jsonList, orgFileName);
+			
 		}
 	}
 
