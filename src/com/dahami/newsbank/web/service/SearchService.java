@@ -111,7 +111,9 @@ public class SearchService extends ServiceBase {
 						}
 					}
 				}
-				
+				if(exportType == EXPORT_TYPE_EXCEL) {
+					sParam.setPageVol(100000);
+				}
 			}
 			else {
 				searchable = false;
@@ -122,10 +124,6 @@ public class SearchService extends ServiceBase {
 			sParam.setMediaInactive(SearchParameterBean.MEDIA_INACTIVE_NO);
 			// 사용자 검색은 판매 대상만 검색
 			sParam.setSaleState(SearchParameterBean.SALE_STATE_OK);
-			
-			if(exportType == EXPORT_TYPE_EXCEL) {
-				sParam.setPageVol(100000);
-			}
 		}
 		
 		Map<String, Object> photoList = null;
