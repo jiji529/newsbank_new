@@ -123,7 +123,7 @@ if(!contentBlidF) {
 						<dt>출력사이즈</dt>
 						<dd>${photoDTO.getWidthCmStr()} x ${photoDTO.getHeightCmStr()} (cm)</dd>
 						<dt>파일용량</dt>
-						<dd>${photoDTO.fileSize}MB</dd>
+						<dd>${photoDTO.getFileSizeMBStr()}MB</dd>
 						<dt>파일포멧</dt>
 						<dd>JPEG</dd>
 						<dt>해상도</dt>
