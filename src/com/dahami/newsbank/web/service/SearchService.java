@@ -45,6 +45,7 @@ public class SearchService extends ServiceBase {
 	
 	public static final int EXPORT_TYPE_JSON = 0;
 	public static final int EXPORT_TYPE_XML = 1;
+	public static final int EXPORT_TYPE_EXCEL = 2;
 	
 	private int searchMode;
 	
@@ -57,6 +58,13 @@ public class SearchService extends ServiceBase {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String[]> params = request.getParameterMap();
 		SearchParameterBean sParam = new SearchParameterBean(params);
+		
+		int exportType = 0;
+		try {
+			exportType = (int)request.getAttribute("exportType");
+		}catch(Exception e) {
+			exportType = EXPORT_TYPE_JSON;
+		}
 		
 		boolean searchable = true;
 		
@@ -114,6 +122,10 @@ public class SearchService extends ServiceBase {
 			sParam.setMediaInactive(SearchParameterBean.MEDIA_INACTIVE_NO);
 			// 사용자 검색은 판매 대상만 검색
 			sParam.setSaleState(SearchParameterBean.SALE_STATE_OK);
+			
+			if(exportType == EXPORT_TYPE_EXCEL) {
+				sParam.setPageVol(100000);
+			}
 		}
 		
 		Map<String, Object> photoList = null;
@@ -125,12 +137,7 @@ public class SearchService extends ServiceBase {
 			list = (List<PhotoDTO>) photoList.get("result");
 		}
 		
-		int exportType = 0;
-		try {
-			exportType = (int)request.getAttribute("exportType");
-		}catch(Exception e) {
-			exportType = EXPORT_TYPE_JSON;
-		}
+
 		
 		if(exportType == EXPORT_TYPE_JSON) {
 			JSONObject json = new JSONObject();

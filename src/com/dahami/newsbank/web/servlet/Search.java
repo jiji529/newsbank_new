@@ -52,6 +52,9 @@ public class Search extends NewsbankServletBase {
 				if(cmd.is3("xml")) {
 					request.setAttribute("exportType", SearchService.EXPORT_TYPE_XML);	
 				}
+				else if(cmd.is3("excel")) {
+					request.setAttribute("exportType", SearchService.EXPORT_TYPE_EXCEL);
+				}
 			}
 		}catch(Exception e){
 			request.setAttribute("exportType", SearchService.EXPORT_TYPE_JSON);

@@ -374,7 +374,9 @@
 				timeout: 60000,
 				type : 'POST',
 				success : function(data) {
-					alert("현재 개발 진행중입니다.")
+					if(data == "OK") {
+						$(".img_area img").attr("src", "/view.down.photo?uciCode=" + $("#uciCode").val() + "&dummy=" + Math.random( ));
+					}
 				},
 				error : function(data) {
 					console.log("Error: " + data.statusText);

@@ -90,7 +90,7 @@ public class DownloadService extends ServiceBase {
 	/** 다운로드 타입 : 제휴(게티 등)업체 */
 	public static final String DOWN_TYPE_CORP= "corp";
 	
-	private static final String PATH_PHOTO_BASE = "/data/newsbank/serviceImages";
+	public static final String PATH_PHOTO_BASE = "/data/newsbank/serviceImages";
 	private static final String PATH_LOGO_BASE = "/data/newsbank/logo";
 
 	/** 임시생성 로고 저장폴더 */

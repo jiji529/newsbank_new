@@ -33,6 +33,7 @@ import kr.or.uci.dist.api.APIHandler;
 
 public class CMSService extends ServiceBase {
 	
+	private static final String PATH_PHOTO_BASE = DownloadService.PATH_PHOTO_BASE;
 	private static final String PATH_TEMP_PIC_UPLOAD = "/data/newsbank/serviceTemp/picUpload";
 	
 	static {
@@ -229,7 +230,6 @@ public class CMSService extends ServiceBase {
 				}
 				else if(isUpload) {
 					if(action.equals("updatePic")) {
-						photoDTO.getListPath();
 						File upFile = multi.getFile("uploadFile");
 						
 						ExifDTO exif = null;
@@ -280,11 +280,26 @@ public class CMSService extends ServiceBase {
 							logger.warn("", e);
 						}
 						
-						// TODO 사진 교체
-						// 기존 원본은 _timestamp 붙여서 복사해 둘 것.
-						String bakOrg = ""; 
+						// 사진 교체
+						String orgPath = PATH_PHOTO_BASE + photoDTO.getOriginPath();
+						// 기존 원본은 _timestamp 붙여서 보관 
+						String bakPath = orgPath + "_" + System.currentTimeMillis();
+						new File(orgPath).renameTo(new File(bakPath));
+
+						// 원본 변경
+						upFile.renameTo(new File(orgPath));
+						// 뷰 변경
+						String viewPath = PATH_PHOTO_BASE + photoDTO.getViewPath();
+						new File(viewPath).delete();
+						new File(viewFile + ".jpg").renameTo(new File(viewPath));
+						// 리스트 변경
+						String listPath = PATH_PHOTO_BASE + photoDTO.getListPath();
+						new File(listPath).delete();
+						new File(listFile + ".jpg").renameTo(new File(listPath));
 						
-						// TODO 임시파일 삭제
+						// 임시파일 삭제
+						new File(viewFile).delete();
+						new File(listFile).delete();
 						
 						// 사진 관련 항목만 업데이트
 						PhotoDAO photoDAO = new PhotoDAO();
@@ -296,7 +311,7 @@ public class CMSService extends ServiceBase {
 						log.setUciCode(photoDTO.getUciCode());
 						log.setIp(HttpUtil.getRequestIpAddr(request));
 						log.setActionType(ActionLogDTO.ACTION_TYPE_CHANGE_PHOTO);
-						log.setDescription(multi.getOriginalFileName("uploadFile") + " / ORG: " + bakOrg);
+						log.setDescription(multi.getOriginalFileName("uploadFile") + " / ORG: " + bakPath);
 						photoDAO.insertActionLog(log);
 					}
 					else {
