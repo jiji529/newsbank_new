@@ -372,33 +372,39 @@ if(photoDto == null
 	
 	// #장바구니에 추가하기
 	function insertUsageOption() {
-		
 		var login_state = login_chk();
 		
 		if(login_state) { // 로그인 체크
 			var uciCode = "${photoDTO.uciCode}";
 			var count = $(".op_cont").length;
+			var cartArray = new Array(); // 장바구니 배열
 			
 			if(count > 0) {
+				
 				$(".op_cont").each(function(index){
 					var usageList_seq = $(".op_cont").eq(index).attr("value");
 					var price = $(".op_price").eq(index).attr("value");
 					
-					// 선택옵션 새롭게 추가
-					$.ajax({
-						url: "/cart.popOption?action=insertCart",
-						type: "POST",
-						data: {
-							"uciCode" : uciCode,
-							"usageList_seq" : usageList_seq,
-							"price" : price						
-						},
-						success: function(data) {					
-						}
-					});
+					var obj = new Object(); // 객체
+					obj.uciCode = uciCode;
+					obj.usageList_seq = usageList_seq;
+					obj.price = price;
+					
+					cartArray.push(obj);
 				});
 				
-				alert("장바구니에 담겼습니다.");
+				$.ajax({
+					url: "/cart.popOption?action=insertCart",
+					type: "POST",
+					data : ({
+						cartArray : JSON.stringify(cartArray)
+					}),
+					success: function(data) {
+						
+						alert("장바구니에 담겼습니다.");
+					}
+				});
+				
 			}else {
 				alert("최소한 1개의 구매옵션은 선택해야 합니다.");
 			}
