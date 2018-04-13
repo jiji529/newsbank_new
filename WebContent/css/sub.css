@@ -83,7 +83,7 @@
 .search_list.square .thumb a{display:table-cell;width:218px; height:218px; vertical-align:middle; padding:5px; }
 .search_list.square .thumb img{max-width:208px; max-height:208px; }
 
-.search_list.square .thumb .info{position: absolute; bottom: 0; left: 0; right: 0;  pointer-events: auto; height:40%; background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0,0,0,0.6))); background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: -moz-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 100%); -webkit-transition: opacity 0.2s; -moz-transition: opacity 0.2s; transition: opacity 0.2s; }
+.search_list.square .thumb .info{position: absolute; bottom: 0; left: 0; right: 0;  pointer-events: auto; height:20%; background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0,0,0,0.6))); background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: -moz-linear-gradient(top, transparent 0%, rgba(0,0,0,0.6) 100%); background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 100%); -webkit-transition: opacity 0.2s; -moz-transition: opacity 0.2s; transition: opacity 0.2s; }
 .search_list.square .thumb .photo_info{display: inline-block; max-width: 100%; font-size: 15px; font-weight: 500; color: #fff; position:absolute; left:20px; bottom:15px;}
 .search_list.square .thumb .right{position: absolute; right: 10px; bottom: 10px; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; transition: all 0.2s;}
 .search_list.square .thumb .right a{width: 24px; height: 24px; text-indent:-9999px; float:left; margin-left:10px;}
