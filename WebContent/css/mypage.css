@@ -205,7 +205,8 @@
 
 .mypage .view .view_lt .btn_edit{ float:right;}
 .mypage .view .view_lt .btn_edit a{ float:left; height:28px; padding:0 15px; line-height:28px; color:#f79320; border:1px #f79320 solid; border-radius:14px; font-size:13px; margin-left:5px;}
-.mypage .view .view_lt .cont_area{ padding-bottom:30px;}
+.mypage .view .view_lt .cont_area{ padding-bottom:30px; margin-top:10px;}
+.mypage .view .view_lt .img_area{ padding-bottom:50px; }
 .mypage .view .view_lt .cont_area input[type=file]{ width:100%; border:1px #ccc solid; margin-bottom:15px;}
 .mypage .view .view_lt input.editCont{ float:left; width:100%; padding:5px 10px; font-size:14px;  color:#666;resize: vertical;}
 .mypage .view .view_lt textarea.editCont, .mypage .view .view_lt textarea.editTitle{ float:left; width:100%; padding:5px 10px; font-size:14px;  line-height:20px; color:#666; resize: vertical; margin-bottom:10px;}
