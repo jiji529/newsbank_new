@@ -30,6 +30,19 @@ $(document).on("click", ".popup_close", function() {
 	$(".mask").css("display", "none");
 	$(".pop_history .pop_cont tbody").html(""); 
 });
+
+function excel() { // form, iframe을 이용한 엑셀저장
+	var url = "modLog.cms" + $("#manage").val();
+	var uciCode = $("#uciCode").val();
+	
+	//console.log(url);
+	//console.log(uciCode);
+	
+	$("#choiceUciCode").val(uciCode);
+	$("#downFile").val("excel");
+	$("#excelDownForm").attr("action", url);
+	$("#excelDownForm").submit();
+}
 </script>
 
    <div id="popup_wrap" class="pop_group wd2 pop_history">
@@ -76,3 +89,10 @@ $(document).on("click", ".popup_close", function() {
 		</div>
 	</div>
 	<div class="mask"></div>
+	
+	<!-- Excel 저장 form -->
+	<form id="excelDownForm" method="post"  target="excelDownFrame">
+		<input type="hidden" id="choiceUciCode" name="uciCode" />
+		<input type="hidden" id="downFile" name="downFile" />
+	</form>
+	<iframe id="excelDownFrame" name="excelDownFrame" style="display:none"></iframe>
