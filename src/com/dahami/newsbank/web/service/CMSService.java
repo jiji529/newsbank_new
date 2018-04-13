@@ -281,22 +281,38 @@ public class CMSService extends ServiceBase {
 						}
 						
 						// 사진 교체
-						String orgPath = PATH_PHOTO_BASE + photoDTO.getOriginPath();
 						// 기존 원본은 _timestamp 붙여서 보관 
-						String bakPath = orgPath + "_" + System.currentTimeMillis();
-						new File(orgPath).renameTo(new File(bakPath));
-
-						// 원본 변경
-						upFile.renameTo(new File(orgPath));
-						// 뷰 변경
-						String viewPath = PATH_PHOTO_BASE + photoDTO.getViewPath();
-						new File(viewPath).delete();
-						new File(viewFile + ".jpg").renameTo(new File(viewPath));
-						// 리스트 변경
-						String listPath = PATH_PHOTO_BASE + photoDTO.getListPath();
-						new File(listPath).delete();
-						new File(listFile + ".jpg").renameTo(new File(listPath));
-						
+						String orgPath = PATH_PHOTO_BASE + photoDTO.getOriginPath();
+						String backupPrefix = "_" + System.currentTimeMillis();
+						String bakPath = orgPath + backupPrefix;
+						if(FileUtil.changeFile(bakPath, orgPath) || !new File(orgPath).exists()) {	// 백업 (원본이 없으면 넘어감)
+							// 업로드 파일 원본경로로 이동
+							if(FileUtil.changeFile(orgPath, upFile.getAbsolutePath())) {
+								// 뷰 파일 백업 후 교체
+								String viewPath = PATH_PHOTO_BASE + photoDTO.getViewPath();
+								FileUtil.changeFile(viewPath+backupPrefix, viewPath);	// 백업
+								if(FileUtil.changeFile(viewPath, viewFile + ".jpg")) {	// 업로드파일 이동
+									// 리스트 파일 백업 후 교체
+									String listPath = PATH_PHOTO_BASE + photoDTO.getListPath();
+									FileUtil.changeFile(listPath+backupPrefix, listPath);	// 백업
+									if(FileUtil.changeFile(listPath, listFile + ".jpg")) {	// 업로드파일 이동
+										logger.debug("파일변경 성공 / " + photoDTO.getUciCode());
+									}
+									else {
+										logger.warn("파일변경 실패4 / " + photoDTO.getUciCode());
+									}
+								}
+								else {
+									logger.warn("파일변경 실패3 / " + photoDTO.getUciCode());
+								}
+							}
+							else {
+								logger.warn("파일변경 실패2 / " + photoDTO.getUciCode());
+							}
+						}
+						else {
+							logger.warn("파일변경 실패1 / " + photoDTO.getUciCode());
+						}
 						// 임시파일 삭제
 						new File(viewFile).delete();
 						new File(listFile).delete();

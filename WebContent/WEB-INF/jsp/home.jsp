@@ -325,5 +325,7 @@
 		</div>
 		<%@include file="footer.jsp"%>
 	</div>
+	<!-- TOP으로 이동 버튼 -->
+	<div id="top"><a href="#">TOP</a></div>
 </body>
 </html>

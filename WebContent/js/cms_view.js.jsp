@@ -358,6 +358,7 @@
 			return;
 		}
 		
+		$("#searchProgress").css("display", "block");
 		var updData = new FormData();
 		updData.append("uploadFile", tmpFile);
 		updData.append("uciCode", $("#uciCode").val());
@@ -367,7 +368,7 @@
 		
 		$.ajax({
 				url : url,
-				async : false,
+				async : true,
 				data : updData,
 				processData : false,
 				contentType : false,
@@ -377,14 +378,16 @@
 					if(data == "OK") {
 						$(".img_area img").attr("src", "/view.down.photo?uciCode=" + $("#uciCode").val() + "&dummy=" + Math.random( ));
 					}
+					$("#searchProgress").css("display", "none");
 				},
 				error : function(data) {
 					console.log("Error: " + data.statusText);
 					alert("잘못된 접근입니다.");
+					$("#searchProgress").css("display", "none");
 				},
 
 			});
-		
+		$(this).val("");
 	});
 	
 	var picType = [ 'image/jpeg' ];

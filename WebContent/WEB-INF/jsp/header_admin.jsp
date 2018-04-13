@@ -21,3 +21,11 @@
 		</ul>
 	</div>
 </nav>
+
+<%--프로그레시브 바 --%>
+<div id="searchProgress" class="progress">
+	<div id="searchProgressImg" class="loader"></div>
+</div>
+
+<%-- TOP으로 이동 버튼 --%>
+<div id="top"><a href="#">TOP</a></div>
