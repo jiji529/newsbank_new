@@ -238,7 +238,7 @@
 .mypage .view .view_rt .cms_rt .tag_list .tag_auto{ background:#f5f5f5; border:1px #ccc solid;}
 .mypage .view .view_lt .cont_area .img_tit:first-child{color:#666; margin-bottom:0; font-size:18px; }
 .mypage .mp_btn{float:right; padding:10px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa; }
-.mypage .view .view_lt .img_area .btn{ float:right; margin-top:10px;}
+.mypage .view .view_lt .img_area .btn{position:absolute; right:10px; bottom:0;}
 
 
 /*장바구니*/
