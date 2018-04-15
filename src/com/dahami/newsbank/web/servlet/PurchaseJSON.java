@@ -185,14 +185,16 @@ public class PurchaseJSON extends NewsbankServletBase {
 
 			String SERVER_HOST = request.getServerName();
 			if (request.getServerName().equalsIgnoreCase("localhost") || request.getServerName().equalsIgnoreCase("127.0.0.1")) {
-				SERVER_HOST += ":" + request.getServerPort();
+				SERVER_HOST = "http://" +SERVER_HOST+":" + request.getServerPort();
+			}else {
+				SERVER_HOST = "https://" +SERVER_HOST;
 			}
 
 			/*
 			 * 가상계좌(무통장) 결제 연동을 하시는 경우 아래 LGD_CASNOTEURL 을 설정하여 주시기 바랍니다.
 			 */
 			// String LGD_CASNOTEURL = "http://www.newsbank.co.kr/Noteurl.Xpay";
-			String LGD_CASNOTEURL = "http://" + SERVER_HOST + "/Noteurl.Xpay";
+			String LGD_CASNOTEURL = SERVER_HOST + "/Noteurl.Xpay";
 
 			/*
 			 * LGD_RETURNURL 을 설정하여 주시기 바랍니다. 반드시 현재 페이지와 동일한 프로트콜 및 호스트이어야 합니다. 아래 부분을 반드시
@@ -200,7 +202,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 			 */
 			// String LGD_RETURNURL = "http://www.newsbank.co.kr/Returnurl.Xpay";// FOR
 			// MANUAL
-			String LGD_RETURNURL = "http://" + SERVER_HOST + "/Returnurl.Xpay";// FOR MANUAL
+			String LGD_RETURNURL = SERVER_HOST + "/Returnurl.Xpay";// FOR MANUAL
 
 			LGD_DATA.put("CST_MID", CST_MID); // *LG U+와 계약시 설정한 상점아이디
 			LGD_DATA.put("LGD_VERSION", "JSP_Non-ActiveX_Standard"); // 사용 모듈 정보
