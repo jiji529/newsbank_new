@@ -342,10 +342,10 @@
     
 	<!-- 블라인드 & 전체 콘텐츠 갯수 -->
 	<select id="countContents" resultMap="ContentDTO" parameterType="java.util.Map">
-	    SELECT COALESCE(SUM(IF(saleStat=2, 1, 0)), 0) AS blindCnt, COUNT(uciCode) AS totalCnt
+		SELECT COALESCE(SUM(IF(saleStat=2, 1, 0)), 0) AS blindCnt, COUNT(uciCode) AS totalCnt
 		FROM photo A
-		LEFT JOIN member B ON A.member_seq = B.seq
-		WHERE B.type='M' AND B.seq = #{seq}
+        LEFT JOIN member B ON A.member_seq = B.seq
+		WHERE member_seq = #{seq} AND B.type='M'
 	</select>
 	
 	<!-- 회원현황(그룹추가) -->

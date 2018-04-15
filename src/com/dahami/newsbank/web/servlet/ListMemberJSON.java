@@ -60,6 +60,14 @@ public class ListMemberJSON extends NewsbankServletBase {
 		List<MemberDTO> listMember = new ArrayList<MemberDTO>();
 		MemberDAO memberDAO = new MemberDAO();
 		
+		Map<Object, Object> searchOpt = new HashMap<Object, Object>();
+		searchOpt.put("keyword", keyword);
+		searchOpt.put("type", type);
+		searchOpt.put("deferred", deferred);
+		searchOpt.put("group", group);
+		searchOpt.put("pageVol", pageVol);
+		searchOpt.put("startPage", startPage);
+		
 		CmdClass cmd = CmdClass.getInstance(request);
 		if (cmd.isInvalid()) {
 			response.sendRedirect("/invlidPage.jsp");
@@ -68,10 +76,6 @@ public class ListMemberJSON extends NewsbankServletBase {
 		
 		if(cmd.is3("excel")) {
 			// 목록 엑셀다운로드
-			Map<Object, Object> searchOpt = new HashMap<Object, Object>();
-			searchOpt.put("pageVol", pageVol);
-			searchOpt.put("startPage", startPage);
-			
 			listMember = memberDAO.selectMemberList(searchOpt);
 			
 			List<String> headList = Arrays.asList("아이디", "회사명", "회원구분", "이름", "이메일", "연락처", "결제구분", "그룹구분", "계약기간", "가입일자"); //  테이블 상단 제목
@@ -95,14 +99,6 @@ public class ListMemberJSON extends NewsbankServletBase {
 			
 		}else {
 			// 회원 목록 json
-			Map<Object, Object> searchOpt = new HashMap<Object, Object>();
-			searchOpt.put("keyword", keyword);
-			searchOpt.put("type", type);
-			searchOpt.put("deferred", deferred);
-			searchOpt.put("group", group);
-			searchOpt.put("pageVol", pageVol);
-			searchOpt.put("startPage", startPage);
-			
 			int totalCnt = 0; // 총 갯수
 			int pageCnt = 0; // 페이지 갯수
 			

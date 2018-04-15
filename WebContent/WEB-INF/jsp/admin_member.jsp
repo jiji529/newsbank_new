@@ -412,6 +412,15 @@ function go_memberView(member_seq) {
 }
 
 function downInternal() {
+	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
+	var type = $("#sel_type option:selected").attr("value"); // 회원구분
+	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
+	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
+	
+	$("#keyword").val(keyword);
+	$("#type").val(type);
+	$("#deferred").val(deferred);
+	$("#group").val(group);
 	$("#pageVol").val(1000);
 	$("#startPage").val(0);
 	$("#downForm").attr("action", "/excel.listMember.api");
@@ -562,6 +571,10 @@ function downInternal() {
 	</form>
 	
 	<form id="downForm" method="post"  target="downFrame">
+		<input type="hidden" id="keyword" name="keyword" />
+		<input type="hidden" id="type" name="type" />
+		<input type="hidden" id="deferred" name="deferred" />
+		<input type="hidden" id="group" name="group" />
 		<input type="hidden" id="pageVol" name="pageVol" />
 		<input type="hidden" id="startPage" name="startPage" value="file" />
 	</form>
