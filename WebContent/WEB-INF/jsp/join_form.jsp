@@ -110,7 +110,7 @@ $(function() {
 									<div class="inp">
 										<input type="password" id="pw" name="pw" maxlength="16" placeholder="비밀번호 (6~16자의 영문 대소문자, 숫자, 특수문자를 조합)" required />
 									</div>
-									<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
+									<p class="txt_message" id="pw_message" style="display: none;">영대소문자, 숫자, 특수기호를 모두 사용해주세요.</p>
 								</dd>
 							</dl>
 							<dl class="item_info">

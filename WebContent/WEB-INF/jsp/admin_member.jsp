@@ -463,7 +463,7 @@ function downInternal() {
 									<option value="">전체</option>
 									<option value="0">온라인결제</option>
 									<option value="1">오프라인결제</option>
-									<option value="2">오프라인 별도요금</option>
+									<option value="2">오프라인 별도가격</option>
 								</select></td>
 						</tr>
 						<tr>

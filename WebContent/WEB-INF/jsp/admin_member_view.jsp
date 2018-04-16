@@ -81,7 +81,7 @@
 				break;
 				
 			case 2:
-				// 오프라인 별도요금
+				// 오프라인 별도가격
 				$(".offline_area").show();
 				$(".photoUsage").show();
 				break;
@@ -171,7 +171,7 @@
 							<th> 비밀번호 변경 </th>
 							<td>
 								<input type="password" id="pw" name="pw" class="inp_txt" size="40">
-								<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
+								<p class="txt_message" id="pw_message" style="display: none;">영대소문자, 숫자, 특수기호를 모두 사용해주세요.</p>
 							</td>
 						</tr>
 						<tr>
@@ -245,7 +245,7 @@
 											<input type="file" name="doc" accept="application/pdf, image/*" required />
 										</div>
 										<c:if test="${!empty MemberDTO.compDocPath}">
-											<a class="btn_input1" href="/doc.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">사업자등록증 다운로드</a>
+											<a class="btn_input1" target="_blank" href="/doc.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">사업자등록증 다운로드</a>
 										</c:if>
 										<p class="txt_message" id="compNum_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
 									</td>
@@ -310,7 +310,7 @@
 										<select name="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
 											<option value="0" <c:if test="${MemberDTO.deferred eq '0'}">selected</c:if>>온라인결제</option>
 											<option value="1" <c:if test="${MemberDTO.deferred eq '1'}">selected</c:if>>오프라인결제</option>
-											<option value="2" <c:if test="${MemberDTO.deferred eq '2'}">selected</c:if>>오프라인 별도 요금</option>
+											<option value="2" <c:if test="${MemberDTO.deferred eq '2'}">selected</c:if>>오프라인 별도가격</option>
 										</select>
 									</td>
 								</tr>
@@ -332,7 +332,7 @@
 											<input type="file" name="contract" accept="application/pdf, image/*" required />
 										</div>
 										<c:if test="${!empty MemberDTO.contractPath}">
-											<a class="btn_input1" href="/contract.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
+											<a class="btn_input1" target="_blank" href="/contract.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
 										</c:if>
 									</td>
 								</tr>

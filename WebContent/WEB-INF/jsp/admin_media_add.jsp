@@ -103,7 +103,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<th> 비밀번호 변경 </th>
 							<td>
 								<input type="password" name="pw" id="pw" class="inp_txt" size="40">
-								<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
+								<p class="txt_message" id="pw_message" style="display: none;">영대소문자, 숫자, 특수기호를 모두 사용해주세요</p>
 							</td>
 						</tr>
 						<tr>
@@ -223,7 +223,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<td><select name="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
 									<option value="0" selected="selected">온라인결제</option>
 									<option value="1">오프라인결제</option>
-									<option value="2">오프라인 별도 요금</option>
+									<option value="2">오프라인 별도가격</option>
 								</select></td>
 						</tr>
 					</tbody>

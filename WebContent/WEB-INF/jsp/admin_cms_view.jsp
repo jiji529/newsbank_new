@@ -38,12 +38,17 @@
 	
 	//관리자페이지 현재 페이지 도매인과 같은 링크 부모객체 클래스 추가
 	$(document).ready(function() {
-		$("[href]").each(function() {
-			if (this.href == window.location.href) {
+		//side bar 메뉴 class on 
+		$(".lnb [href]").each(function() {
+			var lng_path = (this.pathname).substr(1, (this.pathname).length);
+			var location_path = (window.location.pathname).substr(1, (window.location.pathname).length);
+			
+			if (location_path.match(lng_path)) {
 				$(this).parent().addClass("on");
-			}
-		});
+			} 
+		});	
 	});
+	
 	$(document).ready(function() {
 		$("#popup_open").click(function() {
 			$("#popup_wrap").css("display", "block");

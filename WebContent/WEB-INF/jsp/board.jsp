@@ -17,6 +17,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%
+	String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+	pageContext.setAttribute("LF", "\n"); // Enter
+	pageContext.setAttribute("BR", "<br/>"); //br 태그
+%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -120,7 +126,6 @@
 					<li class="on"><a href="/board">공지사항</a></li>
 					<li><a href="/FAQ">FAQ</a></li>
 					<li><a href="/contact">직접 문의하기</a></li>
-					<!-- <li><a href="javascript:void(0)">사이트맵</a></li> -->
 				</ul>
 			</div>
 			<div class="table_head">
@@ -138,29 +143,10 @@
 							<c:if test="${!empty board.fileName}">
 								<img src="/notice.down.photo?seq=${board.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
 							</c:if>
-							<p>${board.description}</p>
+							<p>${fn:replace(board.description, LF, BR)}</p>
 						</dd>
 					</c:forEach>
 				</dl>
-				<!-- 나중에 쓸수도 있어요 지금 어차피 faq 11개라 그냥 가려놔도 될거같아요
-				<div class="pagination">
-					<ul>
-						<li class="first"> <a href="javascript:void(0)">첫 페이지</a> </li>
-						<li class="prev"> <a href="javascript:void(0)">이전 페이지</a> </li>
-						<li> <a href="javascript:void(0)">1</a> </li>
-						<li class="active"> <a href="javascript:void(0)">2</a> </li>
-						<li> <a href="javascript:void(0)">3</a> </li>
-						<li> <a href="javascript:void(0)">4</a> </li>
-						<li> <a href="javascript:void(0)">5</a> </li>
-						<li> <a href="javascript:void(0)">6</a> </li>
-						<li> <a href="javascript:void(0)">7</a> </li>
-						<li> <a href="javascript:void(0)">8</a> </li>
-						<li> <a href="javascript:void(0)">9</a> </li>
-						<li> <a href="javascript:void(0)">10</a> </li>
-						<li class="next"> <a href="javascript:void(0)"> 다음 페이지 </a> </li>
-						<li class="last"> <a href="javascript:void(0)"> 마지막 페이지 </a> </li>
-					</ul>
-				</div> -->
 			</div>
 		</section>
 		<%@include file="footer.jsp"%>

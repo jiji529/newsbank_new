@@ -161,7 +161,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<th> 비밀번호 변경 </th>
 							<td>
 								<input type="password" id="pw" name="pw" class="inp_txt" size="40">
-								<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
+								<p class="txt_message" id="pw_message" style="display: none;">영대소문자, 숫자, 특수기호를 모두 사용해주세요.</p>
 							</td>
 						</tr>
 						<tr>
@@ -194,7 +194,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<th>이메일</th>
 							<td><input id="email" name="email" type="text" class="inp_txt" size="50" value="${MemberDTO.email}" /></td>
 						</tr>
-						<tr>
+						<%-- <tr>
 							<th>회원구분</th>
 							<td>
 								<select name="type" class="inp_txt" style="width: 120px;" onchange="member_choice()">
@@ -203,7 +203,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<option value="M" <c:if test="${MemberDTO.type eq 'M'}">selected</c:if>>언론사</option>
 								</select>
 							</td>
-						</tr>
+						</tr> --%>
 					</tbody>
 				</table>
 				<h4>언론사 회원 추가 정보</h4>
@@ -230,7 +230,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<input type="file" name="doc" accept="application/pdf, image/*" required />
 								</div>
 								<c:if test="${!empty MemberDTO.compDocPath}">
-									<a class="btn_input1" href="/doc.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">사업자등록증 다운로드</a>
+									<a class="btn_input1" target="_blank" href="/doc.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">사업자등록증 다운로드</a>
 								</c:if>
 						</tr>
 						<tr>
@@ -291,7 +291,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 								<select name="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
 									<option value="0" <c:if test="${MemberDTO.deferred eq '0'}">selected</c:if>>온라인결제</option>
 									<option value="1" <c:if test="${MemberDTO.deferred eq '1'}">selected</c:if>>오프라인결제</option>
-									<option value="2" <c:if test="${MemberDTO.deferred eq '2'}">selected</c:if>>오프라인 별도 요금</option>
+									<option value="2" <c:if test="${MemberDTO.deferred eq '2'}">selected</c:if>>오프라인 별도가격</option>
 								</select>
 							</td>
 						</tr>
@@ -344,7 +344,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<input type="file" name="bank" accept="application/pdf, image/*" required />
 								</div>
 								<c:if test="${!empty MemberDTO.compBankPath}">
-									<a class="btn_input1" href="/bank.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">통장사본 다운로드</a>
+									<a class="btn_input1" target="_blank" href="/bank.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">통장사본 다운로드</a>
 								</c:if>
 						</tr>
 						<tr>
@@ -361,7 +361,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<input type="file" name="contract" accept="application/pdf, image/*" required />
 								</div>
 								<c:if test="${!empty MemberDTO.contractPath}">
-									<a class="btn_input1" href="/contract.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
+									<a class="btn_input1" target="_blank" href="/contract.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
 								</c:if>
 						</tr>
 						<tr>
@@ -457,7 +457,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<input type="file" name="logo" accept="application/pdf, image/*" required />
 								</div>
 								<c:if test="${!empty MemberDTO.logo}">
-									<a class="btn_input1" href="/logo.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+									<a class="btn_input1" target="_blank" href="/logo.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
 								</c:if>
 							</td>
 						</tr>

@@ -35,13 +35,13 @@ $(document).ready(function() {
 			//check = check && validCompDoc();
 			//check = check && validUploadFile(); // 사업자등록증 업로드
 			
-			// 오프라인 회원의 경우 (0 : 온라인, 1: 오프라인결제, 2: 오프라인 별도요금)
+			// 오프라인 회원의 경우 (0 : 온라인, 1: 오프라인결제, 2: 오프라인 별도가격)
 			if(deferred != 0) {
 				check = check && validTaxPhone(); // 세금계산서 담당자		
 				console.log("validTaxPhone() : " + validTaxPhone());
 				
 				if(deferred == 2){
-					// 사용용도는 오프라인 별도요금 회원의 경우에만 해당
+					// 사용용도는 오프라인 별도가격 회원의 경우에만 해당
 					check = check && validUsage();
 				}
 			}
@@ -57,6 +57,16 @@ $(document).ready(function() {
 		}
 
 		return false;
+	});
+	
+	// side bar 메뉴 class on 
+	$(".lnb [href]").each(function() {
+		var lng_path = (this.pathname).substr(1, (this.pathname).length);
+		var location_path = (window.location.pathname).substr(1, (window.location.pathname).length);
+		
+		if (location_path.match(lng_path)) {
+			$(this).parent().addClass("on");
+		} 
 	});
 	
 	// 사진 용도 유무 체크

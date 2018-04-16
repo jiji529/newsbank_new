@@ -18,6 +18,9 @@
  		  $(".filter_duration .filter_list").stop().slideUp("fast");
  		  $(this).children(".filter_list").stop().slideUp("fast");
  		  $(".ui-datepicker-close").trigger("click");
+  		}else {
+  			// 일반적으로 영역을 벗어나면 사라짐
+  			$(".filter_list").stop().slideUp("fast");
   		}
   });;
  });

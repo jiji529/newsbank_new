@@ -35,11 +35,11 @@
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
 <!-- <script src="js/join.js"></script> --> <!-- 기존의 회원가입의 형식과는 다른 부분이 있어서 admin.js를 생성해서 필요한 부분만 커스터마이징 -->
-<script src="js/admin.js?v=20180308"></script>
+<script src="js/admin.js?v=20180416"></script>
 <script>
 
 	$(document).ready(function() {
-		// 법인, 오프라인 별도요금 항목 숨김처리
+		// 법인, 오프라인 별도가격 항목 숨김처리
 		$(".offline_area").hide();
 		$(".media_only").hide();
 		$(".corp_area").hide();
@@ -87,7 +87,7 @@
 				break;
 				
 			case 2:
-				// 오프라인 별도요금
+				// 오프라인 별도가격
 				$(".offline_area").show();
 				$(".photoUsage").show();
 				break;
@@ -132,7 +132,7 @@
 								<th> 비밀번호 </th>
 								<td>
 									<input type="password" name="pw" id="pw" class="inp_txt" size="40">
-									<p class="txt_message" id="pw_message" style="display: none;">일반적인 단어는 추측하기 쉽습니다. 다시 만드시겠어요?</p>
+									<p class="txt_message" id="pw_message" style="display: none;">영대소문자, 숫자, 특수기호를 모두 사용해주세요.</p>
 								</td>
 							</tr>
 							<tr>
@@ -254,7 +254,7 @@
 									<td><select name="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
 											<option value="0" selected="selected">온라인결제</option>
 											<option value="1">오프라인결제</option>
-											<option value="2">오프라인 별도 요금</option>
+											<option value="2">오프라인 별도가격</option>
 										</select></td>
 								</tr>
 								<!-- 법인, 언론사 둘다 오프라인 결제 시에만 노출  -->
@@ -263,7 +263,8 @@
 									<td><input type="text" name="contractStart" class="inp_txt datepicker" size="12" value="" />
 										<span class=" bar">~</span>
 										<input type="text" name="contractEnd" class="inp_txt datepicker" size="12" value="" />
-										<a href="#" class="btn_input1">계약서 업로드</a> <a href="#" class="btn_input1">계약서 다운로드</a></td>
+										<a href="#" class="btn_input1">계약서 업로드</a> 
+									</td>
 								</tr>
 								<tr class="offline_area photoUsage" style="display: none;">
 									<th>사진 용도</th>
@@ -319,10 +320,13 @@
 								<!-- 여기부터 언론사만 노출 -->
 								<tr class="media_only">
 									<th>정산 매체</th>
-									<td><select name="admission" class="inp_txt" style="width:180px;">
+									<td>
+										<select name="admission" class="inp_txt" style="width:180px;">
 											<option value="Y" >승인</option>
 											<option value="N" selected="selected">비승인</option>
-										</select><a href="#" class="btn_input1">정산정보 보기</a></td>
+										</select>
+										<!-- <a href="#" class="btn_input1">정산정보 보기</a> -->
+									</td>
 								</tr>
 							</tbody>
 						</table>
