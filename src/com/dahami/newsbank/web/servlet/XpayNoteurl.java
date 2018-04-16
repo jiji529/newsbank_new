@@ -196,6 +196,20 @@ public class XpayNoteurl extends NewsbankServletBase {
 					 * 무통장 입금취소 성공 결과 상점 처리(DB) 부분 상점 결과 처리가 정상이면 "OK"
 					 */
 					// if( 무통장 입금취소 성공 상점처리결과 성공 )
+					
+					PaymentManageDTO payment = new PaymentManageDTO();
+					payment.setLGD_BUYERID(LGD_BUYERID);// 아이디
+					payment.setLGD_OID(LGD_OID); // 주문번호
+					payment.setLGD_PAYSTATUS(0);// 1:결제성공 0:결제실패 2:결제대기중 3:무통장입금 대기중
+					payment.setLGD_RESPCODE(LGD_RESPCODE); // 결제상태
+					payment.setLGD_RESPMSG(LGD_RESPMSG); // 결제메세지
+					payment.setLGD_TID(LGD_TID); // 거래번호
+
+					PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
+					payment = paymentDAO.updatePaymentManage(payment);
+					
+					
+					
 					resultMSG = "OK";
 				}
 			} else { // 결제가 실패이면
