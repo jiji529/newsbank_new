@@ -25,7 +25,6 @@ public class MypageAccountInfo extends NewsbankServletBase {
 	 */
 	public MypageAccountInfo() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -34,7 +33,6 @@ public class MypageAccountInfo extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
@@ -121,7 +119,6 @@ public class MypageAccountInfo extends NewsbankServletBase {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

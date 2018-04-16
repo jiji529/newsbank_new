@@ -29,16 +29,12 @@ public class DibsJSON extends NewsbankServletBase {
      */
     public DibsJSON() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
 	    
 	    HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
@@ -59,7 +55,6 @@ public class DibsJSON extends NewsbankServletBase {
 			try {
 				jsonList.add(dto.convertToFullMap());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -72,8 +67,8 @@ public class DibsJSON extends NewsbankServletBase {
 		json.put("totalCount", totalCount);
 		json.put("totalPage", totalPage);
 		
-		response.getWriter().print(json);		
-	
+		response.setContentType("application/json");	
+		response.getWriter().print(json);
  		request.setAttribute("jsonList", jsonList);
 	}
 
@@ -81,7 +76,6 @@ public class DibsJSON extends NewsbankServletBase {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

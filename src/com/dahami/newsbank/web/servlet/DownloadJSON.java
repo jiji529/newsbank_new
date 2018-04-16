@@ -37,14 +37,12 @@ public class DownloadJSON extends NewsbankServletBase {
      */
     public DownloadJSON() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		super.doGet(request, response);
 		
 		String keywordType = request.getParameter("keywordType"); // 키워드 검색 타입
@@ -121,7 +119,6 @@ public class DownloadJSON extends NewsbankServletBase {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

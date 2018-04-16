@@ -32,7 +32,6 @@ public class Pay extends NewsbankServletBase {
 	 */
 	public Pay() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -70,7 +69,6 @@ public class Pay extends NewsbankServletBase {
 				}
 				request.setAttribute("payList", payList);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pay.jsp");
@@ -100,7 +98,6 @@ public class Pay extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

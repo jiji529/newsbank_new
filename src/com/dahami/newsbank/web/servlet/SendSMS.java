@@ -37,7 +37,6 @@ public class SendSMS extends NewsbankServletBase {
 	 */
 	public SendSMS() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -46,7 +45,6 @@ public class SendSMS extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
@@ -147,7 +145,6 @@ public class SendSMS extends NewsbankServletBase {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

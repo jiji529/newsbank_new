@@ -28,16 +28,12 @@ public class UsageJSON extends NewsbankServletBase {
      */
     public UsageJSON() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
 		
 		UsageDAO usageDAO = new UsageDAO();
 		int individual = 0;
@@ -52,13 +48,13 @@ public class UsageJSON extends NewsbankServletBase {
 			try {
 				jsonList.add(dto.convertToMap());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		JSONObject json = new JSONObject();
 		json.put("result", jsonList);		
 		
+		response.setContentType("application/json");
 		response.getWriter().print(json);		
 	
  		request.setAttribute("jsonList", jsonList);
@@ -68,7 +64,6 @@ public class UsageJSON extends NewsbankServletBase {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

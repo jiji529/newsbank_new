@@ -44,7 +44,6 @@ public class PurchaseJSON extends NewsbankServletBase {
 	 */
 	public PurchaseJSON() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -53,7 +52,6 @@ public class PurchaseJSON extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("application/json;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
@@ -294,7 +292,6 @@ public class PurchaseJSON extends NewsbankServletBase {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

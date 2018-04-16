@@ -32,7 +32,6 @@ public class PaymentAction extends NewsbankServletBase {
 	 */
 	public PaymentAction() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -41,7 +40,6 @@ public class PaymentAction extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("application/json;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
@@ -221,7 +219,6 @@ public class PaymentAction extends NewsbankServletBase {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

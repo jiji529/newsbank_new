@@ -31,14 +31,12 @@ public class Collection extends HttpServlet {
      */
     public Collection() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		List<CollectionDTO> collectionList = new ArrayList<CollectionDTO>(); // 컬렉션 목록
 		CollectionDTO dto = new CollectionDTO(); // 컬렉션 객체
 		
@@ -60,7 +58,6 @@ public class Collection extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

@@ -25,7 +25,6 @@ public class XpayNoteurl extends NewsbankServletBase {
 	 */
 	public XpayNoteurl() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -33,7 +32,6 @@ public class XpayNoteurl extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
@@ -149,7 +147,6 @@ public class XpayNoteurl extends NewsbankServletBase {
 
 			LGD_HASHDATA2 = strBuf.toString(); // 상점검증 해쉬값
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -256,7 +253,6 @@ public class XpayNoteurl extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
