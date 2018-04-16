@@ -28,16 +28,13 @@ public class AdjustMediaJSON extends NewsbankServletBase {
      */
     public AdjustMediaJSON() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
 		
 		int adjMaster = Integer.parseInt(request.getParameter("adjMaster"));
 		MemberDTO memberDTO = new MemberDTO();
@@ -56,16 +53,9 @@ public class AdjustMediaJSON extends NewsbankServletBase {
 		
 		JSONObject json = new JSONObject();
 		json.put("result", jArray);
-
+		
+		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

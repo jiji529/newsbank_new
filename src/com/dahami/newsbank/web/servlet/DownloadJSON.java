@@ -29,7 +29,7 @@ import com.dahami.newsbank.web.util.ExcelUtil;
 		urlPatterns = {"/download.api", "/excel.download.api"},
 		loadOnStartup = 1
 		)
-public class DownloadJSON extends HttpServlet {
+public class DownloadJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -45,8 +45,7 @@ public class DownloadJSON extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
 		
 		String keywordType = request.getParameter("keywordType"); // 키워드 검색 타입
 		String keyword = request.getParameter("keyword"); // 키워드
@@ -111,7 +110,8 @@ public class DownloadJSON extends HttpServlet {
 			json.put("pageCnt", pageCnt);
 			json.put("totalCnt", totalCnt);
 			json.put("result", jArray);
-
+			
+			response.setContentType("application/json");
 			response.getWriter().print(json);
 		}
 		

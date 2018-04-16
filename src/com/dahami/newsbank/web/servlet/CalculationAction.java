@@ -44,17 +44,13 @@ public class CalculationAction extends NewsbankServletBase {
      */
     public CalculationAction() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		//session = request.getSession();
+		super.doGet(request, response);
 		
 		CalculationDAO calculationDAO = new CalculationDAO(); // 정산정보 연결
 		
@@ -228,7 +224,6 @@ public class CalculationAction extends NewsbankServletBase {
 						try {
 							mapList.add(dto.convertToMap());
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -368,15 +363,8 @@ public class CalculationAction extends NewsbankServletBase {
 		JSONObject json = new JSONObject(); // json 객체
 		json.put("result", jArray);
 		
+		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

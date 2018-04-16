@@ -37,16 +37,14 @@ public class OnlinePayJSON extends NewsbankServletBase {
      */
     public OnlinePayJSON() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = null;
 		if (session.getAttribute("MemberInfo") != null) {
@@ -143,6 +141,7 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		json.put("totalPrice", totalPrice);
 		json.put("result", searchList);
 
+		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);
 		response.flushBuffer();
 		

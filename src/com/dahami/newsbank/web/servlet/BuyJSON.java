@@ -38,16 +38,14 @@ public class BuyJSON extends NewsbankServletBase {
      */
     public BuyJSON() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = null;
 		if (session.getAttribute("MemberInfo") != null) {
@@ -130,7 +128,7 @@ public class BuyJSON extends NewsbankServletBase {
 				
 				List<String> headList = Arrays.asList("회사/기관명", "아이디", "이름", "구매 신청일", "상태", "매체", "UCI코드", "언론사 사진번호", "용도", "금액"); //  테이블 상단 제목
 				List<Integer> columnSize = Arrays.asList(10, 10, 10, 25, 10, 15, 20, 25, 10, 10); //  컬럼별 길이정보
-				List<String> columnList = Arrays.asList("compName", "id", "name", "LGD_PAYDATE", "LGD_PAYSTATUS", "copyright", "uciCode", "compCode", "usuage", "price"); // 컬럼명
+				List<String> columnList = Arrays.asList("compName", "id", "name", "LGD_PAYDATE", "LGD_PAYSTATUS", "copyright", "photo_uciCode", "compCode", "usuage", "price"); // 컬럼명
 				
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -156,7 +154,8 @@ public class BuyJSON extends NewsbankServletBase {
 		json.put("totalPrice", totalPrice);
 		json.put("totalList", totalList);
 		json.put("result", searchList);
-
+		
+		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);
 		response.flushBuffer();
 	}

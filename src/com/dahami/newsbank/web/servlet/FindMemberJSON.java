@@ -31,7 +31,6 @@ public class FindMemberJSON extends NewsbankServletBase {
 	 */
 	public FindMemberJSON() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -39,10 +38,8 @@ public class FindMemberJSON extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-
+		super.doGet(request, response);
+		
 		boolean isMember = false;
 		boolean isParameter = false;
 		String id = null;
@@ -103,16 +100,8 @@ public class FindMemberJSON extends NewsbankServletBase {
 		json.put("message", "");
 		json.put("data", jArray);
 
+		response.setContentType("application/json");
 		response.getWriter().print(json);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

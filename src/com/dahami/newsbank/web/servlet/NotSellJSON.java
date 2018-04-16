@@ -37,16 +37,14 @@ public class NotSellJSON extends NewsbankServletBase {
      */
     public NotSellJSON() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = null;
 		if (session.getAttribute("MemberInfo") != null) {
@@ -114,7 +112,8 @@ public class NotSellJSON extends NewsbankServletBase {
 		json.put("pageCnt", pageCnt);
 		json.put("totalCnt", totalCnt);
 		json.put("result", searchList);
-
+		
+		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);
 	}
 

@@ -32,21 +32,12 @@ import com.dahami.newsbank.web.util.ExcelUtil;
 public class ListMemberJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see NewsbankServletBase#NewsbankServletBase()
-     */
     public ListMemberJSON() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
 		
 		String keyword = request.getParameter("keyword"); // 키워드
 		String type = request.getParameter("type"); // 회원유형 (P: 개인, C: 기업)
@@ -54,8 +45,6 @@ public class ListMemberJSON extends NewsbankServletBase {
 		String group = request.getParameter("group"); // 그룹구분 (개별: I, 그룹: G) 
 		int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표시 갯수
 		int startPage = Integer.parseInt(request.getParameter("startPage")); // 시작 페이지
-		//int group_seq = (request.getParameter("group") == null) ? 0 : Integer.parseInt(request.getParameter("group")); // 그룹구분 (개별: 0, 그룹: 1) 
-		//int group_seq = Integer.parseInt(request.getParameter("group"));
 		
 		List<MemberDTO> listMember = new ArrayList<MemberDTO>();
 		MemberDAO memberDAO = new MemberDAO();
@@ -88,7 +77,6 @@ public class ListMemberJSON extends NewsbankServletBase {
 				try {
 					mapList.add(dto.convertToMap());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -134,18 +122,11 @@ public class ListMemberJSON extends NewsbankServletBase {
 			json.put("pageCnt", pageCnt);
 			json.put("totalCnt", totalCnt);
 			json.put("result", jArray);
-
+			
+			response.setContentType("application/json");
 			response.getWriter().print(json);
 		}
 		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
