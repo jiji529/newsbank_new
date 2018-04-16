@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script src="js/admin.js?v=20180412"></script>
+<script src="js/admin.js?v=20180416"></script>
 
 <script type="text/javascript">
 
@@ -41,7 +41,7 @@
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
 		var pageVol = parseInt($("#sel_pageVol option:selected").attr("value")); // 페이지 표시 갯수
 		var startPage = ($("#startgo").val()-1) * pageVol; // 시작 페이지
-		var status = $("select[name=status]").val(); // 결제구분
+		var status = $("select[name='status'] option:selected").val(); // 결제구분
 		var start_date = $("input[name=start_date]").val(); // 시작일
 		var end_date = $("input[name=end_date]").val(); // 종료일
 		var pageCnt = 0; // 전체 페이지 갯수
@@ -405,7 +405,7 @@
 			<option value="50">50개</option>
 			<option value="100">100개</option>
 		</select> 
-		<a href="javascript:void(0)" onclick="saveExcel('/excel.buy.api')">엑셀저장</a>
+		<a href="javascript:void(0)" onclick="saveExcel('/excel.buy.api', 'buylist')">엑셀저장</a>
 		</div>
 		<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 			<colgroup>

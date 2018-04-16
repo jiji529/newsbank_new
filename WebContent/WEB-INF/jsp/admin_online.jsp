@@ -347,7 +347,7 @@
 							<option value="50">50개</option>
 							<option value="100">100개</option>
 						</select> 
-						<a href="javascript:void(0)" onclick="saveExcel('/excel.onlinePay.api')">엑셀저장</a>
+						<a href="javascript:void(0)" onclick="saveExcel('/excel.onlinePay.api', 'online')">엑셀저장</a>
 					</div>
 					<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 						<colgroup>
@@ -406,6 +406,12 @@
 		</form>
 		
 		<form id="downForm" method="post"  target="downFrame">
+			<input type="hidden" id="currentKeyword" name="keyword" />
+			<input type="hidden" id="currentKeywordType" name="keywordType" />
+			<input type="hidden" id="currentPayType" name="paytype" />
+			<input type="hidden" id="currentPayStatus" name="paystatus" />
+			<input type="hidden" id="startDate" name="startDate" />
+			<input type="hidden" id="endDate" name="endDate" />
 			<input type="hidden" id="pageVol" name="pageVol" />
 			<input type="hidden" id="startPage" name="startPage" value="file" />
 		</form>

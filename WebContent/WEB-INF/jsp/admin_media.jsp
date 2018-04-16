@@ -510,7 +510,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}		
 	}
 </script>
-<script src="js/admin.js?v=20180416"></script>
+<script src="js/admin.js?v=20180415"></script>
 </head>
 
 <body>
@@ -549,7 +549,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<option value="50">50개</option>
 						<option value="100">100개</option>
 					</select>
-					<a href="javascript:void(0)" onclick="saveExcel('/excel.listMedia.api')">엑셀저장</a></div>
+					<a href="javascript:void(0)" onclick="saveExcel('/excel.listMedia.api', 'member')">엑셀저장</a></div>
 				<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 					<colgroup>
 					<col width="30" />
@@ -635,6 +635,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	</form>
 	
 	<form id="downForm" method="post"  target="downFrame">
+		<input type="hidden" id="currentKeyword" name="keyword" />
 		<input type="hidden" id="pageVol" name="pageVol" />
 		<input type="hidden" id="startPage" name="startPage" value="file" />
 	</form>

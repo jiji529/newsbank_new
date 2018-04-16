@@ -124,16 +124,20 @@
 	        </if>
 	        <if test="keyword != null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
-				 AND m.id LIKE CONCAT('%', #{keyword}, '%')
-				     OR m.name LIKE CONCAT('%', #{keyword}, '%')
+				 AND (
+				 	 m.id LIKE CONCAT('%', #{keyword}, '%')
+			    	 OR m.name LIKE CONCAT('%', #{keyword}, '%')
 				     OR m.compName LIKE CONCAT('%', #{keyword}, '%')
+				    )
 				</if>
 				<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
-				 AND p.uciCode LIKE CONCAT('%', #{keyword}, '%')
+				 AND(
+				 	 p.uciCode LIKE CONCAT('%', #{keyword}, '%')
 				    OR (SELECT compCode FROM photo WHERE uciCode = c.uciCode) LIKE CONCAT('%', #{keyword}, '%')
+				    )
 				</if>
-	            <bind name="keyword" value="'%' + keyword + '%'" />
-	            AND (m.`name` LIKE #{keyword} OR m.`compName` LIKE #{keyword} OR m.`id` LIKE #{keyword})
+	            <!-- <bind name="keyword" value="'%' + keyword + '%'" />
+	            AND (m.`name` LIKE #{keyword} OR m.`compName` LIKE #{keyword} OR m.`id` LIKE #{keyword}) -->
 	        </if>
 		</where>
 		GROUP BY DATE_FORMAT(c.regDate, '%Y-%m'), `type`

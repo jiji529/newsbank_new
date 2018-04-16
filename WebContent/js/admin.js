@@ -608,20 +608,130 @@ function excel() { // 엑셀저장
 	excel_form.submit();
 }
 
-function saveExcel(apiUrl) { // form, iframe을 이용한 엑셀저장
+function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
+	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
+	console.log(keyword);
+	switch(pathName){
+		case "member":
+			// 회원현황
+			var type = $("#sel_type option:selected").attr("value"); // 회원구분
+			var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
+			var group = $("#sel_group option:selected").attr("value"); // 그룹구분
+			
+			$("#type").val(type);
+			$("#deferred").val(deferred);
+			$("#group").val(group);
+			break;
+		
+		case "media":
+			// 정산매체사
+			
+			break;
+			
+		case "download":
+			// 오프라인결제(다운로드)
+			var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
+			var contractStart = $("#contractStart").val();
+			var contractEnd = $("#contractEnd").val();
+			
+			$("#currentKeywordType").val(keywordType);
+			$("#currentContractStart").val(contractStart);
+			$("#currentContractEnd").val(contractEnd);
+			break;
+			
+		case "buylist":
+			// 오프라인 결제(구매내역)
+			var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
+			var status = $("select[name='status'] option:selected").val(); // 상태구분
+			var contractStart = $("#contractStart").val();
+			var contractEnd = $("#contractEnd").val();
+			
+			$("#currentKeywordType").val(keywordType);
+			$("#currentStatus").val(status);
+			$("#startDate").val(contractStart);
+			$("#endDate").val(contractEnd);
+			break;
+			
+		case "fatsell":
+			// 오프라인결제(다운로드 후 비구매)
+			break;
+			
+		case "online":
+			// 온라인결제
+			var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
+			var paytype = $("select[name='paytype'] option:selected").val(); // 결제 방법
+			var paystatus = $("select[name='paystatus'] option:selected").val(); // 결제 상황
+			var contractStart = $("#contractStart").val();
+			var contractEnd = $("#contractEnd").val();
+			
+			$("#currentKeywordType").val(keywordType);
+			$("#currentPayType").val(paytype);
+			$("#currentPayStatus").val(paystatus);
+			$("#startDate").val(contractStart);
+			$("#endDate").val(contractEnd);
+			break;
+			
+		case "sellyear":
+			// 정산관리(년도별 총 판매금액)
+			var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
+			var paytype = $("select[name='paytype'] option:selected").val(); // 결제 방법
+			var contractStart = $("#contractStart").val();
+			var contractEnd = $("#contractEnd").val();
+			var cmd = "S";
+			var adjMaster = $("#adjMaster").val(); // 정산매체
+			var adjSlave = $("#adjSlave").val(); // 피정산매체
+			// 피정산 매체 선택여부 확인
+			if(adjSlave == " ") { // 없음 or 선택안함
+				seqArr = adjMaster;
+			}else if(adjSlave == "all") { // 전체 선택
+				seqArr = $("#adjSlave_arr").val();
+			}else { // 개별선택
+				seqArr = adjSlave;
+			}
+			
+			$("#currentKeywordType").val(keywordType);
+			$("#currentPayType").val(paytype);
+			$("#startDate").val(contractStart);
+			$("#endDate").val(contractEnd);
+			$("#cmd").val(cmd);
+			$("#seqArr").val(seqArr);
+			break;
+			
+		case "sellitem":
+			// 정산관리(결제건별 상세내역)
+			var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
+			var paytype = $("select[name='paytype'] option:selected").val(); // 결제 방법
+			var contractStart = $("#contractStart").val();
+			var contractEnd = $("#contractEnd").val();
+			var cmd = "R";
+			var adjMaster = $("#adjMaster").val(); // 정산매체
+			var adjSlave = $("#adjSlave").val(); // 피정산매체
+			// 피정산 매체 선택여부 확인
+			if(adjSlave == " ") { // 없음 or 선택안함
+				seqArr = adjMaster;
+			}else if(adjSlave == "all") { // 전체 선택
+				seqArr = $("#adjSlave_arr").val();
+			}else { // 개별선택
+				seqArr = adjSlave;
+			}
+			
+			$("#currentKeywordType").val(keywordType);
+			$("#currentPayType").val(paytype);
+			$("#startDate").val(contractStart);
+			$("#endDate").val(contractEnd);
+			$("#cmd").val(cmd);
+			$("#seqArr").val(seqArr);
+			break;
+			
+	}
+	
+	$("#currentKeyword").val(keyword);
 	$("#pageVol").val(1000);
 	$("#startPage").val(0);
 	$("#downForm").attr("action", apiUrl);
 	$("#downForm").submit();
 }
 
-function saveExcel(apiUrl, cmd) { // 정산관리(년도별 총 판매금액, 결제건별 상세내역)의 엑셀저장
-	$("#pageVol").val(1000);
-	$("#startPage").val(0);
-	$("#cmd").val(cmd);
-	$("#downForm").attr("action", apiUrl);
-	$("#downForm").submit();
-}
 
 //등록증 업로드
 $(function() {

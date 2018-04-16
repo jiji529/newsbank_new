@@ -286,14 +286,14 @@ public class CalculationAction extends NewsbankServletBase {
 				if(sep.is3("excel")) {
 					// 목록 엑셀 다운로드
 					// 기간에 따라 동적으로 테이블 항목이 생성
-					/*List<String> headList = Arrays.asList(); //  테이블 상단 제목
-					List<Integer> columnSize = Arrays.asList(); //  컬럼별 길이정보
-					List<String> columnList = Arrays.asList(); // 컬럼명
+					List<String> headList = Arrays.asList("월별", "온라인/오프라인", "가격"); //  테이블 상단 제목
+					List<Integer> columnSize = Arrays.asList(10, 20, 20); //  컬럼별 길이정보
+					List<String> columnList = Arrays.asList("YearOfMonth", "type", "price"); // 컬럼명
 					
 					Date today = new Date();
 				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
 					String orgFileName = "년도별 총 판매금액_" + dateforamt.format(today); // 파일명
-					ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, staticsList, orgFileName);*/
+					ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, staticsList, orgFileName);
 				
 				}else {
 					// 목록 JSON

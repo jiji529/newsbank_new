@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script src="js/admin.js?v=20180412"></script>
+<script src="js/admin.js?v=20180416"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		search();
@@ -289,7 +289,7 @@
 <div class="ad_result">
 
 	<div class="ad_result_btn_area fr">
-		<a href="javascript:void(0)" onclick="saveExcel('/excel.calculation.api', 'R')">엑셀저장</a></div>
+		<a href="javascript:void(0)" onclick="saveExcel('/excel.calculation.api', 'sellitem')">엑셀저장</a></div>
 	</div>
 
 	<div id="tb_media">

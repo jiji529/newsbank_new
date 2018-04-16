@@ -108,6 +108,13 @@
 	</form>
 	
 	<form id="downForm" method="post"  target="downFrame">
+		<input type="hidden" id="currentKeyword" name="keyword" />
+		<input type="hidden" id="currentKeywordType" name="keywordType" />
+		<input type="hidden" id="currentStatus" name="status" />
+		<input type="hidden" id="startDate" name="start_date" />
+		<input type="hidden" id="endDate" name="end_date" />
+		<input type="hidden" id="currentContractStart" name="contractStart" />
+		<input type="hidden" id="currentContractEnd" name="contractEnd" />
 		<input type="hidden" id="pageVol" name="pageVol" />
 		<input type="hidden" id="startPage" name="startPage" value="file" />
 	</form>

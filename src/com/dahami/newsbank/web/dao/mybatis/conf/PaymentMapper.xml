@@ -576,18 +576,18 @@
 		<where>	
 	    	<if test="keyword !=null and keyword != ''">
 				<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
-			    M.id LIKE CONCAT('%', #{keyword}, '%')
-			    OR M.name LIKE CONCAT('%', #{keyword}, '%')
-			    OR M.compName LIKE CONCAT('%', #{keyword}, '%')
+			    (
+				    M.id LIKE CONCAT('%', #{keyword}, '%')
+				    OR M.name LIKE CONCAT('%', #{keyword}, '%')
+				    OR M.compName LIKE CONCAT('%', #{keyword}, '%') 
+			    )
 				</if>
 				<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
-				P.uciCode LIKE CONCAT('%', #{keyword}, '%')
-				OR (SELECT compCode FROM photo WHERE uciCode = PD.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
+				(
+					P.uciCode LIKE CONCAT('%', #{keyword}, '%')
+					OR (SELECT compCode FROM photo WHERE uciCode = PD.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
+				)
 				</if>
-				<bind name="keyword" value="'%' + keyword + '%'" />
-				AND (PM.`LGD_BUYERID` LIKE #{keyword} 
-					OR PM.`LGD_BUYER` LIKE #{keyword} 
-					OR PM.`LGD_OID` LIKE #{keyword})
 			</if> 	
 			
 			<if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">

@@ -29,7 +29,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
-<script src="js/admin.js?v=20180411"></script>
+<script src="js/admin.js?v=20180416"></script>
 <script> 
 $(document).ready(function(){ 
 	$(".popup_close").click(function(){ 
@@ -417,7 +417,7 @@ function downInternal() {
 	var deferred = $("#sel_deferred option:selected").attr("value"); // 결제구분
 	var group = $("#sel_group option:selected").attr("value"); // 그룹구분
 	
-	$("#keyword").val(keyword);
+	$("#currentKeyword").val(keyword);
 	$("#type").val(type);
 	$("#deferred").val(deferred);
 	$("#group").val(group);
@@ -490,7 +490,8 @@ function downInternal() {
 						<option value="50">50개</option>
 						<option value="100">100개</option>
 					</select> 
-					<a href="javascript:void(0)" onclick="downInternal()">엑셀저장</a>
+					<!-- <a href="javascript:void(0)" onclick="downInternal()">엑셀저장</a> -->
+					<a href="javascript:void(0)" onclick="saveExcel('/excel.listMember.api', 'member')">엑셀저장</a>
 				</div>
 				<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 					<colgroup>
@@ -571,7 +572,7 @@ function downInternal() {
 	</form>
 	
 	<form id="downForm" method="post"  target="downFrame">
-		<input type="hidden" id="keyword" name="keyword" />
+		<input type="hidden" id="currentKeyword" name="keyword" />
 		<input type="hidden" id="type" name="type" />
 		<input type="hidden" id="deferred" name="deferred" />
 		<input type="hidden" id="group" name="group" />

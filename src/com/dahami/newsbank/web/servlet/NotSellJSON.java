@@ -88,7 +88,7 @@ public class NotSellJSON extends NewsbankServletBase {
 			
 			if(cmd.is3("excel")) {
 				// 목록 엑셀다운로드
-				List<String> headList = Arrays.asList("회사/기관명", "아이디", "전화번호"); //  테이블 상단 제목
+				List<String> headList = Arrays.asList("회사/기관명", "아이디", "이름", "전화번호"); //  테이블 상단 제목
 				List<Integer> columnSize = Arrays.asList(15, 10, 10, 20); //  컬럼별 길이정보
 				List<String> columnList = Arrays.asList("compName", "id", "name", "phone"); // 컬럼명
 				

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script src="js/admin.js?v=20180411"></script>
+<script src="js/admin.js?v=20180416"></script>
 
 <script>
 	$(document).ready(function() {
@@ -222,7 +222,7 @@
 			<option value="20">20개</option>
 			<option value="50">50개</option>
 			<option value="100">100개</option>
-		</select> <a href="javascript:void(0)" onclick="saveExcel('/excel.download.api')">엑셀저장</a>
+		</select> <a href="javascript:void(0)" onclick="saveExcel('/excel.download.api', 'download')">엑셀저장</a>
 	</div>
 	<table id="excelTable" cellpadding="0" cellspacing="0" class="tb04">
 		<colgroup>

@@ -101,6 +101,11 @@
 	
 	<form id="downForm" method="post"  target="downFrame">
 		<input type="hidden" id="cmd" name="cmd" />
+		<input type="hidden" id="currentKeywordType" name="keywordType" />
+		<input type="hidden" id="currentPayType" name="paytype" />
+		<input type="hidden" id="seqArr" name="seqArr" />
+		<input type="hidden" id="startDate" name="start_date" />
+		<input type="hidden" id="endDate" name="end_date" />
 		<input type="hidden" id="pageVol" name="pageVol" />
 		<input type="hidden" id="startPage" name="startPage" value="file" />
 	</form>

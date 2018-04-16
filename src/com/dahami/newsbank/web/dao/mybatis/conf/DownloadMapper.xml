@@ -90,7 +90,7 @@
 			 )
 			</if>
 			
-			<if test="contractStart != null and contractEnd != null">
+			<if test="contractStart != null and contractStart != '' and contractEnd != null and contractEnd != ''">
 			    AND D.regDate BETWEEN #{contractStart} AND #{contractEnd}
 			</if>
 		</where>
