@@ -234,7 +234,7 @@ public class BookmarkDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public void updateBookmarkPhoto(int bookmark_seq, String photo_uciCode) {
+	public void updateBookmarkPhoto(int bookmark_seq, String photo_uciCode, int member_seq) {
 		SqlSession session = null;
 				
 		try {
@@ -242,6 +242,7 @@ public class BookmarkDAO extends DAOBase {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("bookmark_seq", bookmark_seq);
 			param.put("photo_uciCode", photo_uciCode);
+			param.put("member_seq", member_seq);
 			
 			session.update("Bookmark.updateBookmarkPhoto", param);		
 		} catch (Exception e) {

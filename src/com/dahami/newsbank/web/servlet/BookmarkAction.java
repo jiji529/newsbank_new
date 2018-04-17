@@ -36,10 +36,12 @@ public class BookmarkAction extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		//super.doGet(request, response);
+		super.doGet(request, response);
 		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 		// 로그인 여부에 따라서 북마크 목록 가져오기
 		HttpSession session = request.getSession();
@@ -101,10 +103,10 @@ public class BookmarkAction extends NewsbankServletBase {
 				if(uciCode.contains("|")) {
 					String[] photo_uciCode = uciCode.split("\\|");
 					for (String code : photo_uciCode) {
-						bookmarkDAO.updateBookmarkPhoto(bookmark_seq, code);
+						bookmarkDAO.updateBookmarkPhoto(bookmark_seq, code, member_seq);
 					}
 				} else { // 단일 선택
-					bookmarkDAO.updateBookmarkPhoto(bookmark_seq, uciCode);
+					bookmarkDAO.updateBookmarkPhoto(bookmark_seq, uciCode, member_seq);
 				}
 				
 			} else if(action.equals("insertFolder")) { // 폴더 추가
@@ -127,7 +129,8 @@ public class BookmarkAction extends NewsbankServletBase {
 		json.put("success", success);
 		json.put("message", message);
 		json.put("result", jArray);
-
+		
+		response.setContentType("application/json");
 		response.getWriter().print(json);
 	}
 }

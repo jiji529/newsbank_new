@@ -134,7 +134,10 @@
 		
 		// #폴더 추가하기 버튼
 		$(document).on("click", ".btn_cart", function() {
-			add_layout();
+			var formTag = $(".pop_folder").find("form").length;
+			if(formTag == 0) {
+				add_layout();	
+			}		
 		});
 		
 		 // #폴더추가 취소

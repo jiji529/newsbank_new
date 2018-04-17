@@ -50,9 +50,15 @@
     </update>
     
     <update id="updateBookmarkPhoto" parameterType="java.util.Map">
+        <selectKey resultType="integer" keyProperty="seq" order="BEFORE">
+            SELECT A.seq FROM bookmarkPhoto A
+			INNER JOIN bookmark B ON A.bookmark_seq = B.seq
+			WHERE B.member_seq = #{member_seq} AND A.photo_uciCode = #{photo_uciCode}
+        </selectKey>
         UPDATE bookmarkPhoto SET
         	bookmark_seq = #{bookmark_seq} 
-       	WHERE photo_uciCode = #{photo_uciCode}        
+       	WHERE photo_uciCode = #{photo_uciCode}
+       	AND seq = #{seq}        
     </update>
     
     <select id="selectBookmarkPhoto" resultType="com.dahami.newsbank.web.dto.BookmarkDTO" parameterType="java.util.Map">

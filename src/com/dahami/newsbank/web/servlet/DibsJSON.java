@@ -35,7 +35,8 @@ public class DibsJSON extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    
+		super.doGet(request, response);
+		
 	    HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		int member_seq = MemberInfo.getSeq();
@@ -71,12 +72,4 @@ public class DibsJSON extends NewsbankServletBase {
 		response.getWriter().print(json);
  		request.setAttribute("jsonList", jsonList);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }
