@@ -32,6 +32,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>뉴스뱅크 로그인</title>
+<link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/join.css" />
 <script src="js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="js/login.js"></script>

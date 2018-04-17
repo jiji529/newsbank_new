@@ -29,13 +29,13 @@ $(document).ready(function() {
 
 	function layer_popup(){
 		
-		if($('#popup_id').size()==0){
+		if($('#login_popup').size()==0){
 			var warp = $('<div>').attr({
-				id : 'popup_id',
+				id : 'login_popup',
 			}).appendTo('body');
 		}
 
-		$('#popup_id').load('login.pop',function( response, status){
+		$('#login_popup').load('login.pop',function( response, status){
 			if(response==''){
 				login_move();
 			}
