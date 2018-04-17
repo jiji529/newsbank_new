@@ -290,7 +290,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<td>
 								<select name="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
 									<option value="0" <c:if test="${MemberDTO.deferred eq '0'}">selected</c:if>>온라인결제</option>
-									<option value="1" <c:if test="${MemberDTO.deferred eq '1'}">selected</c:if>>오프라인결제</option>
 									<option value="2" <c:if test="${MemberDTO.deferred eq '2'}">selected</c:if>>오프라인 별도가격</option>
 								</select>
 							</td>

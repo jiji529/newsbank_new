@@ -50,7 +50,7 @@
 					<li>
 						<a href="/dibs.myPage">찜관리</a>
 					</li>
-					<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
+					<c:if test="${MemberInfo.deferred eq 2}">
 						<li>
 							<a href="/download.mypage">다운로드 내역</a>
 						</li>

@@ -19,6 +19,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
  SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
@@ -43,31 +44,32 @@
 <script src="js/footer.js"></script>
 <script src="js/mypage.js?v=20180410"></script>
 <script type="text/javascript">
-	function popup_usage() {
-		var uciCode_arr = new Array();
-		$("#mtBody input:checkbox:checked").each(function(index) {
-			var uciCode = $(this).val();
-			uciCode_arr.push(uciCode);
-		});
-		
-		$("#uciCode_arr").val(uciCode_arr);
-		
-		var frm = document.download_popOption;
-// 		window.open('', frm, 'width=420, height=600');
-// 		frm.action = "/download.popOption";
-// 		frm.target = frm;
-		
-		frm.action = "/postBuylist.mypage";
-		frm.method = "post";
-		frm.submit();
-		
-		//download_popOption.submit();
+	
+	//사용용도 선택
+	function popup_usage() { 
+		var chk_total = $("#mtBody input:checkbox:checked").length;
+		if(chk_total == 0) { // 선택항목 갯수 체크 필수
+			alert("최소 1개 이상을 선택해주세요.");	
+		}else {
+			var uciCode_arr = new Array();
+			$("#mtBody input:checkbox:checked").each(function(index) {
+				var uciCode = $(this).val();
+				uciCode_arr.push(uciCode);
+			});
+			$("#uciCode_arr").val(uciCode_arr);
+			
+			var frm = document.download_popOption;
+			frm.action = "/postBuylist.mypage";
+			frm.method = "post";
+			frm.submit();
+		}
 	}
 	
 	$(document).on("click", ".btn_input2", function() {
 		popup_usage(); // 사용용도 선택
 	});
 	
+	// 페이지 이동
 	function pageMove(page){
 		$("#pagingForm input[name=page]").val(page);
 		$("#pagingForm input[name=year]").val($('#selectYear option:selected').val());
@@ -104,7 +106,7 @@
 					<li>
 						<a href="/dibs.myPage">찜관리</a>
 					</li>
-					<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
+					<c:if test="${MemberInfo.deferred eq 2}">
 						<li class="on">
 							<a href="/download.mypage">다운로드 내역</a>
 						</li>
@@ -188,12 +190,13 @@
 							</div> </a>
 						</td>
 						<td>${download.regDate}</td>
-						<%-- <td>0회<br />
-							<div class="btn_group">
-								<button type="button" class="btn_o" name="btn_down" onclick="down('${download.photo_uciCode}')">다운로드</button>
-							</div></td> --%>
 					</tr>
 					</c:forEach>
+					<c:if test="${fn:length(downList) == 0}">
+						<tr>
+							<td colspan="4">다운로드한 이미지가 없습니다.</td>
+						</tr>
+					</c:if>
 				</tbody>
 			</table>
 			<c:if test="${returnMap['total'][0]%returnMap['bundle'][0] == 0 }">
@@ -221,7 +224,9 @@
 			</div>
 			</c:if>	
 			<div class="btn_area">
-				<a href="#" class="btn_input2">구매하기</a>
+				<c:if test="${fn:length(downList) > 0}">
+					<a href="#" class="btn_input2">구매하기</a>
+				</c:if>
 				<!-- <a href="main.html" onclick="window.open('/download.popOption','new','resizable=no width=420 height=600');return false" class="btn_input2">구매하기</a> -->
 			</div>
 		</section>

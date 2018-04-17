@@ -365,7 +365,6 @@ function search(state) { // 검색
 				
 				var deferred = val.deferred;
 				if(deferred == '0') deferred = "온라인 결제";
-				if(deferred == '1') deferred = "오프라인 결제<br/>(온라인 가격)";
 				if(deferred == '2') deferred = "오프라인 결제<br/>(별도 가격)";	
 				
 				var contractStart = val.contractStart;

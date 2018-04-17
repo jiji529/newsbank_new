@@ -73,7 +73,7 @@
 					<li class="on">
 						<a href="/dibs.myPage">찜관리</a>
 					</li>
-					<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
+					<c:if test="${MemberInfo.deferred eq 2}">
 						<li>
 							<a href="/download.mypage">다운로드 내역</a>
 						</li>
@@ -140,7 +140,7 @@
 				<input type="checkbox" name="checkAll"/>
 				</span>
 				<ul class="button">
-					<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
+					<c:if test="${MemberInfo.deferred eq 2}">
 						<li class="sort_down" onclick="mutli_download()">다운로드</li>
 					</c:if>
 					<c:if test="${MemberInfo.deferred eq 0}">
@@ -184,7 +184,7 @@
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 							<ul class="thumb_btn">
-								<c:if test="${MemberInfo.deferred eq 1 || MemberInfo.deferred eq 2}">
+								<c:if test="${MemberInfo.deferred eq 2}">
 									<li class="btn_down" onclick="down('${PhotoDTO.uciCode}')">다운로드</li>
 								</c:if>
 								<c:if test="${MemberInfo.deferred eq 0}">
