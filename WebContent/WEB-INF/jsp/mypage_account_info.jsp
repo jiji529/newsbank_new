@@ -27,7 +27,7 @@
 	<link rel="stylesheet" href="css/sub.css" />
 	<link rel="stylesheet" href="css/mypage.css" />
 	<script src="js/footer.js"></script>
-	<script src="js/mypage.js?v=20180221"></script>
+	<script src="js/mypage.js?v=20180416"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -216,7 +216,7 @@
 							<span class=" bar">-</span>
 							<input type="text" id="taxPhone3" size="5" class="inp_txt" value="${taxPhone3}" maxlength="4" />
 							<span class=" bar">내선</span>
-							<input type="text" name="taxExtTell" id="taxExtTell" size="5" value="${MemberInfo.taxExtTell}"  class="inp_txt" maxlength="4" /></td>
+							<input type="text" name="taxExtTell" id="taxExtTell" size="5" value=""  class="inp_txt" maxlength="4" /></td>
 						</td>
 					</tr>
 					<tr>

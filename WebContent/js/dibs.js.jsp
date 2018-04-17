@@ -25,11 +25,17 @@ function checkNumber(event) {
 
 $(document).on("click", "div .paging a.prev", function() {
 	var prev = $("input[name=pageNo]").val() - 1;
-	goPage(prev);
+	if(prev != 0) { // 이전 페이지가 있을 경우만
+		goPage(prev);
+	}
+	
 });
 $(document).on("click", "div .paging a.next", function() {
+	var totalPage = $(".total").text();
 	var next = $("input[name=pageNo]").val() - (-1);
-	goPage(next);
+	if(next <= totalPage) { // 다음 페이지가 있을 경우만
+		goPage(next);
+	}	
 });
 
 $(document).on("click", "a[name=nextPage]", function() {
@@ -64,7 +70,6 @@ $(document).on("click", ".filter_list li", function() {
 		$(".sort_folder .list_layer li").css("display", "block");
 		if(seq != "") {
 			$(".sort_folder .list_layer").find("[value=" + seq + "]").css("display", "none");
-			console.log("list_layer : " + seq);
 		}
 		$("input:checkbox[name='checkAll']").attr("checked", false);
 		dibsList();
@@ -79,8 +84,6 @@ function dibsList() {
 	var bookmark_seq = $(".filter_title:nth-of-type(2) .filter_list").find("[selected=selected]").val();
 	var pageVol = $("select[name=limit]").val(); // 페이지당 표현 갯수
 	var pageNo = $("input[name=pageNo]").val(); // 현재 페이지
-	
-	console.log("bookmark_seq : " + bookmark_seq + " / pageVol : " + pageVol + " / pageNo : " + pageNo);
 	
 	var html = "";
 	$.ajax({
@@ -112,7 +115,7 @@ function dibsList() {
 			$("div .result b").html(totalCount);
 			$("div .paging span.total").html(totalPage);
 			
-			console.log(pageVol + " / " + data.result.length);
+			//console.log(pageVol + " / " + data.result.length);
 			if(pageVol > data.result.length) { // 총 갯수가 표현단위보다 작을 때, [다음 페이지] 숨김
 				$(".more").hide();
 			}else {

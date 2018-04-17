@@ -120,7 +120,7 @@
 						<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="dibsList()"/>
 						<span>/</span><span class="total">${totalPage}</span><a href="javascript:void(0)" class="next" title="다음페이지"></a></div>
 					<div class="viewbox">
-						<select name="limit" onchange="dibsList()">
+						<select name="limit" onchange="goPage(1)">
 							<option value="40" selected="selected">40</option>
 							<option value="80">80</option>
 							<option value="120">120</option>

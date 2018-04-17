@@ -22,7 +22,7 @@ public class CartDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public void insertCart(String member_seq, String uciCode, String usageList_seq, String price) {
+	public void insertCart(int member_seq, String uciCode, String usageList_seq, String price) {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
@@ -86,7 +86,7 @@ public class CartDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public void deleteCart(String member_seq, String uciCode) {
+	public void deleteCart(int member_seq, String uciCode) {
 		SqlSession session = null;
 				
 		try {

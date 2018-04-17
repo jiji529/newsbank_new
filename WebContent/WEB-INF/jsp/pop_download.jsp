@@ -38,14 +38,10 @@
 		function userOfusageList() {
 			var result = new Array();
 			var html = "<option value=''>선택</option>";
-			var member_num = ${MemberInfo.seq};
 			
 			$.ajax({
 				url: "/UsageJSON",
 				type: "GET",
-				data: {
-					"individual" : member_num
-				},
 				dataType: "json",
 				success: function(data) { console.log(data);
 					$.each(data.result, function(key, val) {

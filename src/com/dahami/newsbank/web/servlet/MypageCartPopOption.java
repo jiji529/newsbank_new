@@ -50,7 +50,7 @@ public class MypageCartPopOption extends NewsbankServletBase {
 		// 장바구니에 담기 이전에 로그인 체크가 필요
 		
 		String page = request.getParameter("page") == null ? "" : request.getParameter("page");
-		String member_seq = (MemberInfo != null) ? String.valueOf(MemberInfo.getSeq()) : "0";
+		int member_seq = (MemberInfo != null) ? MemberInfo.getSeq() : 0;
 		String action = request.getParameter("action") == null ? "" : request.getParameter("action");
 		String uciCode = request.getParameter("uciCode");
 		//String usageList_seq = request.getParameter("usageList_seq");
@@ -59,7 +59,8 @@ public class MypageCartPopOption extends NewsbankServletBase {
 		
 		UsageDAO usageDAO = new UsageDAO();
 		CartDAO cartDAO = new CartDAO();
-		List<UsageDTO> usageOptions = usageDAO.uciCodeOfUsage(uciCode, member_seq);
+		//List<UsageDTO> usageOptions = usageDAO.uciCodeOfUsage(uciCode, member_seq);
+		List<UsageDTO> usageOptions = usageDAO.usageListOfuser(member_seq);
 		
 		request.setAttribute("page", page);
 		request.setAttribute("usageOptions", usageOptions);

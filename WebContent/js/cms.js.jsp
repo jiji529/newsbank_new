@@ -21,11 +21,17 @@ $(document).on("click", ".btn_cal", function() {
 
 $(document).on("click", "div .paging a.prev", function() {
 	var prev = $("input[name=pageNo]").val() - 1;
-	goPage(prev);
+	if(prev != 0) { // 이전 페이지가 있을 경우만
+		goPage(prev);
+	}
+	
 });
 $(document).on("click", "div .paging a.next", function() {
+	var totalPage = $(".total").text();
 	var next = $("input[name=pageNo]").val() - (-1);
-	goPage(next);
+	if(next <= totalPage) { // 다음 페이지가 있을 경우만
+		goPage(next);
+	}	
 });
 
 $(document).on("click", "a[name=nextPage]", function() {

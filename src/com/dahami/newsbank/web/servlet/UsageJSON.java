@@ -9,11 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.UsageDAO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
 
 /**
@@ -34,11 +36,16 @@ public class UsageJSON extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		super.doGet(request, response);
+		
+		HttpSession session = request.getSession();
+		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo"); // 회원정보
+		int individual = 0; // 0 : 온라인(기본값)
 		
 		UsageDAO usageDAO = new UsageDAO();
-		int individual = 0;
-		if(request.getParameter("individual") != null) {
-			individual = Integer.parseInt(request.getParameter("individual"));
+		if(MemberInfo.getDeferred() == 2) { 
+			// 오프라인 회원은 개인 사용용도를 전달
+			individual = MemberInfo.getSeq();
 		}
 		List<UsageDTO> usageOption = usageDAO.usageList(individual);
 		
@@ -59,12 +66,4 @@ public class UsageJSON extends NewsbankServletBase {
 	
  		request.setAttribute("jsonList", jsonList);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

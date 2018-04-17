@@ -518,7 +518,7 @@ $(document).ready(function() {
 							if(result.taxPhone.length == 9) {
 								$('#taxPhone1').val(result.taxPhone.substr(0, 2));
 								$('#taxPhone2').val(result.taxPhone.substr(2, 3));
-								$('#taxPhone3').val(result.taxPhone.substr(6, 4));
+								$('#taxPhone3').val(result.taxPhone.substr(5, 4));
 								
 							} else if (result.taxPhone.length == 10) {
 								$('#taxPhone1').val(result.taxPhone.substr(0, 3));
@@ -538,6 +538,7 @@ $(document).ready(function() {
 
 						$('input[name=taxName]').val(result.taxName);
 						$('input[name=taxEmail]').val(result.taxEmail);
+						$('input[name=taxExtTell]').val(result.taxExtTell);
 					} else {
 						alert(data.message);
 					}

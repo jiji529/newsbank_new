@@ -55,8 +55,8 @@ public class MypageAuth extends NewsbankServletBase {
 			// 이미 로그인 되어있는지 체크
 			if (mypageAuth) {
 				// 이전에 my page 비밀번호 입력했는지 체크
-				if(MemberInfo.getType().equals("M")) {
-					// 매체사 회원은 사진관리로 이동
+				if(MemberInfo.getType().equals("M") && MemberInfo.getAdmission().equals("Y")) {
+					// 매체사 회원은 사진관리로 이동(단, 관리자로부터 매체사 가입승인 받아야함)
 					response.sendRedirect("/cms"); 
 				}else {
 					// 나머지 회원은 회원정보 관리로 이동
@@ -85,8 +85,8 @@ public class MypageAuth extends NewsbankServletBase {
 						// 로그인 성공
 						session.setAttribute("mypageAuth", true);
 						
-						if(memberDTO.getType().equals("M")) {
-							// 매체사 회원은 사진관리로 이동
+						if(memberDTO.getType().equals("M") && MemberInfo.getAdmission().equals("Y")) {
+							// 매체사 회원은 사진관리로 이동(단, 관리자로부터 매체사 가입승인 받아야함)
 							response.sendRedirect("/cms"); 
 						}else {
 							// 나머지 회원은 회원정보 관리로 이동

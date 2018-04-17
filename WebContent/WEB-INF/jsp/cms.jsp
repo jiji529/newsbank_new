@@ -90,25 +90,35 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		<div class="mypage_ul">
 			<ul class="mp_tab1">
 				<c:if test="${MemberInfo.type eq 'M' && MemberInfo.admission eq 'Y'}">
-						<li>
-							<a href="/accountlist.mypage">정산 관리</a>
-						</li>
-						<li class="on">
-							<a href="/cms">사진 관리</a>
-						</li>
-					</c:if>
 					<li>
-						<a href="/info.mypage">회원정보 관리</a>
+						<a href="/accountlist.mypage">정산 관리</a>
+					</li>
+					<li class="on">
+						<a href="/cms">사진 관리</a>
+					</li>
+				</c:if>
+				<li>
+					<a href="/info.mypage">회원정보 관리</a>
+				</li>
+				<li>
+					<a href="/dibs.myPage">찜관리</a>
+				</li>
+				<c:if test="${MemberInfo.deferred eq 2}">
+					<li>
+						<a href="/download.mypage">다운로드 내역</a>
 					</li>
 					<li>
-						<a href="/dibs.myPage">찜관리</a>
+						<a href="/postBuylist.mypage">구매내역</a>
 					</li>
+				</c:if>
+				<c:if test="${MemberInfo.deferred eq 0}">
 					<li>
 						<a href="/cart.myPage">장바구니</a>
 					</li>
 					<li>
 						<a href="/buylist.mypage">구매내역</a>
 					</li>
+				</c:if>
 			</ul>
 		</div>
 <%@include file="cms_list.jsp" %>

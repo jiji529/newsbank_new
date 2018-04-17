@@ -213,7 +213,7 @@ public class UsageDAO extends DAOBase {
 			session = sf.getSession();
 			
 			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("individual", String.valueOf(seq));
+			param.put("individual", seq);
 			usageList = session.selectList("Usage.selectList", param);
 					
 		} catch (Exception e) {

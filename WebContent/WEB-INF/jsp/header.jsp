@@ -102,7 +102,26 @@
 					<a href="/logout">로그아웃</a>
 				</li>
 				
-				<c:if test="${MemberInfo.type eq 'M'}">
+				<c:choose>
+					<c:when test="${MemberInfo.type eq 'M' && MemberInfo.admission eq 'Y'}">
+						<li>
+							<a href="/cms">마이페이지</a>
+						</li>
+					</c:when>
+					
+					<c:when test="${MemberInfo.type ne 'M'}">
+						<li>
+							<a href="/info.mypage">마이페이지</a>
+						</li>
+					</c:when>
+					
+					<c:otherwise>
+						<li>
+							<a href="/info.mypage">마이페이지</a>
+						</li>
+					</c:otherwise>
+				</c:choose>
+				<%-- <c:if test="${MemberInfo.type eq 'M'}">
 					<li>
 						<a href="/cms">마이페이지</a>
 					</li>
@@ -111,7 +130,7 @@
 					<li>
 						<a href="/info.mypage">마이페이지</a>
 					</li>
-				</c:if>
+				</c:if> --%>
 				
 				<c:if test="${MemberInfo.type == 'A'}">
 					<li class="go_admin">
