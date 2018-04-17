@@ -2,17 +2,19 @@
 $(document).ready(function() {
 	
 	$("#frmLogin").on("submit",function(){
-		$.post("/login.api", $(this).serialize(), function(data) {
+		var form = $(this);
+		$.post("/login.api", form.serialize(), function(data) {
 			if (data.success) {
 				if(data.message){
 					alert(data.message);
 				}
-			//	location.href = "/login";
-				var frm = $('#frmPost');
-				var prevPage = frm.find('[name=prevPage]').val();
-				if(!prevPage)
-					prevPage = "/home";
-				frm.attr('action', prevPage).attr('method', 'post').submit();
+				var id = form.find('#id').val();
+				if(id.length<4){
+					layer_popup();
+				}else{
+					login_move();
+				}
+				
 				return false;
 				
 				
@@ -25,5 +27,31 @@ $(document).ready(function() {
 		return false;
 	});
 
+	function layer_popup(){
+		
+		if($('#popup_id').size()==0){
+			var warp = $('<div>').attr({
+				id : 'popup_id',
+			}).appendTo('body');
+		}
+
+		$('#popup_id').load('login.pop',function( response, status){
+			if(response==''){
+				login_move();
+			}
+		});
+	}
+
+	function login_move(){
+		var frm = $('#frmPost');
+		var prevPage = frm.find('[name=prevPage]').val();
+		if(!prevPage)
+			prevPage = "/home";
+		frm.attr('action', prevPage).attr('method', 'post').submit();
+	}
+
+
 	
 });
+
+
