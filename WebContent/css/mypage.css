@@ -157,7 +157,6 @@
 .mypage .btn_sort .btn_error_pop{ float:right; padding:6px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa; margin-right:10px;}
 .mypage .btn_sort .btn_error_pop .new{ float:left; font-size:12px; font-weight:bold; color:#F00; margin-right:5px; margin-top:1px;}
 .mypage .btn_sort .btn_error_pop:hover{border:1px #f79320 solid; color:#f79320;}
-.error_cont{display:none;}
 .mypage .thumb.img_del:after {content: ''; position: absolute; left: -40px; top: 97px; border-top: 3px solid #fff; width: 276px; -moz-transform:rotate(-45deg); -o-transform:rotate(-45deg); -webkit-transform:rotate(-45deg); -ms-transform:rotate(-45deg); transform: rotate(-45deg);}
 
 .mypage #cms_list2 .thumb.img_blind a{background:#777; }
@@ -532,7 +531,12 @@
 .filters.sml li.filter_title span{line-height:17px; float:left; text-align:left; padding-top:5px;}
 .filters.sml li.filter_title span font{ font-size:12px; font-weight:600;}
 
-.error_list{float:left; width:100%; padding:15px;}
+#popup_wrap.wd .pop_cont.error_list{float:left; width:100%; padding:15px; height:525px;}
 .error_list .sort_error{float:left; width:100%; margin-bottom:10px; }
-
 .error_list select{float:right; margin-left:12px; padding:2px 4px; height:26px; line-height:26px; font-size:13px;}
+.error_list table{border-bottom:1px #999 solid; border-top:2px #333 solid; margin-bottom:0;}
+.error_list tr:hover{background:#fafafa;}
+.error_cont{display:none;}
+.error_cont p{ width:100%; float:left; color:#333; padding:20px 0;}
+.error_cont button{margin:10px auto; padding:8px 15px; border:1px #f79320 solid; background:#fff; color:#f79320;}
+#popup_wrap.wd .pagination ul{ margin:20px 0 10px;} 
