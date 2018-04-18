@@ -21,7 +21,6 @@ public class DownloadDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	//public List<Map<String, String>> downloadList(int member_seq, Map<String,String[]> paramMaps) {
 	public List<Map<String, String>> downloadList(List<Integer> memberList, Map<String,String[]> paramMaps) {
 	
 		SqlSession session = null;
@@ -63,7 +62,6 @@ public class DownloadDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	//public int downloadListTotal(int member_seq, Map<String,String[]> paramMaps) {
 	public int downloadListTotal(List<Integer> memberList, Map<String,String[]> paramMaps) {
 		SqlSession session = null;
 		int count=0;
