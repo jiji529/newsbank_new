@@ -50,20 +50,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		});
 	});
 	$(document).ready(function() {
-		$("#popup_open").click(function() {
-			$("#popup_wrap").css("display", "block");
-			$("#mask").css("display", "block");
-		});
-		
-		$("#popup_open").click(function() {
-			$("#popup_wrap").css("display", "block");
-			$("#mask").css("display", "block");
-		});
-		$(".popup_close").click(function() {
-			$("#popup_wrap").css("display", "none");
-			$("#mask").css("display", "none");
-		});
-		
 		search();
 		setDatepicker();
 	});

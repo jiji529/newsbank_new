@@ -28,6 +28,20 @@ if(photoDto == null
 <script type="text/javascript">
 	$(document).ready(function(key, val){
 		relation_photo();
+		usageList();
+		// 오류 신고하기 팝업
+		$("#popup_open").click(function(){ 
+			alert("기능 구현 예정");
+			// 개발 이후 아래 주석해제
+			//$("#popup_wrap").css("display", "block"); 
+			//$(".mask").css("display", "block"); 
+		}); 
+		
+		// 신고하기 팝업 닫기
+		$(".popup_close").click(function(){ 
+			$("#popup_wrap").css("display", "none"); 
+			$(".mask").css("display", "none"); 
+		}); 
 	});
 	
 	// #찜하기 버튼 on/off
@@ -112,8 +126,6 @@ if(photoDto == null
 		$(this).parent("li").remove();
 		setTotalCount();
 	});
-	
-	usageList();
 	
 	// #선택옵션 용도옵션 불러오기
 	function usageList() {
@@ -561,7 +573,10 @@ if(photoDto == null
 					</div>
 				</div>
 			</div>
-			<h2 class="media_logo"><img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /></h2>
+			<h2 class="media_logo">
+				<img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" />
+				<div class="btn_edit"> <span id="popup_open"><a href="javascript:void(0)">오류 신고하기</a></span></div>
+			</h2>
 			<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
 			</div>
 			<div class="cont_area">
@@ -694,6 +709,38 @@ if(!contentBlidF) {
 				</c:if>
 			</div>
 		</div>
+<%
+}
+%>
+
+<%
+if(!contentBlidF) {
+%>
+		<div id="popup_wrap" class="pop_group wd">
+			<div class="pop_tit">
+				<h2>오류 신고하기</h2>
+				<p>
+					<button class="popup_close">닫기</button>
+				</p>
+			</div>
+			<div class="pop_cont">
+				<div class="error_form">
+					<p>사진과 사진의 상세 정보에서 잘못된 점을 발견하신 경우, 아래 칸에 기재하여 신고해 주세요.<br />
+						최대한 신속하게 수정하여 정상적으로 서비스될 수 있도록 하겠습니다. </p>
+					<textarea rows="16"></textarea>
+					<div class="agree_check">
+							<input type="checkbox" id="chk">
+							<label for="chk">신고 내역 및 처리 결과를 회원가입한 이메일로 받고 싶습니다. </label>
+					</div>
+				</div>
+			</div>
+			<div class="pop_foot">
+				<div class="pop_btn">
+					<button>신고하기</button>
+					<button class="popup_close">닫기</button>
+				</div>
+			</div>
+		</div>		
 <%
 }
 %>

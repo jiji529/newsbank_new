@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.dto.PhotoDTO;
+import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
@@ -40,13 +41,20 @@ public class UsageJSON extends NewsbankServletBase {
 		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo"); // 회원정보
+		UsageDAO usageDAO = new UsageDAO();
+		
 		int individual = 0; // 0 : 온라인(기본값)
 		
-		UsageDAO usageDAO = new UsageDAO();
-		if(MemberInfo.getDeferred() == 2) { 
-			// 오프라인 회원은 개인 사용용도를 전달
-			individual = MemberInfo.getSeq();
+		if (MemberInfo != null) {
+			// 로그인 상태
+			if(MemberInfo.getDeferred() == 2) { 
+				// 오프라인 회원은 개인 사용용도를 전달
+				individual = MemberInfo.getSeq();
+			}
+		}else {
+			// 로그아웃(일반회원)
 		}
+		
 		List<UsageDTO> usageOption = usageDAO.usageList(individual);
 		
 		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();

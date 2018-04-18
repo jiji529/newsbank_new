@@ -154,3 +154,17 @@
 		alert("삭제되었습니다");
 		search();
 	});
+	
+	/** 오류 신고내역 팝업 활성화 */
+	$(document).on("click", "#popup_open", function() {
+		alert("기능 구현 예정");
+		// 개발 이후 아래 주석해제
+		//$("#popup_wrap").css("display", "block"); 
+		//$(".mask").css("display", "block"); 
+	});
+	
+	/** 오류 신고내역 팝업 닫기 */
+	$(document).on("click", ".popup_close", function() {
+		$("#popup_wrap").css("display", "none"); 
+		$(".mask").css("display", "none"); 
+	});

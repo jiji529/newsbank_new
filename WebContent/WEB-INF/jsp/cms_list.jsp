@@ -47,12 +47,112 @@
 			-->
 		</ul>
 		<a href="javascript:void(0)" onclick="excel()" class="excel_down">엑셀저장</a>
+		<span id="popup_open"><a href="javascript:void(0)" class="btn_error_pop"><span class="new">N</span>오류 신고내역</a></span>
 	</div>
 	<section id="cms_list2">
 		<ul>
 		</ul>
 	</section>
 	<div class="more"><a href="javascript:void(0)" name="nextPage">다음 페이지</a></div>
+	
+	<div id="popup_wrap" class="pop_group wd">
+		<div class="pop_tit">
+			<h2>오류 신고내역</h2>
+			<p>
+				<button class="popup_close">닫기</button>
+			</p>
+		</div>
+		<div class="pop_cont error_list">
+				<div class="sort_error">
+					<select>
+						<option value="40" selected="selected">40</option>
+						<option value="80">80</option>
+						<option value="120">120</option>
+					</select>
+					<select>
+						<option value="" selected="selected">상태</option>
+						<option value="">접수</option>
+						<option value="">수정 완료</option>
+					</select>
+					<select>
+						<option value="" selected="selected">매체</option>
+						<option value="">뉴시스</option>
+						<option value="">뉴스1</option>
+					</select>
+				</div>
+				<table cellpadding="0" cellspacing="0" class="tb04" style="">
+					<colgroup>
+					<col width="40">
+					<col width="80">
+					<col width="100">
+					<col width="120">
+					<col width="120">
+					<col width="80">
+					</colgroup>
+					<thead>
+					<tr><th>번호</th>
+						<th>신고일</th>
+						<th>매체</th>
+						<th>UCI 코드</th>
+						<th>언론사 사진코드</th>
+						<th>상태</th>
+						</tr></thead>
+					<tbody>
+						<tr onclick="$('.error_cont').toggle()">
+							<td>1234</td>
+							<td>2018-04-10</td>
+							<td>뉴시스</td>
+							<td>I011-M005527189</td>
+							<td>123456789</td>
+							<td>접수</td>
+						</tr>
+						<tr>
+							<td class="error_cont" colspan="6"><p>사진하고 사진 제목/설명이 안 맞는 것 같습니다.</p>
+								<button>수정완료</button></td>
+						</tr>
+						<tr class="tr_visible">
+							<td>1233</td>
+							<td>2018-04-09</td>
+							<td>뉴스1</td>
+							<td>II011-M005527190</td>
+							<td>123456789</td>
+							<td>수정 완료</td>
+						</tr>
+						<tr>
+							<td class="error_cont" colspan="6"><p>사진하고 사진 제목/설명이 안 맞는 것 같습니다.</p>
+								<button>수정완료</button></td>
+						</tr>
+						<tr class="tr_visible">
+							<td>1233</td>
+							<td>2018-04-09</td>
+							<td>뉴스1</td>
+							<td>II011-M005527190</td>
+							<td>123456789</td>
+							<td>수정 완료</td>
+						</tr>
+						<tr>
+							<td class="error_cont" colspan="6"><p>사진하고 사진 제목/설명이 안 맞는 것 같습니다.</p>
+								<button>수정완료</button></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pagination">
+					<ul id="pagination-demo" class="pagination-sm pagination">
+						<li class="first disabled"><a href="#">First</a></li>
+						<li class="prev disabled"><a href="#">Previous</a></li>
+						<li class="page active"><a href="#">1</a></li>
+						<li class="next disabled"><a href="#">Next</a></li>
+						<li class="last disabled"><a href="#">Last</a></li>
+					</ul>
+				</div>
+		</div>
+		<div class="pop_foot">
+			<div class="pop_btn">
+				<button class="popup_close">닫기</button>
+			</div>
+		</div>
+	</div>
+		
 <%@include file="down_frame.jsp" %>
 <%@include file="view_form.jsp" %>
 <%@include file="excel_frame.jsp" %>
