@@ -32,7 +32,6 @@
 								}),
 								dataType : "json",
 								success : function(data) {
-									console.log(data);
 									if (data.success) {
 										alert('변경되었습니다.');
 										location.reload();
@@ -175,7 +174,9 @@
 		<div class="pop_foot">
 			<div class="pop_btn">
 				<button type="submit" class="popup_change" tabindex="3">변경하기</button>
-				<button type="button" class="popup_close" tabindex="4">다음에 변경하기</button>
+				<c:if test="${!nextChangeHide}">
+					<button type="button" class="popup_close" tabindex="4">다음에 변경하기</button>
+				</c:if>
 			</div>
 		</div>
 	</div>
