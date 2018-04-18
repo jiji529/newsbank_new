@@ -2,6 +2,8 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -42,7 +44,20 @@ public class LoginPopup extends NewsbankServletBase {
 		if (session.getAttribute("MemberInfo") != null) {
 			MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 			if (MemberInfo.getId().length() < 4) {
+				boolean nextChangeHide = false;
+				String targetDate = "20180531";
+				
+				
+				Calendar cal = Calendar.getInstance();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+				String thisDay = dateFormat.format(cal.getTime());
+				if(thisDay.compareTo(targetDate)>0) {
+					nextChangeHide = true;
+				}
+				
 				request.setAttribute("id", MemberInfo.getId());
+				request.setAttribute("nextChangeHide", nextChangeHide);
+				
 
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login_popup.jsp");
 				dispatcher.forward(request, response);
