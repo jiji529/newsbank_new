@@ -102,6 +102,8 @@ public class MemberAction extends NewsbankServletBase {
 		}
 		if (check && request.getParameter("type") != null) {
 			type = request.getParameter("type"); // 회원 구분
+		}else {
+			type = MemberInfo.getType();
 		}
 		System.out.println("type => " + type + " : " + check);
 		
@@ -443,7 +445,7 @@ public class MemberAction extends NewsbankServletBase {
 	public static boolean isValidId(String id) {
 		String regex = "^[a-zA-Z0-9]{2,19}$";
 		boolean err = false;
-		if (id != null && !id.isEmpty()) {
+		if (id != null && !id.isEmpty()&& id.length()>3) {
 			Pattern p = Pattern.compile(regex);
 			Matcher m = p.matcher(id);
 			if (m.matches()) {

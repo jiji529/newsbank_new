@@ -52,7 +52,7 @@
 		where
 		1
 		<if test="id != null">
-			AND id = #{id}
+			AND id = BINARY(#{id}) 
 		</if>
 		<if test="pw != null">
 			AND (pw = #{pw} OR pw = #{pwCurrent} OR pw = #{pwPast})
@@ -72,7 +72,7 @@
 	<!-- 회원가입 아이디 체크 -->
 	<select id="selectId" parameterType="java.util.Map" resultType="int">
 		SELECT count(seq) FROM member
-		where id = #{id}
+		where id = BINARY(#{id}) 
 
 
 	</select>
@@ -140,13 +140,14 @@
 	<update id="updateMember" parameterType="com.dahami.newsbank.web.dto.MemberDTO">
 		update member
 		<set>
-			type = #{type}
+			type = #{type} 
+			<if test="id != null">, id = #{id}</if>
 			<if test="pw != null">, pw = #{pw}</if>
 			<if test="email != null">, email = #{email}</if>
 			<if test="name != null">, name = #{name}</if>
 			<if test="phone != null">, phone = #{phone}</if>
 			<if test="permission != null">, permission = #{permission}</if>
-			<if test="deferred != null">, deferred = #{deferred}</if>
+			<if test="deferred >0">, deferred = #{deferred}</if>
 			<if test="compNum != null">, compNum = #{compNum}</if>
 			<if test="compDocPath != null">, compDocPath = #{compDocPath}</if>
 			<if test="compName != null">, compName = #{compName}</if>
@@ -267,7 +268,7 @@
 	</select>
 
 	<select id="selGetty" resultType="com.dahami.newsbank.web.dto.MemberDTO">
-		select * from member where id = 'gettyimage';
+		select * from member where id = BINARY('gettyimage');
 	</select>
 	
 	<!-- 관리자 회원현황 목록 -->
@@ -361,7 +362,7 @@
 	<update id="updateMemberGroup">
 	    UPDATE member SET group_seq = #{group_seq} WHERE 
 	    <foreach collection="id" item="mID"  separator="OR">
-	        ( id = #{mID} )
+	        ( id =BINARY(#{mID}) )
 	    </foreach>
 	</update>
 	

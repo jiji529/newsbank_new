@@ -40,7 +40,7 @@
 <body>
 	<div class="wrap">
 		<header>
-			<a href="/home" class="logo">
+			<a href="/home" class="logo" tabindex="-1">
 				<h1>뉴스뱅크</h1>
 			</a>
 		</header>
@@ -57,11 +57,11 @@
 					<legend class="blind">로그인</legend>
 					<div class="inp_login">
 						<label for="id" class="lbl" style="display: block;">아이디</label>
-						<input type="text" id="id" name="id" placeholder="아이디" value="<%=id%>" maxlength="20" pattern="[A-Za-z0-9]*" title="숫자와 영문만 입력 하세요." required />
+						<input type="text" id="id" name="id" placeholder="아이디" value="<%=id%>" maxlength="20" pattern="[A-Za-z0-9]*" title="숫자와 영문만 입력 하세요." tabindex="5" autocomplete="username" required />
 					</div>
 					<div class="inp_login">
 						<label for="pw" class="lbl" style="display: block;">비밀번호</label>
-						<input type="password" id="pw" name="pw" placeholder="비밀번호" value="" maxlength="20" required />
+						<input type="password" id="pw" name="pw" placeholder="비밀번호" value="" maxlength="20" tabindex="6" autocomplete="current-password" required />
 					</div>
 					<%
 						// 아이디, 비밀번호가 틀릴경우 화면에 메시지 표시
@@ -74,7 +74,7 @@
 							out.println("</div>");
 						}
 					%>
-					<input type="submit" title="로그인" alt="로그인" value="로그인" class="btn_login" onclick="">
+					<input type="submit" title="로그인" alt="로그인" value="로그인" class="btn_login" onclick="" tabindex="7">
 					<div class="login_check">
 						<input type="checkbox" id="login_chk" name="login_chk" <%if (id.length() > 1)
 				out.println("checked");%> />
