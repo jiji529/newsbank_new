@@ -59,8 +59,8 @@ public class MypageCartPopOption extends NewsbankServletBase {
 		
 		UsageDAO usageDAO = new UsageDAO();
 		CartDAO cartDAO = new CartDAO();
-		//List<UsageDTO> usageOptions = usageDAO.uciCodeOfUsage(uciCode, member_seq);
-		List<UsageDTO> usageOptions = usageDAO.usageListOfuser(member_seq);
+		List<UsageDTO> usageOptions = usageDAO.uciCodeOfUsage(uciCode, member_seq);
+		//List<UsageDTO> usageOptions = usageDAO.usageListOfuser(member_seq);
 		
 		request.setAttribute("page", page);
 		request.setAttribute("usageOptions", usageOptions);

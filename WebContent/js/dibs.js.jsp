@@ -95,7 +95,7 @@ function dibsList() {
 			"pageVol" : pageVol,
 			"pageNo" : pageNo
 		},
-		success: function(data){ console.log(data);
+		success: function(data){ //console.log(data);
 			var totalCount = data.totalCount;
 			var totalPage = data.totalPage;
 			
@@ -231,7 +231,7 @@ function change_folder(bookmark_seq, bookmark_name) {
 /** DB 수정함수 */
 function dibsUpdate(uciCode, bookmark_seq) {
 	var param = "action=updateBookmark";
-	console.log(uciCode.join("|"), bookmark_seq);
+	//console.log(uciCode.join("|"), bookmark_seq);
 	
 	$.ajax({
 		url: "/bookmark.api?"+param,

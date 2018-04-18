@@ -82,7 +82,7 @@ public class UsageDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public List<UsageDTO> uciCodeOfUsage(String uciCode, String member_seq) {
+	public List<UsageDTO> uciCodeOfUsage(String uciCode, int member_seq) {
 		SqlSession session = null;
 		List<UsageDTO> usageList = new ArrayList<UsageDTO>();
 		Map<String, Object> param = new HashMap<String, Object>();
