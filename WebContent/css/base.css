@@ -107,10 +107,6 @@ footer a.clean{ float:right; margin:-2px 0 0 20px; }
 .no_result ul{ width:600px; margin:0 auto; padding-left:20px;}
 .no_result ul li{ color: #333; float:left; width:100%; font-size:15px; line-height:28px; text-align:left; list-style:disc}
 
-
-#top{position: fixed; bottom:30px; right:30px; z-index: 1000; display: block; width: 50px; height:50px; text-decoration: none; font-size: 13px; opacity: 0.8; cursor: pointer; border-radius:25px; background:#666; line-height:50px;font-family:'Montserrat',sans-serif; }
-#top a{color:#fff; display:block;}
-
 #popup_wrap {width:400px; height:250px; background:#fff; border: solid 1px #ccc; position:fixed; top:50%; left:50%; margin:-200px 0 0 -200px; z-index:9999; display:none;} 
 #popup_wrap.pop_group {height:330px; margin:-250px 0 0 -200px;} 
 #popup_wrap.wd {width:900px; height:640px;margin:-320px 0 0 -450px; } 
