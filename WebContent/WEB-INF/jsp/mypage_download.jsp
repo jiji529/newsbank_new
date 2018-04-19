@@ -219,7 +219,7 @@
 					<li class="prev"> <a href="javascript:pageMove('${returnMap['page'][0] - 1 }');">이전 페이지</a> </li>
 					</c:if>
 					<c:forEach  begin="${(cycleStart)*10+1}" end="${((cycleStart)*10 + 10) > lastPage ? lastPage:((cycleStart)*10 + 10)}" var="i" >
-						<li class="active"> <a href="javascript:;" onclick="pageMove('${i}');">${i}</a> </li>
+						<li class="${returnMap['page'][0]==i?'active':''}"> <a href="javascript:;" onclick="pageMove('${i}');">${i}</a> </li>
 					</c:forEach>
 					<c:if test="${returnMap['page'][0] < lp }">
 					<li class="next"> <a href="javascript:pageMove('${returnMap['page'][0] + 1 }');"> 다음 페이지 </a> </li>
