@@ -198,7 +198,7 @@ public class XpayNoteurl extends NewsbankServletBase {
 							calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
 							calculationDTO.setUsage(detailDTO.getUsageList_seq());
 							calculationDTO.setType(0);
-							calculationDTO.setPayType(payment.getPayType());
+							calculationDTO.setPayType(payment.getLGD_PAYTYPE());
 							calculationDTO.setPrice(detailDTO.getPrice());
 							calculationDTO.setFees(payment.getLGD_FEES(detailDTO.getPrice()));
 							calculationDTO.setStatus(0);
@@ -233,7 +233,7 @@ public class XpayNoteurl extends NewsbankServletBase {
 							calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
 							calculationDTO.setUsage(detailDTO.getUsageList_seq());
 							calculationDTO.setType(0);
-							calculationDTO.setPayType(payment.getPayType());
+							calculationDTO.setPayType(payment.getLGD_PAYTYPE());
 							calculationDTO.setPrice(-detailDTO.getPrice());
 							calculationDTO.setFees(0);
 							calculationDTO.setStatus(0);

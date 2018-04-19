@@ -150,7 +150,7 @@ public class PaymentAction extends NewsbankServletBase {
 										calculationDTO.setUciCode(paymentDetailDTO.getPhoto_uciCode());
 										calculationDTO.setUsage(paymentDetailDTO.getUsageList_seq());
 										calculationDTO.setType(0);
-										calculationDTO.setPayType(paymentManageDTO.getPayType());
+										calculationDTO.setPayType(paymentManageDTO.getLGD_PAYTYPE());
 										calculationDTO.setPrice(-paymentDetailDTO.getPrice());
 										calculationDTO.setFees(0);
 										calculationDTO.setStatus(0);
@@ -203,7 +203,7 @@ public class PaymentAction extends NewsbankServletBase {
 											calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
 											calculationDTO.setUsage(detailDTO.getUsageList_seq());
 											calculationDTO.setType(0);
-											calculationDTO.setPayType(paymentManageDTO.getPayType());
+											calculationDTO.setPayType(paymentManageDTO.getLGD_PAYTYPE());
 											calculationDTO.setPrice(-detailDTO.getPrice());
 											calculationDTO.setFees(0);
 											calculationDTO.setStatus(0);
