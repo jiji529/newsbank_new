@@ -304,11 +304,11 @@ $(function() {
 		<footer>
 			<ul>
 				<li>
-					<a href="/policy.intro">이용약관</a>
+					<a target="_blank" href="/policy.intro">이용약관</a>
 				</li>
 				<li class="bar"></li>
 				<li>
-					<a href="/privacy.intro">개인정보처리방침</a>
+					<a target="_blank" href="/privacy.intro">개인정보처리방침</a>
 				</li>
 			</ul>
 			<div class="foot_bt">Copyright © NewsBank. All Rights Reserved.</div>
