@@ -173,6 +173,7 @@
 			<if test="activate >0">, activate = #{activate}</if>
 			<if test="admission != null">, admission = #{admission}</if>
 			<if test="group_seq >0">, group_seq = #{group_seq}</if>
+			<if test="loginDate != null">, loginDate = #{loginDate}</if>
 		</set>
 		where seq = #{seq}
 	</update>

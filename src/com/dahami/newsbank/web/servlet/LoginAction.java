@@ -2,6 +2,8 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -97,6 +99,15 @@ public class LoginAction extends NewsbankServletBase {
 					}
 
 					if (pw_success) {
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+						
+						// 오늘 날짜
+						Date today = new Date();			
+						String loginDate = dateFormat.format(today);
+						
+						
+						memberDTO.setLoginDate(loginDate);
+						memberDAO.updateMember(memberDTO); // 회원정보 업데이트 요청
 						// 로그인 성공
 						session.setAttribute("MemberInfo", memberDTO); // 회원정보 세션 저장
 						session.setMaxInactiveInterval(60 * 60 * 25 * 7);// 유효기간 7일

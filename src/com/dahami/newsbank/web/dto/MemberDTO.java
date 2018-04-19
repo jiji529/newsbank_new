@@ -70,7 +70,9 @@ public class MemberDTO implements Serializable {
 	private String taxPhone; // 계산서 담당자 전화번호
 	private String taxEmail; // 계산서 담당자 메일
 	private String taxExtTell; // 계산서 담당자 내선번호
-	private String regDate; // 등록일
+	private String regDate; // 최초 생성일
+	private String updDate; // 최근 데이터 업데이트 시간
+	private String loginDate; // 마지막 로그인시간
 	private String logo; // 로고
 	private int withdraw; // 회원 상태(0: 정상, 1: 탈퇴)
 	private String admission; // 승인(N: 비승인, Y: 승인)
@@ -749,5 +751,21 @@ public class MemberDTO implements Serializable {
 			
 		}
 		return result;
+	}
+
+	public String getUpdDate() {
+		return updDate;
+	}
+
+	public void setUpdDate(String updDate) {
+		this.updDate = updDate;
+	}
+
+	public String getLoginDate() {
+		return loginDate;
+	}
+
+	public void setLoginDate(String loginDate) {
+		this.loginDate = loginDate;
 	}
 }
