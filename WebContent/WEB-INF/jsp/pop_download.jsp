@@ -122,29 +122,35 @@
 			var uciCode_array = ($("#uciCode_arr").val()).split(",");
 			
 			for(var i=0; i<uciCode_array.length; i++) {
-				var jsonObject = new Object(); // 선택항목 객체
-				var usageArray = new Array(); // 사용용도 객체
 				
 				$(".option_result ul li").each(function(index) {
 					var usage_seq = $(this).children(".op_cont").attr("value");
-					usageArray.push(usage_seq);// 사용용도
+					var price = $(this).children(".op_price").attr("value");
 					
-					jsonObject.uciCode = uciCode_array[i];				 
-					jsonObject.usage = usageArray;
+					var jsonObject = new Object(); // 선택항목 객체
+					jsonObject.uciCode = uciCode_array[i];	
+					jsonObject.usage = usage_seq;
+					jsonObject.price = price;
+					
+					jsonArray.push(jsonObject);
 				});
-				jsonArray.push(jsonObject);
+				
 			}
 			
 			var resultObject = new Object(); // 최종 JSON Object
 			resultObject.order = jsonArray;
+			resultObject.LGD_CUSTOM_USABLEPAY = "SC9999";
 			
 			$("#orderJson").val(JSON.stringify(resultObject));
 			pay_form.submit();
-		}
+			window.opener.location.href = location.origin + "/postBuylist.mypage"; // 부모창 구매내역으로 이동
+			// 현재 팝업창 form submit 이후에 닫기기능 추가하기
+		}				
+		
 	</script>
 </head>
 <body>
-	<form class="pay_form" method="post" action="/pay" name="pay_form" >
+	<form class="pay_form" method="post" action="/purchase.api" name="pay_form" id="pay_form">
 		<input type="hidden" name="orderJson" id="orderJson" />
 		<!-- <input type="hidden" name="uciCode_array" id="uciCode_array" />
 		<input type="hidden" name="usage_array" id="usage_array" /> -->

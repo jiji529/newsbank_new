@@ -338,7 +338,7 @@
 								<tr class="offline_area photoUsage" style="display: none;">
 									<th>사진 용도</th>
 									<td>
-										<c:if test="${usageList != null}" >
+										<c:if test="${fn:length(usageList) != 0}" >
 											<c:forEach var="usageList" items="${usageList}" >
 												<p>
 													<input type="hidden" name="usageList_seq" value="${usageList.usageList_seq}"/>
@@ -349,7 +349,7 @@
 												</p>
 											</c:forEach>
 										</c:if>
-										<c:if test="${usageList == null}" >
+										<c:if test="${fn:length(usageList) == 0}" >
 											<p>
 												<input type="hidden" name="usageList_seq" value="" />
 												<input type="text" class="inp_txt" name="usage" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />

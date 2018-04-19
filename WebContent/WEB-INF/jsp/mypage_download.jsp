@@ -58,9 +58,12 @@
 			});
 			$("#uciCode_arr").val(uciCode_arr);
 			
+			// 구매내역 페이지 이동
+			window.open("", "openWin", "toolbar=no, resizable=no, width=420, height=600, directories=no, status=no, scrollbars=no");
 			var frm = document.download_popOption;
-			frm.action = "/postBuylist.mypage";
+			//frm.action = "/postBuylist.mypage";
 			frm.method = "post";
+			frm.target = "openWin";
 			frm.submit();
 		}
 	}
