@@ -152,7 +152,7 @@ public class PaymentAction extends NewsbankServletBase {
 										calculationDTO.setType(0);
 										calculationDTO.setPayType(paymentManageDTO.getLGD_PAYTYPE());
 										calculationDTO.setPrice(-paymentDetailDTO.getPrice());
-										calculationDTO.setFees(0);
+										calculationDTO.setFees(-paymentManageDTO.getLGD_FEES(paymentDetailDTO.getPrice()));
 										calculationDTO.setStatus(0);
 										CalculationDAO calculationDAO = new CalculationDAO();
 										calculationDAO.insertCalculation(calculationDTO);
@@ -205,7 +205,7 @@ public class PaymentAction extends NewsbankServletBase {
 											calculationDTO.setType(0);
 											calculationDTO.setPayType(paymentManageDTO.getLGD_PAYTYPE());
 											calculationDTO.setPrice(-detailDTO.getPrice());
-											calculationDTO.setFees(0);
+											calculationDTO.setFees(-paymentManageDTO.getLGD_FEES(detailDTO.getPrice()));
 											calculationDTO.setStatus(0);
 											calculationDAO.insertCalculation(calculationDTO);
 										}	

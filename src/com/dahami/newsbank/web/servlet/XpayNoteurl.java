@@ -235,7 +235,7 @@ public class XpayNoteurl extends NewsbankServletBase {
 							calculationDTO.setType(0);
 							calculationDTO.setPayType(payment.getLGD_PAYTYPE());
 							calculationDTO.setPrice(-detailDTO.getPrice());
-							calculationDTO.setFees(0);
+							calculationDTO.setFees(-payment.getLGD_FEES(detailDTO.getPrice()));
 							calculationDTO.setStatus(0);
 							calculationDAO.insertCalculation(calculationDTO);
 						}	
