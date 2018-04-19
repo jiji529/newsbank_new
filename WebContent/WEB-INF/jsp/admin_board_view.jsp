@@ -127,6 +127,21 @@
 			param = "action=updateNotice";
 		}
 		
+		if(title.trim() == ""){
+			alert("제목을 입력해주세요.");
+			return;
+		}
+		
+		if(description.trim() == ''){
+			alert("내용을 입력해주세요.");
+			return;
+		}else{	//엔터를 무지막지하게 쳤을 경우
+			description.replace(/\\n/g,'');
+			if(description.trim() == ''){
+				alert("내용을 입력해주세요.");
+				return;
+			}
+		}
 		
 		if(title != ""){
 			$.ajax({
@@ -146,8 +161,9 @@
 			});
 			
 		} else {
-			alert("제목을 입력해주세요.");
+// 			alert("제목을 입력해주세요.");
 		}
+		
 	}
 
 	function update() { // 공지사항 수정
@@ -161,6 +177,21 @@
 		if(file){
 			file = file.split("\\");
 			fileName = file[file.length-1];
+		}
+		if(title == ""){
+			alert("제목을 입력해주세요.");
+			return;
+		}
+		
+		if(description == ''){
+			alert("내용을 입력해주세요.");
+			return;
+		}else{	//엔터를 무지막지하게 쳤을 경우
+			description.replace(/\\n/g,'');
+			if(description.trim() == ''){
+				alert("내용을 입력해주세요.");
+				return;
+			}
 		}
 		
 		if(title != ""){
@@ -181,8 +212,10 @@
 				}
 			});
 		} else {
-			alert("제목을 입력해주세요.");
+// 			alert("제목을 입력해주세요.");
 		}
+		
+		
 	}
 	function removeHTMLTag(text){
 		text = text.replace(/<br\/>/ig, "\n"); 

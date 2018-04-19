@@ -290,8 +290,10 @@ $(document).ready(function() {
 
 	}
 	$("#compTel2").on("input", function() {
-		if ($(this).val().length == 4) {
+		if ($(this).val().length == 4 && onlyNumber($(this).val())) {
 			$("#compTel3").focus();
+		}else{
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
 		}
 	});
 
@@ -331,13 +333,17 @@ $(document).ready(function() {
 	
 	// 사업자 등록번호 체크
 	$("#compNum1").on("input", function() {
-		if ($(this).val().length == 3) {
+		if ($(this).val().length == 3 && onlyNumber($(this).val())) {
 			$("#compNum2").focus();
+		}else{
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
 		}
 	});
 	$("#compNum2").on("input", function() {
-		if ($(this).val().length == 2) {
+		if ($(this).val().length == 2 && onlyNumber($(this).val())) {
 			$("#compNum3").focus();
+		}else{
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
 		}
 	});
 
@@ -1178,3 +1184,12 @@ $(document).ready(function() {
 
 });
 
+function onlyNumber(v){
+	var regex = /^[0-9]+$/g;
+	if(regex.test(v)){
+		return true;
+	}else{
+		return false;
+	}
+	
+}

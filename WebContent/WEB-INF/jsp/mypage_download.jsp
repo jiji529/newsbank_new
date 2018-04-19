@@ -80,6 +80,7 @@
 		$("#pagingForm").submit();
 	}
 	
+
 </script>
 </head>
 <body>
@@ -206,6 +207,7 @@
 				<c:set value="${returnMap['total'][0]/returnMap['bundle'][0]+1 }" var="lastPage" />
 			</c:if>	
 			<fmt:parseNumber var="lp" value="${lastPage}" integerOnly="true"/>
+			<fmt:parseNumber var="cycleStart" value="${returnMap['page'][0]/10}" integerOnly="true"/>
 			<c:if test="${lp > 0}">
 			<div class="pagination">
 				<ul style="margin-bottom:0;">
@@ -213,7 +215,7 @@
 					<c:if test="${returnMap['page'][0] > 1 }">
 					<li class="prev"> <a href="javascript:pageMove('${returnMap['page'][0] - 1 }');">이전 페이지</a> </li>
 					</c:if>
-					<c:forEach  begin="${(returnMap['page'][0]/10)*10}" end="${((returnMap['page'][0]/10)*10 + 10) > lastPage ? lastPage:((returnMap['page'][0]/10)*10 + 10)}" var="i" >
+					<c:forEach  begin="${(cycleStart)*10+1}" end="${((cycleStart)*10 + 10) > lastPage ? lastPage:((cycleStart)*10 + 10)}" var="i" >
 						<li class="active"> <a href="javascript:;" onclick="pageMove('${i}');">${i}</a> </li>
 					</c:forEach>
 					<c:if test="${returnMap['page'][0] < lp }">

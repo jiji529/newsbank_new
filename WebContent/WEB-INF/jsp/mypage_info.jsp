@@ -45,7 +45,10 @@
 		$("#account_table").css("display", "block");
 	});
 
-	
+	//숫자만 입력
+	$(document).on('input','.phone :text,#compNum1,#compNum2,#compNum3,#compTel2,#compTel3,#compExtTel',function(event){
+	 	$(this).val($(this).val().replace(/[^0-9]+$/g,""));
+	})
 </script>
 </head>
 <body>
