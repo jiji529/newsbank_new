@@ -311,6 +311,7 @@
 		<set>
 			LGD_RESPCODE = #{LGD_RESPCODE}
 			<if test="LGD_RESPMSG != null">, LGD_RESPMSG = #{LGD_RESPMSG}</if>
+			<if test="LGD_AMOUNT != null">, LGD_AMOUNT = #{LGD_AMOUNT}</if>
 			<if test="LGD_TID != null">, LGD_TID = #{LGD_TID}</if>
 			<if test="LGD_PAYSTATUS != null">, LGD_PAYSTATUS = #{LGD_PAYSTATUS}</if>
 			<if test="LGD_FINANCENAME != null">, LGD_FINANCENAME = #{LGD_FINANCENAME}</if>

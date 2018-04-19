@@ -197,7 +197,16 @@
 							</div>
 							</a>
 						</td>
-						<td>${paymentDetailList.getPrice_Str() }</td>
+						<td>
+							<c:choose>
+							  <c:when test="${paymentDetailList.status eq '1'}">
+						    	<del>${paymentDetailList.getPrice_Str() }</del>
+							  </c:when>
+							  <c:otherwise>
+							    ${paymentDetailList.getPrice_Str() }
+							  </c:otherwise>
+							</c:choose>
+						</td>
 						<td>
 							${paymentDetailList.downStart }~
 							<br />

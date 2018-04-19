@@ -113,8 +113,10 @@ public class PaymentAction extends NewsbankServletBase {
 							paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq);
 							paymentDetailDTO = paymentManageDTO.getPaymentDetailItem(paymentDetailDTO);
 							
-							String LGD_CANCELAMOUNT 	= ( paymentDetailDTO.getPrice()>0 )?"":Integer.toString(paymentDetailDTO.getPrice()); 
-							String LGD_REMAINAMOUNT = Integer.toString(paymentManageDTO.getLGD_AMOUNT()-paymentDetailDTO.getPrice());
+							String LGD_CANCELAMOUNT 	= ( paymentDetailDTO.getPrice()>0 )?Integer.toString(paymentDetailDTO.getPrice()):"0"; 
+							//String LGD_REMAINAMOUNT = Integer.toString(paymentManageDTO.getLGD_AMOUNT()-paymentDetailDTO.getPrice());
+							String LGD_REMAINAMOUNT = Integer.toString(paymentManageDTO.getLGD_AMOUNT());
+							
 							xpay.Set("LGD_TXNAME", "PartialCancel");
 							xpay.Set("LGD_CANCELAMOUNT", LGD_CANCELAMOUNT);//부분취소 금액
 						    xpay.Set("LGD_REMAINAMOUNT", LGD_REMAINAMOUNT); //남은 금액
@@ -134,7 +136,9 @@ public class PaymentAction extends NewsbankServletBase {
 						            }
 						        }*/
 						        System.out.println("<p>");
-						        
+						        int lGD_AMOUNT = paymentManageDTO.getLGD_AMOUNT() -paymentDetailDTO.getPrice();
+						        paymentManageDTO.setLGD_AMOUNT(lGD_AMOUNT); // 취소 금액 갱신
+								paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
 						        
 						        paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
 								paymentDetailDTO.setStatus("1"); // 결제취소
