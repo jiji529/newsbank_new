@@ -44,12 +44,28 @@ function downDiferred(uciCode) {
 	downInternal(uciCode);
 }
 
-function downInternal(uciCode, outline) {
+function downInternal(uciCode, outline) { 
 	if(outline == null) {
 		outline = "service";
 	} 
 	$("#downUciCode").val(uciCode);
 // 	$("#downType").val("file");
+	$("#downForm").attr("action", "/"+outline+".down.photo");
+	$("#downForm").submit();
+}
+
+/** 제호(로고) 다운로드 */
+function downLogo(seq) {
+	if(!confirm("제호(로고)를 다운로드 하시겠습니까?")) {
+		return;
+	}
+	
+	downOtherInternal(seq, "logo");
+}
+
+/** 사진을 제외한 그 밖의 다운로드(등록증, 제호, 계약서..) */
+function downOtherInternal(seq, outline) {
+	$("#seq").val(seq);
 	$("#downForm").attr("action", "/"+outline+".down.photo");
 	$("#downForm").submit();
 }
@@ -98,5 +114,6 @@ function getCheckedList() {
 	<input type="hidden" id="downType" name="type" value="file" />
 	<input type="hidden" name="dummy" value="<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
 	<input type="hidden" id="group_seq" name="group_seq" value="${memberInfo.group_seq}" />
+	<input type="hidden" id="seq" name="seq" />
 </form>
 <iframe id="downFrame" name="downFrame" style="display:none"></iframe>

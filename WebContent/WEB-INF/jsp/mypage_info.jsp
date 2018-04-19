@@ -272,7 +272,8 @@
 													<input type="file" name="logo" accept="application/pdf, image/*" required />
 												</div>
 												<c:if test="${!empty MemberInfo.logo}">
-													<a class="btn_input1" href="/logo.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+													<%-- <a class="btn_input1" href="/logo.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a> --%>
+													<a class="btn_input1" href="javascript:void(0)" class="btn_input1" onclick="downLogo(${media.seq})">다운로드</a>
 												</c:if>
 											</div>
 										</c:if>
@@ -294,5 +295,6 @@
 		</section>
 		<%@include file="footer.jsp"%>
 	</div>
+	<%@include file="down_frame.jsp" %>
 </body>
 </html>
