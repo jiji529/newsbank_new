@@ -170,18 +170,18 @@ public class PaymentAction extends NewsbankServletBase {
 								xpay.Set("LGD_TXNAME", "Cancel");
 								if (xpay.TX()) {
 									// 1)결제취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
+									if(xpay.m_szResCode.equals("0000")) {
+										paymentManageDTO.setLGD_RESPCODE("0000"); // 완료코드
+										paymentManageDTO.setLGD_PAYSTATUS(5); // 결제취소
+										paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
 
-									paymentManageDTO.setLGD_RESPCODE("0000"); // 완료코드
-									paymentManageDTO.setLGD_PAYSTATUS(5); // 결제취소
-									paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
-
-									paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
-									paymentDetailDTO.setStatus("1"); // 결제취소
-									/*
-									 * if (paymentDetail_seq > 0) { // 개별 결제 취소건
-									 * paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소 }
-									 */
-									result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+										paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
+										paymentDetailDTO.setStatus("1"); // 결제취소
+									
+										result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+							    	}else {
+							    		message =xpay.m_szResMsg;
+							    	}
 									
 									System.out.println(result);
 
