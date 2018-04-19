@@ -124,17 +124,24 @@ public class PaymentAction extends NewsbankServletBase {
 							    
 							    if (xpay.TX()) {
 							        //1)결제 부분취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
-							    	System.out.println("결제 부분취소 요청이 완료되었습니다.  <br>");
+							    	System.out.println("결제 부분취소 요청 이 완료되었습니다.  <br>");
 							    	System.out.println( "TX Response_code = " + xpay.m_szResCode + "<br>");
 							    	System.out.println( "TX Response_msg = " + xpay.m_szResMsg + "<p>");
-							        int lGD_AMOUNT = paymentManageDTO.getLGD_AMOUNT() -paymentDetailDTO.getPrice();
-							        paymentManageDTO.setLGD_AMOUNT(lGD_AMOUNT); // 취소 금액 갱신
-									paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
-							        
-							        paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
-									paymentDetailDTO.setStatus("1"); // 결제취소
-									paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소
-									result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+							    	
+							    	if(xpay.m_szResCode.equals("0000")) {
+							    		 int lGD_AMOUNT = paymentManageDTO.getLGD_AMOUNT() -paymentDetailDTO.getPrice();
+									        paymentManageDTO.setLGD_AMOUNT(lGD_AMOUNT); // 취소 금액 갱신
+											paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
+									        
+									        paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
+											paymentDetailDTO.setStatus("1"); // 결제취소
+											paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소
+											result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+							    	}else {
+							    		message =xpay.m_szResMsg;
+							    	}
+							    	
+							       
 							        
 							    }else {
 							        //2)API 요청 실패 화면처리

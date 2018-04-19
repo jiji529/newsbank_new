@@ -252,7 +252,7 @@
 		<if test="LGD_RESPMSG != null">, LGD_RESPMSG</if>
 		<if test="LGD_OID != null">, LGD_OID</if>
 		<if test="LGD_PAYSTATUS != null">, LGD_PAYSTATUS</if>
-		<if test="LGD_AMOUNT != null">, LGD_AMOUNT</if>
+		<if test="LGD_AMOUNT >0">, LGD_AMOUNT</if>
 		<if test="LGD_TID != null">, LGD_TID</if>
 		<if test="LGD_PAYTYPE != null">, LGD_PAYTYPE</if>
 		<if test="LGD_PAYDATE != null">, LGD_PAYDATE</if>
@@ -267,7 +267,7 @@
 		<if test="LGD_RESPMSG != null">, #{LGD_RESPMSG}</if>
 		<if test="LGD_OID != null">, #{LGD_OID}</if>
 		<if test="LGD_PAYSTATUS != null">, #{LGD_PAYSTATUS}</if>
-		<if test="LGD_AMOUNT != null">, #{LGD_AMOUNT}</if>
+		<if test="LGD_AMOUNT>0">, #{LGD_AMOUNT}</if>
 		<if test="LGD_TID != null">, #{LGD_TID}</if>
 		<if test="LGD_PAYTYPE != null">, #{LGD_PAYTYPE}</if>
 		<if test="LGD_PAYDATE != null">, #{LGD_PAYDATE}</if>
@@ -311,7 +311,7 @@
 		<set>
 			LGD_RESPCODE = #{LGD_RESPCODE}
 			<if test="LGD_RESPMSG != null">, LGD_RESPMSG = #{LGD_RESPMSG}</if>
-			<if test="LGD_AMOUNT != null">, LGD_AMOUNT = #{LGD_AMOUNT}</if>
+			<if test="LGD_AMOUNT >0">, LGD_AMOUNT = #{LGD_AMOUNT}</if>
 			<if test="LGD_TID != null">, LGD_TID = #{LGD_TID}</if>
 			<if test="LGD_PAYSTATUS != null">, LGD_PAYSTATUS = #{LGD_PAYSTATUS}</if>
 			<if test="LGD_FINANCENAME != null">, LGD_FINANCENAME = #{LGD_FINANCENAME}</if>
