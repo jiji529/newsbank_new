@@ -79,7 +79,7 @@ footer{width:100%; overflow: hidden; height: 80px; padding-top: 18px; border-top
 footer li{  font-size:12px; display:inline-block; margin:0 5px; }
 footer li.bar{width:1px; height:10px; background:#ccc;}
 footer li a{color:#333;}
-footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#999; }
+footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#999; height:auto; line-height:inherit; border-top:0; }
 
 .join_choice{ width:100%; text-align:center; }
 .join_choice li{border:1px #ddd solid; height:240px; width:240px; display:inline-block; margin:10px; position:relative; }
