@@ -17,8 +17,8 @@ button{cursor:pointer;}
 .fl{float:left!important;}
 .fr{float:right!important;}
 a img{border:none;}
-#top{position: fixed; bottom:30px; right:30px; z-index: 1000; display: block; width: 50px; height:50px; text-decoration: none; font-size: 13px; opacity: 0.8; cursor: pointer; border-radius:25px; background:#666; line-height:50px;font-family:'Montserrat',sans-serif; }
-#top a{color:#fff; display:block;}
+#top{position: fixed; bottom:30px; right:30px; z-index: 1000; display: block; width: 50px; height:50px; text-decoration: none; font-size: 13px; opacity: 0.8; cursor: pointer; border-radius:25px; background:#666; line-height:50px; }
+#top a{color:#fff; display:block;font-family:'Montserrat',sans-serif;font-size: 13px;}
 .ml10{margin-left:10px;}
 .mr10{margin-right:10px;}
 /*

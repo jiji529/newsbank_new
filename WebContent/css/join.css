@@ -75,7 +75,7 @@ h1{height: 50px; display: block; width: 142px; margin:0 auto; position: relative
 .navi li {display:block;float:left;width:25%;color:#acacac;font-size:18px;font-family:"nsr";padding-bottom:10px;text-align:center;border-bottom:7px solid #d7d7d7;}
 .navi li.selected {color:#f79320;border-bottom:7px solid #f79320;}
 
-footer{width:100%; overflow: hidden; height: 80px; padding-top: 18px; border-top: 1px solid #e6e6e6; font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif; font-size: 12px; text-align: center; margin-top:20px;}
+footer{width:100%; overflow: hidden; height: 80px; padding-top: 18px; border-top: none; font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif; font-size: 12px; text-align: center; margin-top:20px;}
 footer li{  font-size:12px; display:inline-block; margin:0 5px; }
 footer li.bar{width:1px; height:10px; background:#ccc;}
 footer li a{color:#333;}
