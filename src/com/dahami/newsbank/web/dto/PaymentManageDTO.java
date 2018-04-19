@@ -302,6 +302,38 @@ public class PaymentManageDTO implements Serializable {
 	    }
 		return null;
 	}
+
+	public int getLGD_FEES(int AMOUNT) {
+		int LGD_FEES = 0;
+		double fees;
+		switch (LGD_PAYTYPE) {
+		case "SC0010":
+			fees = 3.2*1.1/100;  //신용카드 수수료 3.2% (VAT 별도)
+			LGD_FEES = (int)(AMOUNT*fees);
+			//PAYTYPE = "신용카드";
+			break;
+		case "SC0030":
+			fees = 1.8*1.1/100; //계좌이체 수수료 100만원 미만 1.8% (VAT 별도)
+			if(AMOUNT>1000000) {
+				fees = 1.3*1.1/100; //계좌이체 수수료 100만원 이상 1.3% (VAT 별도)
+			}
+			LGD_FEES = (int)(AMOUNT*fees);
+			if(LGD_FEES<200) {
+				LGD_FEES = 200;
+			}
+			//PAYTYPE = "계좌이체";
+			break;
+		case "SC0040":
+			fees = 300*1.1;
+			LGD_FEES = (int)fees;
+			//PAYTYPE = "무통장";
+			break;
+
+		}
+		return LGD_FEES;
+	}
+
+
 	
 	
 

@@ -253,8 +253,6 @@
 					<c:if test="${totalDownCount eq '0' and totalCancelCount eq '0'}">
 					<a href="javascript:;" class="btn_input1 precautions_btn">전체 결제 취소</a>
 					</c:if>
-					
-					<%-- <a href="javascript:;" onclick="cancelPay('${paymentManageDTO.LGD_OID}', ${paymentManageDTO.paymentManage_seq }, '${paymentManageDTO.LGD_PAYDATE}', ${totalDownCount})" class="btn_input1 precautions_btn">전체 결제 취소</a> --%>
 				</form>
 				
 				</c:if>

@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
+import com.dahami.newsbank.web.dto.CalculationDTO;
+import com.dahami.newsbank.web.dto.PaymentDetailDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
 
 /**
@@ -185,6 +188,23 @@ public class XpayNoteurl extends NewsbankServletBase {
 
 					PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
 					payment = paymentDAO.updatePaymentManage(payment);
+					
+					
+					if(payment.getPaymentDetailList().size()>0) {
+						CalculationDAO calculationDAO = new CalculationDAO();
+						for (PaymentDetailDTO detailDTO :payment.getPaymentDetailList() ) {
+							CalculationDTO calculationDTO  = new CalculationDTO();
+							calculationDTO.setId(LGD_BUYERID);
+							calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
+							calculationDTO.setUsage(detailDTO.getUsageList_seq());
+							calculationDTO.setType(0);
+							calculationDTO.setPayType(payment.getPayType());
+							calculationDTO.setPrice(detailDTO.getPrice());
+							calculationDTO.setFees(payment.getLGD_FEES(detailDTO.getPrice()));
+							calculationDTO.setStatus(0);
+							calculationDAO.insertCalculation(calculationDTO);
+						}	
+					}
 					
 					
 					resultMSG = "OK";

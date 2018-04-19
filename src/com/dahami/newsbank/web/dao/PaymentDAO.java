@@ -343,7 +343,7 @@ public class PaymentDAO extends DAOBase {
 			session = sf.getSession();
 			session.update("payment.updatePaymentManage", paymentManageDTO);
 			session.commit();
-			paymentManageDTO = session.selectOne("payment.selectPaymentOID", paymentManageDTO);
+			paymentManageDTO = session.selectOne("payment.selectWherePaymentDetail", paymentManageDTO);
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
