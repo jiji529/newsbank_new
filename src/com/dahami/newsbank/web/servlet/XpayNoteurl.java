@@ -225,7 +225,21 @@ public class XpayNoteurl extends NewsbankServletBase {
 					PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
 					payment = paymentDAO.updatePaymentManage(payment);
 					
-					
+					if(payment.getPaymentDetailList().size()>0) {
+						CalculationDAO calculationDAO = new CalculationDAO();
+						for (PaymentDetailDTO detailDTO :payment.getPaymentDetailList() ) {
+							CalculationDTO calculationDTO  = new CalculationDTO();
+							calculationDTO.setId(LGD_BUYERID);
+							calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
+							calculationDTO.setUsage(detailDTO.getUsageList_seq());
+							calculationDTO.setType(0);
+							calculationDTO.setPayType(payment.getPayType());
+							calculationDTO.setPrice(-detailDTO.getPrice());
+							calculationDTO.setFees(0);
+							calculationDTO.setStatus(0);
+							calculationDAO.insertCalculation(calculationDTO);
+						}	
+					}
 					
 					resultMSG = "OK";
 				}
