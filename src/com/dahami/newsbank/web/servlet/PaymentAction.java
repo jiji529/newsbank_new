@@ -113,73 +113,82 @@ public class PaymentAction extends NewsbankServletBase {
 							paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq);
 							paymentDetailDTO = paymentManageDTO.getPaymentDetailItem(paymentDetailDTO);
 							
-							String LGD_CANCELAMOUNT 	= ( paymentDetailDTO.getPrice()>0 )?Integer.toString(paymentDetailDTO.getPrice()):"0"; 
-							//String LGD_REMAINAMOUNT = Integer.toString(paymentManageDTO.getLGD_AMOUNT()-paymentDetailDTO.getPrice());
-							String LGD_REMAINAMOUNT = Integer.toString(paymentManageDTO.getLGD_AMOUNT());
+							if(paymentDetailDTO.getDownCount().equalsIgnoreCase("0")) {
+								String LGD_CANCELAMOUNT 	= ( paymentDetailDTO.getPrice()>0 )?Integer.toString(paymentDetailDTO.getPrice()):"0"; 
+								//String LGD_REMAINAMOUNT = Integer.toString(paymentManageDTO.getLGD_AMOUNT()-paymentDetailDTO.getPrice());
+								String LGD_REMAINAMOUNT = Integer.toString(paymentManageDTO.getLGD_AMOUNT());
+								
+								xpay.Set("LGD_TXNAME", "PartialCancel");
+								xpay.Set("LGD_CANCELAMOUNT", LGD_CANCELAMOUNT);//부분취소 금액
+							    xpay.Set("LGD_REMAINAMOUNT", LGD_REMAINAMOUNT); //남은 금액
+							    
+							    if (xpay.TX()) {
+							        //1)결제 부분취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
+							    	System.out.println("결제 부분취소 요청이 완료되었습니다.  <br>");
+							    	System.out.println( "TX Response_code = " + xpay.m_szResCode + "<br>");
+							    	System.out.println( "TX Response_msg = " + xpay.m_szResMsg + "<p>");
+							        int lGD_AMOUNT = paymentManageDTO.getLGD_AMOUNT() -paymentDetailDTO.getPrice();
+							        paymentManageDTO.setLGD_AMOUNT(lGD_AMOUNT); // 취소 금액 갱신
+									paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
+							        
+							        paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
+									paymentDetailDTO.setStatus("1"); // 결제취소
+									paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소
+									result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+							        
+							    }else {
+							        //2)API 요청 실패 화면처리
+							    	System.out.println("결제 부분취소 요청이 실패하였습니다.  <br>");
+							    	System.out.println( "TX Response_code = " + xpay.m_szResCode + "<br>");
+							    	System.out.println( "TX Response_msg = " + xpay.m_szResMsg + "<p>");
+							    	message = "결제 부분취소 요청이 실패하였습니다. ";
+							    }
+							}else {
+								message = "다운로드 받은 내역이 있을 시, 환불이 불가능합니다.\n (환불가능기간은 결제일로부터 7일 이내입니다.)";
+							}
 							
-							xpay.Set("LGD_TXNAME", "PartialCancel");
-							xpay.Set("LGD_CANCELAMOUNT", LGD_CANCELAMOUNT);//부분취소 금액
-						    xpay.Set("LGD_REMAINAMOUNT", LGD_REMAINAMOUNT); //남은 금액
-						    
-						    if (xpay.TX()) {
-						        //1)결제 부분취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
-						    	System.out.println("결제 부분취소 요청이 완료되었습니다.  <br>");
-						    	System.out.println( "TX Response_code = " + xpay.m_szResCode + "<br>");
-						    	System.out.println( "TX Response_msg = " + xpay.m_szResMsg + "<p>");
-						        
-						        /*for (int i = 0; i < xpay.ResponseNameCount(); i++)
-						        {
-						        	System.out.println(xpay.ResponseName(i) + " = ");
-						            for (int j = 0; j < xpay.ResponseCount(); j++)
-						            {
-						            	System.out.println("\t" + xpay.Response(xpay.ResponseName(i), j) + "<br>");
-						            }
-						        }*/
-						        System.out.println("<p>");
-						        int lGD_AMOUNT = paymentManageDTO.getLGD_AMOUNT() -paymentDetailDTO.getPrice();
-						        paymentManageDTO.setLGD_AMOUNT(lGD_AMOUNT); // 취소 금액 갱신
-								paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
-						        
-						        paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
-								paymentDetailDTO.setStatus("1"); // 결제취소
-								paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소
-								result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
-						        
-						    }else {
-						        //2)API 요청 실패 화면처리
-						    	System.out.println("결제 부분취소 요청이 실패하였습니다.  <br>");
-						    	System.out.println( "TX Response_code = " + xpay.m_szResCode + "<br>");
-						    	System.out.println( "TX Response_msg = " + xpay.m_szResMsg + "<p>");
-						    	message = "결제 부분취소 요청이 실패하였습니다. ";
-						    }
+							
 						    
 
 						}else {
-							xpay.Set("LGD_TXNAME", "Cancel");
-							if (xpay.TX()) {
-								// 1)결제취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
-
-								paymentManageDTO.setLGD_RESPCODE("0000"); // 완료코드
-								paymentManageDTO.setLGD_PAYSTATUS(5); // 결제취소
-								paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
-
-								paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
-								paymentDetailDTO.setStatus("1"); // 결제취소
-								/*
-								 * if (paymentDetail_seq > 0) { // 개별 결제 취소건
-								 * paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소 }
-								 */
-								result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
-								
-								System.out.println(result);
-
-							} else {
-								// 2)API 요청 실패 화면처리
-								System.out.println("결제 취소요청이 실패하였습니다.  <br>");
-								System.out.println("TX Response_code = " + xpay.m_szResCode + "<br>");
-								System.out.println("TX Response_msg = " + xpay.m_szResMsg + "<p>");
-								message = "결제 취소요청이 실패하였습니다. ";
+							boolean isNotDown = true;
+							for (PaymentDetailDTO detail :paymentManageDTO.getPaymentDetailList()) {
+								if(!detail.getDownCount().equalsIgnoreCase("0")) {
+									isNotDown = false;
+								}
 							}
+							
+							if(isNotDown) {
+
+								xpay.Set("LGD_TXNAME", "Cancel");
+								if (xpay.TX()) {
+									// 1)결제취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
+
+									paymentManageDTO.setLGD_RESPCODE("0000"); // 완료코드
+									paymentManageDTO.setLGD_PAYSTATUS(5); // 결제취소
+									paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
+
+									paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
+									paymentDetailDTO.setStatus("1"); // 결제취소
+									/*
+									 * if (paymentDetail_seq > 0) { // 개별 결제 취소건
+									 * paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소 }
+									 */
+									result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
+									
+									System.out.println(result);
+
+								} else {
+									// 2)API 요청 실패 화면처리
+									System.out.println("결제 취소요청이 실패하였습니다.  <br>");
+									System.out.println("TX Response_code = " + xpay.m_szResCode + "<br>");
+									System.out.println("TX Response_msg = " + xpay.m_szResMsg + "<p>");
+									message = "결제 취소요청이 실패하였습니다. ";
+								}
+							}else {
+								message = "다운로드 받은 내역이 있을 시, 환불이 불가능합니다.\n (환불가능기간은 결제일로부터 7일 이내입니다.)";
+							}
+							
 						}
 						
 						

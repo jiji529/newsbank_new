@@ -148,8 +148,10 @@
 			</thead>
 			<tbody>
 				<c:set var="totalDownCount" value="0"/>
+				<c:set var="totalCancelCount" value="0"/>
 				<c:forEach items="${paymentManageDTO.paymentDetailList}" var="paymentDetailList">
 					<c:set var="totalDownCount" value="${totalDownCount + paymentDetailList.downCount}"></c:set>
+					<c:set var="totalCancelCount" value="${totalCancelCount + paymentDetailList.status}"></c:set>
 					<tr>
 						<c:choose>
 							<c:when test="${paymentDetailList.photoDTO.ownerType eq 'M'}">
@@ -248,7 +250,10 @@
 					<input type="hidden" name="LGD_OID" value="${paymentManageDTO.LGD_OID}" />
 					<input type="hidden" name="LGD_PAYDATE" value="${paymentManageDTO.LGD_PAYDATE}" />
 					<input type="hidden" name="totalDownCount" value="${totalDownCount}" />
+					<c:if test="${totalDownCount eq '0' and totalCancelCount eq '0'}">
 					<a href="javascript:;" class="btn_input1 precautions_btn">전체 결제 취소</a>
+					</c:if>
+					
 					<%-- <a href="javascript:;" onclick="cancelPay('${paymentManageDTO.LGD_OID}', ${paymentManageDTO.paymentManage_seq }, '${paymentManageDTO.LGD_PAYDATE}', ${totalDownCount})" class="btn_input1 precautions_btn">전체 결제 취소</a> --%>
 				</form>
 				
