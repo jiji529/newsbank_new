@@ -245,7 +245,7 @@ public class CalculationAction extends NewsbankServletBase {
 						obj.put("compName", calc.getCompName());
 						obj.put("copyright", calc.getCopyright());
 						obj.put("member_seq", calc.getMember_seq());
-						obj.put("payType", calc.getPayType());
+						obj.put("payType", calc.getPayType_Str());
 						obj.put("uciCode", calc.getUciCode());
 						obj.put("usage", calc.getUsage());
 						obj.put("type", calc.getType());

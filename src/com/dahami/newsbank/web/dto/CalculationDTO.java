@@ -97,7 +97,9 @@ public class CalculationDTO {
 		this.compName = compName;
 	}
 	public String getPayType() {
-		//String PAYTYPE="";
+		return payType;
+	}
+	public String getPayType_Str() {
 		String PAYTYPE = payType;
 		switch (payType) {
 		case "SC0010":
@@ -136,6 +138,7 @@ public class CalculationDTO {
 		}
 		return PAYTYPE;
 	}
+	
 	public void setPayType(String payType) {
 		this.payType = payType;
 	}

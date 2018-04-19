@@ -135,41 +135,6 @@ public class PaymentManageDTO implements Serializable {
 	}
 
 	public String getLGD_PAYTYPE() {
-		/*switch (LGD_PAYTYPE) {
-		case "SC0010":
-			LGD_PAYTYPE = "신용카드";
-			break;
-		case "SC0030":
-			LGD_PAYTYPE = "계좌이체";
-			break;
-		case "SC0040":
-			LGD_PAYTYPE = "무통장";
-			break;
-		case "SC0060":
-			LGD_PAYTYPE = "휴대폰";
-			break;
-		case "SC0070":
-			LGD_PAYTYPE = "유선전화결제";
-			break;
-		case "SC0090":
-			LGD_PAYTYPE = "OK캐쉬백";
-			break;
-		case "SC0111":
-			LGD_PAYTYPE = "문화상품권";
-			break;
-		case "SC0112":
-			LGD_PAYTYPE = "게임문화상품권";
-			break;
-		case "SC0113":
-			LGD_PAYTYPE = "도서문화상품권";
-			break;
-		case "SC0220":
-			LGD_PAYTYPE = "모바일T머니";
-			break;
-		case "000000":
-			LGD_PAYTYPE = "후불";
-			break;
-		}*/
 		return LGD_PAYTYPE;
 	}
 	
