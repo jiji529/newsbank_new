@@ -466,7 +466,6 @@ public class PaymentDAO extends DAOBase {
 	 * @return
 	 * @returnType :  List<Map<String, Object>>
 	 */
-	//public List<Map<String, Object>> onlinePayList(Map<String, Object> param) {
 	public List<PaymentManageDTO> onlinePayList(Map<String, Object> param) {
 		SqlSession session = null;
 		try {

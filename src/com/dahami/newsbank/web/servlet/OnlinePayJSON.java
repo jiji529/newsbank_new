@@ -55,8 +55,8 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		
 		boolean success = false;
 		String message = "";
-		String start_date = request.getParameter("start_date") + "000000";
-		String end_date = request.getParameter("end_date") + "240000";
+		String start_date = request.getParameter("start_date");
+		String end_date = request.getParameter("end_date");
 		String keywordType = request.getParameter("keywordType");
 		String keyword = request.getParameter("keyword");
 		String paytype = request.getParameter("paytype"); // 결제방법
@@ -77,11 +77,11 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			
 			if (start_date != null && start_date.length() > 0) {
 				start_date = start_date.replaceAll("-", "");
-				params.put("start_date", start_date);
+				params.put("start_date", start_date + "000000");
 			}
 			if (end_date != null && end_date.length() > 0) {
 				end_date = end_date.replaceAll("-", "");
-				params.put("end_date", end_date);
+				params.put("end_date", end_date + "240000");
 			}
 			if(keywordType != null && keywordType.length() > 0){
 				params.put("keywordType", keywordType);
@@ -127,12 +127,12 @@ public class OnlinePayJSON extends NewsbankServletBase {
 				
 				List<String> headList = Arrays.asList("주문일자", "아이디", "이름", "주문번호", "결제방법", "결제상황", "결제금액"); //  테이블 상단 제목
 				List<Integer> columnSize = Arrays.asList(25, 10, 10, 25, 10, 10, 15); //  컬럼별 길이정보
-				List<String> columnList = Arrays.asList("LGD_PAYDATE", "LGD_BUYERID", "LGD_BUYER", "LGD_BUYERID", "LGD_PAYTYPE", "LGD_PAYSTATUS", "LGD_AMOUNT"); // 컬럼명
+				List<String> columnList = Arrays.asList("LGD_PAYDATE", "LGD_BUYERID", "LGD_BUYER", "LGD_OID", "LGD_PAYTYPE", "LGD_PAYSTATUS_STR", "LGD_AMOUNT"); // 컬럼명
 				
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
 				String orgFileName = "온라인결제관리_" + dateforamt.format(today); // 파일명
-				//ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, jsonList, orgFileName);
+				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, jsonList, orgFileName);
 			
 			}else {
 				if (searchList != null) {

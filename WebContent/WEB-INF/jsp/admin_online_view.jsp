@@ -124,7 +124,7 @@
 							</tr>
 							<tr>
 								<th>결제방법</th>
-								<td>${payInfo.getPayType() }</td>
+								<td>${payInfo.LGD_PAYTYPE_STR }</td>
 								<th>결제 상태</th>
 								<td>${payInfo.LGD_PAYSTATUS_STR }</td>
 							</tr>

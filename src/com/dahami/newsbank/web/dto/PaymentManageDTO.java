@@ -49,6 +49,7 @@ public class PaymentManageDTO implements Serializable {
 	private String LGD_PAYSTATUS_STR; // 상태값 한글 변환
 	private String LGD_TID; // 거래 번호
 	private String LGD_PAYTYPE; // 결제수단 코드
+	private String LGD_PAYTYPE_STR; // 결제수단 코드 한글변환
 	private String LGD_PAYDATE; // 결제 일시
 	private String LGD_PRODUCTINFO; // 구매내역
 	private String LGD_FINANCENAME; //은행
@@ -138,49 +139,55 @@ public class PaymentManageDTO implements Serializable {
 	public String getLGD_PAYTYPE() {
 		return LGD_PAYTYPE;
 	}
-	
-	public String getPayType() {
-		String PAYTYPE="";
-		switch (LGD_PAYTYPE) {
+
+	public String getLGD_PAYTYPE_STR() {
+		return LGD_PAYTYPE_STR;
+	}
+
+	public void setLGD_PAYTYPE_STR(String lGD_PAYTYPE) {
+		String lGD_PAYTYPE_STR = "";
+		
+		switch (lGD_PAYTYPE) {
 		case "SC0010":
-			PAYTYPE = "신용카드";
+			lGD_PAYTYPE_STR = "신용카드";
 			break;
 		case "SC0030":
-			PAYTYPE = "계좌이체";
+			lGD_PAYTYPE_STR = "계좌이체";
 			break;
 		case "SC0040":
-			PAYTYPE = "무통장";
+			lGD_PAYTYPE_STR = "무통장";
 			break;
 		case "SC0060":
-			PAYTYPE = "휴대폰";
+			lGD_PAYTYPE_STR = "휴대폰";
 			break;
 		case "SC0070":
-			PAYTYPE = "유선전화결제";
+			lGD_PAYTYPE_STR = "유선전화결제";
 			break;
 		case "SC0090":
-			PAYTYPE = "OK캐쉬백";
+			lGD_PAYTYPE_STR = "OK캐쉬백";
 			break;
 		case "SC0111":
-			PAYTYPE = "문화상품권";
+			lGD_PAYTYPE_STR = "문화상품권";
 			break;
 		case "SC0112":
-			PAYTYPE = "게임문화상품권";
+			lGD_PAYTYPE_STR = "게임문화상품권";
 			break;
 		case "SC0113":
-			PAYTYPE = "도서문화상품권";
+			lGD_PAYTYPE_STR = "도서문화상품권";
 			break;
 		case "SC0220":
-			PAYTYPE = "모바일T머니";
+			lGD_PAYTYPE_STR = "모바일T머니";
 			break;
 		case "000000":
-			PAYTYPE = "후불";
+			lGD_PAYTYPE_STR = "후불";
 			break;
 		}
-		return PAYTYPE;
+		LGD_PAYTYPE_STR = lGD_PAYTYPE_STR;
 	}
 
 	public void setLGD_PAYTYPE(String lGD_PAYTYPE) {
 		LGD_PAYTYPE = lGD_PAYTYPE;
+		setLGD_PAYTYPE_STR(lGD_PAYTYPE);
 	}
 
 	public String getLGD_PAYDATE() {

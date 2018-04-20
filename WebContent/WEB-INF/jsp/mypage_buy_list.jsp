@@ -93,7 +93,7 @@
 							<td>
 								<a href="javascript:;">${paymentManage.LGD_OID }</a>
 							</td>
-							<td>${paymentManage.getPayType()}</td>
+							<td>${paymentManage.LGD_PAYTYPE_STR}</td>
 							<td>${paymentManage.getLGD_AMOUNT_Str()}</td>
 							<c:choose>
 								<c:when test="${paymentManage.LGD_PAYSTATUS eq '0'}">
