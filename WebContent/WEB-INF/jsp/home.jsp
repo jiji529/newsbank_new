@@ -37,7 +37,16 @@
 <script src="js/unitegallery.min.js"></script>
 <script src="js/ug-theme-tiles.js"></script>
 <link rel="stylesheet" href="css/unite-gallery.css" />
-
+<%
+String errMsg = (String)request.getAttribute("ErrorMSG");
+if(errMsg != null && errMsg.length() > 0) {
+%>
+<script>
+	alert("<%=errMsg%>");
+</script>
+<%
+}
+%>
 <script>
 	$(document).ready(function() {
 		/* Start rowGrid.js */

@@ -3,6 +3,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%
+String errMsg = (String)request.getAttribute("ErrorMSG");
+if(errMsg != null && errMsg.length() > 0) {
+%>
+<script>
+	alert("<%=errMsg%>");
+</script>
+<%
+}
+%>
+
 <script type="text/javascript">
 	$(document).on("keypress", "#keyword", function(e) {
 		if (e.keyCode == 13) { // 엔터

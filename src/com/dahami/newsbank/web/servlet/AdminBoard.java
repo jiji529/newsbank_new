@@ -1,7 +1,6 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,14 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JOptionPane;
 
-import com.dahami.newsbank.web.dao.BoardDAO;
-import com.dahami.newsbank.web.dao.MemberDAO;
-import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.BoardService;
-import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 /**
  * Servlet implementation class AdminBoard
@@ -53,21 +47,11 @@ public class AdminBoard extends NewsbankServletBase {
 				dispatcher.forward(request, response);
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "해당페이지는 관리자만 접근할 수 있습니다.\n 메인페이지로 이동합니다.");
-				response.sendRedirect("/home");
+				processNotAdminAccess(request, response);
+				return;
 			}			
-			
-			
 		} else {
-			response.sendRedirect("/login");
+			processNotLoginAccess(request, response);
 		}
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

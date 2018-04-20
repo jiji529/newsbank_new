@@ -36,6 +36,16 @@
 <link rel="stylesheet" href="css/join.css" />
 <script src="js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
+<%
+String errMsg = (String)request.getAttribute("ErrorMSG");
+if(errMsg != null && errMsg.length() > 0) {
+%>
+<script>
+	alert("<%=errMsg%>");
+</script>
+<%
+}
+%>
 </head>
 <body>
 	<div class="wrap">

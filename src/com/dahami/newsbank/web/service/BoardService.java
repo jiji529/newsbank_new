@@ -6,11 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JOptionPane;
 
 import com.dahami.newsbank.web.dao.BoardDAO;
 import com.dahami.newsbank.web.dto.BoardDTO;
-import com.dahami.newsbank.web.dto.MemberDTO;
 
 public class BoardService extends ServiceBase {
 

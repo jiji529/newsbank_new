@@ -3,6 +3,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<%
+String errMsg = (String)request.getAttribute("ErrorMSG");
+if(errMsg != null && errMsg.length() > 0) {
+%>
+<script>
+	alert("<%=errMsg%>");
+</script>
+<%
+}
+%>
+
 <nav class="gnb_dark">
 	<div class="gnb"><a href="/member.manage" class="logo">관리자페이지</a><a href="/home" target="_blank" class="link">뉴스뱅크 이동</a>
 		<ul class="gnb_right">

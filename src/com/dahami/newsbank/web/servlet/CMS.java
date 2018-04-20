@@ -7,7 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JOptionPane;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.CMSService;
@@ -44,7 +43,7 @@ public class CMS extends NewsbankServletBase {
 
 		// 로그인 체크
 		if(memberInfo == null) {
-			response.sendRedirect("/login");
+			processNotLoginAccess(request, response);
 			return;
 		}
 		
@@ -56,8 +55,7 @@ public class CMS extends NewsbankServletBase {
 		// 관리자 CMS
 		if(cmd.is1("manage")) {
 			if(!memberInfo.getType().equals(MemberDTO.TYPE_ADMIN)) {
-				JOptionPane.showMessageDialog(null, "해당페이지는 관리자만 접근할 수 있습니다.\n 메인 페이지로 이동합니다.");
-				response.sendRedirect("/home");
+				processNotAdminAccess(request, response);
 				return;
 			}
 			isAdmin = true;
@@ -79,7 +77,6 @@ public class CMS extends NewsbankServletBase {
 				mypageAuth = (boolean) session.getAttribute("mypageAuth");
 			}
 			if (!mypageAuth) {
-				JOptionPane.showMessageDialog(null, "해당페이지는 로그인 하여야 접근할 수 있습니다.\n메인 페이지로 이동합니다.");
 				response.sendRedirect("/auth.mypage");
 				return;
 			}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -70,5 +71,17 @@ public abstract class NewsbankServletBase extends HttpServlet {
 		}catch(Exception e) {
 			return "";
 		}
+	}
+	
+	protected void processNotAdminAccess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("ErrorMSG", "해당페이지는 관리자만 접근할 수 있습니다.\\n 메인페이지로 이동합니다.");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/home");
+		dispatcher.forward(request, response);
+	}
+	
+	protected void processNotLoginAccess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("ErrorMSG", "해당페이지는 로그인 하여야 접근할 수 있습니다.\\n메인 페이지로 이동합니다.");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/login");
+		dispatcher.forward(request, response);
 	}
 }
