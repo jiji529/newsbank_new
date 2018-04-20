@@ -539,26 +539,11 @@
 		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
 	</select>
 	
-	<!-- 온라인 결제관리(관리자)  -->
-	<resultMap id="onlineMap" type="java.util.HashMap">
-	    <result javaType="java.lang.Integer" column="paymentManage_seq" property="paymentManage_seq"></result>
-	    <result javaType="java.lang.String" column="member_seq" property="member_seq"></result>
-	    <result javaType="java.lang.String" column="LGD_BUYER" property="LGD_BUYER"></result>
-	    <result javaType="java.lang.String" column="LGD_BUYERID" property="LGD_BUYERID"></result>
-	    <result javaType="java.lang.String" column="LGD_RESPMSG" property="LGD_RESPMSG"></result>
-	    <result javaType="java.lang.String" column="LGD_OID" property="LGD_OID"></result>
-	    <result javaType="java.lang.String" column="LGD_PAYSTATUS" property="LGD_PAYSTATUS"></result>
-	    <result javaType="java.lang.Integer" column="LGD_AMOUNT" property="LGD_AMOUNT"></result>
-	    <result javaType="java.lang.String" column="LGD_PAYTYPE" property="LGD_PAYTYPE"></result>
-	    <result javaType="java.lang.String" column="LGD_PAYDATE" property="LGD_PAYDATE"></result>
-	    <result javaType="java.lang.String" column="regDate" property="regDate"></result>
-	    <result javaType="java.lang.String" column="uciCode" property="uciCode"></result>
-	</resultMap>
-	
 	<!-- 온라인 결제 (목록) -->
 	<select id="onlinePayResult" parameterType="java.util.HashMap" 
 	    resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
-		SELECT PM.`seq` AS `paymentManage_seq`,
+	    
+	    SELECT DISTINCT PM.`seq` AS `paymentManage_seq`,
 			PM.`member_seq`, PM.`LGD_BUYER`,
 			PM.`LGD_BUYERID`, 
 			PM.`LGD_RESPMSG`,
@@ -566,181 +551,123 @@
 			PM.`LGD_PAYSTATUS`,
 			PM.`LGD_AMOUNT`, 		
 			PM.`LGD_PAYTYPE`,
-			PM.`LGD_PAYDATE`,	
-			PM.`regDate`
-		FROM
-		`paymentManage` PM
-		INNER JOIN member M ON PM.member_seq = M.seq
-		<where>	
-	    	<if test="keyword !=null and keyword != ''">
-				<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
-			    (
-				    M.id LIKE CONCAT('%', #{keyword}, '%')
-				    OR M.name LIKE CONCAT('%', #{keyword}, '%')
-				    OR M.compName LIKE CONCAT('%', #{keyword}, '%') 
-			    )
-				</if>
-				<!-- <if test="keywordType == 'photo'"> UCI코드, 언론사 사진번호
-				(
-					P.uciCode LIKE CONCAT('%', #{keyword}, '%')
-					OR (SELECT compCode FROM photo WHERE uciCode = PD.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
-				)
-				</if> -->
-			</if> 	
-			
-			<if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
+			PM.`LGD_PAYDATE`  
+		FROM paymentDetail PD
+		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
+		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
+		
+		<where>
+		    PM.LGD_PAYSTATUS = 1 <!-- 결제 승인건만 조회 -->
+		    <if test="keyword !=null and keyword != ''">
+		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+		            AND (
+	            	 	PM.LGD_BUYERID = #{keyword} OR
+						PM.LGD_BUYER = #{keyword}
+		            )
+	            </if>
+	            
+		        <if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+		            AND (
+		            	P.compCode = #{keyword} OR
+		            	PD.photo_uciCode = #{keyword}		            	
+		            )
+	            </if>
+	        </if>
+	        
+		    <if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
 				AND PM.LGD_PAYTYPE = #{LGD_PAYTYPE}
 			</if>
 			
 			<if test="LGD_PAYSTATUS !=null and LGD_PAYSTATUS != 'all'">
 				AND PM.LGD_PAYSTATUS = #{LGD_PAYSTATUS}
 			</if>
-			
-			<if test="start_date != null and end_date != null">
+	        
+	        <if test="start_date != null and end_date != null">
 			    AND PM.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}
 			</if>
-			
 		</where>
-		ORDER BY PM.`regDate` DESC
+		ORDER BY paymentManage_seq DESC
 		LIMIT #{startPage}, #{pageVol}
-	</select>
+    </select>
 	
-	<!-- <select id="onlinePayResult" parameterType="java.util.HashMap" 
-	    resultMap="onlineMap">
-		SELECT PM.`seq` AS `paymentManage_seq`,
-			PM.`member_seq`, PM.`LGD_BUYER`,
-			PM.`LGD_BUYERID`, 
-			PM.`LGD_RESPMSG`,
-			PM.`LGD_OID`,
-			PM.`LGD_PAYSTATUS`,
-			PM.`LGD_AMOUNT`, 		
-			PM.`LGD_PAYTYPE`,
-			PM.`LGD_PAYDATE`,	
-			PM.`regDate`,
-			P.`uciCode`
-		FROM
-		`paymentManage` PM
-		INNER JOIN (select DISTINCT paymentManage_seq, photo_uciCode from paymentDetail) PD ON PM.seq = PD.paymentManage_seq
-		INNER JOIN member M ON PM.member_seq = M.seq
-		INNER JOIN photo P ON PD.photo_uciCode = P.uciCode
-		<where>	
-	    	<if test="keyword !=null and keyword != ''">
-				<if test="keywordType == 'member'"> 회사/기관명, 아이디, 이름
-			    (
-				    M.id LIKE CONCAT('%', #{keyword}, '%')
-				    OR M.name LIKE CONCAT('%', #{keyword}, '%')
-				    OR M.compName LIKE CONCAT('%', #{keyword}, '%') 
-			    )
-				</if>
-				<if test="keywordType == 'photo'"> UCI코드, 언론사 사진번호
-				(
-					P.uciCode LIKE CONCAT('%', #{keyword}, '%')
-					OR (SELECT compCode FROM photo WHERE uciCode = PD.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
-				)
-				</if>
-			</if> 	
-			
-			<if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
-				AND PM.LGD_PAYTYPE = #{LGD_PAYTYPE}
-			</if>
-			
-			<if test="LGD_PAYSTATUS !=null and LGD_PAYSTATUS != 'all'">
-				AND PM.LGD_PAYSTATUS = #{LGD_PAYSTATUS}
-			</if>
-			
-			<if test="start_date != null and end_date != null">
-			    AND PM.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}
-			</if>
-			
-		</where>
-		ORDER BY PM.`regDate` DESC
-		LIMIT #{startPage}, #{pageVol}
-	</select> -->
-	
-	<!-- 온라인 결제 (총 갯수) -->
+	<!-- 온라인 결제 (총 갯수) -->	
 	<select id="onlinePayCount" parameterType="java.util.HashMap" 
 	    resultType="integer">
-		SELECT COUNT(PM.`seq`) as cnt
-		FROM
-		`paymentManage` PM
-		INNER JOIN (select DISTINCT paymentManage_seq, photo_uciCode from paymentDetail) PD ON PM.seq = PD.paymentManage_seq
-		INNER JOIN member M ON PM.member_seq = M.seq
-		INNER JOIN photo P ON PD.photo_uciCode = P.uciCode
-		<where>	
-		    
+		SELECT COUNT(DISTINCT(PM.`seq`)) as cnt
+		FROM paymentDetail PD
+		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
+		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
+		<where>
+	        PM.LGD_PAYSTATUS = 1 <!-- 결제 승인건만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
-		    	<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
-			    M.id LIKE CONCAT('%', #{keyword}, '%')
-			    OR M.name LIKE CONCAT('%', #{keyword}, '%')
-			    OR M.compName LIKE CONCAT('%', #{keyword}, '%')
-				</if>
-				<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
-				P.uciCode LIKE CONCAT('%', #{keyword}, '%')
-				OR (SELECT compCode FROM photo WHERE uciCode = PD.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
-				</if>
-				<bind name="keyword" value="'%' + keyword + '%'" />
-				AND (PM.`LGD_BUYERID` LIKE #{keyword} 
-					OR PM.`LGD_BUYER` LIKE #{keyword} 
-					OR PM.`LGD_OID` LIKE #{keyword})
-			</if> 	
-			
-			<if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
+		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+		            AND (
+	            	 	PM.LGD_BUYERID = #{keyword} OR
+						PM.LGD_BUYER = #{keyword}
+		            )
+	            </if>
+	            
+		        <if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+		            AND (
+		            	P.compCode = #{keyword} OR
+		            	PD.photo_uciCode = #{keyword}		            	
+		            )
+	            </if>
+	        </if>
+	        
+		    <if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
 				AND PM.LGD_PAYTYPE = #{LGD_PAYTYPE}
 			</if>
 			
 			<if test="LGD_PAYSTATUS !=null and LGD_PAYSTATUS != 'all'">
 				AND PM.LGD_PAYSTATUS = #{LGD_PAYSTATUS}
 			</if>
-			
-			<if test="start_date != null and end_date != null">
+	        
+	        <if test="start_date != null and end_date != null">
 			    AND PM.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}
 			</if>
-			
 		</where>
-		ORDER BY PM.`regDate` DESC
+		ORDER BY paymentManage_seq DESC
 	</select>
 	
 	<!-- 온라인 결제 (총 합계 금액) -->
 	<select id="onlinePayPrice" parameterType="java.util.HashMap" 
 	    resultType="integer">
-		SELECT SUM(PM.`LGD_AMOUNT`) as sum			
-		FROM
-		`paymentManage` PM
-		INNER JOIN (select DISTINCT paymentManage_seq, photo_uciCode from paymentDetail) PD ON PM.seq = PD.paymentManage_seq
-		INNER JOIN member M ON PM.member_seq = M.seq
-		INNER JOIN photo P ON PD.photo_uciCode = P.uciCode
-		<where>	
-		    
+		SELECT COALESCE(SUM(DISTINCT(PM.`LGD_AMOUNT`)), 0) as sum			
+		FROM paymentDetail PD
+		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
+		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
+		<where>
+	        PM.LGD_PAYSTATUS = 1 <!-- 결제 승인건만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
-				<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
-			    M.id LIKE CONCAT('%', #{keyword}, '%')
-			    OR M.name LIKE CONCAT('%', #{keyword}, '%')
-			    OR M.compName LIKE CONCAT('%', #{keyword}, '%')
-				</if>
-				<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
-				P.uciCode LIKE CONCAT('%', #{keyword}, '%')
-				OR (SELECT compCode FROM photo WHERE uciCode = PD.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
-				</if>
-				<bind name="keyword" value="'%' + keyword + '%'" />
-				AND (PM.`LGD_BUYERID` LIKE #{keyword} 
-					OR PM.`LGD_BUYER` LIKE #{keyword} 
-					OR PM.`LGD_OID` LIKE #{keyword})
-			</if> 	
-			
-			<if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
+		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+		            AND (
+	            	 	PM.LGD_BUYERID = #{keyword} OR
+						PM.LGD_BUYER = #{keyword}
+		            )
+	            </if>
+	            
+		        <if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+		            AND (
+		            	P.compCode = #{keyword} OR
+		            	PD.photo_uciCode = #{keyword}		            	
+		            )
+	            </if>
+	        </if>
+	        
+		    <if test="LGD_PAYTYPE !=null and LGD_PAYTYPE != 'all'">
 				AND PM.LGD_PAYTYPE = #{LGD_PAYTYPE}
 			</if>
 			
 			<if test="LGD_PAYSTATUS !=null and LGD_PAYSTATUS != 'all'">
 				AND PM.LGD_PAYSTATUS = #{LGD_PAYSTATUS}
 			</if>
-			
-			<if test="start_date != null and end_date != null">
+	        
+	        <if test="start_date != null and end_date != null">
 			    AND PM.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}
 			</if>
-			
 		</where>
-		ORDER BY PM.`regDate` DESC
+		ORDER BY paymentManage_seq DESC
 	</select>
 	
 	

@@ -274,7 +274,7 @@
 								<td>
 								<select name="keywordType" class="inp_txt" style="width:200px;">
 									<option value="member" selected="selected">회사/기관명, 아이디, 이름</option>
-									<!-- <option value="photo">UCI코드, 언론사 사진번호</option> -->
+									<option value="photo">UCI코드, 언론사 사진번호</option>
 								</select>	
 								<input type="text" class="inp_txt" size="80" id="keyword" placeholder="회사/기관명, 아이디, 이름" />
 								
