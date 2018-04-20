@@ -38,8 +38,10 @@
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
 <script src="js/filter.js"></script>
+<script src="js/admin.js"></script>
 <script type="text/javascript">
-	function cancel_payment(refund, down_count, paymentManage_seq, LGD_OID) {	// 결제 취소
+	
+	function cancel_payment(refund, down_count, paymentManage_seq, LGD_OID, member_seq) {	// 결제 취소
 		console.log(paymentManage_seq);
 	
 		if((refund == "true") && (down_count == 0)){
@@ -48,13 +50,16 @@
 				var param = {
 					"paymentManage_seq" : paymentManage_seq,
 					"LGD_OID" : LGD_OID,
-					"cmd" : "C"
+					"cmd" : "C",
+					"member_seq" : member_seq
 				};
+				
+				console.log(param);
 				
 				$.ajax({
 					type: "POST",
 					dataType: "json",
-					url: "/payment.api",
+					url: "/payment.api.manage",
 					data: param,
 					success: function(data) {
 						console.log(data);
@@ -119,9 +124,9 @@
 							</tr>
 							<tr>
 								<th>결제방법</th>
-								<td>${payInfo.LGD_PAYTYPE }</td>
+								<td>${payInfo.getPayType() }</td>
 								<th>결제 상태</th>
-								<td>${payInfo.LGD_RESPMSG }</td>
+								<td>${payInfo.LGD_PAYSTATUS_STR }</td>
 							</tr>
 							<tr>
 								<th>거래번호</th>
@@ -203,7 +208,7 @@
 						</tfoot>
 					</table>
 				</div>
-				<div class="btn_area"><a href="javascript:history.go(-1)" class="btn_input1">목록</a><a href="javascrip:void(0)" onclick="cancel_payment('${refund }', '${totalDownCount }', ${payInfo.paymentManage_seq }, '${payInfo.LGD_OID }')" class="btn_input3 fr">결제 취소</a></div>
+				<div class="btn_area"><a href="javascript:history.go(-1)" class="btn_input1">목록</a><a href="javascrip:void(0)" onclick="cancel_payment('${refund }', '${totalDownCount }', ${payInfo.paymentManage_seq }, '${payInfo.LGD_OID }', ${payInfo.member_seq })" class="btn_input3 fr">결제 취소</a></div>
 			</div>
 		</section>
 	</div>

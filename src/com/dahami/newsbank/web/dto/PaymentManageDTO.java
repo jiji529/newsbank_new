@@ -46,6 +46,7 @@ public class PaymentManageDTO implements Serializable {
 	private String LGD_OID; // 상점주문번호
 	private int LGD_AMOUNT; // 결제금액
 	private String LGD_PAYSTATUS;// 상태값 /0:결제실패  1:결제성공  2:결제대기중  3:무통장입금 대기중, 4: 후불결제, 5: 결제취소
+	private String LGD_PAYSTATUS_STR; // 상태값 한글 변환
 	private String LGD_TID; // 거래 번호
 	private String LGD_PAYTYPE; // 결제수단 코드
 	private String LGD_PAYDATE; // 결제 일시
@@ -237,6 +238,46 @@ public class PaymentManageDTO implements Serializable {
 	public void setPaymentManage_seq(int paymentManage_seq) {
 		this.paymentManage_seq = paymentManage_seq;
 	}
+	
+	public void setLGD_PAYSTATUS(int lGD_PAYSTATUS) {
+		LGD_PAYSTATUS = Integer.toString(lGD_PAYSTATUS);
+		setLGD_PAYSTATUS_STR(LGD_PAYSTATUS);
+	}
+	
+	public String getLGD_PAYSTATUS_STR() {
+		return LGD_PAYSTATUS_STR;
+	}
+
+	public void setLGD_PAYSTATUS_STR(String lGD_PAYSTATUS) {
+		String lGD_PAYSTATUS_STR = "";
+		switch (lGD_PAYSTATUS) {
+				
+			case "0":
+				lGD_PAYSTATUS_STR = "결제실패";
+				break;
+				
+			case "1":
+				lGD_PAYSTATUS_STR = "결제승인";
+				break;
+				
+			case "2":
+				lGD_PAYSTATUS_STR = "결제대기";
+				break;
+				
+			case "3":
+				lGD_PAYSTATUS_STR = "미입금";
+				break;
+				
+			case "4":
+				lGD_PAYSTATUS_STR = "후불결제";
+				break;
+				
+			case "5":
+				lGD_PAYSTATUS_STR = "결제취소";
+				break;
+		}
+		LGD_PAYSTATUS_STR = lGD_PAYSTATUS_STR;
+	}
 
 	public String getLGD_PAYSTATUS() {
 		return LGD_PAYSTATUS;
@@ -251,10 +292,6 @@ public class PaymentManageDTO implements Serializable {
 		this.memberDTO = memberDTO;
 	}
 
-	public void setLGD_PAYSTATUS(int lGD_PAYSTATUS) {
-		
-		LGD_PAYSTATUS = Integer.toString(lGD_PAYSTATUS);
-	}
 	public int getDetailSize() {
 		return paymentDetailList.size();
 	}
@@ -299,7 +336,30 @@ public class PaymentManageDTO implements Serializable {
 	}
 
 
-	
+	/**
+	 * @methodName  : convertToMap
+	 * @author      : LEE, GWAGNHO
+	 * @date        : 2018. 04. 20. 오전 09:28:03
+	 * @methodCommet: 
+	 * @return
+	 * @throws Exception 
+	 * @returnType  : Map<String,Object>
+	 */
+	public Map<String, Object> convertToMap() throws Exception {
+		Field[] fields = this.getClass().getDeclaredFields();
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		for(Field cur : fields) {
+			int modifier = cur.getModifiers();
+			if((modifier & Modifier.STATIC) == Modifier.STATIC) {
+				continue;
+			}	
+			
+			result.put(cur.getName(), cur.get(this));
+			
+		}
+		return result;
+	}
 	
 
 }

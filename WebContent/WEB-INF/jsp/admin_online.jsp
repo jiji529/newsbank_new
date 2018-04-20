@@ -107,7 +107,7 @@
 			, "paytype":paytype
 			, "paystatus":paystatus
 		};
-		console.log(searchParam);
+		//console.log(searchParam);
 		
 		var html = "";
 		
@@ -124,8 +124,8 @@
 				totalCnt = data.totalCnt; 
 				
 				// 검색결과 표시
-				$("#totalPrice").text(totalPrice);
-				$("#totalCnt").text(totalCnt);
+				$("#totalPrice").text(comma(totalPrice));
+				$("#totalCnt").text(comma(totalCnt));
 				
 				var data = data.result; 
 				if(data.length != 0) {
@@ -142,18 +142,24 @@
 						var LGD_OID = val.LGD_OID;
 						var LGD_PAYTYPE = trans_paytype(val.LGD_PAYTYPE);						
 						var LGD_RESPMSG = val.LGD_RESPMSG;
-						var LGD_AMOUNT = val.LGD_AMOUNT;
+						var LGD_AMOUNT = (val.LGD_AMOUNT == null) ? 0 : val.LGD_AMOUNT;
+						var LGD_PAYSTATUS = val.LGD_PAYSTATUS;
+						var LGD_PAYSTATUS_STR = val.LGD_PAYSTATUS_STR;
 						
 						html += '<tr>';
-						//html += '<td> <div class="tb_check"> <input id="check1" name="check1" type="checkbox"> <label for="check1">선택</label> </div> </td>';
 						html += '<td>' + number + '</td>';
 						html += '<td>' + paydate + '</td>';
 						html += '<td> <a href="javascript:void(0)" onclick="go_memberView(\'' + val.member_seq + '\')">' + LGD_BUYERID + '</a></td>';
 						html += '<td>' + LGD_BUYER + '</td>';
 						html += '<td> <a href="javascript:void(0)" onclick="go_detailView(\'' + LGD_OID + '\')">' + LGD_OID + '</a></td>';
 						html += '<td>' + LGD_PAYTYPE + '</td>';
-						html += '<td>' + LGD_RESPMSG + '</td>';
-						html += '<td>' + LGD_AMOUNT + '</td>';
+						html += '<td>' + LGD_PAYSTATUS_STR + '</td>';
+						
+						if(LGD_PAYSTATUS == 5) { // 결제 취소는 취소선 표기
+							html += '<td><del>' + comma(LGD_AMOUNT) + '</del></td>';
+						}else {
+							html += '<td>' + comma(LGD_AMOUNT) + '</td>';	
+						}						
 						html += '</tr>';
 						
 					});
@@ -268,9 +274,9 @@
 								<td>
 								<select name="keywordType" class="inp_txt" style="width:200px;">
 									<option value="member" selected="selected">회사/기관명, 아이디, 이름</option>
-									<option value="photo">UCI코드, 언론사 사진번호</option>
+									<!-- <option value="photo">UCI코드, 언론사 사진번호</option> -->
 								</select>	
-								<input type="text" class="inp_txt" size="80" id="keyword" placeholder="회사/기관명, 아이디, 이름, UCI코드, 언론사 사진번호" />
+								<input type="text" class="inp_txt" size="80" id="keyword" placeholder="회사/기관명, 아이디, 이름" />
 								
 								</td>
 							</tr>
@@ -371,7 +377,7 @@
 								<th>이름</th>
 								<th>주문번호</th>
 								<th>결제방법</th>
-								<th>결제상황</th>
+								<th>결제상태</th>
 								<th>결제금액</th>
 							</tr>
 						</thead>

@@ -18,7 +18,9 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.PaymentDAO;
+import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.dto.PaymentManageDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.ExcelUtil;
 
@@ -53,8 +55,8 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		
 		boolean success = false;
 		String message = "";
-		String start_date = request.getParameter("start_date");
-		String end_date = request.getParameter("end_date");
+		String start_date = request.getParameter("start_date") + "000000";
+		String end_date = request.getParameter("end_date") + "240000";
 		String keywordType = request.getParameter("keywordType");
 		String keyword = request.getParameter("keyword");
 		String paytype = request.getParameter("paytype"); // 결제방법
@@ -66,7 +68,9 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		int totalPrice = 0; // 총 판매금액
 		
 		Map<String, Object> params = new HashMap<String, Object>(); // 검색옵션
-		List<Map<String, Object>> searchList = new ArrayList<Map<String, Object>>(); // 검색 결과
+		//List<Map<String, Object>> searchList = new ArrayList<Map<String, Object>>(); // 검색 결과
+		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>(); // json 전달변수
+		List<PaymentManageDTO> searchList = new ArrayList<PaymentManageDTO>(); // 검색 결과
 		
 		if (MemberInfo != null) { // 세션값이 있을 때는 해당 매체만 보여주기
 			String member_seq = String.valueOf(MemberInfo.getSeq());
@@ -97,6 +101,17 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			
 			PaymentDAO payDAO = new PaymentDAO();		
 			searchList = payDAO.onlinePayList(params);
+			
+			
+			List<PaymentManageDTO> list = (List<PaymentManageDTO>) searchList;
+			for(PaymentManageDTO dto : list){
+				try {
+					jsonList.add(dto.convertToMap());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
 			totalCnt = payDAO.getOnlineCount(params);
 			totalPrice = payDAO.getOnlinePrice(params);
 			pageCnt = (totalCnt / pageVol) + 1; 
@@ -117,7 +132,7 @@ public class OnlinePayJSON extends NewsbankServletBase {
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
 				String orgFileName = "온라인결제관리_" + dateforamt.format(today); // 파일명
-				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
+				//ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, jsonList, orgFileName);
 			
 			}else {
 				if (searchList != null) {
@@ -139,7 +154,7 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		json.put("pageCnt", pageCnt);
 		json.put("totalCnt", totalCnt);
 		json.put("totalPrice", totalPrice);
-		json.put("result", searchList);
+		json.put("result", jsonList);
 
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);

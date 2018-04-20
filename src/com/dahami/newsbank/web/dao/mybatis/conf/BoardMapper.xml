@@ -3,7 +3,7 @@
 
 <mapper namespace="Notice">
 	<select id="selectNoticeList" resultType="com.dahami.newsbank.web.dto.BoardDTO" parameterType="string">
-      	SELECT * FROM notice
+      	SELECT seq, title, description, fileName, popup, hitCount, regDate FROM notice
 		<where>
 		    <if test = "value != null">
 				AND title LIKE '%${value}%' OR description LIKE '%${value}%'

@@ -19,13 +19,17 @@ import com.dahami.newsbank.web.dto.CalculationDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 import lgdacom.XPayClient.XPayClient;
 
 /**
  * Servlet implementation class PaymentAction
  */
-@WebServlet("/payment.api")
+@WebServlet(
+		urlPatterns = {"/payment.api", "/payment.api.manage"},
+		loadOnStartup = 1
+		)
 public class PaymentAction extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 
@@ -42,6 +46,9 @@ public class PaymentAction extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		super.doGet(request, response);
+		CmdClass cmdClass = CmdClass.getInstance(request);
+		
 		response.setContentType("application/json;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
@@ -70,7 +77,7 @@ public class PaymentAction extends NewsbankServletBase {
 			String cmd = (request.getParameter("cmd") == null) ? "" : request.getParameter("cmd"); // api 구분 crud
 			int paymentManage_seq = (request.getParameter("paymentManage_seq") == null) ? 0
 					: Integer.parseInt(request.getParameter("paymentManage_seq")); // 구매기록 고유번호
-			int paymentDetail_seq = (request.getParameter("cmd") == null) ? 0
+			int paymentDetail_seq = (request.getParameter("paymentDetail_seq") == null) ? 0
 					: Integer.parseInt(request.getParameter("paymentDetail_seq"));// 구매기록 상세 고유번호
 			String LGD_OID = (request.getParameter("LGD_OID") == null) ? "" : request.getParameter("LGD_OID"); // 주문번호
 
@@ -98,7 +105,14 @@ public class PaymentAction extends NewsbankServletBase {
 
 			switch (cmd) {
 			case "C": // 거래 취소 (Cancel)
-				paymentManageDTO.setMember_seq(MemberInfo.getSeq());
+				if(cmdClass.is1("manage")) {
+					// 관리자 페이지에서 접근
+					int member_seq = Integer.parseInt(request.getParameter("member_seq"));
+					paymentManageDTO.setMember_seq(member_seq); // 결제한 사용자 정보를 전달
+				}else {
+					// 사용자 페이지에서 접근
+					paymentManageDTO.setMember_seq(MemberInfo.getSeq());
+				}			
 				paymentManageDTO.setLGD_OID(LGD_OID);
 				paymentManageDTO = paymentDAO.selectPaymentManage(paymentManageDTO);
 				if (paymentManageDTO.getPaymentManage_seq() > 0) {
@@ -259,15 +273,6 @@ public class PaymentAction extends NewsbankServletBase {
 					.append(request.getContextPath());
 		}
 
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

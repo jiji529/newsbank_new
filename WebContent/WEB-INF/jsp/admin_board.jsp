@@ -185,7 +185,7 @@
 											<input id="check${status.index + 1}" name="check" type="checkbox" value="${board.seq}">
 											<label for="check${status.index + 1}">선택</label>
 										</div></td>
-									<td>${status.index + 1}</td>
+									<td>${fn:length(boardList) - status.index}</td>
 									<td><span onclick="popup_open(${status.index + 1})"><a href="#none">${board.title}</a></span></td>
 									<fmt:parseDate value="${board.regDate}" var="noti_regDate" pattern="yyyy-MM-dd"/>
 									<td><fmt:formatDate value="${noti_regDate}" pattern="yyyy-MM-dd"/></td>

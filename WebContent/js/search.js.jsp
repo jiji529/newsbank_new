@@ -383,9 +383,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			data: searchParam,
 			timeout: 1000000,
 			url: "search",
-			success : function(data) {
+			success : function(data) { console.log(data);
 				$(data.result).each(function(key, val) {
-					html += '<li><a href="javascript:void(0)"><img src="<%= IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
+					html += '<li><a href="javascript:void(0)" onclick="go_View(\'' + val.uciCode + '\')"><img src="<%= IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=' + val.uciCode + '" /></a></li>';
 				});
 				$(html).appendTo(".cfix");
 			},
