@@ -100,38 +100,6 @@
 		}
 	});
 	
-	// #총 금액 재계산
-	function recalculate() { 
-		var tot_sell = 0; // 총 금액
-		var tot_surtax = 0; // 총 부가세
-		var tot_purchase = 0; // 총 판매금액
-		
-		$(".order_list tr").each(function(index) {
-			if(index > 0) {
-				var sell_price = $(this).find("td:eq(2)").text(); // 판매가
-				var surtax = $(this).find("td:eq(3)").text(); // 부가세
-				var purchase_price = $(this).find("td:eq(4)").text(); // 구매금액
-				
-				// 숫자만 추출
-				sell_price = parseInt(sell_price.replace(/[^0-9]/g, '')); 
-				surtax = parseInt(surtax.replace(/[^0-9]/g, '')); 
-				purchase_price = parseInt(purchase_price.replace(/[^0-9]/g, '')); 
-				
-				tot_sell += sell_price;
-				tot_surtax += surtax;
-				tot_purchase += purchase_price;
-			}
-		});
-		
-		// 천단위 콤마
-		tot_sell = tot_sell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		tot_surtax = tot_surtax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		tot_purchase = tot_purchase.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		
-		$(".calculate_info_area").find("strong:eq(0)").text(tot_sell);
-		$(".calculate_info_area").find("strong:eq(1)").text(tot_surtax);
-		$(".calculate_info_area").find("strong:eq(2)").text(tot_purchase);
-	}
 	
 	/** DB 삭제함수 */
 	function cartDelete(uciCode) {
@@ -147,20 +115,6 @@
 	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	       	}
 		});
-		
-		/* var param = "action=deleteBookmark";
-		
-		$.ajax({			
-			url: "/bookmark.api?"+param,
-			type: "POST",
-			data: {
-				"uciCode" : uciCode
-			},
-			success: function(data){ }, 
-			error:function(request,status,error){
-	        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       	}
-		}); */
 	}
 	
 	// #다중선택 결제 함수
@@ -194,8 +148,6 @@
 		}else {
 			alert("결제할 항목을 선택해주세요");
 		}
-		
-		
 	}
 	
 	
@@ -224,6 +176,55 @@
 		$("#orderJson").val(JSON.stringify(resultObject));
 		cart_form.submit();
 		
+	});
+	
+	// #총 금액 재계산
+	function recalculate() {
+		var totalPrice = 0; // 총 금액
+		var totalSurtax = 0; // 부가세
+		var totalSell = 0; // 총 판매금액
+		
+		$(".order_list input:checkbox:checked:not(#check_all)").each(function(index) {
+			// 판매가
+			 $(this).closest("tr").find("td:eq(2)").each(function(index) {
+				 var price = $(this).text();
+				 price = price.replace(/[^0-9]/g, "");
+				 totalPrice += parseInt(price);
+			 });
+			
+			// 판매가
+			 $(this).closest("tr").find("td:eq(3)").each(function(index) {
+				 var surtax = $(this).text();
+				 surtax = surtax.replace(/[^0-9]/g, "");
+				 totalSurtax += parseInt(surtax);
+			 });
+			
+			// 판매가
+			 $(this).closest("tr").find("td:eq(4)").each(function(index) {
+				 var sell = $(this).text();
+				 sell = sell.replace(/[^0-9]/g, "");
+				 totalSell += parseInt(sell);
+			 });
+			
+		});
+		
+		var html = '총 금액<strong>' + comma(totalPrice) + '</strong>원';
+		html += '<span style="margin:0 20px;">+</span> ';
+		html += '부가세<strong>' + comma(totalSurtax) + '</strong>원';
+		html += '<span style="margin:0 20px;">=</span> ';
+		html += '총 판매금액 : <strong class="color">' + comma(totalSell) + '</strong>원';
+		
+		if(totalSell > 0) {
+			$(".calculate_info_area").html(html);
+			$(".calculate_info_area").show();
+		}else {
+			$(".calculate_info_area").hide();
+		}
+	}
+	
+	// 장바구니 선택에 따른 금액 자동합산
+	$(document).on("change", ".tb_check", function() {
+		recalculate();
 	});
 	
 </script>
@@ -273,7 +274,7 @@
 				<h3>장바구니</h3>
 			</div>
 			<section class="order_list">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top:0; margin-bottom:15px;">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03 cart_table" style="border-top:0; margin-bottom:15px;">
 					<colgroup>
 					<col width="40">
 					<col>
@@ -333,7 +334,8 @@
 					</c:forEach>
 				</table>
 			<a href="javascript:;" class="mp_btn" style="float:left;">선택 삭제</a>
-			<div class="calculate_info_area">총 금액<strong><fmt:formatNumber value="${total * 10 / 11}" type="number"/></strong>원<span style="margin:0 20px;">+</span> 부가세<strong><fmt:formatNumber value="${total * 10 / 11 / 10}" type="number"/></strong>원<span style="margin:0 20px;">=</span> 총 판매금액 : <strong class="color"><fmt:formatNumber value="${total}" type="number"/></strong>원</div>
+			<div class="calculate_info_area" style="display:none;"></div>
+			<%-- <div class="calculate_info_area">총 금액<strong><fmt:formatNumber value="${total * 10 / 11}" type="number"/></strong>원<span style="margin:0 20px;">+</span> 부가세<strong><fmt:formatNumber value="${total * 10 / 11 / 10}" type="number"/></strong>원<span style="margin:0 20px;">=</span> 총 판매금액 : <strong class="color"><fmt:formatNumber value="${total}" type="number"/></strong>원</div> --%>
 			<div class="btn_area"><a href="javascript:;" class="btn_input2" onclick="multi_pay()">결제하기</a></div>
 	
 	</section>
