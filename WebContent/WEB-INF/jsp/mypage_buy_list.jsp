@@ -114,6 +114,9 @@
 								<c:when test="${paymentManage.LGD_PAYSTATUS eq '5'}">
 									<td>결제 취소</td>
 								</c:when>
+								<c:when test="${paymentManage.LGD_PAYSTATUS eq '6'}">
+									<td>부분 취소</td>
+								</c:when>
 								
 							</c:choose>
 						</tr>

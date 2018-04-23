@@ -162,7 +162,7 @@ public class PaymentDetailDTO implements Serializable {
 	}
 
 	public void setPaystatus(String paystatus) {
-		// 상태값 (0:결제실패 1:결제성공 2:결제대기중 3:무통장입금 대기중, 4: 후불결제, 5: 결제취소)
+		// 상태값 (0:결제실패 1:결제성공 2:결제대기중 3:무통장입금 대기중, 4: 후불결제, 5: 결제취소, 6: 부분취소)
 		switch (paystatus){
 		case "0":
 			paystatus = "결제실패";
@@ -181,6 +181,9 @@ public class PaymentDetailDTO implements Serializable {
 			break;
 		case "5":
 			paystatus = "결제취소";
+			break;
+		case "6":
+			paystatus = "부분취소";
 			break;
 		default:
 			paystatus = "예외상태";
