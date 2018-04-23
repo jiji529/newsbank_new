@@ -155,4 +155,32 @@ public class ReportDAO extends DAOBase {
 		}
 		return result;
 	}
+	
+	/**
+	 * @methodName  : reportWriterEmail
+	 * @author      : LEE. JEAWOO
+	 * @date        : 2018. 04. 23. 오전 11:00:00
+	 * @methodCommet: 오류 신고하기 작성자 Email 불러오기
+	 * @param param
+	 * @return 
+	 */
+	public String reportWriterEmail(int member_seq) {
+		SqlSession session = null;
+		String result = "";				
+		
+		try {
+			session = sf.getSession();
+			result = session.selectOne("report.reportWriterEmail", member_seq);
+						
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return result;
+	}
 }

@@ -27,8 +27,11 @@ public class ErrorReportService {
 	 * @return 
 	 */
 	public void errorReportRegister(HttpServletResponse response, HttpServletRequest request, Map<String,Object> reportMap){
+		ReportDAO dao = new ReportDAO();
+		
 		String title = "사진 오류 신고 접수";
 		StringBuffer content = new StringBuffer();
+		String writerEmail = dao.reportWriterEmail((int)reportMap.get("writeUserSeq"));
 		
 		content.append("안녕하세요, 뉴스뱅크입니다.")									.append("\n\n")
 				.append("고객님께서 신고하신 (UCI코드) 사진의 오류 내역이 정상적으로 접수되었습니다.")	.append("\n\n")
@@ -47,7 +50,6 @@ public class ErrorReportService {
 		}
 		
 		//DB 처리
-		ReportDAO dao = new ReportDAO();
 		int result = 0;
 		result = dao.reportRegister(reportMap);
 		try {
@@ -97,15 +99,16 @@ public class ErrorReportService {
 	 * @param param
 	 * @return 
 	 */
-	public void errorReportModifyComplete(HttpServletResponse response, HttpServletRequest request, String reportSeq){
+	public void errorReportModifyComplete(HttpServletResponse response, HttpServletRequest request, Map<String,Object> reportMap){
 		ReportDAO dao = new ReportDAO();
 		
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("seq", reportSeq);
+		map.put("seq", reportMap.get("reportSeq"));
 		List<Map<String,Object>> list = dao.reportSelectList(map);
 		
 		String title = "사진 오류 수정 완료 안내";
 		StringBuffer content = new StringBuffer();
+		String writerEmail = dao.reportWriterEmail((int)list.get(0).get("member_seq"));
 		
 		content.append("안녕하세요, 뉴스뱅크입니다.")									.append("\n\n")
 				.append("고객님께서 신고하신 (UCI코드) 사진의 오류 사항이 수정되었습니다.")	.append("\n\n")
@@ -124,7 +127,7 @@ public class ErrorReportService {
 		}
 		
 		int result = 0;
-		result = dao.reportModifyComplete(Integer.parseInt(reportSeq));
+		result = dao.reportModifyComplete((int)reportMap.get("reportSeq"));
 		try {
 			response.getWriter().print(result);
 			response.flushBuffer();

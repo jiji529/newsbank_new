@@ -75,7 +75,10 @@ public class ErrorReport extends HttpServlet {
 				service.errorReportRegister(response, request, reportMap);
 			
 			}else if(reqUri.startsWith("complete")){	//2차 오류 신고하기 수정 완료
-				service.errorReportModifyComplete(response, request, request.getParameter("seq"));
+				reportMap = new HashMap<String,Object>();
+				reportMap.put("member_seq", memberSeq);
+				reportMap.put("reportSeq", Integer.parseInt(request.getParameter("seq")));
+				service.errorReportModifyComplete(response, request, reportMap);
 			
 			}else if(reqUri.startsWith("new")){	//수정 완료되지 않은 신고 건수가 있는지 확인
 				service.errprReportNotCompleteCnt(response, request, memberSeq);

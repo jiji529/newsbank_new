@@ -26,6 +26,7 @@
 	<select id="reportSelect" parameterType="java.util.Map" resultType="java.util.HashMap">
 		SELECT 
 			A.seq,
+			A.member_seq,
 			B.copyright as media,
 			B.compCode,
 			A.photo_uciCode as `uciCode`,
@@ -110,5 +111,15 @@
 			AND A.member_seq = #{value}
 			</if>
 		</where>
+	</select>
+	
+	<!-- 오류 신고하기 접수자 메일 받아오기 -->
+	<select id="reportWriterEmail" parameterType="Integer" resultType="String">
+		SELECT
+			email
+		FROM
+			member
+		WHERE
+			seq = #{value}	
 	</select>
 </mapper>
