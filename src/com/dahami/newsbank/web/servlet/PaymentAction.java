@@ -152,6 +152,7 @@ public class PaymentAction extends NewsbankServletBase {
 									if (xpay.m_szResCode.equals("0000")) {
 										int lGD_AMOUNT = paymentManageDTO.getLGD_AMOUNT() - paymentDetailDTO.getPrice();
 										paymentManageDTO.setLGD_AMOUNT(lGD_AMOUNT); // 취소 금액 갱신
+										paymentManageDTO.setLGD_PAYSTATUS(6); // 부분취소
 										paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);
 
 										paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
