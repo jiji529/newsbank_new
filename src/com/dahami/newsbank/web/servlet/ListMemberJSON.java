@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -67,19 +69,41 @@ public class ListMemberJSON extends NewsbankServletBase {
 			// 목록 엑셀다운로드
 			listMember = memberDAO.selectMemberList(searchOpt);
 			
-			List<String> headList = Arrays.asList("아이디", "회사명", "회원구분", "이름", "이메일", "연락처", "결제구분", "그룹구분", "계약기간", "가입일자"); //  테이블 상단 제목
-			List<Integer> columnSize = Arrays.asList(10, 15, 8, 10, 30, 20, 10, 10, 20, 20); //  컬럼별 길이정보
-			List<String> columnList = Arrays.asList("id", "compName", "type", "name", "email", "phone", "deferred", "groupName", "contractStart", "regDate"); // 컬럼명
-			
-			
 			List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 			for(MemberDTO dto : listMember) {
 				try {
-					mapList.add(dto.convertToMap());
+					//mapList.add(dto.convertToMap());
+					Map<String, Object> object = new HashMap<String, Object>();
+					object.put("seq", dto.getSeq());
+					object.put("id", dto.getId());
+					object.put("compName", dto.getCompName());
+					object.put("type", dto.getType());
+					object.put("typeStr", strType(dto.getType()));
+					object.put("name", dto.getName());
+					object.put("email", dto.getEmail());
+					object.put("phone", dto.getPhone());
+					object.put("strPhone", strPhone(dto.getPhone()));
+					object.put("deferred", dto.getDeferred());
+					object.put("strDeferred", strDeferred(dto.getDeferred()));
+					object.put("group_seq", dto.getGroup_seq());
+					object.put("groupName", dto.getGroupName());
+					object.put("groupInfo", groupInfo(dto.getGroupName()));
+					object.put("contractStart", dto.getContractStart());
+					object.put("contractEnd", dto.getContractEnd());
+					object.put("contractPeriod", contractPeriod(dto.getContractStart(), dto.getContractEnd()));
+					object.put("regDate", dto.getRegDate());
+					
+					mapList.add(object);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+			
+			List<String> headList = Arrays.asList("아이디", "회사명", "회원구분", "이름", "이메일", "연락처", "결제구분", "그룹구분", "계약기간", "가입일자"); //  테이블 상단 제목
+			List<Integer> columnSize = Arrays.asList(10, 20, 8, 10, 30, 20, 20, 15, 25, 20); //  컬럼별 길이정보
+			List<String> columnList = Arrays.asList("id", "compName", "typeStr", "name", "email", "strPhone", "strDeferred", "groupInfo", "contractPeriod", "regDate"); // 컬럼명
+			
 			Date today = new Date();
 		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
 			String orgFileName = "회원현황_" + dateforamt.format(today); // 파일명
@@ -128,6 +152,97 @@ public class ListMemberJSON extends NewsbankServletBase {
 		}
 		
 	}
+	
+	// 회원 타입구분
+	private String strType(String type) {
+		String strType = "";
+		switch(type) {
+			case "M":
+				strType = "언론사";
+				break;
+			
+			case "P":
+				strType = "개인";
+				break;
+				
+			case "C":
+				strType = "법인";
+				break;
+				
+			case "A":
+				strType = "관리자";
+				break;
+		}
+		return strType;
+	}
+	
+	// 회원 결제구분
+	private String strDeferred(int deferred) {
+		String strDeferred = "";
+		switch(deferred) {
+			case 0:
+				strDeferred = "온라인 결제";
+				break;
+			
+			case 1:
+				strDeferred = "오프라인 결제(온라인 가격)";
+				break;
+				
+			case 2:
+				strDeferred = "오프라인 결제(별도 가격)";
+				break;			
+			
+		}
+		return strDeferred;
+	}
+	
+	// 계약기간 반환
+	private String contractPeriod(String contractStart, String contractEnd) {
+		String contractPeriod = "";
+		SimpleDateFormat dateforamt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		if(contractStart != null && contractEnd != null) {
+			
+			try {
+				Date startDate = dateforamt.parse(contractStart);
+				Date endDate = dateforamt.parse(contractEnd);
+				
+				contractStart = new SimpleDateFormat("yyyy-MM-dd").format(startDate);
+				contractEnd = new SimpleDateFormat("yyyy-MM-dd").format(endDate);
+				
+				contractPeriod = contractStart + " ~ " + contractEnd;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else {
+			contractPeriod = "정보 미기재";
+		}
+		
+		return contractPeriod;
+	}
+	
+	// 그룹구분
+	private String groupInfo(String groupName) {
+		String groupInfo = "";
+		
+		if(groupName != null) {
+			groupInfo = "그룹(" + groupName + ")";
+		}else {
+			groupInfo = "개별";
+		}
+		
+		return groupInfo;
+	}
+	
+	// 휴대폰 번호(구분자 넣기)
+	private String strPhone(String phone) {
+		String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+	      if(!Pattern.matches(regEx, phone)) return null;
+	      return phone.replaceAll(regEx, "$1-$2-$3");
+	}
 
 }
+
 
