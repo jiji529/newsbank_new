@@ -31,16 +31,16 @@ if(photoDto == null
 		usageList();
 		// 오류 신고하기 팝업
 		$("#popup_open").click(function(){ 
-			alert("기능 구현 예정");
+// 			alert("기능 구현 예정");
 			// 개발 이후 아래 주석해제
-			//$("#popup_wrap").css("display", "block"); 
-			//$(".mask").css("display", "block"); 
+			$("#popup_wrap").css("display", "block"); 
+			$(".mask").css("display", "block"); 
 		}); 
 		
 		// 신고하기 팝업 닫기
-		$(".popup_close").click(function(){ 
+		$(".popup_close").click(function(){
 			$("#popup_wrap").css("display", "none"); 
-			$(".mask").css("display", "none"); 
+// 			$(".mask").css("display", "none"); 
 		}); 
 	});
 	
@@ -539,6 +539,49 @@ if(photoDto == null
 		$("#uciCode").val(uciCode);
 		view_form.submit();
 	}
+	
+ 	function declaration(){	//오류 신고하기
+		var reason = $('#popup_wrap textarea').val();
+		
+		if(reason.trim() == ''){
+			alert("사유를 입력해주세요.");
+			return false;
+		}else{	//엔터를 무지막지하게 쳤을 경우
+			reason.replace(/\\n/g,'');
+			if(reason.trim() == ''){
+				alert("사유를 입력해주세요.");
+				return false;
+			}
+		}
+		$('#userErrorReportForm textarea[name=errorReportTextArea]').val(reason);
+		
+		var mailingCheck = $('#popup_wrap :input[type=checkbox]').prop('checked');
+		if(mailingCheck){
+			$('#userErrorReportForm :input[name=mailing]').val('1');
+		}
+		var msg='정말로 신고를 하시겠습니까?';
+		if(confirm(msg)){
+			$.ajax({
+				type:'post',
+				url:'/register.report.error',
+				data:$('#userErrorReportForm').serialize(),
+				async: false,
+				success:function(data){
+					if(data < 0){
+						alert('오류신고 도중 문제가 발생했습니다.');
+					}else{
+						alert('성공적으로 오류신고가 완료되었습니다.');
+						$('.popup_close').click();	//팝업창 닫기
+					}
+				},
+				error:function(request,error){
+					console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);		
+				}
+				
+			})
+ 		}
+	}
+	
 </script>
 </head>
 <body> 
@@ -716,6 +759,7 @@ if(!contentBlidF) {
 <%
 if(!contentBlidF) {
 %>
+		
 		<div id="popup_wrap" class="pop_group wd">
 			<div class="pop_tit">
 				<h2>오류 신고하기</h2>
@@ -729,18 +773,24 @@ if(!contentBlidF) {
 						최대한 신속하게 수정하여 정상적으로 서비스될 수 있도록 하겠습니다. </p>
 					<textarea rows="16"></textarea>
 					<div class="agree_check">
-							<input type="checkbox" id="chk">
+							<input type="checkbox">
 							<label for="chk">신고 내역 및 처리 결과를 회원가입한 이메일로 받고 싶습니다. </label>
 					</div>
 				</div>
 			</div>
 			<div class="pop_foot">
 				<div class="pop_btn">
-					<button>신고하기</button>
+					<button onclick="declaration();">신고하기</button>
 					<button class="popup_close">닫기</button>
 				</div>
 			</div>
-		</div>		
+		</div>
+		
+		<form id="userErrorReportForm" >
+			<textarea name="errorReportTextArea" style="display:none;"></textarea>
+			<input type="hidden" name="uciCode" value="${photoDTO.uciCode}"/>
+			<input type="hidden" name="mailing" value="0"/>
+		</form>		
 <%
 }
 %>

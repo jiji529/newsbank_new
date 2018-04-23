@@ -18,6 +18,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<script src="js/jquery.twbsPagination.js"></script>
 
 	<div class="table_head">
 		<h3>사진 관리</h3>
@@ -64,23 +65,23 @@
 		</div>
 		<div class="pop_cont error_list">
 				<div class="sort_error">
-					<select>
+					<select name="reportPageVol">
 						<option value="40" selected="selected">40</option>
 						<option value="80">80</option>
 						<option value="120">120</option>
 					</select>
-					<select>
-						<option value="" selected="selected">상태</option>
-						<option value="">접수</option>
-						<option value="">수정 완료</option>
+					<select name="reportStatus">
+						<option value="0" selected="selected">상태</option>
+						<option value="1">접수</option>
+						<option value="2">수정 완료</option>
 					</select>
-					<select>
+					<select name="reportMedia">
 						<option value="" selected="selected">매체</option>
-						<option value="">뉴시스</option>
-						<option value="">뉴스1</option>
+						<option value="뉴시스">뉴시스</option>
+						<option value="뉴스1">뉴스1</option>
 					</select>
 				</div>
-				<table cellpadding="0" cellspacing="0" class="tb04" style="">
+				<table id="reportList" cellpadding="0" cellspacing="0" class="tb04" style="">
 					<colgroup>
 					<col width="40">
 					<col width="80">
@@ -152,7 +153,13 @@
 			</div>
 		</div>
 	</div>
-		
+	<form id="reportListForm">
+		<input type="hidden" name="report_startPage" value="0"/>
+		<input type="hidden" name="report_pageVol" value="1"/>
+		<input type="hidden" name="report_media" value=""/>
+		<input type="hidden" name="report_status" value="0"/>
+		<input type="hidden" name="report_page" value="1"/>
+	</form>
 <%@include file="down_frame.jsp" %>
 <%@include file="view_form.jsp" %>
 <%@include file="excel_frame.jsp" %>
