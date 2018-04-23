@@ -26,7 +26,6 @@ import com.dahami.newsbank.web.util.ExcelUtil;
 /**
  * Servlet implementation class ListMediaJSON
  */
-//@WebServlet("/listMedia.api")
 @WebServlet(
 		urlPatterns = {"/listMedia.api", "/excel.listMedia.api"},
 		loadOnStartup = 1

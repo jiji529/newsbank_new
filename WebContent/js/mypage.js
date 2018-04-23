@@ -1193,3 +1193,46 @@ function onlyNumber(v){
 	}
 	
 }
+
+//엑셀 다운로드
+function excelDown(api, path) { 
+	var keyword = $("input[name='keyword']").val();
+	
+	switch(path) {
+		
+		case "accountlist":
+			// 정산내역
+			var paytype = $("select[name=paytype] option:selected").val();
+			var startDate = $("#contractStart").val(); // 시작일
+			if (startDate == null || startDate.length == 0) {
+				alert("선택한 시작 날짜가 없습니다.");
+				return false;
+			}
+			var endDate = $("#contractEnd").val(); // 종료일
+			if (endDate == null || endDate.length == 0) {
+				alert("선택한 시작 날짜가 없습니다.");
+				return false;
+			}
+			var media_code = new Array(); // 선택 매체 코드
+			$("input[name=media_code]").each(function() {
+				if ($(this).is(":checked")) {
+					media_code.push($(this).val());
+				}
+			});
+			if (media_code.length == 0) {
+				alert("선택된 매체가 없습니다.");
+				return false;
+			}
+			
+			$("#currentPayType").val(paytype);
+			$("#currentMediaCode").val(media_code);
+			$("#startDate").val(startDate);
+			$("#endDate").val(endDate);
+			
+		break;
+	}
+	
+	$("#currentKeyword").val(keyword);
+	$("#downForm").attr("action", api);
+	$("#downForm").submit();
+}

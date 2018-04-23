@@ -35,7 +35,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180229"></script>
+<script src="js/mypage.js?v=20180230"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -127,7 +127,7 @@
 								</c:forEach>
 							</ul>
 							<div class="period">
-								<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${today }" maxlength="10">
+								<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-01-01" maxlength="10">
 								<span class=" bar">~</span>
 								<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${today }" maxlength="10">
 							</div>
@@ -182,7 +182,7 @@
 		<div class="btn_area" style="margin-top: 0;">
 			<a href="javascript:;" class="btn_input2" id="btnaccountSearch">검색</a>
 		</div>
-		<a href="javascript:;" style="float: right; padding: 10px 15px; font-size: 13px; border-radius: 2px; color: #666; border: 1px solid #aaa; margin-top: -20px;">엑셀 다운로드</a>
+		<a href="javascript:;" onclick="excelDown('/excel.account.api', 'accountlist')" style="float: right; padding: 10px 15px; font-size: 13px; border-radius: 2px; color: #666; border: 1px solid #aaa; margin-top: -20px;">엑셀 다운로드</a>
 		<div class="calculate_info_area">
 			기간 : ${year}-01-01 ~ ${today }
 			<span style="margin: 0 20px;">l</span>
@@ -382,5 +382,14 @@
 		</section>
 		<%@include file="footer.jsp"%>
 	</div>
+	
+	<form id="downForm" method="post"  target="downFrame">
+		<input type="hidden" id="currentKeyword" name="keyword" />
+		<input type="hidden" id="currentPayType" name="paytype" />
+		<input type="hidden" id="currentMediaCode" name="media_code" />
+		<input type="hidden" id="startDate" name="start_date" />
+		<input type="hidden" id="endDate" name="end_date" />
+	</form>
+	<iframe id="downFrame" name="downFrame" style="display:none"></iframe>
 </body>
 </html>
