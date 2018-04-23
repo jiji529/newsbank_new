@@ -68,7 +68,18 @@ public class PhotoService extends ServiceBase {
 		else {
 			// 필터에서 관리자/소유자용 항목 표시 안하기 위해
 			request.setAttribute("serviceMode", true);
-						
+			
+			// 선택 언론사 카테고리를 전달받았을 때
+			if(request.getParameter("seq") != null) {
+				
+				MemberDAO memberDAO = new MemberDAO();
+				int seq = Integer.parseInt(request.getParameter("seq"));
+				MemberDTO memberDTO = memberDAO.getMember(seq);
+				
+				request.setAttribute("seq", seq);
+				request.setAttribute("compName", memberDTO.getCompName());
+			}
+			
 			forward = "/WEB-INF/jsp/photo.jsp";
 		}
 		forward(request, response, forward);
