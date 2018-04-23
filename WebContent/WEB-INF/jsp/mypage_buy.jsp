@@ -220,7 +220,7 @@
 							${paymentDetailList.downEnd }
 						</td>
 						<td>
-							<c:if test="${paymentManageDTO.LGD_PAYSTATUS eq '1'  and paymentDetailList.status ne '1'}">
+							<c:if test="${(paymentManageDTO.LGD_PAYSTATUS eq '1' or paymentManageDTO.LGD_PAYSTATUS eq '6')  and paymentDetailList.status ne '1'}">
 							${paymentDetailList.downCount }회
 							<br />
 								<div class="btn_group">
