@@ -210,7 +210,7 @@
 				<c:set value="${returnMap['total'][0]/returnMap['bundle'][0]+1 }" var="lastPage" />
 			</c:if>	
 			<fmt:parseNumber var="lp" value="${lastPage}" integerOnly="true"/>
-			<fmt:parseNumber var="cycleStart" value="${returnMap['page'][0]/10}" integerOnly="true"/>
+			<fmt:parseNumber var="cycleStart" value="${returnMap['page'][0]/10 + (returnMap['page'][0]%10==0?-1:0)}" integerOnly="true"/>
 			<c:if test="${lp > 0}">
 			<div class="pagination">
 				<ul style="margin-bottom:0;">
