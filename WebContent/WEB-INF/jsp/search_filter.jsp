@@ -120,12 +120,45 @@ function setDatepicker() {
 		<ul>
 			<li class="filter_title filter_ico">검색필터</li>
 			<li class="filter_title filter_media">
-				<span><font>매체</font><%=headerSplitChar%>전체</span>
+				<span>
+					<font>매체</font><%=headerSplitChar%>
+					
+					<c:choose>
+						<c:when test="${seq ne null && !empty seq}">
+							${compName}
+						</c:when>
+						<c:otherwise>
+							전체
+						</c:otherwise>
+					</c:choose>
+				</span>
+				
 				<ul class="filter_list">
-					<li value="0" selected="selected">전체</li>
+					<c:choose>
+						<c:when test="${seq ne null && !empty seq}">
+							<li value="0">전체</li>
+							<c:forEach items="${mediaList}" var="media">
+								<c:if test="${seq eq media.seq}">
+									<li value="${media.seq }" selected="selected">${media.name }</li>
+								</c:if>
+								<c:if test="${seq ne media.seq}">
+									<li value="${media.seq }">${media.name }</li>
+								</c:if>
+							</c:forEach>
+						</c:when>
+						
+						<c:otherwise>
+							<li value="0" selected="selected">전체</li>
+							<c:forEach items="${mediaList}" var="media">
+								<li value="${media.seq }">${media.name }</li>								
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+					
+					<%-- <li value="0" selected="selected">전체</li>
 					<c:forEach items="${mediaList}" var="media">
 						<li value="${media.seq }">${media.name }</li>								
-					</c:forEach>
+					</c:forEach> --%>
 				</ul>
 			</li>
 			<li class="filter_title filter_durationReg">
