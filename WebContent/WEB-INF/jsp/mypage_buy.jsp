@@ -12,9 +12,11 @@
   ----------      ---------      ----------------------------------------------
   2017. 10. 16.   hoyadev        buy.mypage
 ---------------------------------------------------------------------------%>
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 	String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
@@ -115,6 +117,9 @@
 					</c:when>
 					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '5'}">
 						<td>결제 취소</td>
+					</c:when>
+					<c:when test="${paymentManageDTO.LGD_PAYSTATUS eq '6'}">
+						<td>부분 취소</td>
 					</c:when>
 					<c:otherwise>
 						<td>결제 실패 ${paymentManageDTO.LGD_PAYSTATUS }</td>
@@ -219,17 +224,26 @@
 							${paymentDetailList.downCount }회
 							<br />
 								<div class="btn_group">
-									<c:if test="${paymentDetailList.downExpire eq false}">
 									<form name="payDetailForm">
 										<input type="hidden" name="paymentDetail_seq" value="${paymentDetailList.paymentDetail_seq}" />
 										<input type="hidden" name="photo_uciCode" value="${paymentDetailList.photo_uciCode}" />
 										<input type="hidden" name="LGD_OID" value="${paymentManageDTO.LGD_OID}" />
-										<button type="button" class="btn_o" name="btn_down">다운로드</button>
-										<c:if test="${paymentDetailList.downCount eq 0 && paymentManageDTO.LGD_PAYTYPE_STR eq '신용카드' && paymentManageDTO.getDetailSize()>1 }">
+										<c:if test="${paymentDetailList.downExpire eq false}">
+											<button type="button" class="btn_o" name="btn_down">다운로드</button>
+										</c:if>
+										
+										<!-- 결제 취소가능기간 : 결제일자 기준 7일 이내  -->
+										<c:set var="today" value="<%= new Date() %>" />
+										<fmt:parseNumber value="${today.time / (1000*60*60*24)}" integerOnly="true" var="NOWDATE"/>
+										<fmt:parseDate value="${paymentManageDTO.LGD_PAYDATE}" var="LGD_PAYDATE" pattern="yyyyMMddHHmmss"/>
+										<fmt:parseNumber value="${LGD_PAYDATE.time / (1000*60*60*24)}" integerOnly="true" var="PAYDATE"/>
+										<c:set value="${NOWDATE - PAYDATE}" var="cancelTerm" />
+										
+										<!-- 결제 취소 : 다운로드 횟수0 && 신용카드 결제 && 결제일자 기준 7일 이내 -->
+										<c:if test="${paymentDetailList.downCount eq 0 && paymentManageDTO.LGD_PAYTYPE_STR eq '신용카드' && cancelTerm <= 7 }">
 											<button type="button" class="btn_g" name="btn_cancel">결제 취소</button>
 										</c:if>
 									</form>
-									</c:if>
 								</div>
 							</c:if>
 						</td>
