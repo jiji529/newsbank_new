@@ -21,6 +21,7 @@ public class CalculationDTO {
 	private int price; // 가격
 	private int status; // 정산상태(0: 기본값, 1: 정산 취소)
 	private int fees; // 수수료
+	private int rate; // 온라인|오프라인 요율
 	private String regDate; // 등록일
 	
 	public int getSeq() {
@@ -71,6 +72,12 @@ public class CalculationDTO {
 	}
 	public void setFees(int fees) {
 		this.fees = fees;
+	}
+	public int getRate() {
+		return rate;
+	}
+	public void setRate(int rate) {
+		this.rate = rate;
 	}
 	public String getRegDate() {
 		return regDate;

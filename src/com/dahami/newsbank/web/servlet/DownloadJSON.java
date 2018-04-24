@@ -78,7 +78,7 @@ public class DownloadJSON extends NewsbankServletBase {
 		if(cmd.is3("excel")) {
 			// 목록 엑셀다운로드
 			List<String> headList = Arrays.asList("회사/기관명", "아이디", "이름", "매체", "UCI코드", "언론사 사진번호", "다운로드일"); //  테이블 상단 제목
-			List<Integer> columnSize = Arrays.asList(10, 10, 10, 15, 20, 25, 25); //  컬럼별 길이정보
+			List<Integer> columnSize = Arrays.asList(30, 20, 15, 15, 20, 30, 25); //  컬럼별 길이정보
 			List<String> columnList = Arrays.asList("compName", "id", "name", "media", "uciCode", "compCode", "regDate"); // 컬럼명
 			
 			Date today = new Date();
@@ -113,13 +113,6 @@ public class DownloadJSON extends NewsbankServletBase {
 			response.getWriter().print(json);
 		}
 		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

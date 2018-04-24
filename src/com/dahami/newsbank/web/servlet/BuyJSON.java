@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,9 +127,19 @@ public class BuyJSON extends NewsbankServletBase {
 			if(cmd.is3("excel")) {
 				// 목록 엑셀다운로드
 				
+				int idx = 0;
+				for(Map<String, Object> object : searchList) {
+					String PAYDATE = dateFormat(object.get("LGD_PAYDATE").toString());
+					String strStatus = strStatus(Integer.parseInt(object.get("status").toString()));
+					
+					searchList.get(idx).put("PAYDATE", PAYDATE);
+					searchList.get(idx).put("strStatus", strStatus);
+					idx++;
+				}
+				
 				List<String> headList = Arrays.asList("회사/기관명", "아이디", "이름", "구매 신청일", "상태", "매체", "UCI코드", "언론사 사진번호", "용도", "금액"); //  테이블 상단 제목
-				List<Integer> columnSize = Arrays.asList(10, 10, 10, 25, 10, 15, 20, 25, 10, 10); //  컬럼별 길이정보
-				List<String> columnList = Arrays.asList("compName", "id", "name", "LGD_PAYDATE", "LGD_PAYSTATUS", "copyright", "photo_uciCode", "compCode", "usuage", "price"); // 컬럼명
+				List<Integer> columnSize = Arrays.asList(25, 10, 10, 25, 10, 15, 20, 25, 10, 10); //  컬럼별 길이정보
+				List<String> columnList = Arrays.asList("compName", "id", "name", "PAYDATE", "strStatus", "copyright", "photo_uciCode", "compCode", "usage", "price"); // 컬럼명
 				
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -159,12 +170,50 @@ public class BuyJSON extends NewsbankServletBase {
 		response.getWriter().print(json);
 		response.flushBuffer();
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+	
+	// 날짜 변환
+	private String dateFormat(String DATE) {
+		String strDate = "";
+		if(!DATE.isEmpty()) {
+			try {
+				SimpleDateFormat dt = new SimpleDateFormat("yyyyMMddHHmmss");
+				Date parseDate;
+				parseDate = dt.parse(DATE);
+				strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(parseDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return strDate;
+	}
+	
+	// 구매상태 반환
+	private String strStatus(int status) {
+		String strStatus = "";
+		switch(status) {
+		case 0:
+			// 기본값
+			strStatus = "구매 신청";
+			break;
+			
+		case 1:
+			// 결제 취소
+			strStatus = "구매 반려";
+			break;
+			
+		case 2:
+			// 정산 승인
+			strStatus = "정산 승인";
+			break;
+			
+		case 3:
+			// 정산 승인취소
+			strStatus = "승인 취소";
+			break;
+		}
+		
+		return strStatus;
 	}
 
 }

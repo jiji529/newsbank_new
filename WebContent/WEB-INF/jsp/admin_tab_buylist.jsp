@@ -161,8 +161,8 @@
 			complete: function() {
 				if(state == undefined){
 					pagings(pageCnt);	
-					$("#loading").hide();
 				}
+				$("#loading").hide();
 			}
 			
 		});

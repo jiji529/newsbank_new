@@ -1,6 +1,8 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +70,6 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		int totalPrice = 0; // 총 판매금액
 		
 		Map<String, Object> params = new HashMap<String, Object>(); // 검색옵션
-		//List<Map<String, Object>> searchList = new ArrayList<Map<String, Object>>(); // 검색 결과
 		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>(); // json 전달변수
 		List<PaymentManageDTO> searchList = new ArrayList<PaymentManageDTO>(); // 검색 결과
 		
@@ -104,13 +105,7 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			
 			
 			List<PaymentManageDTO> list = (List<PaymentManageDTO>) searchList;
-			for(PaymentManageDTO dto : list){
-				try {
-					jsonList.add(dto.convertToMap());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			
 			
 			totalCnt = payDAO.getOnlineCount(params);
 			totalPrice = payDAO.getOnlinePrice(params);
@@ -124,10 +119,28 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			
 			if(cmd.is3("excel")) {
 				// 목록 엑셀다운로드
+				for(PaymentManageDTO dto : list){
+					try {
+						//jsonList.add(dto.convertToMap());
+						Map<String, Object> object = new HashMap<String, Object>();
+						object.put("LGD_PAYDATE", dateFormat(dto.getLGD_PAYDATE()));
+						object.put("LGD_BUYERID", dto.getLGD_BUYERID());
+						object.put("LGD_BUYER", dto.getLGD_BUYER());
+						object.put("LGD_OID", dto.getLGD_OID());
+						object.put("LGD_PAYTYPE_STR", dto.getLGD_PAYTYPE_STR());
+						object.put("LGD_PAYSTATUS_STR", dto.getLGD_PAYSTATUS_STR());
+						object.put("LGD_AMOUNT", dto.getLGD_AMOUNT_Str());
+						
+						jsonList.add(object);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 				
 				List<String> headList = Arrays.asList("주문일자", "아이디", "이름", "주문번호", "결제방법", "결제상황", "결제금액"); //  테이블 상단 제목
 				List<Integer> columnSize = Arrays.asList(25, 10, 10, 25, 10, 10, 15); //  컬럼별 길이정보
-				List<String> columnList = Arrays.asList("LGD_PAYDATE", "LGD_BUYERID", "LGD_BUYER", "LGD_OID", "LGD_PAYTYPE", "LGD_PAYSTATUS_STR", "LGD_AMOUNT"); // 컬럼명
+				List<String> columnList = Arrays.asList("LGD_PAYDATE", "LGD_BUYERID", "LGD_BUYER", "LGD_OID", "LGD_PAYTYPE_STR", "LGD_PAYSTATUS_STR", "LGD_AMOUNT"); // 컬럼명
 				
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -135,6 +148,14 @@ public class OnlinePayJSON extends NewsbankServletBase {
 				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, jsonList, orgFileName);
 			
 			}else {
+				for(PaymentManageDTO dto : list){
+					try {
+						jsonList.add(dto.convertToMap());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
 				if (searchList != null) {
 					success = true;
 				} else {
@@ -161,12 +182,22 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		response.flushBuffer();
 		
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+	
+	// 날짜 변환
+	private String dateFormat(String DATE) {
+		String strDate = "";
+		if(!DATE.isEmpty()) {
+			try {
+				SimpleDateFormat dt = new SimpleDateFormat("yyyyMMddHHmmss");
+				Date parseDate;
+				parseDate = dt.parse(DATE);
+				strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(parseDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return strDate;
 	}
 
 }

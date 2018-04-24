@@ -61,7 +61,7 @@
    	<select id="selectCalculation" resultType="com.dahami.newsbank.web.dto.CalculationDTO" 
    	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 
    	   SELECT C.seq, C.id, M.name, M.compName, SM.name as copyright, P.member_seq, C.`payType`,  
-   	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`regDate`
+   	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, C.`regDate`
 		FROM calculations C
 		INNER JOIN member M ON C.id = M.id
 		INNER JOIN photo P ON C.uciCode = P.uciCode

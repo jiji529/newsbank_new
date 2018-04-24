@@ -413,8 +413,8 @@
 			<input type="hidden" id="currentKeywordType" name="keywordType" />
 			<input type="hidden" id="currentPayType" name="paytype" />
 			<input type="hidden" id="currentPayStatus" name="paystatus" />
-			<input type="hidden" id="startDate" name="startDate" />
-			<input type="hidden" id="endDate" name="endDate" />
+			<input type="hidden" id="startDate" name="start_date" />
+			<input type="hidden" id="endDate" name="end_date" />
 			<input type="hidden" id="pageVol" name="pageVol" />
 			<input type="hidden" id="startPage" name="startPage" value="file" />
 		</form>
