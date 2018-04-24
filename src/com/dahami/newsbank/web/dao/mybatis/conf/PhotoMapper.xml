@@ -63,7 +63,7 @@
 				copyright, shotPerson, 
 				publishDate, shotDate, A.regDate, A.updDate, 
 				widthPixel widthPx, heightPixel heightPx, widthCm, heightCm, dpi, fileSize, exif,
-				member_seq ownerNo, B.compName ownerName, compCode, hitCount
+				member_seq ownerNo, B.compName ownerName, preRate ownerPreRate, postRate ownerPostRate, compCode, hitCount
 				, (select (activate != 1) from member where seq = ownerNo) mediaInactive
 			from photo A
 			inner join member B on A.member_seq = B.seq

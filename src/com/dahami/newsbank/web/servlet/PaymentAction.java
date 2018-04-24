@@ -13,8 +13,10 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.CalculationDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
@@ -102,6 +104,7 @@ public class PaymentAction extends NewsbankServletBase {
 			PaymentManageDTO paymentManageDTO = new PaymentManageDTO();
 			PaymentDetailDTO paymentDetailDTO = new PaymentDetailDTO();
 			PaymentDAO paymentDAO = new PaymentDAO();
+			PhotoDAO photoDAO = new PhotoDAO();
 
 			switch (cmd) {
 			case "C": // 거래 취소 (Cancel)
@@ -120,6 +123,9 @@ public class PaymentAction extends NewsbankServletBase {
 					String today = dayTime.format(new Date());
 					String paydate = paymentManageDTO.getLGD_PAYDATE().substring(0, 8);
 					int gap = Integer.parseInt(today) - Integer.parseInt(paydate); // 소요기간 7일 이내 확인
+					
+					
+					
 					if (gap <= 7) {
 						// 결제 취소 모듈
 						XPayClient xpay = new XPayClient();
@@ -160,11 +166,15 @@ public class PaymentAction extends NewsbankServletBase {
 										paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq); // 결제취소
 										result = paymentDAO.updatePaymentDetailStatus(paymentDetailDTO);
 										
+										PhotoDTO photoDTO = photoDAO.read(paymentDetailDTO.getPhoto_uciCode());
+										
+										
 										CalculationDTO calculationDTO  = new CalculationDTO();
 										calculationDTO.setId(paymentManageDTO.getLGD_BUYERID());
 										calculationDTO.setUciCode(paymentDetailDTO.getPhoto_uciCode());
 										calculationDTO.setUsage(paymentDetailDTO.getUsageList_seq());
 										calculationDTO.setType(0);
+										calculationDTO.setRate(photoDTO.getOwnerPreRate());
 										calculationDTO.setPayType(paymentManageDTO.getLGD_PAYTYPE());
 										calculationDTO.setPrice(-paymentDetailDTO.getPrice());
 										calculationDTO.setFees(-paymentManageDTO.getLGD_FEES(paymentDetailDTO.getPrice()));
@@ -213,11 +223,17 @@ public class PaymentAction extends NewsbankServletBase {
 										
 										CalculationDAO calculationDAO = new CalculationDAO();
 										for (PaymentDetailDTO detailDTO :paymentManageDTO.getPaymentDetailList() ) {
+											
+											
+											PhotoDTO photoDTO = photoDAO.read(detailDTO.getPhoto_uciCode());
+											
+											
 											CalculationDTO calculationDTO  = new CalculationDTO();
 											calculationDTO.setId(paymentManageDTO.getLGD_BUYERID());
 											calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
 											calculationDTO.setUsage(detailDTO.getUsageList_seq());
 											calculationDTO.setType(0);
+											calculationDTO.setRate(photoDTO.getOwnerPreRate());
 											calculationDTO.setPayType(paymentManageDTO.getLGD_PAYTYPE());
 											calculationDTO.setPrice(-detailDTO.getPrice());
 											calculationDTO.setFees(-paymentManageDTO.getLGD_FEES(detailDTO.getPrice()));

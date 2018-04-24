@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.CalculationDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
@@ -210,12 +212,17 @@ public class XpayPayres extends NewsbankServletBase {
 						
 						if(payment.getPaymentDetailList().size()>0) {
 							CalculationDAO calculationDAO = new CalculationDAO();
+							PhotoDAO photoDAO = new PhotoDAO();
 							for (PaymentDetailDTO detailDTO :payment.getPaymentDetailList() ) {
+								
+								PhotoDTO photoDTO = photoDAO.read(detailDTO.getPhoto_uciCode());
+								
 								CalculationDTO calculationDTO  = new CalculationDTO();
 								calculationDTO.setId(payment.getLGD_BUYERID());
 								calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
 								calculationDTO.setUsage(detailDTO.getUsageList_seq());
 								calculationDTO.setType(0);
+								calculationDTO.setRate(photoDTO.getOwnerPreRate());
 								calculationDTO.setPayType(payment.getLGD_PAYTYPE());
 								calculationDTO.setPrice(detailDTO.getPrice());
 								calculationDTO.setFees(payment.getLGD_FEES(detailDTO.getPrice()));
