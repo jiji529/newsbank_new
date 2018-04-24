@@ -163,7 +163,7 @@ public class AccountJSON extends NewsbankServletBase {
 							PAYTYPE_STR = "계좌이체";
 							billingTax = (int) (billingAmount * 0.0022);
 							break;
-						case "000000":
+						case "SC9999":
 							PAYTYPE_STR = "세금계산서";
 							rate = Double.parseDouble(object.get("postRate").toString());
 							break;
