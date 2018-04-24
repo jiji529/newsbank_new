@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -222,14 +223,55 @@ public class CalculationAction extends NewsbankServletBase {
 					List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 					for(CalculationDTO dto : calcList) {
 						try {
-							mapList.add(dto.convertToMap());
+							//mapList.add(dto.convertToMap());
+							DecimalFormat df = new DecimalFormat("#,##0");
+							Map<String, Object> object = new HashMap<String, Object>();
+							
+							int billingAmount = dto.getPrice(); // 결제금액
+							int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
+							int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
+							int billingTax = dto.getFees(); // 빌링수수료
+							int rate = 0; // 정산요율
+							if(dto.getRate() != 0) {
+								rate = dto.getRate();
+							}
+							
+							String payTypeStr = dto.getPayType_Str(); // 결제종류
+							int totalSalesAccount = billingAmount - billingTax; // 총매출액
+							int salesAccount = (int) Math.round(totalSalesAccount * rate); // 회원사 매출액
+							
+							int valueOfSupply = (int) Math.round(salesAccount * 0.9); // 공급가액
+							int addedTaxOfSupply = (int) Math.round(salesAccount * 0.1); // 공급부가세
+							int dahamiAccount = totalSalesAccount - salesAccount; // 다하미 매출액
+							
+							object.put("regDate", dto.getRegDate());
+							object.put("nameId", dto.getName() + "\n" + dto.getId());
+							object.put("compName", dto.getCompName());
+							object.put("uciCode", dto.getUciCode());
+							object.put("copyright", dto.getCopyright());
+							object.put("payType", dto.getPayType_Str());
+							//object.put("price", df.format(dto.getPrice()));
+							
+							object.put("customValue", df.format(customValue)); // 과세금액
+							object.put("customTax", df.format(customTax)); // 과세부가세
+							object.put("billingAmount", df.format(billingAmount)); // 결제금액 
+							object.put("billingTax", df.format(billingTax)); // 빌링수수료
+							object.put("totalSalesAccount", df.format(totalSalesAccount)); // 총 매출액
+							object.put("salesAccount", df.format(salesAccount)); // 회원사 매출액
+							object.put("valueOfSupply", df.format(valueOfSupply));// 공급가액
+							object.put("addedTaxOfSupply", df.format(addedTaxOfSupply)); // 공급부가세
+							object.put("dahamiAccount", df.format(dahamiAccount)); // 다하미 매출액
+							
+							
+							mapList.add(object);
+							
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
-					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "판매자	결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
 					List<Integer> columnSize = Arrays.asList(20, 15, 15, 25, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
-					List<String> columnList = Arrays.asList("regDate", "id", "compName", "uciCode", "copyright", "payType", "price", "fees", "price", "fees", "price", "fees", "price", "fees", "price"); // 컬럼명
+					List<String> columnList = Arrays.asList("regDate", "nameId", "compName", "uciCode", "copyright", "payType", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
 					
 					Date today = new Date();
 				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -238,24 +280,55 @@ public class CalculationAction extends NewsbankServletBase {
 				
 				}else {
 					// 목록 JSON
-					for(CalculationDTO calc : calcList) {
-						JSONObject obj = new JSONObject();
-						obj.put("id", calc.getId());
-						obj.put("name", calc.getName());
-						obj.put("compName", calc.getCompName());
-						obj.put("copyright", calc.getCopyright());
-						obj.put("member_seq", calc.getMember_seq());
-						obj.put("payType", calc.getPayType_Str());
-						obj.put("uciCode", calc.getUciCode());
-						obj.put("usage", calc.getUsage());
-						obj.put("type", calc.getType());
-						obj.put("price", calc.getPrice());
-						obj.put("status", calc.getStatus());
-						obj.put("fees", calc.getFees());
-						obj.put("regDate", calc.getRegDate());
-						
-						jArray.add(obj);					
-					}	
+					
+					for(CalculationDTO dto : calcList) {
+						try {
+							JSONObject obj = new JSONObject();
+							DecimalFormat df = new DecimalFormat("#,##0");
+							Map<String, Object> object = new HashMap<String, Object>();
+							
+							int billingAmount = dto.getPrice(); // 결제금액
+							int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
+							int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
+							int billingTax = dto.getFees(); // 빌링수수료
+							int rate = 0; // 정산요율
+							if(dto.getRate() != 0) {
+								rate = dto.getRate();
+							}
+							
+							String payTypeStr = dto.getPayType_Str(); // 결제종류
+							int totalSalesAccount = billingAmount - billingTax; // 총매출액
+							int salesAccount = (int) Math.round(totalSalesAccount * rate); // 회원사 매출액
+							
+							int valueOfSupply = (int) Math.round(salesAccount * 0.9); // 공급가액
+							int addedTaxOfSupply = (int) Math.round(salesAccount * 0.1); // 공급부가세
+							int dahamiAccount = totalSalesAccount - salesAccount; // 다하미 매출액
+							
+							obj.put("id", dto.getId());
+							obj.put("regDate", dto.getRegDate());
+							obj.put("name", dto.getName());
+							obj.put("compName", dto.getCompName());
+							obj.put("uciCode", dto.getUciCode());
+							obj.put("copyright", dto.getCopyright());
+							obj.put("member_seq", dto.getMember_seq());
+							obj.put("payType", dto.getPayType_Str());
+							obj.put("customValue", customValue); // 과세금액
+							obj.put("customTax", customTax); // 과세부가세
+							obj.put("billingAmount", billingAmount); // 결제금액 
+							obj.put("billingTax", billingTax); // 빌링수수료
+							obj.put("totalSalesAccount", totalSalesAccount); // 총 매출액
+							obj.put("salesAccount", salesAccount); // 회원사 매출액
+							obj.put("valueOfSupply", valueOfSupply);// 공급가액
+							obj.put("addedTaxOfSupply", addedTaxOfSupply); // 공급부가세
+							obj.put("dahamiAccount", dahamiAccount); // 다하미 매출액
+							
+							jArray.add(obj);
+							
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 				}
 								
 							
@@ -279,11 +352,20 @@ public class CalculationAction extends NewsbankServletBase {
 				}
 				
 				if(sep.is3("excel")) {
+					
+					int idx = 0;
+					for(Map<String, Object> object : staticsList) {
+						DecimalFormat df = new DecimalFormat("#,##0");
+						staticsList.get(idx).put("strType", strType(object.get("type").toString()));
+						staticsList.get(idx).put("strPrice", df.format(Integer.parseInt(object.get("price").toString())));
+						idx++;
+					}
+					
 					// 목록 엑셀 다운로드
 					// 기간에 따라 동적으로 테이블 항목이 생성
 					List<String> headList = Arrays.asList("월별", "온라인/오프라인", "가격"); //  테이블 상단 제목
 					List<Integer> columnSize = Arrays.asList(10, 20, 20); //  컬럼별 길이정보
-					List<String> columnList = Arrays.asList("YearOfMonth", "type", "price"); // 컬럼명
+					List<String> columnList = Arrays.asList("YearOfMonth", "strType", "strPrice"); // 컬럼명
 					
 					Date today = new Date();
 				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -365,6 +447,21 @@ public class CalculationAction extends NewsbankServletBase {
 		
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);
+	}
+	
+	// 온라인 | 오프라인 구분
+	private String strType(String type) {
+		String strType = "";
+		switch(type) {
+			case "0":
+				strType = "온라인";
+				break;
+				
+			case "1":
+				strType = "오프라인";
+				break;
+		}
+		return strType;
 	}
 
 }

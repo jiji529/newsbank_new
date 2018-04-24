@@ -23,19 +23,13 @@
 	</select>
 	
 	<select id="selectOptions" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
-	    SELECT seq AS usageList_seq, `usage`, division1, division2, division3, division4, usageDate, price FROM usageList 
-	    WHERE seq IN
-	    <foreach collection="seqArry" item="item" index="index" separator="," open="(" close=")">
-	        #{item}
-	    </foreach>
+	    SELECT seq AS usageList_seq, `usage`, division1, division2, division3, division4, usageDate, price FROM usageList
+	    WHERE seq = #{seq} 
 	</select>
 	
-	<select id="selectPrice" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
-	    SELECT SUM(price) AS price FROM usageList 
-	    WHERE seq IN
-	    <foreach collection="seqArry" item="item" index="index" separator="," open="(" close=")">
-	        #{item}
-	    </foreach>
+	<select id="selectPrice" resultType="int" parameterType="java.util.Map">
+	    SELECT price FROM usageList
+	    WHERE seq = #{seq}
 	</select>
 	
 	<insert id="insertUsage" parameterType="java.util.Map">

@@ -121,11 +121,13 @@ public class UsageDAO extends DAOBase {
 		
 		try {
 			session = sf.getSession();
-			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("seqArry", seqArry);
-			
-			System.out.println(Arrays.toString(seqArry));
-			usageList = session.selectList("Usage.selectOptions", param);
+			// 선택용도 갯수만큼 반복
+			for(String seq : seqArry) {
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("seq", seq);
+				UsageDTO dto = session.selectOne("Usage.selectOptions", param);
+				usageList.add(dto);
+			}
 			return usageList;
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -144,23 +146,26 @@ public class UsageDAO extends DAOBase {
 	 * @param param
 	 * @return 
 	 */
-	public UsageDTO totalPrice(String[] seqArry) {
+	public int totalPrice(String[] seqArry) {
 		SqlSession session = null;
-		UsageDTO usageDTO = new UsageDTO();
+		int sum = 0; // 총 금액
 		try {
 			session = sf.getSession();
-			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("seqArry", seqArry);
-			
-			usageDTO = session.selectOne("Usage.selectPrice", param);
-			return usageDTO;
+			// 선택용도 갯수만큼 반복
+			for(String seq : seqArry) {
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("seq", seq);
+				int price = session.selectOne("Usage.selectPrice", param);
+				sum += price;
+			}
+			return sum;
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
 			session.commit();
 			session.close();
 		}
-		return null;
+		return 0;
 	}
 		
 	/**

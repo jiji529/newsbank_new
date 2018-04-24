@@ -38,9 +38,8 @@ public class PayDAO extends DAOBase {
 			UsageDAO usageDAO = new UsageDAO(); // 사용용도
 			List<UsageDTO> usageList = usageDAO.selectOptions(seqArry); // 사용용도 상세정보
 			cartDTO.setUsageList(usageList);
-			UsageDTO usageDTO = new UsageDTO();
-			usageDTO = usageDAO.totalPrice(seqArry);
-			cartDTO.setPrice(usageDTO.getPrice()); // 총 결제 가격
+			int price = usageDAO.totalPrice(seqArry); // 총 결제 가격
+			cartDTO.setPrice(price);
 			
 			return cartDTO;
 			

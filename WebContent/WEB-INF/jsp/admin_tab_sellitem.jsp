@@ -106,15 +106,15 @@
 		var total = 0; // 검색결과 갯수
 		
 		// 매출합계 변수
-		var sum_taxAmount = 0; // 과세금액 합계
-		var sum_taxAddedTax = 0; // 과세부가세 합계
-		var sum_price = 0; // 결제금액 합계
+		var sum_customValue = 0; // 과세금액 합계
+		var sum_customTax = 0; // 과세부가세 합계
+		var sum_billingAmount = 0; // 결제금액 합계
 		var sum_billingTax = 0; // 빌링수수료 합계
-		var sum_totalSales = 0; // 총매출액 합계
-		var sum_memberSales = 0; // 회원사 합계
-		var sum_supplyPriceAmount = 0; // 공급가액 합계
-		var sum_supplyTax = 0; // 공급부가세 합계
-		var sum_dahamiSales = 0; // 다하미매출액 합계
+		var sum_totalSalesAccount = 0; // 총매출액 합계
+		var sum_salesAccount = 0; // 회원사 합계
+		var sum_valueOfSupply = 0; // 공급가액 합계
+		var sum_addedTaxOfSupply = 0; // 공급부가세 합계
+		var sum_dahamiAccount = 0; // 다하미매출액 합계
 		
 		$.ajax({
 			type: "POST",
@@ -122,29 +122,10 @@
 			data: param,
 			dataType: "json",
 			success: function(data) { 
-				var result = data.result;
+				var result = data.result; console.log(result);
 				total = result.length;
 				
-				$(result).each(function(key, val){
-					
-					var billingTax = Math.round(val.price * 0.0352); // 빌링 수수료
-					var taxAddedTax = Math.round(val.price * 0.1); // 과세부가세
-					var taxAmount = Math.round(val.price - taxAddedTax); // 과세금액
-					var totalSales = Math.round(val.price - billingTax); // 총 매출액
-					var memberSales = Math.round(totalSales * 0.7); // 회원사 매출액
-					var supplyTax = Math.round((memberSales / 110) * 10); // 공급부가세
-					var supplyPriceAmount = Math.round(memberSales - supplyTax); // 공급가액
-					var dahamiSales = Math.round(totalSales - memberSales); // 다하미 매출액
-					
-					sum_taxAmount += taxAmount;
-					sum_taxAddedTax += taxAddedTax;
-					sum_price += val.price;
-					sum_billingTax += billingTax; 
-					sum_totalSales += totalSales;
-					sum_memberSales += memberSales;
-					sum_supplyPriceAmount += supplyPriceAmount;
-					sum_supplyTax += supplyTax;
-					sum_dahamiSales += dahamiSales; 						
+				 $(result).each(function(key, val){				
 					
 					html += '<tr>';
 					html += '<td>' + (key+1) + '</td>';
@@ -154,32 +135,42 @@
 					html += '<td>' + val.uciCode + '</td>';
 					html += '<td>' + val.copyright + '</td>';
 					html += '<td>' + val.payType + '</td>';
-					html += '<td>' + comma(taxAmount) + '</td>';
-					html += '<td>' + comma(taxAddedTax) + '</td>';
-					html += '<td>' + comma(val.price) + '</td>';
-					html += '<td>' + comma(billingTax) + '</td>';
-					html += '<td>' + comma(totalSales) + '</td>';
-					html += '<td>' + comma(memberSales) + '</td>';
-					html += '<td>' + comma(supplyPriceAmount) + '</td>';
-					html += '<td>' + comma(supplyTax) + '</td>';
-					html += '<td>' + comma(dahamiSales) + '</td>';
-					html += '</tr>';						
+					html += '<td>' + comma(val.customValue) + '</td>';
+					html += '<td>' + comma(val.customTax) + '</td>';
+					html += '<td>' + comma(val.billingAmount) + '</td>';
+					html += '<td>' + comma(val.billingTax) + '</td>';
+					html += '<td>' + comma(val.totalSalesAccount) + '</td>';
+					html += '<td>' + comma(val.salesAccount) + '</td>';
+					html += '<td>' + comma(val.valueOfSupply) + '</td>';
+					html += '<td>' + comma(val.addedTaxOfSupply) + '</td>';
+					html += '<td>' + comma(val.dahamiAccount) + '</td>';
+					html += '</tr>';	
+					
+					sum_customValue += val.customValue; // 과세금액 합계
+					sum_customTax += val.customTax; // 과세부가세 합계
+					sum_billingAmount += val.billingAmount; // 결제금액 합계
+					sum_billingTax += val.billingTax; // 빌링수수료 합계
+					sum_totalSalesAccount += val.totalSalesAccount; // 총매출액 합계
+					sum_salesAccount += val.salesAccount; // 회원사 합계
+					sum_valueOfSupply += val.valueOfSupply; // 공급가액 합계
+					sum_addedTaxOfSupply += val.addedTaxOfSupply; // 공급부가세 합계
+					sum_dahamiAccount += val.dahamiAccount; // 다하미매출액 합계
 				
-				});
+				}); 
 			},
 			complete: function(){
 				
 				foot_html += '<tr>';
 				foot_html += '<td colspan="7"> 월 매출액 합계</td>';
-				foot_html += '<td>' + comma(sum_taxAmount) + "</td>";
-				foot_html += '<td>' + comma(sum_taxAddedTax) + "</td>";
-				foot_html += '<td>' + comma(sum_price) + "</td>";
+				foot_html += '<td>' + comma(sum_customValue) + "</td>";
+				foot_html += '<td>' + comma(sum_customTax) + "</td>";
+				foot_html += '<td>' + comma(sum_billingAmount) + "</td>";
 				foot_html += '<td>' + comma(sum_billingTax) + "</td>";
-				foot_html += '<td>' + comma(sum_totalSales) + "</td>";
-				foot_html += '<td><font color="#FF0000">' + comma(sum_memberSales) + "</font></td>";
-				foot_html += '<td>' + comma(sum_supplyPriceAmount) + "</td>";
-				foot_html += '<td>' + comma(sum_supplyTax) + "</td>";
-				foot_html += '<td><font color="#0000FF">' + comma(sum_dahamiSales) + "</font></td>";
+				foot_html += '<td>' + comma(sum_totalSalesAccount) + "</td>";
+				foot_html += '<td><font color="#FF0000">' + comma(sum_salesAccount) + "</font></td>";
+				foot_html += '<td>' + comma(sum_valueOfSupply) + "</td>";
+				foot_html += '<td>' + comma(sum_addedTaxOfSupply) + "</td>";
+				foot_html += '<td><font color="#0000FF">' + comma(sum_dahamiAccount) + "</font></td>";
 				foot_html += '</tr>';
 					
 				$(foot_html).appendTo("#tf_media");
@@ -190,16 +181,15 @@
 				
 				$("#search_period").text(search_period);
 				$("#search_total").text(total);
-				$("#search_price").text(comma(sum_price));
+				$("#search_price").text(comma(sum_billingAmount));
 				
-				$(".calculate_info_area").css("display", "block");
+				$(".calculate_info_area").css("display", "block"); 
 				
 			},
 			error:function(request,status,error){
 				console.log(request, error);	
 			}
 		});
-		
 	}
 </script>
 
