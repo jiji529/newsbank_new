@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +31,7 @@ import com.dahami.newsbank.web.util.ExcelUtil;
 		urlPatterns = {"/listMedia.api", "/excel.listMedia.api"},
 		loadOnStartup = 1
 		)
-public class ListMediaJSON extends HttpServlet {
+public class ListMediaJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -44,8 +45,7 @@ public class ListMediaJSON extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
 		
 		String keyword = request.getParameter("keyword"); // 키워드
 		int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표시 갯수
@@ -72,10 +72,27 @@ public class ListMediaJSON extends HttpServlet {
 		
 		
 		if(cmd.is3("excel")) {
+			int idx = 0;
+			for(Map<String, Object> object : listMember) {
+				String strPhone = strPhone(object.get("phone").toString()); // 휴대폰 번호
+				String strCompNum = strCompNum(object.get("compNum").toString()); // 사업자등록번호
+				String strSettlementRate = strSettlementRate(object); // 정산요율
+				String service = strService(object); // 서비스 상태
+				String strState = strSettlementState(object); // 정산상태
+				
+				listMember.get(idx).put("contentCnt" ,getContentCnt(String.valueOf(listMember.get(idx).get("seq"))));
+				listMember.get(idx).put("strSettlementRate", strSettlementRate);
+				listMember.get(idx).put("strPhone", strPhone);
+				listMember.get(idx).put("strCompNum", strCompNum);
+				listMember.get(idx).put("service", service);
+				listMember.get(idx).put("strState", strState);
+				
+				idx++;
+			}
 			// 목록 엑셀 다운로드
-			List<String> headList = Arrays.asList("아이디", "회사/기관명", "이름", "휴대폰번호", "이메일", "사업자등록번호", "정산요율", "콘텐츠 수량(블라인드/전체)",	"서비스 상태", "정산", "제호"); //  테이블 상단 제목
-			List<Integer> columnSize = Arrays.asList(10, 15, 8, 10, 30, 20, 20, 20, 10, 10, 10); //  컬럼별 길이정보
-			List<String> columnList = Arrays.asList("id", "compName", "name", "phone", "email", "compNum", "preRate", "contentCnt", "activate", "matserID", "logo"); // 컬럼명
+			List<String> headList = Arrays.asList("아이디", "회사/기관명", "이름", "휴대폰번호", "이메일", "사업자등록번호", "정산요율", "콘텐츠 수량(블라인드|전체)",	"서비스 상태", "정산", "제호"); //  테이블 상단 제목
+			List<Integer> columnSize = Arrays.asList(10, 25, 10, 20, 30, 20, 30, 30, 20, 10, 20); //  컬럼별 길이정보
+			List<String> columnList = Arrays.asList("id", "compName", "name", "strPhone", "email", "strCompNum", "strSettlementRate", "contentCnt", "service", "strState", "logo"); // 컬럼명
 			
 			Date today = new Date();
 		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -116,16 +133,10 @@ public class ListMediaJSON extends HttpServlet {
 			json.put("pageCnt", pageCnt);
 			json.put("totalCnt", totalCnt);
 			json.put("result", jArray);
-
+			
+			response.setContentType("application/json");
 			response.getWriter().print(json);
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 	
 	// 매체사별 콘텐츠 수량 반환 (ex. 블라인드 | 전체수량)
@@ -139,9 +150,72 @@ public class ListMediaJSON extends HttpServlet {
 		content = dao.getContentAmount(option);					
 			
 		String contentCnt = String.valueOf(content.get(0).get("blindCnt")) + "|" + String.valueOf(content.get(0).get("totalCnt"));
-		//System.out.println(contentCnt);
 		
 		return contentCnt; 
+	}
+	
+	// 휴대폰 번호(구분자 넣기)
+	private String strPhone(String phone) {
+		String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+	      if(!Pattern.matches(regEx, phone)) return null;
+	      return phone.replaceAll(regEx, "$1-$2-$3");
+	}
+	
+	// 사업자 번호(구분자 넣기)
+	private String strCompNum(String compNum) {
+		String regEx = "(\\d{3})(\\d{2})(\\d{5})";
+	      if(!Pattern.matches(regEx, compNum)) return null;
+	      return compNum.replaceAll(regEx, "$1-$2-$3");
+	}
+	
+	// 정산요율
+	private String strSettlementRate(Map<String, Object> object) {
+		String preRate = "-";
+		String postRate = "-";
+		
+		if(object.containsKey("preRate")) {
+			preRate = object.get("preRate").toString() + "%";
+		}
+		
+		if(object.containsKey("postRate")) {
+			postRate = object.get("postRate").toString() + "%";
+		}
+		
+		String rate = "온라인 " + preRate + "\n오프라인 " + postRate;
+		
+		return rate;
+	}
+	
+	// 서비스 상태
+	private String strService(Map<String, Object> object) {
+		String service = "";
+		String activate = object.get("activate").toString();
+		
+		// 로고가 존재할 때
+		if(object.containsKey("logo")) { 
+			if(activate.equals("1")) {
+				service = "활성";
+			}else if(activate.equals("2")) {
+				service = "비활성";
+			}
+			
+		}else {
+			service = "제호 업로드";
+		}
+		
+		return service;
+	}
+	
+	// 정산상태
+	private String strSettlementState(Map<String, Object> object) {
+		String state = "정산";
+		
+		if(object.containsKey("masterID")) {
+			state = "피정산";
+		}else {
+			state = "정산";
+		}
+		return state;
 	}
 
 }

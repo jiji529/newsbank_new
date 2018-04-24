@@ -14,7 +14,9 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -123,6 +125,9 @@ public class ExcelUtil {
         XSSFRow row = sheet.createRow(0);
         // 쎌 생성
         XSSFCell cell;
+        // 쎌 스타일
+        XSSFCellStyle style = workbook.createCellStyle();
+        style.setWrapText(true); // 자동 줄바꿈
 	        
         // 헤더 정보 구성
         for(int idx=0; idx<headList.size(); idx++) {
@@ -132,7 +137,9 @@ public class ExcelUtil {
         	
         	String cellName = headList.get(idx); // 헤더 셀 이름
         	cell = row.createCell(idx);
+        	cell.setCellStyle(style);
         	cell.setCellValue(cellName);
+        	
         }
 
 	     // 리스트의 size 만큼 row를 생성
@@ -149,8 +156,8 @@ public class ExcelUtil {
 	        	if(mapList.get(rowIdx).get(key) != null) {
 	        		value = mapList.get(rowIdx).get(key).toString();
 	        	}
-	        	//System.out.println(key+ " / " + value);
 	        	cell = row.createCell(num) ;
+	        	cell.setCellStyle(style);
 	        	cell.setCellValue(value);
 	    	}
 	    }
