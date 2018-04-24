@@ -172,7 +172,7 @@
 								<option value="SC0010">카드결제</option>
 								<option value="SC0040">무통장입금</option>
 								<option value="SC0030">실시간 계좌이체</option>
-								<option value="000000">오프라인 세금계산서 발행</option>
+								<option value="SC9999">오프라인 세금계산서 발행</option>
 							</select>
 						</td>
 					</tr>

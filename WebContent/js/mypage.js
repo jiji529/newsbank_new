@@ -799,7 +799,7 @@ $(document).ready(function() {
 							PAYTYPE = "계좌이체";
 							billing_tax = billing_amount * 0.0022;
 							break;
-						case "000000":
+						case "SC9999":
 							PAYTYPE = "세금계산서";
 							rate = value.postRate;
 							break;
@@ -813,7 +813,7 @@ $(document).ready(function() {
 						var added_tax_of_supply = Math.round(sales_account * 0.1); // 공급부가액
 						var dahami_account = total_sales_account - sales_account;
 
-						if (value.LGD_PAYTYPE == "000000") {
+						if (value.LGD_PAYTYPE == "SC9999") {
 							tb_offline_account += "<tr>";
 							tb_offline_account += "<td>" + value.LGD_PAYDATE.substr(0, 4) + '-' + value.LGD_PAYDATE.substr(4, 2) + '-' + value.LGD_PAYDATE.substr(6, 2) + "</td>";
 							tb_offline_account += "<td>" + value.LGD_BUYER + "</td>";

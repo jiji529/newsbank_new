@@ -139,7 +139,7 @@ public class CalculationDTO {
 		case "SC0220":
 			PAYTYPE = "모바일T머니";
 			break;
-		case "000000":
+		case "SC9999":
 			PAYTYPE = "후불";
 			break;
 		}

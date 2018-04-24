@@ -8,7 +8,7 @@
 	<select id="selectTotalPrice" parameterType="java.util.HashMap"
 		resultType="java.util.HashMap">
 		SELECT CASE
-		M.LGD_PAYTYPE WHEN '000000' THEN 'onLine' ELSE
+		M.LGD_PAYTYPE WHEN 'SC9999' THEN 'onLine' ELSE
 		'offline' END as TYPE,
 		YEAR(M.LGD_PAYDATE) as Y, MONTH(M.LGD_PAYDATE)
 		as M, SUM(D.price) AS

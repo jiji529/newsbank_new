@@ -178,7 +178,7 @@ public class PaymentManageDTO implements Serializable {
 		case "SC0220":
 			lGD_PAYTYPE_STR = "모바일T머니";
 			break;
-		case "000000":
+		case "SC9999":
 			lGD_PAYTYPE_STR = "후불";
 			break;
 		}
