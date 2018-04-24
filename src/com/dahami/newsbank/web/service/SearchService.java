@@ -215,16 +215,24 @@ public class SearchService extends ServiceBase {
 			if(photoList != null && list != null && list.size() > 0) {
 				for(PhotoDTO dto : list){
 					try {
-						jsonList.add(dto.convertToFullMap());
+						Map<String, Object> object = new HashMap<String, Object>();
+						object.put("ownerName", dto.getOwnerName());
+						object.put("uciCode", dto.getUciCode());
+						object.put("compCode", dto.getCompCode());
+						object.put("strSaleState", strSaleState(dto.getSaleState()));
+						object.put("publishDate", dateFormat(dto.getPublishDate()));
+						
+						jsonList.add(object);
+						
 					} catch (Exception e) {
 						logger.warn("", e);
 					}
 				}
 			}
 			
-			List<String> headList = Arrays.asList("언론사명", "UCI코드", "언론사코드", "사진상태", "업로드 날짜"); //  테이블 상단 제목
-			List<Integer> columnSize = Arrays.asList(10, 20, 20, 10, 15); //  컬럼별 길이정보
-			List<String> columnList = Arrays.asList("ownerName", "uciCode", "compCode", "saleState", "publishDate"); // 컬럼명
+			List<String> headList = Arrays.asList("언론사명", "UCI코드", "언론사코드", "사진상태", "발행 날짜"); //  테이블 상단 제목
+			List<Integer> columnSize = Arrays.asList(10, 20, 30, 10, 15); //  컬럼별 길이정보
+			List<String> columnList = Arrays.asList("ownerName", "uciCode", "compCode", "strSaleState", "publishDate"); // 컬럼명
 			
 			Date today = new Date();
 		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -232,6 +240,49 @@ public class SearchService extends ServiceBase {
 			ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, jsonList, orgFileName);
 			
 		}
+	}
+	
+	// 사진상태 반환
+	private String strSaleState(int saleState) {
+		String strSaleState = "";
+		
+		switch(saleState) {
+			case 0:
+				strSaleState = "미판매";
+				break;
+				
+			case 1:
+				strSaleState = "판매중";
+				break;
+				
+			case 2:
+				strSaleState = "판매중지";
+				break;
+				
+			case 3:
+				strSaleState = "삭제";
+				break;
+				
+			case 4:
+				strSaleState = "삭제(판매건)";
+				break;
+				
+			case 5:
+				strSaleState = "완전삭제";
+				break;
+		}
+		
+		return strSaleState;
+	}
+	
+	 // 발행날짜 반환
+	private String dateFormat(Date date) {
+		String strDate = "";
+		if(date != null) {
+			strDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+		}
+		
+		return strDate;
 	}
 
 }
