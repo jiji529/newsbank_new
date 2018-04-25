@@ -46,16 +46,20 @@
 			AND	A.seq = #{seq}
 			</if>
 			<if test="member_seq != null and member_seq != 0">
-			AND	A.member_seq = #{member_seq}
+			AND (B.member_seq = #{member_seq}
+			OR B.member_seq IN (SELECT `adjSlave` FROM
+			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission`='Y'
+			AND A.`adjMaster` = #{member_seq}))
 			</if>
-			<if test="media != null and media != ''" >
-			AND	B.copyright = #{media}
+			<if test="media != null and media != 0" >
+			AND	B.copyright = (SELECT name FROM member WHERE seq = #{media})
 			</if>
 			<if test="status != null and status != 0" >
 			AND	A.status = #{status}
 			</if>
 		</where>
 		<if test="startPage != null">
+		ORDER BY A.regDate DESC
 		LIMIT #{startPage}, #{pageVol}
 		</if>
 	</select>
@@ -75,10 +79,13 @@
 			AND	A.seq = #{seq}
 			</if>
 			<if test="member_seq != null and member_seq != 0">
-			AND	A.member_seq = #{member_seq}
+			AND (B.member_seq = #{member_seq}
+			OR B.member_seq IN (SELECT `adjSlave` FROM
+			`adjustment` C INNER JOIN `member` M ON C.adjMaster = M.seq WHERE M.`admission`='Y'
+			AND C.`adjMaster` = #{member_seq}))
 			</if>
-			<if test="media != null and media != ''">
-			AND	B.copyright = #{media}
+			<if test="media != null and media != 0">
+			AND	B.copyright = (SELECT name FROM member WHERE seq = #{media})
 			</if>
 			<if test="status != null and status != 0">
 			AND	A.status = #{status}

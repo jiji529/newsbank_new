@@ -13,6 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.ReportDAO;
+import com.dahami.newsbank.web.util.EmailUtil;
 import com.dahami.newsbank.web.util.JsonUtil;
 
 public class ErrorReportService {
@@ -34,8 +35,11 @@ public class ErrorReportService {
 		String writerEmail = dao.reportWriterEmail((int)reportMap.get("writeUserSeq"));
 		
 		content.append("안녕하세요, 뉴스뱅크입니다.")									.append("\n\n")
-				.append("고객님께서 신고하신 (UCI코드) 사진의 오류 내역이 정상적으로 접수되었습니다.")	.append("\n\n")
-				.append(reportMap.get("content"))							.append("\n\n")
+				.append("고객님께서 신고하신 ("+reportMap.get("uciCode")+") 사진의 오류 내역이 정상적으로 접수되었습니다.")	.append("\n\n")
+				.append("-----------------------------------------------------------------")		.append("\n")
+				.append("신고 내용: ")											.append("\n")
+				.append(reportMap.get("content"))							.append("\n")
+				.append("-----------------------------------------------------------------")		.append("\n\n")
 				.append("최대한 신속하게 수정하여 정상적으로 서비스될 수 있도록 하겠습니다.")			.append("\n\n")
 				.append("뉴스뱅크 서비스를 이용해 주셔서 감사합니다.")
 				;
@@ -44,10 +48,9 @@ public class ErrorReportService {
 		 *		메일링을 위해서 비워둔다. 타이틀과 내용은 만들어 두었다.		 
 		 * **/
 		if(!reportMap.get("mailingCheck").equals("0")){ //메일을 받겠다.
-			
-		}else{	//메일을 받지 않겠다.
-			
-		}
+			EmailUtil eu = new EmailUtil();
+//			eu.sendMail(title,content,writerEmail);		//오픈할때 주석 풀것
+		}else{}
 		
 		//DB 처리
 		int result = 0;
@@ -111,9 +114,12 @@ public class ErrorReportService {
 		String writerEmail = dao.reportWriterEmail((int)list.get(0).get("member_seq"));
 		
 		content.append("안녕하세요, 뉴스뱅크입니다.")									.append("\n\n")
-				.append("고객님께서 신고하신 (UCI코드) 사진의 오류 사항이 수정되었습니다.")	.append("\n\n")
-				.append(list.get(0).get("reason"))							.append("\n\n")
-				.append("앞으로도 서비스 품질 향상을 위해 끊임없이 노력하겠습니다.")			.append("\n\n")
+				.append("고객님께서 신고하신 ("+list.get(0).get("uciCode")+") 사진의 오류 사항이 수정되었습니다.")		.append("\n\n")
+				.append("-----------------------------------------------------------------")		.append("\n")
+				.append("신고 내용: ")											.append("\n")
+				.append(list.get(0).get("reason"))							.append("\n")
+				.append("-----------------------------------------------------------------")		.append("\n\n")
+				.append("앞으로도 서비스 품질 향상을 위해 끊임없이 노력하겠습니다.")				.append("\n\n")
 				.append("감사합니다.")
 				;
 		
@@ -121,12 +127,10 @@ public class ErrorReportService {
 		 *		메일링을 위해서 비워둔다. 타이틀과 내용은 만들어 두었다.		 
 		 * **/
 		if((Integer)list.get(0).get("mailing") != 0){ //메일을 받겠다.
-			
-		}else{	//메일을 받지 않겠다.
-			
-		}
-		
-		int result = 0;
+			EmailUtil eu = new EmailUtil();
+//			eu.sendMail(title,content,writerEmail);		//오픈할때 주석 풀것 
+		}else{}	//메일을 받지 않겠다.
+				int result = 0;
 		result = dao.reportModifyComplete((int)reportMap.get("reportSeq"));
 		try {
 			response.getWriter().print(result);

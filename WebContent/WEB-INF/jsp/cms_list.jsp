@@ -76,9 +76,29 @@
 						<option value="2">수정 완료</option>
 					</select>
 					<select name="reportMedia">
-						<option value="" selected="selected">매체</option>
-						<option value="뉴시스">뉴시스</option>
-						<option value="뉴스1">뉴스1</option>
+<!-- 						<option value="" selected="selected">매체</option> -->
+<!-- 						<option value="뉴시스">뉴시스</option> -->
+<!-- 						<option value="뉴스1">뉴스1</option> -->
+					<c:choose>
+						<c:when test="${seq ne null && !empty seq}">
+							<option value="0">매체</option>
+							<c:forEach items="${mediaList}" var="media">
+								<c:if test="${seq eq media.seq}">
+									<option value="${media.seq }" selected="selected">${media.name }</option>
+								</c:if>
+								<c:if test="${seq ne media.seq}">
+									<option value="${media.seq }">${media.name }</option>
+								</c:if>
+							</c:forEach>
+						</c:when>
+						
+						<c:otherwise>
+							<option value="0" selected="selected">매체</option>
+							<c:forEach items="${mediaList}" var="media">
+								<option value="${media.seq }">${media.name }</option>								
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 					</select>
 				</div>
 				<table id="reportList" cellpadding="0" cellspacing="0" class="tb04" style="">

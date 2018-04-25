@@ -59,7 +59,7 @@ public class ErrorReport extends HttpServlet {
 				reportMap.put("startPage", Integer.parseInt(request.getParameter("report_startPage")));
 				reportMap.put("pageVol", Integer.parseInt(request.getParameter("report_pageVol")));
 				reportMap.put("media", request.getParameter("report_media"));
-				Object status = null;
+				Object status = null; 
 				if(!request.getParameter("report_status").equals("")){
 					status = Integer.parseInt(request.getParameter("report_status"));
 				}

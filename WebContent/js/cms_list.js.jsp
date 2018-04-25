@@ -202,8 +202,10 @@
 				
 				var html = '';
 				var statusName = ['','접수','수정완료']; <!-- 0:전체, 1:접수, 2:수정완료 -->
-				$('#reportList tbody').empty(); 
+				$('#reportList tbody').empty();
+				console.log("empty table"); 
 				$.each(data.data, function(index,value){
+					console.log("draw");
 					html += "<tr onclick=\"$('.error_cont"+index+"').toggle()\"> \n";
 					html += "<td>"+(total-((page-1)*pageVol)-index )+"</td> \n";
 					html += "<td>"+value.regDate+"</td> \n";
