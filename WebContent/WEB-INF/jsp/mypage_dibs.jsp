@@ -34,7 +34,7 @@
 <script src="js/footer.js"></script>
 <script src="js/mypage.js"></script>
 <!-- <script src="js/cms.js.jsp"></script> -->
-<script src="js/dibs.js.jsp?v=20180405"></script>
+<script src="js/dibs.js.jsp?v=20180406"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(key, val){

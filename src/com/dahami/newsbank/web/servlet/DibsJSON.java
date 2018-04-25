@@ -62,11 +62,13 @@ public class DibsJSON extends NewsbankServletBase {
 		
 		int totalCount = totalList.size(); // 전체 갯수
 		int totalPage = (totalCount / pageVol) + 1; // 전체 페이지 수
+		int deferred = MemberInfo.getDeferred(); // 회원 구분(온라인 / 오프라인)
 		
 		JSONObject json = new JSONObject();
 		json.put("result", jsonList);	
 		json.put("totalCount", totalCount);
 		json.put("totalPage", totalPage);
+		json.put("deferred", deferred);
 		
 		response.setContentType("application/json");	
 		response.getWriter().print(json);

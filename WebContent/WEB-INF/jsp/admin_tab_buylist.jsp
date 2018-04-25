@@ -257,59 +257,78 @@
 		});
 	}
 	
-	// 오프라인 구매/정산 상태값 변경 (구매반려 : 1 / 정산 승인: 2 / 정산 승인취소: 3)
+	// 오프라인 구매/정산 상태값 변경 (승인 취소 : 1 / 정산 승인: 2 / 구매 반려: 3)
 	function update_calculations(status) {
 		
 		var count = $("#mtBody input:checkbox:checked").length;
+		var msg = "";
+		
+		switch(status){
+			case 1:
+				msg = "승인 취소";
+				break;
+			
+			case 2:
+				msg = "정산 승인";
+				break;
+				
+			case 3:
+				msg = "구매 반려";
+				break;
+			
+		}
 		
 		if(count != 0){
-			$("#mtBody input:checkbox:checked").each(function(index) {
+			if(confirm("선택하신 항목을 " + msg + " 처리하시겠습니까?")) {
 				
-				var paymentDetail_seq = $(this).val();
-				
-				var uciCode = $(this).closest("tr").find("td").eq(8).text();
-				var id = $(this).closest("tr").find("td").eq(3).text();
-				var price = $(this).closest("tr").find("td").eq(11).text();
-				var rate = $(this).closest("tr").find("input[name=postRate]").val(); 
-				rate = rate / 100;
-				console.log("rate : " + rate);
-				var fees = (price * rate).toString();
-				var usage = parseInt($(this).closest("tr").find("td").eq(10).attr("seq"));
-				var payType = "SC9999"; // 후불
-				//var usuage = ""; // 사용용도
-				
-				if(status == 1) {
-					price = -(price);
-					fees = -(fees);
-				}
-				
-				var param = {
-						"paymentDetail_seq" : paymentDetail_seq,
-						"cmd" : "U",
-						"status" : status,
-						"id": id,
-						"uciCode": uciCode,
-						"price": price,
-						"fees": fees,
-						"payType": payType,
-						"usage":usage
-				};	
-				console.log(param);
-				
-				$.ajax({
-					type: "POST",
-					url: "/calculation.api",
-					data: param,
-					dataType: "json",
-					success: function(data) { 
-						console.log(data);
-					},
-					complete: function() {
-						searchBuyList();
+				$("#mtBody input:checkbox:checked").each(function(index) {
+					
+					var paymentDetail_seq = $(this).val();
+					
+					var uciCode = $(this).closest("tr").find("td").eq(8).text();
+					var id = $(this).closest("tr").find("td").eq(3).text();
+					var price = $(this).closest("tr").find("td").eq(11).text();
+					var rate = $(this).closest("tr").find("input[name=postRate]").val(); 
+					rate = rate / 100;
+					
+					var fees = (price * rate).toString();
+					var usage = parseInt($(this).closest("tr").find("td").eq(10).attr("seq"));
+					var payType = "SC9999"; // 후불
+					//var usuage = ""; // 사용용도
+					
+					if(status == 1) {
+						price = -(price);
+						fees = -(fees);
 					}
+					
+					var param = {
+							"paymentDetail_seq" : paymentDetail_seq,
+							"cmd" : "U",
+							"status" : status,
+							"id": id,
+							"uciCode": uciCode,
+							"price": price,
+							"fees": fees,
+							"payType": payType,
+							"usage":usage
+					};	
+					//console.log(param);
+					
+					$.ajax({
+						type: "POST",
+						url: "/calculation.api",
+						data: param,
+						dataType: "json",
+						success: function(data) { 
+							console.log(data);
+						},
+						complete: function() {
+							searchBuyList();
+						}
+					});
+					
 				});
-				
-			});
+			}
 		}else {
 			alert("원하는 항목을 체크해주세요");
 		}

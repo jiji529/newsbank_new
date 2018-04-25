@@ -95,9 +95,10 @@ function dibsList() {
 			"pageVol" : pageVol,
 			"pageNo" : pageNo
 		},
-		success: function(data){ //console.log(data);
+		success: function(data){ console.log(data);
 			var totalCount = data.totalCount;
 			var totalPage = data.totalPage;
+			var deferred = data.deferred;
 			
 			$(data.result).each(function(key, val) { 
 				//html += '<li class="thumb"> <a href="/view.picture?uciCode='+val.uciCode+'"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
@@ -106,7 +107,13 @@ function dibsList() {
 				html += '<input type="checkbox" value="'+val.uciCode+'"/>';
 				html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
 				html += '<ul class="thumb_btn">';
-				html += '<li class="btn_down" onclick="downDiferred(\''+ val.uciCode +'\')">다운로드</li>';
+				
+				if(deferred == 2) {
+					html += '<li class="btn_down" onclick="downDiferred(\''+ val.uciCode +'\')">다운로드</li>';
+				}else if(deferred == 0) {
+					html += '<li class="btn_cart" onclick="insertBasket(\''+ val.uciCode +'\')">다운로드</li>';
+				}
+				
 				html += '<li class="btn_del">삭제</li>';
 				html += '</ul></li>';					
 			});			
