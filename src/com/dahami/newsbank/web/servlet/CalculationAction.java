@@ -428,8 +428,8 @@ public class CalculationAction extends NewsbankServletBase {
 				
 				paymentDAO.updatePaymentDetail(paymentDetailDTO);
 				
-				// 결제 취소건에 대해서는 calculations 테이블에 취소내역 추가
-				if(status == 1) {
+				// 정산 취소(1) / 승인(2) 건은 정산테이블(calculations)에 추가
+				if(status == 1 || status == 2) {
 					calculationDAO.insertCalculation(calculationDTO);
 				}
 				

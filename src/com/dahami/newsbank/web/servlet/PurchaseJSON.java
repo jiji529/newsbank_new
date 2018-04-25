@@ -113,7 +113,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 						System.out.println("" + (i + 1) + "copyright : " + tempObj.get("copyright"));
 						System.out.println("" + (i + 1) + "usage : " + tempObj.get("usage"));
 						System.out.println("----------------------------");
-						System.out.println(LGD_AMOUNT + " : " + usageList.get(index - 1).getPrice());
+						//System.out.println(LGD_AMOUNT + " : " + usageList.get(index - 1).getPrice());
 
 						int usagePrice = getUsagePrice(usageList, index);
 
@@ -256,12 +256,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 			payment.setLGD_PAYDATE(LGD_TIMESTAMP);
 			payment.setLGD_PAYTYPE(LGD_CUSTOM_USABLEPAY);
 			PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
-			int paymentManage_seq = paymentDAO.insertPaymentManage(payment, DetailList);
-			System.out.println(paymentManage_seq);
-			if (paymentManage_seq > 0) {
-				// 등록 성공
-
-			}
+			int paymentManage_seq = paymentDAO.insertPaymentManage(payment, DetailList); // 추가한 결제정보 고유번호			
 
 		}
 

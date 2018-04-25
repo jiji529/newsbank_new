@@ -440,7 +440,7 @@
 			AND D.`status`= #{status}
 		</if>
 		
-		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
+		ORDER BY M.`LGD_PAYDATE` DESC
 		
 		<if test="startPage !=null and pageVol != null">
 		    LIMIT #{startPage}, #{pageVol}
@@ -491,7 +491,7 @@
 			AND D.`status`= #{status}
 		</if>
 		
-		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
+		ORDER BY M.`LGD_PAYDATE` DESC
 	</select>
 	
 	<!-- 전체 사용자 구매내역 판매금액 함계-->
@@ -537,7 +537,7 @@
 			AND D.`status`= #{status}
 		</if>
 		
-		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
+		ORDER BY M.`LGD_PAYDATE` DESC
 	</select>
 	
 	<!-- 온라인 결제 (목록) -->

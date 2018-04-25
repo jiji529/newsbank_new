@@ -55,12 +55,12 @@
 			"keywordType":keywordType
 			,"keyword":keyword
 			, "pageVol":pageVol
-			, "startPage":startPage
-			, "start_date":start_date
-			, "end_date":end_date
+			, "startPage":startPage 
+			, "start_date":start_date + "000000"
+			, "end_date":end_date + "240000"
 			, "status":status
 		};
-		//console.log(searchParam);
+		console.log(searchParam);
 		
 		var html = "";
 		
@@ -107,26 +107,23 @@
 						var usage = val.usage;
 						var usageList_seq = val.usageList_seq;
 						var price = val.price;
+						var postRate = val.postRate;
 						
 						switch(status) {
 						case 0:
-							// 기본값
 							status = "구매 신청";
 							break;
 							
 						case 1:
-							// 결제 취소
-							status = "구매 반려";
+							status = "승인 취소";
 							break;
 							
 						case 2:
-							// 정산 승인
 							status = "정산 승인";
 							break;
 							
 						case 3:
-							// 정산 승인취소
-							status = "승인 취소";
+							status = "구매 반려";
 							break;
 						}
 						
@@ -147,6 +144,7 @@
 						html += '<td>' + compCode + '</td>';
 						html += '<td seq="' + usageList_seq + '">' + usage + '</td>';
 						html += '<td>' + price + '</td>';
+						html += '<input type="hidden" name="postRate" value="' + postRate + '"/>';
 						html += '</tr>';
 					});
 					
@@ -271,9 +269,12 @@
 				
 				var uciCode = $(this).closest("tr").find("td").eq(8).text();
 				var id = $(this).closest("tr").find("td").eq(3).text();
-				var price = $(this).closest("tr").find("td").eq(10).text();
-				var fees = (price * 0.3).toString();
-				var usage = parseInt($(this).closest("tr").find("td").eq(9).attr("seq"));
+				var price = $(this).closest("tr").find("td").eq(11).text();
+				var rate = $(this).closest("tr").find("input[name=postRate]").val(); 
+				rate = rate / 100;
+				console.log("rate : " + rate);
+				var fees = (price * rate).toString();
+				var usage = parseInt($(this).closest("tr").find("td").eq(10).attr("seq"));
 				var payType = "SC9999"; // 후불
 				//var usuage = ""; // 사용용도
 				
@@ -395,9 +396,9 @@
 	</div>
 	<div class="ad_result">
 		<div class="ad_result_btn_area">
-			<a href="javascript:void(0)" onclick="update_calculations(1)">구매 반려</a>
+			<a href="javascript:void(0)" onclick="update_calculations(3)">구매 반려</a>
 			<a href="javascript:void(0)" onclick="update_calculations(2)">정산 승인</a> 
-			<a href="javascript:void(0)" onclick="update_calculations(3)">정산 승인 취소</a> 
+			<a href="javascript:void(0)" onclick="update_calculations(1)">정산 승인 취소</a> 
 		</div>
 		<div class="ad_result_btn_area fr">
 			<select id="sel_pageVol" onchange="searchBuyList()">

@@ -142,21 +142,34 @@
 			resultObject.LGD_CUSTOM_USABLEPAY = "SC9999";
 			
 			$("#orderJson").val(JSON.stringify(resultObject));
-			pay_form.submit();
-			window.opener.location.href = location.origin + "/postBuylist.mypage"; // 부모창 구매내역으로 이동
-			// 현재 팝업창 form submit 이후에 닫기기능 추가하기
+			
+			// 선택옵션 구매하기
+			$.ajax({
+				type : "post",
+				url : "/purchase.api",
+				data : ({
+					orderJson : JSON.stringify(resultObject)
+				}),
+
+				dataType : "json",
+				success : function(data) { console.log(data);
+					var success = data.success;
+					
+					if(success) {
+						alert("구매 완료");
+						self.close();
+						window.opener.location.href = location.origin + "/postBuylist.mypage"; // 부모창 구매내역으로 이동
+					}
+				},
+				error : function() {
+					console.log(data);
+				}
+			});
 		}				
 		
 	</script>
 </head>
 <body>
-	<form class="pay_form" method="post" action="/purchase.api" name="pay_form" id="pay_form">
-		<input type="hidden" name="orderJson" id="orderJson" />
-		<!-- <input type="hidden" name="uciCode_array" id="uciCode_array" />
-		<input type="hidden" name="usage_array" id="usage_array" /> -->
-		
-		<!-- <input type="hidden" name="cartArry" id="cartArry" /> -->
-	</form>
 	<div class="wrap_pop">
 		<div class="view_rt_top">
 			<h3>구매 옵션변경</h3>
