@@ -52,7 +52,7 @@
 			AND A.`adjMaster` = #{member_seq}))
 			</if>
 			<if test="media != null and media != 0" >
-			AND	B.copyright = (SELECT name FROM member WHERE seq = #{media})
+			AND	B.copyright like concat('%',(SELECT name FROM member WHERE seq = #{media}),'%')
 			</if>
 			<if test="status != null and status != 0" >
 			AND	A.status = #{status}
@@ -85,7 +85,7 @@
 			AND C.`adjMaster` = #{member_seq}))
 			</if>
 			<if test="media != null and media != 0">
-			AND	B.copyright = (SELECT name FROM member WHERE seq = #{media})
+			AND	B.copyright like concat('%',(SELECT name FROM member WHERE seq = #{media}),'%')
 			</if>
 			<if test="status != null and status != 0">
 			AND	A.status = #{status}
