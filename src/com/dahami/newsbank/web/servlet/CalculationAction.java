@@ -212,7 +212,6 @@ public class CalculationAction extends NewsbankServletBase {
 				List<CalculationDTO> calcList = calculationDAO.selectCalculation(param);
 				result = true;
 				
-				
 				if (sep.isInvalid()) {
 					response.sendRedirect("/invlidPage.jsp");
 					return;
@@ -223,7 +222,6 @@ public class CalculationAction extends NewsbankServletBase {
 					List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 					for(CalculationDTO dto : calcList) {
 						try {
-							//mapList.add(dto.convertToMap());
 							DecimalFormat df = new DecimalFormat("#,##0");
 							Map<String, Object> object = new HashMap<String, Object>();
 							
@@ -231,9 +229,9 @@ public class CalculationAction extends NewsbankServletBase {
 							int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
 							int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
 							int billingTax = dto.getFees(); // 빌링수수료
-							int rate = 0; // 정산요율
+							double rate = 0; // 정산요율
 							if(dto.getRate() != 0) {
-								rate = dto.getRate();
+								rate = (double) dto.getRate() / 100;
 							}
 							
 							String payTypeStr = dto.getPayType_Str(); // 결제종류
@@ -250,7 +248,6 @@ public class CalculationAction extends NewsbankServletBase {
 							object.put("uciCode", dto.getUciCode());
 							object.put("copyright", dto.getCopyright());
 							object.put("payType", dto.getPayType_Str());
-							//object.put("price", df.format(dto.getPrice()));
 							
 							object.put("customValue", df.format(customValue)); // 과세금액
 							object.put("customTax", df.format(customTax)); // 과세부가세
@@ -291,9 +288,9 @@ public class CalculationAction extends NewsbankServletBase {
 							int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
 							int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
 							int billingTax = dto.getFees(); // 빌링수수료
-							int rate = 0; // 정산요율
+							double rate = 0;
 							if(dto.getRate() != 0) {
-								rate = dto.getRate();
+								rate = (double) dto.getRate() / 100;
 							}
 							
 							String payTypeStr = dto.getPayType_Str(); // 결제종류
@@ -330,10 +327,8 @@ public class CalculationAction extends NewsbankServletBase {
 						}
 					}
 				}
-								
-							
-				
 				break;
+				
 				
 			case "S":
 				// 년도별 총 판매금액(정산관리)

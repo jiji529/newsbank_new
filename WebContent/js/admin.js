@@ -674,7 +674,8 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 		case "sellyear":
 			// 정산관리(년도별 총 판매금액)
 			var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
-			var paytype = $("select[name='paytype'] option:selected").val(); // 결제 방법
+			//var paytype = $("select[name='paytype'] option:selected").val(); // 결제 방법
+			var payType = $("#paytype").val(); // 결제방법
 			var contractStart = $("#contractStart").val();
 			var contractEnd = $("#contractEnd").val();
 			var cmd = "S";
@@ -690,7 +691,7 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			}
 			
 			$("#currentKeywordType").val(keywordType);
-			$("#currentPayType").val(paytype);
+			$("#currentPayType").val(payType);
 			$("#startDate").val(contractStart);
 			$("#endDate").val(contractEnd);
 			$("#cmd").val(cmd);
@@ -700,7 +701,8 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 		case "sellitem":
 			// 정산관리(결제건별 상세내역)
 			var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
-			var paytype = $("select[name='paytype'] option:selected").val(); // 결제 방법
+			//var payType = $("select[name='paytype'] option:selected").val(); // 결제 방법
+			var payType = $("#paytype").val(); // 결제방법
 			var contractStart = $("#contractStart").val();
 			var contractEnd = $("#contractEnd").val();
 			var cmd = "R";
@@ -716,7 +718,7 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			}
 			
 			$("#currentKeywordType").val(keywordType);
-			$("#currentPayType").val(paytype);
+			$("#currentPayType").val(payType);
 			$("#startDate").val(contractStart);
 			$("#endDate").val(contractEnd);
 			$("#cmd").val(cmd);

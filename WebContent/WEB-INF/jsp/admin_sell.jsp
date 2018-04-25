@@ -102,7 +102,7 @@
 	<form id="downForm" method="post"  target="downFrame">
 		<input type="hidden" id="cmd" name="cmd" />
 		<input type="hidden" id="currentKeywordType" name="keywordType" />
-		<input type="hidden" id="currentPayType" name="paytype" />
+		<input type="hidden" id="currentPayType" name="payType" />
 		<input type="hidden" id="seqArr" name="seqArr" />
 		<input type="hidden" id="startDate" name="start_date" />
 		<input type="hidden" id="endDate" name="end_date" />

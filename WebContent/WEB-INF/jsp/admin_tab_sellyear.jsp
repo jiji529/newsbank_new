@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script src="js/admin.js?v=20180416"></script>
+<script src="js/admin.js?v=20180417"></script>
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -99,9 +99,9 @@
 				"end_date" : end_date,
 				"keyword" : keyword,
 				"seqArr" : seqArr,
-				"paytype" : paytype
+				"payType" : paytype
 		};		
-		console.log(param);
+		//console.log(param);
 		
 		// 초기화
 		$("#sell_thead").empty();
@@ -119,7 +119,7 @@
 			url: "/calculation.api",
 			dataType: "json",
 			data: param,
-			success: function(data) { console.log(data.result);
+			success: function(data) { //console.log(data.result);
 				var result = data.result;
 				var monthlyTotal = 0; // 월별 합계금액
 				
@@ -233,7 +233,7 @@
 			</tr>
 			<tr>
 				<th>결제방법</th>
-				<td><select name="select" class="inp_txt" id="paytype"
+				<td><select name="select" class="inp_txt" id="paytype" name="paytype"
 					style="width: 200px;">
 						<option value="all" selected="selected">전체</option>
 						<option value="SC0040">무통장 입금</option>

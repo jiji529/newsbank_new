@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script src="js/admin.js?v=20180416"></script>
+<script src="js/admin.js?v=20180417"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		search();
@@ -95,8 +95,9 @@
 				"start_date" : start_date,
 				"end_date" : end_date,
 				"keyword" : keyword,
-				"paytype" : paytype
+				"payType" : paytype
 		};		
+		//console.log(param);
 					
 		$("#tf_media").empty();
 		$("#tb_media_tbody").empty();
@@ -122,7 +123,7 @@
 			data: param,
 			dataType: "json",
 			success: function(data) { 
-				var result = data.result; console.log(result);
+				var result = data.result; //console.log(result);
 				total = result.length;
 				
 				 $(result).each(function(key, val){				
@@ -256,7 +257,7 @@
 			</tr>
 			<tr>
 				<th>결제방법</th>
-				<td><select name="select" class="inp_txt" id="paytype"
+				<td><select name="select" class="inp_txt" id="paytype" name="paytype"
 					style="width: 200px;">
 						<option value="all" selected="selected">전체</option>
 						<option value="SC0040">무통장 입금</option>
