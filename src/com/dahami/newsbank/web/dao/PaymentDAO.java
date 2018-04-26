@@ -66,13 +66,19 @@ public class PaymentDAO extends DAOBase {
 	 * @return
 	 * @returnType : List<PaymentDetailDTO>
 	 */
-	public List<PaymentDetailDTO> selectPaymentList(PaymentManageDTO paymentManageDTO) {
+	public List<PaymentDetailDTO> selectPaymentList(Map<String,String[]> paramMaps) {
 		SqlSession session = null;
 		List<PaymentDetailDTO> paylist = null;
 		try {
 
 			session = sf.getSession();
-			paylist = session.selectList("payment.selectPaymentDetailList", paymentManageDTO);
+			
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", paramMaps.get("member_seq")[0]);
+			param.put("year", paramMaps.get("year")[0] == null ? 0 : Integer.parseInt(paramMaps.get("year")[0]));
+			param.put("month", (paramMaps.get("month")[0] == null || paramMaps.get("month")[0].equals("")) ? 0 : Integer.parseInt(paramMaps.get("month")[0]));
+			
+			paylist = session.selectList("payment.selectPaymentDetailList", param);
 
 		} catch (Exception e) {
 			logger.warn("", e);

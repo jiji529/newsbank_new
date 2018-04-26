@@ -41,10 +41,12 @@
 			<foreach item="member_seq" collection="memberList" index="idx" open="(" separator="OR" close=")">
 	            A.member_seq = #{member_seq} 
 	        </foreach>
-			<!-- WHERE A.member_seq = #{member_seq} -->
-			<if test="year != 0">
+			<if test="year != 0 and year != null">
 				AND YEAR(A.regDate) = #{year}
 			</if>
+			<if test="month != 0 and month != null">
+			    AND MONTH(A.regDate) = #{month}
+		    </if>
 		</where>
 		ORDER BY A.regDate DESC
 		LIMIT #{startPage}, #{pageVol}
@@ -59,10 +61,12 @@
 			<foreach item="member_seq" collection="memberList" index="idx" open="(" separator="OR" close=")">
 	            A.member_seq = #{member_seq} 
 	        </foreach>
-			<!-- WHERE A.member_seq = #{member_seq} -->
-			<if test="year != 0">
+			<if test="year != 0 and year != null">
 				AND YEAR(A.regDate) = #{year}
 			</if>
+			<if test="month != 0 and month != null">
+			    AND MONTH(A.regDate) = #{month}
+		    </if>
 		</where>
 		ORDER BY A.regDate DESC
 	</select>

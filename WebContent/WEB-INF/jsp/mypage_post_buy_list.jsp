@@ -22,11 +22,14 @@
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
  SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+ SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
  int beginYear = Integer.parseInt(yearFormat.format(new Date())) - 2; // 현재 년도 -2
  int endYear = Integer.parseInt(yearFormat.format(new Date())); // 현재 년도
+ int currentMonth = Integer.parseInt(monthFormat.format(new Date())); // 현재 월
 %>
 <c:set var="endYear" value="<%=endYear%>"/>
 <c:set var="beginYear" value="<%=beginYear%>"/>
+<c:set var="currentMonth" value="<%=currentMonth%>"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -41,7 +44,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180402"></script>
+<script src="js/mypage.js?v=20180403"></script>
 </head>
 <body>
 <div class="wrap">
@@ -92,11 +95,29 @@
 		<div class="table_head">
 			<h3>구매 내역</h3>
 			<div class="cms_search"> <span class="mess">※고객님과 같은 그룹으로 묶인 계정에서 구매한 내역이 모두 공유됩니다.</span>
-				<select onchange="select_year(this.value, '/postBuylist.mypage')">
-					<option <c:if test="${year eq '0'}">selected</c:if> value="0">전체</option>
+				<select onchange="select_year('/postBuylist.mypage')" id="selectYear">
+					<option <c:if test="${returnMap['year'][0] eq '0'}">selected</c:if> value="0">년도 전체</option>
 					<c:forEach var="yearOpt" begin="${beginYear}" end="${endYear}" step="1">
-						<option <c:if test="${year eq (beginYear-yearOpt+endYear)}">selected</c:if> value="${beginYear-yearOpt+endYear}">${beginYear-yearOpt+endYear}년</option>
+						<option <c:if test="${returnMap['year'][0] eq (beginYear-yearOpt+endYear)}">selected</c:if> value="${beginYear-yearOpt+endYear}">${beginYear-yearOpt+endYear}년</option>
 					</c:forEach>
+				</select>
+				
+				<select onchange="select_month('/postBuylist.mypage')" id="selectMonth">
+					<option value="0">월 전체</option>
+					
+					<!-- (선택년도 == 현재년도) -> 현재월까지 표시  -->
+					<c:if test="${returnMap['year'][0] eq endYear}">
+						<c:forEach var="monthOpt" begin="1" end="${currentMonth}" step="1">
+							<option <c:if test="${returnMap['month'][0] eq monthOpt}">selected</c:if> value="${monthOpt}">${monthOpt}월</option>
+						</c:forEach>
+					</c:if>
+					
+					<!-- 과거년도는 (1~12월) 표시 -->
+					<c:if test="${returnMap['year'][0] < endYear}">
+						<c:forEach var="monthOpt" begin="1" end="12" step="1">
+							<option <c:if test="${returnMap['month'][0] eq monthOpt}">selected</c:if> value="${monthOpt}">${monthOpt}월</option>
+						</c:forEach>
+					</c:if>
 				</select>
 			</div>
 		</div>
@@ -155,6 +176,7 @@
 	<%@include file="footer.jsp"%>
 </div>
 <form id="dateForm" method="post"  target="dateFrame">
+	<input type="hidden" id="month" name="month" />
 	<input type="hidden" id="year" name="year" />
 </form>
 <%@include file="view_form.jsp" %>

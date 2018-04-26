@@ -62,6 +62,9 @@ public class MypageDownload extends NewsbankServletBase {
 				if(!paramMaps.containsKey("year")){
 					paramMaps.put("year", new String[]{"0"});
 				}
+				if(!paramMaps.containsKey("month")){
+					paramMaps.put("month", new String[]{"0"});
+				}
 				if(!paramMaps.containsKey("page")){
 					paramMaps.put("page", new String[]{"1"});
 				}

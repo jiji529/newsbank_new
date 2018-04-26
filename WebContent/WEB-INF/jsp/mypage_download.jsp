@@ -23,11 +23,14 @@
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
  SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+ SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
  int beginYear = Integer.parseInt(yearFormat.format(new Date())) - 2; // 현재 년도 -2
  int endYear = Integer.parseInt(yearFormat.format(new Date())); // 현재 년도
+ int currentMonth = Integer.parseInt(monthFormat.format(new Date())); // 현재 월
 %>
 <c:set var="endYear" value="<%=endYear%>"/>
-<c:set var="beginYear" value="<%=beginYear%>"/>  
+<c:set var="beginYear" value="<%=beginYear%>"/>
+<c:set var="currentMonth" value="<%=currentMonth%>"/>    
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -76,6 +79,7 @@
 	function pageMove(page){
 		$("#pagingForm input[name=page]").val(page);
 		$("#pagingForm input[name=year]").val($('#selectYear option:selected').val());
+		$("#pagingForm input[name=month]").val($('#selectMonth option:selected').val());
 		
 		$("#pagingForm").attr("action","/download.mypage");
 		$("#pagingForm").attr("method","post");
@@ -95,43 +99,44 @@
 			<p>설명어쩌고저쩌고</p>
 		</div>
 		<div class="mypage_ul">
-				<ul class="mp_tab1">
-					<c:if test="${MemberInfo.type eq 'M' && MemberInfo.admission eq 'Y'}">
-						<li>
-							<a href="/accountlist.mypage">정산 관리</a>
-						</li>
-						<li>
-							<a href="/cms">사진 관리</a>
-						</li>
-					</c:if>
+			<ul class="mp_tab1">
+				<c:if test="${MemberInfo.type eq 'M' && MemberInfo.admission eq 'Y'}">
 					<li>
-						<a href="/info.mypage">회원정보 관리</a>
+						<a href="/accountlist.mypage">정산 관리</a>
 					</li>
 					<li>
-						<a href="/dibs.myPage">찜관리</a>
+						<a href="/cms">사진 관리</a>
 					</li>
-					<c:if test="${MemberInfo.deferred eq 2}">
-						<li class="on">
-							<a href="/download.mypage">다운로드 내역</a>
-						</li>
-						<li>
-							<a href="/postBuylist.mypage">구매내역</a>
-						</li>
-					</c:if>
-					<c:if test="${MemberInfo.deferred eq 0}">
-						<li>
-							<a href="/cart.myPage">장바구니</a>
-						</li>
-						<li>
-							<a href="/buylist.mypage">구매내역</a>
-						</li>
-					</c:if>
-				</ul>
-				<!-- 컬렉션 생기면 추가 <ul class="mp_tab2">
-					<li class="on"><a href="javascript:void(0)">사진 찜 관리</a></li>
-					<li><a href="javascript:void(0)">컬렉션 찜 관리</a></li>
-				</ul> -->
-			</div>
+				</c:if>
+				<li>
+					<a href="/info.mypage">회원정보 관리</a>
+				</li>
+				<li>
+					<a href="/dibs.myPage">찜관리</a>
+				</li>
+				<c:if test="${MemberInfo.deferred eq 2}">
+					<li class="on">
+						<a href="/download.mypage">다운로드 내역</a>
+					</li>
+					<li>
+						<a href="/postBuylist.mypage">구매내역</a>
+					</li>
+				</c:if>
+				<c:if test="${MemberInfo.deferred eq 0}">
+					<li>
+						<a href="/cart.myPage">장바구니</a>
+					</li>
+					<li>
+						<a href="/buylist.mypage">구매내역</a>
+					</li>
+				</c:if>
+			</ul>
+			<!-- 컬렉션 생기면 추가 <ul class="mp_tab2">
+				<li class="on"><a href="javascript:void(0)">사진 찜 관리</a></li>
+				<li><a href="javascript:void(0)">컬렉션 찜 관리</a></li>
+			</ul> -->
+		</div>
+			
 		<div class="table_head">
 			<h3>다운로드 내역</h3>
 			<div class="cms_search"> 
@@ -139,15 +144,33 @@
 					<span class="mess">※고객님과 같은 그룹으로 묶인 계정에서 다운로드 받은 내역이 모두 공유됩니다.</span>
 				</c:if>
 				
-				<select onchange="select_year(this.value, '/download.mypage')" id="selectYear">
-<%-- 					<option <c:if test="${year eq '0'}">selected</c:if> value="0">전체</option> --%>
-					<option <c:if test="${returnMap['year'][0] eq '0'}">selected</c:if> value="0">전체</option>
+				<select onchange="select_year('/download.mypage')" id="selectYear">
+					<option <c:if test="${returnMap['year'][0] eq '0'}">selected</c:if> value="0">년도 전체</option>
 					<c:forEach var="yearOpt" begin="${beginYear}" end="${endYear}" step="1">
 						<option <c:if test="${returnMap['year'][0] eq (beginYear-yearOpt+endYear)}">selected</c:if> value="${beginYear-yearOpt+endYear}">${beginYear-yearOpt+endYear}년</option>
 					</c:forEach>
 				</select>
+				
+				<select onchange="select_month('/download.mypage')" id="selectMonth">
+					<option value="0">월 전체</option>
+					
+					<!-- (선택년도 == 현재년도) -> 현재월까지 표시  -->
+					<c:if test="${returnMap['year'][0] eq endYear}">
+						<c:forEach var="monthOpt" begin="1" end="${currentMonth}" step="1">
+							<option <c:if test="${returnMap['month'][0] eq monthOpt}">selected</c:if> value="${monthOpt}">${monthOpt}월</option>
+						</c:forEach>
+					</c:if>
+					
+					<!-- 과거년도는 (1~12월) 표시 -->
+					<c:if test="${returnMap['year'][0] < endYear}">
+						<c:forEach var="monthOpt" begin="1" end="12" step="1">
+							<option <c:if test="${returnMap['month'][0] eq monthOpt}">selected</c:if> value="${monthOpt}">${monthOpt}월</option>
+						</c:forEach>
+					</c:if>
+				</select>		
 			</div>
 		</div>
+		
 		<section class="order_list">
 			<table cellpadding="0" cellspacing="0" class="tb03" style="border-top:0; margin-bottom:10px;">
 				<colgroup>
@@ -177,7 +200,8 @@
 									for="check${loop.index+1}">선택</label>
 							</div>
 						</td>
-						<td>${loop.index+1}</td>
+						<c:set value="${returnMap['bundle'][0] * (returnMap['page'][0] - 1) + loop.index+1 }" var="number"/>
+						<td>${number}</td>
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
@@ -244,11 +268,13 @@
 
 <form id="pagingForm">
 	<input type="hidden" name="year" />
+	<input type="hidden" name="month" />
 	<input type="hidden" name="page" value="${returnMap['page'][0]}"/>
 	<input type="hidden" name="bundle" value="20"/>
 </form>
 	
 <form id="dateForm" method="post"  target="dateFrame">
+	<input type="hidden" id="month" name="month" />
 	<input type="hidden" id="year" name="year" />
 </form>
 <%@include file="down_frame.jsp" %>

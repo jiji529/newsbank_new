@@ -734,7 +734,64 @@
 	
 	
 	<!-- 구매내역 리스트 호출 -->
-	<select id="selectPaymentDetailList" resultMap="paymentDetailResult">
+	<select id="selectPaymentDetailList" resultMap="paymentDetailResult" parameterType="java.util.Map">
+		SELECT M.`seq` as `paymentManage_seq`,
+		M.`member_seq`, M.`LGD_BUYER`,
+		M.`LGD_BUYERID`,
+		M.`LGD_BUYERPHONE`, M.`LGD_RESPCODE`,
+		M.`LGD_RESPMSG`,
+		M.`LGD_OID`,M.LGD_PAYSTATUS,
+		M.`LGD_AMOUNT`, M.`LGD_TID`,
+		M.`LGD_PAYTYPE`,
+		M.`LGD_PAYDATE`,
+		M.`LGD_PRODUCTINFO`, M.`LGD_FINANCENAME`,
+		M.`LGD_ACCOUNTNUM`,
+		M.`regDate`,
+		D.`seq` as `paymentDetail_seq`,
+		D.`usageList_seq`,
+		D.`status`,
+		D.`photo_uciCode`, D.`price`,
+		D.`downStart`,
+		D.`downEnd`, D.`downCount`,
+		R.`compName`, R.`id`, R.`name`,
+		R.`email`, R.`phone`,
+		U.`seq` as `usageList_seq`,
+		U.`usage`,
+		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
+		U.`usageDate`, U.`price`,
+		P.`uciCode`, P.`copyright`, P.`ownerType`
+		FROM
+		`paymentManage`
+		AS M
+		LEFT JOIN
+		paymentDetail D ON M.seq =
+		D.paymentManage_seq
+		INNER JOIN
+		member R ON M.member_seq =
+		R.seq
+		LEFT JOIN
+		usageList U ON
+		U.seq = D.usageList_seq
+		LEFT
+		JOIN photo P ON P.uciCode =
+		D.photo_uciCode
+		<where>		  
+		    <if test="member_seq != null and member_seq != 0">
+		        M.`member_seq` =
+				#{member_seq}
+		    </if>  			
+		    <if test="year != 0 and year != null">
+				AND YEAR(M.regDate) = #{year}
+			</if>
+			<if test="month != 0 and month != null">
+			    AND MONTH(M.regDate) = #{month}
+		    </if>
+		</where>
+		ORDER BY M.`regDate` DESC
+	</select>
+	
+	
+	<!-- <select id="selectPaymentDetailList" resultMap="paymentDetailResult">
 		SELECT M.`seq` as `paymentManage_seq`,
 		M.`member_seq`, M.`LGD_BUYER`,
 		M.`LGD_BUYERID`,
@@ -787,12 +844,9 @@
 			<if test="LGD_PAYSTATUS !=null">
 				AND M.LGD_PAYSTATUS = #{LGD_PAYSTATUS}
 			</if>
-			<!-- <if test="paymentDetailList != null">
-			    AND D.`seq` = #{paymentDetailList.get(0).}
-			</if> -->
 		</where>
 		ORDER BY M.`regDate` DESC
-	</select>
+	</select> -->
 	
 	<!-- 결제 상세내역 취소 -->
 	<!-- <update id="cancelPaymentDetail" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO"> -->

@@ -1016,15 +1016,25 @@ $(function() {
 });
 
 // 다운로드 내역, 구매내역 (년도별 선택 옵션)
-function select_year(year, url) {
+function select_year(url) {
+	var year = $("#selectYear option:selected").val(); // 선택 년도
+	
 	$("#year").val(year);
 	$("#dateForm").attr("action", url);
 	$("#dateForm").submit();
 	
 	
+}
+
+// 다운로드 내역, 구매내역 (월별 선택 옵션)
+function select_month(url) {
+	var year = $("#selectYear option:selected").val(); // 선택 년도
+	var month = $("#selectMonth option:selected").val(); // 선택 월
 	
-	console.log($("#dateForm").length);
-	console.log("year : " + year + " / url : " + url);
+	$("#year").val(year);
+	$("#month").val(month);
+	$("#dateForm").attr("action", url);
+	$("#dateForm").submit();
 }
 
 // 현재날짜 (년월일시분초)

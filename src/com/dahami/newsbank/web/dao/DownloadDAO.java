@@ -35,6 +35,7 @@ public class DownloadDAO extends DAOBase {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("memberList", memberList);
 			param.put("year", paramMaps.get("year")[0] == null ? 0 : Integer.parseInt(paramMaps.get("year")[0]));
+			param.put("month", (paramMaps.get("month")[0] == null || paramMaps.get("month")[0].equals("")) ? 0 : Integer.parseInt(paramMaps.get("month")[0]));
 			param.put("startPage", startPage);
 			param.put("pageVol", pageVol);
 			
@@ -71,6 +72,7 @@ public class DownloadDAO extends DAOBase {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("memberList", memberList);
 			param.put("year", paramMaps.get("year")[0] == null ? 0 : Integer.parseInt(paramMaps.get("year")[0]));
+			param.put("month", (paramMaps.get("month")[0] == null || paramMaps.get("month")[0].equals("")) ? 0 : Integer.parseInt(paramMaps.get("month")[0]));
 			
 			count = session.selectOne("Download.selDownListTotalCnt", param);
 			
