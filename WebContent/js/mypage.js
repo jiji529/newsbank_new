@@ -104,7 +104,7 @@ $(document).ready(function() {
 		$("#pw").removeAttr("name");
 		if (pw.length > 0) {
 			if (regex.test(pw)) {
-				$("#pw_message").css("display", "none");
+				$("#pw_message").css("display", "none");				
 				if (pw != pw_check) {
 					$("#pw_check_message").css("display", "block");
 					$("#pw_check").focus();
@@ -386,8 +386,9 @@ $(document).ready(function() {
 	$('#frmMypage').on('submit', function() {
 		var type = $("#type").val();
 		var check = true;
-		console.log("pw size : " + $('#frmMypage').find('[name=pw]').size());
-		if ($('#frmMypage').find('[name=pw]').size() > 0) {
+		console.log("pw length : " + $('#frmMypage').find('[id=pw]').val().length);
+		
+		if ($('#frmMypage').find('[id=pw]').val().length > 0) {
 			check = check && validPw();
 		}
 		if ($('#frmMypage').find('[name=name]').size() > 0) {
@@ -409,7 +410,6 @@ $(document).ready(function() {
 			check = check && validTaxPhone();
 		}
 		
-
 		if (check) {
 			var message = "";
 			
@@ -439,8 +439,8 @@ $(document).ready(function() {
 				return false;
 			}
 		}
+		return false;
 	});
-
 });
 
 // buylist.mypage
