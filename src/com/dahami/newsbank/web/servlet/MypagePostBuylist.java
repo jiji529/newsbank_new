@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
@@ -36,13 +37,13 @@ public class MypagePostBuylist extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		super.doGet(request, response);
 		
 		HttpSession session = request.getSession();
+		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
-
+		MemberInfo = memberDAO.getMember(MemberInfo); // 최신 회원정보 갱신
+		
 		if (MemberInfo != null) {
 			
 			boolean mypageAuth = false;
@@ -61,12 +62,22 @@ public class MypagePostBuylist extends NewsbankServletBase {
 				if(!paramMaps.containsKey("month")){
 					paramMaps.put("month", new String[]{"0"});
 				}
-				paramMaps.put("member_seq", new String[]{String.valueOf(MemberInfo.getSeq())});
+				
+				int group_seq = MemberInfo.getGroup_seq(); // 회원그룹여부
+				List<Integer> memberList = new ArrayList<>();
+				
+				if(group_seq == 0) {
+					// 일반 회원
+					memberList.add(MemberInfo.getSeq());
+				}else {
+					// 그룹핑 회원
+					memberList = MemberInfo.getDownloadGroupList(); 
+				}
 				
 				// 구매내역 목록
 				PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
 				List<PaymentDetailDTO> listPaymentDetail = new ArrayList<PaymentDetailDTO>();
-				listPaymentDetail = paymentDAO.selectPaymentList(paramMaps);
+				listPaymentDetail = paymentDAO.selectPaymentList(memberList, paramMaps);
 				
 				request.setAttribute("listPaymentDetail", listPaymentDetail);
 				request.setAttribute("returnMap", paramMaps);
@@ -77,13 +88,6 @@ public class MypagePostBuylist extends NewsbankServletBase {
 		} else { 
 			response.sendRedirect("/login");
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

@@ -362,10 +362,8 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-			
 			session.insert("Member.insertGroup", param);
 			
-			//System.out.println("LAST INSERT SEQ : " + param.get("seq"));
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
@@ -390,8 +388,6 @@ public class MemberDAO extends DAOBase {
 		try {
 			session = sf.getSession();
 			session.update("Member.updateMemberGroup", param);
-			//String sql = session.getConfiguration().getMappedStatement("Member.updateMemberGroup").getBoundSql(param).getSql();
-			//System.out.println("sql : " + sql);
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
@@ -531,8 +527,6 @@ public class MemberDAO extends DAOBase {
 			} catch (Exception e) {
 			}
 		}
-		//System.out.println("insert(" + memberDTO + ") --> " + memberDTO.getEmail());
-		//System.out.println(memberDTO.getName());
 
 		return result;
 	}
