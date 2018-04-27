@@ -230,7 +230,7 @@ function setDatepicker() {
 				</ul>
 			</li>
 <c:if test="${serviceMode eq null || serviceMode ne true}">
-			<li class="filter_title filter_service">
+			<li class="filter_title filter_saleState">
 				<span><font>서비스 상태</font><%=headerSplitChar%>정상+숨김</span>
 				<ul class="filter_list">
 					<li value="<%=SearchParameterBean.SALE_STATE_OK_BLIND%>" selected="selected">정상+숨김</li>

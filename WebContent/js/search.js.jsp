@@ -47,7 +47,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			setFilter(view_form.media.value, $("li.filter_media"));
 			setFilter(view_form.horiVertChoice.value, $("li.filter_horizontal"));
 			setFilter(view_form.size.value, $("li.filter_size"));
-			setFilter(view_form.saleState.value, $("li.filter_service"));
+			setFilter(view_form.saleState.value, $("li.filter_saleState"));
 			setFilter(view_form.durationReg.value, $("li.filter_durationReg"));
 			setFilter(view_form.durationTake.value, $("li.filter_durationTake"));
 		}
@@ -165,7 +165,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var portRight = $(".filter_portRight .filter_list").find("[selected=selected]").attr("value");
 		var includePerson = $(".filter_incPerson .filter_list").find("[selected=selected]").attr("value");
 		var group = $(".filter_group .filter_list").find("[selected=selected]").attr("value");
-		var saleState = $(".filter_service .filter_list").find("[selected=selected]").attr("value");
+		var saleState = $(".filter_saleState .filter_list").find("[selected=selected]").attr("value");
 		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value");
 
 		view_form.keyword.value = keyword;

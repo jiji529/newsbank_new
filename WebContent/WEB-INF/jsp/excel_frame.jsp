@@ -16,7 +16,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
 	function excel() { // form, iframe을 이용한 엑셀저장
-		var url = "excel.admin.search";
+		var url = "excel." + searchTarget;
 		getSearchOptions();
 		$("#excelDownForm").attr("action", url);
 		$("#excelDownForm").submit();
@@ -30,7 +30,7 @@
 		var durationTake = $(".filter_durationTake .filter_list").find("[selected=selected]").attr("value"); // 촬영일
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value"); // 가로/세로
 		var size = $(".filter_size .filter_list").find("[selected=selected]").attr("value"); // 사진크기
-		var service = $(".filter_service .filter_list").find("[selected=selected]").attr("value"); // 서비스
+		var saleState = $(".filter_saleState .filter_list").find("[selected=selected]").attr("value"); // 판매상태
 		
 		excelDownForm.keyword.value = keyword;
 		excelDownForm.media.value = media;
@@ -38,7 +38,7 @@
 		excelDownForm.durationTake.value = durationTake;
 		excelDownForm.horiVertChoice.value = horiVertChoice;
 		excelDownForm.size.value = size;
-		excelDownForm.service.value = service;
+		excelDownForm.saleState.value = saleState;
 		
 	}
 </script>
@@ -51,6 +51,6 @@
 	<input type="hidden" name="durationTake" />
 	<input type="hidden" name="horiVertChoice" />
 	<input type="hidden" name="size" />
-	<input type="hidden" name="service" />
+	<input type="hidden" name="saleState" />
 </form>
 <iframe id="excelDownFrame" name="excelDownFrame" style="display:none"></iframe>
