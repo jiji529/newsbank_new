@@ -3,7 +3,7 @@ $(document).ready(function() {
 	
 	$("#frmLogin").on("submit",function(){
 		var form = $(this);
-		$.post("/login.api", form.serialize(), function(data) {
+		$.post("/check.login", form.serialize(), function(data) {
 			if (data.success) {
 				if(data.message){
 					alert(data.message);
@@ -16,11 +16,8 @@ $(document).ready(function() {
 				}
 				
 				return false;
-				
-				
 			} else {
 				alert(data.message);
-
 			}
 		}, "json");
 		
@@ -35,7 +32,7 @@ $(document).ready(function() {
 			}).appendTo('body');
 		}
 
-		$('#login_popup').load('login.pop',function( response, status){
+		$('#login_popup').load('idchange.login',function( response, status){
 			if(response==''){
 				login_move();
 			}

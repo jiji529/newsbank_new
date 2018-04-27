@@ -587,7 +587,7 @@ $(document).ready(function() {
 $(document).ready(function() {
 	
 	$("#frmLogin").on("submit",function(){
-		$.post("/login.api", $(this).serialize(), function(data) {
+		$.post("/check.login", $(this).serialize(), function(data) {
 			console.log(data);
 			if (data.success) {
 				location.href = "/login";

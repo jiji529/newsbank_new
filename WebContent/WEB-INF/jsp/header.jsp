@@ -110,7 +110,7 @@ if(errMsg != null && errMsg.length() > 0) {
 			</c:when>
 			<c:otherwise>
 				<li>
-					<a href="/logout">로그아웃</a>
+					<a href="/out.login">로그아웃</a>
 				</li>
 				
 				<c:choose>

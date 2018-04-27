@@ -183,7 +183,7 @@ if(errMsg != null && errMsg.length() > 0) {
 					</c:when>
 					<c:otherwise>
 						<li>
-							<a href="/logout">로그아웃</a>
+							<a href="/out.login">로그아웃</a>
 						</li>
 						<li>
 							<a href="/info.mypage">마이페이지</a>

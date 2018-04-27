@@ -443,4 +443,17 @@
 	<update id="leaveMember" parameterType="com.dahami.newsbank.web.dto.MemberDTO">
 	    UPDATE member SET withdraw = 1 WHERE seq = #{seq}
 	</update>
+	
+	<select id="listOldMember" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+		<![CDATA[
+		select * from member
+			where loginDate < DATE_SUB(now(), interval 1 year)
+				and oldMailSendDate is null
+		]]>
+	</select>
+	
+	<update id="setOldMailSend"  parameterType="int">
+		update member set oldMailSendDate = now()
+			where seq = #{value}
+	</update>
 </mapper>

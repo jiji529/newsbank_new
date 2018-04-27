@@ -530,5 +530,59 @@ public class MemberDAO extends DAOBase {
 
 		return result;
 	}
+	
+	/**
+	 * @methodName  : listOldMembert
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2018. 4. 27. 오후 1:29:37
+	 * @methodCommet: 장기간 로그인 하지 않은 사용자 쿼리 TODO 활성 사용자만 쿼리하도록 변경
+	 * @return 
+	 * @returnType  : List<MemberDTO>
+	 */
+	public List<MemberDTO> listOldMembert() {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Member.listOldMember");
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	/**
+	 * @methodName  : setOldMailSend
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2018. 4. 27. 오후 1:29:53
+	 * @methodCommet: 장기 로그인 하지 않은 사용자 메일전송 처리
+	 * @param memberSeq
+	 * @return 
+	 * @returnType  : boolean
+	 */
+	public boolean setOldMailSend(int memberSeq) {
+		boolean result = false;
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			session.update("Member.setOldMailSend", memberSeq);
+			result = true;
+			session.commit();
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return result;
+	}
 
 }
