@@ -410,25 +410,15 @@ public class SearchDAO extends DAOBase {
 					// 전체
 				}
 				else {
-					StringBuffer buf = new StringBuffer();
 					if((size & SearchParameterBean.SIZE_LARGE) == SearchParameterBean.SIZE_LARGE) {
-						buf.append("(widthPx:[3000 TO *] AND heightPx:[3000 TO *])");
+						query.addFilterQuery("widthPx:[3000 TO *] AND heightPx:[3000 TO *]");
 					}
 					if((size & SearchParameterBean.SIZE_MEDIUM) == SearchParameterBean.SIZE_MEDIUM) {
-						if(buf.length() > 0) {
-							buf.append(" OR ");
-						}
-						buf.append("((NOT (widthPx:[3000 TO *] AND heightPx:[3000 TO *])) AND (NOT (widthPx:[* TO 1000] AND heightPx:[* TO 1000])))");
+						query.addFilterQuery("NOT (widthPx:[3000 TO *] AND heightPx:[3000 TO *])");
+						query.addFilterQuery("NOT (widthPx:[* TO 1000] AND heightPx:[* TO 1000])");
 					}
 					if((size & SearchParameterBean.SIZE_SMALL) == SearchParameterBean.SIZE_SMALL) {
-						if(buf.length() > 0) {
-							buf.append(" OR ");
-						}
-						buf.append("(widthPx:[* TO 1000] AND heightPx:[* TO 1000])");
-					}
-					
-					if(buf.length() > 0) {
-						query.addFilterQuery("(" + buf.toString() + ")");
+						query.addFilterQuery("widthPx:[* TO 1000] AND heightPx:[* TO 1000]");
 					}
 				}
 			}

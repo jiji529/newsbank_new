@@ -256,7 +256,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}else{
 			html += "<div class='no_result'>";
 			html += "<p>";
-			html += "<em>"+searchKeyword+"</em>에 대한 검색 결과가 없습니다.";
+			if(searchKeyword.length > 0) {
+				html += "<em>"+searchKeyword+"</em>에 대한";
+			}
+			else {
+				html += "조건에 적합한";
+			}
+			html += " 검색 결과가 없습니다.";
 			html += "</p>";
 			html += "<ul>";
 			html += "<li>검색어의 단어수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.</li>";
