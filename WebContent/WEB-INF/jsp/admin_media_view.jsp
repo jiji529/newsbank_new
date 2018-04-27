@@ -54,7 +54,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
-<script src="js/admin.js?v=20180307"></script>
+<script src="js/admin.js?v=20180308"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
@@ -82,6 +82,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var json_data = new Array;
 		
 		$(".frmMedia").each(function(key, value){
+			console.log(key, value);
+			
 			var id = "#frmMedia_"+key;
 			var taxPhone = $("#taxPhone1_"+ key + " option:selected").val() + $("#taxPhone2_" + key).val() + $("#taxPhone3_" + key).val();
 			
@@ -288,7 +290,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<tr>
 							<th>결제구분</th>
 							<td>
-								<select name="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
+								<select name="deferred" id="deferred" class="inp_txt" style="width:180px;" onchange="deferred_choice()">
 									<option value="0" <c:if test="${MemberDTO.deferred eq '0'}">selected</c:if>>온라인결제</option>
 									<option value="2" <c:if test="${MemberDTO.deferred eq '2'}">selected</c:if>>오프라인 별도가격</option>
 								</select>
@@ -297,7 +299,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 						<tr>
 							<th>정산 매체</th>
 							<td>
-								<select name="admission" class="inp_txt" style="width:180px;">
+								<select name="admission" id="admission" class="inp_txt" style="width:180px;">
 									<option value="Y" selected="selected">승인</option>
 									<option value="N" >비승인</option>
 								</select>

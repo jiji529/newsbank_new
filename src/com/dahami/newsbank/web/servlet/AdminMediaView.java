@@ -157,8 +157,6 @@ public class AdminMediaView extends NewsbankServletBase {
 					request.setAttribute("usageList", usageList);					
 				}
 				
-				request.setAttribute("MemberDTO", memberDTO);
-				
 				// 정산정보
 				List<MemberDTO> adjustMedia = memberDAO.adminAdjustMedia(memberDTO);
 				List<String> mediaList = new ArrayList<String>(); // 정산 매체
@@ -172,6 +170,8 @@ public class AdminMediaView extends NewsbankServletBase {
 					request.setAttribute("mediaList", String.join(",", mediaList));
 				}
 				
+				
+				request.setAttribute("MemberDTO", memberDTO);
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_media_view.jsp");
 				dispatcher.forward(request, response);
 				

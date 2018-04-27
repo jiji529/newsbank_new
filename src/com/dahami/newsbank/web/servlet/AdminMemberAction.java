@@ -373,55 +373,55 @@ public class AdminMemberAction extends NewsbankServletBase {
 				
 				memberDTO.setType(jsonObject.get("type").toString());
 				
-				if (jsonObject.get("compBankName").toString() != null && !jsonObject.get("compBankName").toString().equals("")) {
+				if (jsonObject.get("compBankName") != null && !jsonObject.get("compBankName").toString().equals("")) {
 					memberDTO.setCompBankName(jsonObject.get("compBankName").toString());
 				}
 				
-				if (jsonObject.get("compBankAcc").toString() != null && !jsonObject.get("compBankAcc").toString().equals("")) {
+				if (jsonObject.get("compBankAcc") != null && !jsonObject.get("compBankAcc").toString().equals("")) {
 					memberDTO.setCompBankAcc(jsonObject.get("compBankAcc").toString());
 				}
 				
-				if (jsonObject.get("contractStart").toString() != null && !jsonObject.get("contractStart").toString().equals("")) {
+				if (jsonObject.get("contractStart") != null && !jsonObject.get("contractStart").toString().equals("")) {
 					memberDTO.setContractStart(jsonObject.get("contractStart").toString());
 				}
 				
-				if (jsonObject.get("contractEnd").toString() != null && !jsonObject.get("contractEnd").toString().equals("")) {
+				if (jsonObject.get("contractEnd") != null && !jsonObject.get("contractEnd").toString().equals("")) {
 					memberDTO.setContractEnd(jsonObject.get("contractEnd").toString());
 				}
 				
-				if (jsonObject.get("preRate").toString() != null && jsonObject.get("preRate").toString().length() != 0) {
+				if (jsonObject.get("preRate") != null && jsonObject.get("preRate").toString().length() != 0) {
 					memberDTO.setPreRate(Double.parseDouble(jsonObject.get("preRate").toString()));
 				}
 				
-				if (jsonObject.get("postRate").toString() != null && jsonObject.get("postRate").toString().length() != 0) {
+				if (jsonObject.get("postRate") != null && jsonObject.get("postRate").toString().length() != 0) {
 					memberDTO.setPostRate(Double.parseDouble(jsonObject.get("postRate").toString()));
 				}
 				
-				if (jsonObject.get("taxName").toString() != null && !jsonObject.get("taxName").toString().equals("")) {
+				if (jsonObject.get("taxName") != null && !jsonObject.get("taxName").toString().equals("")) {
 					memberDTO.setTaxName(jsonObject.get("taxName").toString());
 				}
 				
-				if (jsonObject.get("taxPhone").toString() != null && !jsonObject.get("taxPhone").toString().equals("")) {
+				if (jsonObject.get("taxPhone") != null && !jsonObject.get("taxPhone").toString().equals("")) {
 					memberDTO.setTaxPhone(jsonObject.get("taxPhone").toString());
 				}
 				
-				if (jsonObject.get("taxExtTell").toString() != null && !jsonObject.get("taxExtTell").toString().equals("")) {
+				if (jsonObject.get("taxExtTell") != null && !jsonObject.get("taxExtTell").toString().equals("")) {
 					memberDTO.setTaxExtTell(jsonObject.get("taxExtTell").toString());
 				}
 				
-				if (jsonObject.get("taxEmail").toString() != null && !jsonObject.get("taxEmail").toString().equals("")) {
+				if (jsonObject.get("taxEmail") != null && !jsonObject.get("taxEmail").toString().equals("")) {
 					memberDTO.setTaxEmail(jsonObject.get("taxEmail").toString());
 				}
 				
-				if (jsonObject.get("activate").toString() != null && !jsonObject.get("activate").toString().equals("")) {
+				if (jsonObject.get("activate") != null && !jsonObject.get("activate").toString().equals("")) {
 					memberDTO.setActivate(jsonObject.get("activate").toString());
 				}
 				
-				if (jsonObject.get("admission").toString() != null && !jsonObject.get("admission").toString().equals("")) {
+				if (jsonObject.get("admission") != null) {
 					memberDTO.setAdmission(jsonObject.get("admission").toString());
 				}
 				
-				if (jsonObject.get("media_seq").toString() != null && !jsonObject.get("media_seq").toString().equals("")) {
+				if (jsonObject.get("media_seq") != null && !jsonObject.get("media_seq").toString().equals("")) {
 					memberDTO.setSeq(Integer.parseInt(jsonObject.get("media_seq").toString()));
 				}
 				

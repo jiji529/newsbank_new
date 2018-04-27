@@ -129,6 +129,15 @@ public class UploadService extends ServiceBase {
 					if(seq != null && page != null) {
 						request.setAttribute("seq", seq);
 						request.setAttribute("page", page);
+						
+						// 첨부파일 업로트 파일 규칙 확인 후 주석해제하기
+						// 로고 파일은 파일명으로 SEQ
+						/*int index = fileName.lastIndexOf(".");
+						if (index != -1) {
+							String fileExt  = fileName.substring(index + 1);
+							fileName = seq + "." + fileExt;
+							System.out.println("fileName : " + fileName);
+						}*/
 					}
 					
 					
