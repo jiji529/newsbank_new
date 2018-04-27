@@ -626,7 +626,12 @@ public class DownloadService extends ServiceBase {
 			if (new File(downPath).exists()) {
 				try {
 					if (targetSize.equals("logo")) {
-						sendImageFile(response, downPath);
+						if (sendType.equals("file")) {
+							String fileName = "logo.jpg";
+							sendImageFile(response, downPath, fileName);
+						} else {
+							sendImageFile(response, downPath);
+						}
 					} else if (targetSize.equals("doc") || targetSize.equals("bank") || targetSize.equals("contract") || targetSize.equals("notice")) {
 						sendFile(response, downPath);
 					} else {

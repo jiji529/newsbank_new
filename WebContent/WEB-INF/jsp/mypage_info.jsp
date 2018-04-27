@@ -200,7 +200,7 @@
 											<input type="file" name="doc" accept="application/pdf, image/*"  required/>
 										</div>
 										<c:if test="${!empty MemberInfo.compDocPath}">
-											<a href="/doc.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>	
+											<a href="/doc.down.photo?type=file&seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>	
 										</c:if> 
 										
 									</td>
