@@ -31,10 +31,15 @@ if(photoDto == null
 		usageList();
 		// 오류 신고하기 팝업
 		$("#popup_open").click(function(){ 
-// 			alert("기능 구현 예정");
-			// 개발 이후 아래 주석해제
-			$("#popup_wrap").css("display", "block"); 
-			$(".mask").css("display", "block"); 
+			var login_stats = login_chk();
+			if(login_stats){
+				$("#popup_wrap").css("display", "block"); 
+				$(".mask").css("display", "block");
+			}else{ // 비회원
+				if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
+					$(".gnb_right li").first().children("a").click();	
+				}	
+			}
 		}); 
 		
 		// 신고하기 팝업 닫기
