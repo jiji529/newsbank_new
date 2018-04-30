@@ -356,11 +356,31 @@ public class SearchDAO extends DAOBase {
 		else {
 			query.setRequestHandler("/select");
 			logger.debug("keyword: " + keyword);
-			query.setQuery(keyword);
-			query.set("defType", "edismax");
-			query.set("qf", "title description keyword shotperson copyright exif uciCode compCode");
 			
+			StringBuffer qBuf = new StringBuffer();
+			qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode'}")
+				.append(keyword)
+				.append("\"");
 			
+			if(keyword.length() == 10) {
+				String tmpKeyword = keyword.toLowerCase();
+				char startCh = tmpKeyword.charAt(0);
+				if(startCh == 'm'
+						|| startCh == 's'
+						|| startCh == 'c'
+						|| startCh == 'p') {
+					try {
+						Long.parseLong(tmpKeyword.substring(1));
+						qBuf.insert(0, "(").append(") OR (_query_:\"{!edismax q.op=AND qf=uciCode}")
+							.append(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)
+							.append(keyword)
+							.append("\")");
+					}catch(Exception e) {
+					}
+				}
+			}
+			
+			query.setQuery(qBuf.toString());
 			
 			List<Integer> targetUserList = params.getTargetUserList();
 			if(targetUserList != null && targetUserList.size() > 0) {
