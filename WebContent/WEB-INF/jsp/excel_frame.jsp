@@ -16,6 +16,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
 	function excel() { // form, iframe을 이용한 엑셀저장
+		alert("엑셀저장이 진행됩니다.");
 		var url = "excel." + searchTarget;
 		getSearchOptions();
 		$("#excelDownForm").attr("action", url);

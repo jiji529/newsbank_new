@@ -15,12 +15,12 @@
   	.mouseleave(function(){
   		// 날짜 피커가 없으면 지움
   		if($(".ui-datepicker").css("display") == "none") {
- 		  $(".filter_duration .filter_list").stop().slideUp("fast");
+  		  $(".filter_duration .filter_list").stop().slideUp("fast");
  		  $(this).children(".filter_list").stop().slideUp("fast");
- 		  $(".ui-datepicker-close").trigger("click");
+ 		  $(".ui-datepicker-close").trigger("click"); 
   		}else {
   			// 일반적으로 영역을 벗어나면 사라짐
-  			$(".filter_list").stop().slideUp("fast");
+//  		$(".filter_list").stop().slideUp("fast");
   		}
   });;
  });

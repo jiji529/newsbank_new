@@ -73,7 +73,7 @@ public class MypageDibs extends NewsbankServletBase {
 				request.setAttribute("bookmarkList", bookmarkList); // 북마크 폴더목록
 				
 				int totalCount = totalList.size(); // 전체 갯수
-				int totalPage = (totalCount / pageVol) + 1; // 페이지 갯수
+				int totalPage = (totalCount / pageVol) + (totalCount % pageVol == 0?0:1); // 페이지 갯수
 				
 				request.setAttribute("totalCount", totalCount);
 				request.setAttribute("totalPage", totalPage);
