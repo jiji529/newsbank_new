@@ -56,7 +56,7 @@
 .filters.sml li.filter_title:after{right:10px;}
 .filters.sml .filter_rt{font-size:13px;}
 
-.search_list{width:100%;}
+.search_list{width:100%; min-height:400px;}
 
 @media (max-width: 1200px) { .search_list.grid { -moz-column-count: 4; -webkit-column-count: 4; column-count: 4; }}
 @media (max-width: 1000px) { .search_list.grid { -moz-column-count: 3; -webkit-column-count: 3; column-count: 3; }}
@@ -78,7 +78,6 @@
 .search_list.grid .thumb .right a.over_down{background:url(../images/down.png) 0 0 no-repeat;}
 
 .search_list.square{ padding:10px 30px;}
-.search_list.square ul{width:100%; float:left;}
 .search_list.square .thumb{border:1px #e6e6e6 solid; float:left; margin:5px; position:relative;} 
 .search_list.square .thumb a{display:table-cell;width:218px; height:218px; vertical-align:middle; padding:5px; }
 .search_list.square .thumb img{max-width:208px; max-height:208px; }
