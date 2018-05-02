@@ -240,7 +240,7 @@
 .mypage .view .view_lt .cont_area .img_tit:first-child{color:#666; margin-bottom:0; font-size:18px; }
 .mypage .mp_btn{float:right; padding:10px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa; }
 .mypage .view .view_lt .img_area .btn{position:absolute; right:10px; bottom:0; padding:7px 20px;}
-#frmMypage .btn_area{margin-bottom:40px;}
+
 
 /*장바구니*/
 .order_list {float:left; width:100%; margin-bottom:50px;}
