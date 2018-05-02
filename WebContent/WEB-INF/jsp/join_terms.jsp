@@ -315,10 +315,10 @@
 							</tr>
 							<tr>
 								<td>LG유플러스</td>
-								<td>(주)이노포스트</td>
-							</tr>
-							<tr>
 								<td>결제처리</td>
+							</tr>
+							<tr>								
+								<td>(주)이노포스트</td>
 								<td>SMS 발송</td>
 							</tr>
 						</table>
