@@ -164,7 +164,8 @@ $(document).on("click", ".btn_del", function() {
 	
 	$("input:checkbox[name='checkAll']").attr("checked", false);
 	var count = $("#wish_list2 .thumb").length;
-	$(".count").text(count);		
+	$(".count").text(count);
+	dibsList();		
 });
 
 /** 다중선택 삭제 */
@@ -188,6 +189,7 @@ $(document).on("click", ".sort_del", function() {
 		
 		$("input:checkbox[name='checkAll']").attr("checked", false);
 		$(".count").text(rest);
+		dibsList();
 	}
 	
 });
