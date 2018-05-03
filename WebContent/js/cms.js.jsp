@@ -27,7 +27,7 @@ $(document).on("click", "div .paging a.prev", function() {
 	
 });
 $(document).on("click", "div .paging a.next", function() {
-	var totalPage = $(".total").text();
+	var totalPage = parseInt($(".total").text());
 	var next = $("input[name=pageNo]").val() - (-1);
 	if(next <= totalPage) { // 다음 페이지가 있을 경우만
 		goPage(next);

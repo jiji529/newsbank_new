@@ -1,8 +1,8 @@
 var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 
 // 이미지 삭제(엄선한 사진)
-$(document).on("click","#btn_rm",function() {		
-	this.closest("tr").remove();
+$(document).on("click","#btn_rm",function() {
+	$(this).closest("tr").remove();
 	set_unitegallery(); // 새로고침
 });
 
@@ -21,7 +21,7 @@ $(document).on("click","#btn_del",function() {
 		};
 	
 	//console.log(param);
-	this.closest("tr").remove();
+	$(this).closest("tr").remove();
 	
 	$.ajax({
 		type: "POST",

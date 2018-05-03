@@ -387,7 +387,7 @@
 							</c:forEach>
 						</ul>
 						<div class="period">
-							<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-${month}-01" maxlength="10">
+							<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-01-01" maxlength="10">
 							<span class=" bar">~</span>
 							<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${today }" maxlength="10">
 						</div>

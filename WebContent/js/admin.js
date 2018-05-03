@@ -31,7 +31,7 @@ $(document).ready(function() {
 			check = check && validCompName(); console.log("validCompName() : " + validCompName());
 			check = check && validCompNum(); console.log("validCompNum() : " + validCompNum());
 			check = check && validCompTel(); console.log("validCompTel() : " + validCompTel());
-			check = check && validCompExtTel(); console.log("validCompExtTel() : " + validCompExtTel());
+			//check = check && validCompExtTel(); console.log("validCompExtTel() : " + validCompExtTel()); // 기입하지 않는 회사가 존재하여 제외 
 			//check = check && validCompDoc();
 			//check = check && validUploadFile(); // 사업자등록증 업로드
 			
@@ -591,6 +591,8 @@ $(document).ready(function() {
 function setDatepicker() {
 	$( ".datepicker" ).datepicker({
      changeMonth: true, 
+     changeYear: true,
+     yearRange: 'c-10:c+10',
      dayNames: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
      dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], 
      monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
