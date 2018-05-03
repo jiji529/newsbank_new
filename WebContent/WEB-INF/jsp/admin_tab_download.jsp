@@ -172,7 +172,7 @@
 			</tr>
 			 
 			<tr>
-				<th>기간별 조회</th>
+				<th>기간선택</th>
 				<td>
 					<select id="customYear" class="inp_txt" class="inp_txt" style="width:100px;">
 						<c:forEach var="i" begin="2015" end="${year}" step="1">
