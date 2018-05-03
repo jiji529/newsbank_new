@@ -154,6 +154,7 @@
 			<tbody>
 				<c:set var="totalDownCount" value="0"/>
 				<c:set var="totalCancelCount" value="0"/>
+				<c:set var="totalPrice" value="${paymentManageDTO.getLGD_AMOUNT()}" />
 				<c:forEach items="${paymentManageDTO.paymentDetailList}" var="paymentDetailList">
 					<c:set var="totalDownCount" value="${totalDownCount + paymentDetailList.downCount}"></c:set>
 					<c:set var="totalCancelCount" value="${totalCancelCount + paymentDetailList.status}"></c:set>
@@ -208,6 +209,7 @@
 							<c:choose>
 							  <c:when test="${paymentDetailList.status eq '1'}">
 						    	<del>${paymentDetailList.getPrice_Str() }</del>
+						    	<c:set var="totalPrice" value="${totalPrice-paymentDetailList.getPrice() }"/>
 							  </c:when>
 							  <c:otherwise>
 							    ${paymentDetailList.getPrice_Str() }
@@ -251,7 +253,8 @@
 				</c:forEach>
 			</tbody>
 			<tfoot>
-				<td colspan="10">합계 : ${paymentManageDTO.getLGD_AMOUNT_Str() }</td>
+				<td colspan="10">합계 : <fmt:formatNumber value="${totalPrice}" pattern="#,###" /></td>
+				<%-- <td colspan="10">합계 : ${paymentManageDTO.getLGD_AMOUNT_Str() }</td> --%>
 			</tfoot>
 		</table>
 		
