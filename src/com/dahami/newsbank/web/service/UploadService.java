@@ -21,12 +21,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.web.dto.MemberDTO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -44,12 +47,15 @@ public class UploadService extends ServiceBase {
 	public static final String PATH_NOTICE_BASE = "/data/newsbank/notice";
 	public static final String PATH_BASE = "/data/newsbank/tmp";
 
-	/*public static final String PATH_COMP_DOC_BASE = "D:/IdeaProjects/git/newsbank/comp/doc";
-	public static final String PATH_COMP_BANK_BASE = "D:/IdeaProjects/git/newsbank/comp/bank";
-	public static final String PATH_COMP_CONTRACT_BASE =  "D:/IdeaProjects/git/newsbank/comp/contract";
-	public static final String PATH_LOGO_BASE = "D:/IdeaProjects/git/newsbank/logo";
-	public static final String PATH_BASE = "D:/IdeaProjects/git/newsbank/tmp";
-*/
+	/*
+	 * public static final String PATH_COMP_DOC_BASE =
+	 * "D:/IdeaProjects/git/newsbank/comp/doc"; public static final String
+	 * PATH_COMP_BANK_BASE = "D:/IdeaProjects/git/newsbank/comp/bank"; public static
+	 * final String PATH_COMP_CONTRACT_BASE =
+	 * "D:/IdeaProjects/git/newsbank/comp/contract"; public static final String
+	 * PATH_LOGO_BASE = "D:/IdeaProjects/git/newsbank/logo"; public static final
+	 * String PATH_BASE = "D:/IdeaProjects/git/newsbank/tmp";
+	 */
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -59,19 +65,27 @@ public class UploadService extends ServiceBase {
 
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+		
+		HttpSession session = request.getSession();
+		MemberDTO MemberInfo = null;
+		if (session.getAttribute("MemberInfo") != null) {
+			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+		}
+		
 		// JSONObject json = new JSONObject();
 		boolean result = false;
-		String message = ""; //결과 메시지
+		String message = ""; // 결과 메시지
 
-
-		String fileFullPath = ""; //파일 실제 경로
-		String fileName = ""; //파일 명
+		String fileFullPath = ""; // 파일 실제 경로
+		String fileName = ""; // 파일 명
 
 		if (request.getAttribute("pathType") != null) {
-			String pathType = (String)request.getAttribute("pathType");
+			String pathType = (String) request.getAttribute("pathType");
 			// String savePath = request.getServletContext().getRealPath("folderName");
 
 			String savePath = PATH_BASE;
+			String saveFileNameType = "";
+			String saveFileExp = "";
 
 			if (pathType != null && !pathType.isEmpty()) {
 				switch (pathType) {
@@ -79,10 +93,13 @@ public class UploadService extends ServiceBase {
 					savePath = PATH_COMP_DOC_BASE;
 					break;
 				case "bank":
-					savePath = PATH_COMP_BANK_BASE;
+					savePath = PATH_COMP_BANK_BASE;  
 					break;
+					
 				case "logo":
 					savePath = PATH_LOGO_BASE;
+					saveFileNameType = "seq";
+					saveFileExp = "jpg";
 					break;
 				case "contract":
 					savePath = PATH_COMP_CONTRACT_BASE;
@@ -90,10 +107,10 @@ public class UploadService extends ServiceBase {
 				case "notice":
 					savePath = PATH_NOTICE_BASE;
 					break;
-					
+
 				}
 			}
-			
+
 			if (savePath.isEmpty()) {
 				message = "파일 경로를 찾을 수 없습니다.";
 			} else {
@@ -101,7 +118,7 @@ public class UploadService extends ServiceBase {
 				// 파일이 저장될 서버의 경로. 되도록이면 getRealPath를 이용하자.
 
 				RequestDispatcher rd = null;
-				
+
 				File file = null;
 				Enumeration files = null;
 
@@ -120,27 +137,10 @@ public class UploadService extends ServiceBase {
 					// encoding, FileRenamePolicy policy)
 					// 아래와 같이 MultipartRequest를 생성만 해주면 파일이 업로드 된다.(파일 자체의 업로드 완료)
 
-					MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit, "UTF-8", new DefaultFileRenamePolicy());
+					MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit, "UTF-8",
+							new DefaultFileRenamePolicy());
 					fileName = multi.getFilesystemName("uploadFile"); // 파일의 이름 얻기
-					
-					String seq = multi.getParameter("seq"); // seq 얻기
-					String page = multi.getParameter("page"); // 접근 page 얻기
-					
-					if(seq != null && page != null) {
-						request.setAttribute("seq", seq);
-						request.setAttribute("page", page);
-						
-						// 첨부파일 업로트 파일 규칙 확인 후 주석해제하기
-						// 로고 파일은 파일명으로 SEQ
-						/*int index = fileName.lastIndexOf(".");
-						if (index != -1) {
-							String fileExt  = fileName.substring(index + 1);
-							fileName = seq + "." + fileExt;
-							System.out.println("fileName : " + fileName);
-						}*/
-					}
-					
-					
+
 					files = multi.getFileNames();
 					String name = (String) files.nextElement();
 					file = multi.getFile(name);
@@ -150,8 +150,68 @@ public class UploadService extends ServiceBase {
 					} else { // 파일이 업로드 되었을때
 						result = true;
 						message = "파일 업로드 성공";
-						fileFullPath= savePath + "/" + fileName;
-										
+						fileFullPath = savePath + "/" + fileName;
+
+						String seq = multi.getParameter("seq")!=null?multi.getParameter("seq"):Integer.toString(MemberInfo.getSeq()); // seq 얻기
+						String page = multi.getParameter("page"); // 접근 page 얻기
+
+						if (seq != null) {
+							request.setAttribute("seq", seq);
+							request.setAttribute("page", page);
+
+							// 첨부파일 업로트 파일 규칙 확인 후 주석해제하기
+							// 로고 파일은 파일명으로 SEQ
+							/*
+							 * int index = fileName.lastIndexOf("."); if (index != -1) { String fileExt =
+							 * fileName.substring(index + 1); fileName = seq + "." + fileExt;
+							 * System.out.println("fileName : " + fileName); }
+							 */
+
+							switch (saveFileNameType) {
+							case "seq":
+								File oldFile = new File(fileFullPath);
+								int index = fileName.lastIndexOf(".");
+								if (index != -1) {
+									String fileExt = fileName.substring(index + 1);
+									if (!saveFileExp.isEmpty()) {
+										fileExt = saveFileExp;
+									}
+									fileName = seq + "." + fileExt;
+								}
+								fileFullPath = savePath +"/" +  fileName;
+								File newFile = new File(fileFullPath);
+								 if(newFile.exists()){
+									 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						                System.out.println(newFile.getName() + " 파일을 삭제합니다");
+						                File tmpFile = new File(savePath +"/" + timestamp.getTime()+"_"+ fileName);
+						                newFile.renameTo(tmpFile);
+					                	newFile.delete();
+						            }
+								
+								byte[] buf = new byte[1024];
+								FileInputStream fin = null;
+								FileOutputStream fout = null;
+								 
+								if(!oldFile.renameTo(newFile)){
+									//renameTo가 실패했을때 강제로 파일을 복사하고 기존 파일을 삭제 출처: http://fruitdev.tistory.com/49
+								    buf = new byte[1024];
+								    fin = new FileInputStream(oldFile);
+								    fout = new FileOutputStream(newFile);
+								 
+								    int read = 0;
+								    while((read=fin.read(buf,0,buf.length))!=-1){
+								        fout.write(buf, 0, read);
+								    }
+								     
+								    fin.close();
+								    fout.close();
+								    oldFile.delete();
+								}
+								break;
+							default:
+								break;
+							}
+						}
 
 					} // else
 

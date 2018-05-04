@@ -272,7 +272,7 @@
 												<span class="name"> ${media.name}(${media.id})</span>												
 												<div class="upload-btn-wrapper">
 													<a href="#" class="btn_input1">제호업로드</a>
-													<input type="file" name="logo" accept="application/pdf, image/*" required />
+													<input type="file" name="logo" accept="image/*" required />
 												</div>
 												<c:if test="${!empty MemberInfo.logo}">
 													<%-- <a class="btn_input1" href="/logo.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a> --%>
