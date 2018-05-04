@@ -383,16 +383,30 @@ public class SearchDAO extends DAOBase {
 			query.setQuery(qBuf.toString());
 			
 			List<Integer> targetUserList = params.getTargetUserList();
-			if(targetUserList != null && targetUserList.size() > 0) {
-				StringBuffer buf = new StringBuffer();
-				for(int targetUser : targetUserList) {
-					if(buf.length() > 0) {
-						buf.append(" OR ");
-					}
-					buf.append(targetUser);
+			StringBuffer tgtBuf = new StringBuffer();
+			if(targetUserList == null) {
+				targetUserList = new ArrayList<Integer>();
+			}
+			
+			if(targetUserList.size() == 0) {
+				List<MemberDTO> activeMemberList = new MemberDAO().listActiveMedia();
+				for(MemberDTO curTgt : activeMemberList) {
+					targetUserList.add(curTgt.getSeq());
 				}
-				query.addFilterQuery("ownerNo:(" + buf.toString() + ")");
-				logger.debug("ownerNo: (" + buf.toString() + ")");
+			}
+			if(targetUserList.size() > 0) {
+				for(int targetUser : targetUserList) {
+					if(tgtBuf.length() > 0) {
+						tgtBuf.append(" OR ");
+					}
+					tgtBuf.append(targetUser);
+				}
+				query.addFilterQuery("ownerNo:(" + tgtBuf.toString() + ")");
+				logger.debug("ownerNo: (" + tgtBuf.toString() + ")");
+			}
+			else {
+				// TODO 서비스 매체 없음 처리
+				
 			}
 			
 //			String duration = params.getDuration();
