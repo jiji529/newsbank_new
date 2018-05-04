@@ -91,8 +91,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				var titleStr = filterForm.find("span").text();
 				var header = titleStr.substring(0, titleStr.indexOf(":")+2);
 				filterForm.find("span").text(header + value);
-			}
-			console.log(value);
+			}			
 		}
 	}
 /*
@@ -158,7 +157,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
 		var durationReg = $(".filter_durationReg .filter_list").find("[selected=selected]").attr("value");
-		console.log("xx"+durationReg);
+		//console.log("xx"+durationReg);
 		var durationTake = $(".filter_durationTake .filter_list").find("[selected=selected]").attr("value");
 		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
@@ -195,6 +194,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				, "saleState":saleState
 				, "size":size
 		};
+		
+		console.log(searchParam);
 		searchKeyword = keyword; //검색결과 없는 페이지를 만들기 위한 검색어 셋팅
 		<%-- 키워드 변경 후 반영 없이 필터 등의 변경으로 인해 재검색 하면 기존 검색어를 키워드로 사용  --%>
 		if(cmsMode) {
