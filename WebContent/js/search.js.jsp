@@ -54,6 +54,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	}
 
 	function setFilter(value, filterForm) {
+		
 		var findF = false;
 		filterForm.find("li").each(function(index) {
 			if($(this).attr("value") == value) {
@@ -73,8 +74,17 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				}
 			});
 			var titleStr = filterForm.find("span").text();
-			var header = titleStr.substring(0, titleStr.indexOf(":")+2);
-			filterForm.find("span").text(header + itemName);
+			var titleFontStr = filterForm.find("font").text();
+			var header = "";
+			if(titleStr.indexOf(":") != -1) { 
+				// 보도사진 페이지
+				header = titleStr.substring(0, titleStr.indexOf(":")+2);
+				filterForm.find("span").text(header + itemName);
+			}else {
+				// CMS 페이지
+				header = titleFontStr;
+				filterForm.find("span").html("<font>" + header + "</font> <br>" + itemName);
+			}
 		}
 		else {
 			if(value.charAt(0) == 'C') {
