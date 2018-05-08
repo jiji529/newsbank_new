@@ -106,7 +106,7 @@
 							</tr>
 							<tr>
 								<th>구분</th>
-								<td>${memberDTO.type }</td>
+								<td>${memberDTO.getStrType() }</td>								
 								<th>회사/기관명</th>
 								<td>${memberDTO.compName }</td>
 							</tr>
@@ -120,7 +120,7 @@
 								<th>연락처</th>
 								<td>${memberDTO.phone }</td>
 								<th>이메일</th>
-								<td><a href="${memberDTO.email }">${memberDTO.email }</a></td>
+								<td>${memberDTO.email }</td>
 							</tr>
 							<tr>
 								<th>결제방법</th>

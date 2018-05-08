@@ -185,6 +185,32 @@ public class MemberDTO implements Serializable {
 	public String getType() {
 		return type;
 	}
+	
+	/**
+	 * @return strType
+	 */
+	public String getStrType() {
+		String strType = "";
+		switch(type) {
+			case "A":
+				strType = "관리자";
+			break;
+			
+			case "M":
+				strType = "매체";
+			break;
+			
+			
+			case "P":
+				strType = "개인";
+			break;
+			
+			case "C":
+				strType = "기업";
+			break;
+		}
+		return strType;
+	}
 
 	/**
 	 * @param type
