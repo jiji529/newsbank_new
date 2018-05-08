@@ -33,7 +33,9 @@ import org.json.simple.JSONObject;
 import com.dahami.common.util.XmlUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.MemberDAO;
+import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dao.SearchDAO;
+import com.dahami.newsbank.web.dto.ActionLogDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 import com.dahami.newsbank.web.util.ExcelUtil;
@@ -212,6 +214,7 @@ public class SearchService extends ServiceBase {
 		}
 		else if(exportType == EXPORT_TYPE_EXCEL) {
 			List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+			PhotoDAO photoDAO = new PhotoDAO();
 			if(photoList != null && list != null && list.size() > 0) {
 				for(PhotoDTO dto : list){
 					try {
@@ -220,7 +223,21 @@ public class SearchService extends ServiceBase {
 						object.put("uciCode", dto.getUciCode());
 						object.put("compCode", dto.getCompCode());
 						object.put("strSaleState", strSaleState(dto.getSaleState()));
-						object.put("publishDate", dateFormat(dto.getPublishDate()));
+						
+						// 업로드 일자(DB등록 일자)
+						SimpleDateFormat dateforamt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						String uploadDate = dateforamt.format(dto.getRegDate()); 
+						object.put("uploadDate", uploadDate);
+						
+						// 블라인드/삭제 등 변경 날짜, 내역 변경 아이디
+						ActionLogDTO logDTO = photoDAO.lastActionLog(dto.getUciCode());
+						if(logDTO == null) { // 변경 이력이 없을 경우
+							object.put("regDate", "-");
+							object.put("name", "-");
+						}else {
+							object.put("regDate", logDTO.getRegStrDate());
+							object.put("name", logDTO.getMemberName());
+						}
 						
 						jsonList.add(object);
 						
@@ -230,9 +247,9 @@ public class SearchService extends ServiceBase {
 				}
 			}
 			
-			List<String> headList = Arrays.asList("언론사명", "UCI코드", "언론사코드", "사진상태", "발행 날짜"); //  테이블 상단 제목
-			List<Integer> columnSize = Arrays.asList(10, 20, 30, 10, 15); //  컬럼별 길이정보
-			List<String> columnList = Arrays.asList("ownerName", "uciCode", "compCode", "strSaleState", "publishDate"); // 컬럼명
+			List<String> headList = Arrays.asList("언론사명", "UCI코드", "언론사코드", "사진상태", "업로드 날짜", "블라인드/삭제 등 변경 날짜", "내역 변경 아이디"); //  테이블 상단 제목
+			List<Integer> columnSize = Arrays.asList(10, 20, 30, 10, 30, 30, 15); //  컬럼별 길이정보
+			List<String> columnList = Arrays.asList("ownerName", "uciCode", "compCode", "strSaleState", "uploadDate", "regDate", "name"); // 컬럼명
 			
 			Date today = new Date();
 		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");

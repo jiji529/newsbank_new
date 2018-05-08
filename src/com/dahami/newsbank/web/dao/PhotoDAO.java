@@ -534,4 +534,21 @@ public class PhotoDAO extends DAOBase {
 		}
 		return new ArrayList<ActionLogDTO>();
 	}
+	
+	// uciCode 가장 최근 수정내역
+	public ActionLogDTO lastActionLog(String uciCode) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			return session.selectOne("Photo.lastActionLog", uciCode);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return null;
+	}
 }
