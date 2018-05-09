@@ -40,7 +40,7 @@
 			, "end_date":end_date + "240000"
 			, "status":status
 		};
-		console.log(searchParam);
+		//console.log(searchParam);
 		
 		var html = "";
 		
@@ -52,7 +52,7 @@
 			dataType: "json",
 			data: searchParam,
 			url: "/buy.api",
-			success: function(data) { console.log(data);
+			success: function(data) { //console.log(data);
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
@@ -65,7 +65,7 @@
 				
 				var data = data.result;
 				
-				if(data.length != 0) {		console.log(data);
+				if(data.length != 0) {	
 					$(data).each(function(key, val){
 						var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
 						
@@ -236,7 +236,7 @@
 					var rate = $(this).closest("tr").find("input[name=postRate]").val(); 
 					rate = rate / 100;
 					
-					var fees = (price * rate).toString();
+					var fees = 0; // 후불회원은 PG수수료가 없음.
 					var usage = parseInt($(this).closest("tr").find("td").eq(10).attr("seq"));
 					var payType = "SC9999"; // 후불
 					//var usuage = ""; // 사용용도
@@ -265,7 +265,7 @@
 						data: param,
 						dataType: "json",
 						success: function(data) { 
-							console.log(data);
+							//console.log(data);
 						},
 						complete: function() {
 							search();
