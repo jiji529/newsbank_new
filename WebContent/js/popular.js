@@ -28,15 +28,15 @@ $(document).on("click","#btn_del",function() {
 		dataType: "json",
 		url: "/admin.popular.api",
 		data: param,
-		success: function(data) {
+		success: function(data) { console.log(data);
 			var uciCode = data.list.uciCode;
 			var ownerName = data.list.ownerName;
-			var hitCount = data.list.hitCount;
+			var downCount = data.list.downCount;
 			
 			html += '<tr>';
 			html += '<td>' + uciCode + '</td>';
 			html += '<td>' + ownerName + '</td>';
-			html += '<td>' + hitCount + '회</td>';
+			html += '<td>' + downCount + '회</td>';
 			html += '<td><a href="#" id="btn_del" class="list_btn">삭제</a></td>';
 			html += '</tr>';
 		},

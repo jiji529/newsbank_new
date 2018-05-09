@@ -198,12 +198,12 @@ public class AdminPopularAction extends NewsbankServletBase {
 				if(photoList.size() == 1) {
 					String uciCode = photoList.get(0).getUciCode();
 					String ownerName = photoList.get(0).getOwnerName();
-					String hitCount = String.valueOf(photoList.get(0).getHitCount());
+					String downCount = String.valueOf(photoList.get(0).getDownCount());
 					
 					Map<String, Object> data = new HashMap<String, Object>();
 					data.put("uciCode", uciCode);
 					data.put("ownerName", ownerName);
-					data.put("hitCount", hitCount);
+					data.put("downCount", downCount);
 					
 					json.put("list", data);
 				}
