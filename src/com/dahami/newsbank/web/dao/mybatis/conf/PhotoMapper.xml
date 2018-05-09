@@ -95,6 +95,7 @@
 		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
 		INNER JOIN member M ON A.member_seq = M.seq 
 		WHERE C.exhName = #{exhName} AND 
+		M.activate = 1 AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 	</select>
 	
@@ -104,7 +105,8 @@
 		INNER JOIN photoExhibition B ON A.uciCode = B.photo_uciCode
 		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
 		INNER JOIN member M ON A.member_seq = M.seq 
-		WHERE C.exhName = #{exhName} AND 
+		WHERE C.exhName = #{exhName} AND
+		M.activate = 1 AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 	</select>
 	
@@ -114,6 +116,7 @@
 		INNER JOIN paymentDetail B ON A.uciCode = B.photo_uciCode
 		INNER JOIN member M ON A.member_seq = M.seq
 		WHERE A.saleStat = 1 AND 
+		M.activate = 1 AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 		ORDER BY B.downCount DESC
 		LIMIT #{start}, #{count}
@@ -125,6 +128,7 @@
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode
 		INNER JOIN member M ON A.member_seq = M.seq
 		WHERE A.saleStat = 1 AND 
+		M.activate = 1 AND
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 		GROUP BY B.photo_uciCode
 		HAVING zzimCount > 0
@@ -138,6 +142,7 @@
 	    FROM photo P
  		INNER JOIN member M ON P.member_seq = M.seq 
 	    WHERE saleStat = 1 AND 
+	    M.activate = 1 AND
 	    uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
 	    ORDER BY hitCount DESC 
 	    LIMIT #{start}, #{count}

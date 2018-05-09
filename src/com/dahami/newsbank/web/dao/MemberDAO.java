@@ -57,6 +57,30 @@ public class MemberDAO extends DAOBase {
 	}
 	
 	/**
+	 * @methodName : listJoinMedia
+	 * @author : LEE,GWANGHO
+	 * @date : 2017. 11. 1. 오전 10:01:43
+	 * @methodCommet: 가입상태의 매체사 리스트
+	 * @return
+	 * @returnType : List<MemberDTO>
+	 */
+	public List<MemberDTO> listJoinMedia() {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Member.listJoinMedia");
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	/**
 	 * @methodName  : getMember
 	 * @author      : JEON,HYUNGGUK
 	 * @date        : 2017. 11. 21. 오전 11:20:49

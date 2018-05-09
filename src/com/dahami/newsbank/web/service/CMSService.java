@@ -339,7 +339,7 @@ public class CMSService extends ServiceBase {
 		else {
 			List<MemberDTO> mediaList = null;
 			if(isAdmin) {
-				mediaList = mDao.listActiveMedia();	
+				mediaList = mDao.listJoinMedia(); // 가입상태의 언론사 목록
 			}
 			else {
 				mediaList = mDao.listAdjustMedia(memberInfo);

@@ -11,6 +11,14 @@
 		and withdraw = 0
 		order by name asc
 	</select>
+	
+	<!-- 가입상태인 매체사 리스트 읽기 (관리자페이지에서는 활성/비활성화 관계없이 가입상태의 모든 매체사가 보여야 함) -->
+	<select id="listJoinMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+		select * from member
+		where type = 'M'		
+		and withdraw = 0
+		order by name asc
+	</select>
 
 	<select id="selMamberBySeq" parameterType="integer" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
@@ -237,6 +245,7 @@
 		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
 		WHERE `type` = 'M'
 		AND `withdraw` = 0
+		AND `admission` = 'Y'
 		AND `compName`!=''
 		AND `compName`
 		is not null
@@ -326,7 +335,7 @@
 	    id, email, name, phone, compNum, compName, preRate, postRate, activate, logo 
 	    FROM member 
 		LEFT JOIN adjustment ON member.seq = adjustment.adjSlave
-		WHERE member.type='M' AND member.admission = 'Y'
+		WHERE member.type='M' AND member.admission = 'Y' AND member.withdraw = 0
 	        
         <if test="keyword != null"> 
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
@@ -397,40 +406,11 @@
 		ORDER BY A.regDate DESC
 	</select>
 	
-	<!-- <select id="memberCnt" resultType="integer" parameterType="java.util.Map">	    
-	    SELECT count(seq) as cnt 
-	    FROM member 
-	    <where>
-	        
-            <if test="keyword != null and keyword != ''"> 키워드
-	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
-            </if>
-            	        
-	        <if test="type != ''"> 회원구분
-	            AND `type` = #{type}
-            </if>
-            
-			<if test="deferred != ''"> 결제구분
-				AND `deferred` = #{deferred}    
-			</if>
-			
-			<if test='group == "I"'> 개별
-				AND `group_seq` is NULL    
-			</if>
-			
-			<if test='group == "G"'> 그룹
-				AND `group_seq` is not NULL    
-			</if>
-			
-		</where>
-	    ORDER BY regDate DESC
-	</select> -->
-	
 	<!-- 조건에 따른 전체 정산매체수 -->
 	<select id="mediaCnt" resultType="integer" parameterType="java.util.Map">	    
 	    SELECT count(seq) as cnt 
 	    FROM member 
-	    WHERE `type` = 'M' AND admission = 'Y'
+	    WHERE `type` = 'M' AND admission = 'Y' AND `withdraw` = 0
 	        
         <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
