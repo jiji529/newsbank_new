@@ -99,7 +99,7 @@
 							break;
 							
 						case 2:
-							status = "정산 승인";
+							status = "구매 승인";
 							break;
 							
 						case 3:

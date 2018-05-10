@@ -163,7 +163,7 @@
 							</td>
 							<td>\ <fmt:formatNumber value="${PaymentDetail.price}" pattern="#,###" /></td>
 							<td>${PaymentDetail.regDate }</td>
-							<td>${PaymentDetail.paystatus }</td>
+							<td>${PaymentDetail.getStrStatus() }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
