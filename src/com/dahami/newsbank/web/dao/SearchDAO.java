@@ -236,7 +236,7 @@ public class SearchDAO extends DAOBase {
 					int ownerNo = cur.getOwnerNo();
 					MemberDTO curMember = memberMap.get(ownerNo);
 					if(curMember != null) {
-						cur.setOwnerName(curMember.getName());
+						cur.setOwnerName(curMember.getCompName()); // 회사/기관명
 					}
 					else {
 						logger.warn("멤버정보 없음: seq / " + ownerNo);

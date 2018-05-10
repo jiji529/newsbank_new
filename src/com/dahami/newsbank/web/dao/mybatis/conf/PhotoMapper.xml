@@ -41,10 +41,11 @@
 	</update>
 	
 	<select id="dibsPhoto" resultType="com.dahami.newsbank.dto.PhotoDTO" parameterType="java.util.Map">
-	    SELECT B.bookmark_seq, A.* FROM photo A
+	    SELECT B.bookmark_seq, M.compName AS copyright, A.uciCode FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode 
 		INNER JOIN bookmark C ON B.bookmark_seq = C.seq
-		INNER JOIN member D  ON C.member_seq = D.seq
+		INNER JOIN photo P ON B.photo_uciCode = P.uciCode
+		INNER JOIN member M ON P.member_seq = M.seq
 		WHERE C.member_seq = #{member_seq}
 		<if test="bookmark_seq != 0 and bookmark_seq != null">
 			AND B.bookmark_seq = #{bookmark_seq}
@@ -60,7 +61,7 @@
 			select
 				uciCode, uciStat uciState, saleStat saleState, ownerType, rightYn portraitRightState, monochrome mono, person includePerson, 
 				titleKr titleKor, titleEn titleEng, keywordKr keywordKor, keywordEn keywordEng, descriptionKr descriptionKor, descriptionEn descriptionEng,
-				copyright, shotPerson, 
+				B.compName AS copyright, shotPerson, 
 				publishDate, shotDate, A.regDate, A.updDate, 
 				widthPixel widthPx, heightPixel heightPx, widthCm, heightCm, dpi, fileSize, exif,
 				member_seq ownerNo, B.compName ownerName, preRate ownerPreRate, postRate ownerPostRate, compCode, hitCount

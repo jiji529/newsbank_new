@@ -223,7 +223,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			data: searchParam,
 			timeout: 1000000,
 			url: searchTarget,
-			success : function(data) { 
+			success : function(data) { console.log(data);
 				var count = data.count; // 총 갯수
 				var viewCnt = data.result.length; // 현재 페이지에 보여지는 목록 갯수
 				

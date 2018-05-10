@@ -119,7 +119,7 @@
 						//html += '<td>' + LGD_OID + '</td>';
 						html += '<td>' + paydate + '</td>';
 						html += '<td>' + status + '</td>';
-						html += '<td>' + copyright + '</td>';
+						html += '<td>' + compName + '</td>';
 						html += '<td><a href="/view.photo?uciCode=' + uciCode + '" target="_blank">' + uciCode + '</a></td>';
 						html += '<td>' + compCode + '</td>';
 						html += '<td seq="' + usageList_seq + '">' + usage + '</td>';

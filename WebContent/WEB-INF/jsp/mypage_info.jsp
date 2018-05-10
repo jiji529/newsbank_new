@@ -135,7 +135,7 @@
 									<input type="text" size="5" class="inp_txt" value="${phone2}" maxlength="4" readonly />
 									<span class=" bar">-</span>
 									<input type="text" size="5" class="inp_txt" value="${phone3}" maxlength="4" readonly />
-									<a id="btnEdit" class="btn_input1">수정.</a>
+									<a id="btnEdit" class="btn_input1">수정</a>
 									<a id="btnCancel" class="btn_input1" style="display:none">취소</a>
 									<!-- 수정 누르면 보이는 -->
 									<div class="edit_phone" style="display: none" id="editView">

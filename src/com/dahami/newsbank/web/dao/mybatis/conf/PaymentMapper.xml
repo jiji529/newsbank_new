@@ -140,7 +140,8 @@
 		U.`usage`,
 		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
 		U.`usageDate`, U.`price`,
-		P.`uciCode`, P.`copyright`, P.`ownerType`
+		P.`uciCode`, P.`ownerType`,
+		N.`compName` AS copyright
 		FROM
 		`paymentManage`
 		AS M
@@ -153,6 +154,8 @@
 		LEFT
 		JOIN photo P ON P.uciCode =
 		D.photo_uciCode
+		LEFT JOIN member N
+		ON P.member_seq = N.seq
 		where
 		M.`member_seq` =
 		#{member_seq}
@@ -765,7 +768,8 @@
 		U.`usage`,
 		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
 		U.`usageDate`, U.`price`,
-		P.`uciCode`, P.`copyright`, P.`ownerType`
+		P.`uciCode`, P.`ownerType`,
+		N.compName AS copyright
 		FROM
 		`paymentManage`
 		AS M
@@ -781,6 +785,8 @@
 		LEFT
 		JOIN photo P ON P.uciCode =
 		D.photo_uciCode
+		INNER JOIN member N
+		ON P.member_seq = N.seq
 		<where>		  
 		    <foreach item="member_seq" collection="memberList" index="idx" open="(" separator="OR" close=")">
 	            M.member_seq = #{member_seq} 

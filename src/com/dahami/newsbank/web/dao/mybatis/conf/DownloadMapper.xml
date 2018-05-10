@@ -33,10 +33,12 @@
 	</resultMap>
 	
 	<select id="selDownList" parameterType="java.util.Map" resultMap="DelayDownloadDTO">
-	    SELECT A.seq, A.photo_uciCode, A.ipAddress, A.regDate, B.copyright
+	    SELECT A.seq, A.photo_uciCode, A.ipAddress, A.regDate, C.compName AS copyright
 			FROM `download` A
 		INNER JOIN photo B
 		ON A.photo_uciCode = B.uciCode
+		INNER JOIN member C
+		ON B.member_seq = C.seq
 		<where>
 			<foreach item="member_seq" collection="memberList" index="idx" open="(" separator="OR" close=")">
 	            A.member_seq = #{member_seq} 
