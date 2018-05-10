@@ -155,58 +155,45 @@ public class AdminPopularAction extends NewsbankServletBase {
 					}
 					
 				break;
-				
-				/*case "autoAdd": // 개별항목 삭제에 따른 자동추가
-					System.out.println(params.toString());
-					
-					List<PhotoDTO> photoList = photoDAO.downloadPhotoList(params);
-					if(photoList.size() == 1) {
-						String uciCode = photoList.get(0).getUciCode();
-						String ownerName = photoList.get(0).getOwnerName();
-						String hitCount = String.valueOf(photoList.get(0).getHitCount());
-						
-						Map<String, Object> data = new HashMap<String, Object>();
-						data.put("uciCode", uciCode);
-						data.put("ownerName", ownerName);
-						data.put("hitCount", hitCount);
-						
-						json.put("list", data);
-					}
-				break;*/
 					
 				}
 				
 			}else if(cmd.equals("D")) { // 개별삭제에 따른 자동완성
 				params.put("tabName", tabName);
 				
-				List<PhotoDTO> photoList = new ArrayList<>();
-				switch(tabName) {
-					case "download": // 다운로드
-						photoList = photoDAO.downloadPhotoList(params);
-						break;
+				if(Integer.parseInt(params.get("count").toString()) == 1) { // 1개씩 불러와야함
+					List<PhotoDTO> photoList = new ArrayList<>();
+					String photoCount = ""; // Tab별 횟수(다운로드 횟수, 찜 횟수, 조회 수)
+					switch(tabName) {
+						case "download": // 다운로드
+							photoList = photoDAO.downloadPhotoList(params);
+							photoCount = String.valueOf(photoList.get(0).getDownCount()); // 다운로드 횟수
+							break;
+						
+						case "zzim": // 찜
+							photoList = photoDAO.basketPhotoList(params);
+							photoCount = String.valueOf(photoList.get(0).getZzimCount()); // 찜 횟수
+							break;
+							
+						case "detail": // 상세보기
+							photoList = photoDAO.hitsPhotoList(params);
+							photoCount = String.valueOf(photoList.get(0).getHitCount()); // 조회 횟수
+							break;
+							
+					}
 					
-					case "zzim": // 찜
-						photoList = photoDAO.basketPhotoList(params);
-						break;
-						
-					case "detail": // 상세보기
-						photoList = photoDAO.hitsPhotoList(params);
-						break;
-						
-				}
-				
-				if(photoList.size() == 1) {
 					String uciCode = photoList.get(0).getUciCode();
 					String ownerName = photoList.get(0).getOwnerName();
-					String downCount = String.valueOf(photoList.get(0).getDownCount());
 					
 					Map<String, Object> data = new HashMap<String, Object>();
 					data.put("uciCode", uciCode);
 					data.put("ownerName", ownerName);
-					data.put("downCount", downCount);
+					data.put("photoCount", photoCount);
 					
 					json.put("list", data);
+					
 				}
+				
 			}
 			
 		

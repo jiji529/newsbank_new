@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dto.ActionLogDTO;
 import com.dahami.newsbank.web.dto.DownloadDTO;
+import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.StatsDTO;
 
 public class PhotoDAO extends DAOBase {
@@ -205,6 +206,16 @@ public class PhotoDAO extends DAOBase {
 			session = sf.getSession();
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("exhName", "에디터");
+			
+			MemberDAO memberDAO = new MemberDAO();
+			List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+			int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
+			
+			for(int idx=0; idx<mediaList.size(); idx++) {
+				mediaSeq[idx] = mediaList.get(idx).getSeq();
+			}		
+			param.put("mediaSeq", mediaSeq);
+			
 			photoList = session.selectList("Photo.selectPhotoExhAdmin", param);
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -234,6 +245,16 @@ public class PhotoDAO extends DAOBase {
 			session = sf.getSession();
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("exhName", "에디터");
+			
+			MemberDAO memberDAO = new MemberDAO();
+			List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+			int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
+			
+			for(int idx=0; idx<mediaList.size(); idx++) {
+				mediaSeq[idx] = mediaList.get(idx).getSeq();
+			}		
+			param.put("mediaSeq", mediaSeq);
+			
 			photoList = session.selectList("Photo.selectPhotoExh", param);
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -259,6 +280,15 @@ public class PhotoDAO extends DAOBase {
 		SqlSession session = null;
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 				
+		MemberDAO memberDAO = new MemberDAO();
+		List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+		int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
+		
+		for(int idx=0; idx<mediaList.size(); idx++) {
+			mediaSeq[idx] = mediaList.get(idx).getSeq();
+		}		
+		params.put("mediaSeq", mediaSeq);
+		
 		try {
 			session = sf.getSession();
 			photoList = session.selectList("Photo.selectDownloadRank", params);
@@ -285,7 +315,16 @@ public class PhotoDAO extends DAOBase {
 	public List<PhotoDTO> basketPhotoList(Map<String, Object> params) {
 		SqlSession session = null;
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-				
+		
+		MemberDAO memberDAO = new MemberDAO();
+		List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+		int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
+		
+		for(int idx=0; idx<mediaList.size(); idx++) {
+			mediaSeq[idx] = mediaList.get(idx).getSeq();
+		}		
+		params.put("mediaSeq", mediaSeq);
+		
 		try {
 			session = sf.getSession();
 			photoList = session.selectList("Photo.selectBasketRank", params);
@@ -312,7 +351,16 @@ public class PhotoDAO extends DAOBase {
 	public List<PhotoDTO> hitsPhotoList(Map<String, Object> params) {
 		SqlSession session = null;
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-				
+		
+		MemberDAO memberDAO = new MemberDAO();
+		List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+		int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
+		
+		for(int idx=0; idx<mediaList.size(); idx++) {
+			mediaSeq[idx] = mediaList.get(idx).getSeq();
+		}		
+		params.put("mediaSeq", mediaSeq);
+		
 		try {
 			session = sf.getSession();
 			photoList = session.selectList("Photo.selectHitsRank", params);

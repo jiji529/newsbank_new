@@ -9,6 +9,7 @@
 		where type = 'M'
 		and activate = 1
 		and withdraw = 0
+		and admission = 'Y'
 		order by name asc
 	</select>
 	

@@ -125,12 +125,6 @@
 						</a>
 					</c:forEach>					
 				 </div>				 
-				<!-- <div id="photo_area">
-					<img
-						src="http://www.dev.newsbank.co.kr/view.down.photo?uciCode=I011-M001047566&amp;dummy=LZsxEkUOqaAHHg14cFQjxA%3D%3D"
-						alt="미리보기인데 제가 구현할 수 없으니 통이미지로 넣었습니다. 이 영역에 미리보기 넣어주세요!"
-						style="float: left; width: 100%;">
-				</div> -->
 			</div>
 		</section>
 		

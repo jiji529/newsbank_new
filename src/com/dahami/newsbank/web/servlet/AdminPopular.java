@@ -88,8 +88,6 @@ public class AdminPopular extends NewsbankServletBase {
 					uciCodeList.add(photo.getUciCode());
 				}
 				request.setAttribute("uciCodeList", uciCodeList);
-				//System.out.println(uciCode_list.toString());
-				
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_popular.jsp");
 				dispatcher.forward(request, response);
