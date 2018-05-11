@@ -39,7 +39,10 @@ public class MypageAccountInfo extends NewsbankServletBase {
 		// 임시 넣기
 		HttpSession session = request.getSession();
 
+		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
+		MemberInfo = memberDAO.getMember(MemberInfo); // 최신 회원정보 갱신
+		
 		
 		if (MemberInfo != null) {
 			boolean mypageAuth = false;
@@ -57,18 +60,6 @@ public class MypageAccountInfo extends NewsbankServletBase {
 				}
 				
 				request.setAttribute("MemberInfo", MemberInfo);
-				if (MemberInfo.getPhone() != null && MemberInfo.getPhone().length() >= 10) {
-					MemberInfo.setPhone(MemberInfo.getPhone().replaceAll("-", ""));
-					request.setAttribute("phone1", MemberInfo.getPhone().substring(0, 3));
-					if (MemberInfo.getPhone().length() == 11) {
-						request.setAttribute("phone2", MemberInfo.getPhone().substring(3, 7));
-					} else {
-						request.setAttribute("phone2", MemberInfo.getPhone().substring(3, 6));
-					}
-					request.setAttribute("phone3", MemberInfo.getPhone().substring(MemberInfo.getPhone().length() - 4, MemberInfo.getPhone().length()));
-
-				}
-				/*
 				// 세금계산서 전화번호, 이메일
 				if (MemberInfo.getTaxPhone() != null && MemberInfo.getTaxPhone().length() >= 9) {
 					MemberInfo.setTaxPhone(MemberInfo.getTaxPhone().replaceAll("-", ""));
@@ -98,7 +89,7 @@ public class MypageAccountInfo extends NewsbankServletBase {
 
 					request.setAttribute("taxPhone3", MemberInfo.getTaxPhone().substring(MemberInfo.getTaxPhone().length() - 4, MemberInfo.getTaxPhone().length()));
 				}
-				*/
+				
 				
 				//매체목록 세팅
 				request.setAttribute("mediaList", new MemberDAO().listAdjustMedia(MemberInfo));

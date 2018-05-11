@@ -221,7 +221,7 @@
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM
-			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission`='Y'
+			`adjustment` A INNER JOIN `member` M ON A.adjSlave = M.seq WHERE M.`admission`='Y'
 			AND `adjMaster` = #{seq})
 		</if>
 		ORDER BY `compName` ASC
