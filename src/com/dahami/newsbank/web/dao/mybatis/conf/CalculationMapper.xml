@@ -6,8 +6,7 @@
    	<insert id="insertCalculation" parameterType="com.dahami.newsbank.web.dto.CalculationDTO" 
    	    useGeneratedKeys="true" keyProperty="seq">
    	    INSERT INTO `calculations` (
-		regDate   	    
-   	    <if test="id != null">, `id`</if>
+   	    <if test="id != null">`id`</if>
    	    <if test="uciCode != null">, `uciCode`</if>
    	    <if test="usage != null">, `usage`</if>
    	    <if test="type != null">, `type`</if>
@@ -15,10 +14,10 @@
    	    <if test="price != null">, `price`</if>
    	    <if test="fees != null">, `fees`</if>
    	    <if test="rate >0">, `rate`</if>
-   	    <if test="status != null">, `status`</if>   	     
+   	    <if test="status != null">, `status`</if>
+   	    <if test="regDate != null">, `regDate`</if>   	     
 		) VALUES (
-		NOW()
-		<if test="id != null">, #{id}</if>
+		<if test="id != null">#{id}</if>
 		<if test="uciCode != null">, #{uciCode}</if>
 		<if test="usage != null">, #{usage}</if>
 		<if test="type != null">, #{type}</if>
@@ -27,6 +26,7 @@
 		<if test="fees != null">, #{fees}</if>
 		<if test="rate >0">, #{rate}</if>
 		<if test="status != null">, #{status}</if>
+		<if test="regDate != null">, #{regDate}</if>
 		)
 		
 		<selectKey resultType="int" keyProperty="seq">
@@ -34,30 +34,6 @@
 			LAST_INSERT_ID()
 		</selectKey>
    	</insert>
-   	
-   	<!-- <insert id="insertCalculation" useGeneratedKeys="true" keyProperty="calculation_seq">
-   	    INSERT INTO `calculations` (
-		regDate   	    
-   	    <if test="id != null">, id</if>
-   	    <if test="uciCode != null">, uciCode</if>
-   	    <if test="type != null">, type</if>
-   	    <if test="price != null">, price</if>
-   	    <if test="fees != null">, fees</if>
-   	    <if test="status != null">, status</if>
-   	    `id`, `uciCode`, `usage`, `type`, `price`, `fees`, `status`) 
-		VALUES (#{id}, #{uciCode}, #{usage}, #{type}, #{price}, #{fees}, #{status})
-		<if test="id != null">, #{id}</if>
-		<if test="uciCode != null">, #{uciCode}</if>
-		<if test="type != null">, #{type}</if>
-		<if test="price != null">, #{price}</if>
-		<if test="fees != null">, #{fees}</if>
-		<if test="status != null">, #{status}</if>
-		
-		<selectKey resultType="int" keyProperty="calculation_seq">
-			SELECT
-			LAST_INSERT_ID()
-		</selectKey>
-   	</insert> -->
    	
    	<!-- 정산매체, 피정산매체 선택에 따른 정산결과 -->
    	<select id="selectCalculation" resultType="com.dahami.newsbank.web.dto.CalculationDTO" 

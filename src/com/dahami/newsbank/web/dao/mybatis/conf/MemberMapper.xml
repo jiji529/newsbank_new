@@ -18,6 +18,7 @@
 		select * from member
 		where type = 'M'		
 		and withdraw = 0
+		and admission = 'Y'
 		order by name asc
 	</select>
 
