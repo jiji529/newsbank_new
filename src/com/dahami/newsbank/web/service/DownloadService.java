@@ -530,6 +530,15 @@ public class DownloadService extends ServiceBase {
 				else if(newDownType.startsWith(DOWN_TYPE_CORP + "_")) {
 					memberInfo = new MemberDAO().getMember(CORP_INFO_QUERY_MAP.get(serviceCode));
 					newDownType = newDownType.substring(DOWN_TYPE_CORP.length()+1);
+					
+					if(photo.getSaleState() != PhotoDTO.SALE_STATE_OK) {
+						if (newDownType.equals("list")) {
+							response.sendRedirect(URL_PHOTO_STOP_LIST);
+						} else {
+							response.sendRedirect(URL_PHOTO_STOP_VIEW);
+						}
+						return;
+					}
 				}
 				
 				targetSize = newDownType;

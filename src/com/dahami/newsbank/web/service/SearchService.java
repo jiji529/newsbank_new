@@ -63,6 +63,11 @@ public class SearchService extends ServiceBase {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String[]> params = request.getParameterMap();
+		try {
+			String photoId = params.get("photoId")[0];
+			System.out.println();
+		}catch(Exception e){}
+		
 		SearchParameterBean sParam = new SearchParameterBean(params);
 		
 		int exportType = 0;
@@ -222,17 +227,23 @@ public class SearchService extends ServiceBase {
 							itemMap.put("shotDate", regDf.format(shotDate));
 						}
 						
-						itemMap.put("link", "/view.photo?uciCode="+uciCode+"&corp=gt");
-						itemMap.put("thumbSrc", "/thumbSrc.down.photo?uciCode="+uciCode+"&corp=gt");
+						itemMap.put("link", "/view.photo?uciCode="+uciCode);
+						itemMap.put("thumbSrc", "/list.down.photo?uciCode="+uciCode+"&corp=gt");
 						itemMap.put("viewSrc", "/view.down.photo?uciCode="+uciCode+"&corp=gt");
 						itemMap.put("outlineSrc", "/outline.down.photo?uciCode="+uciCode+"&corp=gt");
 						itemMap.put("orgSrc", "/service.down.photo?uciCode="+uciCode+"&corp=gt");
-						itemMap.put("imageSrc", "추가협의 필요");
 						
 						itemMap.put("width", dto.getWidthPx());
 						itemMap.put("height", dto.getHeightPx());
-						itemMap.put("size", dto.getFileSizeMBStr() + "MB");
+						itemMap.put("size", dto.getFileSize());
 						itemMap.put("photoId", uciCode);
+						
+						if(dto.getSaleState() == PhotoDTO.SALE_STATE_OK) {
+							itemMap.put("saleState", true);
+						}
+						else {
+							itemMap.put("saleState", false);	
+						}
 					}
 				}
 			}
