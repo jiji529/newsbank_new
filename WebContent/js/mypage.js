@@ -1281,3 +1281,8 @@ function excelDown(api, path) {
 	$("#downForm").attr("action", api);
 	$("#downForm").submit();
 }
+
+// 판매 중지된 이미지 알림 메세지
+function stopSaleMessage() {
+	alert("판매 중지된 이미지입니다.");
+}

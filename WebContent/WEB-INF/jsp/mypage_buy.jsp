@@ -179,15 +179,30 @@
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
-									<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
+									<c:choose>
+										<c:when test="${paymentDetailList.memberDTO.withdraw eq 0 && paymentDetailList.memberDTO.admission eq 'Y' && paymentDetailList.memberDTO.activate eq 1}">
+											<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()">
+										</c:otherwise>
+									</c:choose>
 										<img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${paymentDetailList.photo_uciCode }">
-									</a>
+										</a>
 								</div>
 								<div class="cart_info">
-									<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
-										<div class="brand">${paymentDetailList.photoDTO.copyright }</div>
-										<div class="code">${paymentDetailList.photo_uciCode }</div>
-									</a>
+									<c:choose>
+										<c:when test="${paymentDetailList.memberDTO.withdraw eq 0 && paymentDetailList.memberDTO.admission eq 'Y' && paymentDetailList.memberDTO.activate eq 1}">
+											<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()">
+										</c:otherwise>
+									</c:choose>
+											<div class="brand">${paymentDetailList.photoDTO.copyright }</div>
+											<div class="code">${paymentDetailList.photo_uciCode }</div>
+											</a>
+									
 									<div class="option_area">
 										<ul class="opt_li">
 											<li>${paymentDetailList.usageDTO.usage }</li>

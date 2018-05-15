@@ -33,7 +33,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180410"></script>
+<script src="js/mypage.js?v=20180411"></script>
 <script type="text/javascript">
 	
 	/** 찜하기 */
@@ -304,11 +304,35 @@
 								<label for="check${status.index}">선택</label>
 							</div></td>
 						<td><div class="cart_item">
-								<div class="thumb"><a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank"><img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${CartDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a></div>
-								<div class="cart_info"> <a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank">
-									<div class="brand">${CartDTO.copyright}</div>
-									<div class="code">${CartDTO.uciCode}</div>
-									</a>
+								<%-- <c:choose>
+									<c:when test="${CartDTO.memberDTO.withdraw eq 0 && CartDTO.memberDTO.admission eq 'Y' && CartDTO.memberDTO.activate eq 1}">
+									</c:when>
+									<c:otherwise>
+									</c:otherwise>
+								</c:choose> --%>
+								
+								<div class="thumb">
+									<c:choose>
+										<c:when test="${CartDTO.memberDTO.withdraw eq 0 && CartDTO.memberDTO.admission eq 'Y' && CartDTO.memberDTO.activate eq 1}">
+											<a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank"><img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${CartDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a>
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()"><img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${CartDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a>
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<div class="cart_info">
+									<c:choose>
+										<c:when test="${CartDTO.memberDTO.withdraw eq 0 && CartDTO.memberDTO.admission eq 'Y' && CartDTO.memberDTO.activate eq 1}">
+											<a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank">
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()">
+										</c:otherwise>
+									</c:choose> 
+										<div class="brand">${CartDTO.copyright}</div>
+										<div class="code">${CartDTO.uciCode}</div>
+										</a>
 									<div class="option_area">
 										<c:forEach items="${CartDTO.getUsageList()}" var="UsageDTO">
 											<ul class="opt_li" value="${UsageDTO.usageList_seq}">
@@ -319,7 +343,8 @@
 												<li>${UsageDTO.usageDate}</li>
 											</ul>
 										</c:forEach>
-										<a href= "main.html" onClick="window.open('/cart.popOption?uciCode=${CartDTO.uciCode}','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a></div>
+										<a href= "main.html" onClick="window.open('/cart.popOption?uciCode=${CartDTO.uciCode}','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a>
+									</div>
 								</div>
 							</div></td>
 						<td><fmt:formatNumber value="${CartDTO.price * 10 / 11}" type="number"/>원</td>

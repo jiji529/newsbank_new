@@ -9,6 +9,7 @@ public class CartDTO {
 	private int price; // 가격	
 	private String copyright; // 저작권자
 	private List<UsageDTO> usageList; // 사용용도 구분옵션
+	private MemberDTO memberDTO; // 사진 매체사 정보
 	
 	public String getUciCode() {
 		return uciCode;
@@ -54,6 +55,14 @@ public class CartDTO {
 		return getPathBase() + "_view.jpg";
 	}
 	
+	public MemberDTO getMemberDTO() {
+		return memberDTO;
+	}
+
+	public void setMemberDTO(MemberDTO memberDTO) {
+		this.memberDTO = memberDTO;
+	}
+
 	/**
 	 * @methodName  : getPathBase
 	 * @author      : JEON,HYUNGGUK

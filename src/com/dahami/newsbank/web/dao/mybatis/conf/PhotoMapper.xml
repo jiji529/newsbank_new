@@ -41,7 +41,7 @@
 	</update>
 	
 	<select id="dibsPhoto" resultType="com.dahami.newsbank.dto.PhotoDTO" parameterType="java.util.Map">
-	    SELECT B.bookmark_seq, M.compName AS copyright, A.uciCode FROM photo A
+	    SELECT B.bookmark_seq, M.compName AS copyright, A.uciCode, M.admission, M.withdraw, M.activate FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode 
 		INNER JOIN bookmark C ON B.bookmark_seq = C.seq
 		INNER JOIN photo P ON B.photo_uciCode = P.uciCode

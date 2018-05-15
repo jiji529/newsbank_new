@@ -141,7 +141,8 @@
 		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
 		U.`usageDate`, U.`price`,
 		P.`uciCode`, P.`ownerType`,
-		N.`compName` AS copyright
+		N.`compName` AS copyright,
+		N.admission, N.withdraw, N.activate
 		FROM
 		`paymentManage`
 		AS M
@@ -244,6 +245,9 @@
 		<result property="compName" column="compName" />
 		<result property="email" column="email" />
 		<result property="phone" column="phone" />
+		<result property="admission" column="admission" />
+		<result property="activate" column="activate" />
+		<result property="withdraw" column="withdraw" />
 	</resultMap>
 
 	<!-- 결제정보 입력 -->
@@ -769,7 +773,8 @@
 		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
 		U.`usageDate`, U.`price`,
 		P.`uciCode`, P.`ownerType`,
-		N.compName AS copyright
+		N.compName AS copyright,
+		N.admission, N.withdraw, N.activate
 		FROM
 		`paymentManage`
 		AS M

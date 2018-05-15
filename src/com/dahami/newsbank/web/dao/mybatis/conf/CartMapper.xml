@@ -2,13 +2,67 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Cart">
-	<select id="selectCartList" resultType="com.dahami.newsbank.web.dto.CartDTO" parameterType="java.util.Map">
-      	SELECT A.photo_uciCode as uciCode, M.compName AS copyright, SUM(price) as price FROM basket A 
+    <!-- 장바구니 resultMap -->
+    <resultMap id="cartResult" type="com.dahami.newsbank.web.dto.CartDTO">
+		<result property="uciCode" column="uciCode" />
+		<result property="copyright" column="copyright" />
+		<result property="price" column="price" />
+		<association property="memberDTO" column="seq"
+			javaType="com.dahami.newsbank.web.dto.MemberDTO" resultMap="memberResult" />
+		<!-- <collection property="usageList"
+			ofType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageResult" /> -->
+	</resultMap>
+	
+    <!-- UCI코드별 매체사 권한 -->
+    <resultMap id="memberResult" type="com.dahami.newsbank.web.dto.MemberDTO">
+		<id property="seq" column="seq" />
+		<result property="type" column="type" />
+		<result property="admission" column="admission" />
+		<result property="activate" column="activate" />
+		<result property="withdraw" column="withdraw" />
+	</resultMap>
+	
+    <!-- 사용용도 resultMap -->
+    <resultMap id="usageResult" type="com.dahami.newsbank.web.dto.UsageDTO">
+		<id property="usageList_seq" column="usageList_seq" />
+		<result property="usage" column="usage" />
+		<result property="division1" column="division1" />
+		<result property="division2" column="division2" />
+		<result property="division3" column="division3" />
+		<result property="division4" column="division4" />
+		<result property="usageDate" column="usageDate" />
+		<result property="price" column="price" />
+	</resultMap>
+	
+	<!-- <select id="selectCartList" resultMap="cartResult" parameterType="java.util.Map">
+	    SELECT A.seq, A.photo_uciCode as uciCode, M.compName AS copyright, A.price, 
+		U.`usage`, U.division1, U.division2, U.division3, U.usageDate,
+		M.admission, M.withdraw, M.activate FROM basket A
+		INNER JOIN photo P ON A.photo_uciCode = P.uciCode
+		INNER JOIN member M ON P.member_seq = M.seq
+		INNER JOIN usageList U ON A.usageList_seq = U.seq
+		WHERE A.member_seq = #{member_seq}
+		ORDER BY A.regDate DESC
+	</select> -->
+	
+	<select id="selectCartList" resultMap="cartResult" parameterType="java.util.Map">
+	    SELECT A.seq, A.photo_uciCode as uciCode, M.compName AS copyright, A.price, 
+		U.`usage`, U.division1, U.division2, U.division3, U.usageDate,
+		M.admission, M.withdraw, M.activate FROM basket A
+		INNER JOIN photo P ON A.photo_uciCode = P.uciCode
+		INNER JOIN member M ON P.member_seq = M.seq
+		INNER JOIN usageList U ON A.usageList_seq = U.seq
+		WHERE A.member_seq = #{member_seq}
+		ORDER BY A.regDate DESC
+	</select>
+		    
+	<!-- <select id="selectCartList" resultType="com.dahami.newsbank.web.dto.CartDTO" parameterType="java.util.Map">
+      	SELECT A.photo_uciCode as uciCode, M.compName AS copyright, SUM(price) as price, M.`type`, M.admission, M.withdraw, M.activate FROM basket A 
 		INNER JOIN photo B ON A.photo_uciCode = B.uciCode
 		INNER JOIN member M ON B.member_seq = M.seq
 		WHERE A.member_seq = #{member_seq}
 		GROUP BY A.photo_uciCode
-	</select>
+	</select> -->
 	
 	<select id="selectUsageList" resultType="com.dahami.newsbank.web.dto.UsageDTO" parameterType="java.util.Map">
 	    SELECT A.seq AS usageList_seq, A.usage, A.division1, A.division2, A.division3, A.usageDate FROM usageList A

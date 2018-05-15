@@ -32,7 +32,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
+<script src="js/mypage.js?v=20180406"></script>
 <!-- <script src="js/cms.js.jsp"></script> -->
 <script src="js/dibs.js.jsp?v=20180406"></script>
 
@@ -184,12 +184,26 @@
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 							<ul class="thumb_btn">
-								<c:if test="${MemberInfo.deferred eq 2}">
-									<li class="btn_down" onclick="downDiferred('${PhotoDTO.uciCode}')">다운로드</li>
-								</c:if>
-								<c:if test="${MemberInfo.deferred eq 0}">
-									<li class="btn_cart" onclick="insertBasket('${PhotoDTO.uciCode}')">장바구니</li>
-								</c:if>
+								<!-- 버튼 활성화 조건 : 매체사 승인(admission=Y) && 노출(activate=1) && 정상회원(withdraw=0) -->
+								<c:choose>
+									<c:when test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0}">
+										<c:if test="${MemberInfo.deferred eq 2}">
+											<li class="btn_down" onclick="downDiferred('${PhotoDTO.uciCode}')">다운로드</li>
+										</c:if>
+										<c:if test="${MemberInfo.deferred eq 0}">
+											<li class="btn_cart" onclick="insertBasket('${PhotoDTO.uciCode}')">장바구니</li>
+										</c:if>
+									</c:when>
+									<c:otherwise>
+										<c:if test="${MemberInfo.deferred eq 2}">
+											<li class="btn_down" onclick="stopSaleMessage()">다운로드</li>
+										</c:if>
+										<c:if test="${MemberInfo.deferred eq 0}">
+											<li class="btn_cart" onclick="stopSaleMessage()">장바구니</li>
+										</c:if>
+									</c:otherwise>
+								</c:choose>
+								
 								<li class="btn_del">삭제</li>
 							</ul>
 						</li>
