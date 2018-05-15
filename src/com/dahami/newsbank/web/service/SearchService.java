@@ -168,10 +168,13 @@ public class SearchService extends ServiceBase {
 						logger.warn("", e);
 					}
 				}
+				json.put("count", photoList.get("count"));
+				json.put("totalPage", photoList.get("totalPage"));
 			}
-			
-			json.put("count", photoList.get("count"));
-			json.put("totalPage", photoList.get("totalPage"));
+			else {
+				json.put("count", 0);
+				json.put("totalPage", 0);	
+			}
 			json.put("result", jsonList);
 		
 			request.setAttribute("contentType", "text/json; charset=UTF-8");
@@ -194,11 +197,16 @@ public class SearchService extends ServiceBase {
 				photo.put("Item", itemList);
 				if(list != null && list.size() > 0) {
 					for(PhotoDTO dto : list){
+						String uciCode = dto.getUciCode();
 						Map<String, Object> itemMap = new HashMap<String, Object>();
 						itemList.add(itemMap);
 						itemMap.put("link", dto.getViewUrl());
 						itemMap.put("copyright", dto.getCopyright());
 						itemMap.put("ownerName", dto.getOwnerName());
+						String title = dto.getTitle();
+						if(title != null) {
+							itemMap.put("title", title.trim());
+						}
 						String description = dto.getDescription();
 						if(description != null) {
 							description = description.replaceAll("((\\r)?\\n)+", "\n").trim();
@@ -214,13 +222,17 @@ public class SearchService extends ServiceBase {
 							itemMap.put("shotDate", regDf.format(shotDate));
 						}
 						
-						itemMap.put("flash", "추가협의 필요");
+						itemMap.put("link", "/view.photo?uciCode="+uciCode+"&corp=gt");
+						itemMap.put("thumbSrc", "/thumbSrc.down.photo?uciCode="+uciCode+"&corp=gt");
+						itemMap.put("viewSrc", "/view.down.photo?uciCode="+uciCode+"&corp=gt");
+						itemMap.put("outlineSrc", "/outline.down.photo?uciCode="+uciCode+"&corp=gt");
+						itemMap.put("orgSrc", "/service.down.photo?uciCode="+uciCode+"&corp=gt");
 						itemMap.put("imageSrc", "추가협의 필요");
 						
 						itemMap.put("width", dto.getWidthPx());
 						itemMap.put("height", dto.getHeightPx());
 						itemMap.put("size", dto.getFileSizeMBStr() + "MB");
-						itemMap.put("photoId", dto.getUciCode());
+						itemMap.put("photoId", uciCode);
 					}
 				}
 			}
