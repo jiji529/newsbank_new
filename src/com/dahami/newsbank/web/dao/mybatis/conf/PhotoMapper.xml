@@ -97,6 +97,9 @@
 		INNER JOIN member M ON A.member_seq = M.seq 
 		WHERE C.exhName = #{exhName} AND 
 		M.activate = 1 AND 
+		M.withdraw = 0 AND
+		M.admission = 'Y' AND
+		M.`type` = 'M' AND 
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
 		member_seq IN 
 		<!-- 활성 매체사 SEQ 리스트 -->
@@ -128,7 +131,7 @@
 		INNER JOIN member M ON P.member_seq = M.seq
 		WHERE uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
 		member_seq IN 
-		<!-- 활성 매체사 SEQ 리스트 -->
+		<!-- 활성 매체사 SEQ 리스트 (조건 : type = 'M', activate = 1, withdraw = 0, admission = 'Y') -->
 		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
 		    #{seq}
 		</foreach>
@@ -146,7 +149,7 @@
 		M.activate = 1 AND
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND 
 		member_seq IN 
-		<!-- 활성 매체사 SEQ 리스트 -->
+		<!-- 활성 매체사 SEQ 리스트 (조건 : type = 'M', activate = 1, withdraw = 0, admission = 'Y') -->
 		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
 		    #{seq}
 		</foreach>
@@ -164,7 +167,7 @@
 		WHERE P.saleStat = 1 AND
 		P.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
 		member_seq IN 
-		<!-- 활성 매체사 SEQ 리스트 -->
+		<!-- 활성 매체사 SEQ 리스트 (조건 : type = 'M', activate = 1, withdraw = 0, admission = 'Y') -->
 		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
 		    #{seq}
 		</foreach>

@@ -35,11 +35,46 @@
 		</selectKey>
    	</insert>
    	
+   	<!-- 정산/피정산 상세내역 Result -->
+   	<resultMap id="calculationResult" type="com.dahami.newsbank.web.dto.CalculationDTO">
+		<id property="seq" column="seq" />
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="compName" column="compName" />
+		<result property="copyright" column="copyright" />
+		<result property="member_seq" column="member_seq" />
+		<result property="payType" column="payType" />
+		<result property="uciCode" column="uciCode" />
+		<result property="usage" column="usage" />
+		<result property="type" column="type" />
+		<result property="price" column="price" />
+		<result property="status" column="status" />
+		<result property="fees" column="fees" />
+		<result property="rate" column="rate" />
+		<result property="regDate" column="regDate" />
+		
+		<association property="memberDTO" column="seq"
+			javaType="com.dahami.newsbank.web.dto.MemberDTO" resultMap="memberResult" />
+	</resultMap>
+	
+   	<resultMap id="memberResult" type="com.dahami.newsbank.web.dto.MemberDTO">
+		<id property="seq" column="seq" />
+		<result property="type" column="type" />
+		<result property="id" column="id" />
+		<result property="admission" column="admission" />
+		<result property="withdraw" column="withdraw" />
+		<result property="activate" column="activate" />
+		<result property="compName" column="compName" />
+	</resultMap>
+   	
    	<!-- 정산매체, 피정산매체 선택에 따른 정산결과 -->
-   	<select id="selectCalculation" resultType="com.dahami.newsbank.web.dto.CalculationDTO" 
+   	<!-- <select id="selectCalculation" resultType="com.dahami.newsbank.web.dto.CalculationDTO" 
+   	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> -->
+	<select id="selectCalculation" resultMap="calculationResult" 
    	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 
    	   SELECT C.seq, C.id, M.name, M.compName, SM.name as copyright, P.member_seq, C.`payType`,  
-   	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, C.`regDate`
+   	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, C.`regDate`,
+   	   SM.seq, SM.`type`, SM.id, SM.admission, SM.withdraw, SM.activate, SM.compName
 		FROM calculations C
 		INNER JOIN member M ON C.id = M.id
 		INNER JOIN photo P ON C.uciCode = P.uciCode
@@ -75,7 +110,7 @@
    	</select>
    	
    	<!-- 월별 정산통계 Result -->
-	<resultMap id="calculationResult" type="java.util.HashMap">
+	<resultMap id="calculationMonthResult" type="java.util.HashMap">
 		<result javaType="java.lang.String" column="YearOfMonth" property="YearOfMonth"></result>
 		<result javaType="java.lang.Integer" column="price" property="price"></result>
 		<result javaType="java.lang.Integer" column="type" property="type"></result>
@@ -83,7 +118,7 @@
 	</resultMap>
    	
    	<!-- 정산/피정산 전체매체를 대상으로 온/오프라인 월별 통계 -->
-   	<select id="selectOfMonth" resultMap="calculationResult">
+   	<select id="selectOfMonth" resultMap="calculationMonthResult">
    	    SELECT DATE_FORMAT(c.regDate, '%Y-%m') AS YearOfMonth, SUM(price) AS price, c.`type`, COUNT(price) AS count
 		FROM calculations c
 		INNER JOIN photo p ON c.uciCode = p.uciCode

@@ -23,6 +23,7 @@ public class CalculationDTO {
 	private int fees; // 수수료
 	private int rate; // 온라인|오프라인 요율
 	private String regDate; // 등록일
+	private MemberDTO memberDTO; // UCI코드 소유자의 회원정보
 	
 	public int getSeq() {
 		return seq;
@@ -154,6 +155,14 @@ public class CalculationDTO {
 	}
 	public void setMember_seq(int member_seq) {
 		this.member_seq = member_seq;
+	}
+	
+	public MemberDTO getMemberDTO() {
+		return memberDTO;
+	}
+
+	public void setMemberDTO(MemberDTO memberDTO) {
+		this.memberDTO = memberDTO;
 	}
 	
 	/**

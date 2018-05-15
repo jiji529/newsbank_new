@@ -320,6 +320,9 @@ public class CalculationAction extends NewsbankServletBase {
 							obj.put("addedTaxOfSupply", addedTaxOfSupply); // 공급부가세
 							obj.put("dahamiAccount", dahamiAccount); // 다하미 매출액
 							
+							obj.put("admission", dto.getMemberDTO().getAdmission()); // 매체사 회원 - 승인여부(Y: 승인, N: 비승인)
+							obj.put("withdraw", dto.getMemberDTO().getWithdraw()); // 매체사 회원 - 탈퇴여부(0: 기본, 1: 탈퇴)
+							
 							jArray.add(obj);
 							
 							
