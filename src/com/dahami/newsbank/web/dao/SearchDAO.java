@@ -310,16 +310,6 @@ public class SearchDAO extends DAOBase {
 			query.addFilterQuery("saleState:(" + buf.toString() + ")");
 		}
 		
-		int mediaInactive = params.getMediaInactive();
-		if(mediaInactive > 0) {
-			if(mediaInactive == SearchParameterBean.MEDIA_INACTIVE_YES) {
-				query.addFilterQuery("mediaInactive:1");	
-			}
-			else if(mediaInactive == SearchParameterBean.MEDIA_INACTIVE_NO) {
-				query.addFilterQuery("mediaInactive:0");
-			}
-		}
-		
 		if(uciCode != null && uciCode.trim().length() > 0) {
 			
 			PhotoDTO pDto = new PhotoDAO().read(uciCode);
@@ -384,16 +374,6 @@ public class SearchDAO extends DAOBase {
 			
 			List<Integer> targetUserList = params.getTargetUserList();
 			StringBuffer tgtBuf = new StringBuffer();
-			if(targetUserList == null) {
-				targetUserList = new ArrayList<Integer>();
-			}
-			
-			if(targetUserList.size() == 0) {
-				List<MemberDTO> activeMemberList = new MemberDAO().listActiveMedia();
-				for(MemberDTO curTgt : activeMemberList) {
-					targetUserList.add(curTgt.getSeq());
-				}
-			}
 			if(targetUserList.size() > 0) {
 				for(int targetUser : targetUserList) {
 					if(tgtBuf.length() > 0) {
@@ -405,8 +385,9 @@ public class SearchDAO extends DAOBase {
 				logger.debug("ownerNo: (" + tgtBuf.toString() + ")");
 			}
 			else {
-				// TODO 서비스 매체 없음 처리
-				
+				// 서비스 매체 없음 처리
+				logger.warn("검색 가능 매체 없음");
+				query.addFilterQuery("NOT ownerNo:*");
 			}
 			
 //			String duration = params.getDuration();

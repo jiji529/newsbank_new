@@ -3,22 +3,31 @@
 
 <mapper namespace="Member">
 
-	<!-- 활성 매체사 리스트 읽기 -->
+	<!--
+	활성 매체사 리스트 읽기 (검색대상 매체)
+	- 승인 못 받은 경우(admission = N) 불러오지 않음
+	- 탈퇴 회원(withdraw = 1) 불러오지 않음
+	- 계정 비활성화(activate = 2) 불러오지 않음
+	-->
 	<select id="listActiveMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
 		where type = 'M'
-		and activate = 1
-		and withdraw = 0
-		and admission = 'Y'
+		and activate != 2
+		and withdraw != 1
+		and admission != 'N'
 		order by name asc
 	</select>
 	
-	<!-- 가입상태인 매체사 리스트 읽기 (관리자페이지에서는 활성/비활성화 관계없이 가입상태의 모든 매체사가 보여야 함) -->
-	<select id="listJoinMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+	<!-- 
+	현재 회원인 승인받은 매체사 리스트 읽기 (관리자 CMS 매체)
+	- 승인 못 받은 경우(admission = N) 불러오지 않음
+	- 탈퇴 회원(withdraw = 1) 불러오지 않음
+	 -->
+	<select id="listManagableMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
-		where type = 'M'		
-		and withdraw = 0
-		and admission = 'Y'
+		where type = 'M'
+		and withdraw != 1
+		and admission != 'N'
 		order by name asc
 	</select>
 
@@ -27,16 +36,37 @@
 			where seq = #{seq}
 	</select>
 
+	<!-- 
+	하위매체 리스트를 읽어온다 
+	- 승인 못 받은 경우(admission = N) 불러오지 않음
+	- 탈퇴 회원(withdraw = 1) 불러오지 않음
+	-->
 	<select id="listSlaveAdj" parameterType="int" resultType="int">
-		select adjSlave from adjustment where adjMaster = #{value}
+		select adjSlave from member A, adjustment B 
+		where A.seq = B.adjSlave 
+			and type = 'M'
+			and withdraw != 1
+			and admission != 'N' 
+			and adjMaster = #{value}
 	</select>
 	
+	<!-- 
+	정산관리 하위 매체 리스트를 읽어온다
+	 -->
 	<select id="listSlaveRep" parameterType="int" resultType="int">
-		select repSlave from repPayment where repMaster = #{value}
+		select repSlave from member A, repPayment B
+			where A.seq = repSlave
+				and withdraw != 1
+				and repMaster = #{value}
 	</select>
 	
+	<!-- 
+	그룹매체 리스트를 읽어온다
+	 -->
 	<select id="listGroupMember" parameterType="int" resultType="int">
-		select seq from member where group_seq = #{value}
+		select seq from member 
+			where group_seq = #{value}
+				and withdraw != 1
 	</select>
 
 	<!-- 로그인 체크 및 비밀번호 찾기 -->
