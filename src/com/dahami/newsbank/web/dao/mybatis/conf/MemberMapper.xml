@@ -276,8 +276,6 @@
 		`regDate`,
 		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
 		WHERE `type` = 'M'
-		AND `withdraw` = 0
-		AND `admission` = 'Y'
 		AND `compName`!=''
 		AND `compName`
 		is not null

@@ -299,13 +299,17 @@
 					<c:forEach items="${cartList}" var="CartDTO" varStatus="status">
 					<c:set var="total" value="${total + CartDTO.price}"></c:set>
 						<tr>
-						<td><div class="tb_check">
-								<input id="check${status.index}" name="check${status.index}" type="checkbox" value="${CartDTO.uciCode}">
-								<label for="check${status.index}">선택</label>
-							</div></td>
+						<td>
+							<c:if test="${CartDTO.photoDTO.withdraw eq 0 && CartDTO.photoDTO.admission eq 'Y' && CartDTO.photoDTO.activate eq 1}">
+								<div class="tb_check">
+									<input id="check${status.index}" name="check${status.index}" type="checkbox" value="${CartDTO.uciCode}">
+									<label for="check${status.index}">선택</label>
+								</div>
+							</c:if>
+						</td>
 						<td><div class="cart_item">
 								<%-- <c:choose>
-									<c:when test="${CartDTO.memberDTO.withdraw eq 0 && CartDTO.memberDTO.admission eq 'Y' && CartDTO.memberDTO.activate eq 1}">
+									<c:when test="${CartDTO.photoDTO.withdraw eq 0 && CartDTO.photoDTO.admission eq 'Y' && CartDTO.photoDTO.activate eq 1}">
 									</c:when>
 									<c:otherwise>
 									</c:otherwise>
@@ -313,7 +317,7 @@
 								
 								<div class="thumb">
 									<c:choose>
-										<c:when test="${CartDTO.memberDTO.withdraw eq 0 && CartDTO.memberDTO.admission eq 'Y' && CartDTO.memberDTO.activate eq 1}">
+										<c:when test="${CartDTO.photoDTO.withdraw eq 0 && CartDTO.photoDTO.admission eq 'Y' && CartDTO.photoDTO.activate eq 1}">
 											<a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank"><img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${CartDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a>
 										</c:when>
 										<c:otherwise>
@@ -323,7 +327,7 @@
 								</div>
 								<div class="cart_info">
 									<c:choose>
-										<c:when test="${CartDTO.memberDTO.withdraw eq 0 && CartDTO.memberDTO.admission eq 'Y' && CartDTO.memberDTO.activate eq 1}">
+										<c:when test="${CartDTO.photoDTO.withdraw eq 0 && CartDTO.photoDTO.admission eq 'Y' && CartDTO.photoDTO.activate eq 1}">
 											<a href="/view.photo?uciCode=${CartDTO.uciCode}" target="_blank">
 										</c:when>
 										<c:otherwise>
@@ -343,7 +347,9 @@
 												<li>${UsageDTO.usageDate}</li>
 											</ul>
 										</c:forEach>
-										<a href= "main.html" onClick="window.open('/cart.popOption?uciCode=${CartDTO.uciCode}','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a>
+										<c:if test="${CartDTO.photoDTO.withdraw eq 0 && CartDTO.photoDTO.admission eq 'Y' && CartDTO.photoDTO.activate eq 1}">
+											<a href= "main.html" onClick="window.open('/cart.popOption?uciCode=${CartDTO.uciCode}','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a>
+										</c:if>										
 									</div>
 								</div>
 							</div></td>
@@ -351,8 +357,11 @@
 						<td><fmt:formatNumber value="${CartDTO.price * 10 / 11 / 10}" type="number"/>원</td>
 						<td><strong class="color"><fmt:formatNumber value="${CartDTO.price}" type="number"/>원</strong></td>
 						<td><div class="btn_group">
-								<button type="button" class="btn_o" name="btn_buy">바로구매</button>
-								<button type="button" class="btn_b" name="btn_zzim">찜 하기</button>
+								<!-- 매체사 권한에 따른 구매, 찜하기 기능 동작 -->
+								<c:if test="${CartDTO.photoDTO.withdraw eq 0 && CartDTO.photoDTO.admission eq 'Y' && CartDTO.photoDTO.activate eq 1}">
+									<button type="button" class="btn_o" name="btn_buy">바로구매</button>
+									<button type="button" class="btn_b" name="btn_zzim">찜 하기</button>
+								</c:if>
 								<button type="button" class="btn_g" name="btn_delete">삭제</button>
 							</div></td>
 					</tr>

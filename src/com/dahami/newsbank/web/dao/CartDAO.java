@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dto.CartDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
 
@@ -53,6 +54,7 @@ public class CartDAO extends DAOBase {
 	public List<CartDTO> cartList(String member_seq) {
 		SqlSession session = null;
 		List<CartDTO> cartList = new ArrayList<CartDTO>();
+		PhotoDAO photoDAO = new PhotoDAO();
 				
 		try {
 			session = sf.getSession();
@@ -63,6 +65,8 @@ public class CartDAO extends DAOBase {
 			for(CartDTO cartDTO : cartList) {
 				String uciCode = cartDTO.getUciCode();
 				param.put("uciCode", uciCode);
+				PhotoDTO photoDTO = photoDAO.read(uciCode);
+				cartDTO.setPhotoDTO(photoDTO); // 사진 정보
 				List<UsageDTO> usageList = session.selectList("Cart.selectUsageList", param);
 				cartDTO.setUsageList(usageList);
 			}			

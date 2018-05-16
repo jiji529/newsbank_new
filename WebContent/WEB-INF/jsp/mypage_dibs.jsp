@@ -179,9 +179,21 @@
 			<section id="wish_list2">
 				<ul>					
 					<c:forEach items="${dibsPhotoList}" var="PhotoDTO">
-						<li class="thumb"> <a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')"><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>
+						<li class="thumb"> 
+						<c:choose>
+							<c:when test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0}">
+								<a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')">
+							</c:when>
+							<c:otherwise>
+								<a href="javascript:void(0)" onclick="stopSaleMessage()">
+							</c:otherwise>
+						</c:choose>
+							<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/>
+						</a>
 							<div class="thumb_info">
+							<c:if test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0}">
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
+							</c:if>								
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 							<ul class="thumb_btn">
 								<!-- 버튼 활성화 조건 : 매체사 승인(admission=Y) && 노출(activate=1) && 정상회원(withdraw=0) -->
