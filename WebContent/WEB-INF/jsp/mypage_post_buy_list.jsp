@@ -44,7 +44,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180403"></script>
+<script src="js/mypage.js?v=20180404"></script>
 </head>
 <body>
 <div class="wrap">
@@ -147,15 +147,37 @@
 							<td>${loop.index+1}</td>
 							<td>
 								<div class="cart_item">
-									<div class="thumb"> <a href="javascript:void(0);" onclick="go_View('${PaymentDetail.photo_uciCode}', '/view.photo', '_blank')"><img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PaymentDetail.photo_uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" /></a> </div>
-									<div class="cart_info"> <a href="javascript:void(0);" onclick="go_View('${PaymentDetail.photo_uciCode}', '/view.photo', '_blank')">
-										<div class="brand">${PaymentDetail.photoDTO.copyright }</div>
+									
+									<div class="thumb"> 
+										<c:choose>
+											<c:when test="${PaymentDetail.memberDTO.withdraw eq 0 && PaymentDetail.memberDTO.admission eq 'Y' && PaymentDetail.memberDTO.activate eq 1}">
+												<a href="javascript:void(0);" onclick="go_View('${PaymentDetail.photo_uciCode}', '/view.photo', '_blank')">
+											</c:when>
+											<c:otherwise>
+												<a href="javascript:void(0);" onclick="stopSaleMessage()">
+											</c:otherwise>
+										</c:choose>
+										<img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${PaymentDetail.photo_uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+										</a>
+									</div>
+									
+									<div class="cart_info"> 
+									<c:choose>
+										<c:when test="${PaymentDetail.memberDTO.withdraw eq 0 && PaymentDetail.memberDTO.admission eq 'Y' && PaymentDetail.memberDTO.activate eq 1}">
+											<a href="javascript:void(0);" onclick="go_View('${PaymentDetail.photo_uciCode}', '/view.photo', '_blank')">
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()">
+										</c:otherwise>
+									</c:choose>
+										<div class="brand">${PaymentDetail.photoDTO.copyright}</div>
 										<div class="code">${PaymentDetail.photo_uciCode }</div>
 										</a>
+										
 										<div class="option_area">
 											<ul class="opt_li">
 												<!-- 후불 회원은 사용용도만 존재 -->
-												<li>${PaymentDetail.usageDTO.usage }</li>
+												<li>${PaymentDetail.usageDTO.usage}</li>
 											</ul>
 										</div>
 									</div>
@@ -163,7 +185,7 @@
 							</td>
 							<td>\ <fmt:formatNumber value="${PaymentDetail.price}" pattern="#,###" /></td>
 							<td>${PaymentDetail.regDate }</td>
-							<td>${PaymentDetail.paystatus }</td>
+							<td>${PaymentDetail.getStrStatus() }</td>
 						</tr>
 					</c:forEach>
 				</tbody>

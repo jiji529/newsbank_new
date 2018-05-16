@@ -23,12 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.session.SqlSession;
 
-import com.dahami.newsbank.web.dto.BookmarkDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
-import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
 public class MemberDAO extends DAOBase {
 
@@ -36,7 +33,7 @@ public class MemberDAO extends DAOBase {
 	 * @methodName : listActiveMedia
 	 * @author : JEON,HYUNGGUK
 	 * @date : 2017. 11. 1. 오전 10:01:43
-	 * @methodCommet: 활성 매체사 리스트
+	 * @methodCommet: 활성(검색서비스 가능) 매체사 리스트
 	 * @return
 	 * @returnType : List<MemberDTO>
 	 */
@@ -49,10 +46,28 @@ public class MemberDAO extends DAOBase {
 			logger.warn("", e);
 			return null;
 		} finally {
-			try {
-				session.close();
-			} catch (Exception e) {
-			}
+			try {session.close();} catch (Exception e) {}
+		}
+	}
+	
+	/**
+	 * @methodName  : listManagableMedia
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2018. 5. 15. 오전 9:31:41
+	 * @methodCommet: 관리 가능 매체사 리스트
+	 * @return 
+	 * @returnType  : List<MemberDTO>
+	 */
+	public List<MemberDTO> listManagableMedia() {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("Member.listManagableMedia");
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {session.close();} catch (Exception e) {}
 		}
 	}
 	
@@ -88,7 +103,7 @@ public class MemberDAO extends DAOBase {
 	 * @returnType  : MemberDTO
 	 */
 	public MemberDTO getMember(MemberDTO member) {
-		if(member.getLastModifiedTime() + 5000 <= System.currentTimeMillis()) {
+		if(member.getLastModifiedTime() + 1000 <= System.currentTimeMillis()) {
 			return getMember(member.getSeq());
 		}
 		return member;
@@ -271,10 +286,7 @@ public class MemberDAO extends DAOBase {
 			logger.warn("", e);
 			return null;
 		} finally {
-			try {
-				session.close();
-			} catch (Exception e) {
-			}
+			try {session.close();} catch (Exception e) {}
 		}
 	}
 	

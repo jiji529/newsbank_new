@@ -18,6 +18,7 @@ package com.dahami.newsbank.web.dto;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,6 +143,11 @@ public class ActionLogDTO {
 	}
 	public Date getRegDate() {
 		return regDate;
+	}
+	public String getRegStrDate() { // 년월일 시분초 문자열로 표현
+		SimpleDateFormat dateforamt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String strDate = dateforamt.format(this.regDate);
+		return strDate;
 	}
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;

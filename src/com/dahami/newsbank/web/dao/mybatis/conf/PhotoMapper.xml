@@ -41,10 +41,11 @@
 	</update>
 	
 	<select id="dibsPhoto" resultType="com.dahami.newsbank.dto.PhotoDTO" parameterType="java.util.Map">
-	    SELECT B.bookmark_seq, A.* FROM photo A
+	    SELECT B.bookmark_seq, M.compName AS copyright, A.uciCode, M.admission, M.withdraw, M.activate FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode 
 		INNER JOIN bookmark C ON B.bookmark_seq = C.seq
-		INNER JOIN member D  ON C.member_seq = D.seq
+		INNER JOIN photo P ON B.photo_uciCode = P.uciCode
+		INNER JOIN member M ON P.member_seq = M.seq
 		WHERE C.member_seq = #{member_seq}
 		<if test="bookmark_seq != 0 and bookmark_seq != null">
 			AND B.bookmark_seq = #{bookmark_seq}
@@ -60,11 +61,11 @@
 			select
 				uciCode, uciStat uciState, saleStat saleState, ownerType, rightYn portraitRightState, monochrome mono, person includePerson, 
 				titleKr titleKor, titleEn titleEng, keywordKr keywordKor, keywordEn keywordEng, descriptionKr descriptionKor, descriptionEn descriptionEng,
-				copyright, shotPerson, 
+				B.compName AS copyright, shotPerson, 
 				publishDate, shotDate, A.regDate, A.updDate, 
 				widthPixel widthPx, heightPixel heightPx, widthCm, heightCm, dpi, fileSize, exif,
 				member_seq ownerNo, B.compName ownerName, preRate ownerPreRate, postRate ownerPostRate, compCode, hitCount
-				, (select (activate != 1) from member where seq = ownerNo) mediaInactive
+				, (select (activate != 1) from member where seq = ownerNo) mediaInactive, admission, withdraw, activate
 			from photo A
 			inner join member B on A.member_seq = B.seq
 			where uciCode =  #{uciCode}
@@ -95,7 +96,16 @@
 		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
 		INNER JOIN member M ON A.member_seq = M.seq 
 		WHERE C.exhName = #{exhName} AND 
-		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
+		M.activate = 1 AND 
+		M.withdraw = 0 AND
+		M.admission = 'Y' AND
+		M.`type` = 'M' AND 
+		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
+		member_seq IN 
+		<!-- 활성 매체사 SEQ 리스트 -->
+		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
+		    #{seq}
+		</foreach>
 	</select>
 	
 	<!-- 홈 : 보도사진 -->	
@@ -104,42 +114,64 @@
 		INNER JOIN photoExhibition B ON A.uciCode = B.photo_uciCode
 		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
 		INNER JOIN member M ON A.member_seq = M.seq 
-		WHERE C.exhName = #{exhName} AND 
-		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
+		WHERE C.exhName = #{exhName} AND
+		M.activate = 1 AND 
+		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
+		member_seq IN 
+		<!-- 활성 매체사 SEQ 리스트 -->
+		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
+		    #{seq}
+		</foreach>
 	</select>
 	
 	<!-- 인기사진 : 다운로드 -->
 	<select id="selectDownloadRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, B.downCount, M.name AS ownerName FROM photo A
-		INNER JOIN paymentDetail B ON A.uciCode = B.photo_uciCode
-		INNER JOIN member M ON A.member_seq = M.seq
-		WHERE A.saleStat = 1 AND 
-		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
-		ORDER BY B.downCount DESC
+	    SELECT SUM(PD.downCount) as downCount, PD.photo_uciCode, P.widthCm, P.heightCm, P.uciCode, M.name AS ownerName FROM paymentDetail PD
+		INNER JOIN photo P ON PD.photo_uciCode = P.uciCode
+		INNER JOIN member M ON P.member_seq = M.seq
+		WHERE uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
+		member_seq IN 
+		<!-- 활성 매체사 SEQ 리스트 (조건 : type = 'M', activate = 1, withdraw = 0, admission = 'Y') -->
+		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
+		    #{seq}
+		</foreach>
+		GROUP BY photo_uciCode
+		ORDER BY downCount DESC, uciCode ASC
 		LIMIT #{start}, #{count}
-	</select>
+    </select>
 	
 	<!-- 인기사진 : 찜 -->
 	<select id="selectBasketRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, M.name AS ownerName, COUNT(*) AS zzimCount FROM photo A
+	    SELECT A.widthCm, A.heightCm, A.uciCode, M.compName AS ownerName, COUNT(*) AS zzimCount FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode
 		INNER JOIN member M ON A.member_seq = M.seq
 		WHERE A.saleStat = 1 AND 
-		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
+		M.activate = 1 AND
+		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND 
+		member_seq IN 
+		<!-- 활성 매체사 SEQ 리스트 (조건 : type = 'M', activate = 1, withdraw = 0, admission = 'Y') -->
+		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
+		    #{seq}
+		</foreach>
 		GROUP BY B.photo_uciCode
 		HAVING zzimCount > 0
-		ORDER BY zzimCount DESC
+		ORDER BY zzimCount DESC, uciCode ASC
 		LIMIT #{start}, #{count}
     </select>
     
 	<!-- 인기사진 : 상세보기(조회 수) -->
 	<select id="selectHitsRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT P.widthCm, P.heightCm, P.uciCode, P.hitCount, M.name AS ownerName
-	    FROM photo P
- 		INNER JOIN member M ON P.member_seq = M.seq 
-	    WHERE saleStat = 1 AND 
-	    uciCode NOT IN (SELECT photo_uciCode FROM photoBlock)
-	    ORDER BY hitCount DESC 
+	    SELECT P.widthCm, P.heightCm, P.uciCode, P.hitCount, M.compName AS ownerName
+		FROM photo P
+		LEFT JOIN member M ON P.member_seq = M.seq
+		WHERE P.saleStat = 1 AND
+		P.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
+		member_seq IN 
+		<!-- 활성 매체사 SEQ 리스트 (조건 : type = 'M', activate = 1, withdraw = 0, admission = 'Y') -->
+		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
+		    #{seq}
+		</foreach>
+		ORDER BY hitCount DESC
 	    LIMIT #{start}, #{count}
     </select>
     
@@ -214,5 +246,13 @@
 			from actionLog A, member B
 			where uciCode = #{value} AND A.memberSeq = B.seq
 			order by seq desc
+	</select>
+	
+	<select id="lastActionLog" parameterType="string" resultType="com.dahami.newsbank.web.dto.ActionLogDTO">
+		select A.seq seq, A.uciCode, A.memberSeq, B.id memberId, B.name memberName, A.actionType, A.ip, A.description, A.regDate
+			from actionLog A, member B
+			where uciCode = #{value} AND A.memberSeq = B.seq
+			order by seq desc
+			limit 0, 1
 	</select>
 </mapper>

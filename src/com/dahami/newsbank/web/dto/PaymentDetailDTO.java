@@ -107,6 +107,28 @@ public class PaymentDetailDTO implements Serializable {
 	public String getStatus() {
 		return status;
 	}
+	public String getStrStatus() { // 결제 승인상태 반환
+		String strStatus = "";
+		
+		switch(this.status) {
+			case "0":
+				strStatus = "구매 신청";
+				break;
+				
+			case "1": // 정산 승인 취소
+				strStatus = "승인 취소";
+				break;
+				
+			case "2": // 정산 승인
+				strStatus = "구매 승인";
+				break;
+				
+			case "3": // 반려
+				strStatus = "구매 반려";
+				break;
+		}
+		return strStatus;
+	}
 	public void setStatus(String status) {
 		this.status = status;
 	}

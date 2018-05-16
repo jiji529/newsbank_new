@@ -89,16 +89,18 @@ public class LogService extends ServiceBase {
 			List<Integer> columnSize = Arrays.asList(20, 10, 10, 10); //  컬럼별 길이정보
 			List<String> columnList = Arrays.asList("regDate", "memberId", "memberName", "actionTypeStr"); // 컬럼명
 			
-			
 			List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 			
 			for(ActionLogDTO cur : logs) {
-				try {
-					mapList.add(cur.convertToMap());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
+				Map<String, Object> object = new HashMap<String, Object>();
+				
+				object.put("regDate", cur.getRegStrDate());
+				object.put("memberId", cur.getMemberId());
+				object.put("memberName", cur.getMemberName());
+				object.put("actionTypeStr", cur.getActionTypeStr());
+				
+				mapList.add(object);
 			}
 			
 			String orgFileName = "수정이력_" + uciCode; // 파일명

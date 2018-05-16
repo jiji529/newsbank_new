@@ -346,7 +346,7 @@
 				}),
 				success: function(data) {
 					
-					alert("장바구니에 담겼습니다.");
+					alert("장바구니 옵션이 변경되었습니다.");
 					window.opener.document.location.href = window.opener.document.URL; // 부모창 새로고침
 					window.close(); // 팝업창 닫기
 				}
@@ -358,36 +358,44 @@
 			var uciCodeArr = ("${uciCode}").split(","); // uciCode 배열
 			var cartArray = new Array(); // 장바구니 배열
 			
-			$.each(uciCodeArr, function(key, value) {
-				var uciCode = value;
-				
-				$(".op_cont").each(function(index){ // 선택된 사용용도 리스트 갯수대로 시행
-					var usageList_seq = $(".op_cont").eq(index).attr("value"); // 사용용도 고유번호
-					var price = $(".op_price").eq(index).attr("value"); // 사용용도 가격
-					
-					var obj = new Object(); // 객체
-					obj.uciCode = uciCode;
-					obj.usageList_seq = usageList_seq;
-					obj.price = price;
-					
-					cartArray.push(obj);
-					console.log(obj);
-				});
-			});
+			var count = $(".op_cont").length;
+			var cartArray = new Array(); // 장바구니 배열
 			
-			// 선택옵션 새롭게 추가
-			$.ajax({
-				url: "/cart.popOption?action=insertCart",
-				type: "POST",
-				data : ({
-					cartArray : JSON.stringify(cartArray)
-				}),
-				success: function(data) {
-					alert("장바구니에 추가되었습니다.");
-					window.close();
-					opener.parent.location.reload();						
-				}
-			});
+			if(count > 0) {
+				$.each(uciCodeArr, function(key, value) {
+					var uciCode = value;
+					
+					$(".op_cont").each(function(index){ // 선택된 사용용도 리스트 갯수대로 시행
+						var usageList_seq = $(".op_cont").eq(index).attr("value"); // 사용용도 고유번호
+						var price = $(".op_price").eq(index).attr("value"); // 사용용도 가격
+						
+						var obj = new Object(); // 객체
+						obj.uciCode = uciCode;
+						obj.usageList_seq = usageList_seq;
+						obj.price = price;
+						
+						cartArray.push(obj);
+						console.log(obj);
+					});
+				});
+				
+				// 선택옵션 새롭게 추가
+				$.ajax({
+					url: "/cart.popOption?action=insertCart",
+					type: "POST",
+					data : ({
+						cartArray : JSON.stringify(cartArray)
+					}),
+					success: function(data) {
+						alert("장바구니에 추가되었습니다.");
+						window.close();
+						opener.parent.location.reload();						
+					}
+				});
+				
+			}else {
+				alert("이미지 용도와 옵션, 기간을 모두 선택한 후 장바구니에 담으실 수 있습니다.");
+			}
 		}
 		
 		// #옵션 추가/삭제에 따른 총 금액(수량) 후처리

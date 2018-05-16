@@ -46,12 +46,6 @@ public class SearchParameterBean {
 	public static final int SALE_STATE_BLIND_DEL = SALE_STATE_BLIND | SALE_STATE_DEL;
 	public static final int SALE_STATE_DEFAULT = SALE_STATE_OK_BLIND;	// 기본값
 	
-	
-	/** 미디어 비활성 상태 / 1:비활성 / 2:활성 */
-	private int mediaInactive;
-	public static final int MEDIA_INACTIVE_YES = 1;
-	public static final int MEDIA_INACTIVE_NO = 2;
-	
 	/** 컨텐츠 종류 / 0전체 1보도 2뮤지엄 4개인사진 8컬렉션*/
 	private int contentType;
 	public static final int CONTENT_TYPE_ALL = ALL;
@@ -181,15 +175,6 @@ public class SearchParameterBean {
 	public void setSaleState(int saleState) {
 		this.saleState = saleState;
 	}
-	
-	public int getMediaInactive() {
-		return mediaInactive;
-	}
-
-	public void setMediaInactive(int mediaInactive) {
-		this.mediaInactive = mediaInactive;
-	}
-
 	public int getPageVol() {
 		return pageVol;
 	}

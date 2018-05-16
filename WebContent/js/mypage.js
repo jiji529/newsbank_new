@@ -386,9 +386,9 @@ $(document).ready(function() {
 	$('#frmMypage').on('submit', function() {
 		var type = $("#type").val();
 		var check = true;
-		console.log("pw length : " + $('#frmMypage').find('[id=pw]').val().length);
+		console.log($('#frmMypage').find('[id=pw]').length);
 		
-		if ($('#frmMypage').find('[id=pw]').val().length > 0) {
+		if ($('#frmMypage').find('[id=pw]').length > 0) {
 			check = check && validPw();
 		}
 		if ($('#frmMypage').find('[name=name]').size() > 0) {
@@ -490,7 +490,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#media").change(function() {
+	$("#media").change(function() { 
 		if ($("#media").val().length > 0) {
 			$.ajax({
 				url : "/member.api",
@@ -514,6 +514,18 @@ $(document).ready(function() {
 							$("#contractAuto").prop('checked', true);
 						} else {
 							$("#contractAuto").prop('checked', false);
+						}
+						
+						if(result.compBankPath == null) { // 통장사본 첨부파일 없을 시, 다운로드 버튼 비활성화
+							$(".bank_down").hide();
+						}else {
+							$(".bank_down").show();
+						}
+						
+						if(result.contractPath == null) { // 계약서 첨부파일 없을 시, 다운로드 버튼 비활성화
+							$(".contract_down").hide();
+						}else {
+							$(".contract_down").show();
 						}
 
 						$('input[name=preRate]').val(result.preRate);
@@ -552,6 +564,21 @@ $(document).ready(function() {
 				}
 
 			});
+		}else {
+			// 입력란 초기화
+			var frmInput = $("#frmMypage table tbody input[type=text]");
+			for(var idx=0; idx<frmInput.length; idx++) {
+				var inputName = $(frmInput[idx]).attr("name");
+				var disabledName = ["contractStart", "contractEnd"]; 
+				
+				if($.inArray(inputName, disabledName) == -1) { // 비활성화된 입력창이 아닌 경우만 초기화
+					$("#frmMypage table tbody input[name="+inputName+"]").val("");
+				}else {
+					
+				}
+				
+			}
+			
 		}
 
 	});
@@ -982,6 +1009,14 @@ $(function() {
 			var formData = new FormData();
 			//첫번째 파일태그
 			formData.append("uploadFile", tmpFile);
+			
+			// 정산정보관리(통장사본/계약서 업로드 시, 선택된 주/피정산 매체사 SEQ 값을 전달하기)
+			if(uType == "bank" || uType == "contract") {
+				var seq = $("#media option:selected").val(); // 선택한 매체사 SEQ
+				formData.append("seq", seq);
+			}
+			
+			console.log(formData);
 
 			$.ajax({
 				url : '/'+uType+'.upload',
@@ -1245,4 +1280,9 @@ function excelDown(api, path) {
 	$("#currentKeyword").val(keyword);
 	$("#downForm").attr("action", api);
 	$("#downForm").submit();
+}
+
+// 판매 중지된 이미지 알림 메세지
+function stopSaleMessage() {
+	alert("판매 중지된 이미지입니다.");
 }

@@ -236,7 +236,7 @@ public class SearchDAO extends DAOBase {
 					int ownerNo = cur.getOwnerNo();
 					MemberDTO curMember = memberMap.get(ownerNo);
 					if(curMember != null) {
-						cur.setOwnerName(curMember.getName());
+						cur.setOwnerName(curMember.getCompName()); // 회사/기관명
 					}
 					else {
 						logger.warn("멤버정보 없음: seq / " + ownerNo);
@@ -310,16 +310,6 @@ public class SearchDAO extends DAOBase {
 			query.addFilterQuery("saleState:(" + buf.toString() + ")");
 		}
 		
-		int mediaInactive = params.getMediaInactive();
-		if(mediaInactive > 0) {
-			if(mediaInactive == SearchParameterBean.MEDIA_INACTIVE_YES) {
-				query.addFilterQuery("mediaInactive:1");	
-			}
-			else if(mediaInactive == SearchParameterBean.MEDIA_INACTIVE_NO) {
-				query.addFilterQuery("mediaInactive:0");
-			}
-		}
-		
 		if(uciCode != null && uciCode.trim().length() > 0) {
 			
 			PhotoDTO pDto = new PhotoDAO().read(uciCode);
@@ -383,16 +373,21 @@ public class SearchDAO extends DAOBase {
 			query.setQuery(qBuf.toString());
 			
 			List<Integer> targetUserList = params.getTargetUserList();
-			if(targetUserList != null && targetUserList.size() > 0) {
-				StringBuffer buf = new StringBuffer();
+			StringBuffer tgtBuf = new StringBuffer();
+			if(targetUserList.size() > 0) {
 				for(int targetUser : targetUserList) {
-					if(buf.length() > 0) {
-						buf.append(" OR ");
+					if(tgtBuf.length() > 0) {
+						tgtBuf.append(" OR ");
 					}
-					buf.append(targetUser);
+					tgtBuf.append(targetUser);
 				}
-				query.addFilterQuery("ownerNo:(" + buf.toString() + ")");
-				logger.debug("ownerNo: (" + buf.toString() + ")");
+				query.addFilterQuery("ownerNo:(" + tgtBuf.toString() + ")");
+				logger.debug("ownerNo: (" + tgtBuf.toString() + ")");
+			}
+			else {
+				// 서비스 매체 없음 처리
+				logger.warn("검색 가능 매체 없음");
+				query.addFilterQuery("NOT ownerNo:*");
 			}
 			
 //			String duration = params.getDuration();

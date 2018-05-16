@@ -316,8 +316,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					<tbody>
 						<tr>
 							<th>정산 매체</th>
-							<td><span class="bar">${mediaList}</span>
-								<a href="#" class="btn_input1">수정</a></td>
+							<td>
+								<span class="bar">${mediaList}</span>
+								<!-- <a href="#" class="btn_input1">수정</a> -->
+							</td>
 						</tr>
 					</tbody>
 				</table>

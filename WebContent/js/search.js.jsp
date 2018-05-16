@@ -54,6 +54,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	}
 
 	function setFilter(value, filterForm) {
+		
 		var findF = false;
 		filterForm.find("li").each(function(index) {
 			if($(this).attr("value") == value) {
@@ -73,8 +74,17 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				}
 			});
 			var titleStr = filterForm.find("span").text();
-			var header = titleStr.substring(0, titleStr.indexOf(":")+2);
-			filterForm.find("span").text(header + itemName);
+			var titleFontStr = filterForm.find("font").text();
+			var header = "";
+			if(titleStr.indexOf(":") != -1) { 
+				// 보도사진 페이지
+				header = titleStr.substring(0, titleStr.indexOf(":")+2);
+				filterForm.find("span").text(header + itemName);
+			}else {
+				// CMS 페이지
+				header = titleFontStr;
+				filterForm.find("span").html("<font>" + header + "</font> <br>" + itemName);
+			}
 		}
 		else {
 			if(value.charAt(0) == 'C') {
@@ -91,8 +101,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				var titleStr = filterForm.find("span").text();
 				var header = titleStr.substring(0, titleStr.indexOf(":")+2);
 				filterForm.find("span").text(header + value);
-			}
-			console.log(value);
+			}			
 		}
 	}
 /*
@@ -158,7 +167,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var contentType = $(".filter_contentType .filter_list").find("[selected=selected]").attr("value");
 		var media = $(".filter_media .filter_list").find("[selected=selected]").attr("value");
 		var durationReg = $(".filter_durationReg .filter_list").find("[selected=selected]").attr("value");
-		console.log("xx"+durationReg);
+		//console.log("xx"+durationReg);
 		var durationTake = $(".filter_durationTake .filter_list").find("[selected=selected]").attr("value");
 		var colorMode = $(".filter_color .filter_list").find("[selected=selected]").attr("value");
 		var horiVertChoice = $(".filter_horizontal .filter_list").find("[selected=selected]").attr("value");
@@ -195,6 +204,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				, "saleState":saleState
 				, "size":size
 		};
+		
+		console.log(searchParam);
 		searchKeyword = keyword; //검색결과 없는 페이지를 만들기 위한 검색어 셋팅
 		<%-- 키워드 변경 후 반영 없이 필터 등의 변경으로 인해 재검색 하면 기존 검색어를 키워드로 사용  --%>
 		if(cmsMode) {
@@ -212,7 +223,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			data: searchParam,
 			timeout: 1000000,
 			url: searchTarget,
-			success : function(data) { 
+			success : function(data) { console.log(data);
 				var count = data.count; // 총 갯수
 				var viewCnt = data.result.length; // 현재 페이지에 보여지는 목록 갯수
 				
@@ -327,7 +338,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		}else{
 			html += "<div class='no_result'>";
 			html += "<p>";
-			html += "<em>"+searchKeyword+"</em>에 대한 검색 결과가 없습니다.";
+			if(searchKeyword.length > 0) {
+				html += "<em>"+searchKeyword+"</em>에 대한 검색 결과가 없습니다.";
+			}
+			else {
+				html += "조건에 적합한 검색 결과가 없습니다.";
+			}
 			html += "</p>";
 			html += "<ul>";
 			html += "<li>검색어의 단어수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.</li>";

@@ -15,6 +15,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -27,7 +28,7 @@
 	<link rel="stylesheet" href="css/sub.css" />
 	<link rel="stylesheet" href="css/mypage.css" />
 	<script src="js/footer.js"></script>
-	<script src="js/mypage.js?v=20180416"></script>
+	<script src="js/mypage.js?v=20180418"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -95,9 +96,8 @@
 						<th>매체명</th>
 						<td>
 							<select id="media" name="media_code" class="inp_txt" style="width: 450px;">
-								<option value="">선택해주세요.</option>
 								<c:forEach var="media" items="${mediaList}">.
-									<option value="${media.seq}">${media.compName}</option>
+									<option value="${media.seq}" <c:if test="${media.seq eq MemberInfo.seq}">selected</c:if>>${media.compName}</option>
 								</c:forEach>
 							</select>
 						</td>
@@ -105,36 +105,14 @@
 					<tr>
 						<th>입금 계좌</th>
 						<td>
-							<!-- 
-							<select name="compBankName" class="inp_txt" style="width: 120px;">
-								<option value="">선택</option>
-								<option value="기업">기업</option>
-								<option value="농협">농협</option>
-								<option value="국민">국민</option>
-								<option value="우리">우리</option>
-								<option value="신한">신한</option>
-								<option value="경남">경남</option>
-								<option value="광주">광주</option>
-								<option value="대구">대구</option>
-								<option value="부산">부산</option>
-								<option value="수협">수협</option>
-								<option value="신협">신협</option>
-								<option value="우체국">우체국</option>
-								<option value="전북">전북</option>
-								<option value="제주">제주</option>
-								<option value="KEB하나">KEB하나</option>
-								<option value="한국씨티">한국씨티</option>
-								<option value="SC제일">SC제일</option>
-							</select>
-							-->
-							<input type="text" class="inp_txt" size="40" name='compBankName' value="" style="width: 120px;"/>
-							<input type="text" class="inp_txt" size="40" name='compBankAcc' value="" />
+							<input type="text" class="inp_txt" size="40" name='compBankName' value="${MemberInfo.compBankName}" style="width: 120px;"/>
+							<input type="text" class="inp_txt" size="40" name='compBankAcc' value="${MemberInfo.compBankAcc}" />
 							<div class="upload-btn-wrapper">
 								<button class="btn">통장사본 업로드</button>
 								<input type="file" name="bank" accept="application/pdf, image/*" required />
 							</div>
 							<c:if test="${!empty MemberInfo.compBankPath}">
-								<a href="/bank.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+								<a href="/bank.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1 bank_down">다운로드</a>
 							</c:if>
 						</td>
 					</tr>
@@ -144,9 +122,14 @@
 							계약기간
 						</th>
 						<td>
-							<input id="contractStart" name="contractStart" type="text" size="12" class="inp_txt" value="${MemberInfo.contractStart}" maxlength="10" disabled>
+							<fmt:parseDate var="startStr" value="${MemberInfo.contractStart}" pattern="yyyy-MM-dd HH:mm:ss" />
+							<fmt:formatDate value="${startStr}" var="contractStartYMD" pattern="yyyy-MM-dd"/>
+							<fmt:parseDate var="endStr" value="${MemberInfo.contractEnd}" pattern="yyyy-MM-dd HH:mm:ss" />
+							<fmt:formatDate value="${endStr}" var="contractEndYMD" pattern="yyyy-MM-dd"/>
+							
+							<input id="contractStart" name="contractStart" type="text" size="12" class="inp_txt" value="${contractStartYMD}" maxlength="10" disabled>
 								<span class=" bar">~</span>
-								<input id="contractEnd" name="contractEnd" type="text" size="12" class="inp_txt" value="${MemberInfo.contractEnd}" maxlength="10" disabled>
+								<input id="contractEnd" name="contractEnd" type="text" size="12" class="inp_txt" value="${contractEndYMD}" maxlength="10" disabled>
 									<div class="check">
 										<input type="checkbox" id="contractAuto" />
 										<input type="hidden" name="contractAuto" value='' />
@@ -157,7 +140,7 @@
 										<input type="file" name="contract" accept="application/pdf, image/*" required />
 									</div>
 							<c:if test="${!empty MemberInfo.contractPath}">
-								<a href="/contract.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+								<a href="/contract.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1 contract_down">다운로드</a>
 							</c:if>
 						</td>
 					</tr>
@@ -168,23 +151,26 @@
 						</th>
 						<td>
 							<span class=" bar">온라인 결제</span>
-							<input type="text" size="5" class="inp_txt" name='preRate' value="" maxlength="3" disabled>
+							<fmt:parseNumber var="preRateInt" value="${MemberInfo.preRate}" integerOnly="true "/>
+							<fmt:parseNumber var="postRateInt" value="${MemberInfo.postRate}" integerOnly="true "/>
+							
+							<input type="text" size="5" class="inp_txt" name='preRate' value="${preRateInt}" maxlength="3" disabled>
 								<span class=" bar">%</span>
 								<span class=" bar" style="margin-left: 20px;">오프라인 결제</span>
-								<input type="text" size="5" class="inp_txt" name='postRate' value="" maxlength="3" disabled>
+								<input type="text" size="5" class="inp_txt" name='postRate' value="${postRateInt}" maxlength="3" disabled>
 									<span class=" bar">%</span>
 						</td>
 					</tr>
 					<tr>
 						<th>세금계산서 담당자</th>
 						<td>
-							<input type="text" class="inp_txt" name='taxName' size="60" value="" />
+							<input type="text" class="inp_txt" name='taxName' size="60" value="${MemberInfo.taxName}" />
 						</td>
 					</tr>
 					<tr>
 						<th>세금계산서 담당자 연락처</th>
 						<td>
-							<select id="taxPhone1" class="inp_txt" style="width: 70px;">
+							<select id="taxPhone1" name="taxPhone1" class="inp_txt" style="width: 70px;">
 								<option value="02" <c:if test="${taxPhone1 eq '02'}">selected</c:if>>02</option>
 								<option value="031" <c:if test="${taxPhone1 eq '031'}">selected</c:if>>031</option>
 								<option value="032" <c:if test="${taxPhone1 eq '032'}">selected</c:if>>032</option>
@@ -212,17 +198,17 @@
 								<option value="019" <c:if test="${taxPhone1 eq '019'}">selected</c:if>>019</option>
 							</select>
 							<span class=" bar">-</span>
-							<input type="text" id="taxPhone2" size="5" class="inp_txt" value="${taxPhone2}" maxlength="4">
+							<input type="text" id="taxPhone2" name="taxPhone2" size="5" class="inp_txt" value="${taxPhone2}" maxlength="4">
 							<span class=" bar">-</span>
-							<input type="text" id="taxPhone3" size="5" class="inp_txt" value="${taxPhone3}" maxlength="4" />
+							<input type="text" id="taxPhone3" name="taxPhone3" size="5" class="inp_txt" value="${taxPhone3}" maxlength="4" />
 							<span class=" bar">내선</span>
-							<input type="text" name="taxExtTell" id="taxExtTell" size="5" value=""  class="inp_txt" maxlength="4" /></td>
+							<input type="text" name="taxExtTell" id="taxExtTell" size="5" value="${MemberInfo.taxExtTell}"  class="inp_txt" maxlength="4" /></td>
 						</td>
 					</tr>
 					<tr>
 						<th>세금계산서 담당자 이메일</th>
 						<td>
-							<input type="text" class="inp_txt" size="60" name="taxEmail" value="" />
+							<input type="text" class="inp_txt" size="60" name="taxEmail" value="${MemberInfo.taxEmail}" />
 						</td>
 					</tr>
 				</tbody>

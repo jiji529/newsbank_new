@@ -120,51 +120,55 @@
 			
 			var jsonArray = new Array();
 			var uciCode_array = ($("#uciCode_arr").val()).split(",");
+			var count = $(".op_cont").length;
 			
-			for(var i=0; i<uciCode_array.length; i++) {
-				
-				$(".option_result ul li").each(function(index) {
-					var usage_seq = $(this).children(".op_cont").attr("value");
-					var price = $(this).children(".op_price").attr("value");
+			if(count > 0) {
+				for(var i=0; i<uciCode_array.length; i++) {
 					
-					var jsonObject = new Object(); // 선택항목 객체
-					jsonObject.uciCode = uciCode_array[i];	
-					jsonObject.usage = usage_seq;
-					jsonObject.price = price;
-					
-					jsonArray.push(jsonObject);
-				});
-				
-			}
-			
-			var resultObject = new Object(); // 최종 JSON Object
-			resultObject.order = jsonArray;
-			resultObject.LGD_CUSTOM_USABLEPAY = "SC9999";
-			
-			$("#orderJson").val(JSON.stringify(resultObject));
-			
-			// 선택옵션 구매하기
-			$.ajax({
-				type : "post",
-				url : "/purchase.api",
-				data : ({
-					orderJson : JSON.stringify(resultObject)
-				}),
-
-				dataType : "json",
-				success : function(data) { console.log(data);
-					var success = data.success;
-					
-					if(success) {
-						alert("구매 완료");
-						self.close();
-						window.opener.location.href = location.origin + "/postBuylist.mypage"; // 부모창 구매내역으로 이동
-					}
-				},
-				error : function() {
-					console.log(data);
+					$(".option_result ul li").each(function(index) {
+						var usage_seq = $(this).children(".op_cont").attr("value");
+						var price = $(this).children(".op_price").attr("value");
+						
+						var jsonObject = new Object(); // 선택항목 객체
+						jsonObject.uciCode = uciCode_array[i];	
+						jsonObject.usage = usage_seq;
+						jsonObject.price = price;
+						
+						jsonArray.push(jsonObject);
+					});
 				}
-			});
+				
+				var resultObject = new Object(); // 최종 JSON Object
+				resultObject.order = jsonArray;
+				resultObject.LGD_CUSTOM_USABLEPAY = "SC9999";
+				
+				$("#orderJson").val(JSON.stringify(resultObject));
+				
+				// 선택옵션 구매하기
+				$.ajax({
+					type : "post",
+					url : "/purchase.api",
+					data : ({
+						orderJson : JSON.stringify(resultObject)
+					}),
+
+					dataType : "json",
+					success : function(data) { console.log(data);
+						var success = data.success;
+						
+						if(success) {
+							alert("구매 완료");
+							self.close();
+							window.opener.location.href = location.origin + "/postBuylist.mypage"; // 부모창 구매내역으로 이동
+						}
+					},
+					error : function() {
+						console.log(data);
+					}
+				});
+			}else {
+				alert("구매 용도를 선택해야만 구매하실 수 있습니다.");
+			}
 		}				
 		
 	</script>
@@ -172,7 +176,7 @@
 <body>
 	<div class="wrap_pop">
 		<div class="view_rt_top">
-			<h3>구매 옵션변경</h3>
+			<h3>구매 용도선택</h3>
 		</div>
 		<div class="option_choice">
 			<ul>

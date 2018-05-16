@@ -1,8 +1,8 @@
 var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
 
 // 이미지 삭제(엄선한 사진)
-$(document).on("click","#btn_rm",function() {		
-	this.closest("tr").remove();
+$(document).on("click","#btn_rm",function() {
+	$(this).closest("tr").remove();
 	set_unitegallery(); // 새로고침
 });
 
@@ -21,22 +21,22 @@ $(document).on("click","#btn_del",function() {
 		};
 	
 	//console.log(param);
-	this.closest("tr").remove();
+	$(this).closest("tr").remove();
 	
 	$.ajax({
 		type: "POST",
 		dataType: "json",
 		url: "/admin.popular.api",
 		data: param,
-		success: function(data) {
+		success: function(data) { console.log(data);
 			var uciCode = data.list.uciCode;
 			var ownerName = data.list.ownerName;
-			var hitCount = data.list.hitCount;
+			var photoCount = data.list.photoCount; // Tab별 횟수(다운로드 횟수, 찜 횟수, 조회 수)
 			
 			html += '<tr>';
 			html += '<td>' + uciCode + '</td>';
 			html += '<td>' + ownerName + '</td>';
-			html += '<td>' + hitCount + '회</td>';
+			html += '<td>' + photoCount + '회</td>';
 			html += '<td><a href="#" id="btn_del" class="list_btn">삭제</a></td>';
 			html += '</tr>';
 		},
@@ -184,7 +184,7 @@ $(document).on("click", "#btn_save", function() {
 		, "tabName" : tabName
 		, "cmd" : "U"
 	};
-	//console.log(param);
+	console.log(param);
 	
 	jQuery.ajaxSettings.traditional = true; // 배열 직렬화전달
 	

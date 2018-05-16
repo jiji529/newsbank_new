@@ -129,7 +129,7 @@ if(!contentBlidF) {
 						<dt>해상도</dt>
 						<dd>${photoDTO.dpi}dpi</dd>
 						<dt>저작권자</dt>
-						<dd>${photoDTO.copyright}</dd>
+						<dd>${photoDTO.ownerName}</dd>
 					</dl>
 				</div>
 				<div class="img_info_area area2">

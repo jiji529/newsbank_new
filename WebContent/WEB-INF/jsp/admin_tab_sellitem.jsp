@@ -123,7 +123,7 @@
 			data: param,
 			dataType: "json",
 			success: function(data) { 
-				var result = data.result; //console.log(result);
+				var result = data.result; console.log(result);
 				total = result.length;
 				
 				 $(result).each(function(key, val){				
@@ -133,7 +133,12 @@
 					html += '<td>' + val.regDate + '</td>';
 					html += '<td>' + val.name + '\n(' + val.id + ')</td>';
 					html += '<td>' + val.compName + '</td>';
-					html += '<td>' + val.uciCode + '</td>';
+					// 매체사의 승인, 탈퇴여부에 따른 uciCode 하이퍼링크 활성/비활성 표시
+					if(val.withdraw == 0 && val.admission == "Y") { 
+						html += '<td><a href="/view.photo?uciCode=' + val.uciCode + '" target="_blank">' + val.uciCode + '</a></td>';	
+					}else {
+						html += '<td>' + val.uciCode + '</td>';
+					}
 					html += '<td>' + val.copyright + '</td>';
 					html += '<td>' + val.payType + '</td>';
 					html += '<td>' + comma(val.customValue) + '</td>';
@@ -234,7 +239,7 @@
 					</ul>
 					<div class="period">
 						<input type="text" size="12" id="contractStart" name="start_date"
-							class="inp_txt" value="${year}-${month}-01" maxlength="10">
+							class="inp_txt" value="${year}-01-01" maxlength="10">
 						<span class=" bar">~</span> <input type="text" size="12"
 							id="contractEnd" name="end_date" class="inp_txt"
 							value="${today }" maxlength="10">

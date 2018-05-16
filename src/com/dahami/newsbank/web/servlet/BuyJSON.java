@@ -116,7 +116,11 @@ public class BuyJSON extends NewsbankServletBase {
 			
 			totalPrice = paymentDAO.getBuyPrice(params); 
 			totalCnt = paymentDAO.getBuyCount(params);
-			pageCnt = (totalCnt / pageVol) + 1;	
+			if(totalCnt % pageVol != 0) {
+				pageCnt = (totalCnt / pageVol) + 1;
+			}else {
+				pageCnt = (totalCnt / pageVol);
+			}
 			
 			CmdClass cmd = CmdClass.getInstance(request);
 			if (cmd.isInvalid()) {

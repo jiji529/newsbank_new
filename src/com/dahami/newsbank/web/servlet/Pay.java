@@ -66,8 +66,9 @@ public class Pay extends NewsbankServletBase {
 					JSONArray usageArray = (JSONArray) tempObj.get("usage");
 					
 					CartDTO cartDTO = payDAO.payList(uciCode, toStringArray(usageArray));
-					System.out.println(cartDTO.toString());
-					payList.add(payDAO.payList(uciCode, toStringArray(usageArray)));
+					payList.add(cartDTO);
+					//payList.add(payDAO.payList(uciCode, toStringArray(usageArray)));
+					//System.out.println(cartDTO.toString());
 				}
 				request.setAttribute("payList", payList);
 			} catch (ParseException e) {

@@ -45,7 +45,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180410"></script>
+<script src="js/mypage.js?v=20180411"></script>
 <script type="text/javascript">
 	
 	//사용용도 선택
@@ -205,15 +205,32 @@
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
-									<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_blank')">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${download.photo_uciCode}"/>
-									</a>
+									<c:choose>
+										<c:when test="${download.withdraw eq 0 && download.admission eq 'Y' && download.activate eq 1}">
+											<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_blank')">
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()">
+										</c:otherwise>
+									</c:choose>
+									<img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${download.photo_uciCode}"/>
+											</a>
 								</div>
 								<div class="cart_info">
-									<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_blank')">
-										<div class="brand">${download.copyright}</div>
-										<div class="code">${download.photo_uciCode}</div>
-									</a>
+									<c:choose>
+										<c:when test="${download.withdraw eq 0 && download.admission eq 'Y' && download.activate eq 1}">
+											<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_blank')">
+												<div class="brand">${download.copyright}</div>
+												<div class="code">${download.photo_uciCode}</div>
+											</a>
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()">
+												<div class="brand">${download.copyright}</div>
+												<div class="code">${download.photo_uciCode}</div>
+											</a>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div> </a>
 						</td>

@@ -49,8 +49,8 @@ public class DownloadJSON extends NewsbankServletBase {
 		String keyword = request.getParameter("keyword"); // 키워드
 		int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표시 갯수
 		int startPage = Integer.parseInt(request.getParameter("startPage")); // 시작 페이지
-		String contractStart = request.getParameter("contractStart"); // 시작일자
-		String contractEnd = request.getParameter("contractEnd"); // 마감일자
+		String contractStart = request.getParameter("contractStart") + " 00:00:00"; // 시작일자
+		String contractEnd = request.getParameter("contractEnd") + " 23:59:59"; // 마감일자
 		
 		Map<Object, Object> searchOpt = new HashMap<Object, Object>();
 		searchOpt.put("keywordType", keywordType);
@@ -67,7 +67,11 @@ public class DownloadJSON extends NewsbankServletBase {
 		DownloadDAO downloadDAO = new DownloadDAO();
 		downlist = downloadDAO.totalDownloadList(searchOpt);
 		totalCnt = downloadDAO.getDownloadCount(searchOpt);
-		pageCnt = (totalCnt / pageVol) + 1; 
+		if(totalCnt % pageVol != 0) {
+			pageCnt = (totalCnt / pageVol) + 1;
+		}else {
+			pageCnt = (totalCnt / pageVol);
+		} 
 		
 		CmdClass cmd = CmdClass.getInstance(request);
 		if (cmd.isInvalid()) {

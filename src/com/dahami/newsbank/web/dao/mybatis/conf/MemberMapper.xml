@@ -3,12 +3,31 @@
 
 <mapper namespace="Member">
 
-	<!-- 활성 매체사 리스트 읽기 -->
+	<!--
+	활성 매체사 리스트 읽기 (검색대상 매체)
+	- 승인 못 받은 경우(admission = N) 불러오지 않음
+	- 탈퇴 회원(withdraw = 1) 불러오지 않음
+	- 계정 비활성화(activate = 2) 불러오지 않음
+	-->
 	<select id="listActiveMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
 		where type = 'M'
-		and activate = 1
-		and withdraw = 0
+		and activate != 2
+		and withdraw != 1
+		and admission != 'N'
+		order by name asc
+	</select>
+	
+	<!-- 
+	현재 회원인 승인받은 매체사 리스트 읽기 (관리자 CMS 매체)
+	- 승인 못 받은 경우(admission = N) 불러오지 않음
+	- 탈퇴 회원(withdraw = 1) 불러오지 않음
+	 -->
+	<select id="listManagableMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+		select * from member
+		where type = 'M'
+		and withdraw != 1
+		and admission != 'N'
 		order by name asc
 	</select>
 
@@ -17,16 +36,37 @@
 			where seq = #{seq}
 	</select>
 
+	<!-- 
+	하위매체 리스트를 읽어온다 
+	- 승인 못 받은 경우(admission = N) 불러오지 않음
+	- 탈퇴 회원(withdraw = 1) 불러오지 않음
+	-->
 	<select id="listSlaveAdj" parameterType="int" resultType="int">
-		select adjSlave from adjustment where adjMaster = #{value}
+		select adjSlave from member A, adjustment B 
+		where A.seq = B.adjSlave 
+			and type = 'M'
+			and withdraw != 1
+			and admission != 'N' 
+			and adjMaster = #{value}
 	</select>
 	
+	<!-- 
+	정산관리 하위 매체 리스트를 읽어온다
+	 -->
 	<select id="listSlaveRep" parameterType="int" resultType="int">
-		select repSlave from repPayment where repMaster = #{value}
+		select repSlave from member A, repPayment B
+			where A.seq = repSlave
+				and withdraw != 1
+				and repMaster = #{value}
 	</select>
 	
+	<!-- 
+	그룹매체 리스트를 읽어온다
+	 -->
 	<select id="listGroupMember" parameterType="int" resultType="int">
-		select seq from member where group_seq = #{value}
+		select seq from member 
+			where group_seq = #{value}
+				and withdraw != 1
 	</select>
 
 	<!-- 로그인 체크 및 비밀번호 찾기 -->
@@ -212,7 +252,7 @@
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM
-			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission`='Y'
+			`adjustment` A INNER JOIN `member` M ON A.adjSlave = M.seq WHERE M.`admission`='Y'
 			AND `adjMaster` = #{seq})
 		</if>
 		ORDER BY `compName` ASC
@@ -236,7 +276,6 @@
 		`regDate`,
 		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
 		WHERE `type` = 'M'
-		AND `withdraw` = 0
 		AND `compName`!=''
 		AND `compName`
 		is not null
@@ -326,7 +365,7 @@
 	    id, email, name, phone, compNum, compName, preRate, postRate, activate, logo 
 	    FROM member 
 		LEFT JOIN adjustment ON member.seq = adjustment.adjSlave
-		WHERE member.type='M' AND member.admission = 'Y'
+		WHERE member.type='M' AND member.admission = 'Y' AND member.withdraw = 0
 	        
         <if test="keyword != null"> 
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
@@ -397,40 +436,11 @@
 		ORDER BY A.regDate DESC
 	</select>
 	
-	<!-- <select id="memberCnt" resultType="integer" parameterType="java.util.Map">	    
-	    SELECT count(seq) as cnt 
-	    FROM member 
-	    <where>
-	        
-            <if test="keyword != null and keyword != ''"> 키워드
-	            ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
-            </if>
-            	        
-	        <if test="type != ''"> 회원구분
-	            AND `type` = #{type}
-            </if>
-            
-			<if test="deferred != ''"> 결제구분
-				AND `deferred` = #{deferred}    
-			</if>
-			
-			<if test='group == "I"'> 개별
-				AND `group_seq` is NULL    
-			</if>
-			
-			<if test='group == "G"'> 그룹
-				AND `group_seq` is not NULL    
-			</if>
-			
-		</where>
-	    ORDER BY regDate DESC
-	</select> -->
-	
 	<!-- 조건에 따른 전체 정산매체수 -->
 	<select id="mediaCnt" resultType="integer" parameterType="java.util.Map">	    
 	    SELECT count(seq) as cnt 
 	    FROM member 
-	    WHERE `type` = 'M' AND admission = 'Y'
+	    WHERE `type` = 'M' AND admission = 'Y' AND `withdraw` = 0
 	        
         <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )

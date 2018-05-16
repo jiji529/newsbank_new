@@ -154,6 +154,7 @@
 			<tbody>
 				<c:set var="totalDownCount" value="0"/>
 				<c:set var="totalCancelCount" value="0"/>
+				<c:set var="totalPrice" value="${paymentManageDTO.getLGD_AMOUNT()}" />
 				<c:forEach items="${paymentManageDTO.paymentDetailList}" var="paymentDetailList">
 					<c:set var="totalDownCount" value="${totalDownCount + paymentDetailList.downCount}"></c:set>
 					<c:set var="totalCancelCount" value="${totalCancelCount + paymentDetailList.status}"></c:set>
@@ -178,15 +179,30 @@
 						<td>
 							<div class="cart_item">
 								<div class="thumb">
-									<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
+									<c:choose>
+										<c:when test="${paymentDetailList.memberDTO.withdraw eq 0 && paymentDetailList.memberDTO.admission eq 'Y' && paymentDetailList.memberDTO.activate eq 1}">
+											<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()">
+										</c:otherwise>
+									</c:choose>
 										<img src="<%=IMG_SERVER_URL_PREFIX %>/list.down.photo?uciCode=${paymentDetailList.photo_uciCode }">
-									</a>
+										</a>
 								</div>
 								<div class="cart_info">
-									<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
-										<div class="brand">${paymentDetailList.photoDTO.copyright }</div>
-										<div class="code">${paymentDetailList.photo_uciCode }</div>
-									</a>
+									<c:choose>
+										<c:when test="${paymentDetailList.memberDTO.withdraw eq 0 && paymentDetailList.memberDTO.admission eq 'Y' && paymentDetailList.memberDTO.activate eq 1}">
+											<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:void(0);" onclick="stopSaleMessage()">
+										</c:otherwise>
+									</c:choose>
+											<div class="brand">${paymentDetailList.photoDTO.copyright }</div>
+											<div class="code">${paymentDetailList.photo_uciCode }</div>
+											</a>
+									
 									<div class="option_area">
 										<ul class="opt_li">
 											<li>${paymentDetailList.usageDTO.usage }</li>
@@ -208,6 +224,7 @@
 							<c:choose>
 							  <c:when test="${paymentDetailList.status eq '1'}">
 						    	<del>${paymentDetailList.getPrice_Str() }</del>
+						    	<c:set var="totalPrice" value="${totalPrice-paymentDetailList.getPrice() }"/>
 							  </c:when>
 							  <c:otherwise>
 							    ${paymentDetailList.getPrice_Str() }
@@ -251,7 +268,8 @@
 				</c:forEach>
 			</tbody>
 			<tfoot>
-				<td colspan="10">합계 : ${paymentManageDTO.getLGD_AMOUNT_Str() }</td>
+				<td colspan="10">합계 : <fmt:formatNumber value="${totalPrice}" pattern="#,###" /></td>
+				<%-- <td colspan="10">합계 : ${paymentManageDTO.getLGD_AMOUNT_Str() }</td> --%>
 			</tfoot>
 		</table>
 		

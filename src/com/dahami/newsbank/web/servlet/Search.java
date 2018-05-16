@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.web.service.MediaService;
 import com.dahami.newsbank.web.service.SearchService;
+import com.dahami.newsbank.web.service.ServiceBase;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
@@ -63,8 +65,11 @@ public class Search extends NewsbankServletBase {
 			request.setAttribute("exportType", SearchService.EXPORT_TYPE_JSON);
 		}
 		
-		SearchService ss = null;
-		if(isCmsSearch) {
+		ServiceBase ss = null;
+		if(cmd.is2("media")) {
+			ss = new MediaService();
+		}
+		else if(isCmsSearch) {
 			ss = new SearchService(SearchService.SEARCH_MODE_OWNER);
 		}
 		else if(isAdminSearch) {

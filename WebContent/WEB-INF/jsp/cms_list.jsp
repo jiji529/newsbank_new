@@ -119,7 +119,7 @@
 						<th>상태</th>
 						</tr></thead>
 					<tbody>
-						<tr onclick="$('.error_cont').toggle()">
+						<tr onclick="$('.cont').toggle()">
 							<td>1234</td>
 							<td>2018-04-10</td>
 							<td>뉴시스</td>

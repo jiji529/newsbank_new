@@ -339,7 +339,7 @@ public class CMSService extends ServiceBase {
 		else {
 			List<MemberDTO> mediaList = null;
 			if(isAdmin) {
-				mediaList = mDao.listActiveMedia();	
+				mediaList = mDao.listManagableMedia();
 			}
 			else {
 				mediaList = mDao.listAdjustMedia(memberInfo);

@@ -4,31 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script src="js/admin.js"></script>
+<script src="js/paging.js"></script>
 
 <script type="text/javascript">
-
-	$(document).ready(function() {
-		$("#startgo").val(1); // 최초 1페이지로
-		search();
-	});
-	
-	// 키워드 검색
-	$(document).on("keypress", "#keyword", function(e) {
-		if (e.keyCode == 13) { 
-			$("#startgo").val(1); 
-			search();
-		}
-	});
-	
-	// 페이징 번호 클릭
-	$(document).on("click",".page",function() {
-		var pages = $(this).text();
-		if(pages == "") pages = 1;
-		$("#startgo").val(pages);
-		
-		search("not_paging");
-	});
-	
 	function search(state) {
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
 		var pageVol = parseInt($("#sel_pageVol option:selected").attr("value")); // 페이지 표시 갯수
@@ -90,42 +68,6 @@
 			}
 		});
 	}
-	
-	function pagings(tot) {
-
-		var firval = 1;
-		var realtot = 1;
-		var startpage = $("#startgo").val();
-		$("#lastvalue").val(tot);
-
-		if ($("#totcnt").val() != "") {
-			if (startpage == "1") {
-				firval = parseInt(startpage);
-			} else {
-				firval = parseInt($("#totcnt").val());
-			}
-		}
-		if (tot == "0") {
-			tot = 1;
-		}
-
-		realtot = parseInt(tot);
-
-		$('.pagination').empty();
-		$('.pagination').html(
-				'<ul id="pagination-demo" class="pagination-sm"></ul>');
-
-		$('#pagination-demo').twbsPagination({
-			startPage : firval,
-			totalPages : realtot,
-			visiblePages : 10,
-			onPageClick : function(event, page) {
-
-				$('#page-content').text('Page ' + page);
-			}
-		});
-	}
-	
 </script>
 <div class="ad_sch_area">
 	<table class="tb01" cellpadding="0" cellspacing="0">
@@ -176,6 +118,7 @@
 	</table>
 	<input type="hidden" id="totcnt" value="" />
 	<input type="hidden" id="startgo" value="" />
+	<input type="hidden" id="lastvalue" value="" />
 	<div class="pagination">
 		<ul id="pagination-demo" class="pagination-sm">
 			<!-- 페이징 -->

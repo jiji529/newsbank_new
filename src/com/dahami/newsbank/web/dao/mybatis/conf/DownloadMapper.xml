@@ -30,13 +30,18 @@
 	    <result javaType="java.lang.String" column="ipAddress" property="ipAddress"></result>
 	    <result javaType="java.lang.String" column="regDate" property="regDate"></result>
 	    <result javaType="java.lang.String" column="copyright" property="copyright"></result>
+	    <result javaType="java.lang.String" column="admission" property="admission"></result>
+	    <result javaType="java.lang.String" column="withdraw" property="withdraw"></result>
+	    <result javaType="java.lang.String" column="activate" property="activate"></result>
 	</resultMap>
 	
 	<select id="selDownList" parameterType="java.util.Map" resultMap="DelayDownloadDTO">
-	    SELECT A.seq, A.photo_uciCode, A.ipAddress, A.regDate, B.copyright
+	    SELECT A.seq, A.photo_uciCode, A.ipAddress, A.regDate, C.compName AS copyright, C.withdraw, C.admission, C.activate
 			FROM `download` A
 		INNER JOIN photo B
 		ON A.photo_uciCode = B.uciCode
+		INNER JOIN member C
+		ON B.member_seq = C.seq
 		<where>
 			<foreach item="member_seq" collection="memberList" index="idx" open="(" separator="OR" close=")">
 	            A.member_seq = #{member_seq} 
@@ -150,28 +155,36 @@
 	</resultMap>
 	
 	<select id="notSellList" parameterType="java.util.Map" resultMap="userMap">
-	    SELECT m.compName, m.name, m.id, m.seq, m.phone FROM download down
-		INNER JOIN member m ON down.member_seq = m.seq
-		WHERE m.deferred = 2
-		AND m.seq NOT IN (SELECT member_seq FROM paymentManage)
+	    SELECT compName, name, id, seq, phone FROM member
+			WHERE deferred = 2 AND seq IN (
+				SELECT d.member_seq FROM download d
+				INNER JOIN member m ON d.member_seq = m.seq
+				LEFT JOIN paymentManage p ON d.member_seq = p.member_seq
+				WHERE p.seq IS NULL
+				GROUP BY d.member_seq
+			)
 		<if test="keyword !=null">
 			<bind name="keyword" value="'%' + keyword + '%'" />
-			AND (m.compName LIKE #{keyword} OR m.name LIKE #{keyword} OR m.id LIKE #{keyword}) 
+			AND (compName LIKE #{keyword} OR name LIKE #{keyword} OR id LIKE #{keyword}) 
 		</if>
-		ORDER BY down.regDate DESC
+		ORDER BY regDate DESC
 		LIMIT #{startPage}, #{pageVol}
 	</select>
 	
 	<select id="notSellListCount" parameterType="java.util.Map" resultType="integer">
-	    SELECT COUNT(m.seq) as cnt FROM download down
-		INNER JOIN member m ON down.member_seq = m.seq
-		WHERE m.deferred = 2
-		AND m.seq NOT IN (SELECT member_seq FROM paymentManage)
+	    SELECT COUNT(seq) AS cnt FROM member
+			WHERE deferred = 2 AND seq IN (
+				SELECT d.member_seq FROM download d
+				INNER JOIN member m ON d.member_seq = m.seq
+				LEFT JOIN paymentManage p ON d.member_seq = p.member_seq
+				WHERE p.seq IS NULL
+				GROUP BY d.member_seq
+			)
 		<if test="keyword !=null">
 			<bind name="keyword" value="'%' + keyword + '%'" />
-			AND (m.compName LIKE #{keyword} OR m.name LIKE #{keyword} OR m.id LIKE #{keyword}) 
+			AND (compName LIKE #{keyword} OR name LIKE #{keyword} OR id LIKE #{keyword}) 
 		</if>
-		ORDER BY down.regDate DESC		
+		ORDER BY regDate DESC		
 	</select>
 </mapper>
     

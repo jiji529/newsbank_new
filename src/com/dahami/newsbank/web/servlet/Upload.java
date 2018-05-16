@@ -94,7 +94,13 @@ public class Upload extends NewsbankServletBase {
 						}
 						
 					}else { // 사용자 페이지(로그인 회원정보)
-						memberDTO = MemberInfo;
+						
+						if(request.getAttribute("seq") != null) { // 정산정보(통장사본, 계약서) 업로드 시 
+							int memberSeq = Integer.parseInt((String)request.getAttribute("seq"));
+							memberDTO = memberDAO.getMember(memberSeq); // 선택한 회원정보 불러오기
+						}else {
+							memberDTO = MemberInfo;
+						}
 					}
 					
 					

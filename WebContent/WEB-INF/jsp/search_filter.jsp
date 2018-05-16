@@ -48,66 +48,66 @@ function setDatepicker() {
      closeText: '닫기', 
      dateFormat: "yymmdd"
   });
-	
-	$(document).on("click", ".ico_cal", function() { // 달력 아이콘 클릭에 따른 datepicker 활성화
-		$(this).parent().find("input").focus();
-	});
-	
-	$(document).on("click", ".filter_list li", function() { // 검색 옵션 선택
-		var choice = $(this).text();
-		$(this).siblings().removeAttr("selected");
-		$(this).attr("selected", "selected");
-		
-		if(!$(this).hasClass("choice")){ // 직접 선택을 제외한 나머지는 slide up 이벤트 적용
-			var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
-			var titleTag = $(this).parents(".filter_title").find("span");
-			var titleStr = titleTag.html();
-			titleStr = titleStr.substring(0, titleStr.indexOf("<%=headerSplitChar%>")) + "<%=headerSplitChar%> " + choice;
-			titleTag.html(titleStr);
-			
-			$(this).closest(".filter_list").stop().slideUp("fast");		
-			// 필터 바꾸면 페이지 번호 초기화
-			$("input[name=pageNo]").val("1");
-			search();
-		}
-	});
-	
-	$(document).on("click", ".btn_cal", function() {
-		// 기간 : 직접선택
-		var startDate = $(this).parent().find("input[name=startDate]").val();
-		var endDate = $(this).parent().find("input[name=endDate]").val();
-		
-		if(startDate != "" && endDate != "") {
-			var choice = startDate + "~" + endDate;
-			
-			var titleTag = $(this).parents(".filter_title").find("span");
-			var titleStr = titleTag.html();
-			titleStr = titleStr.substring(0, titleStr.indexOf("<%=headerSplitChar%>")) + "<%=headerSplitChar%> " + choice;
-			titleTag.html(titleStr);
-			
-			var choiceTag = $(this).parents(".choice");
-			$(this).parents(".filter_title").find("li").each(function() {
-				if(this == choiceTag[0]) {
-					$(this).attr("selected", "selected");
-				}
-				else {
-					$(this).removeAttr("selected");
-				}
-			});
-			choiceTag.attr("value", "C" + choice);
-			console.log(choice);
-			
-			$(this).closest(".filter_list").stop().slideUp("fast");
-			// 필터 바꾸면 페이지 번호 초기화
-			$("input[name=pageNo]").val("1");
-			search();	
-			
-		} else {
-			alert("시작날짜, 마지막날짜를 정확히 기입해주세요.");
-		}
-		
-	});
 }
+
+$(document).on("click", ".ico_cal", function() { // 달력 아이콘 클릭에 따른 datepicker 활성화
+	$(this).parent().find("input").focus();
+});
+
+$(document).on("click", ".filter_list li", function() { // 검색 옵션 선택
+	var choice = $(this).text();
+	$(this).siblings().removeAttr("selected");
+	$(this).attr("selected", "selected");
+	
+	if(!$(this).hasClass("choice")){ // 직접 선택을 제외한 나머지는 slide up 이벤트 적용
+		var filter_list = "<ul class=\"filter_list\">" + $(this).parents(".filter_list").html() + "</ul>";
+		var titleTag = $(this).parents(".filter_title").find("span"); 
+		var titleStr = titleTag.html();
+		titleStr = titleStr.substring(0, titleStr.indexOf("<%=headerSplitChar%>")) + "<%=headerSplitChar%> " + choice;
+		titleTag.html(titleStr);
+		
+		$(this).closest(".filter_list").stop().slideUp("fast");		
+		// 필터 바꾸면 페이지 번호 초기화
+		$("input[name=pageNo]").val("1");
+		search();
+	}
+});
+
+$(document).on("click", ".btn_cal", function() {
+	// 기간 : 직접선택
+	var startDate = $(this).parent().find("input[name=startDate]").val();
+	var endDate = $(this).parent().find("input[name=endDate]").val();
+	
+	if(startDate != "" && endDate != "") {
+		var choice = startDate + "~" + endDate;
+		
+		var titleTag = $(this).parents(".filter_title").find("span");
+		var titleStr = titleTag.html();
+		titleStr = titleStr.substring(0, titleStr.indexOf("<%=headerSplitChar%>")) + "<%=headerSplitChar%> " + choice;
+		titleTag.html(titleStr);
+		
+		var choiceTag = $(this).parents(".choice");
+		$(this).parents(".filter_title").find("li").each(function() {
+			if(this == choiceTag[0]) {
+				$(this).attr("selected", "selected");
+			}
+			else {
+				$(this).removeAttr("selected");
+			}
+		});
+		choiceTag.attr("value", "C" + choice);
+		console.log(choice);
+		
+		$(this).closest(".filter_list").stop().slideUp("fast");
+		// 필터 바꾸면 페이지 번호 초기화
+		$("input[name=pageNo]").val("1");
+		search();	
+		
+	} else {
+		alert("시작날짜, 마지막날짜를 정확히 기입해주세요.");
+	}
+	
+});
 </script>
 <%--사용자 검색 화면 확인을 위한 폼값 / 상단 검색어 연동(search / searchTop) --%>
 <c:if test="${serviceMode eq true}">
@@ -139,10 +139,10 @@ function setDatepicker() {
 							<li value="0">전체</li>
 							<c:forEach items="${mediaList}" var="media">
 								<c:if test="${seq eq media.seq}">
-									<li value="${media.seq }" selected="selected">${media.name }</li>
+									<li value="${media.seq }" selected="selected">${media.compName }</li>
 								</c:if>
 								<c:if test="${seq ne media.seq}">
-									<li value="${media.seq }">${media.name }</li>
+									<li value="${media.seq }">${media.compName }</li>
 								</c:if>
 							</c:forEach>
 						</c:when>
@@ -150,7 +150,7 @@ function setDatepicker() {
 						<c:otherwise>
 							<li value="0" selected="selected">전체</li>
 							<c:forEach items="${mediaList}" var="media">
-								<li value="${media.seq }">${media.name }</li>								
+								<li value="${media.seq }">${media.compName }</li>								
 							</c:forEach>
 						</c:otherwise>
 					</c:choose>

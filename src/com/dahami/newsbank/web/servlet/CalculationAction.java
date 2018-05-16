@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -319,6 +320,9 @@ public class CalculationAction extends NewsbankServletBase {
 							obj.put("addedTaxOfSupply", addedTaxOfSupply); // 공급부가세
 							obj.put("dahamiAccount", dahamiAccount); // 다하미 매출액
 							
+							obj.put("admission", dto.getMemberDTO().getAdmission()); // 매체사 회원 - 승인여부(Y: 승인, N: 비승인)
+							obj.put("withdraw", dto.getMemberDTO().getWithdraw()); // 매체사 회원 - 탈퇴여부(0: 기본, 1: 탈퇴)
+							
 							jArray.add(obj);
 							
 							
@@ -430,6 +434,15 @@ public class CalculationAction extends NewsbankServletBase {
 				
 				// 정산 취소(1) / 승인(2) 건은 정산테이블(calculations)에 추가
 				if(status == 1 || status == 2) {
+					if(status == 2) { // 후불회원 결제승인(2) : 등록일자 기준으로 -1달 하기 (정산은 매월 1일 ~5일에 이루어지기 때문)
+						Calendar cal = Calendar.getInstance();
+						cal.add(Calendar.MONTH, -1);
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						String calculateDay = dateFormat.format(cal.getTime()); // 정산일자 (한달전)
+						//System.out.println("정산 날짜 : " + calculateDay);
+						
+						calculationDTO.setRegDate(calculateDay);
+					}
 					calculationDAO.insertCalculation(calculationDTO);
 				}
 				

@@ -135,7 +135,7 @@
 									<input type="text" size="5" class="inp_txt" value="${phone2}" maxlength="4" readonly />
 									<span class=" bar">-</span>
 									<input type="text" size="5" class="inp_txt" value="${phone3}" maxlength="4" readonly />
-									<a id="btnEdit" class="btn_input1">수정.</a>
+									<a id="btnEdit" class="btn_input1">수정</a>
 									<a id="btnCancel" class="btn_input1" style="display:none">취소</a>
 									<!-- 수정 누르면 보이는 -->
 									<div class="edit_phone" style="display: none" id="editView">
@@ -272,7 +272,7 @@
 												<span class="name"> ${media.name}(${media.id})</span>												
 												<div class="upload-btn-wrapper">
 													<a href="#" class="btn_input1">제호업로드</a>
-													<input type="file" name="logo" accept="application/pdf, image/*" required />
+													<input type="file" name="logo" accept="image/*" required />
 												</div>
 												<c:if test="${!empty MemberInfo.logo}">
 													<%-- <a class="btn_input1" href="/logo.down.photo?seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a> --%>

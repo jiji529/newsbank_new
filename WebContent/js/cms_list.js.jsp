@@ -206,7 +206,7 @@
 				console.log("empty table"); 
 				$.each(data.data, function(index,value){
 					console.log("draw");
-					html += "<tr onclick=\"$('.error_cont"+index+"').toggle()\"> \n";
+					html += "<tr onclick=\"$('.cont"+index+"').toggle()\"> \n";
 					html += "<td>"+(total-((page-1)*pageVol)-index )+"</td> \n";
 					html += "<td>"+value.regDate+"</td> \n";
 					html += "<td>"+value.media+"</td> \n";
@@ -215,7 +215,7 @@
 					html += "<td>"+statusName[value.status*1]+"</td> \n";
 					html += "</tr> \n";
 					html += "<tr> \n";
-					html += "<td class=\"error_cont"+index+"\" colspan=\"6\" style=\"display:none;\">";
+					html += "<td class=\"error_cont cont"+index+"\" colspan=\"6\" style=\"display:none;\">";
 					html += "<p>"+value.reason+"</p>";
 				if(value.status*1 == 1){
 					html += "<button onclick='reportModifyComplete(\""+value.seq+"\");'>수정완료</button>";

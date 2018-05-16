@@ -530,6 +530,15 @@ public class DownloadService extends ServiceBase {
 				else if(newDownType.startsWith(DOWN_TYPE_CORP + "_")) {
 					memberInfo = new MemberDAO().getMember(CORP_INFO_QUERY_MAP.get(serviceCode));
 					newDownType = newDownType.substring(DOWN_TYPE_CORP.length()+1);
+					
+					if(photo.getSaleState() != PhotoDTO.SALE_STATE_OK) {
+						if (newDownType.equals("list")) {
+							response.sendRedirect(URL_PHOTO_STOP_LIST);
+						} else {
+							response.sendRedirect(URL_PHOTO_STOP_VIEW);
+						}
+						return;
+					}
 				}
 				
 				targetSize = newDownType;
@@ -548,6 +557,12 @@ public class DownloadService extends ServiceBase {
 					try {
 						// 원본 이미지를 실시간으로 카피 / UCI 임베드 / 다운로드 정보 임베드(메타태그) 하여 전송
 						String orgPath = PATH_PHOTO_BASE + photo.getOriginPath();
+						
+						// TODO 게티 원본 이미지 고정
+						if(serviceCode.equals("gt")) {
+							orgPath = "/data/newsbank/temp/getty.jpg";
+						}
+						
 						if (!new File(orgPath).exists()) {
 							logger.warn("원본이미지 없음: " + orgPath);
 							request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\n관리자에게 문의해 주세요");

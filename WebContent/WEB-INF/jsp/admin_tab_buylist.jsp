@@ -3,13 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script src="js/admin.js?v=20180416"></script>
+<script src="js/paging.js?v=20180508"></script>
 
 <script type="text/javascript">
-
-	$(document).ready(function() {
-		$("#startgo").val(1); // 최초 1페이지로
-		searchBuyList();
-	});
 	
 	/** 전체선택 */
 	$(document).on("click", "input[name='check_all']", function() {
@@ -20,23 +16,7 @@
 		}
 	});
 	
-	// 페이징 번호 클릭
-	$(document).on("click",".page",function() {
-		var pages = $(this).text();
-		if(pages == "") pages = 1;
-		$("#startgo").val(pages);
-		
-		searchBuyList("not_paging");
-	});
-	
-	$(document).on("keypress", "#keyword", function(e) {
-		if (e.keyCode == 13) { // 엔터
-			$("#startgo").val(1); // 최초 1페이지로
-			searchBuyList();
-		}
-	});
-	
-	function searchBuyList(state) {		
+	function search(state) {		
 		var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
 		var pageVol = parseInt($("#sel_pageVol option:selected").attr("value")); // 페이지 표시 갯수
@@ -60,7 +40,7 @@
 			, "end_date":end_date + "240000"
 			, "status":status
 		};
-		console.log(searchParam);
+		//console.log(searchParam);
 		
 		var html = "";
 		
@@ -72,7 +52,7 @@
 			dataType: "json",
 			data: searchParam,
 			url: "/buy.api",
-			success: function(data) { console.log(data);
+			success: function(data) { //console.log(data);
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
@@ -85,7 +65,7 @@
 				
 				var data = data.result;
 				
-				if(data.length != 0) {		console.log(data);
+				if(data.length != 0) {	
 					$(data).each(function(key, val){
 						var number = totalCnt - ( ($("#startgo").val() - 1) * pageVol + key );
 						
@@ -119,7 +99,7 @@
 							break;
 							
 						case 2:
-							status = "정산 승인";
+							status = "구매 승인";
 							break;
 							
 						case 3:
@@ -139,8 +119,8 @@
 						//html += '<td>' + LGD_OID + '</td>';
 						html += '<td>' + paydate + '</td>';
 						html += '<td>' + status + '</td>';
-						html += '<td>' + copyright + '</td>';
-						html += '<td>' + uciCode + '</td>';
+						html += '<td>' + compName + '</td>';
+						html += '<td><a href="/view.photo?uciCode=' + uciCode + '" target="_blank">' + uciCode + '</a></td>';
 						html += '<td>' + compCode + '</td>';
 						html += '<td seq="' + usageList_seq + '">' + usage + '</td>';
 						html += '<td>' + price + '</td>';
@@ -221,41 +201,6 @@
 			$("#buy_result").text("( " + result.join("|") + " )");	
 		}
 	}
-
-	function pagings(tot) {
-
-		var firval = 1;
-		var realtot = 1;
-		var startpage = $("#startgo").val();
-		$("#lastvalue").val(tot);
-
-		if ($("#totcnt").val() != "") {
-			if (startpage == "1") {
-				firval = parseInt(startpage);
-			} else {
-				firval = parseInt($("#totcnt").val());
-			}
-		}
-		if (tot == "0") {
-			tot = 1;
-		}
-
-		realtot = parseInt(tot);
-
-		$('.pagination').empty();
-		$('.pagination').html(
-				'<ul id="pagination-demo" class="pagination-sm"></ul>');
-
-		$('#pagination-demo').twbsPagination({
-			startPage : firval,
-			totalPages : realtot,
-			visiblePages : 10,
-			onPageClick : function(event, page) {
-
-				$('#page-content').text('Page ' + page);
-			}
-		});
-	}
 	
 	// 오프라인 구매/정산 상태값 변경 (승인 취소 : 1 / 정산 승인: 2 / 구매 반려: 3)
 	function update_calculations(status) {
@@ -291,7 +236,7 @@
 					var rate = $(this).closest("tr").find("input[name=postRate]").val(); 
 					rate = rate / 100;
 					
-					var fees = (price * rate).toString();
+					var fees = 0; // 후불회원은 PG수수료가 없음.
 					var usage = parseInt($(this).closest("tr").find("td").eq(10).attr("seq"));
 					var payType = "SC9999"; // 후불
 					//var usuage = ""; // 사용용도
@@ -320,10 +265,10 @@
 						data: param,
 						dataType: "json",
 						success: function(data) { 
-							console.log(data);
+							//console.log(data);
 						},
 						complete: function() {
-							searchBuyList();
+							search();
 						}
 					});
 					
@@ -358,13 +303,11 @@
 				<tr>
 					<th>기간 선택</th>
 					<td>
-						<select id="customYear" name="" class="inp_txt" style="width: 100px;">
-							<option value="all" selected="selected">전체(년)</option>
-							<option value="2018">2018년</option>
-							<option value="2017">2017년</option>
-							<option value="2016">2016년</option>
-							<option value="2015">2015년</option>
-						</select> 
+						<select id="customYear" class="inp_txt" class="inp_txt" style="width:100px;">
+							<c:forEach var="i" begin="2015" end="${year}" step="1">
+								<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
+							</c:forEach>
+						</select>
 						<select id="customDay" name="" class="inp_txt" style="width: 95px;">
 								<option value="all" selected="selected">전체(월)</option>
 								<option value="1">1월</option>
@@ -387,7 +330,7 @@
 							</c:forEach>
 						</ul>
 						<div class="period">
-							<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-${month}-01" maxlength="10">
+							<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-01-01" maxlength="10">
 							<span class=" bar">~</span>
 							<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${today }" maxlength="10">
 						</div>
@@ -398,15 +341,16 @@
 					<td><select name="status" class="inp_txt" style="width: 150px;">
 							<option value="all" selected="selected">전체</option>
 							<option value="0">구매 신청</option>
+							<option value="1">정산 승인취소</option>
 							<option value="2">정산 승인</option>
-							<option value="3">승인 취소</option>
+							<option value="3">구매 반려</option>
 					</select></td>
 				</tr>
 			</tbody>
 		</table>
 	</form>
 	<div class="btn_area" style="margin-top: 0;">
-		<a href="javascript:void(0)" onclick="searchBuyList()" class="btn_input2">검색</a>
+		<a href="javascript:void(0)" class="btn_input2">검색</a>
 	</div>
 	
 	
@@ -420,7 +364,7 @@
 			<a href="javascript:void(0)" onclick="update_calculations(1)">정산 승인 취소</a> 
 		</div>
 		<div class="ad_result_btn_area fr">
-			<select id="sel_pageVol" onchange="searchBuyList()">
+			<select id="sel_pageVol" onchange="search()">
 			<option value="20">20개</option>
 			<option value="50">50개</option>
 			<option value="100">100개</option>
@@ -469,6 +413,7 @@
 		</table>
 		<input type="hidden" id="totcnt" value="" />
 		<input type="hidden" id="startgo" value="" />
+		<input type="hidden" id="lastvalue" value="" />
 		<div class="pagination">
 			<ul id="pagination-demo" class="pagination-sm">
 				<!-- 페이징 -->

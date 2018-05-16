@@ -3,12 +3,15 @@ package com.dahami.newsbank.web.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.dahami.newsbank.dto.PhotoDTO;
+
 public class CartDTO {
 
 	private String uciCode; // UCI 코드
 	private int price; // 가격	
 	private String copyright; // 저작권자
 	private List<UsageDTO> usageList; // 사용용도 구분옵션
+	private PhotoDTO photoDTO; // 사진 정보
 	
 	public String getUciCode() {
 		return uciCode;
@@ -53,7 +56,15 @@ public class CartDTO {
 	public String getViewPath() {
 		return getPathBase() + "_view.jpg";
 	}
-	
+
+	public PhotoDTO getPhotoDTO() {
+		return photoDTO;
+	}
+
+	public void setPhotoDTO(PhotoDTO photoDTO) {
+		this.photoDTO = photoDTO;
+	}
+
 	/**
 	 * @methodName  : getPathBase
 	 * @author      : JEON,HYUNGGUK

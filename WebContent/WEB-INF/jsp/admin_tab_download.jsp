@@ -4,35 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script src="js/admin.js?v=20180416"></script>
+<script src="js/paging.js"></script>
 
 <script>
-	$(document).ready(function() {
-		$("#startgo").val(1); // 최초 1페이지로
-		search();
-	});
-	
-	// 검색 클릭이벤트
-	$(document).on("click", "#downTab_Search", function() {
-		$("#startgo").val(1); // 최초 1페이지로
-		search();
-	});
-
-	$(document).on("keypress", "#keyword", function(e) {
-		if (e.keyCode == 13) { // 엔터
-			$("#startgo").val(1); // 최초 1페이지로
-			search();
-		}
-	});
-	
-	// 페이징 번호 클릭
-	$(document).on("click",".page",function() {
-		var pages = $(this).text();
-		if(pages == "") pages = 1;
-		$("#startgo").val(pages);
-		
-		search("not_paging");
-	});
-	
 	function search(state) {
 		var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword);
@@ -115,41 +89,6 @@
 		});
 	}
 	
-	function pagings(tot){
-		
-		var firval = 1;
-		var realtot = 1;
-		var startpage = $("#startgo").val();
-		$("#lastvalue").val(tot);
-		
-		if($("#totcnt").val() != ""){
-			if(startpage == "1"){
-				firval = parseInt(startpage);
-			}else{
-				firval = parseInt($("#totcnt").val());
-			}
-		}
-		if(tot == "0"){
-			tot = 1;
-		}
-		
-		realtot = parseInt(tot);
-			
-		
-		$('.pagination').empty();
-		$('.pagination').html('<ul id="pagination-demo" class="pagination-sm"></ul>');
-		
-		$('#pagination-demo').twbsPagination({
-			startPage: firval,
-		    totalPages: realtot,
-		    visiblePages: 10,
-		    onPageClick: function (event, page) {
-		    	
-		    	$('#page-content').text('Page ' + page);
-	        }
-		});
-	}
-	
 </script>
 
 <div class="ad_sch_area">
@@ -172,7 +111,7 @@
 			</tr>
 			 
 			<tr>
-				<th>기간별 조회</th>
+				<th>기간선택</th>
 				<td>
 					<select id="customYear" class="inp_txt" class="inp_txt" style="width:100px;">
 						<c:forEach var="i" begin="2015" end="${year}" step="1">
@@ -200,7 +139,7 @@
 						</c:forEach>
 					</ul>
 					<div class="period">
-						<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-${month}-01" maxlength="10">
+						<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-01-01" maxlength="10">
 						<span class=" bar">~</span>
 						<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${today }" maxlength="10">
 					</div>
@@ -258,6 +197,7 @@
 	</table>
 	<input type="hidden" id="totcnt" value="" />
 	<input type="hidden" id="startgo" value="" />
+	<input type="hidden" id="lastvalue" value="" />
 	<div class="pagination">
 		<ul id="pagination-demo" class="pagination-sm">
 			<!-- 페이징 -->
