@@ -183,6 +183,9 @@
 .mypage #cms_list2{width:100%; float:left;}
 .mypage #cms_list2 ul{width:100%; float:left;}
 .mypage #cms_list2 .no_result ul{width:600px; float:none;}
+@supports not (column-span: all) {
+ .mypage #cms_list2 .no_result { position: relative; top:-50px;} 
+}
 .mypage #cms_list2 .thumb{border:1px #e6e6e6 solid; float:left; margin:0 10px 10px 0;width:198px; position:relative; }
 .mypage #cms_list2 .thumb:nth-child(6n){ margin-right:0;}
 .wide .mypage #cms_list2 .thumb:nth-child(6n){ margin-right:10px;}
