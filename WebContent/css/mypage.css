@@ -180,7 +180,7 @@
 .mypage #wish_list2 .thumb .thumb_btn .btn_cart{background:url(../images/mp/btn_cart.png) center 6px no-repeat;}
 .mypage #wish_list2 .thumb .thumb_btn li:hover{background-color:#4d4d4d;}
 
-.mypage #cms_list2{ float:left; width:100%;}
+.mypage #cms_list2{width:100%; float:left;}
 .mypage #cms_list2 ul{width:100%; float:left;}
 .mypage #cms_list2 .no_result ul{width:600px; float:none;}
 .mypage #cms_list2 .thumb{border:1px #e6e6e6 solid; float:left; margin:0 10px 10px 0;width:198px; position:relative; }
