@@ -70,6 +70,11 @@
 	
 	// 정산목록 검색(정산매체 선택)
 	function search() {
+		if(!checkPeriod()) {
+			alert("날짜 옵션을 정확히 입력해주세요.");
+			return;
+		}
+		
 		var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
 		var keyword = $("#keyword").val(); // 키워드
 		var start_date = $("input[name=start_date]").val(); // 시작일
@@ -197,6 +202,76 @@
 			}
 		});
 	}
+	
+	function setYearOfMonth(object) { // 선택년도에 따른 월별옵션 자동완성 
+		var year = $(object).val();
+		var name = $(object).attr("name");
+		var month = 12;
+		var option = "<option value='all'>전체(월)</option>";
+		
+		var now = new Date();
+		var thisYear = now.getFullYear(); // 금년
+		var thisMonth = now.getMonth() + 1; // 금월
+		
+		if(year == thisYear) { // 선택년도가 금년도
+			month = thisMonth;
+		}else if(year < thisYear){ // 과거년도
+			month = 12;
+		}
+		
+		for(var i=1; i<=month; i++) {
+			option += "<option value='" + i + "'>" + i + "월</option>";
+		}
+		
+		switch(name) {
+			case "startYear":
+				$("select[name=startMonth]").html(option);
+				break;
+			
+			case "endYear":
+				$("select[name=endMonth]").html(option);
+				break;
+		}
+	}
+	
+	function setPeriod(object) { // 기간옵션 설정
+		var month = $(object).val();
+		var name = $(object).attr("name");
+		var year;
+		
+		switch(name) {
+			case "startMonth": // 시작 날짜
+				year = $("select[name=startYear] option:selected").val();
+				var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, month-1, 1));
+				$("#contractStart").val(startDate);
+				break;
+			
+			case "endMonth": // 마지막 날짜
+				year = $("select[name=endYear] option:selected").val();
+				var lastDay = (new Date(year, month, 0)).getDate();
+				var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, month-1, lastDay));
+				$("#contractEnd").val(endDate);
+				break;
+		}
+		
+		$('#customDayOption a').removeClass("on");
+	}
+	
+	function checkPeriod() { // 기간 옵션 체크 
+		var result = true;
+		var startDate = $("#contractStart").val();
+		var endDate = $("#contractEnd").val();
+		
+		startDate = startDate.split("-").join("");
+		endDate = endDate.split("-").join("");
+		
+		if(startDate == null || endDate == null) { // 유효성 여부 확인
+			result = false;
+		}else if(startDate > endDate) { // (시작 일자 > 마지막 일자)
+			result = false;
+		}
+		return result;
+	}
 </script>
 
 <div class="ad_sch_area">
@@ -219,30 +294,59 @@
 			</tr>
 			<tr>
 				<th>기간 선택</th>
-				<td><select id="customYear" class="inp_txt"
-					style="width: 100px;">
-						<c:forEach var="i" begin="2015" end="${year}" step="1">
-							<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
-						</c:forEach>
-				</select> <select id="customDay" class="inp_txt" style="width: 95px;">
+				<td>
+					<%-- <select id="customYear" class="inp_txt"
+						style="width: 100px;">
+							<c:forEach var="i" begin="2015" end="${year}" step="1">
+								<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
+							</c:forEach>
+					</select> 
+					<select id="customDay" class="inp_txt" style="width: 95px;">
 						<option value="all" selected="selected">전체(월)</option>
 						
 						<c:forEach var="m" begin="1" end="${month}" step="1">
 							<option value="${m}">${m}월</option>
 						</c:forEach>
-				</select>
+					</select> --%>
 					<ul id="customDayOption" class="period">
 						<c:forEach var="pastMonth" items="${pastMonths}">
 							<li><a href="javascript:;" class="btn" value="${pastMonth}">${fn:substring(pastMonth, 4, 6)}월</a>
 							</li>
 						</c:forEach>
 					</ul>
+					
+					<select name="startYear" class="inp_txt" style="width:100px;" onchange="setYearOfMonth(this)">
+						<c:forEach var="i" begin="2015" end="${year}" step="1">
+							<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
+						</c:forEach>
+					</select>
+					<select name="startMonth" class="inp_txt" style="width:95px;" onchange="setPeriod(this)">
+						<option value="all" selected="selected">전체(월)</option>
+						
+						<c:forEach var="m" begin="1" end="${month}" step="1">
+							<option value="${m}">${m}월</option>
+						</c:forEach>
+					</select>
+					<span class=" bar">~</span>
+					<select name="endYear" class="inp_txt" style="width:100px;" onchange="setYearOfMonth(this)">
+						<c:forEach var="i" begin="2015" end="${year}" step="1">
+							<option value="${i }" <c:if test="${i eq year}">selected</c:if>>${i}년</option>
+						</c:forEach>
+					</select>
+					<select name="endMonth" class="inp_txt" style="width:95px;" onchange="setPeriod(this)">
+						<option value="all" selected="selected">전체(월)</option>
+						
+						<c:forEach var="m" begin="1" end="${month}" step="1">
+							<option value="${m}">${m}월</option>
+						</c:forEach>
+					</select>
+					
 					<div class="period">
 						<input type="text" size="12" id="contractStart" name="start_date"
-							class="inp_txt" value="${year}-01-01" maxlength="10">
+							class="inp_txt" value="${year}-01-01" maxlength="10" disabled>
 						<span class=" bar">~</span> <input type="text" size="12"
 							id="contractEnd" name="end_date" class="inp_txt"
-							value="${today }" maxlength="10">
+							value="${today }" maxlength="10" disabled>
 					</div>
 			</tr>
 			<tr>
