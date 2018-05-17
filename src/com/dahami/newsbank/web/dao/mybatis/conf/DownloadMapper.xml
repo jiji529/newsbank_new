@@ -33,10 +33,11 @@
 	    <result javaType="java.lang.String" column="admission" property="admission"></result>
 	    <result javaType="java.lang.String" column="withdraw" property="withdraw"></result>
 	    <result javaType="java.lang.String" column="activate" property="activate"></result>
+	    <result javaType="java.lang.Integer" column="saleState" property="saleState"></result>
 	</resultMap>
 	
 	<select id="selDownList" parameterType="java.util.Map" resultMap="DelayDownloadDTO">
-	    SELECT A.seq, A.photo_uciCode, A.ipAddress, A.regDate, C.compName AS copyright, C.withdraw, C.admission, C.activate
+	    SELECT A.seq, A.photo_uciCode, A.ipAddress, A.regDate, C.compName AS copyright, C.withdraw, C.admission, C.activate, B.saleStat AS saleState
 			FROM `download` A
 		INNER JOIN photo B
 		ON A.photo_uciCode = B.uciCode

@@ -190,46 +190,6 @@ public class PhotoDAO extends DAOBase {
 	}
 	
 	/**
-	 * @methodName  : editorPhotoListAdmin
-	 * @author      : HOYADEV
-	 * @date        : 2018. 03. 26. 오전 08:46:35
-	 * @methodCommet: 에디터가 선정한 사진(관리자)
-	 * @param param
-	 * @return 
-	 */
-	public List<Map<String, Object>> editorPhotoListAdmin() {
-		SqlSession session = null;
-		//List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-		List<Map<String, Object>> photoList = new ArrayList<Map<String, Object>>();
-				
-		try {
-			session = sf.getSession();
-			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("exhName", "에디터");
-			
-			MemberDAO memberDAO = new MemberDAO();
-			List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
-			int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
-			
-			for(int idx=0; idx<mediaList.size(); idx++) {
-				mediaSeq[idx] = mediaList.get(idx).getSeq();
-			}		
-			param.put("mediaSeq", mediaSeq);
-			
-			photoList = session.selectList("Photo.selectPhotoExhAdmin", param);
-		} catch (Exception e) {
-			logger.warn("", e);
-		} finally {
-			try {
-				session.commit();
-				session.close();
-			} catch (Exception e) {
-			}
-		}
-		return photoList;
-	}
-	
-	/**
 	 * @methodName  : editorPhotoList
 	 * @author      : HOYADEV
 	 * @date        : 2017. 11. 07. 오전 08:46:35

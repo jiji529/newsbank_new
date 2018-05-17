@@ -41,7 +41,7 @@
 	</update>
 	
 	<select id="dibsPhoto" resultType="com.dahami.newsbank.dto.PhotoDTO" parameterType="java.util.Map">
-	    SELECT B.bookmark_seq, M.compName AS copyright, A.uciCode, M.admission, M.withdraw, M.activate FROM photo A
+	    SELECT B.bookmark_seq, M.compName AS copyright, A.uciCode, A.saleStat as saleState, M.admission, M.withdraw, M.activate FROM photo A
 		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode 
 		INNER JOIN bookmark C ON B.bookmark_seq = C.seq
 		INNER JOIN photo P ON B.photo_uciCode = P.uciCode
@@ -77,36 +77,6 @@
 	    	photo SET hitCount = hitCount + 1 
 	    WHERE uciCode = #{uciCode} 
 	</update>
-
-	<resultMap id="photoExhMap" type="com.dahami.newsbank.web.dto.UsageDTO">
-		<id property="seq" column="seq" />
-		<result property="exhibitionList_seq" column="exhibitionList_seq" />
-		<result property="uciCode" column="uciCode" />
-		<result property="represen" column="represen" />
-		<result property="orderBy" column="orderBy" />
-		<result property="hitCount" column="hitCount" />
-		<result property="ownerName" column="ownerName" />
-		<result property="regDate" column="regDate" />
-	</resultMap>
-	
-	<!-- 홈 : 엄선한 사진(관리자) -->	
-	<select id="selectPhotoExhAdmin" parameterType="string" resultMap="photoExhMap">
-	    SELECT B.seq, B.exhibitionList_seq, A.uciCode, B.represen, B.orderBy, A.hitCount, M.name AS ownerName, B.regDate  FROM photo A
-		INNER JOIN photoExhibition B ON A.uciCode = B.photo_uciCode
-		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
-		INNER JOIN member M ON A.member_seq = M.seq 
-		WHERE C.exhName = #{exhName} AND 
-		M.activate = 1 AND 
-		M.withdraw = 0 AND
-		M.admission = 'Y' AND
-		M.`type` = 'M' AND 
-		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
-		member_seq IN 
-		<!-- 활성 매체사 SEQ 리스트 -->
-		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
-		    #{seq}
-		</foreach>
-	</select>
 	
 	<!-- 홈 : 보도사진 -->	
 	<select id="selectPhotoExh" parameterType="string" resultType="com.dahami.newsbank.dto.PhotoDTO">
@@ -116,6 +86,10 @@
 		INNER JOIN member M ON A.member_seq = M.seq 
 		WHERE C.exhName = #{exhName} AND
 		M.activate = 1 AND 
+		M.withdraw = 0 AND
+		M.admission = 'Y' AND
+		M.`type` = 'M' AND
+		A.`saleStat` = 1 AND
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
 		member_seq IN 
 		<!-- 활성 매체사 SEQ 리스트 -->
@@ -130,6 +104,7 @@
 		INNER JOIN photo P ON PD.photo_uciCode = P.uciCode
 		INNER JOIN member M ON P.member_seq = M.seq
 		WHERE uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
+		P.saleStat = 1 AND
 		member_seq IN 
 		<!-- 활성 매체사 SEQ 리스트 (조건 : type = 'M', activate = 1, withdraw = 0, admission = 'Y') -->
 		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">

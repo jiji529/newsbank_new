@@ -102,7 +102,7 @@ function dibsList() {
 			
 			$(data.result).each(function(key, val) { 
 			
-				if(val.admission == 'Y' && val.activate == 1 && val.withdraw == 0) { // 매체사 회원권한 확인
+				if(val.admission == 'Y' && val.activate == 1 && val.withdraw == 0 && val.saleState == 1) { // 매체사 회원권한 확인 & 사진 판매상태 확인
 					html += '<li class="thumb"> <a href="javascript:void(0)" onclick="go_photoView(\'' + val.uciCode + '\')"><img src="<%= IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=' + val.uciCode + '&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/></a>';
 					html += '<div class="thumb_info">';
 					html += '<input type="checkbox" value="'+val.uciCode+'"/>';
@@ -114,7 +114,7 @@ function dibsList() {
 				html += '<span>'+val.uciCode+'</span><span>'+val.copyright+'</span></div>';
 				html += '<ul class="thumb_btn">';
 				
-				if(val.admission == 'Y' && val.activate == 1 && val.withdraw == 0) { // 매체사 회원권한 확인
+				if(val.admission == 'Y' && val.activate == 1 && val.withdraw == 0 && val.saleState == 1) { // 매체사 회원권한 확인 & 사진 판매상태 확인
 					if(deferred == 2) {
 						html += '<li class="btn_down" onclick="downDiferred(\''+ val.uciCode +'\')">다운로드</li>';
 					}else if(deferred == 0) {

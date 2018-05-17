@@ -140,7 +140,7 @@
 		U.`usage`,
 		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
 		U.`usageDate`, U.`price`,
-		P.`uciCode`, P.`ownerType`,
+		P.`uciCode`, P.`ownerType`, P.`saleStat` AS saleState,
 		N.`compName` AS copyright,
 		N.admission, N.withdraw, N.activate
 		FROM
@@ -234,6 +234,7 @@
 		<id property="uciCode" column="uciCode" />
 		<result property="copyright" column="copyright" />
 		<result property="ownerType" column="ownerType" />
+		<result property="saleState" column="saleState" />
 	</resultMap>
 	
 	
@@ -772,7 +773,7 @@
 		U.`usage`,
 		U.`division1`, U.`division2`, U.`division3`, U.`division4`,
 		U.`usageDate`, U.`price`,
-		P.`uciCode`, P.`ownerType`,
+		P.`uciCode`, P.`ownerType`, P.`saleStat` AS saleState,
 		N.compName AS copyright,
 		N.admission, N.withdraw, N.activate
 		FROM

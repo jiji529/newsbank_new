@@ -34,7 +34,7 @@
 <script src="js/footer.js"></script>
 <script src="js/mypage.js?v=20180406"></script>
 <!-- <script src="js/cms.js.jsp"></script> -->
-<script src="js/dibs.js.jsp?v=20180406"></script>
+<script src="js/dibs.js.jsp?v=20180407"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(key, val){
@@ -181,7 +181,7 @@
 					<c:forEach items="${dibsPhotoList}" var="PhotoDTO">
 						<li class="thumb"> 
 						<c:choose>
-							<c:when test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0}">
+							<c:when test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0 && PhotoDTO.saleState eq 1}">
 								<a href="javascript:void(0)" onclick="go_photoView('${PhotoDTO.uciCode}')">
 							</c:when>
 							<c:otherwise>
@@ -191,14 +191,14 @@
 							<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${PhotoDTO.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/>
 						</a>
 							<div class="thumb_info">
-							<c:if test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0}">
+							<c:if test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0 && PhotoDTO.saleState eq 1}">
 								<input type="checkbox" value="${PhotoDTO.uciCode}"/>
 							</c:if>								
 								<span>${PhotoDTO.uciCode}</span><span>${PhotoDTO.copyright}</span></div>
 							<ul class="thumb_btn">
 								<!-- 버튼 활성화 조건 : 매체사 승인(admission=Y) && 노출(activate=1) && 정상회원(withdraw=0) -->
 								<c:choose>
-									<c:when test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0}">
+									<c:when test="${PhotoDTO.admission eq 'Y' && PhotoDTO.activate eq 1 && PhotoDTO.withdraw eq 0 && PhotoDTO.saleState eq 1}">
 										<c:if test="${MemberInfo.deferred eq 2}">
 											<li class="btn_down" onclick="downDiferred('${PhotoDTO.uciCode}')">다운로드</li>
 										</c:if>

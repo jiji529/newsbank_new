@@ -196,8 +196,10 @@
 					<tr>
 						<td>
 							<div class="tb_check">
+							<c:if test="${download.withdraw eq 0 && download.admission eq 'Y' && download.activate eq 1 && download.saleState eq 1}">
 								<input id="check${loop.index+1}" name="check${loop.index+1}" type="checkbox" value="${download.photo_uciCode }"> <label
 									for="check${loop.index+1}">선택</label>
+							</c:if>
 							</div>
 						</td>
 						<c:set value="${returnMap['bundle'][0] * (returnMap['page'][0] - 1) + loop.index+1 }" var="number"/>
@@ -206,7 +208,7 @@
 							<div class="cart_item">
 								<div class="thumb">
 									<c:choose>
-										<c:when test="${download.withdraw eq 0 && download.admission eq 'Y' && download.activate eq 1}">
+										<c:when test="${download.withdraw eq 0 && download.admission eq 'Y' && download.activate eq 1 && download.saleState eq 1}">
 											<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_blank')">
 										</c:when>
 										<c:otherwise>
@@ -218,7 +220,7 @@
 								</div>
 								<div class="cart_info">
 									<c:choose>
-										<c:when test="${download.withdraw eq 0 && download.admission eq 'Y' && download.activate eq 1}">
+										<c:when test="${download.withdraw eq 0 && download.admission eq 'Y' && download.activate eq 1 && download.saleState eq 1}">
 											<a href="javascript:void(0);" onclick="go_View('${download.photo_uciCode}', '/view.photo', '_blank')">
 												<div class="brand">${download.copyright}</div>
 												<div class="code">${download.photo_uciCode}</div>

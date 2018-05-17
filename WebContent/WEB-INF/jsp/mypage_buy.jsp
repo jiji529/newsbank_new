@@ -180,7 +180,7 @@
 							<div class="cart_item">
 								<div class="thumb">
 									<c:choose>
-										<c:when test="${paymentDetailList.memberDTO.withdraw eq 0 && paymentDetailList.memberDTO.admission eq 'Y' && paymentDetailList.memberDTO.activate eq 1}">
+										<c:when test="${paymentDetailList.memberDTO.withdraw eq 0 && paymentDetailList.memberDTO.admission eq 'Y' && paymentDetailList.memberDTO.activate eq 1 && paymentDetailList.photoDTO.saleState eq 1}">
 											<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
 										</c:when>
 										<c:otherwise>
@@ -192,7 +192,7 @@
 								</div>
 								<div class="cart_info">
 									<c:choose>
-										<c:when test="${paymentDetailList.memberDTO.withdraw eq 0 && paymentDetailList.memberDTO.admission eq 'Y' && paymentDetailList.memberDTO.activate eq 1}">
+										<c:when test="${paymentDetailList.memberDTO.withdraw eq 0 && paymentDetailList.memberDTO.admission eq 'Y' && paymentDetailList.memberDTO.activate eq 1 && paymentDetailList.photoDTO.saleState eq 1}">
 											<a href="javascript:void(0);" onclick="go_View('${paymentDetailList.photo_uciCode}', '/view.photo', '_blank')">
 										</c:when>
 										<c:otherwise>
