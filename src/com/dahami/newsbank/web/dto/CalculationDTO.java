@@ -24,6 +24,7 @@ public class CalculationDTO {
 	private int rate; // 온라인|오프라인 요율
 	private String regDate; // 등록일
 	private MemberDTO memberDTO; // UCI코드 소유자의 회원정보
+	private UsageDTO usageDTO; // UCI코드별 용도정보
 	
 	public int getSeq() {
 		return seq;
@@ -42,6 +43,13 @@ public class CalculationDTO {
 	}
 	public void setUciCode(String uciCode) {
 		this.uciCode = uciCode;
+	}
+	
+	public UsageDTO getUsageDTO() {
+		return usageDTO;
+	}
+	public void setUsageDTO(UsageDTO usageDTO) {
+		this.usageDTO = usageDTO;
 	}
 	
 	public int getUsage() {

@@ -175,7 +175,7 @@ public class CalculationAction extends NewsbankServletBase {
 		calculationDTO.setSeq(seq);
 		calculationDTO.setUciCode(uciCode);
 		calculationDTO.setMember_seq(member_seq);
-		calculationDTO.setUsage(usage);
+		//calculationDTO.setUsage(usage);
 		calculationDTO.setType(type);
 		calculationDTO.setPrice(price);
 		calculationDTO.setFees(fees);
@@ -260,6 +260,12 @@ public class CalculationAction extends NewsbankServletBase {
 							object.put("addedTaxOfSupply", df.format(addedTaxOfSupply)); // 공급부가세
 							object.put("dahamiAccount", df.format(dahamiAccount)); // 다하미 매출액
 							
+							object.put("usage", dto.getUsageDTO().getUsage());
+							object.put("division1", dto.getUsageDTO().getDivision1());
+							object.put("division2", dto.getUsageDTO().getDivision2());
+							object.put("division3", dto.getUsageDTO().getDivision3());
+							object.put("division4", dto.getUsageDTO().getDivision4());
+							object.put("price", dto.getUsageDTO().getPrice());
 							
 							mapList.add(object);
 							
@@ -322,6 +328,13 @@ public class CalculationAction extends NewsbankServletBase {
 							
 							obj.put("admission", dto.getMemberDTO().getAdmission()); // 매체사 회원 - 승인여부(Y: 승인, N: 비승인)
 							obj.put("withdraw", dto.getMemberDTO().getWithdraw()); // 매체사 회원 - 탈퇴여부(0: 기본, 1: 탈퇴)
+							
+							obj.put("usage", dto.getUsageDTO().getUsage());
+							obj.put("division1", dto.getUsageDTO().getDivision1());
+							obj.put("division2", dto.getUsageDTO().getDivision2());
+							obj.put("division3", dto.getUsageDTO().getDivision3());
+							obj.put("division4", dto.getUsageDTO().getDivision4());
+							obj.put("price", dto.getUsageDTO().getPrice());
 							
 							jArray.add(obj);
 							

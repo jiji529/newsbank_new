@@ -55,6 +55,8 @@
 		
 		<association property="memberDTO" column="seq"
 			javaType="com.dahami.newsbank.web.dto.MemberDTO" resultMap="memberResult" />
+		<association property="usageDTO" column="usage"
+			javaType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageResult" />
 	</resultMap>
 	
    	<resultMap id="memberResult" type="com.dahami.newsbank.web.dto.MemberDTO">
@@ -66,6 +68,17 @@
 		<result property="activate" column="activate" />
 		<result property="compName" column="compName" />
 	</resultMap>
+	
+   	<resultMap id="usageResult" type="com.dahami.newsbank.web.dto.UsageDTO">
+ 	    <id property="usageList_seq" column="usageList_seq" />
+		<result property="usage" column="usageName" />
+		<result property="division1" column="division1" />
+		<result property="division2" column="division2" />
+		<result property="division3" column="division3" />
+		<result property="division4" column="division4" />
+		<result property="usageDate" column="usageDate" />
+		<result property="price" column="price" />
+ 	</resultMap>
    	
    	<!-- 정산매체, 피정산매체 선택에 따른 정산결과 -->
    	<!-- <select id="selectCalculation" resultType="com.dahami.newsbank.web.dto.CalculationDTO" 
@@ -74,9 +87,11 @@
    	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 
    	   SELECT C.seq, C.id, M.name, M.compName, SM.name as copyright, P.member_seq, C.`payType`,  
    	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, C.`regDate`,
+   	   U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, U.price,
    	   SM.seq, SM.`type`, SM.id, SM.admission, SM.withdraw, SM.activate, SM.compName
 		FROM calculations C
 		INNER JOIN member M ON C.id = M.id
+		INNER JOIN usageList U ON C.`usage` =  U.seq
 		INNER JOIN photo P ON C.uciCode = P.uciCode
 		INNER JOIN member SM ON P.member_seq = SM.seq
 		

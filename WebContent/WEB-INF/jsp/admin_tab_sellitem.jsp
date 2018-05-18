@@ -146,6 +146,13 @@
 					}
 					html += '<td>' + val.copyright + '</td>';
 					html += '<td>' + val.payType + '</td>';
+					
+					if(val.division1) { // 온라인 결제 
+						html += '<td>' + val.division1 + '</td>';	
+					}else { // 후불 결제
+						html += '<td>' + val.usage + '</td>';
+					}				
+					
 					html += '<td>' + comma(val.customValue) + '</td>';
 					html += '<td>' + comma(val.customTax) + '</td>';
 					html += '<td>' + comma(val.billingAmount) + '</td>';
@@ -172,7 +179,7 @@
 			complete: function(){
 				
 				foot_html += '<tr>';
-				foot_html += '<td colspan="7"> 월 매출액 합계</td>';
+				foot_html += '<td colspan="8"> 월 매출액 합계</td>';
 				foot_html += '<td>' + comma(sum_customValue) + "</td>";
 				foot_html += '<td>' + comma(sum_customTax) + "</td>";
 				foot_html += '<td>' + comma(sum_billingAmount) + "</td>";
@@ -293,7 +300,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>기간 선택</th>
+				<th>정산(월) 선택</th>
 				<td>
 					<%-- <select id="customYear" class="inp_txt"
 						style="width: 100px;">
@@ -403,6 +410,7 @@
 					<th>사진ID</th>
 					<th>판매자</th>
 					<th>결제종류</th>
+					<th>용도</th>
 					<th>과세금액</th>
 					<th>과세부가세</th>
 					<th>결제금액</th>
