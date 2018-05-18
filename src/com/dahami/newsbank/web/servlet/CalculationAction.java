@@ -175,7 +175,7 @@ public class CalculationAction extends NewsbankServletBase {
 		calculationDTO.setSeq(seq);
 		calculationDTO.setUciCode(uciCode);
 		calculationDTO.setMember_seq(member_seq);
-		//calculationDTO.setUsage(usage);
+		calculationDTO.setUsage(usage);
 		calculationDTO.setType(type);
 		calculationDTO.setPrice(price);
 		calculationDTO.setFees(fees);
