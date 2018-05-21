@@ -60,8 +60,8 @@
 				setCountPrice(data.totalList);
 				
 				// 검색결과 표시
-				$("#totalPrice").text(totalPrice);
-				$("#totalCnt").text(totalCnt);
+				$("#totalPrice").text(comma(totalPrice));
+				$("#totalCnt").text(comma(totalCnt));
 				
 				var data = data.result;
 				
@@ -183,22 +183,22 @@
 		});
 		
 		if(apply_cnt > 0) {
-			var text = "구매 신청 : " + apply_price + "원 /" + apply_cnt + "건";
+			var text = "구매 신청 : " + comma(apply_price) + "원 /" + comma(apply_cnt) + "건";
 			result.push(text);
 		}
 		
 		if(approve_cnt > 0) {
-			var text = "정산 승인 : " + apply_price + "원 /" + apply_cnt + "건";
+			var text = "정산 승인 : " + comma(apply_price) + "원 /" + comma(apply_cnt) + "건";
 			result.push(text);
 		}
 		
 		if(disapprove_cnt > 0) {
-			var text = "정산 승인 : " + apply_price + "원 /" + apply_cnt + "건";
+			var text = "정산 승인 : " + comma(apply_price) + "원 /" + comma(apply_cnt) + "건";
 			result.push(text);
 		}
 		
 		if(result.length > 0) {
-			$("#buy_result").text("( " + result.join("|") + " )");	
+			$("#buy_result").text("( " + result.join(" | ") + " )");	
 		}
 	}
 	

@@ -391,7 +391,7 @@
 		#{paymentManage_seq});
 	</delete>
 	
-	<!-- 전체 사용자 구매내역 -->
+	<!-- 전체 사용자 구매내역 (오프라인 결제) -->
 	<select id="selectAllPaymentDetail" parameterType="java.util.HashMap"
 		resultType="java.util.HashMap">
 		
@@ -426,7 +426,8 @@
 		LEFT JOIN
 		member mp ON P.member_seq = mp.seq
 		where
-		M.LGD_PAYSTATUS !='0'	
+		M.LGD_PAYSTATUS !='0' AND
+		M.LGD_PAYTYPE = 'SC9999'	
 		
 		<if test="start_date !=null and end_date !=null">
 			AND M.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}			
@@ -459,7 +460,7 @@
 		
 	</select>
 	
-	<!-- 전체 사용자 구매내역 갯수-->
+	<!-- 전체 사용자 구매내역 갯수 (오프라인 결제)-->
 	<select id="AllPaymentDetailCnt" parameterType="java.util.HashMap"	resultType="integer">
 		
 	   SELECT COUNT(M.`seq`) as cnt
@@ -477,7 +478,8 @@
 		LEFT JOIN
 		member mp ON P.member_seq = mp.seq
 		where
-		M.LGD_PAYSTATUS !='0'		
+		M.LGD_PAYSTATUS !='0' AND 
+		M.LGD_PAYTYPE = 'SC9999'		
 		
 		<if test="start_date !=null and end_date !=null">
 			AND M.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}			
@@ -505,7 +507,7 @@
 		ORDER BY M.`LGD_PAYDATE` DESC
 	</select>
 	
-	<!-- 전체 사용자 구매내역 판매금액 함계-->
+	<!-- 전체 사용자 구매내역 판매금액 함계 (오프라인 결제)-->
 	<select id="AllPaymentDetailPrice" parameterType="java.util.HashMap"	resultType="integer">
 		
 	   SELECT COALESCE(SUM(D.`price`), 0) as sum
@@ -523,7 +525,8 @@
 		LEFT JOIN
 		member mp ON P.member_seq = mp.seq
 		where
-		M.LGD_PAYSTATUS !='0'	
+		M.LGD_PAYSTATUS !='0' AND 
+		M.LGD_PAYTYPE = 'SC9999'	
 		
 		<if test="start_date !=null and end_date !=null">
 			AND M.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}			
@@ -569,7 +572,8 @@
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
 		
 		<where>
-		    PM.LGD_PAYSTATUS = 1 <!-- 결제 승인건만 조회 -->
+		    PM.LGD_PAYSTATUS = 1 AND <!-- 결제 승인건만 조회 -->
+		    PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
 		            AND (
@@ -610,7 +614,8 @@
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
 		<where>
-	        PM.LGD_PAYSTATUS = 1 <!-- 결제 승인건만 조회 -->
+	        PM.LGD_PAYSTATUS = 1 AND <!-- 결제 승인건만 조회 -->
+	        PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
 		            AND (
@@ -650,7 +655,8 @@
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
 		<where>
-	        PM.LGD_PAYSTATUS = 1 <!-- 결제 승인건만 조회 -->
+	        PM.LGD_PAYSTATUS = 1 AND <!-- 결제 승인건만 조회 -->
+	        PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
 		            AND (
