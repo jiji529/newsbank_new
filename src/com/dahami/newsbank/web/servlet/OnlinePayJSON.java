@@ -70,8 +70,11 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		int totalPrice = 0; // 총 판매금액
 		
 		Map<String, Object> params = new HashMap<String, Object>(); // 검색옵션
+		Map<String, Object> totalParams = new HashMap<String, Object>();
 		List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>(); // json 전달변수
+		List<Map<String, Object>> totalList = new ArrayList<Map<String, Object>>();
 		List<PaymentManageDTO> searchList = new ArrayList<PaymentManageDTO>(); // 검색 결과
+		List<PaymentManageDTO> searchAllList = new ArrayList<PaymentManageDTO>(); // 전체목록 
 		
 		if (MemberInfo != null) { // 세션값이 있을 때는 해당 매체만 보여주기
 			String member_seq = String.valueOf(MemberInfo.getSeq());
@@ -79,22 +82,28 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			if (start_date != null && start_date.length() > 0) {
 				start_date = start_date.replaceAll("-", "");
 				params.put("start_date", start_date + "000000");
+				totalParams.put("start_date", start_date + "000000");
 			}
 			if (end_date != null && end_date.length() > 0) {
 				end_date = end_date.replaceAll("-", "");
 				params.put("end_date", end_date + "240000");
+				totalParams.put("end_date", end_date + "240000");
 			}
 			if(keywordType != null && keywordType.length() > 0){
 				params.put("keywordType", keywordType);
+				totalParams.put("keywordType", keywordType);
 			}
 			if (keyword != null && keyword.length() > 0) {
 				params.put("keyword", keyword);
+				totalParams.put("keyword", keyword);
 			}
 			if (paytype != null && paytype.length() > 0) {
 				params.put("LGD_PAYTYPE", paytype);
+				totalParams.put("LGD_PAYTYPE", paytype);
 			}
 			if (paystatus != null && paystatus.length() > 0) {
 				params.put("LGD_PAYSTATUS", paystatus);
+				totalParams.put("LGD_PAYSTATUS", paystatus);
 			}
 			
 			params.put("pageVol", pageVol);
@@ -102,6 +111,7 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			
 			PaymentDAO payDAO = new PaymentDAO();		
 			searchList = payDAO.onlinePayList(params);
+			searchAllList = payDAO.onlinePayList(totalParams);
 			
 			
 			List<PaymentManageDTO> list = (List<PaymentManageDTO>) searchList;
@@ -156,6 +166,14 @@ public class OnlinePayJSON extends NewsbankServletBase {
 					}
 				}
 				
+				for(PaymentManageDTO dto : searchAllList){
+					try {
+						totalList.add(dto.convertToMap());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
 				if (searchList != null) {
 					success = true;
 				} else {
@@ -176,6 +194,7 @@ public class OnlinePayJSON extends NewsbankServletBase {
 		json.put("totalCnt", totalCnt);
 		json.put("totalPrice", totalPrice);
 		json.put("result", jsonList);
+		json.put("totalList", totalList);
 
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);

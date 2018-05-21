@@ -603,7 +603,9 @@
 			</if>
 		</where>
 		ORDER BY paymentManage_seq DESC
-		LIMIT #{startPage}, #{pageVol}
+		<if test="startPage !=null and pageVol != null">
+		    LIMIT #{startPage}, #{pageVol}
+	    </if>
     </select>
 	
 	<!-- 온라인 결제 (총 갯수) -->	

@@ -151,9 +151,11 @@
 	function setCountPrice(totalList) {
 		var apply_price = 0; // 구매신청
 		var apply_cnt = 0;
+		var cancel_price = 0; // 결제 취소
+		var cancel_cnt = 0;		
 		var approve_price = 0; // 정산승인
 		var approve_cnt = 0;
-		var disapprove_price = 0; // 승인 취소
+		var disapprove_price = 0; // 구매반려
 		var disapprove_cnt = 0; 
 		
 		var result = new Array();
@@ -164,17 +166,22 @@
 			
 			switch(status) {
 			
-				case 0:
+				case 0: // 구매 신청(기본값)
 					apply_price += price;
 					apply_cnt += 1;
 					break;
 					
-				case 2:
+				case 1: // 정산 승인취소(결제 취소)
+					cancel_price += price;
+					cancel_cnt += 1;
+					break;
+					
+				case 2: // 정산 승인(관리자 승인)
 					approve_price += price;
 					approve_cnt += 1;
 					break;
 					
-				case 3:
+				case 3: // 구매반려(관리자 승인거부)
 					disapprove_price += price;
 					disapprove_cnt += 1;
 					break;
@@ -187,16 +194,22 @@
 			result.push(text);
 		}
 		
+		if(cancel_cnt > 0) {
+			var text = "정상 승인취소 : " + comma(cancel_price) + "원 /" + comma(cancel_cnt) + "건";
+			result.push(text);
+		}
+		
 		if(approve_cnt > 0) {
-			var text = "정산 승인 : " + comma(apply_price) + "원 /" + comma(apply_cnt) + "건";
+			var text = "정산 승인 : " + comma(approve_price) + "원 /" + comma(approve_cnt) + "건";
 			result.push(text);
 		}
 		
 		if(disapprove_cnt > 0) {
-			var text = "정산 승인 : " + comma(apply_price) + "원 /" + comma(apply_cnt) + "건";
+			var text = "정산 승인 : " + comma(disapprove_price) + "원 /" + comma(disapprove_cnt) + "건";
 			result.push(text);
 		}
 		
+		$("#buy_result").text(""); // 초기화
 		if(result.length > 0) {
 			$("#buy_result").text("( " + result.join(" | ") + " )");	
 		}

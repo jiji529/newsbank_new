@@ -118,10 +118,12 @@
 			dataType: "json",
 			data: searchParam,
 			url: "/onlinePay.api",
-			success: function(data) { console.log(data);
+			success: function(data) { //console.log(data);
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
+				
+				setCountPrice(data.totalList); // 결과치 통계 표시
 				
 				// 검색결과 표시
 				$("#totalPrice").text(comma(totalPrice));
@@ -176,6 +178,50 @@
 				}
 			}
 		});
+	}
+	
+	// 종류별 건수, 합계금액
+	function setCountPrice(totalList) {
+		var completePay = 0; // 결제 완료
+		var completeCnt = 0;
+		var cancelPay = 0; // 결제 취소
+		var cancelCnt = 0;
+		
+		var result = new Array();
+		
+		$(totalList).each(function(key, val){
+			var status = parseInt(val.LGD_PAYSTATUS); // 1: 결제 완료, 5: 결제 취소
+			var price = val.LGD_AMOUNT; // 가격
+			
+			switch(status) {
+			
+				case 1: // 결제 완료
+					completePay += price;
+					completeCnt += 1;
+					break;
+					
+				case 5: // 결제 취소
+					cancelPay += price;
+					cancelCnt += 1;
+					break;
+			}
+		});
+		
+		
+		if(completeCnt > 0) {
+			var text = "결제 완료 : " + comma(completePay) + "원 /" + comma(completeCnt) + "건";
+			result.push(text);
+		}
+		
+		if(cancelCnt > 0) {
+			var text = "결제 취소 : " + comma(cancelPay) + "원 /" + comma(cancelCnt) + "건";
+			result.push(text);
+		}
+		
+		$("#search_result").text(""); // 초기화
+		if(result.length > 0) {
+			$("#search_result").text("( " + result.join(" | ") + " )");	
+		}
 	}
 	
 	// 결제방법 코드를 한글로 치환
@@ -329,7 +375,6 @@
 								<td><select name="paystatus" class="inp_txt"
 									style="width: 150px;">
 										<option value="all" selected="selected">전체</option>
-										<option value="3">미입금</option>
 										<option value="1">결제완료</option>
 										<option value="5">결제취소</option>
 								</select></td>
