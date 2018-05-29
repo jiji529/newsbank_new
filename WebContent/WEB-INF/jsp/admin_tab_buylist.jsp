@@ -247,7 +247,7 @@
 					var id = $(this).closest("tr").find("td").eq(3).text();
 					var price = $(this).closest("tr").find("td").eq(11).text();
 					var rate = $(this).closest("tr").find("input[name=postRate]").val(); 
-					rate = rate / 100;
+					//rate = rate / 100;
 					
 					var fees = 0; // 후불회원은 PG수수료가 없음.
 					var usage = parseInt($(this).closest("tr").find("td").eq(10).attr("seq"));
@@ -268,9 +268,10 @@
 							"price": price,
 							"fees": fees,
 							"payType": payType,
-							"usage":usage
+							"usage":usage,
+							"rate":rate
 					};	
-					//console.log(param);
+					console.log(param);
 					
 					$.ajax({
 						type: "POST",

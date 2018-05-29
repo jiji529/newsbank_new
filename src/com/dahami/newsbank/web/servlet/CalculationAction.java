@@ -72,6 +72,7 @@ public class CalculationAction extends NewsbankServletBase {
 		int price = 0;
 		int fees = 0;
 		int status = 0;
+		int rate = 0;
 		
 		String keyword = null; // 키워드
 		String start_date = null; // 시작 일자
@@ -170,6 +171,11 @@ public class CalculationAction extends NewsbankServletBase {
 		}
 		System.out.println("keywordType => " + keywordType);
 		
+		if (request.getParameter("rate") != null) { // 정산 요율
+			rate = Integer.parseInt(request.getParameter("rate"));
+		}
+		System.out.println("rate => " + rate);
+		
 		CalculationDTO calculationDTO = new CalculationDTO();
 		calculationDTO.setId(id);
 		calculationDTO.setSeq(seq);
@@ -183,6 +189,7 @@ public class CalculationAction extends NewsbankServletBase {
 		calculationDTO.setPayType(payType);
 		calculationDTO.setType(type);
 		calculationDTO.setStatus(status);
+		calculationDTO.setRate(rate);
 		
 		JSONArray jArray = new JSONArray(); // json 배열
 		JSONArray tempArray = new JSONArray();
@@ -230,14 +237,14 @@ public class CalculationAction extends NewsbankServletBase {
 							int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
 							int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
 							int billingTax = dto.getFees(); // 빌링수수료
-							double rate = 0; // 정산요율
+							double dRate = 0; // 정산요율
 							if(dto.getRate() != 0) {
-								rate = (double) dto.getRate() / 100;
+								dRate = (double) dto.getRate() / 100;
 							}
 							
 							String payTypeStr = dto.getPayType_Str(); // 결제종류
 							int totalSalesAccount = billingAmount - billingTax; // 총매출액
-							int salesAccount = (int) Math.round(totalSalesAccount * rate); // 회원사 매출액
+							int salesAccount = (int) Math.round(totalSalesAccount * dRate); // 회원사 매출액
 							
 							int valueOfSupply = (int) Math.round(salesAccount * 0.9); // 공급가액
 							int addedTaxOfSupply = (int) Math.round(salesAccount * 0.1); // 공급부가세
@@ -295,14 +302,14 @@ public class CalculationAction extends NewsbankServletBase {
 							int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
 							int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
 							int billingTax = dto.getFees(); // 빌링수수료
-							double rate = 0;
+							double dRate = 0;
 							if(dto.getRate() != 0) {
-								rate = (double) dto.getRate() / 100;
+								dRate = (double) dto.getRate() / 100;
 							}
 							
 							String payTypeStr = dto.getPayType_Str(); // 결제종류
 							int totalSalesAccount = billingAmount - billingTax; // 총매출액
-							int salesAccount = (int) Math.round(totalSalesAccount * rate); // 회원사 매출액
+							int salesAccount = (int) Math.round(totalSalesAccount * dRate); // 회원사 매출액
 							
 							int valueOfSupply = (int) Math.round(salesAccount * 0.9); // 공급가액
 							int addedTaxOfSupply = (int) Math.round(salesAccount * 0.1); // 공급부가세
