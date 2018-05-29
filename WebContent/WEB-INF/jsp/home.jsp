@@ -242,7 +242,7 @@ if(errMsg != null && errMsg.length() > 0) {
 				<div id="photo_area"> 
 					<c:forEach items="${photoList}" var="photo">						
 						<a href='javascript:go_photoView("${photo.uciCode}")' onclick='go_photoView("${photo.uciCode}")'>
-							<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+							<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 						</a>
 					</c:forEach>					
 				 </div>
@@ -285,7 +285,7 @@ if(errMsg != null && errMsg.length() > 0) {
 					<div id="download_area"> 
 						<c:forEach items="${downloadList}" var="down" varStatus="status">
 							<a href='javascript:go_photoView("${down.uciCode}")' onclick='go_photoView("${down.uciCode}")'>
-								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 							</a>
 						</c:forEach>					
 					 </div>									
@@ -296,7 +296,7 @@ if(errMsg != null && errMsg.length() > 0) {
 					<div id="zzim_area"> 
 						<c:forEach items="${basketList}" var="basket" varStatus="status">
 							<a href='javascript:go_photoView("${basket.uciCode}")' onclick='go_photoView("${basket.uciCode}")'>
-								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 							</a>
 						</c:forEach>					
 					 </div>					
@@ -307,7 +307,7 @@ if(errMsg != null && errMsg.length() > 0) {
 					<div id="hit_area"> 
 						<c:forEach items="${hitsList}" var="hit" varStatus="status">
 							<a href='javascript:go_photoView("${hit.uciCode}")' onclick='go_photoView("${hit.uciCode}")'>
-								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 							</a>
 						</c:forEach>					
 					 </div>
