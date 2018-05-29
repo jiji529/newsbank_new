@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
+
 import com.dahami.newsbank.dto.PhotoDTO;
 
 public class SearchParameterBean {
@@ -105,6 +107,16 @@ public class SearchParameterBean {
 	private int pageVol;
 	private int pageNo;
 	
+	public static final String SORT_FLD_SCORE = "score";
+	public static final String SORT_FLD_ID = "id";
+	public static final String SORT_FLD_TITLE = "title";
+	public static final String SORT_FLD_OWNER = "owner";
+	public static final String SORT_FLD_REGDATE = "rdate";
+	public static final String SORT_FLD_SHOTDATE = "sdate";
+	public static final String SORT_FLD_FILESIZE = "fsize";
+	private String sortField;
+	private ORDER sortOrder;;
+	
 	public SearchParameterBean() {
 		this.ownerType = new String[] {
 			OWNER_MEDIA	
@@ -145,6 +157,55 @@ public class SearchParameterBean {
 		try{this.portRight = Integer.parseInt(params.get("portRight")[0]);}catch(Exception e){}
 		try{this.includePerson = Integer.parseInt(params.get("includePerson")[0]);}catch(Exception e){}
 		try{this.group = Integer.parseInt(params.get("group")[0]);}catch(Exception e){}
+		
+		setOrder(params);
+	}
+	
+	private void setOrder(Map<String, String[]> params) {
+		String sort = null;
+		try{ sort = params.get("sort")[0];}catch(Exception e){}
+		if(sort == null) {
+			sort = SORT_FLD_REGDATE;
+		}
+		if(sort.indexOf(":") == -1) {
+			sort += ":d";
+		}
+		
+		String [] sortArry = sort.split("\\:");
+		
+		switch(sortArry[0]) {
+		case SORT_FLD_SCORE:
+			sortField = "score";
+			break;
+		case SORT_FLD_ID:
+			sortField = "uciCode";
+			break;
+		case SORT_FLD_TITLE:
+			sortField = "title_sort";
+			break;
+		case SORT_FLD_OWNER:
+			sortField = "copyright";
+			break;
+		case SORT_FLD_REGDATE:
+			sortField = "regDate";
+			break;
+		case SORT_FLD_SHOTDATE:
+			sortField = "shotDate";
+			break;
+		case SORT_FLD_FILESIZE:
+			sortField = "fileSize";
+			break;
+		}
+		
+		switch(sortArry[1]) {
+		case "a":
+			sortOrder = ORDER.asc;
+			break;
+		case "d":
+			sortOrder = ORDER.desc;
+			break;
+		}
+		
 	}
 	
 	public SearchParameterBean nextPage() {
@@ -299,6 +360,14 @@ public class SearchParameterBean {
 
 	public void setOwnerType(String[] ownerType) {
 		this.ownerType = ownerType;
+	}
+
+	public String getSortField() {
+		return sortField;
+	}
+
+	public ORDER getSortOrder() {
+		return sortOrder;
 	}
 	
 }
