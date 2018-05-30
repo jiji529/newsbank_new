@@ -18,6 +18,8 @@
 		ON P.`uciCode` = D.`photo_uciCode`
 		where
 		M.LGD_RESPCODE='0000'
+		AND 
+		D.`status` = 2
 		AND
 		(P.`member_seq` = #{member_seq} OR P.`member_seq` IN (SELECT
 		`adjSlave` FROM `adjustment` A
