@@ -119,6 +119,7 @@
 			data: searchParam,
 			url: "/onlinePay.api",
 			success: function(data) { //console.log(data);
+				
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 

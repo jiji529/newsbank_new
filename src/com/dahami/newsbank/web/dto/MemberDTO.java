@@ -265,6 +265,9 @@ public class MemberDTO implements Serializable {
 	 * @return
 	 */
 	public String getCompName() {
+		if(compName == null || compName.length() == 0){
+			compName = "";
+		}
 		return compName;
 	}
 

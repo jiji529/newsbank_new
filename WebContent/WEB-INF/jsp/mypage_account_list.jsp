@@ -140,7 +140,7 @@
 							<c:forEach var="media" items="${mediaList}">
 								<label class="per">
 									<span class="media_name">
-										<input type="checkbox" name="media_code" value="${media.seq}" />
+										<input type="checkbox" name="media_code" value="${media.seq}" checked/>
 										${media.compName}
 									</span>
 									<span>

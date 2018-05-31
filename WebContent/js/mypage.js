@@ -1032,7 +1032,8 @@ $(function() {
 					} else {
 						alert(data.message);
 					}
-					location.reload();
+					// 새로고침하면, 입력/수정한 회원정보 내역이 모두 사라지기 때문에 주석처리
+					//location.reload();
 				},
 				error : function(data) {
 					console.log("Error: " + data.statusText);

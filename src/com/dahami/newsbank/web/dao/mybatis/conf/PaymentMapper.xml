@@ -560,7 +560,7 @@
 	<select id="onlinePayResult" parameterType="java.util.HashMap" 
 	    resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
 	    
-	    SELECT DISTINCT PM.`seq` AS `paymentManage_seq`,
+	    SELECT PM.`seq` AS `paymentManage_seq`,
 			PM.`member_seq`, PM.`LGD_BUYER`,
 			PM.`LGD_BUYERID`, 
 			PM.`LGD_RESPMSG`,
@@ -578,16 +578,18 @@
 		    PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+		            <bind name="keyword" value="'%' + keyword + '%'" />
 		            AND (
-	            	 	PM.LGD_BUYERID = #{keyword} OR
-						PM.LGD_BUYER = #{keyword}
+	            	 	PM.LGD_BUYERID LIKE #{keyword} OR
+						PM.LGD_BUYER LIKE #{keyword}
 		            )
 	            </if>
 	            
 		        <if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+		            <bind name="keyword" value="'%' + keyword + '%'" />
 		            AND (
-		            	P.compCode = #{keyword} OR
-		            	PD.photo_uciCode = #{keyword}		            	
+		            	P.compCode LIKE #{keyword} OR
+		            	PD.photo_uciCode LIKE #{keyword}		            	
 		            )
 	            </if>
 	        </if>
@@ -613,7 +615,7 @@
 	<!-- 온라인 결제 (총 갯수) -->	
 	<select id="onlinePayCount" parameterType="java.util.HashMap" 
 	    resultType="integer">
-		SELECT COUNT(DISTINCT(PM.`seq`)) as cnt
+		SELECT COUNT(PM.`seq`) as cnt
 		FROM paymentDetail PD
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
@@ -622,16 +624,18 @@
 	        PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+		            <bind name="keyword" value="'%' + keyword + '%'" />
 		            AND (
-	            	 	PM.LGD_BUYERID = #{keyword} OR
-						PM.LGD_BUYER = #{keyword}
+	            	 	PM.LGD_BUYERID LIKE #{keyword} OR
+						PM.LGD_BUYER LIKE #{keyword}
 		            )
 	            </if>
 	            
 		        <if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+		            <bind name="keyword" value="'%' + keyword + '%'" />
 		            AND (
-		            	P.compCode = #{keyword} OR
-		            	PD.photo_uciCode = #{keyword}		            	
+		            	P.compCode LIKE #{keyword} OR
+		            	PD.photo_uciCode LIKE #{keyword}		            	
 		            )
 	            </if>
 	        </if>
@@ -654,7 +658,7 @@
 	<!-- 온라인 결제 (총 합계 금액) -->
 	<select id="onlinePayPrice" parameterType="java.util.HashMap" 
 	    resultType="integer">
-		SELECT COALESCE(SUM(DISTINCT(PM.`LGD_AMOUNT`)), 0) as sum			
+		SELECT COALESCE(SUM(PM.`LGD_AMOUNT`), 0) as sum			
 		FROM paymentDetail PD
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
@@ -663,16 +667,18 @@
 	        PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+		            <bind name="keyword" value="'%' + keyword + '%'" />
 		            AND (
-	            	 	PM.LGD_BUYERID = #{keyword} OR
-						PM.LGD_BUYER = #{keyword}
+	            	 	PM.LGD_BUYERID LIKE #{keyword} OR
+						PM.LGD_BUYER LIKE #{keyword}
 		            )
 	            </if>
 	            
 		        <if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+		            <bind name="keyword" value="'%' + keyword + '%'" />
 		            AND (
-		            	P.compCode = #{keyword} OR
-		            	PD.photo_uciCode = #{keyword}		            	
+		            	P.compCode LIKE #{keyword} OR
+		            	PD.photo_uciCode LIKE #{keyword}		            	
 		            )
 	            </if>
 	        </if>
