@@ -138,7 +138,7 @@ public class Login extends NewsbankServletBase {
 			}
 			if (memberInfo.getId().length() < 4) {
 				boolean nextChangeHide = false;
-				String targetDate = "20180531";
+				String targetDate = "20181231";
 				
 				
 				Calendar cal = Calendar.getInstance();

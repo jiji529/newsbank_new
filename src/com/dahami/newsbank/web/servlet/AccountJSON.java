@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.xmlbeans.impl.inst2xsd.SalamiSliceStrategy;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.PaymentDAO;
@@ -81,6 +82,17 @@ public class AccountJSON extends NewsbankServletBase {
 		media_code = StringUtils.join(media, ",");
 
 		List<Map<String, Object>> searchList = new ArrayList<Map<String, Object>>();
+		
+		List<Map<String, Object>> onlineList = new ArrayList<Map<String, Object>>(); // 온라인 판매
+		List<Map<String, Object>> offlineList = new ArrayList<Map<String, Object>>(); // 오프라인 판매
+		List<String> titleList = new ArrayList<String>(); // 테이블 제목리스트
+		List<List<String>> headerList = new ArrayList<List<String>>(); // 테이블 헤더리스트
+		List<List<Integer>> colSizeList = new ArrayList<List<Integer>>(); // 컬럼별 사이즈
+		List<List<String>> colList = new ArrayList<List<String>>(); // 컬럼명
+		
+		List<List<Map<String, Object>>> searchOnOffList = new ArrayList<List<Map<String, Object>>>(); //  온/오프라인 판매 리스트
+		
+		JSONArray jArray = new JSONArray(); // json 배열
 		/*
 		 * if (start_date == null || end_date == null) { Calendar cal =
 		 * Calendar.getInstance(); int year = cal.get(cal.YEAR); start_date = year +
@@ -189,6 +201,15 @@ public class AccountJSON extends NewsbankServletBase {
 					searchList.get(idx).put("valueOfSupply", df.format(valueOfSupply)); // 공급가액
 					searchList.get(idx).put("addedTaxOfSupply", df.format(addedTaxOfSupply)); // 공급부가세
 					searchList.get(idx).put("dahamiAccount", df.format(dahamiAccount)); // 다하미 매출액
+					
+					
+					if(object.get("LGD_PAYTYPE").equals("SC9999")) {
+						// 오프라인 판매목록
+						offlineList.add(searchList.get(idx));
+					}else {
+						// 온라인 판매목록
+						onlineList.add(searchList.get(idx));
+					}					
 
 					idx++;
 					
@@ -200,16 +221,70 @@ public class AccountJSON extends NewsbankServletBase {
 			}
 			
 			if(searchList.size() > 0) {
-				List<String> headList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-				List<Integer> columnSize = Arrays.asList(15, 10, 20, 10, 10, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15); //  컬럼별 길이정보
-				List<String> columnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usage", "copyright", 
+				// 기존 Excel 생성
+//				List<String> headList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+//				List<Integer> columnSize = Arrays.asList(15, 10, 20, 10, 10, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15); //  컬럼별 길이정보
+//				List<String> columnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usage", "copyright", 
+//						 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
+//						 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+//				
+//				Date today = new Date();
+//			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+//				String orgFileName = "정산내역_" + dateforamt.format(today); // 파일명
+				//ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
+				
+				// JSONArray로 출력할 데이터 Excel로 전달
+				// 온라인 판매대금 추가
+				List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+				List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+				List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usage", "copyright", 
 						 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
 						 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+				titleList.add("온라인 판매대금 정산내역");
+				headerList.add(onlineHeadList);
+				colSizeList.add(onlineColumnSize);
+				colList.add(onlineColumnList);
+				searchOnOffList.add(onlineList);
 				
+				JSONObject onlineObj = new JSONObject();
+				onlineObj.put("headList", onlineHeadList);
+				onlineObj.put("columnSize", onlineColumnSize);
+				onlineObj.put("columnList", onlineColumnList);
+				onlineObj.put("title", "온라인 판매대금 정산내역");
+				onlineObj.put("body", onlineList);
+				
+				jArray.add(onlineObj);
+				
+				
+				// 오프라인 판매대금 추가
+				List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+				List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+				List<String> offlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usage", "copyright", 
+						 "PAYTYPE_STR", "customValue", "customTax", "billingAmount",  
+						 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+				titleList.add("오프라인 판매대금 정산내역");
+				headerList.add(offlineHeadList);
+				colSizeList.add(offlineColumnSize);
+				colList.add(offlineColumnList);
+				searchOnOffList.add(offlineList);
+				
+				
+				JSONObject offlineObj = new JSONObject();
+				offlineObj.put("headList", offlineHeadList);
+				offlineObj.put("columnSize", offlineColumnSize);
+				offlineObj.put("columnList", offlineColumnList);
+				offlineObj.put("title", "오프라인 판매대금 정산내역");
+				offlineObj.put("body", offlineList);
+				
+				jArray.add(offlineObj);
+				
+				// 최종 엑셀 반영
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
 				String orgFileName = "정산내역_" + dateforamt.format(today); // 파일명
-				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
+					
+				ExcelUtil.xlsxWiterJSONParsing(request, response, jArray, orgFileName);
+				
 			}else {
 				response.getWriter().append("<script type=\"text/javascript\">alert('생성할 데이터가 없습니다.');</script>").append(request.getContextPath());
 			}			
