@@ -114,10 +114,32 @@ public class DownloadService extends ServiceBase {
 		ACCESS_IP_MAP = new HashMap<String, Set<String>>();
 		final Set<String> ipSet = new HashSet<String>();
 		ACCESS_IP_MAP.put("gt", ipSet);
+		
+		// 2016. 05. 18	이매진 IP 추가 -- "121.78.118.233", "121.78.196.177", "121.78.196.178"
+		//	2017. 03. 17	이매진 IP 추가 -- "1.214.46.66", "121.78.196.175"
+		ipSet.add("1.214.46.66");
+		ipSet.add("121.78.196.163");
+		ipSet.add("121.78.196.165");
+		ipSet.add("121.78.196.175");
+		ipSet.add("121.78.196.177");
+		ipSet.add("121.78.196.178");
+		ipSet.add("121.78.118.233");
+		ipSet.add("121.78.115.56");
+		
+		// 2018.01.24 대전사무실 IP 추가
 		ipSet.add("59.27.23.3");
+	
+	    //  2016. 05. 03    연구소 고정 IP 추가
+		ipSet.add("211.217.82.104");
+		ipSet.add("106.240.225.154");
+		
+		// 정체불명
+		ipSet.add("59.6.244.140");
+		
+		// 로컬 테스트
 		ipSet.add("127.0.0.1");
 		ipSet.add("0:0:0:0:0:0:0:1");
-
+		
 		CORP_NAME_MAP = new HashMap<String, String>();
 		CORP_NAME_MAP.put("nb", "뉴스뱅크");
 		CORP_NAME_MAP.put("gt", "게티이미지코리아");
