@@ -185,9 +185,30 @@ if(errMsg != null && errMsg.length() > 0) {
 						<li>
 							<a href="/out.login">로그아웃</a>
 						</li>
-						<li>
+						
+						<c:choose>
+							<c:when test="${(MemberInfo.type eq 'M' || MemberInfo.type eq 'Q') && MemberInfo.admission eq 'Y'}">
+								<li>
+									<a href="/cms">마이페이지</a>
+								</li>
+							</c:when>
+							
+							<c:when test="${MemberInfo.type eq 'W' && MemberInfo.admission eq 'Y'}">
+								<li>
+									<a href="/accountlist.mypage">마이페이지</a>
+								</li>
+							</c:when>
+							
+							<c:otherwise>
+								<li>
+									<a href="/info.mypage">마이페이지</a>
+								</li>
+							</c:otherwise>
+						</c:choose>
+						
+						<!-- <li>
 							<a href="/info.mypage">마이페이지</a>
-						</li>
+						</li> -->
 						<c:if test="${MemberInfo.type == 'A'}">
 							<li class="go_admin">
 								<a href="/member.manage">관리자페이지</a>

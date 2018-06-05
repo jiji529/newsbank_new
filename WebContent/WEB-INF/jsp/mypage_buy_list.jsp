@@ -44,6 +44,19 @@
 							<a href="/cms">사진 관리</a>
 						</li>
 					</c:if>
+					
+					<c:if test="${MemberInfo.type eq 'Q' && MemberInfo.admission eq 'Y'}">
+						<li>
+							<a href="/cms">사진 관리</a>
+						</li>
+					</c:if>
+					
+					<c:if test="${MemberInfo.type eq 'W' && MemberInfo.admission eq 'Y'}">
+						<li>
+							<a href="/accountlist.mypage">정산 관리</a>
+						</li>
+					</c:if>
+					
 					<li>
 						<a href="/info.mypage">회원정보 관리</a>
 					</li>

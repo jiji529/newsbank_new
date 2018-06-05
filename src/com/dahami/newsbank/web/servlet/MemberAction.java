@@ -295,6 +295,7 @@ public class MemberAction extends NewsbankServletBase {
 				if (adj.getSeq() == adjSlave) {
 					System.out.println(adjSlave);
 					slave_match = true;
+					compName = adj.getCompName(); // 회사명 전달
 				}
 
 			}

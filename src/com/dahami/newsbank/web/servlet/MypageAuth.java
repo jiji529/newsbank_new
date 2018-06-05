@@ -55,10 +55,13 @@ public class MypageAuth extends NewsbankServletBase {
 			// 이미 로그인 되어있는지 체크
 			if (mypageAuth) {
 				// 이전에 my page 비밀번호 입력했는지 체크
-				if(MemberInfo.getType().equals("M") && MemberInfo.getAdmission().equals("Y")) {
-					// 매체사 회원은 사진관리로 이동(단, 관리자로부터 매체사 가입승인 받아야함)
+				if( (MemberInfo.getType().equals("M") || MemberInfo.getType().equals("Q")) && MemberInfo.getAdmission().equals("Y")) {
+					// 매체사 회원('M': 모든 매체사 권한, 'Q': 사진관리자 권한 총 2가지 회원은 사진관리로 이동(단, 관리자로부터 매체사 가입승인 받아야함))
 					response.sendRedirect("/cms"); 
-				}else {
+				}else if(MemberInfo.getType().equals("W") && MemberInfo.getAdmission().equals("Y")) {
+					// 매체사 정산관리자 회원은 사진관리로 이동
+					response.sendRedirect("/accountlist.mypage");
+				}else {				
 					// 나머지 회원은 회원정보 관리로 이동
 					response.sendRedirect("/info.mypage");
 				}
@@ -85,9 +88,12 @@ public class MypageAuth extends NewsbankServletBase {
 						// 로그인 성공
 						session.setAttribute("mypageAuth", true);
 						
-						if(memberDTO.getType().equals("M") && MemberInfo.getAdmission().equals("Y")) {
+						if( (MemberInfo.getType().equals("M") || MemberInfo.getType().equals("Q")) && MemberInfo.getAdmission().equals("Y")) {
 							// 매체사 회원은 사진관리로 이동(단, 관리자로부터 매체사 가입승인 받아야함)
 							response.sendRedirect("/cms"); 
+						}else if(MemberInfo.getType().equals("W") && MemberInfo.getAdmission().equals("Y")) {
+							// 매체사 정산관리자 회원은 사진관리로 이동
+							response.sendRedirect("/accountlist.mypage");
 						}else {
 							// 나머지 회원은 회원정보 관리로 이동
 							response.sendRedirect("/info.mypage");

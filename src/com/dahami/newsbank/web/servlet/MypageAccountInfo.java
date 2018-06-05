@@ -54,7 +54,8 @@ public class MypageAccountInfo extends NewsbankServletBase {
 				response.sendRedirect("/auth.mypage");
 			} else {
 				//request.setAttribute("type", MemberInfo.getType());
-				if(!MemberInfo.getType().equalsIgnoreCase("M")) {
+				if(!(MemberInfo.getType().equalsIgnoreCase("M") || MemberInfo.getType().equalsIgnoreCase("W"))) {
+					// 회원 종류가 해당 옵션(M: 매체사, W: 정산 관리자)이 아닌 경우는, 회원정보 페이지로 이동
 					response.sendRedirect("/info.mypage");
 					return;
 				}

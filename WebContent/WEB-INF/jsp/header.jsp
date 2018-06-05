@@ -114,9 +114,15 @@ if(errMsg != null && errMsg.length() > 0) {
 				</li>
 				
 				<c:choose>
-					<c:when test="${MemberInfo.type eq 'M' && MemberInfo.admission eq 'Y'}">
+					<c:when test="${(MemberInfo.type eq 'M' || MemberInfo.type eq 'Q') && MemberInfo.admission eq 'Y'}">
 						<li>
 							<a href="/cms">마이페이지</a>
+						</li>
+					</c:when>
+					
+					<c:when test="${MemberInfo.type eq 'W' && MemberInfo.admission eq 'Y'}">
+						<li>
+							<a href="/accountlist.mypage">마이페이지</a>
 						</li>
 					</c:when>
 					
