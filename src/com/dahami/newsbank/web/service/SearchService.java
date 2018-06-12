@@ -63,11 +63,6 @@ public class SearchService extends ServiceBase {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String[]> params = request.getParameterMap();
-		try {
-			String photoId = params.get("photoId")[0];
-			System.out.println();
-		}catch(Exception e){}
-		
 		SearchParameterBean sParam = new SearchParameterBean(params);
 		
 		int exportType = 0;

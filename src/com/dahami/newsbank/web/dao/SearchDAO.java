@@ -202,64 +202,66 @@ public class SearchDAO extends DAOBase {
 		QueryResponse res = null;
 		try {
 			SolrQuery query = makeSolrQuery(param);
-			QueryRequest req = makeSolrRequest(query);
-			
-			// 정렬
-			if(query.get("qt") != null && query.get("qt").trim().equals("/mlt")) {
-//				query.addSort("score", ORDER.desc);
-			}
-			else {
-				String sField = param.getSortField();
-				ORDER sOrder = param.getSortOrder();
-				if(sField != null) {
-					query.addSort(sField, sOrder);
-				}
-				if(sField == null || !sField.equals("uciCode")) {
-					query.addSort("uciCode", ORDER.desc);	
-				}
-			}
-			
-			client = getClient();
-			long sTime = System.currentTimeMillis();
-			res = req.process(client);
-			long eTime = System.currentTimeMillis();
-			if(query.get("qt") != null && query.get("qt").trim().equals("/mlt")) {
-				logger.debug("MltTime: " + (eTime-sTime) + " msec");
-			}
-			else {
-				logger.debug("QueryTime: " + (eTime-sTime) + " msec");	
-			}
-			
-			SolrDocumentList docList = null;
-			if(res.getResults() != null) {
-				docList = res.getResults();
-			}
-			
-			int resultCount = 0;
 			List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-			if(docList != null && docList.size() > 0) {
-				MemberDAO mDao = new MemberDAO();
-				List<MemberDTO> mList = mDao.listActiveMedia();
-				Map<Integer, MemberDTO> memberMap = new HashMap<Integer, MemberDTO>();
-				for(MemberDTO curM : mList) {
-					memberMap.put(curM.getSeq(), curM);
+			int resultCount = 0;
+			int pageVol = 10;
+			if(query != null) {
+				pageVol = query.getRows();
+				// 정렬
+				if(query.get("qt") != null && query.get("qt").trim().equals("/mlt")) {
+	//				query.addSort("score", ORDER.desc);
 				}
-				for(SolrDocument doc : docList) {
-					PhotoDTO cur = new PhotoDTO(doc);
-					int ownerNo = cur.getOwnerNo();
-					MemberDTO curMember = memberMap.get(ownerNo);
-					if(curMember != null) {
-						cur.setOwnerName(curMember.getCompName()); // 회사/기관명
+				else {
+					String sField = param.getSortField();
+					ORDER sOrder = param.getSortOrder();
+					if(sField != null) {
+						query.addSort(sField, sOrder);
 					}
-					else {
-						logger.warn("멤버정보 없음: seq / " + ownerNo);
+					if(sField == null || !sField.equals("uciCode")) {
+						query.addSort("uciCode", ORDER.desc);	
 					}
-					photoList.add(cur);
 				}
-				resultCount = (int)docList.getNumFound();
+				QueryRequest req = makeSolrRequest(query);
+				client = getClient();
+				long sTime = System.currentTimeMillis();
+				res = req.process(client);
+				long eTime = System.currentTimeMillis();
+				if(query.get("qt") != null && query.get("qt").trim().equals("/mlt")) {
+					logger.debug("MltTime: " + (eTime-sTime) + " msec");
+				}
+				else {
+					logger.debug("QueryTime: " + (eTime-sTime) + " msec");	
+				}
+				
+				SolrDocumentList docList = null;
+				if(res.getResults() != null) {
+					docList = res.getResults();
+				}
+				
+				if(docList != null && docList.size() > 0) {
+					MemberDAO mDao = new MemberDAO();
+					List<MemberDTO> mList = mDao.listActiveMedia();
+					Map<Integer, MemberDTO> memberMap = new HashMap<Integer, MemberDTO>();
+					for(MemberDTO curM : mList) {
+						memberMap.put(curM.getSeq(), curM);
+					}
+					for(SolrDocument doc : docList) {
+						PhotoDTO cur = new PhotoDTO(doc);
+						int ownerNo = cur.getOwnerNo();
+						MemberDTO curMember = memberMap.get(ownerNo);
+						if(curMember != null) {
+							cur.setOwnerName(curMember.getCompName()); // 회사/기관명
+						}
+						else {
+							logger.warn("멤버정보 없음: seq / " + ownerNo);
+						}
+						photoList.add(cur);
+					}
+					resultCount = (int)docList.getNumFound();
+					
+				}
 			}
 			ret.put("result", photoList);
-			int pageVol = query.getRows();
 			ret.put("count", resultCount);
 			ret.put("totalPage", ((resultCount / pageVol) + 1));
 		} catch (Exception e) {
@@ -274,6 +276,7 @@ public class SearchDAO extends DAOBase {
 	private SolrQuery makeSolrQuery(SearchParameterBean params) {
 		SolrQuery query = new SolrQuery();
 		query.set("collection", collectionNameNewsbank);
+		String photoId = params.getPhotoId();
 		String keyword = params.getKeyword();
 		String uciCode = params.getUciCode();
 		
@@ -358,31 +361,43 @@ public class SearchDAO extends DAOBase {
 		}
 		else {
 			query.setRequestHandler("/select");
-			logger.debug("keyword: " + keyword);
 			
 			StringBuffer qBuf = new StringBuffer();
-			qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode'}")
-				.append(keyword)
-				.append("\"");
-			
-			if(keyword.length() == 10) {
-				String tmpKeyword = keyword.toLowerCase();
-				char startCh = tmpKeyword.charAt(0);
-				if(startCh == 'm'
-						|| startCh == 's'
-						|| startCh == 'c'
-						|| startCh == 'p') {
-					try {
-						Long.parseLong(tmpKeyword.substring(1));
-						qBuf.insert(0, "(").append(") OR (_query_:\"{!edismax q.op=AND qf=uciCode}")
-							.append(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)
-							.append(keyword)
-							.append("\")");
-					}catch(Exception e) {
+			if(photoId.length() > 0) {
+				Map<String, Object> oldKeyMap = new PhotoDAO().getNewUciCode(photoId);
+				if(oldKeyMap != null) {
+					uciCode = (String) oldKeyMap.get("revUci");
+					logger.debug("Key: " + uciCode + " (" + photoId + ")");
+					qBuf.append("uciCode:").append(uciCode);
+				}
+				else {
+					return null;
+				}
+			}
+			else {
+				logger.debug("keyword: " + keyword);
+				qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode'}")
+					.append(keyword)
+					.append("\"");
+				
+				if(keyword.length() == 10) {
+					String tmpKeyword = keyword.toLowerCase();
+					char startCh = tmpKeyword.charAt(0);
+					if(startCh == 'm'
+							|| startCh == 's'
+							|| startCh == 'c'
+							|| startCh == 'p') {
+						try {
+							Long.parseLong(tmpKeyword.substring(1));
+							qBuf.insert(0, "(").append(") OR (_query_:\"{!edismax q.op=AND qf=uciCode}")
+								.append(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)
+								.append(keyword)
+								.append("\")");
+						}catch(Exception e) {
+						}
 					}
 				}
 			}
-			
 			query.setQuery(qBuf.toString());
 			
 			List<Integer> targetUserList = params.getTargetUserList();
