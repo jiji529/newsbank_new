@@ -39,6 +39,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
+import com.dahami.common.util.HttpUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
@@ -116,17 +117,28 @@ public class SearchDAO extends DAOBase {
 				solrClients = new ArrayList<SolrClient>();
 				int poolSize = Integer.parseInt(conf.getProperty("SOLR_POOL"));
 				int solrHostIdx = 0;
+				
+				HttpSolrClient.Builder httpSolrBuilder = new HttpSolrClient.Builder();
+				CloudSolrClient.Builder cloudBuilder = null;
+				if(zkHostList.size() > 0) {
+//					cloudBuilder = new CloudSolrClient.Builder(zkHostList, Optional.empty())
+					cloudBuilder = new CloudSolrClient.Builder(zkHostList, null)
+							.withParallelUpdates(true);
+				}
+				
 				while(solrClients.size() < poolSize) {
 					if(zkHostList.size() > 0) {
-						CloudSolrClient solr = new CloudSolrClient(zkHostList, null);
-						solr.setParallelUpdates(true);
+						CloudSolrClient solr = cloudBuilder
+								.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId,  solrPw))
+								.build();
 						solr.connect();
-						setSolrAuth(solr);
 						solrClients.add(solr);
 					}
 					else if(solrHostList.size() > 0) {
-						SolrClient solr = new HttpSolrClient(solrHostList.get(solrHostIdx++));
-						setSolrAuth(solr);
+						SolrClient solr = httpSolrBuilder
+								.withBaseSolrUrl(solrHostList.get(solrHostIdx++))
+								.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId,  solrPw))
+								.build();
 						solrClients.add(solr);
 						if(solrHostIdx >= solrHostList.size()) {
 							solrHostIdx = 0;
@@ -139,17 +151,6 @@ public class SearchDAO extends DAOBase {
 			}
 			initialized = true;
 		}
-	}
-
-	private void setSolrAuth(SolrClient solr) {
-		HttpClient httpClient = null;
-		if(solr instanceof HttpSolrClient) {
-			httpClient = ((HttpSolrClient)solr).getHttpClient();
-		}
-		else if(solr instanceof CloudSolrClient) {
-			httpClient = ((CloudSolrClient)solr).getLbClient().getHttpClient();
-		}
-		HttpClientUtil.setBasicAuth((DefaultHttpClient)httpClient, solrId, solrPw);
 	}
 
 	private void loadProperties() {
