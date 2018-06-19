@@ -284,8 +284,11 @@
 			return;
 		}
 		var uciCode = $('#uciCode').val();
-		var newTitle = $(".editTitle").text();
-		var newCont = $(".editCont").text();
+		var newTitle = $(".editTitle").val();
+		var newCont = $(".editCont").val();
+		
+		console.log("newTitle : " + newTitle);
+		console.log("newCont : " + newCont);
 		
 		var url = "/view.cms" + $("#manage").val();
 		$.ajax({
