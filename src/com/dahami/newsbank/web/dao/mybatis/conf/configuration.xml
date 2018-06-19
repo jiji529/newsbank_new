@@ -8,7 +8,7 @@
 			<transactionManager type="JDBC" />             
 			<dataSource type="POOLED">
 				<property name="driver" value="com.mysql.cj.jdbc.Driver" />                 
-				<property name="url" value="jdbc:mysql://1.255.6.40/news_bank?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false" />
+				<property name="url" value="jdbc:mysql://1.255.6.40/news_bank?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Seoul&amp;useSSL=false" />
 				<property name="username" value="newsDev" />                 
 				<property name="password" value="ekgkal4174@" />
 				<property name="poolMaximumActiveConnections" value="5"/> 
@@ -23,7 +23,7 @@
 			<transactionManager type="JDBC" />             
 			<dataSource type="POOLED">
 				<property name="driver" value="com.mysql.cj.jdbc.Driver" />                 
-				<property name="url" value="jdbc:mysql://1.255.6.40/news_bank_dev?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false" />
+				<property name="url" value="jdbc:mysql://1.255.6.40/news_bank_dev?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Seoul&amp;useSSL=false" />
 				<property name="username" value="newsDev" />                 
 				<property name="password" value="ekgkal4174@" />
 				<property name="poolMaximumActiveConnections" value="5"/> 
