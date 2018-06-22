@@ -23,6 +23,7 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.ExcelUtil;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 /**
  * Servlet implementation class ListMediaJSON
@@ -102,6 +103,7 @@ public class ListMediaJSON extends NewsbankServletBase {
 			// JSON 목록
 			
 			JSONArray jArray = new JSONArray(); // json 배열
+			List<String> masterIdList = new ArrayList<String>();
 			
 			for(int idx=0; idx<listMember.size(); idx++) {
 				JSONObject arr = new JSONObject(); // json 배열에 들어갈 객체
@@ -121,9 +123,31 @@ public class ListMediaJSON extends NewsbankServletBase {
 				arr.put("contractStart", listMember.get(idx).get("contractStart"));
 				arr.put("contractEnd", listMember.get(idx).get("contractEnd"));
 				arr.put("regDate", listMember.get(idx).get("regDate"));
-				arr.put("masterID", listMember.get(idx).get("masterID"));
+				//arr.put("masterID", listMember.get(idx).get("masterID"));
 				arr.put("activate", listMember.get(idx).get("activate"));
 				arr.put("logo", listMember.get(idx).get("logo"));
+				
+				
+				if(idx > 0) {
+					int prevSeq = Integer.parseInt(listMember.get(idx-1).get("seq").toString()); // 이전 SEQ
+					int nowSeq = Integer.parseInt(listMember.get(idx).get("seq").toString()); // 현재 SEQ
+					
+					if(prevSeq == nowSeq) { // 현재와 이전 seq가 같으면 현재 masterID를 추가
+						if(listMember.get(idx).get("masterID") != null) {
+							masterIdList.add(listMember.get(idx).get("masterID").toString());
+							arr.put("masterID", masterIdList.toString());
+							jArray.remove(idx-1);
+							listMember.remove(idx-1);
+						}
+						
+					}else {
+						masterIdList.clear();
+						if(listMember.get(idx).get("masterID") != null) {
+							masterIdList.add(listMember.get(idx).get("masterID").toString());
+							arr.put("masterID", listMember.get(idx).get("masterID"));
+						}
+					}
+				}
 				jArray.add(arr);
 			}
 			

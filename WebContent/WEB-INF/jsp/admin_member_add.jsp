@@ -62,7 +62,7 @@
 				$(".corp_area").show();
 				break;
 				
-			case 'M': // 언론사
+			case 'M' : case 'Q': case 'W': // 언론사(공통, 사진관리자, 정산관리자)
 				$(".media_only").show();
 				$(".corp_area").show();
 				break;
@@ -171,6 +171,8 @@
 										<option value="P" selected="selected">개인</option>
 										<option value="C">법인</option>
 										<option value="M">언론사</option>
+										<option value="Q">언론사(사진관리자)</option>
+										<option value="W">언론사(정산관리자)</option>
 									</select></td>
 							</tr>
 						</tbody>

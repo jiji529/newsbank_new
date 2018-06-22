@@ -276,9 +276,36 @@
 		`regDate`,
 		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
 		WHERE `type` = 'M'
-		AND `compName`!=''
-		AND `compName`
+		<!-- AND `compName`!=''
+		AND `compName` -->
 		is not null
+		<if test="seq != 0">
+			AND `seq` = #{seq}
+			OR `seq` IN (SELECT `adjSlave` FROM
+			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission`='Y'
+			AND `adjMaster` = #{seq})
+		</if>
+		ORDER BY `compName` ASC
+	</select>
+	
+	<!-- 정산관리자 Slave 계정정보 전달 -->
+	<select id="adjustMediaInfo" resultType="com.dahami.newsbank.web.dto.MemberDTO">
+		SELECT
+		`seq`, `id`, `email`, `name`, `phone`, `type`,
+		`permission`,
+		`deferred`, `compNum`, `compDocPath`, `compName`,
+		`compAddress`,
+		`compAddDetail`, `compZipcode`, `compBankName`,
+		`compBankAcc`,
+		`compBankPath`, `compTel`, `compExtTel`, `contractPath`,
+		DATE_FORMAT(`contractStart`,'%Y-%m-%d') AS `contractStart`,
+		DATE_FORMAT(`contractEnd`,'%Y-%m-%d') AS `contractEnd`,
+		`contractAuto`, `preRate`, `postRate`,
+		`taxName`,
+		`taxPhone`, `taxEmail`, `taxExtTell`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
+		`regDate`,
+		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
+		WHERE `type` = 'M'		
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM

@@ -110,13 +110,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			type: "POST",
 			url: "/admin.member.api",
 			data: adjustData,
-			success: function(data) {
+			success: function(data) { 
+				data = $.parseJSON(data);
 				var success = data.success;
 				var message = data.message;
 				
-				if(success) {
-					console.log(message);
-					//alert(message);					
+				if(success) {					
+					alert(message);					
 				}
 			}
 		});

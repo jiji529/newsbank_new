@@ -105,7 +105,7 @@
 				$(".corp_area").show();
 				break;
 				
-			case 'M': // 언론사
+			case 'M' : case 'Q': case 'W': // 언론사(공통, 사진관리자, 정산관리자)
 				$("#tName").text(tName);
 				$(".media_only").show();
 				$(".corp_area").show();
@@ -144,6 +144,14 @@
 		}
 		
 	}
+	
+	// 정산정보 보기 - 정산매체사 팝업
+	$(document).on("click", ".popup_media_info", function() {
+		var seq = $("#seq").val();		
+		$("#member_seq").val(seq);
+		
+		view_media_manage.submit();
+	});
 </script>
 </head>
 <body>
@@ -207,10 +215,12 @@
 						<tr>
 							<th>회원구분</th>
 							<td>
-								<select name="type" class="inp_txt mtype" style="width: 120px;" >
+								<select name="type" class="inp_txt mtype" style="width: 150px;" >
 									<option value="P" <c:if test="${MemberDTO.type eq 'P'}">selected</c:if>>개인</option>
 									<option value="C" <c:if test="${MemberDTO.type eq 'C'}">selected</c:if>>법인</option>
 									<option value="M" <c:if test="${MemberDTO.type eq 'M'}">selected</c:if>>언론사</option>
+									<option value="Q" <c:if test="${MemberDTO.type eq 'Q'}">selected</c:if>>언론사(사진관리자)</option>
+									<option value="W" <c:if test="${MemberDTO.type eq 'W'}">selected</c:if>>언론사(정산관리자)</option>
 								</select>
 							</td>
 						</tr>
@@ -313,8 +323,6 @@
 										</select>
 									</td>
 								</tr>
-								<!-- 법인, 언론사 둘다 오프라인 결제 시에만 노출  -->
-								<%-- <c:if test="${MemberDTO.deferred eq '2'}"> --%>
 								<tr class="offline_area">
 									<th>계약 기간</th>
 									
@@ -404,21 +412,24 @@
 									<th>세금계산서 담당자 이메일</th>
 									<td><input type="text" name="taxEmail" class="inp_txt" size="50" value="${MemberDTO.taxEmail}" /></td>
 								</tr>
-								<!-- 여기부터 언론사만 노출 -->
+								<!-- 여기부터 언론사, 정산관리자만 노출 -->
 								<c:if test="${MemberDTO.type eq 'M'}">
 								<tr class="media_only">
 									<th>정산 매체</th>
-									<td><select name="admission" class="inp_txt" style="width:180px;">
+									<td>
+										<select name="admission" class="inp_txt" style="width:180px;">
 											<option value="Y" <c:if test="${MemberDTO.admission eq 'Y'}">selected</c:if>>승인</option>
 											<option value="N" <c:if test="${MemberDTO.admission eq 'N'}">selected</c:if>>비승인</option>
-										</select><a href="#" class="btn_input1">정산정보 보기</a></td>
+										</select>
+										
+										<a href="javascript:;" class="btn_input1 popup_media_info">정산정보 보기</a>
+										<input type="hidden" name="seq" id="seq" value="${MemberDTO.seq}"/>
+									</td>
 								</tr>
 								</c:if>
-							<%-- </c:if> --%>
 						</tbody>
 					</table>
 				</div>
-				<%-- </c:if> --%>
 				<div class="btn_area">
 					<a href="javascript:;" id="btnSubmit" class="btn_input2" onclick="member_update()">회원정보 수정</a>
 					<a href="/member.manage" class="btn_input1">취소</a>
@@ -429,6 +440,11 @@
 				<input type="hidden" name="cmd" value="U" />
 				<input type="hidden" name="seq" value="${MemberDTO.seq}" />
 				<input type="hidden" id="type" name="type" value="${MemberDTO.type}" />
+			</form>
+			
+			<!-- 정산정보 보기 : 정산매체사 관리 팝업 -->
+			<form method="post" action="/view.media.manage" name="view_media_manage" target="_blank">
+				<input type="hidden" name="member_seq" id="member_seq"/>
 			</form>
 		</div>
 	</section>

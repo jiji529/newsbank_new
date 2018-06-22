@@ -354,6 +354,8 @@ function search(state) { // 검색
 				if(type == "P") type = "개인";
 				if(type == "C") type = "법인";
 				if(type == "M") type = "언론사";
+				if(type == "Q") type = "언론사<br/>(사진관리자)";
+				if(type == "W") type = "언론사<br/>(정산관리자)";
 				
 				var group = val.group_seq;
 				var groupName = val.groupName;
@@ -454,6 +456,8 @@ function downInternal() {
 									<option value="P">개인</option>
 									<option value="C">법인</option>
 									<option value="M">언론사</option>
+									<option value="Q">언론사(사진관리자)</option>
+									<option value="W">언론사(정산관리자)</option>
 								</select></td>
 						</tr>
 						<tr>

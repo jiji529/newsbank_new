@@ -1,6 +1,7 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -58,6 +59,11 @@ public class MypageAccountInfo extends NewsbankServletBase {
 					// 회원 종류가 해당 옵션(M: 매체사, W: 정산 관리자)이 아닌 경우는, 회원정보 페이지로 이동
 					response.sendRedirect("/info.mypage");
 					return;
+				}
+				
+				if(MemberInfo.getType().equalsIgnoreCase("W")) {
+					// 회원 권한이 정산관리자의 경우는 slave 회원의 정산정보를 가져온다. (아주경제: 정산관리자 특별 계정생성으로 인한 예외처리)
+					MemberInfo = memberDAO.adjustMediaInfo(MemberInfo);
 				}
 				
 				request.setAttribute("MemberInfo", MemberInfo);

@@ -135,9 +135,9 @@
 							계약기간
 						</th>
 						<td>
-							<fmt:parseDate var="startStr" value="${MemberInfo.contractStart}" pattern="yyyy-MM-dd HH:mm:ss" />
+							<fmt:parseDate var="startStr" value="${MemberInfo.contractStart}" pattern="yyyy-MM-dd" />
 							<fmt:formatDate value="${startStr}" var="contractStartYMD" pattern="yyyy-MM-dd"/>
-							<fmt:parseDate var="endStr" value="${MemberInfo.contractEnd}" pattern="yyyy-MM-dd HH:mm:ss" />
+							<fmt:parseDate var="endStr" value="${MemberInfo.contractEnd}" pattern="yyyy-MM-dd" />
 							<fmt:formatDate value="${endStr}" var="contractEndYMD" pattern="yyyy-MM-dd"/>
 							
 							<input id="contractStart" name="contractStart" type="text" size="12" class="inp_txt" value="${contractStartYMD}" maxlength="10" disabled>

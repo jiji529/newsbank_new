@@ -353,24 +353,11 @@ public class AdminMemberAction extends NewsbankServletBase {
 			for(int i=0; i<jsonArray.size(); i++) {
 				JSONObject jsonObject = (JSONObject)jsonArray.get(i);
 				
-				/*
-				System.out.println("compBankName : " + jsonObject.get("compBankName"));
-				System.out.println("compBankAcc : " + jsonObject.get("compBankAcc"));
-				System.out.println("contractStart : " + jsonObject.get("contractStart"));
-				System.out.println("contractEnd : " + jsonObject.get("contractEnd"));
-				System.out.println("preRate : " + jsonObject.get("preRate"));
-				System.out.println("postRate : " + jsonObject.get("postRate"));
-				System.out.println("taxName : " + jsonObject.get("taxName"));
-				System.out.println("taxPhone : " + jsonObject.get("taxPhone"));
-				System.out.println("taxExtTell : " + jsonObject.get("taxExtTell"));
-				System.out.println("taxEmail : " + jsonObject.get("taxEmail"));
-				System.out.println("activate : " + jsonObject.get("activate"));
-				System.out.println("admission : " + jsonObject.get("admission"));
-				System.out.println("media_seq : " + jsonObject.get("media_seq"));
-				System.out.println("===================================\n");
-				*/
-				
 				memberDTO.setType(jsonObject.get("type").toString());
+				
+				if (jsonObject.get("cmd") != null && !jsonObject.get("cmd").toString().equals("")) {
+					cmd = jsonObject.get("cmd").toString(); // api 구분 crud
+				}
 				
 				if (jsonObject.get("compBankName") != null && !jsonObject.get("compBankName").toString().equals("")) {
 					memberDTO.setCompBankName(jsonObject.get("compBankName").toString());
