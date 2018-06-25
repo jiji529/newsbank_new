@@ -91,7 +91,7 @@ public class ListMediaJSON extends NewsbankServletBase {
 				idx++;
 			}
 			// 목록 엑셀 다운로드
-			List<String> headList = Arrays.asList("아이디", "회사/기관명", "이름", "휴대폰번호", "이메일", "사업자등록번호", "정산요율", "콘텐츠 수량(블라인드|전체)",	"서비스 상태", "정산", "제호"); //  테이블 상단 제목
+			List<String> headList = Arrays.asList("아이디", "회사/기관명", "이름", "휴대폰번호", "이메일", "사업자등록번호", "정산요율", "콘텐츠 수량(블라인드 | 전체)",	"서비스 상태", "정산", "제호"); //  테이블 상단 제목
 			List<Integer> columnSize = Arrays.asList(10, 25, 10, 20, 30, 20, 30, 30, 20, 10, 20); //  컬럼별 길이정보
 			List<String> columnList = Arrays.asList("id", "compName", "name", "strPhone", "email", "strCompNum", "strSettlementRate", "contentCnt", "service", "strState", "logo"); // 컬럼명
 			
@@ -103,7 +103,6 @@ public class ListMediaJSON extends NewsbankServletBase {
 			// JSON 목록
 			
 			JSONArray jArray = new JSONArray(); // json 배열
-			List<String> masterIdList = new ArrayList<String>();
 			
 			for(int idx=0; idx<listMember.size(); idx++) {
 				JSONObject arr = new JSONObject(); // json 배열에 들어갈 객체
@@ -128,27 +127,35 @@ public class ListMediaJSON extends NewsbankServletBase {
 				arr.put("logo", listMember.get(idx).get("logo"));
 				
 				
-				if(idx > 0) {
-					int prevSeq = Integer.parseInt(listMember.get(idx-1).get("seq").toString()); // 이전 SEQ
-					int nowSeq = Integer.parseInt(listMember.get(idx).get("seq").toString()); // 현재 SEQ
+				if(idx >= 1) {
+					// 인덱스 1부터 기존에 추가된 항목과 비교 후에 추가해주기				
 					
-					if(prevSeq == nowSeq) { // 현재와 이전 seq가 같으면 현재 masterID를 추가
-						if(listMember.get(idx).get("masterID") != null) {
-							masterIdList.add(listMember.get(idx).get("masterID").toString());
-							arr.put("masterID", masterIdList.toString());
-							jArray.remove(idx-1);
-							listMember.remove(idx-1);
-						}
+					int jArraySize = jArray.size();
+					boolean existFlag = false; // 피정산 매체 존재여부
+					for(int jdx=0; jdx<jArraySize; jdx++) {
+						JSONObject obj = (JSONObject)jArray.get(jdx);
 						
-					}else {
-						masterIdList.clear();
-						if(listMember.get(idx).get("masterID") != null) {
-							masterIdList.add(listMember.get(idx).get("masterID").toString());
+						// jArray에 추가하고자 하는 정산매체의 seq가 포함되어 있는지 확인
+						if(Integer.parseInt(listMember.get(idx).get("seq").toString()) == Integer.parseInt(obj.get("seq").toString())) {
+							// 이미 존재하는 seq를 추가하고자 할 경우,masterID를 합쳐준다.
+							String masterID = obj.get("masterID") + ", " + listMember.get(idx).get("masterID").toString();
+							obj.put("masterID", masterID);
+							existFlag = true;
+							
+						}else {
+							// seq가 다를 경우는 추가해준다.
 							arr.put("masterID", listMember.get(idx).get("masterID"));
-						}
+						}						
 					}
-				}
-				jArray.add(arr);
+					
+					if(!existFlag) { // 중복 seq가 없을 경우만 추가
+						jArray.add(arr);
+					}
+					
+				}else {
+					// (idx == 0) 첫번째 대상은 무조건 추가
+					jArray.add(arr);
+				}							
 			}
 			
 			JSONObject json = new JSONObject();
@@ -173,7 +180,7 @@ public class ListMediaJSON extends NewsbankServletBase {
 		MemberDAO dao = new MemberDAO();
 		content = dao.getContentAmount(option);					
 			
-		String contentCnt = String.valueOf(content.get(0).get("blindCnt")) + "|" + String.valueOf(content.get(0).get("totalCnt"));
+		String contentCnt = String.valueOf(content.get(0).get("blindCnt")) + " | " + String.valueOf(content.get(0).get("totalCnt"));
 		
 		return contentCnt; 
 	}
@@ -234,8 +241,8 @@ public class ListMediaJSON extends NewsbankServletBase {
 	private String strSettlementState(Map<String, Object> object) {
 		String state = "정산";
 		
-		if(object.containsKey("masterID")) {
-			state = "피정산";
+		if(object.containsKey("masterID")) {			
+			state = "피정산(" + object.get("masterID").toString() + ")";
 		}else {
 			state = "정산";
 		}
