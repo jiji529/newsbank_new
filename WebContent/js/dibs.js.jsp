@@ -202,8 +202,7 @@ $(document).on("click", ".sort_del", function() {
 		});
 		
 		$("input:checkbox[name='checkAll']").attr("checked", false);
-		$(".count").text(rest);
-		dibsList();
+		$(".count").text(rest);		
 	}
 	
 });

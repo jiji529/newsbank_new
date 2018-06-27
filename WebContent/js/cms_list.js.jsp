@@ -234,7 +234,7 @@
 <!-- 				console.log(page + " : " + pageCycle + " : " + lastPage + " : " + pageVol + " : " + dataSize + " : " + total); -->
 <!-- 				console.log(pageCycle*10+1 + " : "+(pageCycle*10+10 > lastPage ? lastPage+1 : pageCycle*10+11)); -->
 				for(var i = pageCycle*10+1; i < (pageCycle*10+10 > lastPage ? lastPage+1 : pageCycle*10+11); i++){
-					pagingHtml += "<li class=\""+(page==i ? 'page active' : '')+"\"> <a href=\"javascript:;\" onclick=\"pageMove('"+i+"');\">"+i+"</a> </li> \n";
+					pagingHtml += "<li class=\""+(page==i ? 'page active' : '')+"\"> <a href=\"javascript:void(0);\" onclick=\"pageMove('"+i+"');\">"+i+"</a> </li> \n";
 				}
 				if(page < lastPage){
 					pagingHtml += "<li class=\"next\"> <a href=\"javascript:pageMove('"+(page+1)+"');\"> 다음 페이지 </a> </li> \n";

@@ -305,7 +305,7 @@
 	<input type="hidden" name="bundle" value="20"/>
 </form>
 	
-<form id="dateForm" method="post"  target="dateFrame">
+<form id="dateForm" method="post">
 	<input type="hidden" id="month" name="month" />
 	<input type="hidden" id="year" name="year" />
 </form>

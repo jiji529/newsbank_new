@@ -331,7 +331,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				</tbody>
 				</table>
 			</form>
-			<div class="btn_area"><a href="javascript:;" class="btn_input2" onclick="member_submit()">추가</a><a href="/media.manage" class="btn_input1">취소</a></div>
+			<div class="btn_area"><a href="javascript:void(0);" class="btn_input2" onclick="member_submit()">추가</a><a href="/media.manage" class="btn_input1">취소</a></div>
 		</div>
 	</section>
 </div>

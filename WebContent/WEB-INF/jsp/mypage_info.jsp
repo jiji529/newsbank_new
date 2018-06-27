@@ -165,11 +165,11 @@
 										<input type="text" id="phone2" size="5" class="inp_txt" value="" maxlength="4">
 										<span class=" bar">-</span>
 										<input type="text" id="phone3" size="5" class="inp_txt" value="" maxlength="4" />
-										<a href="javascrpit:;" id="phone_certify" class="btn_input2">인증번호 요청</a>
+										<a href="javascript:void(0);" id="phone_certify" class="btn_input2">인증번호 요청</a>
 										<div class="">
 											<span class="edit_phone_txt">인증번호 입력</span>
 											<input type="text" size="40" id="certify_number" name="CertiNum" class="inp_txt" value="" maxlength="6" />
-											<a href="javascrpit:;" id="certify_submit" class="btn_input1">확인</a>
+											<a href="javascript:void(0);" id="certify_submit" class="btn_input1">확인</a>
 										</div>
 										<p class="txt_message" id="phone_message" style="display: none;">형식이 올바르지 않은 휴대폰 번호입니다.</p>
 										<p class="txt_message" id="certify_message" style="display: none;">인증번호를 다시 확인해주세요.</p>
@@ -265,7 +265,7 @@
 									<td>
 										<div class="my_addr">
 											<input type="text" id="compZipcode" name="compZipcode" class="inp_txt" size="6" value="${MemberInfo.compZipcode}" readonly required />
-											<a href="javascript:;" id="findAddress" class="btn_input1">수정</a>
+											<a href="javascript:void(0);" id="findAddress" class="btn_input1">수정</a>
 										</div>
 										<div class="my_addr">
 											<input type="text" id="compAddress" name="compAddress" class="inp_txt" size="55" value="${MemberInfo.compAddress}" readonly required />
@@ -301,7 +301,7 @@
 						</table>
 					</c:if>
 					<div class="btn_area">
-						<a href="javascript:;" id="btnSubmit" class="btn_input2">수정</a>
+						<a href="javascript:void(0);" id="btnSubmit" class="btn_input2">수정</a>
 						<a href="javascript:location.reload();" class="btn_input1">취소</a>
 					</div>
 					<input type="hidden" name="cmd" value="U" />

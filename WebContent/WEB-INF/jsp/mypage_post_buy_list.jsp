@@ -210,7 +210,7 @@
 	</section>
 	<%@include file="footer.jsp"%>
 </div>
-<form id="dateForm" method="post"  target="dateFrame">
+<form id="dateForm" method="post">
 	<input type="hidden" id="month" name="month" />
 	<input type="hidden" id="year" name="year" />
 </form>
