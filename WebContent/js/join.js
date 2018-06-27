@@ -559,7 +559,7 @@ $(document).ready(function() {
 			check = check && validCompNum();
 			check = check && validCompTel();
 			check = check && validCompDoc();
-			check = check && validUploadFile();
+			//check = check && validUploadFile();
 
 			if ($(this).find("[name=type]").val() == "M") {
 

@@ -65,13 +65,12 @@ public class UploadService extends ServiceBase {
 
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = null;
 		if (session.getAttribute("MemberInfo") != null) {
 			MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		}
-		
+
 		// JSONObject json = new JSONObject();
 		boolean result = false;
 		String message = ""; // 결과 메시지
@@ -93,9 +92,9 @@ public class UploadService extends ServiceBase {
 					savePath = PATH_COMP_DOC_BASE;
 					break;
 				case "bank":
-					savePath = PATH_COMP_BANK_BASE;  
+					savePath = PATH_COMP_BANK_BASE;
 					break;
-					
+
 				case "logo":
 					savePath = PATH_LOGO_BASE;
 					saveFileNameType = "seq";
@@ -151,13 +150,19 @@ public class UploadService extends ServiceBase {
 						result = true;
 						message = "파일 업로드 성공";
 						fileFullPath = savePath + "/" + fileName;
-
-						String seq = multi.getParameter("seq")!=null?multi.getParameter("seq"):Integer.toString(MemberInfo.getSeq()); // seq 얻기
-						String page = multi.getParameter("page"); // 접근 page 얻기
+						String seq =null;
+						try {
+							seq = multi.getParameter("seq") != null ? multi.getParameter("seq")
+									: Integer.toString(MemberInfo.getSeq()); // seq 얻기
+						}catch(Exception e) {
+							
+						}
+						
+						// String page = multi.getParameter("page"); // 접근 page 얻기
 
 						if (seq != null) {
 							request.setAttribute("seq", seq);
-							request.setAttribute("page", page);
+							// request.setAttribute("page", page);
 
 							// 첨부파일 업로트 파일 규칙 확인 후 주석해제하기
 							// 로고 파일은 파일명으로 SEQ
@@ -178,34 +183,34 @@ public class UploadService extends ServiceBase {
 									}
 									fileName = seq + "." + fileExt;
 								}
-								fileFullPath = savePath +"/" +  fileName;
+								fileFullPath = savePath + "/" + fileName;
 								File newFile = new File(fileFullPath);
-								 if(newFile.exists()){
-									 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-						                System.out.println(newFile.getName() + " 파일을 삭제합니다");
-						                File tmpFile = new File(savePath +"/" + timestamp.getTime()+"_"+ fileName);
-						                newFile.renameTo(tmpFile);
-					                	newFile.delete();
-						            }
-								
+								if (newFile.exists()) {
+									Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+									System.out.println(newFile.getName() + " 파일을 삭제합니다");
+									File tmpFile = new File(savePath + "/" + timestamp.getTime() + "_" + fileName);
+									newFile.renameTo(tmpFile);
+									newFile.delete();
+								}
+
 								byte[] buf = new byte[1024];
 								FileInputStream fin = null;
 								FileOutputStream fout = null;
-								 
-								if(!oldFile.renameTo(newFile)){
-									//renameTo가 실패했을때 강제로 파일을 복사하고 기존 파일을 삭제 출처: http://fruitdev.tistory.com/49
-								    buf = new byte[1024];
-								    fin = new FileInputStream(oldFile);
-								    fout = new FileOutputStream(newFile);
-								 
-								    int read = 0;
-								    while((read=fin.read(buf,0,buf.length))!=-1){
-								        fout.write(buf, 0, read);
-								    }
-								     
-								    fin.close();
-								    fout.close();
-								    oldFile.delete();
+
+								if (!oldFile.renameTo(newFile)) {
+									// renameTo가 실패했을때 강제로 파일을 복사하고 기존 파일을 삭제 출처: http://fruitdev.tistory.com/49
+									buf = new byte[1024];
+									fin = new FileInputStream(oldFile);
+									fout = new FileOutputStream(newFile);
+
+									int read = 0;
+									while ((read = fin.read(buf, 0, buf.length)) != -1) {
+										fout.write(buf, 0, read);
+									}
+
+									fin.close();
+									fout.close();
+									oldFile.delete();
 								}
 								break;
 							default:
