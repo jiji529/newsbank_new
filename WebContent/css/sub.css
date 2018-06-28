@@ -33,7 +33,7 @@
 .filters .folder_edit{ margin:15px auto 0; cursor:default }
 .filters .folder_edit a{display: block; height: 30px; line-height: 30px; border:1px solid #dbdbdb; background-color: #f6f7f9; color: #333; background:#fff; padding:0 20px; text-align:center;}
 
-.filters .filter_rt{ float:right; right:0; position:absolute; height:50px; padding:13px 0; line-height:24px; font-size:14px; color:#666;}
+.filters .filter_rt{ float:right; right:40px; position:absolute; height:50px; padding:13px 0; line-height:24px; font-size:14px; color:#666;}
 .filters .filter_rt .result{float:left; margin-right:10px;}
 .filters .filter_rt .result .count{ color:#f79320;}
 .filters .filter_rt .paging{float:left; margin-right:15px;}
