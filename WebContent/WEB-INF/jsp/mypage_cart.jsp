@@ -361,7 +361,7 @@
 											</ul>
 										</c:forEach>
 										<c:if test="${CartDTO.photoDTO.withdraw eq 0 && CartDTO.photoDTO.admission eq 'Y' && CartDTO.photoDTO.activate eq 1 && CartDTO.photoDTO.saleState eq 1}">
-											<a href= "main.html" onClick="window.open('/cart.popOption?uciCode=${CartDTO.uciCode}','new','resizable=no width=420 height=600');return false">옵션 변경/추가</a>
+											<a href= "main.html" onClick="window.open('/cart.popOption?uciCode=${CartDTO.uciCode}','new','toolbar=no, resizable=no, width=420, height=600, directories=no, status=no, scrollbars=no');return false">옵션 변경/추가</a>
 										</c:if>										
 									</div>
 								</div>
