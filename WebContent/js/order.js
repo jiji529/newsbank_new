@@ -9,7 +9,7 @@ var LGD_window_type = 'iframe';
  * 수정불가
  */
 function launchCrossPlatform(platform) {
-	if(platform!=null){
+	if(platform==null){
 		platform = 'service';
 	}
 	// lgdwin = openXpay(document.getElementById('LGD_PAYINFO'), 'service',
@@ -68,7 +68,6 @@ $(document).ready(function() {
 				dataType : "json",
 				success : function(data) {
 					if (data.success) {
-						console.log(data.data);
 						$('#LGD_PAYINFO').remove();
 						var form = $('<form></form>');
 						form.attr('id', 'LGD_PAYINFO');
