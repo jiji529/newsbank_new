@@ -40,7 +40,7 @@ if(errMsg != null && errMsg.length() > 0) {
 	
 	// 로그인 페이지 이동시 매개변수 넘기기
 	$(document).ready(function() {
-		var param = "${param}".replace(/, /gi, '&').slice(0, -1).slice(1);
+		var param = '${param}'.replace(/, /gi, '&').slice(0, -1).slice(1);
 		$('a[href="/login"]').on("click", function(e) {
 			e.preventDefault();
 			var form = document.createElement('form');

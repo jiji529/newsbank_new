@@ -8,10 +8,13 @@ var LGD_window_type = 'iframe';
 /*
  * 수정불가
  */
-function launchCrossPlatform() {
+function launchCrossPlatform(platform) {
+	if(platform!=null){
+		platform = 'service';
+	}
 	// lgdwin = openXpay(document.getElementById('LGD_PAYINFO'), 'service',
 	// LGD_window_type, null, "", "");
-	lgdwin = openXpay(document.getElementById('LGD_PAYINFO'), 'test', LGD_window_type, null, "", "");
+	lgdwin = openXpay(document.getElementById('LGD_PAYINFO'), platform, LGD_window_type, null, "", "");
 }
 /*
  * FORM 명만 수정 가능
@@ -65,6 +68,7 @@ $(document).ready(function() {
 				dataType : "json",
 				success : function(data) {
 					if (data.success) {
+						console.log(data.data);
 						$('#LGD_PAYINFO').remove();
 						var form = $('<form></form>');
 						form.attr('id', 'LGD_PAYINFO');
@@ -85,7 +89,7 @@ $(document).ready(function() {
 						});
 
 						// form.submit();
-						launchCrossPlatform();
+						launchCrossPlatform(data.data.CST_PLATFORM);
 					}
 
 				},

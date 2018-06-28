@@ -70,7 +70,10 @@ public class PaymentAction extends NewsbankServletBase {
 			String realPath = request.getSession().getServletContext().getRealPath("/"); // request.getRealPath("/");
 			String configPath = realPath + "lgdacom"; // LG텔레콤에서 제공한 환경파일("/conf/lgdacom.conf") 위치 지정.
 
-			String CST_PLATFORM = "test";// LG유플러스 결제서비스 선택(test:테스트, service:서비스)
+			String CST_PLATFORM = "service";// LG유플러스 결제서비스 선택(test:테스트, service:서비스)
+			if(MemberInfo.getId().equalsIgnoreCase("dahami_test")) {
+				CST_PLATFORM = "test";
+			}
 			String CST_MID = "dahaminewsbank"; // LG유플러스로 부터 발급받으신 상점아이디를 입력하세요.
 			String LGD_MID = ("test".equals(CST_PLATFORM.trim()) ? "t" : "") + CST_MID; // 테스트 아이디는 't'를 제외하고 입력하세요.
 																						// 상점아이디(자동생성)
