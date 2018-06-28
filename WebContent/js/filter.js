@@ -1,8 +1,4 @@
  jQuery(document).ready(function(){
-  $(" ").each(function(){
-   $(this).parent(".filter_list").css("width", $(this).parent(".filter_list").parent(".filter_title").width()+60);
-   $(this).css("width", $(this).parent(".filter_list").parent(".filter_title").width()+60);
-  });
 //  var calOpenF = false;
   $(".filter_title")
   	.click(function(){
@@ -27,10 +23,6 @@
  
  
  jQuery(document).ready(function(){
-  $(" ").each(function(){
-   $(this).parent(".folder_item").css("width", $(this).parent(".folder_item").parent(".sort_folder").width()+60);
-   $(this).css("width", $(this).parent(".folder_item").parent(".sort_folder").width()+60);
-  });
   $(".sort_folder").click(function(){
    $(this).children(".folder_item").stop().slideDown("fast");
   }).mouseleave(function(){
@@ -39,10 +31,6 @@
  });
  
  jQuery(document).ready(function(){
-  $(" ").each(function(){
-   $(this).parent(".navi_select").css("width", $(this).parent(".navi_select").parent(".navi_cate").width()+60);
-   $(this).css("width", $(this).parent(".navi_select").parent(".navi_cate").width()+60);
-  });
   $(".navi_cate").click(function(){
    $(this).children(".navi_select").stop().slideDown("fast");
   }).mouseleave(function(){
