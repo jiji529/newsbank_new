@@ -153,7 +153,10 @@ public class PurchaseJSON extends NewsbankServletBase {
 			String LGD_OID = LGD_BUYERID + "_" + LGD_TIMESTAMP; // 주문번호(상점정의 유니크한 주문번호를 입력하세요)
 			String LGD_PRODUCTINFO = LGD_BUYER + "(" + LGD_BUYERID + ")_" + LGD_AMOUNT + "_구매"; // 상품명
 
-			String CST_PLATFORM = "test";// LG유플러스 결제서비스 선택(test:테스트, service:서비스)
+			String CST_PLATFORM = "service";// LG유플러스 결제서비스 선택(test:테스트, service:서비스)
+			if(MemberInfo.getId().equalsIgnoreCase("dahami_test")) {
+				CST_PLATFORM = "test";
+			}
 			String CST_MID = "dahaminewsbank"; // LG유플러스로 부터 발급받으신 상점아이디를 입력하세요.
 			String LGD_MID = ("test".equals(CST_PLATFORM.trim()) ? "t" : "") + CST_MID; // 테스트 아이디는 't'를 제외하고 입력하세요.
 			String LGD_MERTKEY = "49bd4da3b4414d8396a591a1c9565bbd";// 상점MertKey(mertkey는 상점관리자 -> 계약정보 -> 상점정보관리에서
