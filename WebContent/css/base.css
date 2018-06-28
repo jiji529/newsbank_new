@@ -53,7 +53,7 @@ nav.gnb_dark .gnb .gnb_left li.on a{color:#f79320;}
 .admin nav .gnb_right li a{font-size:13px;}
 	
 .fixed .wrap{ padding-top: 140px; }
-.fixed_layer{position:fixed; top:0; z-index:50; float:left; width:100%; min-width:1240px}
+.fixed_layer{position:fixed; top:0; z-index:50; float:left; width:100%; min-width:1360px}
 
 
 .gnb_srch{ float:right; width:340px; height:80px; position:relative; padding:18px 0; margin-right:20px;}
