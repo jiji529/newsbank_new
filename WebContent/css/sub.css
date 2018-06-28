@@ -19,7 +19,7 @@
 .filters li.filter_title.filter_ico{ text-indent:-9999px; background:url(../images/sub/if_filter.svg) 20px 18px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid;}
 .filters li.filter_title.folder_ico{ text-indent:-9999px; background:url(../images/sub/if_folder.svg) 20px 14px no-repeat; width:40px; margin-left:40px; border-left:1px #e5e5e5 solid; background-size:22px 20px;}
 .filters li.filter_title.filter_ico:after,.filters li.filter_title.folder_ico:after{ content: ''; display:none;}
-.filters li .filter_list{display:none;  background:#f5f6f8; z-index:2000; position:absolute; border:1px #e5e5e5 solid; margin-left:-20px; margin-top:-2px;}
+.filters li .filter_list{display:none;  background:#f5f6f8; z-index:2000; position:fixed; border:1px #e5e5e5 solid; margin-left:-20px; margin-top:-2px;}
 .filters li ul{overflow:auto; max-height:600px; width:200px;}
 .filters li .filter_list li{float:left; width:100%; padding:0 20px; border-bottom:#e5e5e5 1px solid; height:45px; text-align:left; font-size:14px; line-height:45px; overflow:hidden;white-space: nowrap;word-wrap: normal; text-overflow:ellipsis;}
 .filters li .filter_list li.choice{height:165px;}
