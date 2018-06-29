@@ -224,7 +224,8 @@ function go_photoView(uciCode) {
 
 /** 찜관리-폴더이동 */
 function change_folder(bookmark_seq, bookmark_name) {
-	var chk_total = $("#wish_list2 input:checkbox:checked").length;
+	var total = $(".count").text(); // 기존의 전체 갯수
+	var chk_total = $("#wish_list2 input:checkbox:checked").length; // 선택 갯수
 	var filter_title = $(".filter_list").find("[selected=selected]").text();
 	var uciCode = new Array();
 				
@@ -243,7 +244,12 @@ function change_folder(bookmark_seq, bookmark_name) {
 		
 		dibsUpdate(uciCode, bookmark_seq);
 		$("input:checkbox[name='checkAll']").attr("checked", false);
-		var count = $("#wish_list2 .thumb").length;
+		
+		if(filter_title == "찜한 사진 전체") { // 찜한 사진 전체 대상일 때는 갯수변화 X
+			var count = total;
+		}else {
+			var count = total - chk_total;	
+		}
 		$(".count").text(count);
 		
 		alert("선택하신 사진이 " + bookmark_name + "폴더로 이동되었습니다.");

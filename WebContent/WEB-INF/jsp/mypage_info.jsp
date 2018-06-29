@@ -215,7 +215,7 @@
 										<c:if test="${!empty MemberInfo.compDocPath}">
 											<a href="/doc.down.photo?type=file&seq=${MemberInfo.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>	
 										</c:if> 
-										
+										<p class="txt_message" id="compNum_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
 									</td>
 								</tr>
 								<tr>
