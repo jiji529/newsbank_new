@@ -31,6 +31,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/filter.js"></script>
+<script src="js/admin.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
 <script>
 	
@@ -53,10 +54,10 @@
 			}
 			
 			$('input[type=file]').bind('change', function() {
-				var page = (location.pathname).split(".")[1];
-				var seq = $("input[name='seq']").val(); console.log("seq : " + seq);
-				var uType = $(this).attr("name");				
-				var tmpFile = $(this)[0].files[0];
+				var page = (location.pathname).split(".")[1]; 
+				var seq = $("input[name='seq']").val();
+				var uType = $(this).attr("name"); 
+				var tmpFile = $(this)[0].files[0]; 
 				var sizeLimit = 1024 * 1024 * 15;
 				if (tmpFile.size > sizeLimit) {
 					alert("파일 용량이 15MB를 초과했습니다");

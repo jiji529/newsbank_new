@@ -276,6 +276,9 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		$("input[name='seq']").val(seq);
 	});
 	
+	function reset_page() { // 시작 페이지 초기화
+		$("#startgo").val(1);
+	}
 	
 	function search(state) {
 		var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
@@ -544,7 +547,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					<a href="javascript:void(0)" onclick="check_approve()">선택 활성화</a>
 					</div>
 				<div class="ad_result_btn_area fr">
-					<select id="sel_pageVol" onchange="search()">
+					<select id="sel_pageVol" onchange="reset_page(); search();">
 						<option value="20">20개</option>
 						<option value="50">50개</option>
 						<option value="100">100개</option>

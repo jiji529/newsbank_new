@@ -316,6 +316,10 @@ function makePhoneNumber(phoneNumber) { // 휴대폰 번호로 표현
 	return phoneNumber.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
 }
 
+function reset_page() { // 시작 페이지 초기화
+	$("#startgo").val(1);
+}
+
 function search(state) { // 검색
 	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
 	var type = $("#sel_type option:selected").attr("value"); // 회원구분
@@ -337,6 +341,8 @@ function search(state) { // 검색
 	
 	var html = "";
 	$("#mtBody").empty();
+	
+	console.log(searchParam);
 	
 	$.ajax({
 		type: "POST",
@@ -488,7 +494,7 @@ function downInternal() {
 					<a href="javascript:void(0)" class="bk" onclick="drop_out()">탈퇴처리</a>
 				</div>
 				<div class="ad_result_btn_area fr">
-					<select id="sel_pageVol" onchange="search()">
+					<select id="sel_pageVol" onchange="reset_page(); search();">
 						<option value="20">20개</option>
 						<option value="50">50개</option>
 						<option value="100">100개</option>

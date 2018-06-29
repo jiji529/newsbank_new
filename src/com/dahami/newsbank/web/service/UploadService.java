@@ -151,9 +151,12 @@ public class UploadService extends ServiceBase {
 						message = "파일 업로드 성공";
 						fileFullPath = savePath + "/" + fileName;
 						String seq =null;
+						String page = null;
 						try {
 							seq = multi.getParameter("seq") != null ? multi.getParameter("seq")
 									: Integer.toString(MemberInfo.getSeq()); // seq 얻기
+							page = multi.getParameter("page") != null ? multi.getParameter("page")
+									: null; // page 얻기
 						}catch(Exception e) {
 							
 						}
@@ -216,6 +219,10 @@ public class UploadService extends ServiceBase {
 							default:
 								break;
 							}
+						}
+						
+						if(page != null) {
+							request.setAttribute("page", page);
 						}
 
 					} // else

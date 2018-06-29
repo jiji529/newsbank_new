@@ -214,7 +214,7 @@
 								<div class="pop_noti_tit"> ${board.title} </div>
 								<div class="pop_noti_txt" style="overflow:scroll;">
 									<c:if test="${!empty board.fileName}">
-										<img src="<%=IMG_SERVER_URL_PREFIX%>/notice.down.photo?seq=${board.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/>
+										<img src="<%=IMG_SERVER_URL_PREFIX%>/notice.down.photo?seq=${board.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"/> <br/>
 									</c:if>
 									${fn:replace(board.description, LF, BR)}	
 								</div>
