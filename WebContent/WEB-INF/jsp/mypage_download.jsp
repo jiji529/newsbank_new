@@ -288,7 +288,6 @@
 				<c:if test="${fn:length(downList) > 0}">
 					<a href="#" class="btn_input2">구매하기</a>
 				</c:if>
-				<!-- <a href="main.html" onclick="window.open('/download.popOption','new','resizable=no width=420 height=600');return false" class="btn_input2">구매하기</a> -->
 			</div>
 		</section>
 	</section>

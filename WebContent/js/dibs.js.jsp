@@ -272,7 +272,6 @@ function dibsUpdate(uciCode, bookmark_seq) {
 
 /** 단일 장바구니 추가 */
 function insertBasket(uciCode) {
-	//window.open('/cart.popOption?page=dibs.myPage&uciCode=' + uciCode,'new','resizable=no width=420 height=600');
 	$("#page").val("dibs.myPage");
 	$("#uciCode").val(uciCode); // 선택 uciCode 배열로 전달
 	

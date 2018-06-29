@@ -122,7 +122,7 @@
 								<li value="${bookmark.seq}">${bookmark.bookName}</li>
 							</c:forEach>
 							<li class="folder_edit">
-								<a href="/dibs.popOption" onclick="window.open('/dibs.popOption','new','resizable=no width=420 height=600');return false">폴더 관리</a>
+								<a href="/dibs.popOption" onclick="window.open('/dibs.popOption','new','toolbar=no, resizable=no, width=420, height=600, directories=no, status=no, scrollbars=no');return false">폴더 관리</a>
 							</li>
 						</ul>
 					</li>
@@ -176,7 +176,7 @@
 									
 								</c:forEach>
 							</ul>
-							<div class="box_add"><a onclick="window.open('/dibs.popOption','new','resizable=no width=420 height=600');return false">새 폴더 추가</a>
+							<div class="box_add"><a onclick="window.open('/dibs.popOption','new','toolbar=no, resizable=no, width=420, height=600, directories=no, status=no, scrollbars=no');return false">새 폴더 추가</a>
 								<form style="display: ;"><!-- 바로윗줄 추가버튼 눌렀을때 display block-->
 									<fieldset>
 										<legend>폴더 추가 폼</legend>
