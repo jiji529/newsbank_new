@@ -128,7 +128,7 @@
 .mypage .filters li.filter_title{max-width:150px}
 .mypage .filters li.filter_title:after{right:15px;}}
 */
-.mypage .filters.sml{position:relative;}
+.mypage .filters{position:relative;}
 .mypage .filters .filter_rt{right:10px;}
 
 .mypage .btn_sort{float:left; width:100%; margin:20px 0; font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif; letter-spacing:-1px; }
