@@ -128,7 +128,8 @@
 .mypage .filters li.filter_title{max-width:150px}
 .mypage .filters li.filter_title:after{right:15px;}}
 */
-.mypage .filters .filter_rt{margin-right:10px;}
+.mypage .filters.sml{position:relative;}
+.mypage .filters .filter_rt{right:10px;}
 
 .mypage .btn_sort{float:left; width:100%; margin:20px 0; font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif; letter-spacing:-1px; }
 .mypage .btn_sort span.task_check{float:left; border:1px #e2e2e2 solid; background:#f8f8f8; width:28px; height:28px;cursor:pointer;}
@@ -220,7 +221,7 @@
 .mypage .view .view_lt .img_info_area.area2 dl{grid-template-columns:18% 30% 15% 34%;-ms-grid-columns:18% 30% 15% 34%;}
 */
 .mypage .view .view_rt{ padding-top:25px; padding-left:20px; }
-.mypage .view .view_rt .btn_down a{float:left; width:100%; background:#f79320; color:#fff;display:block;text-align:center;height:50px; line-height:50px; font-weight:600; margin-bottom:30px;}
+.mypage .view .view_rt .btn_down a{float:left; width:100%; background:#f79320; color:#fff;display:block;text-align:center;height:50px; line-height:50px; font-weight:600; margin-bottom:30px; cursor:pointer;}
 .mypage .view .view_rt .cms_rt{ float:left; width:100%; }
 .mypage .view .view_rt .cms_rt .info_tit {float:left; width:100%; margin:0 0 15px; font-size:15px; color:#f79320; }
 .mypage .view .view_rt .cms_rt .cms_table1{width:100%; border-top:1px #dfdfdf solid; font-size:13px; color:#333;}
