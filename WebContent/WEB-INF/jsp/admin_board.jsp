@@ -124,12 +124,15 @@
 	}
 	
 	function insert_board() { // 신규 등록
+		$("#seq").val("");
 		view_form.submit();
 	}
 	
 	function resort() { //목록 재정렬
+		var total = $(".noti tbody tr").length;
 		$(".noti tbody tr").each(function(index) {
-			$(this).find("td:eq(1)").text(index + 1);			
+			var idx = total-index;
+			$(this).find("td:eq(1)").text(idx);			
 		});
 	}
 </script>
@@ -186,7 +189,7 @@
 											<label for="check${status.index + 1}">선택</label>
 										</div></td>
 									<td>${fn:length(boardList) - status.index}</td>
-									<td><span onclick="popup_open(${status.index + 1})"><a href="#none">${board.title}</a></span></td>
+									<td><span onclick="popup_open(${status.index + 1})"><a href="javascript:void(0)">${board.title}</a></span></td>
 									<fmt:parseDate value="${board.regDate}" var="noti_regDate" pattern="yyyy-MM-dd"/>
 									<td><fmt:formatDate value="${noti_regDate}" pattern="yyyy-MM-dd"/></td>
 									<%-- <td><a href="view.board.manage?seq=${board.seq}" class="list_btn">수정</a></td> --%>

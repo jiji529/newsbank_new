@@ -31,11 +31,21 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/filter.js"></script>
-<script src="js/admin.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
 <script>
 	
 	$(document).ready(function() {
+		
+		// side bar 메뉴 class on 
+		$(".lnb [href]").each(function() {
+			var lng_path = (this.pathname).substr(1, (this.pathname).length);
+			var location_path = (window.location.pathname).substr(1, (window.location.pathname).length);
+			
+			if (location_path.match(lng_path)) {
+				$(this).parent().addClass("on");
+			} 
+		});
+		
 		//첨부파일 업로드
 		$(function() {
 
@@ -121,7 +131,6 @@
 		var description = $("textarea[name='desc']").val();
 		//description = description.replace(/(?:\r\n|\r|\n)/g, '<br />'); // 줄바꿈 태그 추가
 		var param = "";
-		console.log(description);
 		if(seq == "") {
 			param = "action=insertNotice";
 		} else {

@@ -23,6 +23,17 @@ $(document).on("click","#btn_del",function() {
 	//console.log(param);
 	$(this).closest("tr").remove();
 	
+	var uciCode = $(this).closest("tr").find("td:eq(0)").text();
+	var rmUciCodeList = $("#rmUciCodeList").val();
+	if(rmUciCodeList.length == 0) {
+		rmUciCodeList = uciCode;
+	}else {
+		rmUciCodeList += "," + uciCode;
+	}
+	
+	$("#rmUciCodeList").val(rmUciCodeList); // 삭제 대상 uciCode 목록
+	
+	
 	$.ajax({
 		type: "POST",
 		dataType: "json",
@@ -131,14 +142,13 @@ $(document).on("click", "#btn_complete", function() {
 	var delArr = array_diff(existList, editList); // 삭제될 대상
 	var insArr = array_diff(editList, existList); // 추가될 대상
 	
-	
 	var param = {
 		"delArr" : delArr
 		, "insArr" : insArr
 		, "tabName" : "selected"
 		, "cmd" : "U"
 	};
-	//console.log(param);
+	console.log(param);
 	
 	jQuery.ajaxSettings.traditional = true; // 배열 직렬화전달
 	
@@ -164,27 +174,26 @@ $(document).on("click", "#btn_save", function() {
 	existList = existList.replace("[", "");
 	existList = existList.replace("]", "");
 	existList = existList.split(", ");
-	//console.log("기존 리스트 : " + existList);
 	
-	// 편진된 리스트
+	// 편집된 리스트
 	var editList = [];
 	$("tbody tr").each(function(index){
 		var uciCode = $(this).find("td:first").text();
 		editList.push(uciCode);
 	});
-	//console.log("편집 리스트 : " + editList);
 	
-	var delArr = array_diff(existList, editList); // 삭제될 대상
-	//console.log("삭제 리스트 : " + delArr);
-	
+	var rmUciCodeList = $("#rmUciCodeList").val().split(","); // 삭제할 리스트
+	var insArr = array_diff(editList, existList); // 추가될 대상	
 	var tabName = $(".tabs li").find("a.active").attr("value");
 	
 	var param = {
-		"delArr" : delArr
+		"delArr" : rmUciCodeList
+		, "insArr" : insArr
 		, "tabName" : tabName
 		, "cmd" : "U"
-	};
-	console.log(param);
+	};	
+	
+	//console.log(param);
 	
 	jQuery.ajaxSettings.traditional = true; // 배열 직렬화전달
 	

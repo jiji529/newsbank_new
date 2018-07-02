@@ -154,7 +154,7 @@
 			<h3>다운로드 내역</h3>
 			<div class="cms_search"> 
 				<c:if test="${MemberInfo.group_seq != 0}">
-					<span class="mess">※고객님과 같은 그룹으로 묶인 계정에서 다운로드 받은 내역이 모두 공유됩니다.</span>
+					<span class="mess">※ 다운로드 시일이 오래 된 사진을 이용하시려는 경우, 사진이 판매중지 상태가 아닌지 반드시 확인 부탁드립니다.</span>
 				</c:if>
 				
 				<select onchange="select_year('/download.mypage')" id="selectYear">

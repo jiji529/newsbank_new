@@ -117,6 +117,7 @@
 				</div>
 				
 				<input type="hidden" id="uciCodeList" value="${uciCodeList}"/>
+				<input type="hidden" id="rmUciCodeList" />
 				<input type="hidden" id="delCnt" value="7"/>
 				<div id="photo_area"> 
 					<c:forEach items="${photoList}" var="photo">						
