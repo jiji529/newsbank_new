@@ -205,7 +205,7 @@
 		}
 		
 		if(disapprove_cnt > 0) {
-			var text = "정산 승인 : " + comma(disapprove_price) + "원 /" + comma(disapprove_cnt) + "건";
+			var text = "구매 반려 : " + comma(disapprove_price) + "원 /" + comma(disapprove_cnt) + "건";
 			result.push(text);
 		}
 		

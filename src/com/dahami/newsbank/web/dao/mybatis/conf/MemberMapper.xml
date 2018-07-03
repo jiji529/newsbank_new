@@ -278,7 +278,6 @@
 		WHERE `type` = 'M'
 		<!-- AND `compName`!=''
 		AND `compName` -->
-		is not null
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM
