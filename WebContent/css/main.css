@@ -3,7 +3,7 @@
 
 .main{ }
 .main .top{ height: calc(60vh);min-height: 400px;position: relative;z-index: 10; width: 100%; display: table; text-align: center; margin: 0 0 20px;}
-.main .top .overlay{position: absolute; left: 0; right: 0; top: 0; bottom: 0; background-color: rgba(0,0,0,0.25); z-index: 3; }
+.main .top .overlay{position: absolute; left: 0; right: 0; top: 0; bottom: 0; background-color: rgba(0,0,0,0.35); z-index: 3; }
 .main .top .main_bg{position: absolute; top: 0; left: 0; right: 0; bottom: 0; 	background:url(../images/bg_main.jpg) center no-repeat; background-size: cover;  }
 .main .main_tit{ max-width: 900px; margin: 0 auto; display: table-cell; vertical-align: middle; position:relative; z-index:10; padding-top:20px; }
 .main .main_tit h2{ font-size: 45px; text-align: center; padding: 25px 0; margin: 0; color: #fff; }
