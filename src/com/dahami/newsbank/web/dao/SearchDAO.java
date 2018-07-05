@@ -365,39 +365,16 @@ public class SearchDAO extends DAOBase {
 			
 			StringBuffer qBuf = new StringBuffer();
 			if(photoId.length() > 0) {
-				Map<String, Object> oldKeyMap = new PhotoDAO().getNewUciCode(photoId);
-				if(oldKeyMap != null) {
-					uciCode = (String) oldKeyMap.get("revUci");
-					logger.debug("Key: " + uciCode + " (" + photoId + ")");
-					qBuf.append("uciCode:").append(uciCode);
-				}
-				else {
-					return null;
-				}
+				logger.debug("photoId: " + photoId);
+				qBuf.append("_query_:\"{!edismax q.op=AND qf='uciCode compCode, oldCode'}")
+					.append(normalizeKeywordStr(photoId))
+					.append("\"");
 			}
 			else {
 				logger.debug("keyword: " + keyword);
-				qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode'}")
-					.append(keyword)
+				qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode, oldCode'}")
+					.append(normalizeKeywordStr(keyword))
 					.append("\"");
-				
-				if(keyword.length() == 10) {
-					String tmpKeyword = keyword.toLowerCase();
-					char startCh = tmpKeyword.charAt(0);
-					if(startCh == 'm'
-							|| startCh == 's'
-							|| startCh == 'c'
-							|| startCh == 'p') {
-						try {
-							Long.parseLong(tmpKeyword.substring(1));
-							qBuf.insert(0, "(").append(") OR (_query_:\"{!edismax q.op=AND qf=uciCode}")
-								.append(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)
-								.append(keyword)
-								.append("\")");
-						}catch(Exception e) {
-						}
-					}
-				}
 			}
 			query.setQuery(qBuf.toString());
 			
@@ -482,6 +459,21 @@ public class SearchDAO extends DAOBase {
 		}
 		return query;
 	}
+	
+	private String normalizeKeywordStr(String keyword) {
+		StringBuffer kwBuf = new StringBuffer();
+		for(String curKw : keyword.trim().split("\\p{Space}+")) {
+			if(curKw.startsWith(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)) {
+				curKw = curKw.substring(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI.length());
+			}
+			if(kwBuf.length() > 0) {
+				kwBuf.append(" ");
+			}
+			kwBuf.append(curKw);
+		}
+		return kwBuf.toString();
+	}
+		
 	
 	private void setDuration(String duration, String field, SolrQuery query) {
 		if(duration != null && duration.trim().length() > 0) {

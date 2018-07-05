@@ -26,12 +26,6 @@
 			WHERE uciCode = #{uciCode}
 	</update>
     
-    <!-- 구 데이터 키 맵정보 읽기 -->
-    <select id="selNewUciCode" parameterType="string" resultType="java.util.Map">
-    	select * from codeMap
-    		where oriUci = #{value} or dateCmsCode = #{value}
-    </select>
-    
     <update id="updateSaleState" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 	    UPDATE photo SET
 	    	saleStat = #{saleState},

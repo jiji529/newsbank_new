@@ -45,30 +45,6 @@ public class PhotoDAO extends DAOBase {
 	}
 	
 	/**
-	 * @methodName  : getNewUciCode
-	 * @author      : JEON,HYUNGGUK
-	 * @date        : 2018. 6. 12. 오후 1:55:25
-	 * @methodCommet: 구 서비스 키를 사용해서 신 사진키를 얻어옴
-	 * @param oldCode
-	 * @return 
-	 * @returnType  : Map<String,Object>
-	 */
-	public Map<String, Object> getNewUciCode(String oldCode) {
-		SqlSession session = null;
-		
-		try {
-			session = sf.getSession();
-			return session.selectOne("Photo.selNewUciCode", oldCode);
-		} catch (Exception e) {
-			logger.warn("", e);
-		} finally {
-			try {session.commit();} catch (Exception e) {}
-			try {session.close();} catch (Exception e) {}
-		}
-		return null;
-	}
-	
-	/**
 	 * @methodName  : update
 	 * @author      : HOYADEV
 	 * @date        : 2017. 10. 19. 오전 08:54:35
