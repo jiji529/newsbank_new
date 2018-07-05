@@ -43,6 +43,27 @@ public abstract class NewsbankServletBase extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		
+		String browser = request.getHeader("User-Agent");
+		// Explorer 10 버전 미만의 경우, 안내 페이지로 이동
+		if(browser != null && browser.indexOf("Trident") != -1) {
+			
+			String[] browser_info = browser.split(";");
+			String version = "";
+			for (String info : browser_info) {
+				if(info.indexOf("Trident") != -1) {
+					version = info.replaceAll("[^0-9.]", "");
+				}
+			}
+			
+			if(Double.parseDouble(version) < 6.0) {
+				// IE8(Trident/4.0), IE9(Trident/5.0), IE10(Trident/6.0), IE11(Trident/7.0)
+				request.setAttribute("ErrorMSG", "뉴스뱅크 홈페이지는 Explorer 10 이상의 버전에 최적화되어 있습니다.");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/browser_exception.jsp");
+				dispatcher.forward(request, response);
+			}
+		}
+		
 		request.setAttribute("loginInfo",(MemberDTO) session.getAttribute("MemberInfo"));
 		request.setCharacterEncoding("UTF-8");
 		

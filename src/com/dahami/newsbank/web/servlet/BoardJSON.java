@@ -35,7 +35,7 @@ public class BoardJSON extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
 		
 	    String keyword = request.getParameter("keyword");
 	    BoardDAO boardDAO = new BoardDAO();

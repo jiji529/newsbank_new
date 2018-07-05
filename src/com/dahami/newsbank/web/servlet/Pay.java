@@ -40,8 +40,6 @@ public class Pay extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
 		System.setProperty("jsse.enableSNIExtension", "false"); //handshake alert: unrecognized_name 에러
 
 		// 로그인 정보 세션 체크

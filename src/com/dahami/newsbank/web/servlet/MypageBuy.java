@@ -34,8 +34,7 @@ public class MypageBuy extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
 
 		// 임시 넣기
 		HttpSession session = request.getSession();
