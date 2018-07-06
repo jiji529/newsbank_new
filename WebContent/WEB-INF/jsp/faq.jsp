@@ -20,6 +20,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>뉴스뱅크-FAQ</title>
 <script src="js/jquery-1.12.4.min.js"></script>
 <link rel="stylesheet" href="css/base.css" />

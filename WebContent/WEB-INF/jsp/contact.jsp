@@ -21,6 +21,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>뉴스뱅크-직접문의하기</title>
 
 <link rel="stylesheet" href="css/base.css" />
