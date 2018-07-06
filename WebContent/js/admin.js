@@ -12,7 +12,7 @@ $(document).ready(function() {
 			message = "회원 추가하시겠습니까?";
 			check = check && validId();
 			check = check && validPw();
-			check = check && validName();
+			// check = check && validName(); 회원정보 다수 수정으로 인해 임시 주석처리
 			
 		}else if(cmd == "U") {
 			if($("#frmJoin").find("[name=pw]").val().length > 0) {
@@ -21,7 +21,7 @@ $(document).ready(function() {
 			}
 			message = "회원정보를 수정하시겠습니까?";
 		}
-		
+		/*
 		check = check && validEmail();		
 		check = check && validPhone();
 		// check = check && validCertify(); (인증번호 체크는 관리자 페이지에서 필요 없음.)
@@ -46,11 +46,11 @@ $(document).ready(function() {
 				}
 			}
 		}
-		
+		*/
 		if (check) {
 			if (confirm(message)) {
-				//joinAccess();
-				validUploadFile()
+				joinAccess();
+				// validUploadFile(); 회원정보 다수 수정으로 인해 임시 주석처리
 
 				return false;
 			}
@@ -334,6 +334,7 @@ $(document).ready(function() {
 		var tmpPath = path.split(".");
 		var redirectURL = "/" + tmpPath[1] + "." + tmpPath[2]; 
 		var message = (cmd == "C") ? "정상적으로 추가되었습니다." : "정상적으로 수정되었습니다.";
+		console.log($("#frmJoin").serialize());
 		$.post("/admin.member.api", $("#frmJoin").serialize(), function(data) {
 			if (data.success) {
 				alert(message);

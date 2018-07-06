@@ -138,11 +138,12 @@ public class AdminMemberAction extends NewsbankServletBase {
 
 		if (check && request.getParameter("email") != null) {
 			email = request.getParameter("email"); // 이메일 request
-			check = check && isValidEmail(email);
+			// 회원정보 다수 수정으로 인해 임시 주석처리
+			/*check = check && isValidEmail(email);
 			System.out.println("email => " + email + " : " + check);
 			if (!check) {
 				message = "이메일 형식이 올바르지 않습니다.";
-			}
+			}*/
 		}
 
 		if (check && request.getParameter("name") != null) {
@@ -152,11 +153,12 @@ public class AdminMemberAction extends NewsbankServletBase {
 
 		if (check && request.getParameter("phone") != null) {
 			phone = request.getParameter("phone"); // 전화번호 request
-			check = check && isValidPhone(phone);
+			// 회원정보 다수 수정으로 인해 임시 주석처리
+			/*check = check && isValidPhone(phone);
 			System.out.println("phone => " + phone + " : " + check);
 			if (!check) {
 				message = "휴대폰 번호 형식이 올바르지 않습니다.";
-			}
+			}*/
 			/*check = check && isValidCertiNum(request);
 			if (!check) {
 				message = "인증번호가 올바르지 않습니다.";
@@ -166,12 +168,13 @@ public class AdminMemberAction extends NewsbankServletBase {
 
 		if (check && request.getParameter("compNum") != null) {
 			compNum = request.getParameter("compNum"); // 사업자등록번호
-			check = check && isValidCompNum(compNum);
+			// 회원정보 다수 수정으로 인해 임시 주석처리
+			/*check = check && isValidCompNum(compNum);
 
 			System.out.println("compNum => " + compNum + " : " + check);
 			if (!check) {
 				message = "사업자 등록번호 형식이 올바르지 않습니다.";
-			}
+			}*/
 		}
 
 		if (check && request.getParameter("compDocPath") != null) {
@@ -186,20 +189,22 @@ public class AdminMemberAction extends NewsbankServletBase {
 
 		if (check && request.getParameter("compTel") != null) {
 			compTel = request.getParameter("compTel"); // 회사전화번호
-			check = check && isValidPhone(compTel);
+			// 회원정보 다수 수정으로 인해 임시 주석처리
+			/*check = check && isValidPhone(compTel);
 			System.out.println("compTel => " + compTel + " : " + check);
 			if (!check) {
 				message = "회사 전화 번호 형식이 올바르지 않습니다.";
-			}
+			}*/
 		}
 		
 		if(check && request.getParameter("compExtTel") != null && request.getParameter("compExtTel").length() != 0) {
 			compExtTel = request.getParameter("compExtTel"); // 회사 내선번호
-			check = check && isValidExhTel(compExtTel); 
+			// 회원정보 다수 수정으로 인해 임시 주석처리
+			/*check = check && isValidExhTel(compExtTel); 
 			System.out.println("compExtTel => " + compExtTel + " : " + check);
 			if (!check) {
 				message = "회사 내선번호 형식이 올바르지 않습니다.";
-			}
+			}*/
 		}
 
 		if (check && request.getParameter("compAddress") != null) {
@@ -261,11 +266,11 @@ public class AdminMemberAction extends NewsbankServletBase {
 			usageList_seq = request.getParameterValues("usageList_seq"); // 로고 경로 request
 		}
 
-		if (check && request.getParameter("preRate") != null && request.getParameter("taxName").length() != 0) {
+		if (check && request.getParameter("preRate") != null && request.getParameter("preRate").length() != 0) {
 			preRate = Double.parseDouble(request.getParameter("preRate"));
 		}
 
-		if (check && request.getParameter("postRate") != null && request.getParameter("taxName").length() != 0) {
+		if (check && request.getParameter("postRate") != null && request.getParameter("postRate").length() != 0) {
 			postRate = Double.parseDouble(request.getParameter("postRate"));
 		}
 
@@ -283,11 +288,12 @@ public class AdminMemberAction extends NewsbankServletBase {
 		
 		if(check && request.getParameter("taxExtTell") != null && request.getParameter("taxExtTell").length() != 0) {
 			taxExtTell = request.getParameter("taxExtTell"); // 회사 내선번호
-			check = check && isValidExhTel(taxExtTell); 
+			// 회원정보 다수 수정으로 인해 임시 주석처리
+			/*check = check && isValidExhTel(taxExtTell); 
 			System.out.println("taxExtTell => " + taxExtTell + " : " + check);
 			if (!check) {
 				message = "세금계산서 담당자 내선번호 형식이 올바르지 않습니다.";
-			}
+			}*/
 		}
 
 		if (check && request.getParameter("permission") != null) {
@@ -458,7 +464,8 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setGroup_seq(group_seq);
 			
 			// 후불회원만 사용 용도 갯수만큼 생성 (deferred = 2)
-			if(deferred != 0 && deferred == 2) {
+			System.out.println("isEmptyStringArray - usage : " + isEmptyStringArray(usage));
+			if(deferred != 0 && deferred == 2 && isEmptyStringArray(usage)) {
 				for(int i = 0; i<usage.length; i++) {
 					UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
 					usageDTO.setUsage(usage[i]);
@@ -554,6 +561,15 @@ public class AdminMemberAction extends NewsbankServletBase {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	public boolean isEmptyStringArray(String [] array){
+		for(int i=0; i<array.length; i++){ 
+			if(array[i]!=null){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static boolean isValidEmail(String email) {
