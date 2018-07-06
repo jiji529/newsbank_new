@@ -123,7 +123,7 @@
 						html += '<td><a href="/view.photo?uciCode=' + uciCode + '" target="_blank">' + uciCode + '</a></td>';
 						html += '<td>' + compCode + '</td>';
 						html += '<td seq="' + usageList_seq + '">' + usage + '</td>';
-						html += '<td>' + price + '</td>';
+						html += '<td>' + comma(price) + '</td>';
 						html += '<input type="hidden" name="postRate" value="' + postRate + '"/>';
 						html += '</tr>';
 					});
