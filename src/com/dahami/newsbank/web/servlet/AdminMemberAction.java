@@ -464,8 +464,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setGroup_seq(group_seq);
 			
 			// 후불회원만 사용 용도 갯수만큼 생성 (deferred = 2)
-			System.out.println("isEmptyStringArray - usage : " + isEmptyStringArray(usage));
-			if(deferred != 0 && deferred == 2 && isEmptyStringArray(usage)) {
+			if(deferred != 0 && deferred == 2) {
 				for(int i = 0; i<usage.length; i++) {
 					UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
 					usageDTO.setUsage(usage[i]);
@@ -561,15 +560,6 @@ public class AdminMemberAction extends NewsbankServletBase {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
-	}
-	
-	public boolean isEmptyStringArray(String [] array){
-		for(int i=0; i<array.length; i++){ 
-			if(array[i]!=null){
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public static boolean isValidEmail(String email) {

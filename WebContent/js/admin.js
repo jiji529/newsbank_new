@@ -334,7 +334,7 @@ $(document).ready(function() {
 		var tmpPath = path.split(".");
 		var redirectURL = "/" + tmpPath[1] + "." + tmpPath[2]; 
 		var message = (cmd == "C") ? "정상적으로 추가되었습니다." : "정상적으로 수정되었습니다.";
-		console.log($("#frmJoin").serialize());
+		
 		$.post("/admin.member.api", $("#frmJoin").serialize(), function(data) {
 			if (data.success) {
 				alert(message);
