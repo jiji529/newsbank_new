@@ -102,7 +102,7 @@ $(function() {
 										<input type="text" id="id" name="id" maxlength="15" placeholder="아이디" pattern="[A-Za-z0-9]*" title="숫자와 영문만 입력 하세요." required />
 									</div>
 									<p class="txt_message" id="id_message" style="display: none;">이미 사용된 아이디입니다. 다른 아이디를 입력하세요.</p>
-									<p class="txt_message" id="id_message2" style="display: none;">숫자와 영문만 입력 하세요.</p>
+									<p class="txt_message" id="id_message2" style="display: none;">숫자와 영문만 입력 하세요.(4글자 이상)</p>
 								</dd>
 							</dl>
 							<dl class="item_info">

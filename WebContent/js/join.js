@@ -90,7 +90,7 @@ $(document).ready(function() {
 	function validId() {
 		var id = $("#id").val();
 		var regex = /[A-Za-z0-9]{2,19}$/g;
-		if (regex.test(id) && id.length > 0) {
+		if (regex.test(id) && id.length > 3) {
 			$("#id_message2").css("display", "none");
 			return true;
 		} else {
@@ -107,7 +107,7 @@ $(document).ready(function() {
 					id : $("#id").val()
 				}),
 				dataType : "json",
-				success : function(data) {
+				success : function(data) { console.log(data);
 					if (data.success) {
 						// 사용중
 						$("#id_message").css("display", "block");

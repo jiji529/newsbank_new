@@ -115,7 +115,7 @@ public class MemberAction extends NewsbankServletBase {
 			check = check && isValidId(id);
 			System.out.println("id => " + id + " : " + check);
 			if (!check) {
-				message = "아이디 형식이 올바르지 않습니다.s";
+				message = "아이디 형식이 올바르지 않습니다.";
 			}
 		}
 		if (check && request.getParameter("pw") != null) {

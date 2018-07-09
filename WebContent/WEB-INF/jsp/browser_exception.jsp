@@ -28,6 +28,17 @@
 <link rel="stylesheet" href="css/main.css" />
 <link rel="stylesheet" href="css/ie.css" />
 
+<%
+String errMsg = (String)request.getAttribute("ErrorMSG");
+if(errMsg != null && errMsg.length() > 0) {
+%>
+<script>
+	alert("<%=errMsg%>");
+</script>
+<%
+}
+%>
+
 <script src="js/footer.js"></script>
 <script>
     $(document).ready(function(){
