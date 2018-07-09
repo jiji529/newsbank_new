@@ -26,6 +26,7 @@
 <script src="js/jquery.row-grid.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/ㅑie.css" />
 
 <script src="js/footer.js"></script>
 <script>
@@ -37,7 +38,7 @@
 </head>
 <body>
 <div class="wrap">
-	<nav class="gnb_dark">
+	<div class="gnb_dark">
 		<div class="gnb"><a href="/home" class="logo"></a>
 			<ul class="gnb_left">
 				<li><a href="#">보도사진</a></li>
@@ -51,9 +52,9 @@
 				<!-- <li class="go_admin"><a href="admin1.html">관리자페이지</a></li> -->
 			</ul>
 		</div>
-	</nav>
+	</div>
 	<div class="main">
-		<section class="html5">
+		<div class="html5">
 		<div class="html5_ex"><b>뉴스뱅크는 HTML5 로 제작되었습니다.</b><br />
 크롬, 파이어폭스, 익스플로러11 등 HTML5 표준 브라우저를 지원하며, <br />
 보다 원활한 사용을 위해 <a href="https://www.google.com/chrome/">크롬 브라우저</a>를 권장합니다.</div>
@@ -62,9 +63,9 @@
 				<li class="firefox"><a href="https://www.mozilla.org/ko/firefox/">Mozila Firefox<br />다운로드</a></li>
 				<li class="ie"><a href="https://support.microsoft.com/ko-kr/help/17621/internet-explorer-downloads">Internet Explorer 11<br />다운로드</a></li>
 			</ul>
-		</section>
+		</div>
 	</div>
-	<footer>
+	<div class="footer">
 		<div class="foot_wrap">
 			<div class="foot_lt">(주)다하미커뮤니케이션즈 | 대표 박용립<br />
 				서울시 중구 마른내로 140 5층 (쌍림동, 인쇄정보센터)<br />
@@ -115,7 +116,7 @@
 			</div>
 		</div>
 		<div class="foot_bt">Copyright © NewsBank. All Rights Reserved.</div>
-	</footer>
+	</div>
 	<div id="top"><a href="#">TOP</a></div>
 </div>
 </body>
