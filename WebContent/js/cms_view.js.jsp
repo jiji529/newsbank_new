@@ -342,8 +342,6 @@
 		if(!confirm("사진 변경은 즉시 반영됩니다(복구는 불가능합니다).\n\n변경 하시겠습니까?")) {
 			return;
 		}
-		alert("기능 막음");
-		return;
 		
 		$("#fileChangePic").click();
 	});

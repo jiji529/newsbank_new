@@ -31,6 +31,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
+import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -228,6 +229,7 @@ public class SearchDAO extends DAOBase {
 				res = req.process(client);
 				long eTime = System.currentTimeMillis();
 				if(query.get("qt") != null && query.get("qt").trim().equals("/mlt")) {
+					query.setMoreLikeThis(true);
 					logger.debug("MltTime: " + (eTime-sTime) + " msec");
 				}
 				else {
@@ -352,12 +354,25 @@ public class SearchDAO extends DAOBase {
 			mltQfBuf.append(" morp_description");
 			
 			query.setRequestHandler("/mlt");
+			if(uciCode.startsWith(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)) {
+				uciCode = uciCode.substring(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI.length());
+			}
 			query.setQuery("uciCode:" + uciCode);
-			query.set("mlt.fl", "morp_title morp_keyword morp_description");
-			query.set("mlt.qf", mltQfBuf.toString());
+			
+			query.setMoreLikeThis(true);
+			query.setMoreLikeThisFields("morp_title", "morp_keyword", "morp_description");
+//			query.set("mlt.fl", "morp_title morp_keyword morp_description");
+			
+			query.setMoreLikeThisQF(mltQfBuf.toString());
+//			query.set("mlt.qf", mltQfBuf.toString());
+			
 			query.set("mlt.match.include", false);
-			query.set("mlt.boost", true);
-			query.set("mlt.mintf", 1);
+			
+			query.setMoreLikeThisBoost(true);
+//			query.set("mlt.boost", true);;
+			
+			query.setMoreLikeThisMinTermFreq(1);
+//			query.set("mlt.mintf", 1);
 			query.setRows(params.getPageVol());
 		}
 		else {
@@ -366,13 +381,13 @@ public class SearchDAO extends DAOBase {
 			StringBuffer qBuf = new StringBuffer();
 			if(photoId.length() > 0) {
 				logger.debug("photoId: " + photoId);
-				qBuf.append("_query_:\"{!edismax q.op=AND qf='uciCode compCode, oldCode'}")
+				qBuf.append("_query_:\"{!edismax q.op=AND qf='uciCode compCode oldCode'}")
 					.append(normalizeKeywordStr(photoId))
 					.append("\"");
 			}
 			else {
 				logger.debug("keyword: " + keyword);
-				qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode, oldCode'}")
+				qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode oldCode'}")
 					.append(normalizeKeywordStr(keyword))
 					.append("\"");
 			}
@@ -516,7 +531,7 @@ public class SearchDAO extends DAOBase {
 	}
 	
 	protected QueryRequest makeSolrRequest(SolrQuery query) {
-		QueryRequest req = new QueryRequest(query);
+		QueryRequest req = new QueryRequest(query, METHOD.POST);
 		req.setBasicAuthCredentials(solrId, solrPw);
 		return req;
 	}
