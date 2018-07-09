@@ -26,7 +26,7 @@
 <script src="js/jquery.row-grid.js"></script>
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/main.css" />
-<link rel="stylesheet" href="css/ㅑie.css" />
+<link rel="stylesheet" href="css/ie.css" />
 
 <script src="js/footer.js"></script>
 <script>
