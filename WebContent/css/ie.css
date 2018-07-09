@@ -13,7 +13,7 @@
 
 .gnb_dark{height: 90px; width: 100%; margin: 0 auto; top: 0; padding-top:10px; background:#fff; border-bottom:1px #e6e6e6 solid;}
 .gnb_dark .gnb{padding:0 50px; }
-.gnb_dark .gnb a.logo{height: 50px; display: block; float: left; width: 142px; margin: 10px 0; position: relative; background:url(../images/logo_b.svg) 0 0 no-repeat;} 
+.gnb_dark .gnb a.logo{height: 50px; display: block; float: left; width: 142px; margin: 10px 0; position: relative; background:url(../images/logo.png) 0 0 no-repeat;} 
 .gnb_dark .gnb .gnb_left li a{color:#555;}
 .gnb_dark .gnb .gnb_left li.on a{color:#f79320;}
 
