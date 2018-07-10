@@ -150,6 +150,34 @@ public class PaymentDAO extends DAOBase {
 
 		return list;
 	}
+	
+	/**
+	 * 
+	 * @param paymentManageDTO
+	 * @author : Choi, SeongHyeon
+	 * @date : 2018. 07. 10. 오후 16:01:43
+	 * @methodCommet: 결제 코드로만 결제 정보 호출
+	 */
+	public PaymentManageDTO selectPaymentOID(PaymentManageDTO paymentManageDTO) {
+		SqlSession session = null;
+		PaymentManageDTO dto = new PaymentManageDTO();
+		try {
+
+			session = sf.getSession();
+			dto = session.selectOne("payment.selectPaymentOID", paymentManageDTO);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return dto;
+	}
 
 	/**
 	 * @methodName : insertPaymentManage

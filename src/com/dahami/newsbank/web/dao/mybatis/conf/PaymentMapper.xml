@@ -344,7 +344,7 @@
 		resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
 		SELECT `seq` as `paymentManage_seq`, `member_seq`, `LGD_BUYER`, `LGD_BUYERID`,
 		`LGD_BUYERPHONE`, `LGD_RESPCODE`, `LGD_RESPMSG`, `LGD_OID`,
-		`LGD_AMOUNT`, `LGD_TID`, `LGD_PAYTYPE`, `LGD_PAYDATE`,
+		`LGD_AMOUNT`, `LGD_TID`, `LGD_PAYTYPE`, `LGD_PAYDATE`,`LGD_PAYSTATUS`,
 		`LGD_PRODUCTINFO`, `LGD_ACCOUNTNUM`, `regDate` FROM `paymentManage`
 		where  LGD_OID = #{LGD_OID}
 

@@ -181,56 +181,62 @@ public class XpayNoteurl extends NewsbankServletBase {
 					 */
 					// if( 무통장 입금 성공 상점처리결과 성공 )
 					
-					
-					PaymentManageDTO payment = new PaymentManageDTO();
-					payment.setLGD_BUYERID(LGD_BUYERID);// 아이디
-					payment.setLGD_OID(LGD_OID); // 주문번호
-					payment.setLGD_PAYSTATUS(1);// 1:결제성공 0:결제실패 2:결제대기중 3:무통장입금 대기중
-					payment.setLGD_RESPCODE(LGD_RESPCODE); // 결제상태
-					payment.setLGD_RESPMSG(LGD_RESPMSG); // 결제메세지
-					payment.setLGD_TID(LGD_TID); // 거래번호
-
 					PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
-					payment = paymentDAO.updatePaymentManage(payment);
+					PaymentManageDTO payment = new PaymentManageDTO();
+					payment.setLGD_OID(LGD_OID); // 주문번호
+					PaymentManageDTO selectPaymentOID =paymentDAO.selectPaymentOID(payment);
 					
-					
-					PaymentDetailDTO paymentDetail = new PaymentDetailDTO();
-					paymentDetail.setPaymentManage_seq(payment.getPaymentManage_seq());
+					if(!selectPaymentOID.getLGD_PAYSTATUS().equals("1")) {
+						payment.setLGD_BUYERID(LGD_BUYERID);// 아이디
+						payment.setLGD_PAYSTATUS(1);// 1:결제성공 0:결제실패 2:결제대기중 3:무통장입금 대기중
+						payment.setLGD_RESPCODE(LGD_RESPCODE); // 결제상태
+						payment.setLGD_RESPMSG(LGD_RESPMSG); // 결제메세지
+						payment.setLGD_TID(LGD_TID); // 거래번호
 
-					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					Calendar Cal = Calendar.getInstance();
-					String startDate = df.format(Cal.getTime());
-					Cal.add(Calendar.DATE, 1); // 오늘 포함 일주일
-					String endDate = df.format(Cal.getTime());
+						
+						payment = paymentDAO.updatePaymentManage(payment);
+						
+						
+						PaymentDetailDTO paymentDetail = new PaymentDetailDTO();
+						paymentDetail.setPaymentManage_seq(payment.getPaymentManage_seq());
 
-					paymentDetail.setDownStart(startDate); // 다운로드 start date
-					paymentDetail.setDownEnd(endDate); // 다운로드 end date
-					paymentDAO.updateDownloadDate(paymentDetail);
-					
-					
-					
-					if(payment.getPaymentDetailList().size()>0) {
-						CalculationDAO calculationDAO = new CalculationDAO();
-						PhotoDAO photoDAO = new PhotoDAO();
-						for (PaymentDetailDTO detailDTO :payment.getPaymentDetailList() ) {
-							
-							PhotoDTO photoDTO = photoDAO.read(detailDTO.getPhoto_uciCode());
-							System.out.println(photoDTO.getOwnerPreRate());
-							
-							
-							CalculationDTO calculationDTO  = new CalculationDTO();
-							calculationDTO.setId(LGD_BUYERID);
-							calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
-							calculationDTO.setUsage(detailDTO.getUsageList_seq());
-							calculationDTO.setType(0);
-							calculationDTO.setRate(photoDTO.getOwnerPreRate());
-							calculationDTO.setPayType(payment.getLGD_PAYTYPE());
-							calculationDTO.setPrice(detailDTO.getPrice());
-							calculationDTO.setFees(payment.getLGD_FEES(detailDTO.getPrice()));
-							calculationDTO.setStatus(0);
-							calculationDAO.insertCalculation(calculationDTO);
-						}	
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						Calendar Cal = Calendar.getInstance();
+						String startDate = df.format(Cal.getTime());
+						Cal.add(Calendar.DATE, 1); // 오늘 포함 일주일
+						String endDate = df.format(Cal.getTime());
+
+						paymentDetail.setDownStart(startDate); // 다운로드 start date
+						paymentDetail.setDownEnd(endDate); // 다운로드 end date
+						paymentDAO.updateDownloadDate(paymentDetail);
+						
+						
+						
+						if(payment.getPaymentDetailList().size()>0) {
+							CalculationDAO calculationDAO = new CalculationDAO();
+							PhotoDAO photoDAO = new PhotoDAO();
+							for (PaymentDetailDTO detailDTO :payment.getPaymentDetailList() ) {
+								
+								PhotoDTO photoDTO = photoDAO.read(detailDTO.getPhoto_uciCode());
+								System.out.println(photoDTO.getOwnerPreRate());
+								
+								
+								CalculationDTO calculationDTO  = new CalculationDTO();
+								calculationDTO.setId(LGD_BUYERID);
+								calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
+								calculationDTO.setUsage(detailDTO.getUsageList_seq());
+								calculationDTO.setType(0);
+								calculationDTO.setRate(photoDTO.getOwnerPreRate());
+								calculationDTO.setPayType(payment.getLGD_PAYTYPE());
+								calculationDTO.setPrice(detailDTO.getPrice());
+								calculationDTO.setFees(payment.getLGD_FEES(detailDTO.getPrice()));
+								calculationDTO.setStatus(0);
+								calculationDAO.insertCalculation(calculationDTO);
+							}	
+						}
 					}
+					
+					
 					
 					
 					resultMSG = "OK";
@@ -239,41 +245,49 @@ public class XpayNoteurl extends NewsbankServletBase {
 					 * 무통장 입금취소 성공 결과 상점 처리(DB) 부분 상점 결과 처리가 정상이면 "OK"
 					 */
 					// if( 무통장 입금취소 성공 상점처리결과 성공 )
-					
-					PaymentManageDTO payment = new PaymentManageDTO();
-					payment.setLGD_BUYERID(LGD_BUYERID);// 아이디
-					payment.setLGD_OID(LGD_OID); // 주문번호
-					payment.setLGD_AMOUNT(0); // 취소 금액 갱신
-					payment.setLGD_PAYSTATUS(5);// 1:결제성공 0:결제실패 2:결제대기중 3:무통장입금 대기중
-					payment.setLGD_RESPCODE(LGD_RESPCODE); // 결제상태
-					payment.setLGD_RESPMSG(LGD_RESPMSG); // 결제메세지
-					payment.setLGD_TID(LGD_TID); // 거래번호
-
 					PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
-					payment = paymentDAO.updatePaymentManage(payment);
-					PhotoDAO photoDAO = new PhotoDAO();
+					PaymentManageDTO payment = new PaymentManageDTO();
+					payment.setLGD_OID(LGD_OID); // 주문번호
 					
-					if(payment.getPaymentDetailList().size()>0) {
-						CalculationDAO calculationDAO = new CalculationDAO();
-						for (PaymentDetailDTO detailDTO :payment.getPaymentDetailList() ) {
-							
-							PhotoDTO photoDTO = photoDAO.read(detailDTO.getPhoto_uciCode());
-							System.out.println(photoDTO.getOwnerPreRate());
-							
-							
-							CalculationDTO calculationDTO  = new CalculationDTO();
-							calculationDTO.setId(LGD_BUYERID);
-							calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
-							calculationDTO.setUsage(detailDTO.getUsageList_seq());
-							calculationDTO.setType(0);
-							calculationDTO.setRate(photoDTO.getOwnerPreRate());
-							calculationDTO.setPayType(payment.getLGD_PAYTYPE());
-							calculationDTO.setPrice(-detailDTO.getPrice());
-							calculationDTO.setFees(-payment.getLGD_FEES(detailDTO.getPrice()));
-							calculationDTO.setStatus(0);
-							calculationDAO.insertCalculation(calculationDTO);
-						}	
+					
+					PaymentManageDTO selectPaymentOID =paymentDAO.selectPaymentOID(payment);
+					
+					if(!selectPaymentOID.getLGD_PAYSTATUS().equals("5")) {
+						payment.setLGD_BUYERID(LGD_BUYERID);// 아이디
+						payment.setLGD_AMOUNT(0); // 취소 금액 갱신
+						payment.setLGD_PAYSTATUS(5);// 1:결제성공 0:결제실패 2:결제대기중 3:무통장입금 대기중
+						payment.setLGD_RESPCODE(LGD_RESPCODE); // 결제상태
+						payment.setLGD_RESPMSG(LGD_RESPMSG); // 결제메세지
+						payment.setLGD_TID(LGD_TID); // 거래번호
+
+						
+						payment = paymentDAO.updatePaymentManage(payment);
+						PhotoDAO photoDAO = new PhotoDAO();
+						
+						if(payment.getPaymentDetailList().size()>0) {
+							CalculationDAO calculationDAO = new CalculationDAO();
+							for (PaymentDetailDTO detailDTO :payment.getPaymentDetailList() ) {
+								
+								PhotoDTO photoDTO = photoDAO.read(detailDTO.getPhoto_uciCode());
+								System.out.println(photoDTO.getOwnerPreRate());
+								
+								
+								CalculationDTO calculationDTO  = new CalculationDTO();
+								calculationDTO.setId(LGD_BUYERID);
+								calculationDTO.setUciCode(detailDTO.getPhoto_uciCode());
+								calculationDTO.setUsage(detailDTO.getUsageList_seq());
+								calculationDTO.setType(0);
+								calculationDTO.setRate(photoDTO.getOwnerPreRate());
+								calculationDTO.setPayType(payment.getLGD_PAYTYPE());
+								calculationDTO.setPrice(-detailDTO.getPrice());
+								calculationDTO.setFees(-payment.getLGD_FEES(detailDTO.getPrice()));
+								calculationDTO.setStatus(0);
+								calculationDAO.insertCalculation(calculationDTO);
+							}	
+						}
 					}
+					
+					
 					
 					resultMSG = "OK";
 				}
