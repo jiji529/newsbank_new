@@ -137,6 +137,9 @@ public class SearchService extends ServiceBase {
 			}
 		}
 		
+		// 검색 가능한 매체 세팅 / MLT 등에서 제한을 위해
+		sParam.setSearchableUserList(new ArrayList<Integer>(searchableMdSet));
+		
 		if(searchMode == SEARCH_MODE_USER) {
 			// 사용자 검색은 판매 대상만 검색
 			sParam.setSaleState(SearchParameterBean.SALE_STATE_OK);

@@ -373,7 +373,18 @@ public class SearchDAO extends DAOBase {
 			
 			query.setMoreLikeThisMinTermFreq(1);
 //			query.set("mlt.mintf", 1);
+			
+			query.setMoreLikeThisCount(params.getPageVol());
 			query.setRows(params.getPageVol());
+			
+			StringBuffer ownerNoStr = new StringBuffer();
+			for(int ownerNo : params.getSearchableUserList()) {
+				if(ownerNoStr.length() > 0) {
+					ownerNoStr.append(" OR ");
+				}
+				ownerNoStr.append(ownerNo);
+			}
+			query.setFilterQueries("ownerNo:(" + ownerNoStr.toString() + ")");
 		}
 		else {
 			query.setRequestHandler("/select");
@@ -492,7 +503,6 @@ public class SearchDAO extends DAOBase {
 	
 	private void setDuration(String duration, String field, SolrQuery query) {
 		if(duration != null && duration.trim().length() > 0) {
-			System.out.println(duration);
 			if(!duration.startsWith("C")) {
 				Calendar sCal = Calendar.getInstance();
 				sCal.add(Calendar.DAY_OF_YEAR, 1);

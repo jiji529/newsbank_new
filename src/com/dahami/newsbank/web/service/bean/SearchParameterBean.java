@@ -59,6 +59,9 @@ public class SearchParameterBean {
 	/** 대상 매체(유저 Seq) 지정 / 없거나 공백값이면 전체 */
 	private List<Integer> targetUserList;
 	
+	/** 검색 가능한 매체 리스트 / 자동세팅됨 */
+	private List<Integer> searchableUserList;
+	
 	/** 검색기간 D일/W주/M달/Y년 내 검색 / yyyyMMdd~yyyyMMdd*/
 	private String duration;
 	
@@ -287,6 +290,19 @@ public class SearchParameterBean {
 			this.targetUserList = new ArrayList<Integer>();
 		}
 		this.targetUserList.add(targetUser);
+	}
+	
+	public List<Integer> getSearchableUserList() {
+		if(searchableUserList == null) {
+			synchronized(this) {
+				searchableUserList = new ArrayList<Integer>();
+			}
+		}
+		return searchableUserList;
+	}
+
+	public void setSearchableUserList(List<Integer> searchableUserList) {
+		this.searchableUserList = searchableUserList;
 	}
 
 	public String getDuration() {

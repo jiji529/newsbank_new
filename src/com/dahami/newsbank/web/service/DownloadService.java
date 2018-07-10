@@ -59,6 +59,7 @@ import org.apache.commons.imaging.formats.tiff.write.TiffOutputField;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 
 import com.dahami.common.util.FileUtil;
+import com.dahami.common.util.HttpUpDownUtil;
 import com.dahami.common.util.HttpUtil;
 import com.dahami.common.util.ImageUtil;
 import com.dahami.common.util.ZipUtil;
@@ -670,7 +671,7 @@ public class DownloadService extends ServiceBase {
 							sendImageFile(response, downPath);
 						}
 					} else if (targetSize.equals("doc") || targetSize.equals("bank") || targetSize.equals("contract") || targetSize.equals("notice")) {
-						sendFile(response, downPath);
+						sendFile(request, response, downPath);
 					} else {
 						if (targetSize.equals("service")) {
 							sendImageFile(response, downPath, uciCode + ".jpg");
@@ -923,78 +924,8 @@ public class DownloadService extends ServiceBase {
 		return ImageUtil.saveImage(fullImg, tgtPath, ImageUtil.IMAGE_FORMAT_JPEG);
 	}
 
-	private void sendFile( HttpServletResponse response, String sendPath, String fileName ) throws Exception  {
-		File file = new File(sendPath);
-		
-		/*HttpServletRequest request,
-		String userAgent = request.getHeader("User-Agent");
-		boolean ie = userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("rv:11") > -1;
-		String fileName = null;
-		if (ie) {
-			fileName = URLEncoder.encode(file.getName(), "utf-8");
-		} else {
-			fileName = new String(file.getName().getBytes("utf-8"), "iso-8859-1");
-		}*/
-		
-		if(fileName!="") {
-			
-		}
-		int pos = file.getName().lastIndexOf( "." );
-		String ext = file.getName().substring( pos + 1 );
-		fileName = URLEncoder.encode(fileName, "utf-8");
-		fileName = fileName+"."+ext;
-		//fileName = URLEncoder.encode(file.getName(), "utf-8");
-		response.setContentType("application/octet-stream");
-		response.setHeader("Content-Disposition", "attachment;filename=\"" +fileName  + "\";");
-
-		FileInputStream fis = new FileInputStream(file);
-		BufferedInputStream bis = new BufferedInputStream(fis);
-		ServletOutputStream so = response.getOutputStream();
-		BufferedOutputStream bos = new BufferedOutputStream(so);
-
-		byte[] data = new byte[2048];
-		int input = 0;
-		while ((input = bis.read(data)) != -1) {
-			bos.write(data, 0, input);
-			bos.flush();
-		}
-
-		if (bos != null)
-			bos.close();
-		if (bis != null)
-			bis.close();
-		if (so != null)
-			so.close();
-		if (fis != null)
-			fis.close();
-	}
-	private void sendFile( HttpServletResponse response, String sendPath ) throws Exception  {
-		File file = new File(sendPath);
-		
-	
-		String fileName = URLEncoder.encode(file.getName(), "utf-8");
-		response.setContentType("application/octet-stream");
-		response.setHeader("Content-Disposition", "attachment;filename=\"" +fileName  + "\";");
-
-		FileInputStream fis = new FileInputStream(file);
-		BufferedInputStream bis = new BufferedInputStream(fis);
-		ServletOutputStream so = response.getOutputStream();
-		BufferedOutputStream bos = new BufferedOutputStream(so);
-
-		byte[] data = new byte[2048];
-		int input = 0;
-		while ((input = bis.read(data)) != -1) {
-			bos.write(data, 0, input);
-			bos.flush();
-		}
-
-		if (bos != null)
-			bos.close();
-		if (bis != null)
-			bis.close();
-		if (so != null)
-			so.close();
-		if (fis != null)
-			fis.close();
+	private void sendFile( HttpServletRequest request, HttpServletResponse response, String sendPath ) throws Exception  {
+		File fd = new File(sendPath);
+		HttpUpDownUtil.fileDownload(request, response, fd.getName(), fd.getName(), fd.getParent(), "octet-stream");
 	}
 }
