@@ -193,6 +193,7 @@ public class XpayNoteurl extends NewsbankServletBase {
 					PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
 					payment = paymentDAO.updatePaymentManage(payment);
 					
+					
 					PaymentDetailDTO paymentDetail = new PaymentDetailDTO();
 					paymentDetail.setPaymentManage_seq(payment.getPaymentManage_seq());
 
@@ -205,7 +206,8 @@ public class XpayNoteurl extends NewsbankServletBase {
 					paymentDetail.setDownStart(startDate); // 다운로드 start date
 					paymentDetail.setDownEnd(endDate); // 다운로드 end date
 					paymentDAO.updateDownloadDate(paymentDetail);
-
+					
+					
 					
 					if(payment.getPaymentDetailList().size()>0) {
 						CalculationDAO calculationDAO = new CalculationDAO();
