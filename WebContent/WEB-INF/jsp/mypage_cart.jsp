@@ -34,7 +34,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180411"></script>
+<script src="js/mypage.js"></script>
 <script type="text/javascript">
 	
 	/** 찜하기 */
@@ -229,12 +229,6 @@
 	});
 	
 </script>
-
-<link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/sub.css" />
-<link rel="stylesheet" href="css/mypage.css" />
-<script src="js/filter.js"></script>
-<script src="js/footer.js"></script>
 </head>
 <body>
 	<div class="wrap">
