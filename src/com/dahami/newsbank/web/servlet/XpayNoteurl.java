@@ -243,6 +243,7 @@ public class XpayNoteurl extends NewsbankServletBase {
 					PaymentManageDTO payment = new PaymentManageDTO();
 					payment.setLGD_BUYERID(LGD_BUYERID);// 아이디
 					payment.setLGD_OID(LGD_OID); // 주문번호
+					payment.setLGD_AMOUNT(0); // 취소 금액 갱신
 					payment.setLGD_PAYSTATUS(5);// 1:결제성공 0:결제실패 2:결제대기중 3:무통장입금 대기중
 					payment.setLGD_RESPCODE(LGD_RESPCODE); // 결제상태
 					payment.setLGD_RESPMSG(LGD_RESPMSG); // 결제메세지
