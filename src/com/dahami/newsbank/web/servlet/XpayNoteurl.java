@@ -3,6 +3,8 @@ package com.dahami.newsbank.web.servlet;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -190,6 +192,20 @@ public class XpayNoteurl extends NewsbankServletBase {
 
 					PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
 					payment = paymentDAO.updatePaymentManage(payment);
+					
+					PaymentDetailDTO paymentDetail = new PaymentDetailDTO();
+					paymentDetail.setPaymentManage_seq(payment.getPaymentManage_seq());
+
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					Calendar Cal = Calendar.getInstance();
+					String startDate = df.format(Cal.getTime());
+					Cal.add(Calendar.DATE, 1); // 오늘 포함 일주일
+					String endDate = df.format(Cal.getTime());
+
+					paymentDetail.setDownStart(startDate); // 다운로드 start date
+					paymentDetail.setDownEnd(endDate); // 다운로드 end date
+					paymentDAO.updateDownloadDate(paymentDetail);
+
 					
 					if(payment.getPaymentDetailList().size()>0) {
 						CalculationDAO calculationDAO = new CalculationDAO();
