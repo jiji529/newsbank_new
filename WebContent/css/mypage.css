@@ -165,7 +165,7 @@
 .mypage #cms_list2 .thumb.img_del a{background:#777; }
 .mypage .thumb.img_del img{ opacity:0.35;}
 
-.mypage #wish_list2{ float:left;}
+.mypage #wish_list2{ float:left; margin-bottom:50px;}
 .mypage #wish_list2 ul{width:100%; float:left;}
 .mypage #wish_list2 .thumb{border:1px #e6e6e6 solid; float:left; margin:0 10px 10px 0;width:198px; position:relative;}
 .mypage #wish_list2 .thumb:nth-child(6n){ margin-right:0;}
