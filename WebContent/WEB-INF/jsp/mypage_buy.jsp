@@ -237,7 +237,7 @@
 							<c:choose>
 							  <c:when test="${paymentDetailList.status eq '1'}">
 						    	<del>${paymentDetailList.getPrice_Str() }</del>
-						    	<c:set var="totalPrice" value="${totalPrice-paymentDetailList.getPrice() }"/>
+						    	<%-- <c:set var="totalPrice" value="${totalPrice-paymentDetailList.getPrice() }"/> --%>
 							  </c:when>
 							  <c:otherwise>
 							    ${paymentDetailList.getPrice_Str() }

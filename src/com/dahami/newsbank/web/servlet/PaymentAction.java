@@ -210,6 +210,7 @@ public class PaymentAction extends NewsbankServletBase {
 								if (xpay.TX()) {
 									// 1)결제취소결과 화면처리(성공,실패 결과 처리를 하시기 바랍니다.)
 									if (xpay.m_szResCode.equals("0000")) {
+										paymentManageDTO.setLGD_AMOUNT(0); // 취소 금액 갱신
 										paymentManageDTO.setLGD_RESPCODE("0000"); // 완료코드
 										paymentManageDTO.setLGD_PAYSTATUS(5); // 결제취소
 										paymentManageDTO = paymentDAO.updatePaymentManage(paymentManageDTO);

@@ -35,8 +35,8 @@ public abstract class DAOBase {
 		String confBase = "com/dahami/newsbank/web/dao/mybatis/conf";
 		MybatisService mybatis = new MybatisService(confBase);
 		mybatis.activate();
-//		sf = mybatis.getMybatisServiceSessionFactory(MethodHandles.lookup().lookupClass(), "dev");
-		sf = mybatis.getMybatisServiceSessionFactory(MethodHandles.lookup().lookupClass(), "service");
+		sf = mybatis.getMybatisServiceSessionFactory(MethodHandles.lookup().lookupClass(), "dev");
+		//sf = mybatis.getMybatisServiceSessionFactory(MethodHandles.lookup().lookupClass(), "service");
 	}
 	
 	public DAOBase() {
