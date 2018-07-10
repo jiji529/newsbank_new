@@ -125,7 +125,7 @@ public class DownloadService extends ServiceBase {
 		ipSet.add("121.78.196.177");
 		ipSet.add("121.78.196.178");
 		ipSet.add("121.78.118.233");
-		ipSet.add("121.78.115.56");
+//		ipSet.add("121.78.115.56");	// 2018-06-18 제거 / 게티 확인
 		
 		// 2018.01.24 대전사무실 IP 추가
 		ipSet.add("59.27.23.3");
