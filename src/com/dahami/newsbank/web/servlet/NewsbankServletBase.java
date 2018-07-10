@@ -62,18 +62,22 @@ public abstract class NewsbankServletBase extends HttpServlet {
 		}
 	}
 	
+	/**
+	 * @methodName  : getBrowserVersion
+	 * @author      : LEE.GWANGHO
+	 * @date        : 2018. 07. 09. 오후 3:36:33
+	 * @methodCommet: 접속 브라우저 정보
+	 * @param params
+	 * @param pName
+	 * @return 
+	 * @returnType  : String
+	 */
 	protected String getBrowserVersion(String browser) {
-		/**
-		 * @methodName  : getBrowserVersion
-		 * @author      : LEE.GWANGHO
-		 * @date        : 2018. 07. 09. 오후 3:36:33
-		 * @methodCommet: 접속 브라우저 정보
-		 * @param params
-		 * @param pName
-		 * @return 
-		 * @returnType  : String
-		 */
 		String version = "";
+		
+		if(browser == null) {
+			return "other";
+		}
 		
 		if(browser.indexOf("MSIE") != -1 || browser.indexOf("Trident") != -1) {
 			if(browser.indexOf("MSIE") == -1) { // IE 11버전
