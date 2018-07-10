@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.dto.PhotoDTO;
@@ -50,9 +49,6 @@ public class PaymentAction extends NewsbankServletBase {
 			throws ServletException, IOException {
 		super.doGet(request, response);
 		CmdClass cmdClass = CmdClass.getInstance(request);
-		
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
 
 		// 로그인 정보 세션 체크
 		HttpSession session = request.getSession();

@@ -43,9 +43,14 @@ public abstract class NewsbankServletBase extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		request.setAttribute("loginInfo",(MemberDTO) session.getAttribute("MemberInfo"));
+		request.setCharacterEncoding("UTF-8");
+		
+		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
+		response.addHeader("Cache-Control", "no-cache");
 		
 		String version = getBrowserVersion(request.getHeader("User-Agent"));
-		
 		if(version.indexOf("MSIE") != -1) {
 			version = version.replaceAll("[^0-9.]", "");
 			
@@ -55,13 +60,6 @@ public abstract class NewsbankServletBase extends HttpServlet {
 				dispatcher.forward(request, response);
 			}
 		}
-		
-		request.setAttribute("loginInfo",(MemberDTO) session.getAttribute("MemberInfo"));
-		request.setCharacterEncoding("UTF-8");
-		
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		response.addHeader("Cache-Control", "no-cache");
 	}
 	
 	protected String getBrowserVersion(String browser) {
