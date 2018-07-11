@@ -95,9 +95,9 @@
 		P.uciCode, P.compCode, D.regDate  FROM download D
 		INNER JOIN member M ON D.member_seq = M.seq
 		INNER JOIN photo P ON D.photo_uciCode = P.uciCode
-		<where>
+		WHERE M.`type` = 'P'AND M.deferred = 2
 			<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
-		     ( 
+		     AND ( 
 			     M.id LIKE CONCAT('%', #{keyword}, '%')
 				 OR M.name LIKE CONCAT('%', #{keyword}, '%')
 				 OR M.compName LIKE CONCAT('%', #{keyword}, '%')
@@ -105,7 +105,7 @@
 			</if>
 			
 			<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
-			 (   P.uciCode LIKE CONCAT('%', #{keyword}, '%')
+			 AND (   P.uciCode LIKE CONCAT('%', #{keyword}, '%')
 				OR (SELECT compCode FROM photo WHERE uciCode = D.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
 			 )
 			</if>
@@ -113,7 +113,6 @@
 			<if test="contractStart != null and contractStart != '' and contractEnd != null and contractEnd != ''">
 			    AND D.regDate BETWEEN #{contractStart} AND #{contractEnd}
 			</if>
-		</where>
 		ORDER BY D.regDate DESC
 		LIMIT #{startPage}, #{pageVol}
     </select>
@@ -124,10 +123,9 @@
 	    FROM download D
 		INNER JOIN member M ON D.member_seq = M.seq
 		INNER JOIN photo P ON D.photo_uciCode = P.uciCode
-		
-		<where>
+		WHERE M.`type` = 'P'AND M.deferred = 2
 			<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
-		     ( 
+		    AND ( 
 			     M.id LIKE CONCAT('%', #{keyword}, '%')
 				 OR M.name LIKE CONCAT('%', #{keyword}, '%')
 				 OR M.compName LIKE CONCAT('%', #{keyword}, '%')
@@ -135,7 +133,7 @@
 			</if>
 			
 			<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
-			 (   P.uciCode LIKE CONCAT('%', #{keyword}, '%')
+			AND (   P.uciCode LIKE CONCAT('%', #{keyword}, '%')
 				OR (SELECT compCode FROM photo WHERE uciCode = D.photo_uciCode) LIKE CONCAT('%', #{keyword}, '%')
 			 )
 			</if>
@@ -143,7 +141,6 @@
 			<if test="contractStart != null and contractEnd != null">
 			    AND D.regDate BETWEEN #{contractStart} AND #{contractEnd}
 			</if>
-		</where>
 		ORDER BY D.regDate DESC 
     </select>
 	
