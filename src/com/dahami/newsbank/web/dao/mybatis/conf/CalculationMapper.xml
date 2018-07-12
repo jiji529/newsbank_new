@@ -90,10 +90,10 @@
    	   U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, U.price,
    	   SM.seq, SM.`type`, SM.id, SM.admission, SM.withdraw, SM.activate, SM.compName
 		FROM calculations C
-		INNER JOIN member M ON C.id = M.id
-		INNER JOIN usageList U ON C.`usage` =  U.seq
-		INNER JOIN photo P ON C.uciCode = P.uciCode
-		INNER JOIN member SM ON P.member_seq = SM.seq
+		LEFT JOIN member M ON C.id = M.id
+		LEFT JOIN usageList U ON C.`usage` =  U.seq
+		LEFT JOIN photo P ON C.uciCode = P.uciCode
+		LEFT JOIN member SM ON P.member_seq = SM.seq
 		
 		<where>
 		    <if test="member_seqArr != null and member_seqArr.length != 0">
