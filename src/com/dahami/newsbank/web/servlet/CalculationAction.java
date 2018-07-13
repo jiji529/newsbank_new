@@ -244,10 +244,10 @@ public class CalculationAction extends NewsbankServletBase {
 							
 							String payTypeStr = dto.getPayType_Str(); // 결제종류
 							double totalSalesAccount = billingAmount - billingTax; // 총매출액
-							double salesAccount = (double) Math.round(Double.parseDouble(String.format("%.1f", totalSalesAccount * dRate))); // 회원사 매출액
+							double salesAccount = (double) Math.round(totalSalesAccount * dto.getRate() / 100); // 회원사 매출액
 							
-							int valueOfSupply = (int) Math.round(salesAccount * 0.9); // 공급가액
-							int addedTaxOfSupply = (int) Math.round(salesAccount * 0.1); // 공급부가세
+							int valueOfSupply = (int) Math.round(salesAccount * 90 / 100); // 공급가액
+							int addedTaxOfSupply = (int) Math.round(salesAccount * 10 / 100); // 공급부가세
 							double dahamiAccount = totalSalesAccount - salesAccount; // 다하미 매출액
 							
 							object.put("regDate", dto.getRegDate());
@@ -309,10 +309,10 @@ public class CalculationAction extends NewsbankServletBase {
 							
 							String payTypeStr = dto.getPayType_Str(); // 결제종류
 							double totalSalesAccount = billingAmount - billingTax; // 총매출액
-							double salesAccount = (double) Math.round(Double.parseDouble(String.format("%.1f", totalSalesAccount * dRate))); // 회원사 매출액
+							double salesAccount = (double) Math.round(totalSalesAccount * dto.getRate() / 100); // 회원사 매출액
 							
-							int valueOfSupply = (int) Math.round(salesAccount * 0.9); // 공급가액
-							int addedTaxOfSupply = (int) Math.round(salesAccount * 0.1); // 공급부가세
+							int valueOfSupply = (int) Math.round(salesAccount * 90 / 100); // 공급가액
+							int addedTaxOfSupply = (int) Math.round(salesAccount * 10 / 100); // 공급부가세
 							double dahamiAccount = totalSalesAccount - salesAccount; // 다하미 매출액
 							
 							obj.put("id", dto.getId());
