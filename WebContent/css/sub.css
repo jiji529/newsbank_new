@@ -93,7 +93,13 @@
 
 .view{ width:1240px; margin:0 auto;  text-align:left; font-family:'nanum',AppleSDGothicNeo, '맑은고딕','돋움',Dotum,AppleGothic,Arial,sans-serif;}
 .view .view_lt{ width:841px; float:left; padding-right: 20px;border-right:1px solid #e5e5e5; }
-.view .view_rt {width:399px; float:left; padding:50px 10px; }
+.view .view_rt {width:399px; float:left; padding-left:20px; }
+.view .view_rt .restriction{ float:left;}
+.view .view_rt .restriction .view_rt_top{border:none;}
+.view .view_rt .restriction .restriction_cont{float:left; background:#f8f6f3; width:100%; padding:10px; font-size:14px; line-height:24px; border:1px #ddd solid; color:#777; letter-spacing:-0.7px;}
+.view .view_rt .restriction .restriction_cont a{color:#333; text-decoration:underline;}
+
+
 .view .view_lt .navi{ width:100%; height:28px; float:left; margin-top:20px;}
 .view .view_lt .navi a.home{ float:left; padding-left:20px; font: 11px/1.3 돋움; color:#999; background:url(../images/view/ico_home.png) 0 0 no-repeat; margin-top:8px; margin-right:5px;}
 .view .view_lt .navi a.home:hover{ text-decoration:underline;}

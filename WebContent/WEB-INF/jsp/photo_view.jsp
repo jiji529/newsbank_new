@@ -709,6 +709,19 @@ if(!contentBlidF) {
 if(!contentBlidF) {
 %>
 		<div class="view_rt">
+			<!-- 제약사항 안내 (뉴시스 회원만) -->
+			<c:if test="${photoDTO.ownerName eq '뉴시스'}">
+				<div class="restriction">
+	 				<div class="view_rt_top">
+	 					<h3>제약사항 안내</h3>
+	 				</div>
+	 				<div class="restriction_cont">TV, 인터넷뉴스, 신문 등 <b class="color">언론 보도용으로는 판매가 불가</b>합니다. <br />
+	 					언론 보도 목적으로 사용해야 하는 경우는 <br />
+	 					<a href="https://www.newsbank.co.kr/contact" target="_blank">뉴스뱅크 고객센터</a>로 문의해주시기 바랍니다.</div>
+	 			</div>
+			</c:if>
+			
+ 			
 			<div class="view_rt_top">
 				<h3>이미지 구매하기</h3>
 				<a href="/price.info" class="price_info" target="_blank">가격확인</a>
