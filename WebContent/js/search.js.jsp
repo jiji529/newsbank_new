@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dahami.newsbank.web.service.bean.SearchParameterBean" %>
 <%@ page import="com.dahami.newsbank.dto.PhotoDTO" %>
+<%@ page import="com.dahami.newsbank.Constants" %>
 
 <%
 String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
@@ -188,6 +189,17 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		view_form.saleState.value = saleState;
 		view_form.size.value = size;
 		
+		var sort = "";
+<%
+	if(Constants.SEARCH_SORT_SCORE) {
+%>
+		if(keyword.length > 0) {
+			sort = "score:d";
+		}
+<%
+	}
+%>
+		
 		var searchParam = {
 				"keyword":keyword
 				, "pageNo":pageNo
@@ -203,6 +215,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				, "group":group
 				, "saleState":saleState
 				, "size":size
+				, "sort":sort
 		};
 		
 		console.log(searchParam);

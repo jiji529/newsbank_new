@@ -26,14 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
-import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.QueryRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -41,11 +38,11 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 import com.dahami.common.util.HttpUtil;
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.bean.SearchParameterBean;
 
-@SuppressWarnings("deprecation")
 public class SearchDAO extends DAOBase {
 	
 	private static final SimpleDateFormat fullDf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -112,8 +109,7 @@ public class SearchDAO extends DAOBase {
 						solrHostList.add(solrHost);
 					}
 				}
-				
-				collectionNameNewsbank = (String) conf.get("COLLECTION_NAME_NEWSBANK");
+				collectionNameNewsbank = (String) conf.get(Constants.TARGET_SOLR_PARAM);
 				
 				solrClients = new ArrayList<SolrClient>();
 				int poolSize = Integer.parseInt(conf.getProperty("SOLR_POOL"));
@@ -137,7 +133,7 @@ public class SearchDAO extends DAOBase {
 					}
 					else if(solrHostList.size() > 0) {
 						SolrClient solr = httpSolrBuilder
-								.withBaseSolrUrl(solrHostList.get(solrHostIdx++))
+								.withBaseSolrUrl(solrHostList.get(solrHostIdx++) + collectionNameNewsbank)
 								.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId,  solrPw))
 								.build();
 						solrClients.add(solr);
@@ -398,8 +394,13 @@ public class SearchDAO extends DAOBase {
 			}
 			else {
 				logger.debug("keyword: " + keyword);
-				qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode oldCode'}")
-					.append(normalizeKeywordStr(keyword))
+				if(Constants.SEARCH_FIELD_MORP) {
+					qBuf.append("_query_:\"{!edismax q.op=AND qf='morp_title morp_description morp_keyword shotperson copyright exif uciCode compCode oldCode'}");
+				}
+				else {
+					qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode oldCode'}");
+				}
+				qBuf.append(normalizeKeywordStr(keyword))
 					.append("\"");
 			}
 			query.setQuery(qBuf.toString());

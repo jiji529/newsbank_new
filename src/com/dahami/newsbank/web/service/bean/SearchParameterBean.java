@@ -168,7 +168,7 @@ public class SearchParameterBean {
 	private void setOrder(Map<String, String[]> params) {
 		String sort = null;
 		try{ sort = params.get("sort")[0];}catch(Exception e){}
-		if(sort == null) {
+		if(sort == null || sort.trim().length() == 0) {
 			sort = SORT_FLD_REGDATE;
 		}
 		if(sort.indexOf(":") == -1) {
@@ -209,7 +209,6 @@ public class SearchParameterBean {
 			sortOrder = ORDER.desc;
 			break;
 		}
-		
 	}
 	
 	public SearchParameterBean nextPage() {
