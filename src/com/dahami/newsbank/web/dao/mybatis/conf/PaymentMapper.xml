@@ -562,15 +562,16 @@
 	    resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
 	    
 	    SELECT PM.`seq` AS `paymentManage_seq`,
-			PM.`member_seq`, PM.`LGD_BUYER`,
-			PM.`LGD_BUYERID`, 
+		    PM.`member_seq`,
+			PM.`LGD_BUYER`,
+			PM.`LGD_BUYERID`,
+			PM.`LGD_PAYSTATUS`, 
 			PM.`LGD_RESPMSG`,
 			PM.`LGD_OID`,
-			PM.`LGD_PAYSTATUS`,
-			PM.`LGD_AMOUNT`, 		
+			PM.`LGD_PAYDATE`,
 			PM.`LGD_PAYTYPE`,
-			PM.`LGD_PAYDATE`  
-		FROM paymentDetail PD
+			SUM(PD.`price`) AS LGD_AMOUNT
+		FROM paymentDetail PD 
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
 		
@@ -607,7 +608,8 @@
 			    AND PM.LGD_PAYDATE BETWEEN #{start_date} AND #{end_date}
 			</if>
 		</where>
-		ORDER BY paymentManage_seq DESC
+		GROUP BY PM.`seq`, PM.`member_seq`, PM.`LGD_BUYER`, PM.`LGD_BUYERID`, PM.`LGD_PAYSTATUS`, PM.`LGD_RESPMSG`, PM.`LGD_OID`, PM.`LGD_PAYDATE`, PM.`LGD_PAYTYPE`
+		ORDER BY PM.`LGD_PAYDATE` DESC
 		<if test="startPage !=null and pageVol != null">
 		    LIMIT #{startPage}, #{pageVol}
 	    </if>
@@ -616,7 +618,7 @@
 	<!-- 온라인 결제 (총 갯수) -->	
 	<select id="onlinePayCount" parameterType="java.util.HashMap" 
 	    resultType="integer">
-		SELECT COUNT(PM.`seq`) as cnt
+		SELECT COUNT(DISTINCT(PM.`LGD_OID`)) as cnt
 		FROM paymentDetail PD
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
@@ -659,7 +661,7 @@
 	<!-- 온라인 결제 (총 합계 금액) -->
 	<select id="onlinePayPrice" parameterType="java.util.HashMap" 
 	    resultType="integer">
-		SELECT COALESCE(SUM(PM.`LGD_AMOUNT`), 0) as sum			
+		SELECT COALESCE(SUM(PD.`price`), 0) as sum			
 		FROM paymentDetail PD
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode

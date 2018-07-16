@@ -234,10 +234,15 @@
 		switch(name) {
 			case "startYear":
 				$("select[name=startMonth]").html(option);
+				var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 0, 1));
+				$("#contractStart").val(startDate);
 				break;
 			
 			case "endYear":
 				$("select[name=endMonth]").html(option);
+				var lastDay = (new Date(thisYear, thisMonth, 0)).getDate();
+				var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, month-1, lastDay));
+				$("#contractEnd").val(endDate);
 				break;
 		}
 	}
@@ -246,16 +251,29 @@
 		var month = $(object).val();
 		var name = $(object).attr("name");
 		var year;
+		var date = new Date();
+		
+		// 선택 년도가 금년이면 1월 1일 ~ 금년도 월까지 
 		
 		switch(name) {
 			case "startMonth": // 시작 날짜
 				year = $("select[name=startYear] option:selected").val();
+				if(month == "all") { // 전체는 1월부터 시작
+					month = 1;
+				}							
 				var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, month-1, 1));
 				$("#contractStart").val(startDate);
 				break;
 			
 			case "endMonth": // 마지막 날짜
 				year = $("select[name=endYear] option:selected").val();
+				if(month == "all") {
+					if(year == date.getFullYear()) {
+						month = date.getMonth() + 1;
+					}else if(year < date.getFullYear()) {
+						month = 12;
+					}
+				}
 				var lastDay = (new Date(year, month, 0)).getDate();
 				var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, month-1, lastDay));
 				$("#contractEnd").val(endDate);
