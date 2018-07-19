@@ -27,6 +27,16 @@ if(errMsg != null && errMsg.length() > 0) {
 	});
 
 	function searchTop() {
+		var oldKw = $("#keyword_current").val();
+		var newKw = $("#keyword").val();
+		if(oldKw == newKw) {
+			return;
+		}
+		
+		if($("input[name=pageNo]").length > 0) {
+			$("input[name=pageNo]").val(1);	
+		}
+		
 		if($("#serviceMode").length > 0) {
 			$("#keyword_current").val($("#keyword").val());
 			search();

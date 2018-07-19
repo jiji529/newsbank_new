@@ -49,35 +49,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		search();
 	});
 	
-	function checkNumber(event) {
-		event = event || window.event;
-		var keyID = (event.which) ? event.which : event.keyCode;
-		if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 ) 
-			|| (keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 || keyID == 16 || keyID == 35 || keyID == 36)		
-		)
-		{
-			return;
-		}
-		else if(keyID == 13) {
-			search();
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	function goPage(pageNo) {
-		if(pageNo < 1) {
-			pageNo = 1;
-		}
-		else if(pageNo > $("div .paging span.total").html()) {
-			pageNo = $("div .paging span.total").html();
-		}
-		$("input[name=pageNo]").val(pageNo);
-		search();
-	}
-	
 </script>
 </head>
 <body> 

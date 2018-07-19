@@ -247,7 +247,7 @@ $(document).on("click", ".btn_cal", function() {
 			<div class="result"><b class="count">0</b>개의 결과</div>
 			<div class="paging">
 				<a href="javascript:void(0)" class="prev" title="이전페이지"></a>
-				<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="search()"/>
+				<input type="text" name="pageNo" class="page" value="1" onkeydown="return checkNumber(event);" onblur="searchPage()"/>
 				<span>/</span>
 				<span class="total">0</span>
 				<a href="javascript:void(0)" class="next" title="다음페이지"></a>

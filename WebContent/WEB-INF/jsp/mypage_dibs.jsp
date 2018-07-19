@@ -34,7 +34,6 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js?v=20180406"></script>
-<!-- <script src="js/cms.js.jsp"></script> -->
 <script src="js/dibs.js.jsp?v=20180407"></script>
 
 <script type="text/javascript">

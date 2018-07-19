@@ -139,9 +139,52 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		});
 	}
 	
+	function checkNumber(event) {
+		event = event || window.event;
+		var keyID = (event.which) ? event.which : event.keyCode;
+		if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 ) 
+			|| (keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 || keyID == 16 || keyID == 35 || keyID == 36)		
+		)
+		{
+			return;
+		}
+		else if(keyID == 13) {
+			if(event.currentTarget.name = "pageNo") {
+				event.currentTarget.blur();
+			}
+			else {
+				search();
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function goPage(pageNo) {
+		if(pageNo < 1) {
+			pageNo = 1;
+		}
+		else if(pageNo > $("div .paging span.total").html()) {
+			pageNo = $("div .paging span.total").html();
+		}
+		$("input[name=pageNo]").val(pageNo);
+		search();
+	}
+	
 	<%-- 상황에 따른 서비스 CMS용 검색 호출 --%>
 	function search() {
 		searchInternal($("#serviceMode").length == 0);
+	}
+	
+	function searchPage() {
+		var pageNo = $("input[name=pageNo]").val().match(/[0-9]/g).join("");
+		if(Number(pageNo) > Number($("div .paging span.total").html())) {
+			alert("입력이 최대 페이지보다 큽니다");
+			return;
+		}
+		search();
 	}
 	
 	<%-- 통합(서비스/CMS) 검색 --%>
