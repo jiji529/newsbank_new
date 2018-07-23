@@ -239,9 +239,7 @@
 							<th>9월</th>
 							<th>10월</th>
 							<th>11월</th>
-							<th>
-								<p>12월</p>
-							</th>
+							<th>12월</th>
 							<th>합계</th>
 						</tr>
 					</thead>
@@ -376,7 +374,7 @@
 					<tbody>
 					</tbody>
 					<tfoot>
-						<td colspan="6">오프라인 매출액 합계</td>
+						<td colspan="7">오프라인 매출액 합계</td>
 						<td>0</td>
 						<td>0</td>
 						<td>0</td>
