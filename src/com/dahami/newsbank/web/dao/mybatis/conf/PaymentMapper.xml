@@ -550,7 +550,7 @@
 		    )
 		</if>
 		
-		<if test="status !=null">
+		<if test="status !=null and status != 'all'">
 			AND D.`status`= #{status}
 		</if>
 		
