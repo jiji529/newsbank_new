@@ -47,7 +47,7 @@
 		U.`division1`, U.`division2`,
 		U.`division3`, U.`division4`,
 		U.`usageDate`,
-		P.`copyright`,
+		mp.`compName` AS copyright,
 		mp.`preRate`,
 		mp.`postRate`
 		FROM
@@ -95,7 +95,7 @@
 		<if test="media !=null">
 			AND P.`member_seq` IN (${media})
 		</if>
-		ORDER BY P.`copyright`,M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
+		ORDER BY mp.`compName`, M.`LGD_PAYTYPE`,M.`LGD_PAYDATE` ASC
 	</select>
 
 
