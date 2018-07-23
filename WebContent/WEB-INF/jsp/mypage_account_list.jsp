@@ -208,7 +208,23 @@
 		</div>
 		<div class="account_list">
 			<div class="tb_total_account" style="display: block">
-				<table cellpadding="0" cellspacing="0" class="tb03 ">
+				<table cellpadding="0" cellspacing="0" class="tb03 minitb">
+						<colgroup>
+							<col width="30" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="40" />
+							<col width="80" />
+						</colgroup>
 					<thead>
 						<tr>
 							<th>-</th>

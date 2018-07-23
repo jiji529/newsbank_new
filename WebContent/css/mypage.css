@@ -106,7 +106,9 @@
 
 .mypage .tb03 { border-top:2px #555b62 solid; border-bottom:1px #999 solid; }
 .mypage .tb03 th { padding: 10px 20px; color:#333; font-size: 14px; border-top: 1px solid #dce0e9; height:45px; background:#f6f6f6; }
-.mypage .tb03 td { padding: 10px 30px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; }
+.mypage .tb03 td { padding: 10px 20px; border-top: 1px solid #dce0e9; font-size:13px; line-height: 18px; }
+.mypage .tb03.minitb td { padding:10px 5px; max-width:100px; word-break:break-all; }
+
 .mypage .tb03 td a { color:#000;}
 .mypage .tb03 td a:hover { text-decoration:underline;}
 .mypage .tb03 tfoot td { font-weight:bold; color:#f79320; font-size:14px; border-top:1px #ccc solid;  }
