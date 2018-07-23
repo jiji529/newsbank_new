@@ -39,6 +39,7 @@
 		resultType="java.util.HashMap">
 
 		SELECT M.`LGD_BUYER`,
+		M.`LGD_BUYERID`, mm.compName AS LGD_BUYER_COMPNAME,
 		M.`LGD_OID`,
 		M.`LGD_PAYTYPE`,
 		M.`LGD_PAYDATE`,

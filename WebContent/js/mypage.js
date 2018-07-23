@@ -844,10 +844,10 @@ $(document).ready(function() {
 							tb_offline_account += "<tr>";
 							tb_offline_account += "<td>" + value.LGD_PAYDATE.substr(0, 4) + '-' + value.LGD_PAYDATE.substr(4, 2) + '-' + value.LGD_PAYDATE.substr(6, 2) + "</td>";
 							tb_offline_account += "<td>" + value.LGD_BUYER + "</td>";
+							tb_offline_account += "<td>" + value.LGD_BUYERID + "/" + value.LGD_BUYER_COMPNAME + "</td>";
 							tb_offline_account += "<td>" + value.photo_uciCode + "</td>";
 							tb_offline_account += "<td>" + value.usage + "</td>";
 							tb_offline_account += "<td>" + value.copyright + "</td>";
-							tb_offline_account += "<td>무통장입금</td>";
 							tb_offline_account += "<td>" + PAYTYPE.toLocaleString() + "</td>";
 							tb_offline_account += "<td>" + customs_value.toLocaleString() + "</td>";
 							tb_offline_account += "<td>" + added_tax.toLocaleString() + "</td>";
@@ -925,7 +925,7 @@ $(document).ready(function() {
 					$('.tb_online_account tfoot ').empty();
 					$('.tb_online_account tfoot ').html(total_online_area);
 					var total_offline_area = "<tr>";
-					total_offline_area += "<td colspan=\"7\">오프라인 매출액 합계</td>";
+					total_offline_area += "<td colspan=\"6\">오프라인 매출액 합계</td>";
 					total_offline_area += "<td>" + tb_offline_total_cv.toLocaleString() + "</td>";
 					total_offline_area += "<td>" + tb_offline_total_at.toLocaleString() + "</td>";
 					total_offline_area += "<td>" + tb_offline_total_ba.toLocaleString() + "</td>";

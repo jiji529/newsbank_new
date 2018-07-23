@@ -184,7 +184,7 @@
 								<option value="SC0010">카드결제</option>
 								<option value="SC0040">무통장입금</option>
 								<option value="SC0030">실시간 계좌이체</option>
-								<option value="SC9999">오프라인 세금계산서 발행</option>
+								<option value="SC9999">세금계산서</option>
 							</select>
 						</td>
 					</tr>
@@ -355,7 +355,7 @@
 							<th>사진ID</th>
 							<th>사용용도</th>
 							<th>판매자</th>
-							<th colspan="2">결제종류</th>
+							<th>결제종류</th>
 							<th>과세금액</th>
 							<th>과세부가세</th>
 							<th>결제금액</th>
@@ -375,7 +375,7 @@
 					<tbody>
 					</tbody>
 					<tfoot>
-						<td colspan="7">오프라인 매출액 합계</td>
+						<td colspan="6">오프라인 매출액 합계</td>
 						<td>0</td>
 						<td>0</td>
 						<td>0</td>
