@@ -34,7 +34,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180230"></script>
+<script src="js/mypage.js?v=20180304"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -363,7 +363,7 @@
 								<p>회원사</p>
 								<p>매출액</p>
 							</th>
-							<th>공금가액</th>
+							<th>공급가액</th>
 							<th>공급부가세</th>
 							<th>
 								<p>다하미</p>
@@ -389,7 +389,7 @@
 				<table class="tb01 " cellpadding="0" cellspacing="0" style="float: right; width: 400px; margin-top: 60px;">
 					<tbody>
 						<tr>
-							<td>공금가액</td>
+							<td>공급가액</td>
 							<td>0</td>
 						</tr>
 						<tr>

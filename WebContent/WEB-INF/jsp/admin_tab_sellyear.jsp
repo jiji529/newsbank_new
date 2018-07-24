@@ -84,17 +84,24 @@
 		var adjMaster = $("#adjMaster").val(); // 정산매체
 		var adjSlave = $("#adjSlave").val(); // 피정산매체
 		
-		// 피정산 매체 선택여부 확인
-		if(adjSlave == " ") { // 없음 or 선택안함
-			seqArr = adjMaster;
-		}else if(adjSlave == "all") { // 전체 선택 (주정산 + 피정산 매체 모두 포함)
-			var adjSlave_arr = $("#adjSlave_arr").val();
-			var split_arr = adjSlave_arr.split(",");
-			split_arr.push(adjMaster);
-			seqArr = split_arr.join(",");
-		}else { // 개별선택
-			seqArr = adjSlave;
+		console.log("adjMaster : " + adjMaster + " / adjSlave : " + adjSlave);
+		
+		if(adjMaster == "all") { // 정산 매체 선택 시
+			seqArr = '';
+		}else{
+			// 피정산 매체 선택여부 확인
+			if(adjSlave == " ") { // 없음 or 선택안함
+				seqArr = adjMaster;
+			}else if(adjSlave == "all") { // 전체 선택 (주정산 + 피정산 매체 모두 포함)
+				var adjSlave_arr = $("#adjSlave_arr").val();
+				var split_arr = adjSlave_arr.split(",");
+				split_arr.push(adjMaster);
+				seqArr = split_arr.join(",");
+			}else { // 개별선택
+				seqArr = adjSlave;
+			}
 		}
+		
 		
 		var param = {
 				"keywordType":keywordType,
@@ -105,7 +112,7 @@
 				"seqArr" : seqArr,
 				"payType" : paytype
 		};		
-		//console.log(param);
+		console.log(param);
 		
 		// 초기화
 		$("#sell_thead").empty();

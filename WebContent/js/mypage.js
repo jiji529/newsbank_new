@@ -696,19 +696,66 @@ $(document).ready(function() {
 
 	if ($(".tb_total_account").length > 0) {
 		var now = new Date();
+		var media = new Array();
+		$("input[name=media_code]:checked").each(function() {
+			media.push($(this).val());
+		});
+		console.log(media);
+		
+		var param = {
+			cmd : 'total',
+			media_code : media.join(","),
+			start_date : now.getFullYear() + "0101",
+			end_date : now.getFullYear() + "1231"	
+		};
+		console.log(param);
+		
 		$.ajax({
 			url : "/account.api",
 			type : "post",
-			data : ({
-				cmd : 'total',
-				start_date : now.getFullYear() + "0101",
-				end_date : now.getFullYear() + "1231"
-			}),
+			data : param,
 			dataType : "json",
 			success : function(data) {
+				console.log(data);
 				var offline_list = new Array();
 				var online_list = new Array();
 				if (data.success) {
+					var onlieTotalPay = 0;
+					var offlieTotalPay = 0;
+					
+					$.each(data.data, function(key, value) {
+						var M = value.YearOfMonth.split("-");						
+						if (value.type == 0) { // online
+							$('.tb_total_account tbody tr:eq(0) td:eq(' + M[1] + ')').text(value.totalPrice.toLocaleString());
+							onlieTotalPay += value.totalPrice;
+						} else if(value.type == 1) { // offline
+							$('.tb_total_account tbody tr:eq(1) td:eq(' + M[1] + ')').text(value.totalPrice.toLocaleString());
+							offlieTotalPay += value.totalPrice;
+						}
+					});
+					
+					$('.tb_total_account tbody tr:eq(0) td:eq(13)').text(onlieTotalPay.toLocaleString());
+					$('.tb_total_account tbody tr:eq(1) td:eq(13)').text(offlieTotalPay.toLocaleString());
+					$('.calculate_info_area span:eq(1)').text(data.data.length);
+					$('.calculate_info_area span:eq(3)').text((onlieTotalPay+offlieTotalPay).toLocaleString());
+					
+					$('.tb_total_account tfoot td:not(:eq(0))').each(function(i) {
+						var onPay = $('.tb_total_account tbody tr:eq(0) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
+						var offPay = $('.tb_total_account tbody tr:eq(1) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
+
+						if (!Number.isInteger(Number.parseInt(onPay)))
+							onPay = 0;
+						if (!Number.isInteger(Number.parseInt(offPay)))
+							offPay = 0;
+						var totalPay = Number.parseInt(onPay) + Number.parseInt(offPay);
+						if (totalPay > 0) {
+							$(this).text(totalPay.toLocaleString());
+						}
+
+					});
+				}
+				
+				/*if (data.success) {
 					var onlieTotalPay = 0;
 					var offlieTotalPay = 0;
 					$.each(data.data, function(key, value) {
@@ -741,7 +788,7 @@ $(document).ready(function() {
 
 					});
 
-				}
+				}*/
 			}
 		});
 	}
@@ -770,6 +817,7 @@ $(document).ready(function() {
 		}
 		var name = $("input[name=keyword]").val(); // 아이디/이름/회사명
 		var pay = $("select[name=payType]").val(); // 결제구분
+		
 		$.ajax({
 			url : "/account.api",
 			type : "post",
@@ -777,6 +825,7 @@ $(document).ready(function() {
 			dataType : "json",
 			success : function(data) {
 				console.log(data);
+				
 				// $('.account_list').empty();
 				if (data.success) {
 					var totalPay = 0;
@@ -805,13 +854,17 @@ $(document).ready(function() {
 
 					$.each(data.data, function(key, value) {
 						totalPay += value.price;
+						
+//						console.log(value.price, value.rate, value.LGD_PAYTYPE);
+//						console.log(value.LGD_PAYTYPE, value.LGD_BUYER, value.LGD_BUYERID, value.LGD_BUYER_COMPNAME);
+//						console.log(value.photo_uciCode, value.usage, value.copyright, value.LGD_PAYDATE);
 
 						var billing_amount = value.price; // 결제금액
 						var added_tax = Math.round(billing_amount * 0.1); // 과세부가세
 						var customs_value = Math.round(billing_amount * 0.9); // 과세금액
 						var billing_tax = 0; // 빌링수수료
 
-						var rate = value.preRate;
+						var rate = value.rate;
 						var PAYTYPE = "";
 						switch (value.LGD_PAYTYPE) {
 						case "SC0010":
@@ -828,7 +881,8 @@ $(document).ready(function() {
 							break;
 						case "SC9999":
 							PAYTYPE = "세금계산서";
-							rate = value.postRate;
+							//rate = value.rate
+							//rate = value.postRate;
 							break;
 						}
 						billing_tax = Math.round(billing_tax);
@@ -846,7 +900,7 @@ $(document).ready(function() {
 							tb_offline_account += "<td>" + value.LGD_BUYER + "</td>";
 							tb_offline_account += "<td>" + value.LGD_BUYERID + "/" + value.LGD_BUYER_COMPNAME + "</td>";
 							tb_offline_account += "<td>" + value.photo_uciCode + "</td>";
-							tb_offline_account += "<td>" + value.usage + "</td>";
+							tb_offline_account += "<td>" + value.usageName + "</td>";
 							tb_offline_account += "<td>" + value.copyright + "</td>";
 							tb_offline_account += "<td>" + PAYTYPE.toLocaleString() + "</td>";
 							tb_offline_account += "<td>" + customs_value.toLocaleString() + "</td>";
@@ -872,7 +926,7 @@ $(document).ready(function() {
 							tb_online_account += "<td>" + value.LGD_PAYDATE.substr(0, 4) + '-' + value.LGD_PAYDATE.substr(4, 2) + '-' + value.LGD_PAYDATE.substr(6, 2) + "</td>";
 							tb_online_account += "<td>" + value.LGD_BUYER + "</td>";
 							tb_online_account += "<td>" + value.photo_uciCode + "</td>";
-							tb_online_account += "<td>" + value.usage + "</td>";
+							tb_online_account += "<td>" + value.usageName + "</td>";
 							tb_online_account += "<td>" + value.copyright + "</td>";
 							tb_online_account += "<td>" + PAYTYPE.toLocaleString() + "</td>";
 							tb_online_account += "<td>" + customs_value.toLocaleString() + "</td>";
@@ -925,7 +979,7 @@ $(document).ready(function() {
 					$('.tb_online_account tfoot ').empty();
 					$('.tb_online_account tfoot ').html(total_online_area);
 					var total_offline_area = "<tr>";
-					total_offline_area += "<td colspan=\"6\">오프라인 매출액 합계</td>";
+					total_offline_area += "<td colspan=\"7\">오프라인 매출액 합계</td>";
 					total_offline_area += "<td>" + tb_offline_total_cv.toLocaleString() + "</td>";
 					total_offline_area += "<td>" + tb_offline_total_at.toLocaleString() + "</td>";
 					total_offline_area += "<td>" + tb_offline_total_ba.toLocaleString() + "</td>";

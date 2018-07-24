@@ -24,7 +24,9 @@ import org.apache.xmlbeans.impl.inst2xsd.SalamiSliceStrategy;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
+import com.dahami.newsbank.web.dto.CalculationDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -77,8 +79,13 @@ public class AccountJSON extends NewsbankServletBase {
 		String paytype = request.getParameter("paytype");
 		String media_code = request.getParameter("media_code");
 		String result_type = request.getParameter("cmd");
-
+		
 		String[] media = request.getParameterValues("media_code");
+		/*if(media_code.indexOf(",") != -1) {
+			media = media_code.split(",");
+		}else{
+			media = request.getParameterValues("media_code"); 
+		}*/
 		media_code = StringUtils.join(media, ",");
 
 		List<Map<String, Object>> searchList = new ArrayList<Map<String, Object>>();
@@ -118,16 +125,23 @@ public class AccountJSON extends NewsbankServletBase {
 				params.put("paytype", paytype);
 			}
 			if (media_code != null && media_code.length() > 0) {
-				params.put("media", media_code);
+				params.put("media", media);
 			}
 
 			PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
-
+			CalculationDAO calculationDAO = new CalculationDAO(); // 정산정보 연결
+			
 			if (result_type != null && result_type.equalsIgnoreCase("total")) {
-				searchList = paymentDAO.selectTotalPrice(params); // 전체
+				searchList = calculationDAO.mypageCal(params); // 전체
 			} else {
-				searchList = paymentDAO.searchAccountList(params); // 개별
+				searchList = calculationDAO.mypageCalList(params); // 개별
 			}
+
+//			if (result_type != null && result_type.equalsIgnoreCase("total")) {
+//				searchList = paymentDAO.selectTotalPrice(params); // 전체
+//			} else {
+//				searchList = paymentDAO.searchAccountList(params); // 개별
+//			}
 
 			if (searchList != null) {
 				success = true;
