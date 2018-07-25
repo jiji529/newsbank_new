@@ -35,6 +35,15 @@
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/mypage.js?v=20180304"></script>
+
+<script>
+	$(document).on("keypress", "#keyword", function(e) {
+		if (e.keyCode == 13) { // 엔터
+			$("#frmAccountList").submit();
+		}
+	});
+</script>
+
 </head>
 <body>
 	<div class="wrap">
@@ -172,7 +181,7 @@
 					<tr>
 						<th>아이디/이름/회사명</th>
 						<td>
-							<input name="keyword" type="text" class="inp_txt" size="50" />
+							<input name="keyword" id="keyword" type="text" class="inp_txt" size="50" />
 						</td>
 					</tr>
 					<tr>

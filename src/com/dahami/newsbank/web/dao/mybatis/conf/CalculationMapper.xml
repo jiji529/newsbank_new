@@ -191,20 +191,16 @@
 	</resultMap>
 	
    	<!-- 정산 내역 월별통계 (마이페이지) -->
-   	<select id="mypageCal" resultMap="calculationMonthResult" parameterType="java.util.HashMap">
+   	<select id="monthlyStats" resultMap="calculationMonthResult" parameterType="java.util.HashMap">
    	    SELECT DATE_FORMAT(c.regDate, '%Y-%m') AS YearOfMonth, 
-		SUM(price) AS totalPrice, c.`type`
+		SUM(price) AS price, c.`type`
 		FROM calculations c
 		INNER JOIN photo p ON c.uciCode = p.uciCode
 		INNER JOIN member m on c.id = m.id
 		<where>
 		    <if test="media != null">
-			    <!-- <foreach item="slaveSeq" collection="media" index="idx" open="(" separator="OR" close=")">
+			    <foreach item="slaveSeq" collection="media" index="idx" open="(" separator="OR" close=")">
 		            p.member_seq = #{slaveSeq} 
-		        </foreach> -->
-		        p.member_seq IN 
-		        <foreach item="slaveSeq" collection="media" index="idx" open="(" separator="," close=")">
-		             #{slaveSeq}
 		        </foreach>
 	        </if>
 		    <if test="start_date != null and end_date != null">
@@ -228,7 +224,7 @@
    	</select>
    	
    	<!-- 정산 내역 상세내역 (마이페이지) -->
-   	<select id="mypageCalList" resultMap="calculationDetailResult" parameterType="java.util.HashMap"> 
+   	<select id="statsList" resultMap="calculationDetailResult" parameterType="java.util.HashMap"> 
    	   SELECT C.seq, C.id AS LGD_BUYERID, M.name AS LGD_BUYER, M.compName AS LGD_BUYER_COMPNAME, SM.name as copyright, P.member_seq, C.`payType` AS LGD_PAYTYPE,  
    	   C.`uciCode` AS photo_uciCode, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, DATE_FORMAT(C.`regDate`, '%Y%m%d') AS LGD_PAYDATE,
    	   U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, U.price,

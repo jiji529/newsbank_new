@@ -85,20 +85,20 @@ public class CalculationDAO extends DAOBase {
 	}
 	
 	/**
-	 * @methodName : mypageCal
+	 * @methodName : monthlyStats
 	 * @author : Lee.GwangHo
-	 * @date : 2018. 03. 22. 오후 01:33:43
+	 * @date : 2018. 07. 22. 오후 01:33:43
 	 * @methodCommet: 마이페이지 정산 내역 통계
 	 * @return
-	 * @returnType : List<CalculationDTO>
+	 * @returnType : List<Map<String, Object>>
 	 */ 
-	public List<Map<String, Object>> mypageCal(Map<String, Object> param) {
+	public List<Map<String, Object>> monthlyStats(Map<String, Object> param) {
 		SqlSession session = null;
 		List<Map<String, Object>> result = new ArrayList<>();
 		
 		try {
 			session = sf.getSession();
-			return session.selectList("calculation.mypageCal", param);
+			return session.selectList("calculation.monthlyStats", param);
 		} catch (Exception e) {
 			logger.warn("", e);
 			return null;
@@ -109,41 +109,20 @@ public class CalculationDAO extends DAOBase {
 			}
 		}
 	}
-	
-	/*public static String getQuery(SqlSession sqlSession, String queryId , Object sqlParam){
-
-		BoundSql boundSql = sqlSession.getConfiguration().getMappedStatement(queryId).getSqlSource().getBoundSql(sqlParam);
-		String query1 = boundSql.getSql();
-		Object paramObj = boundSql.getParameterObject();
-
-		if(paramObj != null){              // 파라미터가 아무것도 없을 경우
-			List<ParameterMapping> paramMapping = boundSql.getParameterMappings();
-			for(ParameterMapping mapping : paramMapping){
-				String propValue = mapping.getProperty();       
-				query1=query1.replaceFirst("\\?", "#{"+propValue+"}");
-			}
-		}
-		return query1; 
-	}
-	
-	public static String getQuery_Str(SqlSession sqlSession, String queryId , Object sqlParam){
-		return sqlSession.getConfiguration().getMappedStatement(queryId).getSqlSource().getBoundSql(sqlParam).getSql();
-	}*/
-
 
 	/**
-	 * @methodName : mypageCalList
+	 * @methodName : statsList
 	 * @author : Lee.GwangHo
-	 * @date : 2018. 03. 20. 오후 03:01:43
+	 * @date : 2018. 07. 22. 오후 03:01:43
 	 * @methodCommet: 정산내역 목록
 	 * @return
-	 * @returnType : List<CalculationDTO>
+	 * @returnType : List<Map<String, Object>>
 	 */ 
-	public List<Map<String, Object>> mypageCalList(Map<String, Object> param) {
+	public List<Map<String, Object>> statsList(Map<String, Object> param) {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-			return session.selectList("calculation.mypageCalList", param);
+			return session.selectList("calculation.statsList", param);
 		} catch (Exception e) {
 			logger.warn("", e);
 			return null;

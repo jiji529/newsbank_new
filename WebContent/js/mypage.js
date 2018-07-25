@@ -696,19 +696,19 @@ $(document).ready(function() {
 
 	if ($(".tb_total_account").length > 0) {
 		var now = new Date();
-		var media = new Array();
-		$("input[name=media_code]:checked").each(function() {
-			media.push($(this).val());
+		var media = []; // 선택 매체 코드
+		$("input[name=media_code]").each(function() {
+			if ($(this).is(":checked")) {
+				media.push($(this).val());
+			}
 		});
-		console.log(media);
 		
 		var param = {
-			cmd : 'total',
-			media_code : media.join(","),
-			start_date : now.getFullYear() + "0101",
-			end_date : now.getFullYear() + "1231"	
+			'cmd' : 'total',
+			'media_code' : media,
+			'start_date' : now.getFullYear() + "0101",
+			'end_date' : now.getFullYear() + "1231"	
 		};
-		console.log(param);
 		
 		$.ajax({
 			url : "/account.api",
@@ -726,11 +726,11 @@ $(document).ready(function() {
 					$.each(data.data, function(key, value) {
 						var M = value.YearOfMonth.split("-");						
 						if (value.type == 0) { // online
-							$('.tb_total_account tbody tr:eq(0) td:eq(' + M[1] + ')').text(value.totalPrice.toLocaleString());
-							onlieTotalPay += value.totalPrice;
+							$('.tb_total_account tbody tr:eq(0) td:eq(' + M[1] + ')').text(value.price.toLocaleString());
+							onlieTotalPay += value.price;
 						} else if(value.type == 1) { // offline
-							$('.tb_total_account tbody tr:eq(1) td:eq(' + M[1] + ')').text(value.totalPrice.toLocaleString());
-							offlieTotalPay += value.totalPrice;
+							$('.tb_total_account tbody tr:eq(1) td:eq(' + M[1] + ')').text(value.price.toLocaleString());
+							offlieTotalPay += value.price;
 						}
 					});
 					

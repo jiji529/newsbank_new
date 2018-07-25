@@ -81,11 +81,10 @@ public class AccountJSON extends NewsbankServletBase {
 		String result_type = request.getParameter("cmd");
 		
 		String[] media = request.getParameterValues("media_code");
-		/*if(media_code.indexOf(",") != -1) {
-			media = media_code.split(",");
-		}else{
-			media = request.getParameterValues("media_code"); 
-		}*/
+		if(media == null) {
+			// 정산내역 통계 로드 시
+			media = request.getParameterValues("media_code[]");
+		}
 		media_code = StringUtils.join(media, ",");
 
 		List<Map<String, Object>> searchList = new ArrayList<Map<String, Object>>();
@@ -132,9 +131,9 @@ public class AccountJSON extends NewsbankServletBase {
 			CalculationDAO calculationDAO = new CalculationDAO(); // 정산정보 연결
 			
 			if (result_type != null && result_type.equalsIgnoreCase("total")) {
-				searchList = calculationDAO.mypageCal(params); // 전체
+				searchList = calculationDAO.monthlyStats(params); // 전체
 			} else {
-				searchList = calculationDAO.mypageCalList(params); // 개별
+				searchList = calculationDAO.statsList(params); // 개별
 			}
 
 //			if (result_type != null && result_type.equalsIgnoreCase("total")) {
