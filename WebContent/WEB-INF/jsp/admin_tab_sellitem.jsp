@@ -34,7 +34,7 @@
 					
 					if(result.length > 0) {
 						// 피정산 매체목록이 존재할 경우만 추가
-						html += '<option value="all" selected="selected">피정산 매체 전체</option>';
+						html += '<option value="all" selected="selected">정산 매체 전체</option>';
 						html += '<option value=" ">' + masterName + '</option>';
 						
 						$(result).each(function(key, val){
@@ -87,12 +87,20 @@
 		var seqArr = 0; // 피정산 매체
 		
 		// 피정산 매체 선택여부 확인
-		if(adjSlave == " ") { // 없음 or 선택안함
-			seqArr = adjMaster;
-		}else if(adjSlave == "all") { // 전체 선택
-			seqArr = $("#adjSlave_arr").val();
-		}else { // 개별선택
-			seqArr = adjSlave;
+		if(adjMaster == "all") { // 정산 매체 선택 시
+			seqArr = '';
+		}else{
+			// 피정산 매체 선택여부 확인
+			if(adjSlave == " ") { // 없음 or 선택안함
+				seqArr = adjMaster;
+			}else if(adjSlave == "all") { // 전체 선택 (주정산 + 피정산 매체 모두 포함)
+				var adjSlave_arr = $("#adjSlave_arr").val();
+				var split_arr = adjSlave_arr.split(",");
+				split_arr.push(adjMaster);
+				seqArr = split_arr.join(",");
+			}else { // 개별선택
+				seqArr = adjSlave;
+			}
 		}
 		
 		var param = {
