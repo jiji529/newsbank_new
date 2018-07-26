@@ -14,6 +14,7 @@
 	//정산매체 선택에 따른 피정산 매체 목록
 	$(document).on("change", "#adjMaster", function() {
 		var master = $(this).val();
+		var masterName = $("#adjMaster option:selected").text();
 		
 		$("#adjSlave").children().remove();
 		var html = "";
@@ -34,7 +35,7 @@
 					if(result.length > 0) {
 						// 피정산 매체목록이 존재할 경우만 추가
 						html += '<option value="all" selected="selected">피정산 매체 전체</option>';
-						html += '<option value=" ">선택안함</option>';
+						html += '<option value=" ">' + masterName + '</option>';
 						
 						$(result).each(function(key, val){
 							html += '<option value="' + val.seq + '">' + val.name + '</option>';
@@ -387,7 +388,6 @@
 
 				</select> <select name="" id="adjSlave" class="inp_txt" style="width: 150px;">
 						<option value="all" selected="selected">피정산 매체 전체</option>
-						<option value=" ">선택안함</option>
 				</select> <input type="hidden" id="adjSlave_arr" value=""></td>
 			</tr>
 			<tr>

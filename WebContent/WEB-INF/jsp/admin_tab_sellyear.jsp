@@ -14,9 +14,11 @@
 		search();
 	});
 	
+	
 	//정산매체 선택에 따른 피정산 매체 목록
 	$(document).on("change", "#adjMaster", function() {
 		var master = $(this).val();
+		var masterName = $("#adjMaster option:selected").text();
 		
 		$("#adjSlave").children().remove();
 		var html = "";
@@ -33,11 +35,10 @@
 				success: function(data){ 
 					var result = data.result;
 					
-					
 					if(result.length > 0) {
 						// 피정산 매체목록이 존재할 경우만 추가
-						html += '<option value="all" selected="selected">피정산 매체 전체</option>';
-						html += '<option value=" ">선택안함</option>';
+						html += '<option value="all" selected="selected">정산 매체 전체</option>';
+						html += '<option value=" ">' + masterName + '</option>';
 						
 						$(result).each(function(key, val){
 							html += '<option value="' + val.seq + '">' + val.name + '</option>';
@@ -84,8 +85,6 @@
 		var adjMaster = $("#adjMaster").val(); // 정산매체
 		var adjSlave = $("#adjSlave").val(); // 피정산매체
 		
-		console.log("adjMaster : " + adjMaster + " / adjSlave : " + adjSlave);
-		
 		if(adjMaster == "all") { // 정산 매체 선택 시
 			seqArr = '';
 		}else{
@@ -102,7 +101,6 @@
 			}
 		}
 		
-		
 		var param = {
 				"keywordType":keywordType,
 				"cmd" : "S",
@@ -112,7 +110,6 @@
 				"seqArr" : seqArr,
 				"payType" : paytype
 		};		
-		console.log(param);
 		
 		// 초기화
 		$("#sell_thead").empty();
@@ -130,10 +127,9 @@
 			url: "/calculation.api",
 			dataType: "json",
 			data: param,
-			success: function(data) { //console.log(data.result);
+			success: function(data) { 
 				var result = data.result;
 				var monthlyTotal = 0; // 월별 합계금액
-				
 				
 				$(result).each(function(key, val){
 					var price = val.price;
@@ -239,7 +235,6 @@
 
 				</select> <select name="" id="adjSlave" class="inp_txt" style="width: 150px;">
 						<option value="all" selected="selected">피정산 매체 전체</option>
-						<option value=" ">선택안함</option>
 				</select> <input type="hidden" id="adjSlave_arr" value=""></td>
 			</tr>
 			<tr>
