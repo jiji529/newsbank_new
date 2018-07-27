@@ -79,13 +79,14 @@ public class AccountJSON extends NewsbankServletBase {
 		String paytype = request.getParameter("paytype");
 		String media_code = request.getParameter("media_code");
 		String result_type = request.getParameter("cmd");
-		
-		String[] media = request.getParameterValues("media_code");
-		if(media == null) {
-			// 정산내역 통계 로드 시
+		String[] media = {};
+		if(media_code == null) {
 			media = request.getParameterValues("media_code[]");
-		}
-		media_code = StringUtils.join(media, ",");
+			media_code = StringUtils.join(media, ",");
+		}else {
+			media = media_code.split(",");
+			media_code = StringUtils.join(media, ",");
+		}		
 
 		List<Map<String, Object>> searchList = new ArrayList<Map<String, Object>>();
 		
@@ -131,7 +132,68 @@ public class AccountJSON extends NewsbankServletBase {
 			CalculationDAO calculationDAO = new CalculationDAO(); // 정산정보 연결
 			
 			if (result_type != null && result_type.equalsIgnoreCase("total")) {
-				searchList = calculationDAO.monthlyStats(params); // 전체
+				//searchList = calculationDAO.monthlyStats(params); // 전체
+				List<Map<String, Object>> tempList = new ArrayList<Map<String, Object>>();
+				tempList = calculationDAO.monthlyStats(params);
+				
+				for(int idx=0; idx<tempList.size(); idx++) {
+					boolean isInsert = true; // 추가여부
+					String YearOfMonth = tempList.get(idx).get("YearOfMonth").toString();
+					String payType = tempList.get(idx).get("payType").toString();
+					int price = (int) tempList.get(idx).get("price");
+					int type = (int) tempList.get(idx).get("type");
+					double rate = (double) tempList.get(idx).get("rate");
+					int billing_tax = 0; // 빌링수수료
+					
+					switch(payType) {
+						case "SC0010":
+							billing_tax =  (int) Math.round(price * 0.00363);
+							break;
+						case "SC0040":
+							billing_tax = 440;
+							break;
+						case "SC0030":
+							billing_tax = (int) Math.round(price * 0.0022);
+							break;
+						case "SC9999":
+							break;
+					}
+					
+					int total_sales_account = price - billing_tax; // 총매출액 
+					int sales_account = (int) Math.round(total_sales_account * rate / 100); // 회원사
+					
+					Map<String, Object> object = new HashMap<>();
+					object.put("YearOfMonth", YearOfMonth);
+					object.put("price", sales_account);
+					object.put("type", type);
+					
+					if(searchList.isEmpty()) {
+						searchList.add(object);
+						
+					}else {
+						
+						for(int jx=0; jx<searchList.size(); jx++) {
+							if(searchList.get(jx).get("YearOfMonth").equals(YearOfMonth) && searchList.get(jx).get("type").equals(type)) {
+								// 날짜와 타입이 같은 값이 이미 존재하면 기존의 값에 더하기
+								
+								isInsert = !isInsert;
+								int sumPrice = (int) searchList.get(jx).get("price") + sales_account;
+								Map<String, Object> changeObject = new HashMap<>();
+								changeObject.put("YearOfMonth", YearOfMonth);
+								changeObject.put("price", sumPrice);
+								changeObject.put("type", type);
+								searchList.set(jx, changeObject);
+							}else {
+								// 날짜&타입이 같지 않다면 
+							}
+						}
+						
+						if(isInsert) {
+							searchList.add(object);
+						}
+						
+					}
+				}
 			} else {
 				searchList = calculationDAO.statsList(params); // 개별
 			}
@@ -154,153 +216,163 @@ public class AccountJSON extends NewsbankServletBase {
 		
 		if(cmd.is3("excel")) {
 			// 엑셀 다운로드
-			int idx = 0;
 			
-			for(Map<String, Object> object : searchList) {
-				try {
+			if (result_type != null && result_type.equalsIgnoreCase("total")) { 
+				// == 연도별 정산내역 엑셀 다운로드 ==
+				int idx = 0;
+				for(Map<String, Object> object : searchList) {
 					DecimalFormat df = new DecimalFormat("#,##0");
-					SimpleDateFormat dt = new SimpleDateFormat("yyyyMMddHHmmss");
-					Date paydate = dt.parse(searchList.get(idx).get("LGD_PAYDATE").toString());
-					String PAYDATE = new SimpleDateFormat("yyyy-MM-dd").format(paydate); // 결제일자
-					
-					int billingAmount = Integer.parseInt(object.get("price").toString()); // 결제금액
-					int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
-					int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
-					int billingTax = 0; // 빌링수수료
-					double rate = Double.parseDouble(object.get("preRate").toString());
-					
-					String LGD_PAYTYPE = object.get("LGD_PAYTYPE").toString();
-					String PAYTYPE_STR = "";
-					
-					
-					switch(LGD_PAYTYPE) {
-						case "SC0010":
-							PAYTYPE_STR = "카드결제";
-							billingTax = (int) (billingAmount * 0.00363);
-							break;
-						
-						case "SC0040":
-							PAYTYPE_STR = "무통장입금";
-							billingTax = 440;
-							break;
-							
-						case "SC0030":
-							PAYTYPE_STR = "계좌이체";
-							billingTax = (int) (billingAmount * 0.0022);
-							break;
-						case "SC9999":
-							PAYTYPE_STR = "세금계산서";
-							rate = Double.parseDouble(object.get("postRate").toString());
-							break;
-					}
-					billingTax = Math.round(billingTax);
-					rate = 1 - rate / 100;
-					
-					int totalSalesAccount = billingAmount - billingTax; // 총매출액
-					int salesAccount = (int) Math.round(totalSalesAccount * rate); // 회원사 매출액
-					
-					int valueOfSupply = (int) Math.round(salesAccount * 0.9); // 공급가액
-					int addedTaxOfSupply = (int) Math.round(salesAccount * 0.1); // 공급부가세
-					int dahamiAccount = totalSalesAccount - salesAccount; // 다하미 매출액
-					
-					searchList.get(idx).put("PAYDATE", PAYDATE); // 결제일자
-					searchList.get(idx).put("PAYTYPE_STR", PAYTYPE_STR); // 결제종류
-					searchList.get(idx).put("customValue", df.format(customValue)); // 과세금액
-					searchList.get(idx).put("customTax", df.format(customTax)); // 과세부가세
-					searchList.get(idx).put("billingAmount", df.format(billingAmount)); // 결제금액
-					searchList.get(idx).put("billingTax", df.format(billingTax)); // 빌링수수료
-					searchList.get(idx).put("totalSalesAccount", df.format(totalSalesAccount)); // 총 매출액
-					searchList.get(idx).put("salesAccount", df.format(salesAccount)); // 회원사 매출액
-					searchList.get(idx).put("valueOfSupply", df.format(valueOfSupply)); // 공급가액
-					searchList.get(idx).put("addedTaxOfSupply", df.format(addedTaxOfSupply)); // 공급부가세
-					searchList.get(idx).put("dahamiAccount", df.format(dahamiAccount)); // 다하미 매출액
-					
-					
-					if(object.get("LGD_PAYTYPE").equals("SC9999")) {
-						// 오프라인 판매목록
-						offlineList.add(searchList.get(idx));
-					}else {
-						// 온라인 판매목록
-						onlineList.add(searchList.get(idx));
-					}					
-
+					searchList.get(idx).put("strType", strType(object.get("type").toString()));
+					searchList.get(idx).put("strPrice", df.format(Integer.parseInt(object.get("price").toString())));
 					idx++;
-					
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				List<String> headList = Arrays.asList("월별", "온라인/오프라인", "가격"); //  테이블 상단 제목
+				List<Integer> columnSize = Arrays.asList(10, 20, 20); //  컬럼별 길이정보
+				List<String> columnList = Arrays.asList("YearOfMonth", "strType", "strPrice"); // 컬럼명
 				
-			}
-			
-			if(searchList.size() > 0) {
-				// 기존 Excel 생성
-//				List<String> headList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-//				List<Integer> columnSize = Arrays.asList(15, 10, 20, 10, 10, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15); //  컬럼별 길이정보
-//				List<String> columnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usage", "copyright", 
-//						 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
-//						 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
-//				
-//				Date today = new Date();
-//			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
-//				String orgFileName = "정산내역_" + dateforamt.format(today); // 파일명
-				//ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
-				
-				// JSONArray로 출력할 데이터 Excel로 전달
-				// 온라인 판매대금 추가
-				List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-				List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
-				List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usage", "copyright", 
-						 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
-						 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
-				titleList.add("온라인 판매대금 정산내역");
-				headerList.add(onlineHeadList);
-				colSizeList.add(onlineColumnSize);
-				colList.add(onlineColumnList);
-				searchOnOffList.add(onlineList);
-				
-				JSONObject onlineObj = new JSONObject();
-				onlineObj.put("headList", onlineHeadList);
-				onlineObj.put("columnSize", onlineColumnSize);
-				onlineObj.put("columnList", onlineColumnList);
-				onlineObj.put("title", "온라인 판매대금 정산내역");
-				onlineObj.put("body", onlineList);
-				
-				jArray.add(onlineObj);
-				
-				
-				// 오프라인 판매대금 추가
-				List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-				List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
-				List<String> offlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usage", "copyright", 
-						 "PAYTYPE_STR", "customValue", "customTax", "billingAmount",  
-						 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
-				titleList.add("오프라인 판매대금 정산내역");
-				headerList.add(offlineHeadList);
-				colSizeList.add(offlineColumnSize);
-				colList.add(offlineColumnList);
-				searchOnOffList.add(offlineList);
-				
-				
-				JSONObject offlineObj = new JSONObject();
-				offlineObj.put("headList", offlineHeadList);
-				offlineObj.put("columnSize", offlineColumnSize);
-				offlineObj.put("columnList", offlineColumnList);
-				offlineObj.put("title", "오프라인 판매대금 정산내역");
-				offlineObj.put("body", offlineList);
-				
-				jArray.add(offlineObj);
-				
-				// 최종 엑셀 반영
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
-				String orgFileName = "정산내역_" + dateforamt.format(today); // 파일명
-					
-				ExcelUtil.xlsxWiterJSONParsing(request, response, jArray, orgFileName);
-				
+				String orgFileName = "연도별 정산내역_" + dateforamt.format(today); // 파일명
+				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
+			
 			}else {
-				response.getWriter().append("<script type=\"text/javascript\">alert('생성할 데이터가 없습니다.');</script>").append(request.getContextPath());
-			}			
+				// == 결제건별 정산내역 엑셀 다운로드 ==
+				int idx = 0;
+				
+				for(Map<String, Object> object : searchList) {
+					try {
+						DecimalFormat df = new DecimalFormat("#,##0");
+						SimpleDateFormat dt = new SimpleDateFormat("yyyyMMdd");
+						Date paydate = dt.parse(searchList.get(idx).get("LGD_PAYDATE").toString());
+						String PAYDATE = new SimpleDateFormat("yyyy-MM-dd").format(paydate); // 결제일자
+						
+						int billingAmount = Integer.parseInt(object.get("price").toString()); // 결제금액
+						int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
+						int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
+						int billingTax = 0; // 빌링수수료
+						double rate = Double.parseDouble(object.get("rate").toString());
+						
+						String LGD_PAYTYPE = object.get("LGD_PAYTYPE").toString();
+						String PAYTYPE_STR = "";
+						
+						
+						switch(LGD_PAYTYPE) {
+							case "SC0010":
+								PAYTYPE_STR = "카드결제";
+								billingTax =  (int) Math.round(billingAmount * 0.00363);
+								break;
+							
+							case "SC0040":
+								PAYTYPE_STR = "무통장입금";
+								billingTax = 440;
+								break;
+								
+							case "SC0030":
+								PAYTYPE_STR = "계좌이체";
+								billingTax = (int) Math.round(billingAmount * 0.0022);
+								break;
+							case "SC9999":
+								PAYTYPE_STR = "세금계산서";
+								break;
+						}
+						
+						billingTax = Math.round(billingTax);
+						rate = rate / 100;
+						
+						int totalSalesAccount = billingAmount - billingTax; // 총매출액
+						int salesAccount = (int) Math.round(totalSalesAccount * rate); // 회원사 매출액
+						
+						int valueOfSupply = (int) Math.round(salesAccount * 0.9); // 공급가액
+						int addedTaxOfSupply = (int) Math.round(salesAccount * 0.1); // 공급부가세
+						int dahamiAccount = totalSalesAccount - salesAccount; // 다하미 매출액
+						
+						searchList.get(idx).put("PAYDATE", PAYDATE); // 결제일자
+						searchList.get(idx).put("PAYTYPE_STR", PAYTYPE_STR); // 결제종류
+						searchList.get(idx).put("customValue", df.format(customValue)); // 과세금액
+						searchList.get(idx).put("customTax", df.format(customTax)); // 과세부가세
+						searchList.get(idx).put("billingAmount", df.format(billingAmount)); // 결제금액
+						searchList.get(idx).put("billingTax", df.format(billingTax)); // 빌링수수료
+						searchList.get(idx).put("totalSalesAccount", df.format(totalSalesAccount)); // 총 매출액
+						searchList.get(idx).put("salesAccount", df.format(salesAccount)); // 회원사 매출액
+						searchList.get(idx).put("valueOfSupply", df.format(valueOfSupply)); // 공급가액
+						searchList.get(idx).put("addedTaxOfSupply", df.format(addedTaxOfSupply)); // 공급부가세
+						searchList.get(idx).put("dahamiAccount", df.format(dahamiAccount)); // 다하미 매출액
+						
+						
+						if(object.get("LGD_PAYTYPE").equals("SC9999")) {
+							// 오프라인 판매목록
+							offlineList.add(searchList.get(idx));
+						}else {
+							// 온라인 판매목록
+							onlineList.add(searchList.get(idx));
+						}					
+
+						idx++;
+						
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				
+				if(searchList.size() > 0) {
+					// 온라인 판매대금 추가
+					List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+					List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+					List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usageName", "copyright", 
+							 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
+							 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+					titleList.add("온라인 판매대금 정산내역");
+					headerList.add(onlineHeadList);
+					colSizeList.add(onlineColumnSize);
+					colList.add(onlineColumnList);
+					searchOnOffList.add(onlineList);
+					
+					JSONObject onlineObj = new JSONObject();
+					onlineObj.put("headList", onlineHeadList);
+					onlineObj.put("columnSize", onlineColumnSize);
+					onlineObj.put("columnList", onlineColumnList);
+					onlineObj.put("title", "온라인 판매대금 정산내역");
+					onlineObj.put("body", onlineList);
+					
+					jArray.add(onlineObj);
+					
+					
+					// 오프라인 판매대금 추가
+					List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "ID", "회사명", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+					List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 30, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+					List<String> offlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "id", "compName", "photo_uciCode", "usageName", "copyright", 
+							 "PAYTYPE_STR", "customValue", "customTax", "billingAmount",  
+							 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+					titleList.add("오프라인 판매대금 정산내역");
+					headerList.add(offlineHeadList);
+					colSizeList.add(offlineColumnSize);
+					colList.add(offlineColumnList);
+					searchOnOffList.add(offlineList);
+					
+					
+					JSONObject offlineObj = new JSONObject();
+					offlineObj.put("headList", offlineHeadList);
+					offlineObj.put("columnSize", offlineColumnSize);
+					offlineObj.put("columnList", offlineColumnList);
+					offlineObj.put("title", "오프라인 판매대금 정산내역");
+					offlineObj.put("body", offlineList);
+					
+					jArray.add(offlineObj);
+					
+					// 최종 엑셀 반영
+					Date today = new Date();
+				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+					String orgFileName = "정산내역_" + dateforamt.format(today); // 파일명
+					
+					ExcelUtil.xlsxWiterJSONParsing(request, response, jArray, orgFileName);
+					
+				}else {
+					response.getWriter().append("<script type=\"text/javascript\">alert('생성할 데이터가 없습니다.');</script>").append(request.getContextPath());
+				}
+			}
+						
 			
 		}else {
 			// JSON 목록
@@ -315,6 +387,21 @@ public class AccountJSON extends NewsbankServletBase {
 			response.getWriter().print(json);
 		}
 		
+	}
+	
+	// 온라인 | 오프라인 구분
+	private String strType(String type) {
+		String strType = "";
+		switch(type) {
+			case "0":
+				strType = "온라인";
+				break;
+				
+			case "1":
+				strType = "오프라인";
+				break;
+		}
+		return strType;
 	}
 
 }

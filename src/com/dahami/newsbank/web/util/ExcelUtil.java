@@ -252,11 +252,10 @@ public class ExcelUtil {
 				List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 				JSONArray jsonBodyArray = (JSONArray) jsonParser.parse(bodyList.toString());
 				
-				// 행 생성
+				// 온라인, 오프라인 라인 구분
 				if(i != 0) {
-					rowIndex = rowIndex + 1;
-					row = sheet.createRow(rowIndex+1);
-					rowIndex++;
+					rowIndex = rowIndex + 4;
+					row = sheet.createRow(rowIndex);
 				}
 				
 				// 헤더 정보 구성
@@ -275,13 +274,7 @@ public class ExcelUtil {
 	            for(int bodyIdx=0; bodyIdx<jsonBodyArray.size(); bodyIdx++) {
 					JSONObject bodyObject = (JSONObject) jsonBodyArray.get(bodyIdx);
 					
-					// 행 생성
-					if(i != 0) {
-						rowIndex = rowIndex + 1;
-					}else{
-						rowIndex = rowIndex + jsonBodyArray.size(); 
-					}
-					row = sheet.createRow(rowIndex);
+					row = sheet.createRow(rowIndex + 1);
 					rowIndex++;
 					
 			        // 셀 넣기

@@ -86,7 +86,10 @@
 			</ul>
 			<ul class="mp_tab2">
 				<li>
-					<a href="/accountlist.mypage">정산 내역</a>
+					<a href="/accountyear.mypage">연도별 총 매출액</a>
+				</li>
+				<li>
+					<a href="/accountlist.mypage">결제건별 정산내역</a>
 				</li>
 				<li>
 					<a href="/account.mypage">정산 정보 관리</a>

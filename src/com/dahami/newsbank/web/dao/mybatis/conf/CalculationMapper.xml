@@ -130,6 +130,8 @@
 		<result javaType="java.lang.Integer" column="price" property="price"></result>
 		<result javaType="java.lang.Integer" column="type" property="type"></result>
 		<result javaType="java.lang.Integer" column="count" property="count"></result>
+		<result javaType="java.lang.Double" column="rate" property="rate"></result>
+		<result javaType="java.lang.String" column="payType" property="payType"></result>
 	</resultMap>
    	
    	<!-- 정산/피정산 전체매체를 대상으로 온/오프라인 월별 통계 -->
@@ -191,7 +193,7 @@
 	</resultMap>
 	
    	<!-- 정산 내역 월별통계 (마이페이지) -->
-   	<select id="monthlyStats" resultMap="calculationMonthResult" parameterType="java.util.HashMap">
+   	<!-- <select id="monthlyStats" resultMap="calculationMonthResult" parameterType="java.util.HashMap">
    	    SELECT DATE_FORMAT(c.regDate, '%Y-%m') AS YearOfMonth, 
 		SUM(price) AS price, c.`type`
 		FROM calculations c
@@ -206,7 +208,38 @@
 		    <if test="start_date != null and end_date != null">
 		        AND DATE_FORMAT(c.regDate, '%Y%m%d') BETWEEN #{start_date} AND #{end_date}
 	        </if>		    
-	        <if test="payType != null and payType != 'all'">
+	        <if test="paytype != null and paytype != 'all'">
+	            AND c.payType = #{paytype}
+	        </if>
+	        <if test="keyword != null and keyword != ''">
+		        <if test="keywordType == 'member'"> 회사/기관명, 아이디, 이름
+				 AND (
+				 	 m.id LIKE CONCAT('%', #{keyword}, '%')
+			    	 OR m.name LIKE CONCAT('%', #{keyword}, '%')
+				     OR m.compName LIKE CONCAT('%', #{keyword}, '%')
+				    )
+				</if>
+	        </if>
+		</where>
+		GROUP BY DATE_FORMAT(c.regDate, '%Y-%m'), `type`
+		ORDER BY DATE_FORMAT(c.regDate, '%Y-%m')
+   	</select> -->
+   	
+   	<select id="monthlyStats" resultMap="calculationMonthResult" parameterType="java.util.HashMap">
+   	    SELECT DATE_FORMAT(c.regDate, '%Y-%m') AS YearOfMonth, c.price, c.`type`, c.rate, c.payType
+		FROM calculations c
+		INNER JOIN photo p ON c.uciCode = p.uciCode
+		INNER JOIN member m on c.id = m.id
+		<where>
+		    <if test="media != null">
+			    <foreach item="slaveSeq" collection="media" index="idx" open="(" separator="OR" close=")">
+		            p.member_seq = #{slaveSeq} 
+		        </foreach>
+	        </if>
+		    <if test="start_date != null and end_date != null">
+		        AND DATE_FORMAT(c.regDate, '%Y%m%d') BETWEEN #{start_date} AND #{end_date}
+	        </if>		    
+	        <if test="paytype != null and paytype != 'all'">
 	            AND c.payType = #{paytype}
 	        </if>
 	        <if test="keyword != null and keyword != ''">
@@ -218,8 +251,7 @@
 				    )
 				</if>
 	        </if>
-		</where>
-		GROUP BY DATE_FORMAT(c.regDate, '%Y-%m'), `type`
+		</where>		
 		ORDER BY DATE_FORMAT(c.regDate, '%Y-%m')
    	</select>
    	

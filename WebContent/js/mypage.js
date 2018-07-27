@@ -643,6 +643,113 @@ function year_of_month_option() {
 	$(option).appendTo("#customDay");
 }
 
+// 연도별 정산내역 테이블 초기화
+function initAccountTable() {
+	$('.tb_total_account tbody tr').each(function(key, value){
+		var td = $(value).find('td');
+		$(td).each(function(idx, target){
+			if(idx > 0) {
+				$(target).text("");
+			}
+		});
+	});
+	
+	$('.tb_total_account tfoot tr').each(function(key, value){
+		var td = $(value).find('td');
+		$(td).each(function(idx, target){
+			if(idx > 0) {
+				$(target).text("");
+			}
+		});
+	});
+}
+
+// accountyear.mypage
+$(document).ready(function() {
+	
+	// 년도별 정산내역
+	$('#btnaccountYearSearch').on('click', function() {
+		initAccountTable(); // 테이블 초기화
+		
+		var now = new Date();
+		var media = []; // 선택 매체 코드
+		$("input[name=media_code]").each(function() {
+			if ($(this).is(":checked")) {
+				media.push($(this).val());
+			}
+		});
+		
+		var startDate = $("#contractStart").val();
+		var endDate = $("#contractEnd").val();
+		var period = startDate + " ~ " + endDate;
+		var paytype = $("select[name='paytype'] option:selected").val();
+		
+		var param = {
+			'cmd' : 'total',
+			'media_code' : media,
+			'start_date' : startDate,
+			'end_date' : endDate,
+			'paytype' : paytype
+		};
+		console.log(param);	
+		
+		
+		$.ajax({
+			url : "/account.api",
+			type : "post",
+			data : param,
+			dataType : "json",
+			success : function(data) {
+				console.log(data);
+				var offline_list = new Array();
+				var online_list = new Array();
+				if (data.success) {
+					var onlieTotalPay = 0;
+					var offlieTotalPay = 0;
+					
+					$.each(data.data, function(key, value) {
+						var M = value.YearOfMonth.split("-");						
+						if (value.type == 0) { // online
+							$('.tb_total_account tbody tr:eq(0) td:eq(' + M[1] + ')').text(value.price.toLocaleString());
+							onlieTotalPay += value.price;
+						} else if(value.type == 1) { // offline
+							$('.tb_total_account tbody tr:eq(1) td:eq(' + M[1] + ')').text(value.price.toLocaleString());
+							offlieTotalPay += value.price;
+						}
+					});
+					
+					$('.tb_total_account tbody tr:eq(0) td:eq(13)').text(onlieTotalPay.toLocaleString());
+					$('.tb_total_account tbody tr:eq(1) td:eq(13)').text(offlieTotalPay.toLocaleString());
+					$('.calculate_info_area span:eq(0)').text(period);
+					$('.calculate_info_area span:eq(2)').text(data.data.length);
+					$('.calculate_info_area span:eq(4)').text((onlieTotalPay+offlieTotalPay).toLocaleString());
+					
+					$('.tb_total_account tfoot td:not(:eq(0))').each(function(i) {
+						var onPay = $('.tb_total_account tbody tr:eq(0) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
+						var offPay = $('.tb_total_account tbody tr:eq(1) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
+
+						if (!Number.isInteger(Number.parseInt(onPay)))
+							onPay = 0;
+						if (!Number.isInteger(Number.parseInt(offPay)))
+							offPay = 0;
+						var totalPay = Number.parseInt(onPay) + Number.parseInt(offPay);
+						if (totalPay > 0) {
+							$(this).text(totalPay.toLocaleString());
+						}
+
+					});
+				}
+			}
+		});
+		
+	});
+	
+	
+	
+	
+});
+
+
 // accountlist.mypage
 $(document).ready(function() {
 
@@ -703,11 +810,15 @@ $(document).ready(function() {
 			}
 		});
 		
+		var startDate = $("#contractStart").val();
+		var endDate = $("#contractEnd").val();
+		var period = startDate + " ~ " + endDate;
+		
 		var param = {
 			'cmd' : 'total',
 			'media_code' : media,
-			'start_date' : now.getFullYear() + "0101",
-			'end_date' : now.getFullYear() + "1231"	
+			'start_date' : startDate,
+			'end_date' : endDate
 		};
 		
 		$.ajax({
@@ -736,8 +847,9 @@ $(document).ready(function() {
 					
 					$('.tb_total_account tbody tr:eq(0) td:eq(13)').text(onlieTotalPay.toLocaleString());
 					$('.tb_total_account tbody tr:eq(1) td:eq(13)').text(offlieTotalPay.toLocaleString());
-					$('.calculate_info_area span:eq(1)').text(data.data.length);
-					$('.calculate_info_area span:eq(3)').text((onlieTotalPay+offlieTotalPay).toLocaleString());
+					$('.calculate_info_area span:eq(0)').text(period);
+					$('.calculate_info_area span:eq(2)').text(data.data.length);
+					$('.calculate_info_area span:eq(4)').text((onlieTotalPay+offlieTotalPay).toLocaleString());
 					
 					$('.tb_total_account tfoot td:not(:eq(0))').each(function(i) {
 						var onPay = $('.tb_total_account tbody tr:eq(0) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
@@ -755,40 +867,6 @@ $(document).ready(function() {
 					});
 				}
 				
-				/*if (data.success) {
-					var onlieTotalPay = 0;
-					var offlieTotalPay = 0;
-					$.each(data.data, function(key, value) {
-						if (value.TYPE == "offline") {
-							$('.tb_total_account tbody tr:eq(1) td:eq(' + value.M + ')').text(value.totalPrice.toLocaleString());
-							onlieTotalPay += value.totalPrice;
-						} else {
-							$('.tb_total_account tbody tr:eq(0) td:eq(' + value.M + ')').text(value.totalPrice.toLocaleString());
-							offlieTotalPay += value.totalPrice;
-						}
-
-					});
-					$('.tb_total_account tbody tr:eq(0) td:eq(13)').text(onlieTotalPay.toLocaleString());
-					$('.tb_total_account tbody tr:eq(1) td:eq(13)').text(offlieTotalPay.toLocaleString());
-					$('.calculate_info_area span:eq(1)').text(data.data.length);
-					$('.calculate_info_area span:eq(3)').text((onlieTotalPay+offlieTotalPay).toLocaleString())
-					
-					$('.tb_total_account tfoot td:not(:eq(0))').each(function(i) {
-						var onPay = $('.tb_total_account tbody tr:eq(0) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
-						var offPay = $('.tb_total_account tbody tr:eq(1) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
-
-						if (!Number.isInteger(Number.parseInt(onPay)))
-							onPay = 0;
-						if (!Number.isInteger(Number.parseInt(offPay)))
-							offPay = 0;
-						var totalPay = Number.parseInt(onPay) + Number.parseInt(offPay);
-						if (totalPay > 0) {
-							$(this).text(totalPay.toLocaleString());
-						}
-
-					});
-
-				}*/
 			}
 		});
 	}
@@ -855,10 +933,6 @@ $(document).ready(function() {
 					$.each(data.data, function(key, value) {
 						totalPay += value.price;
 						
-//						console.log(value.price, value.rate, value.LGD_PAYTYPE);
-//						console.log(value.LGD_PAYTYPE, value.LGD_BUYER, value.LGD_BUYERID, value.LGD_BUYER_COMPNAME);
-//						console.log(value.photo_uciCode, value.usage, value.copyright, value.LGD_PAYDATE);
-
 						var billing_amount = value.price; // 결제금액
 						var added_tax = Math.round(billing_amount * 0.1); // 과세부가세
 						var customs_value = Math.round(billing_amount * 0.9); // 과세금액
@@ -881,12 +955,11 @@ $(document).ready(function() {
 							break;
 						case "SC9999":
 							PAYTYPE = "세금계산서";
-							//rate = value.rate
-							//rate = value.postRate;
 							break;
 						}
 						billing_tax = Math.round(billing_tax);
-						rate = 1 - rate / 100;
+						//rate = 1 - rate / 100;
+						rate = rate / 100;
 						var total_sales_account = billing_amount - billing_tax; // 총매출액
 						var sales_account = Math.round(total_sales_account * rate);// 회원사
 						// 매출액
@@ -1324,6 +1397,39 @@ function excelDown(api, path) {
 				return false;
 			}
 			
+			$("#currentPayType").val(paytype);
+			$("#currentMediaCode").val(media_code);
+			$("#startDate").val(startDate);
+			$("#endDate").val(endDate);
+			
+		break;
+		
+		case "accountyear":
+			// 연도별 정산내역
+			var cmd = "total";
+			var paytype = $("select[name=paytype] option:selected").val();
+			var startDate = $("#contractStart").val(); // 시작일
+			if (startDate == null || startDate.length == 0) {
+				alert("선택한 시작 날짜가 없습니다.");
+				return false;
+			}
+			var endDate = $("#contractEnd").val(); // 종료일
+			if (endDate == null || endDate.length == 0) {
+				alert("선택한 시작 날짜가 없습니다.");
+				return false;
+			}
+			var media_code = new Array(); // 선택 매체 코드
+			$("input[name=media_code]").each(function() {
+				if ($(this).is(":checked")) {
+					media_code.push($(this).val());
+				}
+			});
+			if (media_code.length == 0) {
+				alert("선택된 매체가 없습니다.");
+				return false;
+			}
+			
+			$("#currentCmd").val(cmd);
 			$("#currentPayType").val(paytype);
 			$("#currentMediaCode").val(media_code);
 			$("#startDate").val(startDate);

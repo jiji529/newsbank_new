@@ -34,13 +34,17 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180304"></script>
+<script src="js/mypage.js?v=20180305"></script>
 
 <script>
 	$(document).on("keypress", "#keyword", function(e) {
 		if (e.keyCode == 13) { // 엔터
 			$("#frmAccountList").submit();
 		}
+	});
+	
+	$(document).ready(function() {
+		$("#frmAccountList").submit();
 	});
 </script>
 
@@ -100,7 +104,10 @@
 			</ul>
 			<ul class="mp_tab2">
 				<li>
-					<a href="/accountlist.mypage">정산 내역</a>
+					<a href="/accountyear.mypage">연도별 총 매출액</a>
+				</li>
+				<li>
+					<a href="/accountlist.mypage">결제건별 정산내역</a>
 				</li>
 				<li>
 					<a href="/account.mypage">정산 정보 관리</a>
@@ -108,7 +115,7 @@
 			</ul>
 		</div>
 		<div class="table_head">
-			<h3>정산 내역</h3>
+			<h3>결제건별 정산내역</h3>
 			<!--<p class="txt">결제정보를 등록하시면 결제 시 자동으로 반영됩니다.</p>-->
 		</div>
 		<form id="frmAccountList" method="post">
