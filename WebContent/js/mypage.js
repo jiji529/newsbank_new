@@ -968,7 +968,7 @@ $(document).ready(function() {
 							PAYTYPE = "세금계산서";
 							break;
 						}
-						billing_tax = Math.round(billing_tax);
+						billing_tax = value.fees;
 						//rate = 1 - rate / 100;
 						rate = rate / 100;
 						var total_sales_account = billing_amount - billing_tax; // 총매출액
