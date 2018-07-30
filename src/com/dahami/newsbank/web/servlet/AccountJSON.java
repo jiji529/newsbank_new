@@ -139,27 +139,12 @@ public class AccountJSON extends NewsbankServletBase {
 				for(int idx=0; idx<tempList.size(); idx++) {
 					boolean isInsert = true; // 추가여부
 					String YearOfMonth = tempList.get(idx).get("YearOfMonth").toString();
-					String payType = tempList.get(idx).get("payType").toString();
 					int price = (int) tempList.get(idx).get("price");
 					int type = (int) tempList.get(idx).get("type");
 					double rate = (double) tempList.get(idx).get("rate");
-					int billing_tax = 0; // 빌링수수료
+					int fees = (int) tempList.get(idx).get("fees");
 					
-					switch(payType) {
-						case "SC0010":
-							billing_tax =  (int) Math.round(price * 0.00363);
-							break;
-						case "SC0040":
-							billing_tax = 440;
-							break;
-						case "SC0030":
-							billing_tax = (int) Math.round(price * 0.0022);
-							break;
-						case "SC9999":
-							break;
-					}
-					
-					int total_sales_account = price - billing_tax; // 총매출액 
+					int total_sales_account = price - fees; // 총매출액 
 					int sales_account = (int) Math.round(total_sales_account * rate / 100); // 회원사
 					
 					Map<String, Object> object = new HashMap<>();

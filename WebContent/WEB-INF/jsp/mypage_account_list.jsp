@@ -34,7 +34,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180305"></script>
+<script src="js/mypage.js?v=20180307"></script>
 
 <script>
 	$(document).on("keypress", "#keyword", function(e) {

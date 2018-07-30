@@ -132,6 +132,7 @@
 		<result javaType="java.lang.Integer" column="count" property="count"></result>
 		<result javaType="java.lang.Double" column="rate" property="rate"></result>
 		<result javaType="java.lang.String" column="payType" property="payType"></result>
+		<result javaType="java.lang.Integer" column="fees" property="fees"></result>
 	</resultMap>
    	
    	<!-- 정산/피정산 전체매체를 대상으로 온/오프라인 월별 통계 -->
@@ -226,7 +227,7 @@
    	</select> -->
    	
    	<select id="monthlyStats" resultMap="calculationMonthResult" parameterType="java.util.HashMap">
-   	    SELECT DATE_FORMAT(c.regDate, '%Y-%m') AS YearOfMonth, c.price, c.`type`, c.rate, c.payType
+   	    SELECT DATE_FORMAT(c.regDate, '%Y-%m') AS YearOfMonth, c.price, c.`type`, c.rate, c.payType, c.fees
 		FROM calculations c
 		INNER JOIN photo p ON c.uciCode = p.uciCode
 		INNER JOIN member m on c.id = m.id

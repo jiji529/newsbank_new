@@ -810,6 +810,8 @@ $(document).ready(function() {
 			}
 		});
 		
+		console.log(media);
+		
 		var startDate = $("#contractStart").val();
 		var endDate = $("#contractEnd").val();
 		var period = startDate + " ~ " + endDate;
@@ -896,10 +898,19 @@ $(document).ready(function() {
 		var name = $("input[name=keyword]").val(); // 아이디/이름/회사명
 		var pay = $("select[name=payType]").val(); // 결제구분
 		
+		var param = {
+			'media_code' : media_code,
+			'start_date' : startDate,
+			'end_date' : endDate
+		};
+		
+		console.log(param);
+		
 		$.ajax({
 			url : "/account.api",
 			type : "post",
-			data : $(this).serialize(),
+			data : param,
+			//data : $(this).serialize(),
 			dataType : "json",
 			success : function(data) {
 				console.log(data);
