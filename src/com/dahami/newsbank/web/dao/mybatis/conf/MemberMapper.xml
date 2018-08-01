@@ -334,7 +334,7 @@
 	</select>
 
 	<select id="selGetty" resultType="com.dahami.newsbank.web.dto.MemberDTO">
-		select * from member where id = BINARY('gettyimage');
+		select * from member where id = BINARY('imazins');
 	</select>
 	
 	<!-- 관리자 회원현황 목록 -->
