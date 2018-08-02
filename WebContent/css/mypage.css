@@ -41,6 +41,10 @@
 .mypage .tb02 th { padding: 8px 0; border-left: 1px solid #4d4941; background: #665947; color:#fff; font-size: 13px; text-align: center; }
 .mypage .tb02 td { padding: 10px; border-left: 1px solid #e6e6e6; border-top: 1px solid #dce0e9; font-size:13px; text-align: center; line-height: 18px; }
 .mypage .tb02 tfoot td { background:#f5f4f0; font-weight:600; border-bottom: 1px solid #d7d7d7; }
+
+.mypage .tb_online_account .tb02 tr:hover, .mypage .tb_offline_account .tb02 tr:hover { background:#fef4e8; }
+.mypage .tb_online_account .tb02 tb, .mypage .tb_offline_account .tb02 tb{padding:5px;}
+
 .mypage th:first-child, .mypage td:first-child { border-left:none; }
 .mypage .period{margin-left:15px;}
 .mypage li .btn{ padding: 10px 20px; color: #666; border: 1px solid #ccc; background:#fff; margin-left:-1px; border-radius:0;}
