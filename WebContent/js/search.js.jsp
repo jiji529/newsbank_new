@@ -377,7 +377,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				if(val.saleState != <%=PhotoDTO.SALE_STATE_DEL%>) {
 					html += "<input type=\"checkbox\" value=\""+ val.uciCode +"\"/>";
 				}
-				html += "<span>" + val.uciCode + "</span><span>" + val.copyright + "</span></div>";
+				html += "<span>" + val.uciCode + "</span><span>" + val.ownerName + "</span></div>";
 				html += "<ul class=\"thumb_btn\">";
 				if(deleted.length == 0) {
 					html += "<li class=\"btn_down\" value=\"" + val.uciCode + "\"><a>다운로드</a></li>"
