@@ -333,7 +333,13 @@ public class PaymentManageDTO implements Serializable {
 			//PAYTYPE = "계좌이체";
 			break;
 		case "SC0040":
-			fees = 300*1.1;
+			int payCount = paymentDetailList.size();
+			if(payCount>0) {
+				fees = Math.floor(300*1.1/payCount);	
+			}else {
+				fees = Math.floor(300*1.1);	
+			}
+			
 			LGD_FEES = (int)fees;
 			//PAYTYPE = "무통장";
 			break;
