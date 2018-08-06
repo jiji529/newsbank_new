@@ -132,7 +132,7 @@ public class CalculationAction extends NewsbankServletBase {
 		System.out.println("type => " + type);
 		
 		if (request.getParameter("price") != null) { // 결제비용
-			price = Integer.parseInt(request.getParameter("price").replaceAll("\\p{Punct}", ""));
+			price = Integer.parseInt(request.getParameter("price"));
 		}
 		System.out.println("price => " + price);
 		

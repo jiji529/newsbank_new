@@ -239,7 +239,9 @@ public class SearchDAO extends DAOBase {
 				
 				if(docList != null && docList.size() > 0) {
 					MemberDAO mDao = new MemberDAO();
-					List<MemberDTO> mList = mDao.listActiveMedia();
+//					List<MemberDTO> mList = mDao.listActiveMedia();
+					List<MemberDTO> mList = mDao.listManagableMedia();
+					
 					Map<Integer, MemberDTO> memberMap = new HashMap<Integer, MemberDTO>();
 					for(MemberDTO curM : mList) {
 						memberMap.put(curM.getSeq(), curM);

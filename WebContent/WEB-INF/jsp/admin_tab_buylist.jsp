@@ -246,7 +246,7 @@
 					
 					var uciCode = $(this).closest("tr").find("td").eq(8).text();
 					var id = $(this).closest("tr").find("td").eq(3).text();
-					var price = $(this).closest("tr").find("td").eq(11).text();
+					var price = $(this).closest("tr").find("td").eq(11).text().replace(/,/, "");
 					var rate = $(this).closest("tr").find("input[name=postRate]").val(); 
 					//rate = rate / 100;
 					
