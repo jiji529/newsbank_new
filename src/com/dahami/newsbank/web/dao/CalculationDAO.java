@@ -68,7 +68,6 @@ public class CalculationDAO extends DAOBase {
 	 */ 
 	public List<Map<String, Object>> selectOfMonth(Map<String, Object> param) {
 		SqlSession session = null;
-		List<Map<String, Object>> result = new ArrayList<>();
 		
 		try {
 			session = sf.getSession();

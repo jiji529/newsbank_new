@@ -15,14 +15,11 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import com.dahami.newsbank.web.dao.CalculationDAO;
-import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.CalculationDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
@@ -268,11 +265,17 @@ public class CalculationAction extends NewsbankServletBase {
 							object.put("dahamiAccount", df.format(dahamiAccount)); // 다하미 매출액
 							
 							object.put("usage", dto.getUsageDTO().getUsage());
-							object.put("division1", dto.getUsageDTO().getDivision1());
+							object.put("division1", dto.getUsageDTO().getDivision1());							
 							object.put("division2", dto.getUsageDTO().getDivision2());
 							object.put("division3", dto.getUsageDTO().getDivision3());
 							object.put("division4", dto.getUsageDTO().getDivision4());
 							object.put("price", dto.getUsageDTO().getPrice());
+							
+							if(dto.getUsageDTO().getDivision1() != null) {
+								object.put("usageName", dto.getUsageDTO().getDivision1());
+							}else{
+								object.put("usageName", dto.getUsageDTO().getUsage());
+							}
 							
 							mapList.add(object);
 							
@@ -280,9 +283,9 @@ public class CalculationAction extends NewsbankServletBase {
 							e.printStackTrace();
 						}
 					}
-					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-					List<Integer> columnSize = Arrays.asList(20, 15, 15, 25, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
-					List<String> columnList = Arrays.asList("regDate", "nameId", "compName", "uciCode", "copyright", "payType", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "판매자", "결제종류", "용도", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+					List<Integer> columnSize = Arrays.asList(20, 15, 15, 25, 10, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
+					List<String> columnList = Arrays.asList("regDate", "nameId", "compName", "uciCode", "copyright", "payType", "usageName", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
 					
 					Date today = new Date();
 				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -372,24 +375,69 @@ public class CalculationAction extends NewsbankServletBase {
 				
 				if(sep.is3("excel")) {
 					
-					int idx = 0;
-					for(Map<String, Object> object : staticsList) {
-						DecimalFormat df = new DecimalFormat("#,##0");
-						staticsList.get(idx).put("strType", strType(object.get("type").toString()));
-						staticsList.get(idx).put("strPrice", df.format(Integer.parseInt(object.get("price").toString())));
-						idx++;
+					List<Map<String, Object>> OnOfflineList = new ArrayList<Map<String, Object>>();
+					
+					int thisYear = Integer.parseInt(start_date.substring(0, 4));
+					int startMonth = Integer.parseInt(start_date.substring(5, 7));
+					int endMonth = Integer.parseInt(end_date.substring(5, 7));
+					int[] totalPrice = new int[endMonth+1];					
+					int[] columnSizeArr = new int[endMonth+1];
+					List<String> headList = new ArrayList<String>(); //  테이블 상단 제목
+					List<String> columnList = new ArrayList<String>(); // 컬럼명
+					
+					headList.add("구분");
+					columnList.add("payType");
+					columnSizeArr[0] = 20;
+					totalPrice[0] = 0;
+					
+					// 년도별 판매금액 배열 생성
+					String[] payArr = {"온라인", "오프라인"};
+					int index = 0;
+					for(String pay : payArr) {
+						Map<String, Object> object = new HashMap<String, Object>();
+						object.put("payType", pay);
+						
+						for(int month = startMonth; month <= endMonth; month++) {						
+							price = findPrice(staticsList, month, thisYear, pay);						
+							object.put(String.valueOf(month)+"월", price);
+							columnSizeArr[month] = 20;
+							
+							if(index == 0) {
+								headList.add(String.valueOf(month)+"월");
+								columnList.add(String.valueOf(month)+"월");
+								totalPrice[month] = price;
+							}else {
+								int total = price + totalPrice[month];
+								totalPrice[month] = total;
+							}
+						}
+						index++;
+						OnOfflineList.add(object);
 					}
 					
+					Map<String, Object> totalObject = new HashMap<String, Object>();
+					totalObject.put("payType", "합계");
+					
+					for(int idx=1; idx<totalPrice.length; idx++) {
+						totalObject.put((idx) + "월", totalPrice[idx]);
+					}
+					OnOfflineList.add(totalObject);
+					
+					String columnStr = Arrays.toString(columnSizeArr);
+					columnStr = columnStr.replaceAll("\\[", "");
+					columnStr = columnStr.replaceAll("\\]", "");
+					String[] columnStrSize = columnStr.split(","); //  컬럼별 길이정보 (한글)
+					
+					List<Integer> columnSize = new ArrayList<Integer>();
+					for(String size : columnStrSize) {
+						columnSize.add(Integer.parseInt(size.trim()));
+					}
 					// 목록 엑셀 다운로드
 					// 기간에 따라 동적으로 테이블 항목이 생성
-					List<String> headList = Arrays.asList("월별", "온라인/오프라인", "가격"); //  테이블 상단 제목
-					List<Integer> columnSize = Arrays.asList(10, 20, 20); //  컬럼별 길이정보
-					List<String> columnList = Arrays.asList("YearOfMonth", "strType", "strPrice"); // 컬럼명
-					
 					Date today = new Date();
 				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
 					String orgFileName = "년도별 총 판매금액_" + dateforamt.format(today); // 파일명
-					ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, staticsList, orgFileName);
+					ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, OnOfflineList, orgFileName);
 				
 				}else {
 					// 목록 JSON
@@ -490,6 +538,20 @@ public class CalculationAction extends NewsbankServletBase {
 				break;
 		}
 		return strType;
+	}
+	
+	// 년월에 해당하는 합계 금액
+	private int findPrice(List<Map<String, Object>> staticsList, int month, int thisYear, String pay) {
+		String thisMonth = (month < 10) ? '0' + String.valueOf(month) : String.valueOf(month);
+		String YearOfMonth = thisYear + "-" + thisMonth;
+		int price = 0;
+		for(Map<String, Object> object : staticsList) {
+			if(object.get("YearOfMonth").equals(YearOfMonth) && strType(object.get("type").toString()).equals(pay)) {
+				price = Integer.parseInt(object.get("price").toString());
+			}
+		}
+		
+		return price;
 	}
 
 }
