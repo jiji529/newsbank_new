@@ -190,7 +190,7 @@
 			<if test="deferred >0">, deferred = #{deferred}</if>
 			<if test="compNum != null">, compNum = #{compNum}</if>
 			<if test="compDocPath != null">, compDocPath = #{compDocPath}</if>
-			<if test="compName != null">, compName = #{compName}</if>
+			<if test="compName != null and !compName.equals('')">, compName = #{compName}</if>
 			<if test="compAddress != null">, compAddress = #{compAddress}</if>
 			<if test="compAddDetail != null">, compAddDetail = #{compAddDetail}</if>
 			<if test="compZipcode != null">, compZipcode = #{compZipcode}</if>

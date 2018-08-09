@@ -100,11 +100,7 @@ public class AccountJSON extends NewsbankServletBase {
 		List<List<Map<String, Object>>> searchOnOffList = new ArrayList<List<Map<String, Object>>>(); //  온/오프라인 판매 리스트
 		
 		JSONArray jArray = new JSONArray(); // json 배열
-		/*
-		 * if (start_date == null || end_date == null) { Calendar cal =
-		 * Calendar.getInstance(); int year = cal.get(cal.YEAR); start_date = year +
-		 * "0101"; end_date = year + "1231"; }
-		 */
+		
 		if (MemberInfo != null) {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("member_seq", MemberInfo.getSeq());
@@ -132,7 +128,6 @@ public class AccountJSON extends NewsbankServletBase {
 			CalculationDAO calculationDAO = new CalculationDAO(); // 정산정보 연결
 			
 			if (result_type != null && result_type.equalsIgnoreCase("total")) {
-				//searchList = calculationDAO.monthlyStats(params); // 전체
 				List<Map<String, Object>> tempList = new ArrayList<Map<String, Object>>();
 				tempList = calculationDAO.monthlyStats(params);
 				
@@ -183,11 +178,6 @@ public class AccountJSON extends NewsbankServletBase {
 				searchList = calculationDAO.statsList(params); // 개별
 			}
 
-//			if (result_type != null && result_type.equalsIgnoreCase("total")) {
-//				searchList = paymentDAO.selectTotalPrice(params); // 전체
-//			} else {
-//				searchList = paymentDAO.searchAccountList(params); // 개별
-//			}
 
 			if (searchList != null) {
 				success = true;
@@ -204,7 +194,73 @@ public class AccountJSON extends NewsbankServletBase {
 			
 			if (result_type != null && result_type.equalsIgnoreCase("total")) { 
 				// == 연도별 정산내역 엑셀 다운로드 ==
-				int idx = 0;
+				List<Map<String, Object>> OnOfflineList = new ArrayList<Map<String, Object>>();
+				
+				int thisYear = Integer.parseInt(start_date.substring(0, 4));
+				int startMonth = Integer.parseInt(start_date.substring(4, 6));
+				int endMonth = Integer.parseInt(end_date.substring(4, 6));
+				int[] totalPrice = new int[endMonth+1];					
+				int[] columnSizeArr = new int[endMonth+1];
+				List<String> headList = new ArrayList<String>(); //  테이블 상단 제목
+				List<String> columnList = new ArrayList<String>(); // 컬럼명
+				
+				headList.add("구분");
+				columnList.add("payType");
+				columnSizeArr[0] = 20;
+				totalPrice[0] = 0;
+				
+				// 년도별 판매금액 배열 생성
+				String[] payArr = {"온라인", "오프라인"};
+				int index = 0;
+				int price = 0;
+				
+				for(String pay : payArr) {
+					Map<String, Object> object = new HashMap<String, Object>();
+					object.put("payType", pay);
+					
+					for(int month = startMonth; month <= endMonth; month++) {						
+						price = findPrice(searchList, month, thisYear, pay);						
+						object.put(String.valueOf(month)+"월", price);
+						columnSizeArr[month] = 20;
+						
+						if(index == 0) {
+							headList.add(String.valueOf(month)+"월");
+							columnList.add(String.valueOf(month)+"월");
+							totalPrice[month] = price;
+						}else {
+							int total = price + totalPrice[month];
+							totalPrice[month] = total;
+						}
+					}
+					index++;
+					OnOfflineList.add(object);
+				}
+				
+				Map<String, Object> totalObject = new HashMap<String, Object>();
+				totalObject.put("payType", "합계");
+				
+				for(int idx=1; idx<totalPrice.length; idx++) {
+					totalObject.put((idx) + "월", totalPrice[idx]);
+				}
+				OnOfflineList.add(totalObject);
+				
+				String columnStr = Arrays.toString(columnSizeArr);
+				columnStr = columnStr.replaceAll("\\[", "");
+				columnStr = columnStr.replaceAll("\\]", "");
+				String[] columnStrSize = columnStr.split(","); //  컬럼별 길이정보 (한글)
+				
+				List<Integer> columnSize = new ArrayList<Integer>();
+				for(String size : columnStrSize) {
+					columnSize.add(Integer.parseInt(size.trim()));
+				}
+				// 목록 엑셀 다운로드
+				// 기간에 따라 동적으로 테이블 항목이 생성
+				Date today = new Date();
+			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+				String orgFileName = "년도별 총 판매금액_" + dateforamt.format(today); // 파일명
+				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, OnOfflineList, orgFileName);
+				
+				/*int idx = 0;
 				for(Map<String, Object> object : searchList) {
 					DecimalFormat df = new DecimalFormat("#,##0");
 					searchList.get(idx).put("strType", strType(object.get("type").toString()));
@@ -218,7 +274,7 @@ public class AccountJSON extends NewsbankServletBase {
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
 				String orgFileName = "연도별 정산내역_" + dateforamt.format(today); // 파일명
-				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);
+				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);*/
 			
 			}else {
 				// == 결제건별 정산내역 엑셀 다운로드 ==
@@ -232,9 +288,9 @@ public class AccountJSON extends NewsbankServletBase {
 						String PAYDATE = new SimpleDateFormat("yyyy-MM-dd").format(paydate); // 결제일자
 						
 						int billingAmount = Integer.parseInt(object.get("price").toString()); // 결제금액
-						int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
-						int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
-						int billingTax = 0; // 빌링수수료
+						int customValue = (int) Math.round(billingAmount / 1.1); // 과세금액
+						int customTax = (int) Math.round(billingAmount - customValue); // 과세부가세
+						int billingTax = (int) object.get("fees"); // 빌링수수료
 						double rate = Double.parseDouble(object.get("rate").toString());
 						
 						String LGD_PAYTYPE = object.get("LGD_PAYTYPE").toString();
@@ -244,24 +300,24 @@ public class AccountJSON extends NewsbankServletBase {
 						switch(LGD_PAYTYPE) {
 							case "SC0010":
 								PAYTYPE_STR = "카드결제";
-								billingTax =  (int) Math.round(billingAmount * 0.00363);
+								//billingTax =  (int) Math.round(billingAmount * 0.00363);
 								break;
 							
 							case "SC0040":
 								PAYTYPE_STR = "무통장입금";
-								billingTax = 440;
+								//billingTax = 440;
 								break;
 								
 							case "SC0030":
 								PAYTYPE_STR = "계좌이체";
-								billingTax = (int) Math.round(billingAmount * 0.0022);
+								//billingTax = (int) Math.round(billingAmount * 0.0022);
 								break;
 							case "SC9999":
 								PAYTYPE_STR = "세금계산서";
 								break;
 						}
 						
-						billingTax = Math.round(billingTax);
+						//billingTax = Math.round(billingTax);
 						rate = rate / 100;
 						
 						int totalSalesAccount = billingAmount - billingTax; // 총매출액
@@ -387,6 +443,20 @@ public class AccountJSON extends NewsbankServletBase {
 				break;
 		}
 		return strType;
+	}
+	
+	// 년월에 해당하는 합계 금액
+	private int findPrice(List<Map<String, Object>> staticsList, int month, int thisYear, String pay) {
+		String thisMonth = (month < 10) ? '0' + String.valueOf(month) : String.valueOf(month);
+		String YearOfMonth = thisYear + "-" + thisMonth;
+		int price = 0;
+		for(Map<String, Object> object : staticsList) {
+			if(object.get("YearOfMonth").equals(YearOfMonth) && strType(object.get("type").toString()).equals(pay)) {
+				price = Integer.parseInt(object.get("price").toString());
+			}
+		}
+		
+		return price;
 	}
 
 }

@@ -51,7 +51,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 		super.doGet(request, response);
 		
 		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
-		MemberDTO MemberInfo = new MemberDTO();
+		MemberDTO MemberInfo = new MemberDTO(); // 회원 기본정보
 		
 		if(request.getParameter("seq") != null) {
 			int member_seq = Integer.parseInt(request.getParameter("seq"));

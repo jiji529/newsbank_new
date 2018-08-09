@@ -34,12 +34,12 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180306"></script>
+<script src="js/mypage.js?v=20180308"></script>
 
 <script>
-	$(document).on("keypress", "#keyword", function(e) {
+	$(document).on("keypress", "#subKeyword", function(e) {
 		if (e.keyCode == 13) { // 엔터
-			
+			accountYearSearch();
 		}
 	});
 </script>
@@ -184,7 +184,7 @@
 					<tr>
 						<th>아이디/이름/회사명</th>
 						<td>
-							<input name="keyword" id="keyword" type="text" class="inp_txt" size="50" />
+							<input name="subKeyword" id="subKeyword" type="text" class="inp_txt" size="50" />
 						</td>
 					</tr>
 					<tr>

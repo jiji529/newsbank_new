@@ -669,90 +669,95 @@ $(document).ready(function() {
 	
 	// 년도별 정산내역
 	$('#btnaccountYearSearch').on('click', function() {
-		initAccountTable(); // 테이블 초기화
-		
-		var now = new Date();
-		var media = []; // 선택 매체 코드
-		$("input[name=media_code]").each(function() {
-			if ($(this).is(":checked")) {
-				media.push($(this).val());
-			}
-		});
-		
-		var startDate = $("#contractStart").val();
-		var endDate = $("#contractEnd").val();
-		var period = startDate + " ~ " + endDate;
-		var paytype = $("select[name='paytype'] option:selected").val();
-		
-		var param = {
-			'cmd' : 'total',
-			'media_code' : media,
-			'start_date' : startDate,
-			'end_date' : endDate,
-			'paytype' : paytype
-		};
-		console.log(param);	
-		
-		
-		$.ajax({
-			url : "/account.api",
-			type : "post",
-			data : param,
-			dataType : "json",
-			success : function(data) {
-				console.log(data);
-				var offline_list = new Array();
-				var online_list = new Array();
-				if (data.success) {
-					var onlieTotalPay = 0;
-					var offlieTotalPay = 0;
-					
-					$.each(data.data, function(key, value) {
-						var M = value.YearOfMonth.split("-");						
-						if (value.type == 0) { // online
-							$('.tb_total_account tbody tr:eq(0) td:eq(' + M[1] + ')').text(value.price.toLocaleString());
-							onlieTotalPay += value.price;
-						} else if(value.type == 1) { // offline
-							$('.tb_total_account tbody tr:eq(1) td:eq(' + M[1] + ')').text(value.price.toLocaleString());
-							offlieTotalPay += value.price;
-						}
-					});
-					
-					$('.tb_total_account tbody tr:eq(0) td:eq(13)').text(onlieTotalPay.toLocaleString());
-					$('.tb_total_account tbody tr:eq(1) td:eq(13)').text(offlieTotalPay.toLocaleString());
-					$('.calculate_info_area span:eq(0)').text(period);
-					$('.calculate_info_area span:eq(2)').text(data.data.length);
-					$('.calculate_info_area span:eq(4)').text((onlieTotalPay+offlieTotalPay).toLocaleString());
-					
-					$('.tb_total_account tfoot td:not(:eq(0))').each(function(i) {
-						var onPay = $('.tb_total_account tbody tr:eq(0) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
-						var offPay = $('.tb_total_account tbody tr:eq(1) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
-
-						if (!Number.isInteger(Number.parseInt(onPay)))
-							onPay = 0;
-						if (!Number.isInteger(Number.parseInt(offPay)))
-							offPay = 0;
-						var totalPay = Number.parseInt(onPay) + Number.parseInt(offPay);
-						if (totalPay > 0) {
-							$(this).text(totalPay.toLocaleString());
-						}
-
-					});
-				}
-			}
-		});
-		
+		accountYearSearch();
 	});
 	
-	
-	
-	
 });
+	
+
+// 연도별 총 매출액 목록 함수
+function accountYearSearch(){
+	initAccountTable(); // 테이블 초기화
+	
+	var now = new Date();
+	var media = []; // 선택 매체 코드
+	$("input[name=media_code]").each(function() {
+		if ($(this).is(":checked")) {
+			media.push($(this).val());
+		}
+	});
+	
+	var startDate = $("#contractStart").val();
+	var endDate = $("#contractEnd").val();
+	var period = startDate + " ~ " + endDate;
+	var paytype = $("select[name='paytype'] option:selected").val();
+	var keyword = $("input[name='subKeyword']").val();
+	
+	var param = {
+		'cmd' : 'total',
+		'media_code' : media,
+		'start_date' : startDate,
+		'end_date' : endDate,
+		'paytype' : paytype,
+		'keyword' : keyword
+	};
+	console.log(param);	
+	
+	
+	$.ajax({
+		url : "/account.api",
+		type : "post",
+		data : param,
+		dataType : "json",
+		success : function(data) {
+			console.log(data);
+			var offline_list = new Array();
+			var online_list = new Array();
+			if (data.success) {
+				var onlieTotalPay = 0;
+				var offlieTotalPay = 0;
+				
+				$.each(data.data, function(key, value) {
+					var M = value.YearOfMonth.split("-");						
+					if (value.type == 0) { // online
+						$('.tb_total_account tbody tr:eq(0) td:eq(' + M[1] + ')').text(value.price.toLocaleString());
+						onlieTotalPay += value.price;
+					} else if(value.type == 1) { // offline
+						$('.tb_total_account tbody tr:eq(1) td:eq(' + M[1] + ')').text(value.price.toLocaleString());
+						offlieTotalPay += value.price;
+					}
+				});
+				
+				$('.tb_total_account tbody tr:eq(0) td:eq(13)').text(onlieTotalPay.toLocaleString());
+				$('.tb_total_account tbody tr:eq(1) td:eq(13)').text(offlieTotalPay.toLocaleString());
+				$('.calculate_info_area span:eq(0)').text(period);
+				$('.calculate_info_area span:eq(2)').text(data.data.length);
+				$('.calculate_info_area span:eq(4)').text((onlieTotalPay+offlieTotalPay).toLocaleString());
+				
+				$('.tb_total_account tfoot td:not(:eq(0))').each(function(i) {
+					var onPay = $('.tb_total_account tbody tr:eq(0) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
+					var offPay = $('.tb_total_account tbody tr:eq(1) td:not(:eq(0)):eq(' + i + ')').text().trim().replace(/,/gi, "");
+
+					if (!Number.isInteger(Number.parseInt(onPay)))
+						onPay = 0;
+					if (!Number.isInteger(Number.parseInt(offPay)))
+						offPay = 0;
+					var totalPay = Number.parseInt(onPay) + Number.parseInt(offPay);
+					if (totalPay > 0) {
+						$(this).text(totalPay.toLocaleString());
+					}
+
+				});
+			}
+		}
+	});
+}
 
 
 // accountlist.mypage
 $(document).ready(function() {
-
+	
+	//  기간별 조회 - 년도 선택
 	$('#customYear').on('change', function() {
 		$('#customDayOption a.btn').removeClass('on'); // 날짜 초기화
 		$('#customDay').val('all');
@@ -760,10 +765,12 @@ $(document).ready(function() {
 		change_customDay(); // 월별 선택
 	});
 	
+	//  기간별 조회 - 월 선택
 	$('#customDay').on('change', function() {
 		change_customDay();
 	});
 	
+	// 최근 6개월 선택 버튼 클릭 이벤트
 	$('#customDayOption a.btn').on('click', function(i) {
 		var year = $(this).attr('value').substring(0,4);
 		var mon = $(this).attr('value').substring(4,6) - 1;
@@ -779,23 +786,7 @@ $(document).ready(function() {
 
 	});
 	
-	/*
-	 * 원본
-	$('#customDay a.btn').on('click', function(i) {
-		var year = $('#customYear').val();
-		var mon = $(this).parent().index();
-		var lastDay = (new Date($('#customYear').val(), mon + 1, 0)).getDate();
-		var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
-		var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
-
-		$("#contractStart").val(startDate);
-		$("#contractEnd").val(endDate)
-		$('#customDay a.btn').removeClass('on'); // 날짜 초기화
-		$(this).addClass('on');
-
-	});
-	*/
-
+	// 결제건별 상세내역 [검색] 버튼 클릭 이벤트
 	$('#btnaccountSearch').on('click', function() {
 		$("#frmAccountList").submit();
 
@@ -815,12 +806,14 @@ $(document).ready(function() {
 		var startDate = $("#contractStart").val();
 		var endDate = $("#contractEnd").val();
 		var period = startDate + " ~ " + endDate;
+		var keyword = $("#subKeyword").val();
 		
 		var param = {
 			'cmd' : 'total',
 			'media_code' : media,
 			'start_date' : startDate,
-			'end_date' : endDate
+			'end_date' : endDate,
+			'keyword' : keyword
 		};
 		
 		$.ajax({
@@ -873,6 +866,7 @@ $(document).ready(function() {
 		});
 	}
 
+	// 결제건별 상세내역 검색 이벤트
 	$("#frmAccountList").on("submit", function() {
 		console.log("frmAccountList 호출");
 		var startDate = $("#contractStart").val(); // 시작일
@@ -895,13 +889,16 @@ $(document).ready(function() {
 			alert("선택된 매체가 없습니다.");
 			return false;
 		}
-		var name = $("input[name=keyword]").val(); // 아이디/이름/회사명
-		var pay = $("select[name=payType]").val(); // 결제구분
+		var keyword = $("input[name=subKeyword]").val(); // 아이디/이름/회사명
+		var paytype = $("select[name='paytype'] option:selected").val(); // 결제구분
+		//var pay = $("select[name=payType]").val(); // 결제구분
 		
 		var param = {
 			'media_code' : media_code,
 			'start_date' : startDate,
-			'end_date' : endDate
+			'end_date' : endDate,
+			'paytype' : paytype,			
+			'keyword' : keyword			
 		};
 		
 		console.log(param);
@@ -945,32 +942,29 @@ $(document).ready(function() {
 						totalPay += value.price;
 						
 						var billing_amount = value.price; // 결제금액
-						var added_tax = Math.round(billing_amount * 0.1); // 과세부가세
-						var customs_value = Math.round(billing_amount * 0.9); // 과세금액
-						var billing_tax = 0; // 빌링수수료
+						var customs_value = Math.round(billing_amount / 1.1); // 과세금액
+						var added_tax = Math.round(billing_amount-customs_value); // 과세부가세(결제금액-과세금액)
+						var billing_tax = value.fees; // 빌링수수료
 
 						var rate = value.rate;
+						rate = rate / 100;
+						
 						var PAYTYPE = "";
 						switch (value.LGD_PAYTYPE) {
 						case "SC0010":
 							PAYTYPE = "카드결제";
-							billing_tax = billing_amount * 0.00363;
 							break;
 						case "SC0040":
 							PAYTYPE = "무통장입금";
-							billing_tax = 440;
 							break;
 						case "SC0030":
 							PAYTYPE = "계좌이체";
-							billing_tax = billing_amount * 0.0022;
 							break;
 						case "SC9999":
 							PAYTYPE = "세금계산서";
 							break;
 						}
-						billing_tax = value.fees;
-						//rate = 1 - rate / 100;
-						rate = rate / 100;
+						
 						var total_sales_account = billing_amount - billing_tax; // 총매출액
 						var sales_account = Math.round(total_sales_account * rate);// 회원사
 						// 매출액
@@ -1380,7 +1374,7 @@ function onlyNumber(v){
 
 //엑셀 다운로드
 function excelDown(api, path) { 
-	var keyword = $("input[name='keyword']").val();
+	var keyword = $("input[name='subKeyword']").val();
 	
 	switch(path) {
 		

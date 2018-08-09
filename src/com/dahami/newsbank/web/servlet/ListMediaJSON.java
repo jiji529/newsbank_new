@@ -122,7 +122,7 @@ public class ListMediaJSON extends NewsbankServletBase {
 				arr.put("contractStart", listMember.get(idx).get("contractStart"));
 				arr.put("contractEnd", listMember.get(idx).get("contractEnd"));
 				arr.put("regDate", listMember.get(idx).get("regDate"));
-				//arr.put("masterID", listMember.get(idx).get("masterID"));
+				arr.put("masterID", listMember.get(idx).get("masterID"));
 				arr.put("activate", listMember.get(idx).get("activate"));
 				arr.put("logo", listMember.get(idx).get("logo"));
 				

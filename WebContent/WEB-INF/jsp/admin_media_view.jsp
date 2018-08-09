@@ -87,6 +87,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			
 			var id = "#frmMedia_"+key;
 			var taxPhone = $("#taxPhone1_"+ key + " option:selected").val() + $("#taxPhone2_" + key).val() + $("#taxPhone3_" + key).val();
+			console.log(id + " / " + taxPhone);
 			
 			if($("#frmMedia_" + key).find("[name=taxPhone]").length > 0) {
 				$("#frmMedia").find("[name=taxPhone]").val(taxPhone);
@@ -95,17 +96,22 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					type : 'hidden',
 					name : 'taxPhone',
 					value : taxPhone
-				}).appendTo('.frmMedia');
+				}).appendTo('#frmMedia_' + key);
+				
+				console.log('#frmMedia_' + key);
+				//}).appendTo('.frmMedia');
 			}
 			
 			var formData = $(id).serializeArray();
 			var jsonObj = jQFormSerializeArrToJson(formData);
+			console.log(jsonObj);
 			
 			json_data.push(jsonObj);
 		});
 		
-		console.log(json_data);
+		
 		var adjustData = {"ajdustList" : JSON.stringify(json_data)}; // json 데이터
+		console.log(adjustData);
 		
 		$.ajax({
 			type: "POST",
@@ -117,7 +123,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				var message = data.message;
 				
 				if(success) {					
-					alert(message);					
+					//alert(message);					
 				}
 			}
 		});
@@ -133,6 +139,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 
 		 return jsonObj;
 	} 
+	
+	// 첨부파일 업로드 시 대상 정산매체 seq 값을 할당
+	function setTargetSeq(seq){
+		$("input[name='seq']").val(seq);
+	}
 </script>
 </head>
 <body>
@@ -343,12 +354,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 								<span class=" bar"></span>
 								<input type="text" name="compBankAcc" id="compBankAcc_${status.index}" class="inp_txt" size="26" value="${media.compBankAcc}" />
 								
-								<div class="upload-btn-wrapper">
+								<div class="upload-btn-wrapper" onclick="setTargetSeq(${media.seq})">
 									<a href="#" class="btn_input1">통장사본 업로드</a>
 									<input type="file" name="bank" accept="application/pdf, image/*" required />
 								</div>
-								<c:if test="${!empty MemberDTO.compBankPath}">
-									<a class="btn_input1" target="_blank" href="/bank.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">통장사본 다운로드</a>
+								<c:if test="${!empty media.compBankPath}">
+									<a class="btn_input1" target="_blank" href="/bank.down.photo?seq=${media.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">통장사본 다운로드</a>
 								</c:if>
 						</tr>
 						<tr>
@@ -360,12 +371,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 								<span class=" bar">~</span>
 								<input type="text" name="contractEnd" id="contractEnd_${status.index}" class="inp_txt datepicker" size="12" value="<fmt:formatDate value="${contractEnd}" pattern="yyyy-MM-dd"/>" />
 								
-								<div class="upload-btn-wrapper">
+								<div class="upload-btn-wrapper" onclick="setTargetSeq(${media.seq})">
 									<a href="#" class="btn_input1">계약서 업로드</a>
 									<input type="file" name="contract" accept="application/pdf, image/*" required />
 								</div>
-								<c:if test="${!empty MemberDTO.contractPath}">
-									<a class="btn_input1" target="_blank" href="/contract.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
+								<c:if test="${!empty media.contractPath}">
+									<a class="btn_input1" target="_blank" href="/contract.down.photo?seq=${media.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">계약서 다운로드</a>
 								</c:if>
 						</tr>
 						<tr>
@@ -381,35 +392,52 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<td><input type="text" name="taxName" id="taxName_${status.index}" class="inp_txt" size="43" value="${media.taxName}" /></td>
 						</tr>
 						
-						<c:if test="${fn:substring(media.taxPhone,0,2) eq '02'}">
-							<c:set var="taxPhone1" value="${fn:substring(media.taxPhone,0,2)}"/>
+						<c:if test="${media.taxPhone ne null && fn:length(media.taxPhone) >= 9 }">
+							<c:if test="${fn:substring(media.taxPhone,0,2) eq '02'}">
+								<c:set var="taxPhone1" value="${fn:substring(media.taxPhone,0,2)}"/>
+								
+								<c:choose>
+									<c:when test="${fn:length(media.taxPhone) eq '9'}">
+										<c:set var="taxPhone2" value="${fn:substring(media.taxPhone,2,5)}"/>
+									</c:when>
+									<c:otherwise>
+										<c:set var="taxPhone2" value="${fn:substring(media.taxPhone,2,6)}"/>
+									</c:otherwise>								
+								</c:choose>
+								
+							</c:if>
 							
-							<c:choose>
-								<c:when test="${fn:length(media.taxPhone) eq '9'}">
-									<c:set var="taxPhone2" value="${fn:substring(media.taxPhone,2,5)}"/>
-								</c:when>
-								<c:otherwise>
-									<c:set var="taxPhone2" value="${fn:substring(media.taxPhone,2,6)}"/>
-								</c:otherwise>								
-							</c:choose>
+							<c:if test="${fn:substring(media.taxPhone,0,2) ne '02'}">
+								<c:set var="taxPhone1" value="${fn:substring(media.taxPhone,0,3)}"/>
+								
+								<c:choose>
+									<c:when test="${fn:length(media.taxPhone) eq 10}">
+										<c:set var="taxPhone2" value="${fn:substring(media.taxPhone,3,6)}"/>
+									</c:when>
+									<c:otherwise>
+										<c:set var="taxPhone2" value="${fn:substring(media.taxPhone,3,7)}"/>
+									</c:otherwise>								
+								</c:choose>
+								
+							</c:if>
 							
+							<c:set var="taxPhone3" value="${fn:substring(media.taxPhone, fn:length(media.taxPhone) - 4, fn:length(media.taxPhone))}"/>
 						</c:if>
 						
-						<c:if test="${fn:substring(media.taxPhone,0,2) ne '02'}">
-							<c:set var="taxPhone1" value="${fn:substring(media.taxPhone,0,3)}"/>
+						<c:if test="${media.taxPhone ne null && fn:length(media.taxPhone) <= 3 }">
+							<c:if test="${fn:substring(media.taxPhone,0,2) eq '02'}">
+								<c:set var="taxPhone1" value="${fn:substring(media.taxPhone,0,2)}"/>
+								<c:set var="taxPhone2" value=""/>
+								<c:set var="taxPhone3" value=""/>
+							</c:if>
 							
-							<c:choose>
-								<c:when test="${fn:length(media.taxPhone) eq 10}">
-									<c:set var="taxPhone2" value="${fn:substring(media.taxPhone,3,6)}"/>
-								</c:when>
-								<c:otherwise>
-									<c:set var="taxPhone2" value="${fn:substring(media.taxPhone,3,7)}"/>
-								</c:otherwise>								
-							</c:choose>
-							
+							<c:if test="${fn:substring(media.taxPhone,0,2) ne '02'}">
+								<c:set var="taxPhone1" value="${fn:substring(media.taxPhone,0,3)}"/>
+								<c:set var="taxPhone2" value=""/>
+								<c:set var="taxPhone3" value=""/>
+								
+							</c:if>
 						</c:if>
-						
-						<c:set var="taxPhone3" value="${fn:substring(media.taxPhone, fn:length(media.taxPhone) - 4, fn:length(media.taxPhone))}"/>
 						
 						<tr>
 							<th>세금계산서 담당자 전화번호</th>
@@ -456,12 +484,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 							<td>
 								<span class="bar">${media.logo}</span>
 								
-								<div class="upload-btn-wrapper">
+								<div class="upload-btn-wrapper" onclick="setTargetSeq(${media.seq})">
 									<a href="#" class="btn_input1">업로드</a>
 									<input type="file" name="logo" accept="application/pdf, image/*" required />
 								</div>
-								<c:if test="${!empty MemberDTO.logo}">
-									<a class="btn_input1" target="_blank" href="/logo.down.photo?seq=${MemberDTO.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
+								<c:if test="${!empty media.logo}">
+									<a class="btn_input1" target="_blank" href="/logo.down.photo?seq=${media.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
 								</c:if>
 							</td>
 						</tr>
@@ -477,7 +505,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				</table>
 				</form>	
 			</c:forEach>		
-			<div class="btn_area"><a href="#" class="btn_input2" onclick="member_update(); media_update();">회원정보 수정</a><a href="/media.manage" class="btn_input1">목록</a></div>
+			<div class="btn_area"><a href="javascript:void(0)" class="btn_input2" onclick="member_update(); media_update();">회원정보 수정</a><a href="/media.manage" class="btn_input1">목록</a></div>
 		</div>
 	</section>
 </div>

@@ -34,10 +34,10 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180307"></script>
+<script src="js/mypage.js?v=20180310"></script>
 
 <script>
-	$(document).on("keypress", "#keyword", function(e) {
+	$(document).on("keypress", "#subKeyword", function(e) {
 		if (e.keyCode == 13) { // 엔터
 			$("#frmAccountList").submit();
 		}
@@ -188,13 +188,13 @@
 					<tr>
 						<th>아이디/이름/회사명</th>
 						<td>
-							<input name="keyword" id="keyword" type="text" class="inp_txt" size="50" />
+							<input name="subKeyword" id="subKeyword" type="text" class="inp_txt" size="50" />
 						</td>
 					</tr>
 					<tr>
 						<th>결제방법</th>
 						<td>
-							<select name="paytype" class="inp_txt" style="width: 380px;">
+							<select name="paytype" id="searchPaytype" class="inp_txt" style="width: 380px;">
 								<option value="">- 선택 -</option>
 								<option value="">전체</option>
 								<option value="SC0010">카드결제</option>
