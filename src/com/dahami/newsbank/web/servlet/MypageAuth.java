@@ -79,8 +79,6 @@ public class MypageAuth extends NewsbankServletBase {
 					MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 					memberDTO.setId(MemberInfo.getId());
 					memberDTO.setPw(CommonUtil.sha1(pw));
-					
-					
 
 					MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 					memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청

