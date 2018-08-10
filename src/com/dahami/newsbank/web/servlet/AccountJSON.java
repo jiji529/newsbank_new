@@ -259,22 +259,6 @@ public class AccountJSON extends NewsbankServletBase {
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
 				String orgFileName = "년도별 총 판매금액_" + dateforamt.format(today); // 파일명
 				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, OnOfflineList, orgFileName);
-				
-				/*int idx = 0;
-				for(Map<String, Object> object : searchList) {
-					DecimalFormat df = new DecimalFormat("#,##0");
-					searchList.get(idx).put("strType", strType(object.get("type").toString()));
-					searchList.get(idx).put("strPrice", df.format(Integer.parseInt(object.get("price").toString())));
-					idx++;
-				}
-				List<String> headList = Arrays.asList("월별", "온라인/오프라인", "가격"); //  테이블 상단 제목
-				List<Integer> columnSize = Arrays.asList(10, 20, 20); //  컬럼별 길이정보
-				List<String> columnList = Arrays.asList("YearOfMonth", "strType", "strPrice"); // 컬럼명
-				
-				Date today = new Date();
-			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
-				String orgFileName = "연도별 정산내역_" + dateforamt.format(today); // 파일명
-				ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, searchList, orgFileName);*/
 			
 			}else {
 				// == 결제건별 정산내역 엑셀 다운로드 ==
@@ -300,24 +284,20 @@ public class AccountJSON extends NewsbankServletBase {
 						switch(LGD_PAYTYPE) {
 							case "SC0010":
 								PAYTYPE_STR = "카드결제";
-								//billingTax =  (int) Math.round(billingAmount * 0.00363);
 								break;
 							
 							case "SC0040":
 								PAYTYPE_STR = "무통장입금";
-								//billingTax = 440;
 								break;
 								
 							case "SC0030":
 								PAYTYPE_STR = "계좌이체";
-								//billingTax = (int) Math.round(billingAmount * 0.0022);
 								break;
 							case "SC9999":
 								PAYTYPE_STR = "세금계산서";
 								break;
 						}
 						
-						//billingTax = Math.round(billingTax);
 						rate = rate / 100;
 						
 						int totalSalesAccount = billingAmount - billingTax; // 총매출액
@@ -358,54 +338,59 @@ public class AccountJSON extends NewsbankServletBase {
 				}
 				
 				if(searchList.size() > 0) {
-					// 온라인 판매대금 추가
-					List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-					List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
-					List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usageName", "copyright", 
-							 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
-							 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
-					titleList.add("온라인 판매대금 정산내역");
-					headerList.add(onlineHeadList);
-					colSizeList.add(onlineColumnSize);
-					colList.add(onlineColumnList);
-					searchOnOffList.add(onlineList);
 					
-					JSONObject onlineObj = new JSONObject();
-					onlineObj.put("headList", onlineHeadList);
-					onlineObj.put("columnSize", onlineColumnSize);
-					onlineObj.put("columnList", onlineColumnList);
-					onlineObj.put("title", "온라인 판매대금 정산내역");
-					onlineObj.put("body", onlineList);
-					
-					jArray.add(onlineObj);
-					
-					
-					// 오프라인 판매대금 추가
-					List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "ID", "회사명", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-					List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 30, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
-					List<String> offlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "id", "compName", "photo_uciCode", "usageName", "copyright", 
-							 "PAYTYPE_STR", "customValue", "customTax", "billingAmount",  
-							 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
-					titleList.add("오프라인 판매대금 정산내역");
-					headerList.add(offlineHeadList);
-					colSizeList.add(offlineColumnSize);
-					colList.add(offlineColumnList);
-					searchOnOffList.add(offlineList);
+					if(onlineList.size() > 0) {
+						// 온라인 판매대금 추가
+						List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+						List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+						List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usageName", "copyright", 
+								 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
+								 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+						titleList.add("온라인 판매대금 정산내역");
+						headerList.add(onlineHeadList);
+						colSizeList.add(onlineColumnSize);
+						colList.add(onlineColumnList);
+						searchOnOffList.add(onlineList);
+						
+						JSONObject onlineObj = new JSONObject();
+						onlineObj.put("headList", onlineHeadList);
+						onlineObj.put("columnSize", onlineColumnSize);
+						onlineObj.put("columnList", onlineColumnList);
+						onlineObj.put("title", "온라인 판매대금 정산내역");
+						onlineObj.put("body", onlineList);
+						
+						jArray.add(onlineObj);
+					}
 					
 					
-					JSONObject offlineObj = new JSONObject();
-					offlineObj.put("headList", offlineHeadList);
-					offlineObj.put("columnSize", offlineColumnSize);
-					offlineObj.put("columnList", offlineColumnList);
-					offlineObj.put("title", "오프라인 판매대금 정산내역");
-					offlineObj.put("body", offlineList);
-					
-					jArray.add(offlineObj);
+					if(offlineList.size() > 0) {
+						// 오프라인 판매대금 추가
+						List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "ID", "회사명", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+						List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 30, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+						List<String> offlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "id", "compName", "photo_uciCode", "usageName", "copyright", 
+								 "PAYTYPE_STR", "customValue", "customTax", "billingAmount",  
+								 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+						titleList.add("오프라인 판매대금 정산내역");
+						headerList.add(offlineHeadList);
+						colSizeList.add(offlineColumnSize);
+						colList.add(offlineColumnList);
+						searchOnOffList.add(offlineList);
+						
+						
+						JSONObject offlineObj = new JSONObject();
+						offlineObj.put("headList", offlineHeadList);
+						offlineObj.put("columnSize", offlineColumnSize);
+						offlineObj.put("columnList", offlineColumnList);
+						offlineObj.put("title", "오프라인 판매대금 정산내역");
+						offlineObj.put("body", offlineList);
+						
+						jArray.add(offlineObj);
+					}
 					
 					// 최종 엑셀 반영
 					Date today = new Date();
 				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
-					String orgFileName = "정산내역_" + dateforamt.format(today); // 파일명
+					String orgFileName = "결제건별 정산내역_" + dateforamt.format(today); // 파일명
 					
 					ExcelUtil.xlsxWiterJSONParsing(request, response, jArray, orgFileName);
 					
