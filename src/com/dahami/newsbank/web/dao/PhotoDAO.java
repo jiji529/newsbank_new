@@ -536,7 +536,7 @@ public class PhotoDAO extends DAOBase {
 		try {
 			session = sf.getSession();
 			session.insert("Photo.insertActionLog", dto);
-			
+			logger.info("ActionLog: " + dto.getUciCode() + " / " + dto.getActionTypeStr() + " / memberSeq: " + dto.getMemberSeq());
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
