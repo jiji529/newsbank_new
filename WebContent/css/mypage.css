@@ -551,3 +551,10 @@
 .error_cont p{ width:100%; float:left; color:#333; padding:20px 0;}
 .error_cont button{margin:10px auto; padding:8px 15px; border:1px #f79320 solid; background:#fff; color:#f79320;}
 #popup_wrap.wd .pagination ul{ margin:20px 0 10px;} 
+
+.price_mess{float:left; margin-bottom:20px; margin-top:-20px; width:100%; background: #f8f6f3; padding: 20px; font-size: 15px; border: 1px #ddd solid; color: #333;}
+ a.price_info {    float: right;
+    width: 24px;
+    height: 24px;
+    background: url(../images/view/question.png) 0 0 no-repeat;
+    text-indent: -9999px;}

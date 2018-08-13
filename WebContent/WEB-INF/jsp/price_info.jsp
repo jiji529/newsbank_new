@@ -297,7 +297,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<div class="view_rt_top">
+				<div class="price_mess">
 					이용자가 뉴스뱅크가 제공하는 이미지를 사용할 경우 저작권, 피사체에 대한 초상권, 상표권 등 기타권리는 이용자 자신이 취득하여야 합니다. 
 					<a href="/policy.intro" class="price_info" target="_blank">이용약관</a>
 				</div>
