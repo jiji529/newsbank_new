@@ -45,6 +45,28 @@ public class PhotoDAO extends DAOBase {
 	}
 	
 	/**
+	 * @methodName  : getUciCodeByOldCode
+	 * @author      : JEON,HYUNGGUK
+	 * @date        : 2018. 8. 9. 오후 3:33:42
+	 * @methodCommet: 구 코드를 사용하여 새로운 UCI 코드를 판별한다
+	 * @param oldCode
+	 * @return 
+	 * @returnType  : String
+	 */
+	public String getUciCodeByOldCode(String oldCode) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectOne("Photo.selUciCodeByOld", oldCode);
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return null;
+	}
+	/**
 	 * @methodName  : update
 	 * @author      : HOYADEV
 	 * @date        : 2017. 10. 19. 오전 08:54:35
@@ -91,19 +113,15 @@ public class PhotoDAO extends DAOBase {
 	 */
 	public void update_SaleState(PhotoDTO photoDTO) {
 		SqlSession session = null;
-				
 		try {
 			session = sf.getSession();
 			session.update("Photo.updateSaleState", photoDTO);
-			
+			logger.info("UpdateSaleState: " + photoDTO.getUciCode() + " / " + photoDTO.getSaleState());
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
-			try {
-				session.commit();
-				session.close();
-			} catch (Exception e) {
-			}
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
 		}
 	}
 	

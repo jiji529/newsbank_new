@@ -111,10 +111,12 @@ public class DownloadService extends ServiceBase {
 	private static final Map<String, String> CORP_NAME_MAP;
 	private static final Map<String, String> CORP_INFO_QUERY_MAP;
 
+	private static final String SERVICE_CODE_GETTY = "gt";
+	
 	static {
 		ACCESS_IP_MAP = new HashMap<String, Set<String>>();
 		final Set<String> ipSet = new HashSet<String>();
-		ACCESS_IP_MAP.put("gt", ipSet);
+		ACCESS_IP_MAP.put(SERVICE_CODE_GETTY, ipSet);
 		
 		// 2016. 05. 18	이매진 IP 추가 -- "121.78.118.233", "121.78.196.177", "121.78.196.178"
 		//	2017. 03. 17	이매진 IP 추가 -- "1.214.46.66", "121.78.196.175"
@@ -143,10 +145,10 @@ public class DownloadService extends ServiceBase {
 		
 		CORP_NAME_MAP = new HashMap<String, String>();
 		CORP_NAME_MAP.put("nb", "뉴스뱅크");
-		CORP_NAME_MAP.put("gt", "게티이미지코리아");
+		CORP_NAME_MAP.put(SERVICE_CODE_GETTY, "게티이미지코리아");
 
 		CORP_INFO_QUERY_MAP = new HashMap<String, String>();
-		CORP_INFO_QUERY_MAP.put("gt", "Member.selGetty");
+		CORP_INFO_QUERY_MAP.put(SERVICE_CODE_GETTY, "Member.selGetty");
 	}
 
 //	private String targetSize;
@@ -520,7 +522,18 @@ public class DownloadService extends ServiceBase {
 			}
 			// 압축본을 제외한 이미지 전송 요청
 			else {
+				uciCode = uciCode.trim();
 				PhotoDTO photo = photoDao.read(uciCode);
+				if(photo != null && !photo.getUciCode().equals(uciCode) && targetSize.equals("list") && serviceCode != null && serviceCode.equals(SERVICE_CODE_GETTY)) {
+					String newCode = photoDao.getUciCodeByOldCode(uciCode);
+					if(newCode != null) {
+						photo = photoDao.read(newCode);
+						if(photo != null && photo.getUciCode() != null && photo.getUciCode().equals(newCode)) {
+							uciCode = newCode;
+						}
+					}
+				}
+				
 				// 사진 정보가 없는 경우
 				if (photo == null || photo.getUciCode().equals(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)) {
 					// 파일 부재(이미지 부재 / 오류) 이미지 전송
@@ -582,7 +595,7 @@ public class DownloadService extends ServiceBase {
 						String orgPath = PATH_PHOTO_BASE + photo.getOriginPath();
 						
 						// 게티 원본 이미지 고정
-//						if(serviceCode.equals("gt")) {
+//						if(serviceCode.equals(SERVICE_CODE_GETTY)) {
 //							orgPath = "/data/newsbank/temp/getty.jpg";
 //						}
 						
