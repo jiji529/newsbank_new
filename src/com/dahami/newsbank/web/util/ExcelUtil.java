@@ -17,10 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -56,7 +58,7 @@ public class ExcelUtil {
         HSSFRow row = sheet.createRow(0);
         // 쎌 생성
         HSSFCell cell;
-
+        
         // 헤더 정보 구성
         for(int idx=0; idx<headList.size(); idx++) {
         	// 전달된 컬럼 갯수만큼 생성
@@ -85,6 +87,7 @@ public class ExcelUtil {
 	        	//System.out.println(key+ " / " + value);
 	        	cell = row.createCell(num) ;
 	        	cell.setCellValue(value);
+	        	
 	    	}
 	    }
 	    
@@ -140,6 +143,7 @@ public class ExcelUtil {
         // 쎌 스타일
         XSSFCellStyle style = workbook.createCellStyle();
         style.setWrapText(true); // 자동 줄바꿈
+        style.setAlignment(HorizontalAlignment.CENTER);
 	        
         // 헤더 정보 구성
         for(int idx=0; idx<headList.size(); idx++) {
@@ -229,6 +233,7 @@ public class ExcelUtil {
         // 쎌 스타일
         XSSFCellStyle style = workbook.createCellStyle();
         style.setWrapText(true); // 자동 줄바꿈
+        style.setAlignment(HorizontalAlignment.CENTER);
         
         
 	 	JSONParser jsonParser = new JSONParser();

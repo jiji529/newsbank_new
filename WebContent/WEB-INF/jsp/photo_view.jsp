@@ -761,6 +761,12 @@ if(!contentBlidF) {
 						<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
 						<div class="btn_down" id="btnDownTentative"><a href="javascript:void(0)" value="${photoDTO.uciCode}">시안 다운로드</a></div>
 						<div class="btn_buy"><a href="javascript:;" onclick="go_pay()">구매하기</a></div>
+						<div class="restriction">
+							<div class="restriction_cont">
+								뉴스뱅크는 본 이미지의 피사체에 대한 초상권, 상표권, 특허권 등 제반권리를 가지고 있지 않습니다. <br/>
+								<b class="color">광고·홍보·홍보상품 판촉 용도에는 사용허가가 필요</b>합니다.
+							</div>
+						</div>
 					</div>
 				</c:if>
 				<c:if test="${loginInfo != null && loginInfo.deferred != 0}">
