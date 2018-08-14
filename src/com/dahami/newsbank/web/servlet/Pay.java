@@ -19,6 +19,7 @@ import org.json.simple.parser.ParseException;
 import com.dahami.newsbank.web.dao.PayDAO;
 import com.dahami.newsbank.web.dto.CartDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class Pay
@@ -40,6 +41,16 @@ public class Pay extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		System.setProperty("jsse.enableSNIExtension", "false"); //handshake alert: unrecognized_name 에러
 
 		// 로그인 정보 세션 체크
@@ -93,13 +104,4 @@ public class Pay extends NewsbankServletBase {
 	    }
 	    return arr;
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

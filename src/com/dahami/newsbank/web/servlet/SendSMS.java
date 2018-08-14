@@ -139,15 +139,6 @@ public class SendSMS extends NewsbankServletBase {
 		response.getWriter().print(json); // json 생성
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 	public static int generateNumber(int length) {
 		// 랜덤 length 자리 생성
 

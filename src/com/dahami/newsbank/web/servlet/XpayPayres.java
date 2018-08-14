@@ -299,13 +299,4 @@ public class XpayPayres extends NewsbankServletBase {
 	//	dispatcher.forward(request, response);
 		 response.sendRedirect("/result.pay?orderNo="+xpay.Response("LGD_OID", 0));
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

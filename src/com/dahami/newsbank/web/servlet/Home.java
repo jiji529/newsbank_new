@@ -46,6 +46,10 @@ public class Home extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
 		CmdClass cmd = CmdClass.getInstance(request);
 		if (cmd.isInvalid()) {
 			response.sendRedirect("/invlidPage.jsp");
@@ -79,16 +83,4 @@ public class Home extends NewsbankServletBase {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
 		dispatcher.forward(request, response);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-
-	
-
 }

@@ -55,11 +55,11 @@ public class AccountJSON extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
 		
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
 		CmdClass cmd = CmdClass.getInstance(request);
-		
 		if (cmd.isInvalid()) {
 			response.sendRedirect("/invlidPage.jsp");
 			return;

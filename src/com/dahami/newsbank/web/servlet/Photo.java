@@ -35,6 +35,10 @@ public class Photo extends NewsbankServletBase {
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
 		CmdClass cmd = CmdClass.getInstance(request);
 		if (cmd.isInvalid()) {
 			response.sendRedirect("/invlidPage.jsp");

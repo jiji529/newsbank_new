@@ -44,6 +44,15 @@ public class DownloadJSON extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 		String keywordType = request.getParameter("keywordType"); // 키워드 검색 타입
 		String keyword = request.getParameter("keyword"); // 키워드
@@ -72,12 +81,6 @@ public class DownloadJSON extends NewsbankServletBase {
 		}else {
 			pageCnt = (totalCnt / pageVol);
 		} 
-		
-		CmdClass cmd = CmdClass.getInstance(request);
-		if (cmd.isInvalid()) {
-			response.sendRedirect("/invlidPage.jsp");
-			return;
-		}
 		
 		if(cmd.is3("excel")) {
 			// 목록 엑셀다운로드

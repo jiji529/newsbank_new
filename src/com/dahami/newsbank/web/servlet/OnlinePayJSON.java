@@ -48,6 +48,15 @@ public class OnlinePayJSON extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = null;
@@ -120,12 +129,6 @@ public class OnlinePayJSON extends NewsbankServletBase {
 			totalCnt = payDAO.getOnlineCount(params);
 			totalPrice = payDAO.getOnlinePrice(params);
 			pageCnt = (totalCnt / pageVol) + 1; 
-			
-			CmdClass cmd = CmdClass.getInstance(request);
-			if (cmd.isInvalid()) {
-				response.sendRedirect("/invlidPage.jsp");
-				return;
-			}
 			
 			if(cmd.is3("excel")) {
 				// 목록 엑셀다운로드

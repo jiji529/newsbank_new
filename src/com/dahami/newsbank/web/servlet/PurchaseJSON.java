@@ -283,16 +283,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 
 		return price;
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-
+	
 	/*
 	 * 
 	 * MD5 암호화

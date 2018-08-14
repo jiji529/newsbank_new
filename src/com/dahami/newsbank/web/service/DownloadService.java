@@ -867,7 +867,7 @@ public class DownloadService extends ServiceBase {
 		ServletOutputStream sos = response.getOutputStream();
 		try {
 			sos.write(data);
-			response.getOutputStream().flush();
+			sos.flush();
 		} catch (IOException e) {
 			String errMsg = e.getLocalizedMessage();
 			if (errMsg.indexOf("현재 연결은 사용자의 호스트 시스템의 소프트웨어의 의해 중단되었습니다") == -1) {

@@ -35,13 +35,5 @@ public class JoinKind extends NewsbankServletBase {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/join_kind.jsp");
 		dispatcher.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
+    }
 }

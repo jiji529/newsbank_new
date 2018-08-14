@@ -50,6 +50,9 @@ public class CalculationAction extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
 		
 		CalculationDAO calculationDAO = new CalculationDAO(); // 정산정보 연결
 		

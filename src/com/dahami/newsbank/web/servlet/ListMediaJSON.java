@@ -47,6 +47,15 @@ public class ListMediaJSON extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 		String keyword = request.getParameter("keyword"); // 키워드
 		int pageVol = Integer.parseInt(request.getParameter("pageVol")); // 표시 갯수
@@ -64,13 +73,6 @@ public class ListMediaJSON extends NewsbankServletBase {
 		listMember = memberDAO.selectMediaList(searchOpt);
 		totalCnt = memberDAO.getMediaCount(searchOpt);
 		pageCnt = (totalCnt / pageVol) + 1; // 페이지 갯수 (총 갯수 / 페이지 당 행의 수  + 1)
-		
-		CmdClass cmd = CmdClass.getInstance(request);
-		if (cmd.isInvalid()) {
-			response.sendRedirect("/invlidPage.jsp");
-			return;
-		}		
-		
 		
 		if(cmd.is3("excel")) {
 			int idx = 0;

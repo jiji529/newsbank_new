@@ -40,6 +40,15 @@ public class ListMemberJSON extends NewsbankServletBase {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 		String keyword = request.getParameter("keyword"); // 키워드
 		String type = request.getParameter("type"); // 회원유형 (P: 개인, C: 기업)
@@ -58,12 +67,6 @@ public class ListMemberJSON extends NewsbankServletBase {
 		searchOpt.put("group", group);
 		searchOpt.put("pageVol", pageVol);
 		searchOpt.put("startPage", startPage);
-		
-		CmdClass cmd = CmdClass.getInstance(request);
-		if (cmd.isInvalid()) {
-			response.sendRedirect("/invlidPage.jsp");
-			return;
-		}
 		
 		if(cmd.is3("excel")) {
 			// 목록 엑셀다운로드

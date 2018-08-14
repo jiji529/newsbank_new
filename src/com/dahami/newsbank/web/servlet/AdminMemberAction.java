@@ -25,6 +25,7 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.CommonUtil;
 
 import org.json.simple.parser.*;
@@ -49,6 +50,9 @@ public class AdminMemberAction extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
 		
 		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 		MemberDTO MemberInfo = new MemberDTO(); // 회원 기본정보
@@ -555,13 +559,6 @@ public class AdminMemberAction extends NewsbankServletBase {
 		response.getWriter().print(json);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 	public static boolean isValidEmail(String email) {
 		boolean err = false;
 		String regex = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$";
@@ -688,30 +685,4 @@ public class AdminMemberAction extends NewsbankServletBase {
 			usageDAO.insertUsage(usageList, seq); // 사용용도 추가
 		}
 	}
-
-	/*public static boolean isValidCertiNum(HttpServletRequest request) {
-		boolean err = false;
-		String getCertiphone = null;
-		String getCertiNum = null;
-		String CertiNum = null;
-		String phone = null;
-
-		if (session.getAttribute("sCertifyNumber") != null) {
-			// 세션 내 인증번호 체크
-			getCertiNum = (String) session.getAttribute("sCertifyNumber");
-		}
-		if (session.getAttribute("sCertifyPhone") != null) {
-			// 세션 내 인증번호 체크
-			getCertiphone = (String) session.getAttribute("sCertifyPhone");
-		}
-		CertiNum = request.getParameter("CertiNum"); // 전화번호 인증번호 request
-		phone = request.getParameter("phone");
-		if (CertiNum != null && phone != null && !CertiNum.isEmpty() && !phone.isEmpty() && CertiNum.equalsIgnoreCase(getCertiNum) && phone.equalsIgnoreCase(getCertiphone)) {
-			err = true;
-		}
-		session.removeAttribute("sCertifyNumber");
-		session.removeAttribute("sCertifyPhone");
-
-		return err;
-	}*/
 }

@@ -16,6 +16,7 @@ import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BoardDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.BoardDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class BoardJSON
@@ -36,6 +37,15 @@ public class BoardJSON extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 	    String keyword = request.getParameter("keyword");
 	    BoardDAO boardDAO = new BoardDAO();
@@ -57,12 +67,4 @@ public class BoardJSON extends NewsbankServletBase {
 		response.getWriter().print(json);		
  		request.setAttribute("jsonList", jsonList);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

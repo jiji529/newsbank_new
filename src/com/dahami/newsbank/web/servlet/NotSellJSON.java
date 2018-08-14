@@ -44,6 +44,15 @@ public class NotSellJSON extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = null;
@@ -82,12 +91,6 @@ public class NotSellJSON extends NewsbankServletBase {
 				pageCnt = (totalCnt / pageVol);
 			}
 			
-			CmdClass cmd = CmdClass.getInstance(request);
-			if (cmd.isInvalid()) {
-				response.sendRedirect("/invlidPage.jsp");
-				return;
-			}
-			
 			if(cmd.is3("excel")) {
 				// 목록 엑셀다운로드
 				List<String> headList = Arrays.asList("회사/기관명", "아이디", "이름", "전화번호"); //  테이블 상단 제목
@@ -120,12 +123,4 @@ public class NotSellJSON extends NewsbankServletBase {
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }
