@@ -273,7 +273,8 @@ public class Login extends NewsbankServletBase {
 			JSONObject json = new JSONObject();
 			json.put("success", result);
 			json.put("message", message);
-
+			
+			response.setContentType("application/json");
 			response.getWriter().print(json);
 		}
 	}

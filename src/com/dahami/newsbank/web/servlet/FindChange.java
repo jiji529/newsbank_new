@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
@@ -39,8 +40,16 @@ public class FindChange extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 
 		session = request.getSession();
 

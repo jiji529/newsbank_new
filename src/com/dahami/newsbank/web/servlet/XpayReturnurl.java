@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
+
 /**
  * Servlet implementation class XpayReturnurl
  */
@@ -28,8 +30,16 @@ public class XpayReturnurl extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 	
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pay/returnurl.jsp");

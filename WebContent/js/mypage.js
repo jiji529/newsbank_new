@@ -496,7 +496,7 @@ $(document).ready(function() {
 				url : "/member.api",
 				type : "post",
 				data : ({
-					cmd : "R",
+					action : "R",
 					media_code : $("#media").val()
 				}),
 				dataType : "json",
@@ -664,19 +664,8 @@ function initAccountTable() {
 	});
 }
 
-// accountyear.mypage
-$(document).ready(function() {
-	
-	// 년도별 정산내역
-	$('#btnaccountYearSearch').on('click', function() {
-		accountYearSearch();
-	});
-	
-});
-	
-
-// 연도별 총 매출액 목록 함수
-function accountYearSearch(){
+// 연도별 총 매출액
+function accountYearSearch() {
 	initAccountTable(); // 테이블 초기화
 	
 	var now = new Date();
@@ -691,17 +680,18 @@ function accountYearSearch(){
 	var endDate = $("#contractEnd").val();
 	var period = startDate + " ~ " + endDate;
 	var paytype = $("select[name='paytype'] option:selected").val();
-	var keyword = $("input[name='subKeyword']").val();
+	var keyword = $("input[name=subKeyword]").val(); // 아이디/이름/회사명
 	
 	var param = {
-		'cmd' : 'total',
+		'action' : 'total',
 		'media_code' : media,
 		'start_date' : startDate,
 		'end_date' : endDate,
 		'paytype' : paytype,
 		'keyword' : keyword
 	};
-	console.log(param);	
+	
+//	console.log(param);	
 	
 	
 	$.ajax({
@@ -753,11 +743,19 @@ function accountYearSearch(){
 	});
 }
 
+// accountyear.mypage
+$(document).ready(function() {
+	
+	// 년도별 정산내역
+	$('#btnaccountYearSearch').on('click', function() {
+		accountYearSearch();
+	});
+});
+
 
 // accountlist.mypage
 $(document).ready(function() {
-	
-	//  기간별 조회 - 년도 선택
+
 	$('#customYear').on('change', function() {
 		$('#customDayOption a.btn').removeClass('on'); // 날짜 초기화
 		$('#customDay').val('all');
@@ -765,12 +763,10 @@ $(document).ready(function() {
 		change_customDay(); // 월별 선택
 	});
 	
-	//  기간별 조회 - 월 선택
 	$('#customDay').on('change', function() {
 		change_customDay();
 	});
 	
-	// 최근 6개월 선택 버튼 클릭 이벤트
 	$('#customDayOption a.btn').on('click', function(i) {
 		var year = $(this).attr('value').substring(0,4);
 		var mon = $(this).attr('value').substring(4,6) - 1;
@@ -786,7 +782,23 @@ $(document).ready(function() {
 
 	});
 	
-	// 결제건별 상세내역 [검색] 버튼 클릭 이벤트
+	/*
+	 * 원본
+	$('#customDay a.btn').on('click', function(i) {
+		var year = $('#customYear').val();
+		var mon = $(this).parent().index();
+		var lastDay = (new Date($('#customYear').val(), mon + 1, 0)).getDate();
+		var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
+		var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
+
+		$("#contractStart").val(startDate);
+		$("#contractEnd").val(endDate)
+		$('#customDay a.btn').removeClass('on'); // 날짜 초기화
+		$(this).addClass('on');
+
+	});
+	*/
+
 	$('#btnaccountSearch').on('click', function() {
 		$("#frmAccountList").submit();
 
@@ -806,10 +818,10 @@ $(document).ready(function() {
 		var startDate = $("#contractStart").val();
 		var endDate = $("#contractEnd").val();
 		var period = startDate + " ~ " + endDate;
-		var keyword = $("#subKeyword").val();
+		var keyword = $("input[name=subKeyword]").val(); // 아이디/이름/회사명
 		
 		var param = {
-			'cmd' : 'total',
+			'action' : 'total',
 			'media_code' : media,
 			'start_date' : startDate,
 			'end_date' : endDate,
@@ -866,7 +878,6 @@ $(document).ready(function() {
 		});
 	}
 
-	// 결제건별 상세내역 검색 이벤트
 	$("#frmAccountList").on("submit", function() {
 		console.log("frmAccountList 호출");
 		var startDate = $("#contractStart").val(); // 시작일
@@ -891,16 +902,14 @@ $(document).ready(function() {
 		}
 		var keyword = $("input[name=subKeyword]").val(); // 아이디/이름/회사명
 		var paytype = $("select[name='paytype'] option:selected").val(); // 결제구분
-		//var pay = $("select[name=payType]").val(); // 결제구분
 		
 		var param = {
 			'media_code' : media_code,
 			'start_date' : startDate,
 			'end_date' : endDate,
-			'paytype' : paytype,			
-			'keyword' : keyword			
+			'paytype' : paytype,
+			'keyword' : keyword
 		};
-		
 		console.log(param);
 		
 		$.ajax({
@@ -942,29 +951,32 @@ $(document).ready(function() {
 						totalPay += value.price;
 						
 						var billing_amount = value.price; // 결제금액
-						var customs_value = Math.round(billing_amount / 1.1); // 과세금액
-						var added_tax = Math.round(billing_amount-customs_value); // 과세부가세(결제금액-과세금액)
-						var billing_tax = value.fees; // 빌링수수료
+						var added_tax = Math.round(billing_amount * 0.1); // 과세부가세
+						var customs_value = Math.round(billing_amount * 0.9); // 과세금액
+						var billing_tax = 0; // 빌링수수료
 
 						var rate = value.rate;
-						rate = rate / 100;
-						
 						var PAYTYPE = "";
 						switch (value.LGD_PAYTYPE) {
 						case "SC0010":
 							PAYTYPE = "카드결제";
+							billing_tax = billing_amount * 0.00363;
 							break;
 						case "SC0040":
 							PAYTYPE = "무통장입금";
+							billing_tax = 440;
 							break;
 						case "SC0030":
 							PAYTYPE = "계좌이체";
+							billing_tax = billing_amount * 0.0022;
 							break;
 						case "SC9999":
 							PAYTYPE = "세금계산서";
 							break;
 						}
-						
+						billing_tax = value.fees;
+						//rate = 1 - rate / 100;
+						rate = rate / 100;
 						var total_sales_account = billing_amount - billing_tax; // 총매출액
 						var sales_account = Math.round(total_sales_account * rate);// 회원사
 						// 매출액
@@ -1254,7 +1266,7 @@ $(document).ready(function() {
 			
 			var param = {
 				"LGD_OID" : LGD_OID,
-				"cmd" : "C"
+				"action" : "C"
 			};
 			console.log(param);
 				
@@ -1301,7 +1313,7 @@ $(document).ready(function() {
 			var imgPath = "/service.down.photo?uciCode=" + uciCode + "&type=file";
 			var param = {
 					"paymentDetail_seq" : paymentDetail_seq,
-					"cmd" : "D"
+					"action" : "D"
 				};
 				
 				console.log(param);
@@ -1334,7 +1346,7 @@ $(document).ready(function() {
 			var param = {
 					"paymentDetail_seq" : paymentDetail_seq,
 					"LGD_OID" : LGD_OID,
-					"cmd" : "C"
+					"action" : "C"
 				};
 					
 				$.ajax({
@@ -1411,7 +1423,7 @@ function excelDown(api, path) {
 		
 		case "accountyear":
 			// 연도별 정산내역
-			var cmd = "total";
+			var action = "total";
 			var paytype = $("select[name=paytype] option:selected").val();
 			var startDate = $("#contractStart").val(); // 시작일
 			if (startDate == null || startDate.length == 0) {
@@ -1434,7 +1446,7 @@ function excelDown(api, path) {
 				return false;
 			}
 			
-			$("#currentCmd").val(cmd);
+			$("#currentAction").val(action);
 			$("#currentPayType").val(paytype);
 			$("#currentMediaCode").val(media_code);
 			$("#startDate").val(startDate);

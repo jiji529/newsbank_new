@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<script src="/js/popular.js"></script>
+<script src="/js/popular.js?v=20180817"></script>
 
 <script type="text/javascript">
 	

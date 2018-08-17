@@ -112,9 +112,8 @@
 					<h3>회원 추가</h3>
 				</div>
 				<h4>기본 정보</h4>
-				<!-- <form id="frmJoin" action="/member.api" name="frmJoin"> -->
 				<form id="frmJoin" action="/admin.member.api" name="frmJoin" method="post">
-					<input type="hidden" name="cmd" value="C" />
+					<input type="hidden" name="action" value="C" />
 					<table class="tb01" cellpadding="0" cellspacing="0">
 						<colgroup>
 						<col style="width:240px;">

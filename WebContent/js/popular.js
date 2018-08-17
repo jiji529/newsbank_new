@@ -14,7 +14,7 @@ $(document).on("click","#btn_del",function() {
 	var html = "";
 	
 	var param = {
-			"cmd" : "D"
+			"action" : "D"
 			, "start" : delCnt
 			, "count" : 1
 			, "tabName" : tabName
@@ -146,7 +146,7 @@ $(document).on("click", "#btn_complete", function() {
 		"delArr" : delArr
 		, "insArr" : insArr
 		, "tabName" : "selected"
-		, "cmd" : "U"
+		, "action" : "U"
 	};
 	console.log(param);
 	
@@ -190,7 +190,7 @@ $(document).on("click", "#btn_save", function() {
 		"delArr" : rmUciCodeList
 		, "insArr" : insArr
 		, "tabName" : tabName
-		, "cmd" : "U"
+		, "action" : "U"
 	};	
 	
 	//console.log(param);

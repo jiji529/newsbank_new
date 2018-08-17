@@ -4,17 +4,17 @@ $(document).ready(function() {
 	$("#frmJoin").on("submit", function() {
 		// process form
 		var check = true;
-		var cmd = $("input[name=cmd]").val(); 
+		var action = $("input[name=action]").val(); 
 		var deferred = $("select[name=deferred] option:selected").val(); 
 		var message = "";
 		
-		if(cmd == "C") {
+		if(action == "C") {
 			message = "회원 추가하시겠습니까?";
 			check = check && validId();
 			check = check && validPw();
 			// check = check && validName(); 회원정보 다수 수정으로 인해 임시 주석처리
 			
-		}else if(cmd == "U") {
+		}else if(action == "U") {
 			if($("#frmJoin").find("[name=pw]").val().length > 0) {
 				check = check && validPw();
 				console.log("비밀번호 수정");
@@ -329,11 +329,11 @@ $(document).ready(function() {
 	
 	// 회원가입 최종완료
 	function joinAccess() {
-		var cmd = $("input[name=cmd]").val();
+		var action = $("input[name=action]").val();
 		var path = $(location).attr("pathname"); 
 		var tmpPath = path.split(".");
 		var redirectURL = "/" + tmpPath[1] + "." + tmpPath[2]; 
-		var message = (cmd == "C") ? "정상적으로 추가되었습니다." : "정상적으로 수정되었습니다.";
+		var message = (action == "C") ? "정상적으로 추가되었습니다." : "정상적으로 수정되었습니다.";
 		
 		$.post("/admin.member.api", $("#frmJoin").serialize(), function(data) {
 			if (data.success) {
@@ -681,7 +681,7 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			var payType = $("#paytype").val(); // 결제방법
 			var contractStart = $("#contractStart").val();
 			var contractEnd = $("#contractEnd").val();
-			var cmd = "S";
+			var action = "S";
 			var adjMaster = $("#adjMaster").val(); // 정산매체
 			var adjSlave = $("#adjSlave").val(); // 피정산매체
 			// 피정산 매체 선택여부 확인
@@ -697,7 +697,7 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			$("#currentPayType").val(payType);
 			$("#startDate").val(contractStart);
 			$("#endDate").val(contractEnd);
-			$("#cmd").val(cmd);
+			$("#action").val(action);
 			$("#seqArr").val(seqArr);
 			break;
 			
@@ -708,7 +708,7 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			var payType = $("#paytype").val(); // 결제방법
 			var contractStart = $("#contractStart").val();
 			var contractEnd = $("#contractEnd").val();
-			var cmd = "R";
+			var action = "R";
 			var adjMaster = $("#adjMaster").val(); // 정산매체
 			var adjSlave = $("#adjSlave").val(); // 피정산매체
 			// 피정산 매체 선택여부 확인
@@ -724,7 +724,7 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			$("#currentPayType").val(payType);
 			$("#startDate").val(contractStart);
 			$("#endDate").val(contractEnd);
-			$("#cmd").val(cmd);
+			$("#action").val(action);
 			$("#seqArr").val(seqArr);
 			break;
 			

@@ -423,7 +423,7 @@
 	</div>
 	
 	<form id="downForm" method="post"  target="downFrame">
-		<input type="hidden" id="currentCmd" name="cmd" />
+		<input type="hidden" id="currentAction" name="action" />
 		<input type="hidden" id="currentKeyword" name="keyword" />
 		<input type="hidden" id="currentPayType" name="paytype" />
 		<input type="hidden" id="currentMediaCode" name="media_code" />

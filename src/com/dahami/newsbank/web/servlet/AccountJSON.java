@@ -77,7 +77,7 @@ public class AccountJSON extends NewsbankServletBase {
 		String keyword = request.getParameter("keyword");
 		String paytype = request.getParameter("paytype");
 		String media_code = request.getParameter("media_code");
-		String result_type = request.getParameter("cmd");
+		String action = request.getParameter("action");
 		String[] media = {};
 		if(media_code == null) {
 			media = request.getParameterValues("media_code[]");
@@ -126,7 +126,7 @@ public class AccountJSON extends NewsbankServletBase {
 			PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
 			CalculationDAO calculationDAO = new CalculationDAO(); // 정산정보 연결
 			
-			if (result_type != null && result_type.equalsIgnoreCase("total")) {
+			if (action != null && action.equalsIgnoreCase("total")) {
 				List<Map<String, Object>> tempList = new ArrayList<Map<String, Object>>();
 				tempList = calculationDAO.monthlyStats(params);
 				
@@ -191,7 +191,7 @@ public class AccountJSON extends NewsbankServletBase {
 		if(cmd.is3("excel")) {
 			// 엑셀 다운로드
 			
-			if (result_type != null && result_type.equalsIgnoreCase("total")) { 
+			if (action != null && action.equalsIgnoreCase("total")) { 
 				// == 연도별 정산내역 엑셀 다운로드 ==
 				List<Map<String, Object>> OnOfflineList = new ArrayList<Map<String, Object>>();
 				
@@ -408,7 +408,8 @@ public class AccountJSON extends NewsbankServletBase {
 				json.put("message", message);
 			}
 			json.put("data", searchList);
-
+			
+			response.setContentType("application/json");
 			response.getWriter().print(json);
 		}
 		

@@ -106,7 +106,7 @@
 		var param = {
 				"keywordType":keywordType,
 				"seqArr" : seqArr,
-				"cmd" : "R",
+				"action" : "R",
 				"start_date" : start_date,
 				"end_date" : end_date,
 				"keyword" : keyword,

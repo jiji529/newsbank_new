@@ -78,7 +78,7 @@ public class PaymentAction extends NewsbankServletBase {
 																						// 상점아이디(자동생성)
 			/********************************/
 
-			String cmd = (request.getParameter("cmd") == null) ? "" : request.getParameter("cmd"); // api 구분 crud
+			String action = (request.getParameter("action") == null) ? "" : request.getParameter("action"); // api 구분 crud
 			int paymentManage_seq = (request.getParameter("paymentManage_seq") == null) ? 0
 					: Integer.parseInt(request.getParameter("paymentManage_seq")); // 구매기록 고유번호
 			int paymentDetail_seq = (request.getParameter("paymentDetail_seq") == null) ? 0
@@ -98,7 +98,7 @@ public class PaymentAction extends NewsbankServletBase {
 			 * request.getParameter("LGD_OID"); }
 			 */
 
-			System.out.println("cmd => " + cmd);
+			System.out.println("action => " + action);
 			System.out.println("paymentManage_seq => " + paymentManage_seq);
 			System.out.println("paymentManage_seq => " + paymentManage_seq);
 			System.out.println("LGD_OID => " + LGD_OID);
@@ -108,7 +108,7 @@ public class PaymentAction extends NewsbankServletBase {
 			PaymentDAO paymentDAO = new PaymentDAO();
 			PhotoDAO photoDAO = new PhotoDAO();
 
-			switch (cmd) {
+			switch (action) {
 			case "C": // 거래 취소 (Cancel)
 				if(cmdClass.is1("manage")) {
 					// 관리자 페이지에서 접근
@@ -286,6 +286,7 @@ public class PaymentAction extends NewsbankServletBase {
 			json.put("result", result);
 			json.put("message", message);
 
+			response.setContentType("application/json");
 			response.getWriter().print(json);
 		} else {
 			response.getWriter().append(

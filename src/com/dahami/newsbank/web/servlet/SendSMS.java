@@ -24,6 +24,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class SendSMS
@@ -45,8 +46,17 @@ public class SendSMS extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		HttpSession session = request.getSession();
 		String tel = request.getParameter("tel"); // 전화번호 request
 		String token = request.getParameter("token"); // 인증번호 request
@@ -136,6 +146,7 @@ public class SendSMS extends NewsbankServletBase {
 		json.put("success", success);
 		json.put("message", success_msg);
 
+		response.setContentType("application/json");
 		response.getWriter().print(json); // json 생성
 	}
 

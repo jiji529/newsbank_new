@@ -305,7 +305,7 @@
 						<a href="javascript:void(0);" id="btnSubmit" class="btn_input2">수정</a>
 						<a href="javascript:location.reload();" class="btn_input1">취소</a>
 					</div>
-					<input type="hidden" name="cmd" value="U" />
+					<input type="hidden" name="action" value="U" />
 					<input type="hidden" id="type" name="type" value="${MemberInfo.type}" />
 				</form>
 			</div>

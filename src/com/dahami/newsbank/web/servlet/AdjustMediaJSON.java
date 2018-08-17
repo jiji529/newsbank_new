@@ -64,7 +64,7 @@ public class AdjustMediaJSON extends NewsbankServletBase {
 		JSONObject json = new JSONObject();
 		json.put("result", jArray);
 		
-		response.setContentType("application/json;charset=UTF-8");
+		response.setContentType("application/json");
 		response.getWriter().print(json);
 	}
 

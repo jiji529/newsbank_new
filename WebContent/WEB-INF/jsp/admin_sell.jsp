@@ -101,7 +101,7 @@
 	</form>
 	
 	<form id="downForm" method="post"  target="downFrame">
-		<input type="hidden" id="cmd" name="cmd" />
+		<input type="hidden" id="action" name="action" />
 		<input type="hidden" id="currentKeywordType" name="keywordType" />
 		<input type="hidden" id="currentPayType" name="payType" />
 		<input type="hidden" id="seqArr" name="seqArr" />

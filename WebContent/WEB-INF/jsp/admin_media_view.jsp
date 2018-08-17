@@ -158,7 +158,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			</div>
 			<h4>기본 정보</h4>
 			<form id="frmJoin" action="/admin.member.api" name="frmJoin" method="post">
-				<input type="hidden" name="cmd" value="U" />
+				<input type="hidden" name="action" value="U" />
 				<input type="hidden" name="seq" value="${MemberDTO.seq}" />
 				<input type="hidden" id="type" name="type" value="${MemberDTO.type}" />
 				<table class="tb01" cellpadding="0" cellspacing="0">
@@ -340,7 +340,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			<c:forEach var="media" items="${adjustMedia}" varStatus="status">
 				<form class="frmMedia" id="frmMedia_${status.index}" name="frmMedia" method="post" action="">
 					<input type="hidden" name="type" value="${media.type}" />
-					<input type="hidden" name="cmd" value="M" />
+					<input type="hidden" name="action" value="M" />
 					<h5>${media.compName} 정산 정보</h5>
 					<table class="tb01" cellpadding="0" cellspacing="0">
 					<colgroup>

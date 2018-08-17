@@ -19,6 +19,7 @@ import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.CalculationDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class XpayNoteurl
@@ -39,8 +40,16 @@ public class XpayNoteurl extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 
 		/*
 		 * [상점 결제결과처리(DB) 페이지]

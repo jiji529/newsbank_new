@@ -161,7 +161,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var member_seq = $("#member_seq").val();
 		
 		var param = {
-			"cmd" : "U",
+			"action" : "U",
 			"type" : "M",
 			"seq" : member_seq,
 			"activate" : 1		
@@ -188,7 +188,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 		var member_seq = $("#member_seq").val();
 		
 		var param = {
-			"cmd" : "U",
+			"action" : "U",
 			"type" : "M",
 			"seq" : member_seq,
 			"activate" : 2		
@@ -488,7 +488,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					var seq = $(this).val();
 					
 					var param = {
-						cmd : 'U',
+						action : 'U',
 						seq : seq,
 						admission : 'Y',
 						type : 'M'

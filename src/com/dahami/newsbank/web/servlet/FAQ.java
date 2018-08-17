@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class FAQ
@@ -29,8 +30,17 @@ public class FAQ extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		HttpSession session = request.getSession();
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo");
 		if (MemberInfo != null) {

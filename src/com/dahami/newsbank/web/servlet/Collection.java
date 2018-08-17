@@ -15,6 +15,7 @@ import org.json.simple.JSONArray;
 
 import com.dahami.newsbank.web.dao.CollectionDAO;
 import com.dahami.newsbank.web.dto.CollectionDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class Collection
@@ -23,7 +24,7 @@ import com.dahami.newsbank.web.dto.CollectionDTO;
 		urlPatterns = {"/collection"},
 		loadOnStartup = 1
 		)
-public class Collection extends HttpServlet {
+public class Collection extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -37,6 +38,17 @@ public class Collection extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		List<CollectionDTO> collectionList = new ArrayList<CollectionDTO>(); // 컬렉션 목록
 		CollectionDTO dto = new CollectionDTO(); // 컬렉션 객체
 		

@@ -54,13 +54,19 @@ public class CalculationAction extends NewsbankServletBase {
 			return;
 		}
 		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		CalculationDAO calculationDAO = new CalculationDAO(); // 정산정보 연결
 		
 		boolean check = true;
 		boolean result = false;
 		String message = null;
 		int seq = 0;
-		String cmd = null;
+		String action = null;
 		String name = null;
 		String id = null;
 		String compName = null;
@@ -81,10 +87,10 @@ public class CalculationAction extends NewsbankServletBase {
 		String keywordType = null;
 		
 		
-		if (request.getParameter("cmd") != null) { // 구분
-			cmd = request.getParameter("cmd"); // api 구분 crud
+		if (request.getParameter("action") != null) { // 구분
+			action = request.getParameter("action"); // api 구분 crud
 		}
-		System.out.println("cmd => " + cmd);
+		System.out.println("action => " + action);
 		
 		if (request.getParameter("seq") != null) { // 회원번호
 			seq = Integer.parseInt(request.getParameter("seq"));
@@ -201,9 +207,8 @@ public class CalculationAction extends NewsbankServletBase {
 		}
 		
 		PaymentDAO paymentDAO = new PaymentDAO();
-		CmdClass sep = CmdClass.getInstance(request);
 		
-		switch(cmd) {
+		switch(action) {
 			case "C":
 				// 정산 추가
 				break;
@@ -220,12 +225,12 @@ public class CalculationAction extends NewsbankServletBase {
 				List<CalculationDTO> calcList = calculationDAO.selectCalculation(param);
 				result = true;
 				
-				if (sep.isInvalid()) {
+				if (cmd.isInvalid()) {
 					response.sendRedirect("/invlidPage.jsp");
 					return;
 				}
 				
-				if(sep.is3("excel")) {
+				if(cmd.is3("excel")) {
 					// 목록 엑셀 다운로드
 					List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 					for(CalculationDTO dto : calcList) {
@@ -371,12 +376,12 @@ public class CalculationAction extends NewsbankServletBase {
 				
 				List<Map<String, Object>> staticsList = calculationDAO.selectOfMonth(param);
 				
-				if (sep.isInvalid()) {
+				if (cmd.isInvalid()) {
 					response.sendRedirect("/invlidPage.jsp");
 					return;
 				}
 				
-				if(sep.is3("excel")) {
+				if(cmd.is3("excel")) {
 					
 					List<Map<String, Object>> OnOfflineList = new ArrayList<Map<String, Object>>();
 					

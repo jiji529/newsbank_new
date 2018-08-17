@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
@@ -35,8 +36,17 @@ public class MypageAuth extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		// 임시 넣기
 		HttpSession session = request.getSession();
 		String pw = request.getParameter("pw"); // 패스워드 request

@@ -103,7 +103,7 @@
 		
 		var param = {
 				"keywordType":keywordType,
-				"cmd" : "S",
+				"action" : "S",
 				"start_date" : start_date,
 				"end_date" : end_date,
 				"keyword" : keyword,

@@ -262,7 +262,7 @@
 					
 					var param = {
 							"paymentDetail_seq" : paymentDetail_seq,
-							"cmd" : "U",
+							"action" : "U",
 							"status" : status,
 							"id": id,
 							"uciCode": uciCode,

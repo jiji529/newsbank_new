@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -37,8 +39,17 @@ public class SendEmail extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		HttpSession httpSession = request.getSession();
 		
 		boolean success = false;
@@ -87,6 +98,7 @@ public class SendEmail extends NewsbankServletBase {
 		json.put("success", success);
 		json.put("message", success_msg);
 
+		response.setContentType("application/json");
 		response.getWriter().print(json);
 	}
 }

@@ -100,7 +100,7 @@
 			<h3>정산 정보 관리</h3>
 		</div>
 		<form id="frmMypage" action="/member.api" method="post">
-			<input type="hidden" name="cmd" value="U" />
+			<input type="hidden" name="action" value="U" />
 			<input type="hidden" id="type" name="type" value="M" />
 			<input type="hidden" id="mediaCodes" name="mediaCodes" value=""/>
 			<table class="tb01" cellpadding="0" cellspacing="0">

@@ -54,6 +54,12 @@ public class AdminMemberAction extends NewsbankServletBase {
 			return;
 		}
 		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 		MemberDTO MemberInfo = new MemberDTO(); // 회원 기본정보
 		
@@ -68,7 +74,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 		boolean check = true;
 		boolean result = false;
 		String message = null;
-		String cmd = "";
+		String action = "";
 
 		/** 공통 **/
 		int seq = 0;
@@ -115,8 +121,8 @@ public class AdminMemberAction extends NewsbankServletBase {
 		int master_seq = 0;
 		int group_seq = 0;
 
-		if (request.getParameter("cmd") != null) {
-			cmd = request.getParameter("cmd"); // api 구분 crud
+		if (request.getParameter("action") != null) {
+			action = request.getParameter("action"); // api 구분 crud
 		}
 		if (check && request.getParameter("type") != null) {
 			type = request.getParameter("type"); // 회원 구분
@@ -365,8 +371,8 @@ public class AdminMemberAction extends NewsbankServletBase {
 				
 				memberDTO.setType(jsonObject.get("type").toString());
 				
-				if (jsonObject.get("cmd") != null && !jsonObject.get("cmd").toString().equals("")) {
-					cmd = jsonObject.get("cmd").toString(); // api 구분 crud
+				if (jsonObject.get("action") != null && !jsonObject.get("action").toString().equals("")) {
+					action = jsonObject.get("action").toString(); // api 구분 crud
 				}
 				
 				if (jsonObject.get("compBankName") != null && !jsonObject.get("compBankName").toString().equals("")) {
@@ -470,22 +476,24 @@ public class AdminMemberAction extends NewsbankServletBase {
 			// 후불회원만 사용 용도 갯수만큼 생성 (deferred = 2)
 			if(deferred != 0 && deferred == 2) {
 				for(int i = 0; i<usage.length; i++) {
-					UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
-					usageDTO.setUsage(usage[i]);
-					usageDTO.setPrice(Integer.parseInt(price[i]));
-					//System.out.println("["+i+"] : "+usageList_seq[i]);
-					
-					if(usageList_seq[i] != null && usageList_seq[i] != "") {
-						usageDTO.setUsageList_seq(Integer.parseInt(usageList_seq[i]));
-					}			
-					
-					usageList.add(i, usageDTO);
+					if(usage[i].length() != 0){
+						UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
+						usageDTO.setUsage(usage[i]);
+						usageDTO.setPrice(Integer.parseInt(price[i]));
+						//System.out.println("["+i+"] : "+usageList_seq[i]);
+						
+						if(usageList_seq[i] != null && usageList_seq[i] != "") {
+							usageDTO.setUsageList_seq(Integer.parseInt(usageList_seq[i]));
+						}			
+						
+						usageList.add(i, usageDTO);
+					}
 				}
 				
 				saveUsageList(seq, usageList); // 사용용도 저장
 			}
 			
-			switch (cmd) {
+			switch (action) {
 			case "C":
 				memberDTO = memberDAO.insertMember(memberDTO); // 회원정보 요청
 				if (memberDTO.getSeq() > 0) {
@@ -530,7 +538,7 @@ public class AdminMemberAction extends NewsbankServletBase {
 
 		JSONObject json = new JSONObject();
 
-		if (cmd.equalsIgnoreCase("R")) {
+		if (action.equalsIgnoreCase("R")) {
 			if (memberDTO != null && memberDTO.isMember()) {
 				result = true;
 				Map<String, Object> data = new HashMap<String, Object>();
@@ -555,7 +563,8 @@ public class AdminMemberAction extends NewsbankServletBase {
 		}
 		json.put("success", result);
 		json.put("message", message);
-
+		
+		response.setContentType("application/json");
 		response.getWriter().print(json);
 	}
 

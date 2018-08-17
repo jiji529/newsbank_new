@@ -63,7 +63,7 @@ public class BoardJSON extends NewsbankServletBase {
 		JSONObject json = new JSONObject();
 		json.put("result", jsonList);		
 		
-		response.setContentType("text/json; charset=UTF-8");
+		response.setContentType("application/json; charset=UTF-8");
 		response.getWriter().print(json);		
  		request.setAttribute("jsonList", jsonList);
 	}

@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
+
 /**
  * Servlet implementation class MypageAuth
  */
@@ -26,10 +28,17 @@ public class JoinSuccess extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+    	super.doGet(request, response);
+    	if(response.isCommitted()) {
+    		return;
+    	}
+
+    	CmdClass cmd = CmdClass.getInstance(request);
+    	if (cmd.isInvalid()) {
+    		response.sendRedirect("/invlidPage.jsp");
+    		return;
+    	}
+    	
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/join_success.jsp");
 		dispatcher.forward(request, response);
 	}

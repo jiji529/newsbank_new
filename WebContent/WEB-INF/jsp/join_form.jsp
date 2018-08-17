@@ -89,7 +89,7 @@ $(function() {
 				<div class="txt_desc">가입 정보를 입력하세요.</div>
 			</div>
 			<form id="frmJoin" name="frmJoin">
-				<input type="hidden" name="cmd" value="C" />
+				<input type="hidden" name="action" value="C" />
 				<input type="hidden" name="type" value="${type }" />
 				<fieldset class="fld_comm">
 					<legend class="blind">가입 정보</legend>

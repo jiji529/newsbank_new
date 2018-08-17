@@ -30,6 +30,7 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
 import com.dahami.newsbank.web.dto.UsageDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class PurchaseJSON 결제 정보 호출
@@ -52,8 +53,16 @@ public class PurchaseJSON extends NewsbankServletBase {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 
 		HttpSession session = request.getSession();
 
@@ -267,6 +276,7 @@ public class PurchaseJSON extends NewsbankServletBase {
 		json.put("message", message);
 		json.put("data", LGD_DATA);
 
+		response.setContentType("application/json");
 		response.getWriter().print(json);
 
 	}

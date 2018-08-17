@@ -162,6 +162,7 @@ public class Upload extends NewsbankServletBase {
 		json.put("message", message);
 		json.put("file", fileName);
 		json.put("notice_seq", notice_seq);
+		response.setContentType("application/json");
 		response.getWriter().print(json);
 		/*
 		 * JSONObject json = new JSONObject(); boolean result = false; String message =

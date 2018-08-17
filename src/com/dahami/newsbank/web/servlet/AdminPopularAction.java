@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class AdminPopularAction
@@ -35,14 +36,22 @@ public class AdminPopularAction extends NewsbankServletBase {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+		
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 		String[] insArr = null; // 추가할 대상
 		String[] delArr = null; // 삭제할 대상
 		String exhName = "에디터"; // 전시대상
 		String tabName = null; // 탭 이름
-		String cmd = null; // 모드
+		String action = null; // 모드
 		int start = 0; // LIMIT 시작
 		int count = 0; // LIMIT 갯수
 		
@@ -54,8 +63,8 @@ public class AdminPopularAction extends NewsbankServletBase {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("exhName", exhName);
 		
-		if(check && request.getParameter("cmd") != null) {
-			cmd = request.getParameter("cmd"); // 모드
+		if(check && request.getParameter("action") != null) {
+			action = request.getParameter("action"); // 모드
 		}
 		
 		if(check && request.getParameter("tabName") != null) {
@@ -84,7 +93,7 @@ public class AdminPopularAction extends NewsbankServletBase {
 		
 		if(check) {
 			
-			if(cmd.equals("U")) { // 수정 
+			if(action.equals("U")) { // 수정 
 				
 				switch(tabName) {
 				case "selected": // 엄선한 사진
@@ -158,7 +167,7 @@ public class AdminPopularAction extends NewsbankServletBase {
 					
 				}
 				
-			}else if(cmd.equals("D")) { // 개별삭제에 따른 자동완성
+			}else if(action.equals("D")) { // 개별삭제에 따른 자동완성
 				params.put("tabName", tabName);
 				
 				if(Integer.parseInt(params.get("count").toString()) == 1) { // 1개씩 불러와야함
@@ -197,7 +206,7 @@ public class AdminPopularAction extends NewsbankServletBase {
 			}
 			
 		
-
+			response.setContentType("application/json");
 			response.getWriter().print(json);
 			
 		}

@@ -128,7 +128,7 @@
 				type: "POST",
 				url: "/admin.member.api",
 				data : ({
-					cmd : 'D',
+					action : 'D',
 					seq : seq
 				}),
 				dataType : "json",
@@ -438,7 +438,7 @@
 						<a href="javascript:;" class="btn_input3 fr" onclick="drop_out()">탈퇴</a>
 					</c:if>
 				</div>
-				<input type="hidden" name="cmd" value="U" />
+				<input type="hidden" name="action" value="U" />
 				<input type="hidden" name="seq" value="${MemberDTO.seq}" />
 				<input type="hidden" id="type" name="type" value="${MemberDTO.type}" />
 			</form>

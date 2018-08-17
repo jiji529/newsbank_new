@@ -27,7 +27,7 @@
 								url : "/member.api",
 								type : "post",
 								data : ({
-									cmd : "U",
+									action : "U",
 									id : new_id.val()
 								}),
 								dataType : "json",

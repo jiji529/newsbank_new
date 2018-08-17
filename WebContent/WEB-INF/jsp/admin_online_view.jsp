@@ -51,7 +51,7 @@
 				var param = {
 					"paymentManage_seq" : paymentManage_seq,
 					"LGD_OID" : LGD_OID,
-					"cmd" : "C",
+					"action" : "C",
 					"member_seq" : member_seq
 				};
 				

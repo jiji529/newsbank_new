@@ -20,6 +20,7 @@ import org.json.simple.JSONObject;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.UploadService;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.CommonUtil;
 
 /**
@@ -42,8 +43,17 @@ public class MemberAction extends NewsbankServletBase {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {				
-		response.setContentType("application/json;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
+		
 		session = request.getSession();
 		MemberDAO memberDAO = new MemberDAO(); // 회원정보 연결
 		MemberDTO MemberInfo = null;
@@ -54,7 +64,7 @@ public class MemberAction extends NewsbankServletBase {
 		boolean check = true;
 		boolean result = false;
 		String message = null;
-		String cmd = "";
+		String action = "";
 		String mediaCodes = "";
 
 		/** 공통 **/
@@ -97,8 +107,8 @@ public class MemberAction extends NewsbankServletBase {
 		int master_seq = 0;
 		int group_seq = 0;
 
-		if (request.getParameter("cmd") != null) {
-			cmd = request.getParameter("cmd"); // api 구분 crud
+		if (request.getParameter("action") != null) {
+			action = request.getParameter("action"); // api 구분 crud
 		}
 		if (check && request.getParameter("type") != null) {
 			type = request.getParameter("type"); // 회원 구분
@@ -349,7 +359,7 @@ public class MemberAction extends NewsbankServletBase {
 			memberDTO.setGroup_seq(group_seq);
 			
 
-			switch (cmd) {
+			switch (action) {
 			case "C":
 				memberDTO = memberDAO.insertMember(memberDTO); // 회원정보 요청
 				if (memberDTO.getSeq() > 0) {
@@ -391,7 +401,7 @@ public class MemberAction extends NewsbankServletBase {
 
 		JSONObject json = new JSONObject();
 
-		if (cmd.equalsIgnoreCase("R")) {
+		if (action.equalsIgnoreCase("R")) {
 			if (memberDTO != null && memberDTO.isMember()) {
 				result = true;
 				Map<String, Object> data = new HashMap<String, Object>();
@@ -418,6 +428,7 @@ public class MemberAction extends NewsbankServletBase {
 		json.put("success", result);
 		json.put("message", message);
 
+		response.setContentType("application/json");
 		response.getWriter().print(json);
 
 	}

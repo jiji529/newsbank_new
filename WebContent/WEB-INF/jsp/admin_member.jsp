@@ -210,7 +210,7 @@ function drop_out() {
 					type: "POST",
 					url: "/admin.member.api",
 					data : ({
-						cmd : 'D',
+						action : 'D',
 						seq : seq
 					}),
 					dataType : "json",
