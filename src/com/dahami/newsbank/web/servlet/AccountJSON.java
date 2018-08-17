@@ -58,6 +58,7 @@ public class AccountJSON extends NewsbankServletBase {
 		if(response.isCommitted()) {
 			return;
 		}
+		CmdClass cmd = CmdClass.getInstance(request);
 		if (cmd.isInvalid()) {
 			response.sendRedirect("/invlidPage.jsp");
 			return;
