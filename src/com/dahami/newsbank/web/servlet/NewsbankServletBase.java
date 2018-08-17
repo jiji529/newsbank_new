@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 
 public abstract class NewsbankServletBase extends HttpServlet {
@@ -26,7 +27,7 @@ public abstract class NewsbankServletBase extends HttpServlet {
 	
 	private static final long serialVersionUID = 4745659834372195390L;
 	protected Logger logger;
-	
+	protected CmdClass cmd;
 	private boolean loggerConfInitF;
 	
     public NewsbankServletBase() {
@@ -49,6 +50,8 @@ public abstract class NewsbankServletBase extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		response.addHeader("Cache-Control", "no-cache");
+		
+		this.cmd = CmdClass.getInstance(request);
 		
 		String version = getBrowserVersion(request.getHeader("User-Agent"));
 		if(version.indexOf("MSIE") != -1) {
