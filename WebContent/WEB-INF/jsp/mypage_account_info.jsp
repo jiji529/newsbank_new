@@ -29,7 +29,7 @@
 	<link rel="stylesheet" href="css/sub.css" />
 	<link rel="stylesheet" href="css/mypage.css" />
 	<script src="js/footer.js"></script>
-	<script src="js/mypage.js?v=20180420"></script>
+	<script src="js/mypage.js?v=20180421"></script>
 </head>
 <body>
 	<div class="wrap">

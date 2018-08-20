@@ -380,35 +380,27 @@ $(document).ready(function() {
 	$('#frmMypage').on('submit', function() {
 		var type = $("#type").val();
 		var check = true;
-		console.log($('#frmMypage').find('[id=pw]').length);
 		
 		if ($('#frmMypage').find('[id=pw]').length > 0) {
 			check = check && validPw();
-			console.log("pw : " + check);
 		}
 		if ($('#frmMypage').find('[name=name]').size() > 0) {
 			check = check && validName();
-			console.log("name : " + check);
 		}
 		if ($('#phone3').size() > 0) {
 			check = check && validPhone();
-			console.log("phone : " + check);
 		}
 		if ($('#frmMypage').find('[name=compNum]').size() > 0) {
 			check = check && validCompNum();
-			console.log("compNum : " + check);
 		}
 		if ($('#frmMypage').find('[name=compName]').size() > 0) {
 			check = check && validCompName();
-			console.log("compName : " + check);
 		}
 		if ($('#compTel3').size() > 0) {
 			check = check && validCompTel();
-			console.log("compTel : " + check);
 		}
 		if ($('#taxPhone3').size() > 0) {
 			check = check && validTaxPhone();
-			console.log("taxPhone : " + check);
 		}
 		
 		if (check) {
@@ -418,7 +410,7 @@ $(document).ready(function() {
 				// 정산매체 여러개를 일괄적용
 				var mediaCodes = $.map($("#media option"), function(e) { if(e.value) return e.value; });
 				mediaCodes.join(",");
-				console.log(mediaCodes);
+				//console.log(mediaCodes);
 				$("#mediaCodes").val(mediaCodes);
 				message = "모든 정산매체를 일괄 수정하시겠습니까?";
 			} else {
@@ -449,7 +441,6 @@ $(document).ready(function() {
 	$("#tbBuyList a").each(function() {
 		var a = $(this);
 		a.on("click", function() {
-			console.log(a);
 			var form = $('<form></form>');
 			form.attr('action', '/buy.mypage');
 			form.attr('method', 'post');
@@ -701,7 +692,7 @@ function accountYearSearch() {
 		data : param,
 		dataType : "json",
 		success : function(data) {
-			console.log(data);
+			//console.log(data);
 			var offline_list = new Array();
 			var online_list = new Array();
 			if (data.success) {
@@ -814,7 +805,7 @@ $(document).ready(function() {
 			}
 		});
 		
-		console.log(media);
+		//console.log(media);
 		
 		var startDate = $("#contractStart").val();
 		var endDate = $("#contractEnd").val();
@@ -835,7 +826,7 @@ $(document).ready(function() {
 			data : param,
 			dataType : "json",
 			success : function(data) {
-				console.log(data);
+				//console.log(data);
 				var offline_list = new Array();
 				var online_list = new Array();
 				if (data.success) {
@@ -880,7 +871,7 @@ $(document).ready(function() {
 	}
 
 	$("#frmAccountList").on("submit", function() {
-		console.log("frmAccountList 호출");
+		//console.log("frmAccountList 호출");
 		var startDate = $("#contractStart").val(); // 시작일
 		if (startDate == null || startDate.length == 0) {
 			alert("선택한 시작 날짜가 없습니다.");
@@ -911,7 +902,7 @@ $(document).ready(function() {
 			'paytype' : paytype,
 			'keyword' : keyword
 		};
-		console.log(param);
+		//console.log(param);
 		
 		$.ajax({
 			url : "/account.api",
@@ -920,7 +911,6 @@ $(document).ready(function() {
 			//data : $(this).serialize(),
 			dataType : "json",
 			success : function(data) {
-				console.log(data);
 				
 				// $('.account_list').empty();
 				if (data.success) {
@@ -1085,7 +1075,7 @@ $(document).ready(function() {
 
 					var rs_vos = tb_online_total_vos + tb_offline_total_vos;
 					var rs_atos = tb_online_total_atos + tb_offline_total_atos;
-					console.log(rs_vos, rs_atos)
+					//console.log(rs_vos, rs_atos)
 					var rs_total = rs_vos + rs_atos;
 					var tb_result_account = "<tbody>";
 					tb_result_account += "<tr>";
@@ -1141,7 +1131,6 @@ $(function() {
 	$('input[type=file]').bind('change', function() {
 		
 		var uType = $(this).attr("name");	
-		console.log(uType);
 		var tmpFile = $(this)[0].files[0];
 		var sizeLimit = 1024 * 1024 * 15;
 		if (tmpFile.size > sizeLimit) {
@@ -1161,7 +1150,7 @@ $(function() {
 				formData.append("seq", seq);
 			}
 			
-			console.log(formData);
+			//console.log(formData);
 
 			$.ajax({
 				url : '/'+uType+'.upload',
@@ -1171,7 +1160,7 @@ $(function() {
 				contentType : false,
 				type : 'POST',
 				success : function(data) {
-					console.log(data);
+					//console.log(data);
 					if (data.success) {
 						alert(data.message);
 					} else {
@@ -1262,14 +1251,14 @@ $(document).ready(function() {
 		var totalDownCount  = payAllCancelForm.find('input[name=totalDownCount]').val();
 		var LGD_OID  = payAllCancelForm.find('input[name=LGD_OID]').val();
 		var gap = today - paydate; // 소요기간
-		console.log(gap);
+		//console.log(gap);
 		if(gap <= 7 && totalDownCount == 0) { // 7일 이내
 			
 			var param = {
 				"LGD_OID" : LGD_OID,
 				"action" : "C"
 			};
-			console.log(param);
+			//console.log(param);
 				
 			$.ajax({
 				type: "POST",
@@ -1303,7 +1292,7 @@ $(document).ready(function() {
 	var payDetailForm = $('form[name=payDetailForm]');
 	payDetailForm.each(function(index){
 		var detail = $(this);
-		console.log(detail);
+		//console.log(detail);
 		
 		detail.find('button[name=btn_down]').on("click", function() {
 			if(!confirm("이미지를 다운로드 하시면 이미지를 사용하지 않으시더라도\n결제 취소를 하실 수 없습니다.\n\n이미지를 다운로드 하시겠습니까?")) {
@@ -1317,7 +1306,7 @@ $(document).ready(function() {
 					"action" : "D"
 				};
 				
-				console.log(param);
+				//console.log(param);
 				
 				$.ajax({
 					type: "POST",
@@ -1325,7 +1314,7 @@ $(document).ready(function() {
 					dataType: "json",
 					data: param,
 					success: function(data) {
-						console.log(data);
+						//console.log(data);
 					},
 					complete: function() {
 					}
@@ -1365,7 +1354,7 @@ $(document).ready(function() {
 							alert("요청에 실패하였습니다.\n고객센터(02-593-4174)로 문의 부탁드립니다.");
 							location.reload();
 						}
-						console.log(data);
+						//console.log(data);
 					}
 				});
 			

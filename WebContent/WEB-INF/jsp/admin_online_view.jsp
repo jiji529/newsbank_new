@@ -64,9 +64,16 @@
 					data: param,
 					success: function(data) {
 						console.log(data);
+						var result = data.result;
+						var message = data.message;
+						
+						if(result) {
+							alert("결제 취소 완료");			
+						}else {
+							alert(message);
+						}
 					}
 				});
-				alert("결제 취소 완료");
 			}
 		}else{
 			if(down_count > 0) {
