@@ -13,12 +13,13 @@ import javax.servlet.http.HttpSession;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
+import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
  * Servlet implementation class PayResult
  */
 @WebServlet("/result.pay")
-public class PayResult extends HttpServlet {
+public class PayResult extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -33,8 +34,16 @@ public class PayResult extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+		super.doGet(request, response);
+		if(response.isCommitted()) {
+			return;
+		}
+
+		CmdClass cmd = CmdClass.getInstance(request);
+		if (cmd.isInvalid()) {
+			response.sendRedirect("/invlidPage.jsp");
+			return;
+		}
 		
 		String lGD_OID;
 

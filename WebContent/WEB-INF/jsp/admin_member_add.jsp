@@ -37,7 +37,7 @@
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
 <!-- <script src="js/join.js"></script> --> <!-- 기존의 회원가입의 형식과는 다른 부분이 있어서 admin.js를 생성해서 필요한 부분만 커스터마이징 -->
-<script src="js/admin.js?v=20180416"></script>
+<script src="js/admin.js?v=20180418"></script>
 <script>
 
 	$(document).ready(function() {

@@ -251,29 +251,29 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					<tbody>
 						<tr>
 							<th>결제 계좌</th>
-							<td><input type="text" name="compBankName" id="compBankName" placeholder="은행 입력" class="inp_txt" size="14" value=" " />
+							<td><input type="text" name="compBankName" id="compBankName" placeholder="은행 입력" class="inp_txt" size="14" value="" />
 								<span class=" bar"></span>
-								<input type="text" name="compBankAcc" id="compBankAcc" placeholder="계좌번호 입력" class="inp_txt" size="26" value=" " />
+								<input type="text" name="compBankAcc" id="compBankAcc" placeholder="계좌번호 입력" class="inp_txt" size="26" value="" />
 								<a href="#" class="btn_input1">통장사본 업로드</a></td>
 						</tr>
 						<tr>
 							<th>계약 기간</th>
-							<td><input type="text" name="contractStart" id="contractStart" class="inp_txt datepicker" size="12" value=" " />
+							<td><input type="text" name="contractStart" id="contractStart" class="inp_txt datepicker" size="12" value="" />
 								<span class=" bar">~</span>
-								<input type="text" name="contractEnd" id="contractEnd" class="inp_txt datepicker" size="12" value=" " />
+								<input type="text" name="contractEnd" id="contractEnd" class="inp_txt datepicker" size="12" value="" />
 								<a href="#" class="btn_input1">계약서 업로드</a> </td>
 						</tr>
 						<tr>
 							<th>정산요율</th>
 							<td><span class=" bar">온라인 결제</span>
-								<input type="text" name="preRate" id="preRate" class="inp_txt" size="4" value=" " />
+								<input type="text" name="preRate" id="preRate" class="inp_txt" size="4" value="" />
 								<span class=" bar">%</span><span class=" bar" style="margin-left:10px;">오프라인 결제</span>
-								<input type="text" name="postRate" id="postRate" class="inp_txt" size="4" value=" " />
+								<input type="text" name="postRate" id="postRate" class="inp_txt" size="4" value="" />
 								<span class=" bar">%</span> </td>
 						</tr>
 						<tr>
 							<th>세금계산서 담당자</th>
-							<td><input type="text" name="taxName" id="taxName" class="inp_txt" size="43" value=" " /></td>
+							<td><input type="text" name="taxName" id="taxName" class="inp_txt" size="43" value="" /></td>
 						</tr>
 						<tr>
 							<th>세금계산서 담당자 전화번호</th>
@@ -305,11 +305,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<option value="019">019</option>
 								</select>
 								<span class=" bar">-</span>
-								<input type="text" id="taxPhone2" size="5"  class="inp_txt" value=" " maxlength="4">
+								<input type="text" id="taxPhone2" size="5"  class="inp_txt" value="" maxlength="4">
 								<span class=" bar">-</span>
-								<input type="text" id="taxPhone3" size="5"  class="inp_txt" value=" " maxlength="4">
+								<input type="text" id="taxPhone3" size="5"  class="inp_txt" value="" maxlength="4">
 								<span class=" bar2">내선</span>
-								<input type="text" id="taxExtTell" name="taxExtTell" size="5"  class="inp_txt" value=" " maxlength="4" /></td>
+								<input type="text" id="taxExtTell" name="taxExtTell" size="5"  class="inp_txt" value="" maxlength="4" /></td>
 						</tr>
 						<tr>
 							<th>세금계산서 담당자 이메일</th>

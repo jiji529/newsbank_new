@@ -17,7 +17,7 @@ import com.dahami.newsbank.web.servlet.bean.CmdClass;
  * Servlet implementation class PrivateIntro
  */
 @WebServlet("/privacy.intro")
-public class PrivacyIntro extends HttpServlet {
+public class PrivacyIntro extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**

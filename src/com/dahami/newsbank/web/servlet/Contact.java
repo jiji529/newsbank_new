@@ -17,7 +17,7 @@ import com.dahami.newsbank.web.servlet.bean.CmdClass;
  * Servlet implementation class Contact
  */
 @WebServlet("/contact")
-public class Contact extends HttpServlet {
+public class Contact extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
     /**
