@@ -677,18 +677,17 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 		case "sellyear":
 			// 정산관리(년도별 총 판매금액)
 			var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
-			//var paytype = $("select[name='paytype'] option:selected").val(); // 결제 방법
 			var payType = $("#paytype").val(); // 결제방법
 			var contractStart = $("#contractStart").val();
 			var contractEnd = $("#contractEnd").val();
 			var action = "S";
 			var adjMaster = $("#adjMaster").val(); // 정산매체
-			var adjSlave = $("#adjSlave").val(); // 피정산매체
+			var adjSlave = $("#adjSlave option:selected").val(); // 피정산매체
 			// 피정산 매체 선택여부 확인
 			if(adjSlave == " ") { // 없음 or 선택안함
 				seqArr = adjMaster;
 			}else if(adjSlave == "all") { // 전체 선택
-				seqArr = $("#adjSlave_arr").val();
+				seqArr = $("#adjSlave_arr").val() + "," + adjMaster;
 			}else { // 개별선택
 				seqArr = adjSlave;
 			}
@@ -715,7 +714,7 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			if(adjSlave == " ") { // 없음 or 선택안함
 				seqArr = adjMaster;
 			}else if(adjSlave == "all") { // 전체 선택
-				seqArr = $("#adjSlave_arr").val();
+				seqArr = $("#adjSlave_arr").val() + "," + adjMaster;
 			}else { // 개별선택
 				seqArr = adjSlave;
 			}

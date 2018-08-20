@@ -271,9 +271,10 @@ public class AccountJSON extends NewsbankServletBase {
 						String PAYDATE = new SimpleDateFormat("yyyy-MM-dd").format(paydate); // 결제일자
 						
 						int billingAmount = Integer.parseInt(object.get("price").toString()); // 결제금액
-						int customValue = (int) Math.round(billingAmount / 1.1); // 과세금액
-						int customTax = (int) Math.round(billingAmount - customValue); // 과세부가세
+						int customTax = (int) Math.round(billingAmount * 0.1); // 과세부가세
+						int customValue = (int) Math.round(billingAmount * 0.9); // 과세금액
 						int billingTax = (int) object.get("fees"); // 빌링수수료
+								
 						double rate = Double.parseDouble(object.get("rate").toString());
 						
 						String LGD_PAYTYPE = object.get("LGD_PAYTYPE").toString();

@@ -164,32 +164,26 @@ $(document).ready(function() {
 
 	}
 
-	// 핸드폰 번호 인증 체크
+	// 세금계산서 담당자 연락처 유효성 확인
 	function validTaxPhone() {
-		var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
-		var phone = $("#taxPhone1").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
-		if ($("#taxPhone2").val().length > 0 || $("#taxPhone3").val().length > 0) {
-
+		var regex = /^0([0-9]{1,3})-?([0-9]{3,4})-?([0-9]{4})$/;
+		var taxPhone = $("#taxPhone1").val() + $("#taxPhone2").val() + $("#taxPhone3").val();
+		if (regex.test(taxPhone) && taxPhone.length > 0) {
 			if ($('#frmMypage').find("[name=taxPhone]").length > 0) {
 				$('#frmMypage').find("[name=taxPhone]").val(phone);
 			} else {
 				$('<input>').attr({
 					type : 'hidden',
 					name : 'taxPhone',
-					value : phone
+					value : taxPhone
 				}).appendTo('#frmMypage');
 			}
-
-			if (regex.test(phone) && phone.length > 0) {
-				$("#phone_message").css("display", "none");
-				return true;
-			} else {
-				$("#phone_message").css("display", "block");
-				$("#phone3").focus();
-				return false;
-			}
-		} else {
+			$("#taxPhone_message").css("display", "none");
 			return true;
+		} else {
+			$("#taxPhone_message").css("display", "block");
+			$("#taxPhone3").focus();
+			return false;
 		}
 
 	}
@@ -390,24 +384,31 @@ $(document).ready(function() {
 		
 		if ($('#frmMypage').find('[id=pw]').length > 0) {
 			check = check && validPw();
+			console.log("pw : " + check);
 		}
 		if ($('#frmMypage').find('[name=name]').size() > 0) {
 			check = check && validName();
+			console.log("name : " + check);
 		}
 		if ($('#phone3').size() > 0) {
 			check = check && validPhone();
+			console.log("phone : " + check);
 		}
 		if ($('#frmMypage').find('[name=compNum]').size() > 0) {
 			check = check && validCompNum();
+			console.log("compNum : " + check);
 		}
 		if ($('#frmMypage').find('[name=compName]').size() > 0) {
 			check = check && validCompName();
+			console.log("compName : " + check);
 		}
 		if ($('#compTel3').size() > 0) {
 			check = check && validCompTel();
+			console.log("compTel : " + check);
 		}
 		if ($('#taxPhone3').size() > 0) {
 			check = check && validTaxPhone();
+			console.log("taxPhone : " + check);
 		}
 		
 		if (check) {

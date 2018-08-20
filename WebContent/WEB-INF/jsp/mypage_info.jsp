@@ -258,6 +258,7 @@
 										
 										<span class=" bar">내선</span>
 										<input type="text" id="compExtTel" name="compExtTel" size="5"  class="inp_txt" value="${compExtTel}" maxlength="4" />
+										<p class="txt_message" id="compTel_message" style="display: none;">형식이 올바르지 않은 번호입니다.</p>
 									</td>
 									
 								</tr>
