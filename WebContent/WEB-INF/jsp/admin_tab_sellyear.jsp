@@ -34,6 +34,7 @@
 				url: "/adjust.media.api",
 				success: function(data){ 
 					var result = data.result;
+					console.log(result);
 					
 					if(result.length > 0) {
 						// 피정산 매체목록이 존재할 경우만 추가
@@ -41,7 +42,7 @@
 						html += '<option value=" ">' + masterName + '</option>';
 						
 						$(result).each(function(key, val){
-							html += '<option value="' + val.seq + '">' + val.name + '</option>';
+							html += '<option value="' + val.seq + '">' + val.compName + '</option>';
 							adjSlave_arr.push(val.seq);
 						});	
 					}else {

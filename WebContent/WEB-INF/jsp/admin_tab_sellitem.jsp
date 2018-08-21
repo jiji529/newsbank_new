@@ -38,7 +38,7 @@
 						html += '<option value=" ">' + masterName + '</option>';
 						
 						$(result).each(function(key, val){
-							html += '<option value="' + val.seq + '">' + val.name + '</option>';
+							html += '<option value="' + val.seq + '">' + val.compName + '</option>';
 							adjSlave_arr.push(val.seq);
 						});	
 					}else {

@@ -57,7 +57,7 @@ public class AdjustMediaJSON extends NewsbankServletBase {
 		for(MemberDTO slave : slaveList) {
 			JSONObject obj = new JSONObject();
 			obj.put("seq", slave.getSeq());
-			obj.put("name", slave.getName());
+			obj.put("compName", slave.getCompName());
 			jArray.add(obj);
 		}
 		
