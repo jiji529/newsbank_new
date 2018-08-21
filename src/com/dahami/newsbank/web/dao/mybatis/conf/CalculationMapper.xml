@@ -83,7 +83,7 @@
    	<!-- 정산매체, 피정산매체 선택에 따른 정산결과 -->
 	<select id="selectCalculation" resultMap="calculationResult" 
    	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 
-   	   SELECT C.seq, C.id, M.name, M.compName, SM.name as copyright, P.member_seq, C.`payType`,  
+   	   SELECT C.seq, C.id, M.name, M.compName, SM.compName as copyright, P.member_seq, C.`payType`,  
    	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, C.`regDate`,
    	   U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, U.price,
    	   SM.seq, SM.`type`, SM.id, SM.admission, SM.withdraw, SM.activate, SM.compName
