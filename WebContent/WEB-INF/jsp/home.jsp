@@ -50,6 +50,7 @@ if(errMsg != null && errMsg.length() > 0) {
 %>
 <script>
 	$(document).ready(function() {
+		get_totalNumberPhoto();
 		/* Start rowGrid.js */
 		$(".photo_cont").rowGrid({
 			itemSelector : ".img_list",
@@ -149,6 +150,44 @@ if(errMsg != null && errMsg.length() > 0) {
 		$("#uciCode").val(uciCode);
 		view_form.submit();
 	}
+	
+	function get_totalNumberPhoto() {
+		var keyword = "";
+		var pageNo = 1;
+		var pageVol = 40;
+		var durationReg = 1;
+		var durationTake = 1;
+		var media = 0;
+		var size = 0;
+		
+		var searchParam = {
+				"keyword":keyword
+				, "pageNo":pageNo
+				, "pageVol":pageVol
+				, "durationReg":durationReg
+				, "durationTake":durationTake
+				, "media":media
+				, "size":size
+		};
+		
+		$.ajax({
+			type: "POST",
+			async: true,
+			dataType: "json",
+			data: searchParam,
+			timeout: 1000000,
+			url: "/search",
+			success : function(data) { 
+				var count = data.count; // 만 단위로 표현
+				var totalNumber = Math.floor(count / 10000);
+				$(".totalNumberPhoto").text(totalNumber + "만");
+			},
+			error : function(request, status, error) {
+				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	}
+	
 	
 </script>
 </head>
@@ -277,7 +316,7 @@ if(errMsg != null && errMsg.length() > 0) {
 				<div class="serv_txt_l">
 					<h3>뉴스뱅크 서비스 소개</h3>
 					<h2>언론사 보도사진 통합 라이브러리</h2>
-					<p>뉴스뱅크는 25개 언론사의 보도사진 520만 컷 이상을 보유하고 있는 국내 최대의 보도사진 통합 라이브러리입니다.<br />
+					<p>뉴스뱅크는 ${fn:length(mediaList)}개 언론사의 보도사진 <span class="totalNumberPhoto"></span> 컷 이상을 보유하고 있는 국내 최대의 보도사진 통합 라이브러리입니다.<br />
 						신미양요, 병인양요의 19세기 사진을 비롯해 일제 강점기를 지나 6.25 전쟁을 거치고<br />
 						산업화와 민주화 시대를 거쳐 오늘에 이르기까지 <br />대한민국 근현대사의 중요 장면이 생생한 보도사진으로 기록되어 남아 있습니다.</p>
 				</div>
