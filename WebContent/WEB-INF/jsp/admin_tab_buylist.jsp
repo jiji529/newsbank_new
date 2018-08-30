@@ -65,6 +65,7 @@
 				$("#totalCnt").text(comma(totalCnt));
 				
 				var data = data.result;
+				console.log(data);
 				
 				if(data.length != 0) {	
 					$(data).each(function(key, val){
@@ -120,7 +121,7 @@
 						//html += '<td>' + LGD_OID + '</td>';
 						html += '<td>' + paydate + '</td>';
 						html += '<td>' + status + '</td>';
-						html += '<td>' + compName + '</td>';
+						html += '<td>' + copyright + '</td>';
 						html += '<td><a href="/view.photo?uciCode=' + uciCode + '" target="_blank">' + uciCode + '</a></td>';
 						html += '<td>' + compCode + '</td>';
 						html += '<td seq="' + usageList_seq + '">' + usage + '</td>';
