@@ -30,6 +30,9 @@ public class SearchParameterBean {
 	private String keyword;
 	private String uciCode;
 	
+	/** 관리자가 모든(비활성 포함) 매체를 검색할 때 사용하는 매체번호 */
+	public static final int SEARCH_OPTION_OWNER_ALL = -1;
+	
 	public static final String OWNER_SELF = PhotoDTO.OWNER_SELF;
 	public static final String OWNER_COOP = PhotoDTO.OWNER_COOP;
 	public static final String OWNER_MEDIA = PhotoDTO.OWNER_MEDIA;

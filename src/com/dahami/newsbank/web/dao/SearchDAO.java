@@ -410,14 +410,19 @@ public class SearchDAO extends DAOBase {
 			List<Integer> targetUserList = params.getTargetUserList();
 			StringBuffer tgtBuf = new StringBuffer();
 			if(targetUserList.size() > 0) {
-				for(int targetUser : targetUserList) {
-					if(tgtBuf.length() > 0) {
-						tgtBuf.append(" OR ");
-					}
-					tgtBuf.append(targetUser);
+				if(targetUserList.size() == 1 && targetUserList.get(0) == SearchParameterBean.SEARCH_OPTION_OWNER_ALL) {
+					// 모든 매체 검색
 				}
-				query.addFilterQuery("ownerNo:(" + tgtBuf.toString() + ")");
-				logger.debug("ownerNo: (" + tgtBuf.toString() + ")");
+				else {
+					for(int targetUser : targetUserList) {
+						if(tgtBuf.length() > 0) {
+							tgtBuf.append(" OR ");
+						}
+						tgtBuf.append(targetUser);
+					}
+					query.addFilterQuery("ownerNo:(" + tgtBuf.toString() + ")");
+					logger.debug("ownerNo: (" + tgtBuf.toString() + ")");
+				}
 			}
 			else {
 				// 서비스 매체 없음 처리
