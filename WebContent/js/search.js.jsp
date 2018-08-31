@@ -192,6 +192,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 	
 		$("#searchProgress").css("display", "block");
 		
+		var fullSearch = false; // 전체매체 검색(비제휴 매체 포함)
+		if(cmsMode) {
+			fullSearch = $("#fullSearch").is(":checked");
+		}
+		 
+		
 		var keyword = "";
 		if(cmsMode) {
 			keyword = $("#cms_keyword_current").val();
@@ -259,6 +265,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				, "saleState":saleState
 				, "size":size
 				, "sort":sort
+				, "fullSearch":fullSearch
 		};
 		
 		console.log(searchParam);

@@ -26,6 +26,9 @@
 			<input type="text" id="cms_keyword" placeholder="이미지 검색" />
 			<input type="text" id="cms_keyword_current" style="display: none;" />
 			<button id="cms_searchBtn">검색</button>
+			<c:if test="${isAdmin eq true}">
+				<input type="checkbox" id="fullSearch"/>전체매체 검색(비제휴 매체 포함)
+			</c:if>
 		</div>
 	</div>
 	<!-- 필터시작 -->
@@ -119,42 +122,7 @@
 						<th>상태</th>
 						</tr></thead>
 					<tbody>
-						<tr onclick="$('.cont').toggle()">
-							<td>1234</td>
-							<td>2018-04-10</td>
-							<td>뉴시스</td>
-							<td>I011-M005527189</td>
-							<td>123456789</td>
-							<td>접수</td>
-						</tr>
-						<tr>
-							<td class="error_cont" colspan="6"><p>사진하고 사진 제목/설명이 안 맞는 것 같습니다.</p>
-								<button>수정완료</button></td>
-						</tr>
-						<tr class="tr_visible">
-							<td>1233</td>
-							<td>2018-04-09</td>
-							<td>뉴스1</td>
-							<td>II011-M005527190</td>
-							<td>123456789</td>
-							<td>수정 완료</td>
-						</tr>
-						<tr>
-							<td class="error_cont" colspan="6"><p>사진하고 사진 제목/설명이 안 맞는 것 같습니다.</p>
-								<button>수정완료</button></td>
-						</tr>
-						<tr class="tr_visible">
-							<td>1233</td>
-							<td>2018-04-09</td>
-							<td>뉴스1</td>
-							<td>II011-M005527190</td>
-							<td>123456789</td>
-							<td>수정 완료</td>
-						</tr>
-						<tr>
-							<td class="error_cont" colspan="6"><p>사진하고 사진 제목/설명이 안 맞는 것 같습니다.</p>
-								<button>수정완료</button></td>
-						</tr>
+						
 					</tbody>
 				</table>
 				<div class="pagination">

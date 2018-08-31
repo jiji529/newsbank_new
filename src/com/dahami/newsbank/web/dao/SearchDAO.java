@@ -290,7 +290,9 @@ public class SearchDAO extends DAOBase {
 			ownerTypeBuf.append(ownerType);
 		}
 		if(ownerTypeBuf.length() > 0) {
-			query.addFilterQuery("ownerType:(" + ownerTypeBuf.toString() + ")");
+			if(!params.isFullSearch()) {
+				query.addFilterQuery("ownerType:(" + ownerTypeBuf.toString() + ")");
+			}
 		}
 		
 		// 기본적으로 판매건만 보기
@@ -410,8 +412,9 @@ public class SearchDAO extends DAOBase {
 			List<Integer> targetUserList = params.getTargetUserList();
 			StringBuffer tgtBuf = new StringBuffer();
 			if(targetUserList.size() > 0) {
-				if(targetUserList.size() == 1 && targetUserList.get(0) == SearchParameterBean.SEARCH_OPTION_OWNER_ALL) {
+				if(params.isFullSearch()) {
 					// 모든 매체 검색
+					targetUserList.clear();
 				}
 				else {
 					for(int targetUser : targetUserList) {

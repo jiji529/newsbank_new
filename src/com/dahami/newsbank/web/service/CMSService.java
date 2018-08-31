@@ -344,6 +344,7 @@ public class CMSService extends ServiceBase {
 				mediaList = mDao.listAdjustMedia(memberInfo);
 			}
 			request.setAttribute("mediaList", mediaList);
+			request.setAttribute("isAdmin", isAdmin);
 			
 			if(isAdmin) {
 				forward = "/WEB-INF/jsp/admin_cms.jsp";

@@ -30,8 +30,8 @@ public class SearchParameterBean {
 	private String keyword;
 	private String uciCode;
 	
-	/** 관리자가 모든(비활성 포함) 매체를 검색할 때 사용하는 매체번호 */
-	public static final int SEARCH_OPTION_OWNER_ALL = -1;
+	/** 관리자가 모든(비제휴 포함) 매체를 검색할 때 사용하는 상태 : true-모든 매체(제휴+비제휴) / false-제휴매체사만 */
+	private boolean fullSearch = false;
 	
 	public static final String OWNER_SELF = PhotoDTO.OWNER_SELF;
 	public static final String OWNER_COOP = PhotoDTO.OWNER_COOP;
@@ -121,7 +121,7 @@ public class SearchParameterBean {
 	public static final String SORT_FLD_SHOTDATE = "sdate";
 	public static final String SORT_FLD_FILESIZE = "fsize";
 	private String sortField;
-	private ORDER sortOrder;;
+	private ORDER sortOrder;
 	
 	public SearchParameterBean() {
 		this.ownerType = new String[] {
@@ -164,6 +164,7 @@ public class SearchParameterBean {
 		try{this.portRight = Integer.parseInt(params.get("portRight")[0]);}catch(Exception e){}
 		try{this.includePerson = Integer.parseInt(params.get("includePerson")[0]);}catch(Exception e){}
 		try{this.group = Integer.parseInt(params.get("group")[0]);}catch(Exception e){}
+		try{this.fullSearch = Boolean.valueOf(params.get("fullSearch")[0]).booleanValue();}catch(Exception e){}
 		
 		setOrder(params);
 	}
@@ -394,5 +395,14 @@ public class SearchParameterBean {
 	public ORDER getSortOrder() {
 		return sortOrder;
 	}
+
+	public boolean isFullSearch() {
+		return fullSearch;
+	}
+
+	public void setFullSearch(boolean fullSearch) {
+		this.fullSearch = fullSearch;
+	}
+	
 	
 }
