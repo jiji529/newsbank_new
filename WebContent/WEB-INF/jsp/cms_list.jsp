@@ -23,12 +23,15 @@
 	<div class="table_head">
 		<h3>사진 관리</h3>
 		<div class="cms_search">
+			<c:if test="${isAdmin eq true}">
+				<div class="admin_search">
+					<input type="checkbox" id="fullSearch"/>
+					<label for="fullSearch">전체매체 검색 <br />(비제휴 매체 포함)</label>
+				</div>	
+			</c:if>
 			<input type="text" id="cms_keyword" placeholder="이미지 검색" />
 			<input type="text" id="cms_keyword_current" style="display: none;" />
 			<button id="cms_searchBtn">검색</button>
-			<c:if test="${isAdmin eq true}">
-				<input type="checkbox" id="fullSearch"/>전체매체 검색(비제휴 매체 포함)
-			</c:if>
 		</div>
 	</div>
 	<!-- 필터시작 -->

@@ -534,6 +534,11 @@
 .noti .tb04 td:nth-child(3){text-align:left;}
 .noti .tb04 td:nth-child(3) a:hover{text-decoration:underline;}
 
+.admin .mypage .cms_search .admin_search{float:left;margin-right:3px;}
+.admin .mypage .cms_search .admin_search input{width:0; height:0;opacity: 0; outline: 0;}
+.admin .mypage .cms_search .admin_search label{display: block; width:126px; font-size:13px; line-height:16px; text-align:right; background:url(../images/ico_chk1.png) 0 4px no-repeat;cursor:pointer;}
+.admin .mypage .cms_search .admin_search input:checked+label {  background:url(../images/ico_chk2.png) 0 4px no-repeat;}
+
 /* ? */
 .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block;}
 .btn { padding: 12px 20px; color: #666; border: 1px solid #aaa; background: #fff; border-radius: 2px; margin-left: 10px;}
