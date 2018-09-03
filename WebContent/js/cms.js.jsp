@@ -49,6 +49,15 @@ $(document).on("keypress", "#keyword", function(e) {
 		search();
 	}
 });
+
+$(document).on("change", "#fullSearch", function() { // 사진관리 - 전체매체 검색 체크박스
+	var check = $("#fullSearch").is(":checked");
+	if(check) {
+		$(".filter_media").hide();
+	}else {
+		$(".filter_media").show();
+	}
+});
 	
 	function isNotEmpty(value) { // 배열 빈값 제외
 		return value != "";

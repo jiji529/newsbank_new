@@ -108,6 +108,11 @@ public class CMSService extends ServiceBase {
 						
 						// CMS 는 히트 안함
 	//					photoDAO.hit(uciCode);
+						if(photoDTO.getOwnerName().isEmpty() && photoDTO.getOwnerType().equals("P")) { // 개인소유 사진은 회원명을 소유자로 전달
+							MemberDAO memberDAO = new MemberDAO();
+							MemberDTO memberDTO = memberDAO.getMember(photoDTO.getOwnerNo());
+							photoDTO.setOwnerName(memberDTO.getName());
+						}
 						request.setAttribute("photoDTO", photoDTO);
 						request.setAttribute("statsDTO", statsDTO);
 						request.setAttribute("photoTagList", photoTagList);
