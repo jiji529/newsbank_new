@@ -44,4 +44,25 @@
 	<update id="updateUsage" parameterType="java.util.Map">
 	    UPDATE usageList SET `usage` = #{usage}, `price` = #{price} WHERE seq = #{usageList_seq}	    
 	</update>
+	
+	<select id="selUsageSeq" parameterType="java.util.Map" resultType="int">
+		SELECT seq 
+		FROM usageList
+		WHERE `usage` = #{usage} AND `price` = #{price} AND `individual` = #{paramSeq} AND `active` = 'N' ORDER BY seq DESC LIMIT 1;
+	</select>
+	
+	<insert id="insUsageList" parameterType="java.util.Map">	
+		INSERT INTO usageList 
+			(
+				`usage`, 
+				`price`, 
+				`individual`, 
+				`active`
+			) VALUES (
+				#{usage},
+				#{price},
+				#{paramSeq},
+				'N'
+			)
+	</insert>
 </mapper>

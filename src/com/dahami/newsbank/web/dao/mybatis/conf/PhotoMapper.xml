@@ -220,4 +220,11 @@
 	<select id="selUciCodeByOld" parameterType="string" resultType="string">
 		select * from codeMap where oriUci = #{value} or dateCmscode = #{value}
 	</select>
+	
+	<select id="selPostRate" parameterType="string" resultType="int">
+		SELECT 
+			member.postRate AS PR
+		FROM photo LEFT JOIN member ON photo.member_seq = member.seq
+		WHERE uciCode = #{value};
+	</select>
 </mapper>

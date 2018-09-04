@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<script src="js/admin.js?v=20180416"></script>
 <script src="js/paging.js?v=20180508"></script>
 
 <script type="text/javascript">
@@ -369,7 +368,6 @@
 		<a href="javascript:void(0)" class="btn_input2">검색</a>
 	</div>
 	
-	
 	<div class="calculate_info_area"> 기간 : <span id="select_period"></span> <span class="bar3">l</span> 건수 : <span id="totalCnt" class="color"> </span>건 <span class="bar3">l</span> 총 판매금액 : <span class="color" id="totalPrice"> </span>원 <span class="bar3">l</span>
 		<p style="color:#888;" id="buy_result"></p>
 	</div>
@@ -386,6 +384,11 @@
 			<option value="100">100개</option>
 		</select> 
 		<a href="javascript:void(0)" onclick="saveExcel('/excel.buy.api', 'buylist')">엑셀저장</a>
+		<!-- <a href="javascript:void(0)" onclick="uploadExcel('/calculations.upload.excel')">엑셀 업로드</a> -->
+		<div class="upload-btn-wrapper">
+			<a href="#" class="btn_input1">엑셀 업로드</a>
+			<input type="file" name="calculations" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
+		</div>
 		</div>
 		<table cellpadding="0" cellspacing="0" class="tb04" id="excelTable">
 			<colgroup>

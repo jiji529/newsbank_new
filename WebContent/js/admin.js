@@ -1,5 +1,50 @@
 
 $(document).ready(function() {
+	
+	if ($("#contractStart, #contractEnd").length > 0) {
+		$.datepicker.setDefaults({
+			dateFormat : 'yy-mm-dd',
+			prevText : '이전 달',
+			nextText : '다음 달',
+			monthNames : [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월' ],
+			monthNamesShort : [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월' ],
+			dayNames : [ '일', '월', '화', '수', '목', '금', '토' ],
+			dayNamesShort : [ '일', '월', '화', '수', '목', '금', '토' ],
+			dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ],
+			showMonthAfterYear : true,
+			yearSuffix : '년'
+		});
+
+		$("#contractStart, #contractEnd").datepicker();
+	}
+	
+	// 검색 옵션 - 월별 선택에 따른 기간자동완성
+	$('#customYear').on('change', function() {
+		$('#customDayOption a.btn').removeClass('on'); // 날짜 초기화
+		$('#customDay').val('all');
+		year_of_month_option(); // 월별 옵션
+		change_customDay(); // 월별 선택
+	});
+	
+	$('#customDay').on('change', function() {
+		change_customDay();
+	});
+	
+	$('#customDayOption a.btn').on('click', function(i) {
+		var year = $(this).attr('value').substring(0,4);
+		var mon = $(this).attr('value').substring(4,6) - 1;
+		var lastDay = (new Date(year, mon + 1, 0)).getDate();
+		
+		var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
+		var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
+
+		$("#contractStart").val(startDate);
+		$("#contractEnd").val(endDate);
+		$('#customDayOption a.btn').removeClass('on'); // 날짜 초기화
+		$(this).addClass('on');
+
+	});
+	
 	// 회원가입 양식 제출
 	$("#frmJoin").on("submit", function() {
 		// process form
@@ -754,14 +799,49 @@ $(function() {
 		return false;
 	}
 	
-	$('input[type=file]').bind('change', function() {
+	// 오프라인 결제 관리 - 엑셀 업로드 버튼 이벤트
+	$('input[type=file][name=calculations]').bind('change', function() {
+		var page = (location.pathname).split(".")[1];
+		var uType = $(this).attr("name");
+		var tmpFile = $(this)[0].files[0];
+		var sizeLimit = 1024 * 1024 * 15;
+		
+		var formData = new FormData();
+		//첫번째 파일태그
+		formData.append("uploadFile", tmpFile);			
+		
+		if(uType == "calculations") { // 오프라인 결제관리(정산 엑셀 파일 업로드)
+			$.ajax({
+				url: '/upload.excel',
+				data: formData,
+				dataType : "json",
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					var status = data.status;
+					if(status == "SUCCESS") {
+						alert("엑셀 업로드 성공");
+					}else {
+						alert("업로드 과정에서 문제가 발생했습니다.\n 엑셀 데이터를 확인해주세요.");
+					}
+				},
+				error : function(data) {
+					console.log("Error: " + data.statusText);
+					alert("잘못된 접근입니다.");
+				}
+			})
+		}
+		
+	});
+	
+	// 회원현황, 정산 매체사 관리, 공지사항 페이지 - 파일업로드 버튼 이벤트   (엑셀 업로드 버튼 제외)
+	$('input[type=file]:not([name=calculations])').bind('change', function() {
 		var page = (location.pathname).split(".")[1];
 		var seq = $("input[name='seq']").val();
 		var uType = $(this).attr("name");	
 		var tmpFile = $(this)[0].files[0];
 		var sizeLimit = 1024 * 1024 * 15;
-		
-		console.log("seq : " + seq);
 		
 		if (tmpFile.size > sizeLimit) {
 			alert("파일 용량이 15MB를 초과했습니다");
@@ -770,12 +850,15 @@ $(function() {
 		}
 
 		if (validFileType(tmpFile)) {
+			
 			var formData = new FormData();
 			//첫번째 파일태그
 			formData.append("uploadFile", tmpFile);
 			formData.append("seq", seq); // 회원현황, 정산매체사(member_seq) / 공지사항(notice_seq)
 			formData.append("page", page); // 접근페이지: 회원현황(member), 정산매체사(media), 공지사항(board)
-
+			
+			console.log(formData);
+	
 			$.ajax({
 				url : '/'+uType+'.upload',
 				data : formData,
@@ -796,14 +879,15 @@ $(function() {
 				error : function(data) {
 					console.log("Error: " + data.statusText);
 					alert("잘못된 접근입니다.");
-				},
-
+				}
+	
 			});
+			
 
 		} else {
 			alert("파일 형식이 올바르지 않습니다.");
 			$(this).val("");
-		}
+		}			
 
 	});
 
@@ -811,5 +895,10 @@ $(function() {
 
 //천단위 ,(콤마) 넣어주기
 function comma(num){
-	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	var strNum = "0";
+	if(num != undefined && num != null) {
+		strNum = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	return strNum;
 }

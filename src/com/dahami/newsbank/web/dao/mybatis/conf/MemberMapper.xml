@@ -492,4 +492,14 @@
 		update member set oldMailSendDate = now()
 			where seq = #{value}
 	</update>
+	
+	<select id="selMemExp" parameterType="string" resultType="int">
+		SELECT seq FROM member WHERE id = #{value};
+	</select>
+	
+	<select id="selName" parameterType="int" resultType="java.util.Map">
+		SELECT name, phone
+		FROM member
+		WHERE `seq` = #{member_seq};
+	</select>
 </mapper>

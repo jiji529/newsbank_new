@@ -840,4 +840,73 @@
 			</if>
 
 	</update>
+	
+    <!-- 결제정보 입력 -->
+    <insert id="insPaymentManageDev" parameterType="java.util.Map">
+		INSERT INTO paymentManage
+			(member_seq, 
+			LGD_BUYER,
+			LGD_BUYERID,
+			LGD_BUYERPHONE,
+			LGD_RESPCODE,
+			LGD_RESPMSG,
+			LGD_OID,
+			LGD_AMOUNT,
+			LGD_TID,
+			LGD_PAYSTATUS,
+			LGD_PAYDATE,
+			LGD_PAYTYPE,
+			LGD_PRODUCTINFO,
+			LGD_FINANCENAME,
+			LGD_ACCOUNTNUM,
+			regDate)
+		VALUES
+			(#{member_seq},
+			#{LGD_BUYER},
+			#{LGD_BUYERID},
+			#{LGD_BUYERPHONE},
+			#{LGD_RESPCODE},
+			#{LGD_RESPMSG},
+			#{LGD_OID},
+			#{LGD_AMOUNT},
+			#{LGD_TID},
+			1,
+			#{LGD_PAYDATE},
+			#{LGD_PAYTYPE},
+			#{LGD_PRODUCTINFO},
+			#{LGD_FINANCENAME},
+			#{LGD_ACCOUNTNUM},
+			#{regDate})
+	</insert>
+	
+    <!-- 결제정보 조회 -->
+    <select id="selManageSeq" resultType="int">
+		SELECT seq
+		FROM paymentManage
+		WHERE LGD_OID = #{LGD_OID} AND LGD_TID = #{LGD_TID};
+	</select>
+	
+    <!-- 결제상세정보 입력 -->
+    <insert id="insPaymentDetailDev" parameterType="java.util.Map">
+		INSERT INTO paymentDetail
+			(paymentManage_seq, 
+			usageList_seq,
+			photo_uciCode,
+			price,
+			downStart,
+			downEnd,
+			downCount,
+			status,
+			regDate)
+		VALUES
+			(#{paymentManage_seq},
+			#{usageList_seq},
+			'${photo_uciCode}',
+			#{price},
+			#{downStart},
+			#{downEnd},
+			1,
+			2,
+			#{regDate})
+	</insert>
 </mapper>

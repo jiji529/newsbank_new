@@ -250,5 +250,32 @@
 	    </where>
 		
    	</select>
+   	
+   	<!-- 정산정보 추가 -->
+   	<insert id="insCalculations" parameterType="java.util.Map">
+		INSERT INTO calculations 
+			(id, 
+			uciCode, 
+			`usage`, 
+			`type`, 
+			`payType`, 
+			`price`, 
+			`fees`, 
+			`rate`, 
+			`status`, 
+			regDate) 
+		VALUES 
+			(#{id},
+			#{uciCode},
+			#{usage},
+			#{type},
+			#{payType},
+			#{price},
+			#{fees},
+			#{rate},
+			0,
+			#{regDate}
+			)
+	</insert>
 </mapper>
     

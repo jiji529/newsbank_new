@@ -35,7 +35,7 @@
 <script src="js/footer.js"></script>
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <!-- <script src="js/mypage.js"></script> -->
-<script src="js/admin.js?v=20180407"></script>
+<script src="js/admin.js?v=20180408"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
