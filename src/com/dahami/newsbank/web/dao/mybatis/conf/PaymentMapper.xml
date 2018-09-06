@@ -577,7 +577,7 @@
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
 		
 		<where>
-		    PM.LGD_PAYSTATUS = 1 AND <!-- 결제 승인건만 조회 -->
+		    PM.LGD_PAYSTATUS !=0 AND <!-- 결제 실패를 제외하고 조회 -->
 		    PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->

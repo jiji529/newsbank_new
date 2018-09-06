@@ -159,7 +159,7 @@
 						html += '<td>' + LGD_PAYTYPE + '</td>';
 						html += '<td>' + LGD_PAYSTATUS_STR + '</td>';
 						
-						if(LGD_PAYSTATUS == 5) { // 결제 취소는 취소선 표기
+						if(LGD_PAYSTATUS == 5 || LGD_PAYSTATUS == 6) { // 결제 취소, 부분취소는 취소선 표기
 							html += '<td><del>' + comma(LGD_AMOUNT) + '</del></td>';
 						}else {
 							html += '<td>' + comma(LGD_AMOUNT) + '</td>';	

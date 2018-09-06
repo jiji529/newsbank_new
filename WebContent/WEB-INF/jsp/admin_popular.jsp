@@ -120,6 +120,7 @@
 				<input type="hidden" id="uciCodeList" value="${uciCodeList}"/>
 				<input type="hidden" id="rmUciCodeList" />
 				<input type="hidden" id="delCnt" value="7"/>
+				<input type="hidden" id="IMG_SERVER_URL_PREFIX" value="<%=IMG_SERVER_URL_PREFIX%>"/>
 				<div id="photo_area"> 
 					<c:forEach items="${photoList}" var="photo">						
 						<a href='javascript:go_photoView("${photo.uciCode}")' onclick='go_photoView("${photo.uciCode}")'>

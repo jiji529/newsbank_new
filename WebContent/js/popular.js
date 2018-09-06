@@ -1,5 +1,3 @@
-var IMG_SERVER_URL_PREFIX = "http://www.dev.newsbank.co.kr";
-
 // 이미지 삭제(엄선한 사진)
 $(document).on("click","#btn_rm",function() {
 	$(this).closest("tr").remove();
@@ -103,7 +101,7 @@ $(document).on("click", ".btn_add", function() {
 					html += '<td>' + keyword + '</td>';
 					html += '<td>' + ownerName + '</td>';
 					html += '<td>' + hitCount + '회</td>';
-					html += '<td><a href="#" class="list_btn" value="${photo.mediaExActive}">삭제</a></td>';
+					html += '<td><a href="#" id="btn_rm" class="list_btn" value="${photo.mediaExActive}">삭제</a></td>';
 					html += '</tr>';
 				}
 				
@@ -224,6 +222,7 @@ function array_diff(a, b) {
 
 function set_unitegallery(){ // 새로고침
 	var photo_area = "";
+	var IMG_SERVER_URL_PREFIX = $("#IMG_SERVER_URL_PREFIX").val();
 	
 	$("tbody tr").each(function(index){
 		var uciCode = $(this).find("td:first").text();

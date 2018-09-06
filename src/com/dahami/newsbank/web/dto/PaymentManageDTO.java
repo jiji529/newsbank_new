@@ -281,6 +281,9 @@ public class PaymentManageDTO implements Serializable {
 				
 			case "5":
 				lGD_PAYSTATUS_STR = "결제취소";
+				
+			case "6":
+				lGD_PAYSTATUS_STR = "부분취소";
 				break;
 		}
 		LGD_PAYSTATUS_STR = lGD_PAYSTATUS_STR;

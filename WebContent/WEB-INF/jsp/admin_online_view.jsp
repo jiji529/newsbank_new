@@ -179,9 +179,7 @@
 								<c:set var="totalDownCount" value="${totalDownCount + detail.downCount}"/>	
 								<tr>
 									<td>${status.index+1}</td>
-									<!-- <td><img src="https://www.newsbank.co.kr/datafolder/N0/2016/01/08/E006203286_T.jpg" /></td> -->
-									<%-- <td><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${detail.photo_uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"></td> --%>
-									<td><img src="http://www.dev.newsbank.co.kr/list.down.photo?uciCode=${detail.photo_uciCode}" /></td>
+									<td><img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${detail.photo_uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>"></td>
 									<td>${detail.photoDTO.copyright }</td>
 									<td>${detail.photo_uciCode }</td>
 									<td>${detail.photoDTO.compCode }</td>
@@ -203,7 +201,17 @@
 										</c:if>
 										
 									</td>
-									<td><fmt:formatNumber value="${detail.price }" pattern="#,###" /></td>
+									<td>
+										<c:if test="${detail.status eq 1}">
+											<del><fmt:formatNumber value="${detail.price }" pattern="#,###" /></del>
+										</c:if>
+										<c:if test="${detail.status ne 1}">
+											<fmt:formatNumber value="${detail.price }" pattern="#,###" />
+										</c:if>
+										
+										<%-- <p>${detail.status }</p>
+										<fmt:formatNumber value="${detail.price }" pattern="#,###" /> --%>
+									</td>
 									<td>${detail.downCount }</td>
 								</tr>
 							</c:forEach>						
