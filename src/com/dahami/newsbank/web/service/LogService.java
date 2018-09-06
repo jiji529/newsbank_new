@@ -38,7 +38,7 @@ import com.dahami.newsbank.web.util.ExcelUtil;
 
 public class LogService extends ServiceBase {
 
-	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@SuppressWarnings("unchecked")
 	@Override

@@ -229,7 +229,10 @@ public class CMSService extends ServiceBase {
 							errorF = true;
 						}
 						
-						photoDAO.insertActionLog(log);
+						if(log.getActionType() != 0) {
+							photoDAO.insertActionLog(log);
+						}
+						
 					}
 				}
 				else if(isUpload) {
