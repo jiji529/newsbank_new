@@ -287,13 +287,13 @@
 
 /*고객센터*/
 .rules{ }
-.rules .rule_list{ float:left; margin:40px 0 ; width:100%; padding:30px 60px; background:#f8f8f8; border:1px #ddd solid;}
-.rules .rule_list li{ float:left;  height:45px; line-height:45px; width:50%;}
-.rules .rule_list li a{ display:block; color:#666; font-size:16px;text-align:left;}
-.rules .rule_list li a:hover{ color:#f79320;}
+.rules .rule_list, .mypage .policy_wrap .section_go{ float:left; margin:40px 0 ; width:100%; padding:30px 60px; background:#f8f8f8; border:1px #ddd solid;}
+.rules .rule_list li, .mypage .policy_wrap .section_go li{ float:left;  height:45px; line-height:45px; width:50%; list-style:none; font-family:'nsr'; margin-bottom:0;}
+.rules .rule_list li a, .mypage .policy_wrap .section_go li a{ display:block; color:#666; font-size:16px;text-align:left;}
+.rules .rule_list li a:hover, .mypage .policy_wrap .section_go li a:hover{ color:#f79320;}
 .rules .rule_cont{ float:left; width:100%; text-align:left; margin-bottom:50px;}
-.rules .rule_cont p{position: relative; font-size:15px; color:#333; line-height:1.8; margin-bottom:10px; float:left;  width:100%;}
-.rules .rule_cont h3{ color: #333; margin: 20px 0 10px 0; font-size:17px; margin:30px 0 10px; float:left;  width:100%;}
+.rules .rule_cont p, .mypage .policy_wrap section p{position: relative; font-size:15px; color:#333; line-height:1.8; margin-bottom:10px; float:left;  width:100%;}
+.rules .rule_cont h3, .mypage .policy_wrap section h4 { color: #333; margin: 20px 0 10px 0; font-size:17px; margin:30px 0 10px; float:left;  width:100%;}
 .rules .rule_cont ol{float:left; padding-left:30px; width:100%;}
 .rules .rule_cont li{ list-style-type:decimal; position: relative; font-size:15px; color:#333; line-height:1.8;  float:left; width:100%; margin-bottom:10px; float:left; }
 .rules .rule_cont li p{margin:0; font-size:14px; color:#000;}
@@ -313,6 +313,28 @@
 .rules .past_priv{float:left; width:100%; padding:20px; border:1px #ddd solid; background:#f6f6f6;}
 .rules .past_priv select{ height:36px; float:left; margin-right:8px;}
 .rules .past_priv a{ width:80px; line-height:36px; background:#666; color:#fff; height:36px; display:block; float:left; text-align:center; font-size:14px;}
+
+.mypage .policy_wrap *{text-align:left; font-family:"nsr",Helvetica,AppleSDGothicNeo, AppleGothic,Arial,Dotum,'돋움',sans-serif;}
+.mypage .policy_wrap h1 { font-size: 32px; font-weight: normal; line-height: 40px; margin-bottom: 15px;}
+.mypage .policy_wrap .policy_top p{margin-top:30px; }
+.mypage .policy_wrap .policy_info { color: #333; font-size: 16px; line-height: 30px; padding-bottom: 30px; border-bottom: 1px solid #dcdcdc;}
+.mypage .policy_wrap .policy_history { width: 100%; padding: 10px 0;}
+.mypage .policy_wrap .policy_history select { font-size: 15px; padding: 3px 10px 4px; border-radius: 4px;}
+.mypage .policy_wrap section { margin-bottom: 25px; font-size: 15px; line-height: 24px; width: 100%; padding-bottom: 30px; border-bottom: 1px #ccc solid; float:left;}
+.mypage .policy_wrap section h5 { font-size: 16px; color: #666; margin: 15px 0 ; text-align:center;}
+.mypage .policy_wrap section ol { width: 100%; margin: 15px 0;}
+.mypage .policy_wrap section p span { padding-left: 10px; width: 100%; margin: 5px 0;}
+.mypage .policy_wrap section table { width: 100%; margin: 5px 0 10px; border-top: 2px #666 solid;}
+.mypage .policy_wrap section th { padding: 7px 0; border-bottom: 1px solid #919191; border-left: 1px solid #e4e4e4; background: #f9f9f9; line-height: 17px; color: #000; text-align: center;}
+.mypage .policy_wrap section td { padding: 6px 10px; border-bottom: 1px solid #e4e4e4; border-left: 1px solid #e4e4e4; text-align: left;}
+.mypage .policy_wrap section table th:first-child, .mypage .policy_wrap section table td:first-child { border-left: 0;}
+.mypage .policy_wrap .policy_cont ol, .mypage .policy_wrap .policy_cont ul { padding-left: 20px;}
+.mypage .policy_wrap li { margin-bottom: 10px; padding-left: 4px; list-style:decimal;}
+.mypage .policy_wrap li ul li { list-style:circle;}
+.mypage .policy_wrap li ol li { list-style: lower-latin;}
+
+.mypage .policy_wrap .box{width:100%; padding:20px; color:#666; float:left;}
+
 
 /* 직접 문의하기 */
 .call th{background:#f6f6f6; height:45px; border-bottom:1px #ddd solid; border-left:1px #ddd solid; font-size:14px; color:#333;}
