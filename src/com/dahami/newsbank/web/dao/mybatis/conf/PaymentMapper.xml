@@ -571,7 +571,7 @@
 			PM.`LGD_OID`,
 			PM.`LGD_PAYDATE`,
 			PM.`LGD_PAYTYPE`,
-			SUM(PD.`price`) AS LGD_AMOUNT
+			PM.`LGD_AMOUNT`
 		FROM paymentDetail PD 
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
@@ -624,7 +624,7 @@
 		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
 		<where>
-	        PM.LGD_PAYSTATUS = 1 AND <!-- 결제 승인건만 조회 -->
+	        <!-- PM.LGD_PAYSTATUS = 1 AND --> <!-- 결제 승인건만 조회 -->
 	        PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
@@ -664,10 +664,10 @@
 	    resultType="integer">
 		SELECT COALESCE(SUM(PD.`price`), 0) as sum			
 		FROM paymentDetail PD
-		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
+		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq AND PD.status = 0
 		LEFT JOIN photo P ON PD.photo_uciCode = P.uciCode
 		<where>
-	        PM.LGD_PAYSTATUS = 1 AND <!-- 결제 승인건만 조회 -->
+	        <!-- PM.LGD_PAYSTATUS = 1 AND --> <!-- 결제 승인건만 조회 -->
 	        PM.LGD_PAYTYPE != 'SC9999' <!-- 온라인 결제만 조회 -->
 		    <if test="keyword !=null and keyword != ''">
 		        <if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->

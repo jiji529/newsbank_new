@@ -209,10 +209,8 @@
 						</thead>
 						<tbody>
 							<!-- 결제 사진 목록 -->
-							<c:set var="totalPrice" value="0" />
 							<c:set var="totalDownCount" value="0"/>
 							<c:forEach var="detail" items="${detailList}" varStatus="status">
-								<c:set var="totalPrice" value="${totalPrice + detail.price}" />
 								<c:set var="totalDownCount" value="${totalDownCount + detail.downCount}"/>	
 								<tr>
 									<td>${status.index+1}</td>
@@ -264,12 +262,17 @@
 						<tfoot>
 							<tr>
 								<td colspan="6">총 결제 금액</td>
-								<td colspan="4"><fmt:formatNumber value="${totalPrice}" pattern="#,###" /></td>
+								<td colspan="4"><fmt:formatNumber value="${payInfo.LGD_AMOUNT}" pattern="#,###" /></td>
 							</tr>
 						</tfoot>
 					</table>
 				</div>
-				<div class="btn_area"><a href="javascript:history.go(-1)" class="btn_input1">목록</a><a href="javascrip:void(0)" onclick="cancel_payment('${refund }', '${totalDownCount }', ${payInfo.paymentManage_seq }, '${payInfo.LGD_OID }', ${payInfo.member_seq })" class="btn_input3 fr">결제 취소</a></div>
+				<div class="btn_area">
+					<a href="javascript:history.go(-1)" class="btn_input1">목록</a>
+					<c:if test="${payInfo.LGD_PAYSTATUS eq 1}">
+						<a href="javascrip:void(0)" onclick="cancel_payment('${refund }', '${totalDownCount }', ${payInfo.paymentManage_seq }, '${payInfo.LGD_OID }', ${payInfo.member_seq })" class="btn_input3 fr">결제 취소</a>
+					</c:if>					
+				</div>
 			</div>
 		</section>
 	</div>

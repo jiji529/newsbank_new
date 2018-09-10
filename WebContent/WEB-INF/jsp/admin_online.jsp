@@ -158,12 +158,7 @@
 						html += '<td> <a href="javascript:void(0)" onclick="go_detailView(\'' + LGD_OID + '\')">' + LGD_OID + '</a></td>';
 						html += '<td>' + LGD_PAYTYPE + '</td>';
 						html += '<td>' + LGD_PAYSTATUS_STR + '</td>';
-						
-						if(LGD_PAYSTATUS == 5 || LGD_PAYSTATUS == 6) { // 결제 취소, 부분취소는 취소선 표기
-							html += '<td><del>' + comma(LGD_AMOUNT) + '</del></td>';
-						}else {
-							html += '<td>' + comma(LGD_AMOUNT) + '</td>';	
-						}						
+						html += '<td>' + comma(LGD_AMOUNT) + '</td>';						
 						html += '</tr>';
 						
 					});
@@ -379,6 +374,7 @@
 										<option value="all" selected="selected">전체</option>
 										<option value="1">결제완료</option>
 										<option value="5">결제취소</option>
+										<option value="6">부분취소</option>
 								</select></td>
 							</tr>
 						</tbody>
