@@ -251,7 +251,12 @@
 									</td>
 									<td>${detail.downCount }</td>
 									<td>
-										<a href="javascrip:void(0)" class="btn_input3" onclick="partCancel(${detail.paymentDetail_seq }, '${payInfo.LGD_OID }', ${payInfo.member_seq })">부분 결제 취소</a>
+										<c:if test="${detail.status eq 1}">
+											취소 완료
+										</c:if>
+										<c:if test="${detail.status ne 1}">
+											<a href="javascrip:void(0)" class="btn_input3" onclick="partCancel(${detail.paymentDetail_seq }, '${payInfo.LGD_OID }', ${payInfo.member_seq })">부분 결제 취소</a>
+										</c:if>
 									</td>
 								</tr>
 							</c:forEach>						
