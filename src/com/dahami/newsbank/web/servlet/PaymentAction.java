@@ -128,7 +128,7 @@ public class PaymentAction extends NewsbankServletBase {
 					
 					
 					
-					if (gap <= 7) {
+					if (gap <= 7 || cmdClass.is1("manage")) {
 						// 결제 취소 모듈
 						XPayClient xpay = new XPayClient();
 						xpay.Init(configPath, CST_PLATFORM);
@@ -139,7 +139,7 @@ public class PaymentAction extends NewsbankServletBase {
 							paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq);
 							paymentDetailDTO = paymentManageDTO.getPaymentDetailItem(paymentDetailDTO);
 
-							if (paymentDetailDTO.getDownCount().equalsIgnoreCase("0")) {
+							if (paymentDetailDTO.getDownCount().equalsIgnoreCase("0") || cmdClass.is1("manage")) {
 								String LGD_CANCELAMOUNT = (paymentDetailDTO.getPrice() > 0)
 										? Integer.toString(paymentDetailDTO.getPrice())
 										: "0";

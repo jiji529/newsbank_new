@@ -83,6 +83,42 @@
 			}
 		}
 	}
+	
+	
+	function partCancel(paymentDetail_seq, LGD_OID, member_seq) { // 부분취소
+		if(!confirm("정말로 결제를 취소하시겠습니까?")) {
+			return;
+		}
+	
+		var param = {
+				"paymentDetail_seq" : paymentDetail_seq,
+				"LGD_OID" : LGD_OID,
+				"member_seq" : member_seq,
+				"action" : "C"
+			};
+		
+			console.log(param);
+		
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				data: param,
+				url: "/payment.api.manage",
+				success: function(data) {
+					if(data.result){
+						alert("결제 취소 완료");
+						location.reload();
+					}else if(data.message){
+						alert(data.message);
+					}else{
+						alert("요청에 실패하였습니다.\n고객센터(02-593-4174)로 문의 부탁드립니다.");
+						location.reload();
+					}
+					//console.log(data);
+				}
+			});
+	}
+	
 </script>
 <title>뉴스뱅크</title>
 </head>
@@ -168,6 +204,7 @@
 								<th>용도</th>
 								<th>결제금액</th>
 								<th>다운로드 횟수</th>
+								<th>결제 취소</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -213,6 +250,9 @@
 										<fmt:formatNumber value="${detail.price }" pattern="#,###" /> --%>
 									</td>
 									<td>${detail.downCount }</td>
+									<td>
+										<a href="javascrip:void(0)" class="btn_input3" onclick="partCancel(${detail.paymentDetail_seq }, '${payInfo.LGD_OID }', ${payInfo.member_seq })">부분 결제 취소</a>
+									</td>
 								</tr>
 							</c:forEach>						
 						</tbody>
