@@ -2,7 +2,9 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -63,16 +65,27 @@ public class MypageBuyList extends NewsbankServletBase {
 			} else {
 
 				request.setAttribute("type", MemberInfo.getType());
+				Map<String,String[]> paramMaps = new HashMap<String,String[]>(request.getParameterMap());
 				
-				PaymentManageDTO paymentManageDTO = new PaymentManageDTO(); // 객체 생성
-				paymentManageDTO.setMember_seq(MemberInfo.getSeq());
+				paramMaps.put("member_seq", new String[]{String.valueOf(MemberInfo.getSeq())});
+				
+				if(!paramMaps.containsKey("page")){
+					paramMaps.put("page", new String[]{"1"});
+				}
+				if(!paramMaps.containsKey("bundle")){
+					paramMaps.put("bundle", new String[]{"20"});
+				}				
 				
 				PaymentDAO paymentDAO = new PaymentDAO(); // 회원정보 연결
 				List<PaymentManageDTO> listPaymentManage = new ArrayList<PaymentManageDTO>();
-				listPaymentManage = paymentDAO.listPaymentManage(paymentManageDTO); // 회원정보 요청
+				listPaymentManage = paymentDAO.listPaymentManage(paramMaps); // 회원정보 요청
+				
+				Map<String, Object> totalObject = paymentDAO.listPaymentManageTotal(paramMaps);
+				paramMaps.put("total", new String[]{String.valueOf(totalObject.get("totalCount"))});
 				
 				request.setAttribute("listPaymentManage", listPaymentManage);
-
+				request.setAttribute("returnMap", paramMaps);
+				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_buy_list.jsp");
 				dispatcher.forward(request, response);
 			}

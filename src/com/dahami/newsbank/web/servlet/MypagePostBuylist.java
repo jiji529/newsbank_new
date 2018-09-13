@@ -72,6 +72,12 @@ public class MypagePostBuylist extends NewsbankServletBase {
 				if(!paramMaps.containsKey("month")){
 					paramMaps.put("month", new String[]{"0"});
 				}
+				if(!paramMaps.containsKey("page")){
+					paramMaps.put("page", new String[]{"1"});
+				}
+				if(!paramMaps.containsKey("bundle")){
+					paramMaps.put("bundle", new String[]{"20"});
+				}
 				
 				int group_seq = MemberInfo.getGroup_seq(); // 회원그룹여부
 				List<Integer> memberList = new ArrayList<>();
@@ -89,8 +95,13 @@ public class MypagePostBuylist extends NewsbankServletBase {
 				List<PaymentDetailDTO> listPaymentDetail = new ArrayList<PaymentDetailDTO>();
 				listPaymentDetail = paymentDAO.selectPaymentList(memberList, paramMaps);
 				
+				Map<String, Object> totalObject = paymentDAO.selectPaymentListTotal(memberList, paramMaps);
+				paramMaps.put("total", new String[]{String.valueOf(totalObject.get("totalCount"))});
+						
 				request.setAttribute("listPaymentDetail", listPaymentDetail);
 				request.setAttribute("returnMap", paramMaps);
+				request.setAttribute("totalPrice", totalObject.get("totalPrice"));
+				
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_post_buy_list.jsp");
 				dispatcher.forward(request, response);

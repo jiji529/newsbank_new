@@ -31,6 +31,7 @@
 <c:set var="endYear" value="<%=endYear%>"/>
 <c:set var="beginYear" value="<%=beginYear%>"/>
 <c:set var="currentMonth" value="<%=currentMonth%>"/>    
+<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,7 +47,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180411"></script>
+<script src="js/mypage.js?v=20180412"></script>
 <script type="text/javascript">
 	
 	//사용용도 선택
@@ -75,18 +76,6 @@
 	$(document).on("click", ".btn_input2", function() {
 		popup_usage(); // 사용용도 선택
 	});
-	
-	// 페이지 이동
-	function pageMove(page){
-		$("#pagingForm input[name=page]").val(page);
-		$("#pagingForm input[name=year]").val($('#selectYear option:selected').val());
-		$("#pagingForm input[name=month]").val($('#selectMonth option:selected').val());
-		
-		$("#pagingForm").attr("action","/download.mypage");
-		$("#pagingForm").attr("method","post");
-		
-		$("#pagingForm").submit();
-	}
 	
 
 </script>
@@ -271,17 +260,17 @@
 			<c:if test="${lp > 0}">
 			<div class="pagination">
 				<ul style="margin-bottom:0;">
-					<li class="first"> <a href="javascript:pageMove('1');">첫 페이지</a> </li>
+					<li class="first"> <a href="javascript:pageMove('1', '${path}');">첫 페이지</a> </li>
 					<c:if test="${returnMap['page'][0] > 1 }">
-					<li class="prev"> <a href="javascript:pageMove('${returnMap['page'][0] - 1 }');">이전 페이지</a> </li>
+					<li class="prev"> <a href="javascript:pageMove('${returnMap['page'][0] - 1 }', '${path}');">이전 페이지</a> </li>
 					</c:if>
 					<c:forEach  begin="${(cycleStart)*10+1}" end="${((cycleStart)*10 + 10) > lastPage ? lastPage:((cycleStart)*10 + 10)}" var="i" >
-						<li class="${returnMap['page'][0]==i?'active':''}"> <a href="javascript:;" onclick="pageMove('${i}');">${i}</a> </li>
+						<li class="${returnMap['page'][0]==i?'active':''}"> <a href="javascript:;" onclick="pageMove('${i}', '${path}');">${i}</a> </li>
 					</c:forEach>
 					<c:if test="${returnMap['page'][0] < lp }">
-					<li class="next"> <a href="javascript:pageMove('${returnMap['page'][0] + 1 }');"> 다음 페이지 </a> </li>
+					<li class="next"> <a href="javascript:pageMove('${returnMap['page'][0] + 1 }', '${path}');"> 다음 페이지 </a> </li>
 					</c:if>
-					<li class="last"> <a href="javascript:pageMove('${lp}');"> 마지막 페이지 </a> </li>
+					<li class="last"> <a href="javascript:pageMove('${lp}', '${path}');"> 마지막 페이지 </a> </li>
 				</ul>
 			</div>
 			</c:if>	

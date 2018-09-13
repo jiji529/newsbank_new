@@ -69,6 +69,10 @@ public class PaymentDAO extends DAOBase {
 	public List<PaymentDetailDTO> selectPaymentList(List<Integer> memberList, Map<String,String[]> paramMaps) {
 		SqlSession session = null;
 		List<PaymentDetailDTO> paylist = null;
+		
+		int startPage = Integer.parseInt(paramMaps.get("page")[0]) - 1;
+		int pageVol = Integer.parseInt(paramMaps.get("bundle")[0]);
+		
 		try {
 
 			session = sf.getSession();
@@ -77,6 +81,8 @@ public class PaymentDAO extends DAOBase {
 			param.put("memberList", memberList);
 			param.put("year", paramMaps.get("year")[0] == null ? 0 : Integer.parseInt(paramMaps.get("year")[0]));
 			param.put("month", (paramMaps.get("month")[0] == null || paramMaps.get("month")[0].equals("")) ? 0 : Integer.parseInt(paramMaps.get("month")[0]));
+			param.put("startPage", startPage * pageVol);
+			param.put("pageVol", pageVol);
 			
 			paylist = session.selectList("payment.selectPaymentDetailList", param);
 
@@ -91,6 +97,45 @@ public class PaymentDAO extends DAOBase {
 		}
 
 		return paylist;
+	}
+	
+	/**
+	 * @methodName : selectPaymentListTotal
+	 * @author : Lee, Gwang ho
+	 * @date : 2018. 09. 12. 오후 02:09:43
+	 * @methodCommet: 구매내역 총 갯수, 금액
+	 * @return
+	 * @returnType : 
+	 */
+	public Map<String, Object> selectPaymentListTotal(List<Integer> memberList, Map<String,String[]> paramMaps) {
+		SqlSession session = null;
+		Map<String, Object> totalObject = new HashMap<>();
+		int count = 0;		
+		int startPage = Integer.parseInt(paramMaps.get("page")[0]) - 1;
+		int pageVol = Integer.parseInt(paramMaps.get("bundle")[0]);
+		
+		try {
+
+			session = sf.getSession();
+			
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("memberList", memberList);
+			param.put("year", paramMaps.get("year")[0] == null ? 0 : Integer.parseInt(paramMaps.get("year")[0]));
+			param.put("month", (paramMaps.get("month")[0] == null || paramMaps.get("month")[0].equals("")) ? 0 : Integer.parseInt(paramMaps.get("month")[0]));
+			
+			totalObject = session.selectOne("payment.selectPaymentDetailListTotal", param);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return totalObject;
 	}
 	
 	/**
@@ -130,14 +175,24 @@ public class PaymentDAO extends DAOBase {
 	 * @return
 	 * @returnType : List<MemberDTO>
 	 */
-	public List<PaymentManageDTO> listPaymentManage(PaymentManageDTO paymentManageDTO) {
+	public List<PaymentManageDTO> listPaymentManage(Map<String,String[]> paramMaps) {
 		SqlSession session = null;
 		List<PaymentManageDTO> list = new ArrayList<PaymentManageDTO>();
+		
+		int member_seq = Integer.parseInt(paramMaps.get("member_seq")[0]);
+		int startPage = Integer.parseInt(paramMaps.get("page")[0]) - 1;
+		int pageVol = Integer.parseInt(paramMaps.get("bundle")[0]);
+		
 		try {
-
 			session = sf.getSession();
-			list = session.selectList("payment.selectPaymentManage", paymentManageDTO);
-
+			
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			param.put("startPage", startPage * pageVol);
+			param.put("pageVol", pageVol);
+			
+			list = session.selectList("payment.selectPaymentManage", param);
+			
 		} catch (Exception e) {
 			logger.warn("", e);
 		} finally {
@@ -149,6 +204,40 @@ public class PaymentDAO extends DAOBase {
 		}
 
 		return list;
+	}
+	
+	/**
+	 * @methodName : listPaymentManageTotal
+	 * @author : Lee, Gwang ho
+	 * @date : 2018. 09. 13. 오전 09:13:43
+	 * @methodCommet: 구매내역 총 갯수, 금액
+	 * @return
+	 * @returnType : 
+	 */
+	public Map<String, Object> listPaymentManageTotal(Map<String,String[]> paramMaps) {
+		SqlSession session = null;
+		Map<String, Object> totalObject = new HashMap<>();
+		int member_seq = Integer.parseInt(paramMaps.get("member_seq")[0]);
+		
+		try {
+			session = sf.getSession();
+			
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("member_seq", member_seq);
+			
+			totalObject = session.selectOne("payment.selectPaymentManageTotal", param);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return totalObject;
 	}
 	
 	/**

@@ -102,7 +102,7 @@
 
 
 	<!-- 결제 정보 목록 호출 -->
-	<select id="selectPaymentManage" parameterType="com.dahami.newsbank.web.dto.PaymentManageDTO"
+	<select id="selectPaymentManage"  parameterType="java.util.Map"
 		resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
 		SELECT `seq` as `paymentManage_seq`, `member_seq`, `LGD_BUYER`, `LGD_BUYERID`,
 		`LGD_BUYERPHONE`, `LGD_RESPCODE`, `LGD_RESPMSG`, `LGD_OID`,
@@ -111,12 +111,26 @@
 		where `member_seq` = #{member_seq}
 		AND `LGD_PAYSTATUS` != '2'
 		AND !(`LGD_PAYSTATUS`='3' AND now()  > date_add(`regDate`, interval 1 day))
-		<if test="LGD_OID !=null">
+		<!-- <if test="LGD_OID !=null">
 			AND LGD_OID = #{LGD_OID}
-		</if>
+		</if> -->
+		ORDER BY regDate DESC 
+		<if test="startPage !=null and pageVol != null">
+		    LIMIT #{startPage}, #{pageVol}
+	    </if>
 
 	</select>
-
+	
+	<!-- 결제 정보 총 개수,금액 -->
+	<select id="selectPaymentManageTotal"  parameterType="java.util.Map"
+		resultType="java.util.HashMap">
+		SELECT COUNT(seq) AS totalCount, COALESCE(SUM(`LGD_AMOUNT`), 0) as totalPrice
+		FROM `paymentManage`
+		where `member_seq` = #{member_seq}
+		AND `LGD_PAYSTATUS` != '2'
+		AND !(`LGD_PAYSTATUS`='3' AND now()  > date_add(`regDate`, interval 1 day))		
+		ORDER BY regDate DESC 		
+	</select>
 
 
 	<!-- 결제 정보 상세 호출 -->
@@ -796,6 +810,41 @@
 		P.`uciCode`, P.`ownerType`, P.`saleStat` AS saleState,
 		N.compName AS copyright,
 		N.admission, N.withdraw, N.activate
+		FROM
+		`paymentManage`
+		AS M
+		LEFT JOIN
+		paymentDetail D ON M.seq =
+		D.paymentManage_seq
+		INNER JOIN
+		member R ON M.member_seq =
+		R.seq
+		LEFT JOIN
+		usageList U ON
+		U.seq = D.usageList_seq
+		LEFT
+		JOIN photo P ON P.uciCode =
+		D.photo_uciCode
+		INNER JOIN member N
+		ON P.member_seq = N.seq
+		<where>		  
+		    <foreach item="member_seq" collection="memberList" index="idx" open="(" separator="OR" close=")">
+	            M.member_seq = #{member_seq} 
+	        </foreach> 			
+		    <if test="year != 0 and year != null">
+				AND YEAR(M.regDate) = #{year}
+			</if>
+			<if test="month != 0 and month != null">
+			    AND MONTH(M.regDate) = #{month}
+		    </if>
+		</where>
+		ORDER BY M.`regDate` DESC
+		LIMIT #{startPage}, #{pageVol}
+	</select>
+	
+	<!-- 구매내역 총 개수/금액 -->
+	<select id="selectPaymentDetailListTotal" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT COUNT(M.`seq`) AS totalCount, COALESCE(SUM(M.`LGD_AMOUNT`), 0) as totalPrice
 		FROM
 		`paymentManage`
 		AS M

@@ -265,7 +265,7 @@ if(errMsg != null && errMsg.length() > 0) {
 			<div class="main_bg"></div>
 			<div class="main_tit">
 				<h2>보도사진 박물관 뉴스뱅크</h2>
-				<p>대한민국의 근현대사를 담은 13개 언론사의 보도사진을 만나보세요.</p>
+				<p>대한민국의 근현대사를 담은 ${fn:length(mediaList)}개 언론사의 보도사진을 만나보세요.</p>
 				<div class="search main_search">
 					<form class="search_form" method="post" action="/photo" name="search_form" >
 						<input type="hidden" id="media" name="media"/>

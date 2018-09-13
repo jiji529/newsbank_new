@@ -15,6 +15,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 <!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,7 +28,8 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js"></script>
+<script src="js/mypage.js?v=20180913"></script>
+
 </head>
 <body>
 	<div class="wrap">
@@ -141,9 +144,45 @@
 						</tr>
 					</c:if>
 				</table>
+				
+				<c:if test="${returnMap['total'][0]%returnMap['bundle'][0] == 0 }">
+					<c:set value="${returnMap['total'][0]/returnMap['bundle'][0] }" var="lastPage" />
+				</c:if>
+				<c:if test="${returnMap['total'][0]%returnMap['bundle'][0] != 0 }">
+					<c:set value="${returnMap['total'][0]/returnMap['bundle'][0]+1 }" var="lastPage" />
+				</c:if>	
+				
+				
+				<fmt:parseNumber var="lp" value="${lastPage}" integerOnly="true"/>
+				<fmt:parseNumber var="cycleStart" value="${returnMap['page'][0]/10 + (returnMap['page'][0]%10==0?-1:0)}" integerOnly="true"/>
+				<c:if test="${lp > 0}">
+				<div class="pagination">
+					<ul style="margin-bottom:0;">
+						<li class="first"> <a href="javascript:pageMove('1', '${path}');">첫 페이지</a> </li>
+						<c:if test="${returnMap['page'][0] > 1 }">
+						<li class="prev"> <a href="javascript:pageMove('${returnMap['page'][0] - 1 }', '${path}');">이전 페이지</a> </li>
+						</c:if>
+						<c:forEach  begin="${(cycleStart)*10+1}" end="${((cycleStart)*10 + 10) > lastPage ? lastPage:((cycleStart)*10 + 10)}" var="i" >
+							<li class="${returnMap['page'][0]==i?'active':''}"> <a href="javascript:;" onclick="pageMove('${i}', '${path}');">${i}</a> </li>
+						</c:forEach>
+						<c:if test="${returnMap['page'][0] < lp }">
+						<li class="next"> <a href="javascript:pageMove('${returnMap['page'][0] + 1 }', '${path}');"> 다음 페이지 </a> </li>
+						</c:if>
+						<li class="last"> <a href="javascript:pageMove('${lp}', '${path}');"> 마지막 페이지 </a> </li>
+					</ul>
+				</div>
+				</c:if>
+			
 			</section>
 		</section>
 		<%@include file="footer.jsp"%>
 	</div>
+	
+	<form id="pagingForm">
+		<input type="hidden" name="year" />
+		<input type="hidden" name="month" />
+		<input type="hidden" name="page" value="${returnMap['page'][0]}"/>
+		<input type="hidden" name="bundle" value="20"/>
+	</form>
 </body>
 </html>

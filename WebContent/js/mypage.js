@@ -1454,3 +1454,21 @@ function excelDown(api, path) {
 function stopSaleMessage() {
 	alert("판매 중지된 이미지입니다.");
 }
+
+//페이지 이동
+function pageMove(page, actionURL){
+	$("#pagingForm input[name=page]").val(page);
+	
+	if($("#pagingForm input[name=year]").length) {
+		$("#pagingForm input[name=year]").val($('#selectYear option:selected').val());
+	}
+	
+	if($("#pagingForm input[name=month]")) {
+		$("#pagingForm input[name=month]").val($('#selectMonth option:selected').val());
+	}
+	
+	$("#pagingForm").attr("action", actionURL);
+	$("#pagingForm").attr("method","post");
+	
+	$("#pagingForm").submit();
+}

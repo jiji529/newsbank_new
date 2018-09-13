@@ -28,7 +28,6 @@ public class DownloadDAO extends DAOBase {
 		
 		int startPage = Integer.parseInt(paramMaps.get("page")[0]) - 1;
 		int pageVol = Integer.parseInt(paramMaps.get("bundle")[0]);
-		startPage = startPage*pageVol; 
 		
 		try {
 			session = sf.getSession();
@@ -36,7 +35,7 @@ public class DownloadDAO extends DAOBase {
 			param.put("memberList", memberList);
 			param.put("year", paramMaps.get("year")[0] == null ? 0 : Integer.parseInt(paramMaps.get("year")[0]));
 			param.put("month", (paramMaps.get("month")[0] == null || paramMaps.get("month")[0].equals("")) ? 0 : Integer.parseInt(paramMaps.get("month")[0]));
-			param.put("startPage", startPage);
+			param.put("startPage", startPage * pageVol);
 			param.put("pageVol", pageVol);
 			
 			downList = session.selectList("Download.selDownList", param);

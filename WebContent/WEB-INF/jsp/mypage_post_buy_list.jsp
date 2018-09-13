@@ -30,6 +30,7 @@
 <c:set var="endYear" value="<%=endYear%>"/>
 <c:set var="beginYear" value="<%=beginYear%>"/>
 <c:set var="currentMonth" value="<%=currentMonth%>"/>
+<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -45,7 +46,8 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180404"></script>
+<script src="js/mypage.js?v=20180405"></script>
+
 </head>
 <body>
 <div class="wrap">
@@ -153,12 +155,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:set var="totalPrice" value="0"/>
 					<c:forEach items="${listPaymentDetail}" var="PaymentDetail" varStatus="loop">
 						<!-- 합계 -->
-						<c:set var="totalPrice" value="${totalPrice + PaymentDetail.price}"/>
 						<tr>
-							<td>${loop.index+1}</td>
+							<c:set value="${returnMap['bundle'][0] * (returnMap['page'][0] - 1) + loop.index+1 }" var="number"/>
+							<td>${number}</td>
 							<td>
 								<div class="cart_item">
 									
@@ -204,9 +205,41 @@
 					</c:forEach>
 				</tbody>
 				<tfoot>
-				<td colspan="6">합계 : \ <fmt:formatNumber value="${totalPrice}" pattern="#,###" /></td>
-					</tfoot>
+					<c:if test="${totalPrice eq ''}">
+						<td colspan="6">구매한 내역이 없습니다.</td>
+					</c:if>
+					<c:if test="${totalPrice ne ''}">
+						<td colspan="6">합계 : \ <fmt:formatNumber value="${totalPrice}" pattern="#,###" /></td>
+					</c:if>
+				</tfoot>
 			</table>
+			
+			<c:if test="${returnMap['total'][0]%returnMap['bundle'][0] == 0 }">
+				<c:set value="${returnMap['total'][0]/returnMap['bundle'][0] }" var="lastPage" />
+			</c:if>
+			<c:if test="${returnMap['total'][0]%returnMap['bundle'][0] != 0 }">
+				<c:set value="${returnMap['total'][0]/returnMap['bundle'][0]+1 }" var="lastPage" />
+			</c:if>	
+			<fmt:parseNumber var="lp" value="${lastPage}" integerOnly="true"/>
+			<fmt:parseNumber var="cycleStart" value="${returnMap['page'][0]/10 + (returnMap['page'][0]%10==0?-1:0)}" integerOnly="true"/>
+			<c:if test="${lp > 0}">
+			<div class="pagination">
+				<ul style="margin-bottom:0;">
+					<li class="first"> <a href="javascript:pageMove('1', '${path}');">첫 페이지</a> </li>
+					<c:if test="${returnMap['page'][0] > 1 }">
+					<li class="prev"> <a href="javascript:pageMove('${returnMap['page'][0] - 1 }', '${path}');">이전 페이지</a> </li>
+					</c:if>
+					<c:forEach  begin="${(cycleStart)*10+1}" end="${((cycleStart)*10 + 10) > lastPage ? lastPage:((cycleStart)*10 + 10)}" var="i" >
+						<li class="${returnMap['page'][0]==i?'active':''}"> <a href="javascript:;" onclick="pageMove('${i}', '${path}');">${i}</a> </li>
+					</c:forEach>
+					<c:if test="${returnMap['page'][0] < lp }">
+					<li class="next"> <a href="javascript:pageMove('${returnMap['page'][0] + 1 }', '${path}');"> 다음 페이지 </a> </li>
+					</c:if>
+					<li class="last"> <a href="javascript:pageMove('${lp}', '${path}');"> 마지막 페이지 </a> </li>
+				</ul>
+			</div>
+			</c:if>
+			
 		</section>
 	</section>
 	<%@include file="footer.jsp"%>
@@ -215,6 +248,14 @@
 	<input type="hidden" id="month" name="month" />
 	<input type="hidden" id="year" name="year" />
 </form>
+
+<form id="pagingForm">
+	<input type="hidden" name="year" />
+	<input type="hidden" name="month" />
+	<input type="hidden" name="page" value="${returnMap['page'][0]}"/>
+	<input type="hidden" name="bundle" value="20"/>
+</form>
+
 <%@include file="view_form.jsp" %>
 </body>
 </html>
