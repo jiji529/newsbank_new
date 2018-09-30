@@ -373,6 +373,7 @@
 									style="width: 150px;">
 										<option value="all" selected="selected">전체</option>
 										<option value="1">결제완료</option>
+										<option value="2">결제대기</option>
 										<option value="5">결제취소</option>
 										<option value="6">부분취소</option>
 								</select></td>
