@@ -31,6 +31,8 @@
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery.row-grid.js"></script>
+<script src="js/jquery.animateNumbers.min.js"></script>
+
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/main.css" />
 <script src="js/footer.js"></script>
@@ -49,6 +51,11 @@ if(errMsg != null && errMsg.length() > 0) {
 }
 %>
 <script>
+        $(document).ready(function() {           
+            $("#pageLoad").animateNumbers(6573063, true, 4000);
+        });
+    </script>
+    <script>
 	$(document).ready(function() {
 		get_totalNumberPhoto();
 		/* Start rowGrid.js */
@@ -262,10 +269,20 @@ if(errMsg != null && errMsg.length() > 0) {
 		<div class="main">
 			<section class="top">
 			<div class="overlay"></div>
-			<div class="main_bg"></div>
+			<ul class="main_bg">
+				<li><span>Image 01</span></li>
+				<li><span>Image 02</span></li>
+				<li><span>Image 03</span></li>   
+				<li><span>Image 04</span></li>
+				<li><span>Image 05</span></li>
+				<li><span>Image 06</span></li>
+				<li><span>Image 07</span></li>
+				<li><span>Image 08</span></li>   
+				<li><span>Image 09</span></li>
+			</ul>
 			<div class="main_tit">
-				<h2>보도사진 박물관 뉴스뱅크</h2>
-				<p>대한민국의 근현대사를 담은 ${fn:length(mediaList)}개 언론사의 보도사진을 만나보세요.</p>
+				<h2>뉴스뱅크</h2>
+				<div class="para">${fn:length(mediaList)}개 언론사의 보도사진 <b class="counter"><div id="pageLoad">0</div></b>건을 만나보세요.</div>
 				<div class="search main_search">
 					<form class="search_form" method="post" action="/photo" name="search_form" >
 						<input type="hidden" id="media" name="media"/>
@@ -281,6 +298,60 @@ if(errMsg != null && errMsg.length() > 0) {
 				</div>
 			</div>
 			</section>
+			<section class="popular">
+			<div class="center">
+				<h2>인기 사진</h2>
+				<p>최근 뉴스뱅크 회원님들께 가장 많은 관심을 받은 사진을 소개합니다.</p>
+				<div class="tab">
+					<ul class="tabs">
+						<li>
+							<a href="javascript:tabControl(0)" class="active">다운로드순</a>
+						</li>
+						<li>
+							<a href="javascript:tabControl(1)">찜하기순</a>
+						</li>
+						<li>
+							<a href="javascript:tabControl(2)">조회수순</a>
+						</li>
+					</ul>
+				</div>
+				
+				<!-- 다운로드 Tab -->
+				<div class="popular_cont">
+					<div id="download_area"> 
+						<c:forEach items="${downloadList}" var="down" varStatus="status">
+							<a href='javascript:go_photoView("${down.uciCode}")' onclick='go_photoView("${down.uciCode}")'>
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+							</a>
+						</c:forEach>					
+					 </div>									
+				</div>
+				
+				<!-- 찜관리 Tab -->
+				<div class="zzim_cont" style="display:none;">
+					<div id="zzim_area"> 
+						<c:forEach items="${basketList}" var="basket" varStatus="status">
+							<a href='javascript:go_photoView("${basket.uciCode}")' onclick='go_photoView("${basket.uciCode}")'>
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+							</a>
+						</c:forEach>					
+					 </div>					
+				</div>
+				
+				<!-- 상세보기 Tab -->
+				<div class="hit_cont" style="display:none;">
+					<div id="hit_area"> 
+						<c:forEach items="${hitsList}" var="hit" varStatus="status">
+							<a href='javascript:go_photoView("${hit.uciCode}")' onclick='go_photoView("${hit.uciCode}")'>
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+							</a>
+						</c:forEach>					
+					 </div>
+				</div>
+				
+			</div>
+			</section>
+			<!--인기사진-->
 			<section class="photo">
 			<div class="center">
 				<h2>뉴스뱅크가 엄선한 사진</h2>
@@ -323,60 +394,7 @@ if(errMsg != null && errMsg.length() > 0) {
 			</div>
 			</section>
 			<!--서비스소개-->
-			<section class="popular">
-			<div class="center">
-				<h2>인기 사진</h2>
-				<p>최근 뉴스뱅크 회원님들께 가장 많은 관심을 받은 사진을 소개합니다.</p>
-				<div class="tab">
-					<ul class="tabs">
-						<li>
-							<a href="javascript:tabControl(0)" class="active">다운로드</a>
-						</li>
-						<li>
-							<a href="javascript:tabControl(1)">찜</a>
-						</li>
-						<li>
-							<a href="javascript:tabControl(2)">상세보기</a>
-						</li>
-					</ul>
-				</div>
-				
-				<!-- 다운로드 Tab -->
-				<div class="popular_cont">
-					<div id="download_area"> 
-						<c:forEach items="${downloadList}" var="down" varStatus="status">
-							<a href='javascript:go_photoView("${down.uciCode}")' onclick='go_photoView("${down.uciCode}")'>
-								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${down.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-							</a>
-						</c:forEach>					
-					 </div>									
-				</div>
-				
-				<!-- 찜관리 Tab -->
-				<div class="zzim_cont" style="display:none;">
-					<div id="zzim_area"> 
-						<c:forEach items="${basketList}" var="basket" varStatus="status">
-							<a href='javascript:go_photoView("${basket.uciCode}")' onclick='go_photoView("${basket.uciCode}")'>
-								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${basket.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-							</a>
-						</c:forEach>					
-					 </div>					
-				</div>
-				
-				<!-- 상세보기 Tab -->
-				<div class="hit_cont" style="display:none;">
-					<div id="hit_area"> 
-						<c:forEach items="${hitsList}" var="hit" varStatus="status">
-							<a href='javascript:go_photoView("${hit.uciCode}")' onclick='go_photoView("${hit.uciCode}")'>
-								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-							</a>
-						</c:forEach>					
-					 </div>
-				</div>
-				
-			</div>
-			</section>
-			<!--인기사진-->
+
 			<section class="media">
 			<div class="center">
 				<h2>회원사 소개</h2>
