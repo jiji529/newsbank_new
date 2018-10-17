@@ -80,8 +80,8 @@ public class ExcelUploadUtil {
 				XSSFSheet sheet = workbook.getSheetAt(cn);
 	
 				//취득된 sheet에서 rows수 취득
-				//int rows = sheet.getPhysicalNumberOfRows();
-				int rows = sheet.getLastRowNum();
+				int rows = totalRows(sheet);
+				
 				//System.out.println(workbook.getSheetName(cn) + " Sheet Row Count : " + rows);
 	
 				//취득된 row에서 취득대상 cell수 취득
@@ -233,7 +233,7 @@ public class ExcelUploadUtil {
 					String paymentDate = regDate.replace("-", "").replace(":", "").replace(" ","").replace(".0", "");
 					Random random = new Random();
 					
-					String orderNo = id+"_"+regDate.replace("-", "").replace(":", "").replace(" ","").replace(".0", "").substring(0, 12)+(random.nextInt(59 - 10 + 1) + 10);		
+					String orderNo = id+"_"+regDate.replace("-", "").replace(":", "").replace(" ","").replace(".0", "").substring(0, 8)+(random.nextInt(23 - 10 + 1) + 10)+(random.nextInt(59 - 10 + 1) + 10)+(random.nextInt(59 - 10 + 1) + 10);
 					String tid = "dahami_"+regDate.replace("-", "").replace(":", "").replace(" ","").replace(".0", "")+(random.nextInt(100 - 10 + 1) + 10);
 					String goodName = buyerName+"("+id+")_"+price+"_구매";
 					
@@ -251,6 +251,7 @@ public class ExcelUploadUtil {
 					param.put("regDate", regDate);
 					
 					mySql_session.insert("calculation.insCalculations", param);
+					
 	
 					
 					param.put("LGD_BUYER", buyerName);
@@ -269,6 +270,8 @@ public class ExcelUploadUtil {
 	
 					
 					mySql_session.insert("payment.insPaymentManageDev", param);
+					
+					//System.out.println("SELECT seq	FROM paymentManage	WHERE LGD_OID = " + orderNo + " AND LGD_TID = " + tid);
 					
 					int manageSeq = mySql_session.selectOne("payment.selManageSeq", param);
 					param.put("manageSeq", manageSeq);
@@ -343,5 +346,29 @@ public class ExcelUploadUtil {
 			}
 			
 		}
+	}
+	
+	public int totalRows(XSSFSheet sheet) { // 빈 행 존재여부를 체크
+		int totalRow = 0;
+		int lastRowNum = sheet.getPhysicalNumberOfRows();
+		XSSFRow row;
+		
+		for (int r = 0; r < lastRowNum; r++) {
+			row = sheet.getRow(r);
+			if(!isRowEmpty(row)) {
+				totalRow += 1;
+			}
+		}
+		
+		return totalRow;
+	}
+	
+	public static boolean isRowEmpty(XSSFRow row) {
+	    for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
+	        Cell cell = row.getCell(c);
+	        if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
+	            return false;
+	    }
+	    return true;
 	}
 }
