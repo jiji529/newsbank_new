@@ -80,7 +80,8 @@ public class ExcelUploadUtil {
 				XSSFSheet sheet = workbook.getSheetAt(cn);
 	
 				//취득된 sheet에서 rows수 취득
-				int rows = sheet.getPhysicalNumberOfRows();
+				//int rows = sheet.getPhysicalNumberOfRows();
+				int rows = sheet.getLastRowNum();
 				//System.out.println(workbook.getSheetName(cn) + " Sheet Row Count : " + rows);
 	
 				//취득된 row에서 취득대상 cell수 취득
@@ -321,7 +322,7 @@ public class ExcelUploadUtil {
 		}catch(Exception e) {
 			finFlag = 2;
 			//logger.warn("",e);
-			//System.out.println(e);     
+			System.out.println(e);     
 		}finally{
 			mySql_session.close();
 			

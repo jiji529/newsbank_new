@@ -44,6 +44,7 @@
 		
 		var html = "";
 		
+		$("input[name='check_all']").prop("checked", false);
 		$("#loading").show();
 		$("#mtBody").empty();
 		
@@ -283,11 +284,12 @@
 							//console.log(data);
 						},
 						complete: function() {
-							search();
 						}
 					});
 					
 				});
+				
+				search();
 			}
 		}else {
 			alert("원하는 항목을 체크해주세요");

@@ -442,7 +442,7 @@
 		LEFT JOIN member mm ON
 		M.member_seq = mm.seq
 		LEFT JOIN
-		member mp ON M.member_seq = mp.seq
+		member mp ON P.member_seq = mp.seq
 		where
 		M.LGD_PAYSTATUS !='0' AND
 		M.LGD_PAYTYPE = 'SC9999'	
