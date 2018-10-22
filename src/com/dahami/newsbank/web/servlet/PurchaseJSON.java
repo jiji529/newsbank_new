@@ -263,7 +263,8 @@ public class PurchaseJSON extends NewsbankServletBase {
 			payment.setLGD_RESPCODE("9999");
 			payment.setLGD_RESPMSG("결제요청");
 			payment.setLGD_AMOUNT(LGD_AMOUNT);
-			payment.setLGD_PAYSTATUS(2);
+			//payment.setLGD_PAYSTATUS(2);
+			payment.setLGD_PAYSTATUS(4); // 후불결제 코드변경
 			payment.setLGD_PRODUCTINFO(LGD_PRODUCTINFO);
 			payment.setLGD_PAYDATE(LGD_TIMESTAMP);
 			payment.setLGD_PAYTYPE(LGD_CUSTOM_USABLEPAY);

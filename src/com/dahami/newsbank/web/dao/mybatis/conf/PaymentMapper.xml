@@ -889,7 +889,7 @@
 			</if>
 
 	</update>
-	
+	   
     <!-- 결제정보 입력 -->
     <insert id="insPaymentManageDev" parameterType="java.util.Map">
 		INSERT INTO paymentManage
@@ -958,4 +958,36 @@
 			2,
 			#{regDate})
 	</insert>
+	
+    <!-- 오프라인 결제 정보 -->
+    <select id="selectOfflinePay" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO" 
+	    resultType="com.dahami.newsbank.web.dto.PaymentManageDTO">
+	    
+	    SELECT PM.`seq` AS paymentManage_seq,
+		    PM.`member_seq`,
+			PM.`LGD_BUYER`,
+			PM.`LGD_BUYERID`,
+			PM.`LGD_PAYSTATUS`, 
+			PM.`LGD_RESPMSG`,
+			PM.`LGD_OID`,
+			PM.`LGD_PAYDATE`,
+			PM.`LGD_PAYTYPE`,
+			PM.`LGD_AMOUNT`
+		FROM paymentDetail PD 
+		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
+		<where>		    
+		    PM.LGD_PAYTYPE = 'SC9999' <!-- 오프라인 결제만 조회 -->
+		    AND PD.seq = #{paymentDetail_seq}
+		</where>
+	</select>
+	
+    <!-- 미승인 오프라인 결제내역 갯수  -->
+    <select id="selectUnArrovePaymentDeatilCnt" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO"
+         resultType="integer">		
+        
+		SELECT COUNT(seq) as cnt
+		FROM paymentDetail
+		WHERE paymentManage_seq = #{paymentManage_seq} AND status != 2 
+		
+	</select>
 </mapper>

@@ -27,6 +27,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="보도사진, 스톡사진, 스톡이미지, 사진판매, 역사사진, 근현대사, 인물사진, 사진박물관, korea, press, photo">
+
 <title>뉴스뱅크</title>
 
 <script src="js/jquery-1.12.4.min.js"></script>

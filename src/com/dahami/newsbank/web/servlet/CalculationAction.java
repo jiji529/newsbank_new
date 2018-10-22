@@ -23,6 +23,7 @@ import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.CalculationDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
+import com.dahami.newsbank.web.dto.PaymentManageDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.ExcelUtil;
 
@@ -193,8 +194,7 @@ public class CalculationAction extends NewsbankServletBase {
 		calculationDTO.setFees(fees);
 		calculationDTO.setCompName(compName);
 		calculationDTO.setPayType(payType);
-		calculationDTO.setType(type);
-		calculationDTO.setStatus(status);
+		//calculationDTO.setStatus(status);
 		calculationDTO.setRate(rate);
 		
 		JSONArray jArray = new JSONArray(); // json 배열
@@ -506,7 +506,12 @@ public class CalculationAction extends NewsbankServletBase {
 				paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq);
 				paymentDetailDTO.setStatus(String.valueOf(status));
 				
-				paymentDAO.updatePaymentDetail(paymentDetailDTO);
+				paymentDAO.updatePaymentDetail(paymentDetailDTO); // 세부항목 수정
+				
+				PaymentManageDTO paymentManageDTO = new PaymentManageDTO();
+				paymentManageDTO = paymentDAO.selectOfflinePay(paymentDetailDTO);
+				paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
+				
 				
 				// 정산 취소(1) / 승인(2) 건은 정산테이블(calculations)에 추가
 				if(status == 1 || status == 2) {
@@ -518,6 +523,18 @@ public class CalculationAction extends NewsbankServletBase {
 						//System.out.println("정산 날짜 : " + calculateDay);
 						
 						calculationDTO.setRegDate(calculateDay);
+						
+						// 세부항목이 모두 수정되면, paymentManage LGD_PAYSTATUS를 변경
+						boolean isUpdate = paymentDAO.getOfflineAllState(paymentDetailDTO);
+						if(isUpdate) {
+							paymentManageDTO.setLGD_PAYSTATUS(1); // 결제 승인처리
+							paymentDAO.updatePaymentManage(paymentManageDTO);
+						}
+						calculationDTO.setStatus(0); // 정산 기본값
+						
+					}else{
+						
+						calculationDTO.setStatus(1); // 정산 취소값
 					}
 					calculationDAO.insertCalculation(calculationDTO);
 				}

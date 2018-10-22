@@ -254,6 +254,7 @@
 					var fees = 0; // 후불회원은 PG수수료가 없음.
 					var usage = parseInt($(this).closest("tr").find("td").eq(10).attr("seq"));
 					var payType = "SC9999"; // 후불
+					var type = 0; // 정산타입(오프라인)
 					//var usuage = ""; // 사용용도
 					
 					if(status == 1) {
@@ -270,8 +271,9 @@
 							"price": price,
 							"fees": fees,
 							"payType": payType,
-							"usage":usage,
-							"rate":rate
+							"usage": usage,
+							"rate": rate,
+							"type": type
 					};	
 					console.log(param);
 					

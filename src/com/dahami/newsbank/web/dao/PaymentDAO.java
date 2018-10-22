@@ -658,7 +658,71 @@ public class PaymentDAO extends DAOBase {
 			}
 		}
 		return price;
-	}	
+	}
+	
+	/**
+	 * @methodName : selectOfflinePay
+	 * @author : Lee, Gwang ho
+	 * @date : 2018. 10. 19. 오전 09:14:43
+	 * @methodCommet: 오프라인 결제정보
+	 * @return
+	 * @returnType : PaymentManageDTO
+	 */
+	public PaymentManageDTO selectOfflinePay(PaymentDetailDTO paymentDetailDTO) {
+		SqlSession session = null;
+		PaymentManageDTO paymentInfo = null;
+		try {
+
+			session = sf.getSession();
+			paymentInfo = session.selectOne("payment.selectOfflinePay", paymentDetailDTO);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return paymentInfo;
+	}
+	
+	/**
+	 * @methodName : getOfflineAllState
+	 * @author : Lee, Gwang ho
+	 * @date : 2018. 10. 19. 오전 09:14:43
+	 * @methodCommet: 오프라인 결제 모든 상세내역 승인상태 반환
+	 * @return
+	 * @returnType : boolean
+	 */
+	
+	public boolean getOfflineAllState(PaymentDetailDTO paymentManageDTO) {
+		boolean result = false;
+		int unapprove_cnt = 0;
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			unapprove_cnt = session.selectOne("payment.selectUnArrovePaymentDeatilCnt", paymentManageDTO);
+			
+			if(unapprove_cnt == 0) { // 미승인 내역이 없을 경우만 반환
+				result = true;
+			}
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return result;
+
+	}
 	
 
 }
