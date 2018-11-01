@@ -91,7 +91,7 @@
 	<!-- 전체 다운로드 내역  -->
 	<select id="TotalDownlist" parameterType="java.util.Map" resultMap="TotalDownloadDTO">
 	    SELECT M.compName, M.id, M.name,
-		(SELECT name FROM member WHERE seq = P.member_seq) AS media, 
+		(SELECT compName FROM member WHERE seq = P.member_seq) AS media, 
 		P.uciCode, P.compCode, D.regDate  FROM download D
 		INNER JOIN member M ON D.member_seq = M.seq
 		INNER JOIN photo P ON D.photo_uciCode = P.uciCode
