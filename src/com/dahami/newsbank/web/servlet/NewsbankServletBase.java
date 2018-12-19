@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
-import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 
 public abstract class NewsbankServletBase extends HttpServlet {

@@ -24,10 +24,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
@@ -36,6 +38,7 @@ import org.apache.solr.client.solrj.request.QueryRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.SolrParams;
 
 import com.dahami.common.util.HttpUtil;
 import com.dahami.newsbank.Constants;
@@ -52,6 +55,7 @@ public class SearchDAO extends DAOBase {
 	private static List<String> zkHostList;
 	private static List<String> solrHostList;
 	
+	boolean isZkUse;
 	private static String collectionNameNewsbank;
 	
 	private static String solrId;
@@ -87,10 +91,10 @@ public class SearchDAO extends DAOBase {
 					zkHostList = new ArrayList<String>();
 					String[] zkHostArry = null;
 					if(isDevServer) {
-						zkHostArry = conf.getProperty("ZK_HOSTS_" + userDomain).split("\\s*\\,\\s*");
+						zkHostArry = conf.getProperty(Constants.TARGET_SOLR_ADDR_CLOUD_PREFIX_PARAM + Constants.TARGET_SOLR_ADDR_SUFFIX_PARAM + "_" + userDomain).split("\\s*\\,\\s*");
 					}
 					else {
-						zkHostArry = conf.getProperty("ZK_HOSTS").split("\\s*\\,\\s*");
+						zkHostArry = conf.getProperty(Constants.TARGET_SOLR_ADDR_CLOUD_PREFIX_PARAM + Constants.TARGET_SOLR_ADDR_SUFFIX_PARAM).split("\\s*\\,\\s*");
 					}
 					for(String zkHost : zkHostArry) {
 						zkHostList.add(zkHost);	
@@ -100,42 +104,71 @@ public class SearchDAO extends DAOBase {
 					solrHostList = new ArrayList<String>();
 					String[] solrHostArry = null;
 					if(isDevServer) {
-						solrHostArry = conf.getProperty("SOLR_HOSTS_" + userDomain).split("\\s*\\,\\s*");;	
+						solrHostArry = conf.getProperty(Constants.TARGET_SOLR_ADDR_HTTP_PREFIX_PARAM + Constants.TARGET_SOLR_ADDR_SUFFIX_PARAM + "_" + userDomain).split("\\s*\\,\\s*");;	
 					}
 					else {
-						solrHostArry = conf.getProperty("SOLR_HOSTS").split("\\s*\\,\\s*");;
+						solrHostArry = conf.getProperty(Constants.TARGET_SOLR_ADDR_HTTP_PREFIX_PARAM + Constants.TARGET_SOLR_ADDR_SUFFIX_PARAM).split("\\s*\\,\\s*");;
 					}
 					for(String solrHost : solrHostArry) {
 						solrHostList.add(solrHost);
 					}
 				}
-				collectionNameNewsbank = (String) conf.get(Constants.TARGET_SOLR_PARAM);
+				else {
+					isZkUse = true;
+				}
+
+				collectionNameNewsbank = (String) conf.get(Constants.TARGET_SOLR_COLLECTION_PREFIX_PARAM + Constants.TARGET_SOLR_COLLECTION_SUFFIX_PARAM);
 				
 				solrClients = new ArrayList<SolrClient>();
 				int poolSize = Integer.parseInt(conf.getProperty("SOLR_POOL"));
 				int solrHostIdx = 0;
 				
-				HttpSolrClient.Builder httpSolrBuilder = new HttpSolrClient.Builder();
 				CloudSolrClient.Builder cloudBuilder = null;
-				if(zkHostList.size() > 0) {
-//					cloudBuilder = new CloudSolrClient.Builder(zkHostList, Optional.empty())
-					cloudBuilder = new CloudSolrClient.Builder(zkHostList, null)
-							.withParallelUpdates(true);
+				if(isZkUse) {
+					cloudBuilder = 
+					// 6.6.x
+//					new CloudSolrClient.Builder().withZkHost(zkHostList)
+					// 7.x
+					new CloudSolrClient.Builder(zkHostList, Optional.empty()).withParallelUpdates(true);
+					
+					cloudBuilder.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId, solrPw));
 				}
 				
 				while(solrClients.size() < poolSize) {
-					if(zkHostList.size() > 0) {
-						CloudSolrClient solr = cloudBuilder
-								.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId,  solrPw))
-								.build();
+					if(isZkUse) {
+						CloudSolrClient solr = cloudBuilder.build();
+						solr.setZkClientTimeout(60000);
+						solr.setZkConnectTimeout(60000);
+						solr.setDefaultCollection(collectionNameNewsbank);
+						// 6.x
+//						solr.setParallelUpdates(true);
 						solr.connect();
 						solrClients.add(solr);
 					}
 					else if(solrHostList.size() > 0) {
-						SolrClient solr = httpSolrBuilder
-								.withBaseSolrUrl(solrHostList.get(solrHostIdx++) + collectionNameNewsbank)
-								.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId,  solrPw))
-								.build();
+						String addr = solrHostList.get(solrHostIdx++);
+						if(addr == null) {
+							addr = "";
+						}
+						addr = addr.trim();
+						if(!addr.endsWith("/")) {
+							addr += "/";
+						}
+						
+						HttpSolrClient.Builder httpSolrBuilder = new HttpSolrClient.Builder()
+								.withBaseSolrUrl(addr + collectionNameNewsbank)
+								.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId, solrPw));
+						@SuppressWarnings("serial")
+						HttpSolrClient solr =
+								// 6.x
+//								httpSolrBuilder.build();
+								// 7.x
+								new HttpSolrClient(httpSolrBuilder) {
+									public QueryResponse query(SolrParams params) throws SolrServerException, IOException {
+										return super.query(params, METHOD.POST);
+									}
+								};
+								
 						solrClients.add(solr);
 						if(solrHostIdx >= solrHostList.size()) {
 							solrHostIdx = 0;
@@ -276,7 +309,10 @@ public class SearchDAO extends DAOBase {
 	
 	private SolrQuery makeSolrQuery(SearchParameterBean params) {
 		SolrQuery query = new SolrQuery();
-		query.set("collection", collectionNameNewsbank);
+		if(isZkUse) {
+			// 7.x 부터 주키퍼 사용시만 세팅 / 아닌경우 세팅하면 post 요청시 오류발생함
+			query.set("collection", collectionNameNewsbank);
+		}
 		String photoId = params.getPhotoId();
 		String keyword = params.getKeyword();
 		String uciCode = params.getUciCode();

@@ -18,13 +18,21 @@ package com.dahami.newsbank;
 
 public class Constants {
 
+	/** 개발/서비스 구분 */
+	private static final boolean IS_SERVICE = true;
+//	private static final boolean IS_SERVICE = false;
+
 	/** 연동 DB */
-	public static final String TARGET_DB = "service";
-//	public static final String TARGET_DB = "dev";
+	public static final String TARGET_DB;
 	
-	/** 연동 검색엔진 설정 파라메터 */
-	public static final String TARGET_SOLR_PARAM = "COLLECTION_NAME_NEWSBANK_REAL";
-//	public static final String TARGET_SOLR_PARAM = "COLLECTION_NAME_NEWSBANK_DEV";
+	/** 연동 검색엔진 주소 설정 파라메터 */
+	public static final String TARGET_SOLR_ADDR_CLOUD_PREFIX_PARAM = "ZK_HOSTS";
+	public static final String TARGET_SOLR_ADDR_HTTP_PREFIX_PARAM = "SOLR_HOSTS";
+	public static final String TARGET_SOLR_ADDR_SUFFIX_PARAM;
+	
+	/** 연동 검색엔진 컬렉션 파라메터 */
+	public static final String TARGET_SOLR_COLLECTION_PREFIX_PARAM = "COLLECTION_NAME_NEWSBANK";
+	public static final String TARGET_SOLR_COLLECTION_SUFFIX_PARAM;
 	
 	/** 형태소분석 사용 */
 //	public static final boolean SEARCH_FIELD_MORP = true;
@@ -33,4 +41,19 @@ public class Constants {
 	/** 검색 정렬 : 스코어 */
 //	public static final boolean SEARCH_SORT_SCORE = true;
 	public static final boolean SEARCH_SORT_SCORE = false;
+	
+	static {
+		if(IS_SERVICE) {
+			TARGET_DB = "service";
+			TARGET_SOLR_ADDR_SUFFIX_PARAM = "_REAL";
+			TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_REAL";
+		}
+		else {
+			TARGET_DB = "dev";
+			TARGET_SOLR_ADDR_SUFFIX_PARAM = "_DEV";
+			TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_DEV";
+		}
+	}
+	
+
 }
