@@ -728,7 +728,13 @@ public class DownloadService extends ServiceBase {
 		TiffOutputDirectory rootDir = null;
 		TiffOutputDirectory exifDir = null;
 		try {
-			ImageMetadata meta = Imaging.getMetadata(fd);
+			ImageMetadata meta = null;
+			
+			try {
+				meta = Imaging.getMetadata(fd);
+			}catch(IOException e) {
+				logger.warn(e.getMessage() + " / " + fd.getAbsolutePath());
+			}
 
 			if (meta == null) {
 				outputSet = new TiffOutputSet();
