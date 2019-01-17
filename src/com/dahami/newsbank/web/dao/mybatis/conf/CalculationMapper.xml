@@ -80,14 +80,6 @@
 		<result property="price" column="price" />
  	</resultMap>
    	
-   	<!-- 정산내역 존재여부 확인 -->
-   	<select id="existsOfCalculation" parameterType="com.dahami.newsbank.web.dto.CalculationDTO"
-		resultType="int">
-		SELECT COUNT(seq) AS cnt
-			FROM calculations
-			WHERE id = #{id} AND uciCode = #{uciCode} AND `type` = #{type} AND payType = #{payType}       	  
-   	</select>
-   	
    	<!-- 정산매체, 피정산매체 선택에 따른 정산결과 -->
 	<select id="selectCalculation" resultMap="calculationResult" 
    	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 

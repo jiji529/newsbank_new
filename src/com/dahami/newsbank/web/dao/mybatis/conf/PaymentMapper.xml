@@ -981,6 +981,28 @@
 		</where>
 	</select>
 	
+    <!-- 오프라인 결제 상세정보 -->
+    <select id="selectOfflinePayDetail" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO" 
+	    resultType="com.dahami.newsbank.web.dto.PaymentDetailDTO">
+	    
+	    SELECT PD.`seq` AS paymentDetail_seq,
+			PD.`paymentManage_seq`,
+			PD.`usageList_seq`,
+			PD.`photo_uciCode`,
+			PD.`price`,
+			PD.`downStart`,
+			PD.`downEnd`,
+			PD.`downCount`,
+			PD.`status`,
+			PD.`regDate`
+		FROM paymentDetail PD 
+		LEFT JOIN paymentManage PM ON PD.paymentManage_seq = PM.seq
+		<where>		    
+		    PM.LGD_PAYTYPE = 'SC9999' <!-- 오프라인 결제만 조회 -->
+		    AND PD.seq = #{paymentDetail_seq}
+		</where>
+	</select>
+	
     <!-- 미승인 오프라인 결제내역 갯수  -->
     <select id="selectUnArrovePaymentDeatilCnt" parameterType="com.dahami.newsbank.web.dto.PaymentDetailDTO"
          resultType="integer">		

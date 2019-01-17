@@ -690,6 +690,35 @@ public class PaymentDAO extends DAOBase {
 	}
 	
 	/**
+	 * @methodName : selectOfflinePayDetail
+	 * @author : Lee, Gwang ho
+	 * @date : 2019. 01. 17. 오후 03:55:43
+	 * @methodCommet: 오프라인 결제 상세정보
+	 * @return
+	 * @returnType : PaymentDetailDTO
+	 */
+	public PaymentDetailDTO selectOfflinePayDetail(PaymentDetailDTO paymentDetailDTO) {
+		SqlSession session = null;
+		PaymentDetailDTO paymentDetail = null;
+		try {
+
+			session = sf.getSession();
+			paymentDetail = session.selectOne("payment.selectOfflinePayDetail", paymentDetailDTO);
+
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.commit();
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return paymentDetail;
+	}
+	
+	/**
 	 * @methodName : getOfflineAllState
 	 * @author : Lee, Gwang ho
 	 * @date : 2018. 10. 19. 오전 09:14:43

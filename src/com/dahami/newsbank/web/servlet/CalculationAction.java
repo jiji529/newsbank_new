@@ -535,17 +535,21 @@ public class CalculationAction extends NewsbankServletBase {
 						
 					}else{ // 정산 취소
 						
-						int cnt = calculationDAO.existsOfCalculation(calculationDTO);
+						paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq);
+						PaymentDetailDTO now_detail = new PaymentDetailDTO(); // 현재 결제상태값
+						now_detail = paymentDAO.selectOfflinePayDetail(paymentDetailDTO);
 						
-						if(cnt > 0) { // 정산테이블(calculations)에 값이 존재할 경우만, 취소내역을 추가
+						if(Integer.parseInt(now_detail.getStatus()) == 2) { // 관리자 승인일 때만 취소내역 추가
 							calculationDTO.setStatus(1); // 정산 취소값
 							calculationDAO.insertCalculation(calculationDTO); // 정산데이터 추가
 						}else {
-							update_state = false; // 후불정산내역이 없는 경우는 정산취소를 할 수 없다.
+							update_state = false; // 승인을 받지 않았을 때는 정산취소 불가능
 						}
-						
-					}		
+					}	
+					
+					
 				}
+				
 				
 				// 정산 내역(calculations)이 있는 경우에만 결제내용 수정 가능
 				if(update_state) { 
