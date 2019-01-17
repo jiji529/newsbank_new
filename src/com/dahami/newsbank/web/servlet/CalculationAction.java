@@ -506,23 +506,24 @@ public class CalculationAction extends NewsbankServletBase {
 				paymentDetailDTO.setPaymentDetail_seq(paymentDetail_seq);
 				paymentDetailDTO.setStatus(String.valueOf(status));
 				
-				paymentDAO.updatePaymentDetail(paymentDetailDTO); // 세부항목 수정
-				
 				PaymentManageDTO paymentManageDTO = new PaymentManageDTO();
 				paymentManageDTO = paymentDAO.selectOfflinePay(paymentDetailDTO);
 				paymentDetailDTO.setPaymentManage_seq(paymentManageDTO.getPaymentManage_seq());
 				
+				boolean update_state = true; // 정산취소 시, 내역이 없을 때 시도하는 것을 방지하기 위해 사용.
 				
 				// 정산 취소(1) / 승인(2) 건은 정산테이블(calculations)에 추가
 				if(status == 1 || status == 2) {
-					Calendar cal = Calendar.getInstance();
-					cal.add(Calendar.MONTH, -1);
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					String calculateDay = dateFormat.format(cal.getTime()); // 정산일자 (한달전)
-					calculationDTO.setRegDate(calculateDay);
-					//System.out.println("정산 날짜 : " + calculateDay);
 					
 					if(status == 2) { // 후불회원 결제승인(2) : 등록일자 기준으로 -1달 하기 (정산은 매월 1일 ~5일에 이루어지기 때문)
+						Calendar cal = Calendar.getInstance();
+						cal.add(Calendar.MONTH, -1);
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						String calculateDay = dateFormat.format(cal.getTime()); // 정산일자 (한달전)
+						//System.out.println("정산 날짜 : " + calculateDay);
+						
+						calculationDTO.setRegDate(calculateDay);
+						
 						// 세부항목이 모두 수정되면, paymentManage LGD_PAYSTATUS를 변경
 						boolean isUpdate = paymentDAO.getOfflineAllState(paymentDetailDTO);
 						if(isUpdate) {
@@ -530,13 +531,25 @@ public class CalculationAction extends NewsbankServletBase {
 							paymentDAO.updatePaymentManage(paymentManageDTO);
 						}
 						calculationDTO.setStatus(0); // 정산 기본값
+						calculationDAO.insertCalculation(calculationDTO); // 정산데이터 추가
 						
-					}else{
+					}else{ // 정산 취소
 						
-						calculationDTO.setStatus(1); // 정산 취소값
-					}
-					
-					calculationDAO.insertCalculation(calculationDTO);
+						int cnt = calculationDAO.existsOfCalculation(calculationDTO);
+						
+						if(cnt > 0) { // 정산테이블(calculations)에 값이 존재할 경우만, 취소내역을 추가
+							calculationDTO.setStatus(1); // 정산 취소값
+							calculationDAO.insertCalculation(calculationDTO); // 정산데이터 추가
+						}else {
+							update_state = false; // 후불정산내역이 없는 경우는 정산취소를 할 수 없다.
+						}
+						
+					}		
+				}
+				
+				// 정산 내역(calculations)이 있는 경우에만 결제내용 수정 가능
+				if(update_state) { 
+					paymentDAO.updatePaymentDetail(paymentDetailDTO); // 세부항목 수정
 				}
 				
 				break;

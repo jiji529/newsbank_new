@@ -132,4 +132,30 @@ public class CalculationDAO extends DAOBase {
 			}
 		}
 	}
+	
+	/**
+	 * @methodName : existsOfCalculation
+	 * @author : Lee, Gwangho
+	 * @date : 2019. 01. 17. 오후 01:25:43
+	 * @methodCommet: 조건에 따른 정산내역 존재여부 (조건: id, uciCode, type, payType) 
+	 * @return
+	 * @returnType : 정산내역 갯수 반환
+	 */
+	public int existsOfCalculation(CalculationDTO calculationDTO) {
+		SqlSession session = null;
+		int count = 0;
+		try {
+			session = sf.getSession();
+			count = session.selectOne("calculation.existsOfCalculation", calculationDTO);			
+			return count;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
 }
