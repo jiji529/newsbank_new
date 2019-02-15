@@ -354,9 +354,12 @@ public class ExcelUploadUtil {
 		XSSFRow row;
 		
 		for (int r = 0; r < lastRowNum; r++) {
-			row = sheet.getRow(r);
-			if(!isRowEmpty(row)) {
-				totalRow += 1;
+			row = sheet.getRow(r);			
+			
+			if(row != null) { // 유효한 값 확인
+				if(!isRowEmpty(row)) {
+					totalRow += 1;
+				}
 			}
 		}
 		
