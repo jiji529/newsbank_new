@@ -62,6 +62,13 @@ public class AdminOnlineView extends NewsbankServletBase {
 			}
 			
 			String LGD_OID = request.getParameter("LGD_OID");
+			String nowStartDate = request.getParameter("nowStartDate");
+			String nowEndDate = request.getParameter("nowEndDate");
+			String nowPayType = request.getParameter("nowPayType");
+			String nowPayStatus = request.getParameter("nowPayStatus");
+			String nowPageVol = request.getParameter("nowPageVol");
+			String nowStartGo = request.getParameter("nowStartGo");
+			
 			PaymentManageDTO pmDTO = new PaymentManageDTO();
 			pmDTO.setLGD_OID(LGD_OID);
 			
@@ -93,6 +100,14 @@ public class AdminOnlineView extends NewsbankServletBase {
 			request.setAttribute("memberDTO", memberDTO);
 			request.setAttribute("detailList", detailList);
 			request.setAttribute("refund", refund);
+			
+			request.setAttribute("paytype", nowPayType);
+			request.setAttribute("paystatus", nowPayStatus);
+			request.setAttribute("start_date", nowStartDate);
+			request.setAttribute("end_date", nowEndDate);
+			request.setAttribute("pagevol", nowPageVol);
+			request.setAttribute("startgo", nowStartGo);
+			
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_online_view.jsp");
 			dispatcher.forward(request, response);

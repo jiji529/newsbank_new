@@ -11,6 +11,7 @@
   date            author         comment
   ----------      ---------      ----------------------------------------------
   2018. 03. 14.   LEE GWANGHO    view.online.manage
+  2019. 03. 26.   LEE GWANGHO	 목록 - 상세 페이지 이동 간에 검색옵션 값이 전달되도록 처리
 ---------------------------------------------------------------------------%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -43,8 +44,6 @@
 <script type="text/javascript">
 	
 	function cancel_payment(refund, down_count, paymentManage_seq, LGD_OID, member_seq) {	// 결제 취소
-		console.log(paymentManage_seq);
-	
 		if((refund == "true") && (down_count == 0)){
 			if (confirm("결제를 취소하시면 이미지 다운로드가 불가능해집니다. 결제를 취소하시겠습니까?")) {
 				
@@ -53,17 +52,15 @@
 					"LGD_OID" : LGD_OID,
 					"action" : "C",
 					"member_seq" : member_seq
-				};
-				
-				console.log(param);
+				};				
+				//console.log(param);
 				
 				$.ajax({
 					type: "POST",
 					dataType: "json",
 					url: "/payment.api.manage",
 					data: param,
-					success: function(data) {
-						console.log(data);
+					success: function(data) {	//console.log(data);
 						var result = data.result;
 						var message = data.message;
 						
@@ -91,32 +88,31 @@
 		}
 	
 		var param = {
-				"paymentDetail_seq" : paymentDetail_seq,
-				"LGD_OID" : LGD_OID,
-				"member_seq" : member_seq,
-				"action" : "C"
-			};
+			"paymentDetail_seq" : paymentDetail_seq,
+			"LGD_OID" : LGD_OID,
+			"member_seq" : member_seq,
+			"action" : "C"
+		};
 		
-			console.log(param);
-		
-			$.ajax({
-				type: "POST",
-				dataType: "json",
-				data: param,
-				url: "/payment.api.manage",
-				success: function(data) {
-					if(data.result){
-						alert("결제 취소 완료");
-						location.reload();
-					}else if(data.message){
-						alert(data.message);
-					}else{
-						alert("요청에 실패하였습니다.\n고객센터(02-593-4174)로 문의 부탁드립니다.");
-						location.reload();
-					}
-					//console.log(data);
+		//console.log(param);
+	
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			data: param,
+			url: "/payment.api.manage",
+			success: function(data) {
+				if(data.result){
+					alert("결제 취소 완료");
+					location.reload();
+				}else if(data.message){
+					alert(data.message);
+				}else{
+					alert("요청에 실패하였습니다.\n고객센터(02-593-4174)로 문의 부탁드립니다.");
+					location.reload();
 				}
-			});
+			}
+		});
 	}
 	
 </script>
@@ -243,9 +239,6 @@
 										<c:if test="${detail.status ne 1}">
 											<fmt:formatNumber value="${detail.price }" pattern="#,###" />
 										</c:if>
-										
-										<%-- <p>${detail.status }</p>
-										<fmt:formatNumber value="${detail.price }" pattern="#,###" /> --%>
 									</td>
 									<td>${detail.downCount }</td>
 									<td>
@@ -268,13 +261,23 @@
 					</table>
 				</div>
 				<div class="btn_area">
-					<a href="javascript:history.go(-1)" class="btn_input1">목록</a>
+					<a href="javascript:void(0)" onclick="online_manage.submit()" class="btn_input1">목록</a>
 					<c:if test="${payInfo.LGD_PAYSTATUS eq 1}">
-						<a href="javascrip:void(0)" onclick="cancel_payment('${refund }', '${totalDownCount }', ${payInfo.paymentManage_seq }, '${payInfo.LGD_OID }', ${payInfo.member_seq })" class="btn_input3 fr">결제 취소</a>
+						<a href="javascript:void(0)" onclick="cancel_payment('${refund }', '${totalDownCount }', ${payInfo.paymentManage_seq }, '${payInfo.LGD_OID }', ${payInfo.member_seq })" class="btn_input3 fr">결제 취소</a>
 					</c:if>					
 				</div>
 			</div>
 		</section>
 	</div>
+	
+	<!-- 온라인 결제 목록 -->
+	<form method="post" action="/online.manage" name="online_manage" >
+		<input type="hidden" name="paytype" id="paytype" value="${paytype}"/>
+		<input type="hidden" name="paystatus" id="paystatus" value="${paystatus}"/>
+		<input type="hidden" name="start_date" id="start_date" value="${start_date}"/>
+		<input type="hidden" name="end_date" id="end_date" value="${end_date}"/>
+		<input type="hidden" name="pagevol" id="pagevol" value="${pagevol}"/>
+		<input type="hidden" name="startgo" id="startgo" value="${startgo}"/>
+	</form>
 </body>
 </html>

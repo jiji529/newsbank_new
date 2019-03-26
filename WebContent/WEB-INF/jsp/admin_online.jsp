@@ -11,6 +11,7 @@
   date            author         comment
   ----------      ---------      ----------------------------------------------
   2017. 11. 21.   LEE GWANGHO    online.manage
+  2019. 03. 26.   LEE GWANGHO	 목록 - 상세 페이지 이동 간에 검색옵션 값이 전달되도록 처리
 ---------------------------------------------------------------------------%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -57,7 +58,11 @@
 			}
 		});
 		
-		$("#startgo").val(1); // 최초 1페이지로
+		var startgo = ('${startgo}' == '') ? 1 : '${startgo}'; // 최초 1페이지
+		var pagevol = ('${pagevol}' == '') ? 20 : '${pagevol}'; // 페이지당 기본 표현 갯수 20
+		$("#startgo").val(startgo);
+		$("#sel_pageVol").val(pagevol);
+		
 		search();		
 	});
 	
@@ -75,6 +80,39 @@
 		search("not_paging");
 	});
 	
+	// 이전 페이지
+	$(document).on("click",".prev",function() {
+		var page = parseInt($("#startgo").val());
+		if(page != 1) page -= 1;
+		
+		$("#startgo").val(page);
+		search("not_paging");
+	});
+	
+	// 다음 페이지
+	$(document).on("click",".next",function() {
+		var page = parseInt($("#startgo").val());
+		var totcnt = $("#totcnt").val();
+		if(page < totcnt) page += 1;
+		
+		$("#startgo").val(page);
+		search("not_paging");
+	});
+	
+	// 첫 페이지
+	$(document).on("click",".first",function() {
+		$("#startgo").val(1);
+		search("not_paging");
+	});
+	
+	// 마지막 페이지
+	$(document).on("click",".last",function() {
+		var totcnt = $("#totcnt").val();
+		$("#startgo").val(totcnt);
+		search("not_paging");
+	});
+	
+	// 검색어 Enter 이벤트
 	$(document).on("keypress", "#keyword", function(e) {
 		if (e.keyCode == 13) { // 엔터
 			$("#startgo").val(1); // 최초 1페이지로
@@ -124,6 +162,8 @@
 				totalPrice = data.totalPrice;
 				pageCnt = data.pageCnt;
 				totalCnt = data.totalCnt; 
+				
+				$("#totcnt").val(pageCnt);
 				
 				setCountPrice(data.totalList); // 결과치 통계 표시
 				
@@ -257,7 +297,7 @@
 			if (startpage == "1") {
 				firval = parseInt(startpage);
 			} else {
-				firval = parseInt($("#totcnt").val());
+				firval = parseInt($("#startgo").val());
 			}
 		}
 		if (tot == "0") {
@@ -269,7 +309,7 @@
 		$('.pagination').empty();
 		$('.pagination').html(
 				'<ul id="pagination-demo" class="pagination-sm"></ul>');
-
+		
 		$('#pagination-demo').twbsPagination({
 			startPage : firval,
 			totalPages : realtot,
@@ -290,6 +330,20 @@
 	// 주문번호 상세페이지 이동
 	function go_detailView(LGD_OID) {
 		$("#LGD_OID").val(LGD_OID);
+		var start_date = $("input[name=start_date]").val(); // 시작일자
+		var end_date = $("input[name=end_date]").val(); // 종료일자
+		var paytype = $("select[name=paytype]").val(); // 결제방법
+		var paystatus = $("select[name=paystatus]").val(); // 결제상황
+		var pagevol = $("#sel_pageVol option:selected").attr("value"); // 페이지별 갯수
+		var startgo = $("#startgo").val(); // 시작 페이지
+		
+		$("#nowStartDate").val(start_date);
+		$("#nowEndDate").val(end_date);
+		$("#nowPayType").val(paytype);
+		$("#nowPayStatus").val(paystatus);
+		$("#nowPageVol").val(pagevol);
+		$("#nowStartGo").val(startgo);
+		
 		view_online_manage.submit();
 	}
 </script>
@@ -352,31 +406,46 @@
 										</c:forEach>
 									</ul>
 									<div class="period">
-										<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-01-01" maxlength="10">
+										<c:if test="${!empty start_date}">
+											<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${start_date}" maxlength="10">
+										</c:if>
+										<c:if test="${empty start_date}">
+											<input type="text"  size="12" id="contractStart" name="start_date"  class="inp_txt" value="${year}-01-01" maxlength="10">
+										</c:if>
+										
 										<span class=" bar">~</span>
-										<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${today}" maxlength="10">
+										
+										<c:if test="${!empty end_date}">
+											<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${end_date}" maxlength="10">
+										</c:if>
+										<c:if test="${empty end_date}">
+											<input type="text"  size="12" id="contractEnd" name="end_date"  class="inp_txt" value="${today}" maxlength="10">
+										</c:if>
 									</div>	
 								</td>
-						</tr>
+							</tr>
 							<tr>
 								<th>결제 방법</th>
-								<td><select name="paytype" class="inp_txt" style="width: 150px;">
-										<option value="all" selected="selected">전체</option>
-										<option value="SC0010">신용카드</option>
-										<option value="SC0040">무통장입금</option>
-										<option value="SC0030">계좌이체</option>
-								</select></td>
+								<td>
+									<select name="paytype" class="inp_txt" style="width: 150px;">
+										<option value="all" <c:if test="${paytype eq 'all'}">selected</c:if>>전체</option>
+										<option value="SC0010" <c:if test="${paytype eq 'SC0010'}">selected</c:if>>신용카드</option>
+										<option value="SC0040" <c:if test="${paytype eq 'SC0040'}">selected</c:if>>무통장입금</option>
+										<option value="SC0030" <c:if test="${paytype eq 'SC0030'}">selected</c:if>>계좌이체</option>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<th>결제 상황</th>
-								<td><select name="paystatus" class="inp_txt"
-									style="width: 150px;">
-										<option value="all" selected="selected">전체</option>
-										<option value="1">결제완료</option>
-										<option value="2">결제대기</option>
-										<option value="5">결제취소</option>
-										<option value="6">부분취소</option>
-								</select></td>
+								<td>
+									<select name="paystatus" class="inp_txt" style="width: 150px;">
+										<option value="all" <c:if test="${paystatus eq 'all'}">selected</c:if>>전체</option>
+										<option value="1" <c:if test="${paystatus eq '1'}">selected</c:if>>결제완료</option>
+										<option value="2" <c:if test="${paystatus eq '2'}">selected</c:if>>결제대기</option>
+										<option value="5" <c:if test="${paystatus eq '5'}">selected</c:if>>결제취소</option>
+										<option value="6" <c:if test="${paystatus eq '6'}">selected</c:if>>부분취소</option>
+									</select>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -450,8 +519,15 @@
 		<!-- 주문번호 상세페이지  -->
 		<form method="post" action="/view.online.manage" name="view_online_manage" >
 			<input type="hidden" name="LGD_OID" id="LGD_OID"/>
+			<input type="hidden" name="nowStartDate" id="nowStartDate" />
+			<input type="hidden" name="nowEndDate" id="nowEndDate" />
+			<input type="hidden" name="nowPayType" id="nowPayType" />
+			<input type="hidden" name="nowPayStatus" id="nowPayStatus" />
+			<input type="hidden" name="nowPageVol" id="nowPageVol" />
+			<input type="hidden" name="nowStartGo" id="nowStartGo" />
 		</form>
 		
+		<!-- 엑셀 저장 -->
 		<form id="downForm" method="post"  target="downFrame">
 			<input type="hidden" id="currentKeyword" name="keyword" />
 			<input type="hidden" id="currentKeywordType" name="keywordType" />

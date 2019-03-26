@@ -56,6 +56,44 @@ public class AdminOnline extends NewsbankServletBase {
 				List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
 				request.setAttribute("mediaList", mediaList); // 활성 매체사
 				
+				// 선택옵션 불러오기
+				String start_date = request.getParameter("start_date");
+				String end_date = request.getParameter("end_date");
+				String paytype = request.getParameter("paytype");
+				String paystatus = request.getParameter("paystatus");
+				String pagevol = request.getParameter("pagevol");
+				String startgo = request.getParameter("startgo");
+				
+				if(start_date != null) {
+					request.setAttribute("start_date", start_date);
+				}
+				System.out.println("start_date => " + start_date);
+				
+				if(end_date != null) {
+					request.setAttribute("end_date", end_date);
+				}
+				System.out.println("end_date => " + end_date);
+				
+				if(paytype != null) {
+					request.setAttribute("paytype", paytype);
+				}
+				System.out.println("paytype => " + paytype);
+				
+				if(paystatus != null) {
+					request.setAttribute("paystatus", paystatus);
+				}
+				System.out.println("paystatus => " + paystatus);
+				
+				if(pagevol != null) {
+					request.setAttribute("pagevol", pagevol);
+				}
+				System.out.println("pagevol => " + pagevol);
+				
+				if(startgo != null) {
+					request.setAttribute("startgo", startgo);
+				}
+				System.out.println("startgo => " + startgo);
+				
 				// 날짜 기간선택 옵션
 				Calendar cal = Calendar.getInstance();
 				int year = cal.get(Calendar.YEAR);
