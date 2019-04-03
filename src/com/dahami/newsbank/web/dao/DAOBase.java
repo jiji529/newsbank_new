@@ -27,12 +27,13 @@ import com.dahami.common.mybatis.impl.MybatisService;
 import com.dahami.newsbank.Constants;
 
 public abstract class DAOBase {
-	protected Logger logger;
-	private static boolean loggerConfInitF;
-	
+	protected static Logger logger;
 	protected static MybatisSessionFactory sf;
 	
 	static {
+		DOMConfigurator.configure(MethodHandles.lookup().lookupClass().getClassLoader().getResource("com/dahami/newsbank/web/conf/log4j.xml"));
+		logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+		
 		String confBase = "com/dahami/newsbank/web/dao/mybatis/conf";
 		MybatisService mybatis = new MybatisService(confBase);
 		mybatis.activate();
@@ -40,10 +41,6 @@ public abstract class DAOBase {
 	}
 	
 	public DAOBase() {
-		if(!loggerConfInitF) {
-			DOMConfigurator.configure(this.getClass().getClassLoader().getResource("com/dahami/newsbank/web/conf/log4j.xml"));
-			loggerConfInitF = true;
-		}
-		logger = LoggerFactory.getLogger(this.getClass());
 	}
+	
 }

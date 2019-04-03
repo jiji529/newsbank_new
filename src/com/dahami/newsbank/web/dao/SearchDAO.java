@@ -18,6 +18,7 @@ package com.dahami.newsbank.web.dao;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -50,171 +54,129 @@ public class SearchDAO extends DAOBase {
 	
 	private static final SimpleDateFormat fullDf = new SimpleDateFormat("yyyyMMddHHmmss");
 	
-	private static Properties conf;
+	private static SolrPoolManager spMgr;
+	private static SolrConnectionValidCheck scvChk;
+	
+	private static int currentUsingSolrCnt;
 	private static List<SolrClient> solrClients;
-	private static List<String> zkHostList;
-	private static List<String> solrHostList;
-	
-	boolean isZkUse;
-	private static String collectionNameNewsbank;
-	
 	private static String solrId;
 	private static String solrPw;
 	
-	private static boolean initialized;
 	private static Object monitor;
+	private static boolean usingBlockF;
+	
+	private static boolean isZkUse;
+	private static String collectionNameNewsbank;
 	
 	static {
 		monitor = new Object();
+		solrClients = new ArrayList<SolrClient>();
 	}
 	
-	public void init() {
-		synchronized(monitor) {
-			if(initialized) {
-				return;
-			}
-			loadProperties();
-			
-			if(solrClients == null) {
-				// 로컬 개발시 / 서버 서비스시 다른 설정을 적용하기 위해
-				boolean isDevServer = false;
-				String userDomain = System.getenv().get("USERDOMAIN");
-				if(conf.getProperty("ZK_HOSTS_" + userDomain) != null
-						|| conf.getProperty("SOLR_HOSTS_" + userDomain) != null) {
-					isDevServer = true;
-				}
-				
-				solrId = conf.getProperty("AUTH_SOLR_ID");
-				solrPw = conf.getProperty("AUTH_SOLR_PW");
-				
-				try{
-					zkHostList = new ArrayList<String>();
-					String[] zkHostArry = null;
-					if(isDevServer) {
-						zkHostArry = conf.getProperty(Constants.TARGET_SOLR_ADDR_CLOUD_PREFIX_PARAM + Constants.TARGET_SOLR_ADDR_SUFFIX_PARAM + "_" + userDomain).split("\\s*\\,\\s*");
-					}
-					else {
-						zkHostArry = conf.getProperty(Constants.TARGET_SOLR_ADDR_CLOUD_PREFIX_PARAM + Constants.TARGET_SOLR_ADDR_SUFFIX_PARAM).split("\\s*\\,\\s*");
-					}
-					for(String zkHost : zkHostArry) {
-						zkHostList.add(zkHost);	
-					}
-				}catch(Exception e) {}
-				if(zkHostList.size() == 0) {
-					solrHostList = new ArrayList<String>();
-					String[] solrHostArry = null;
-					if(isDevServer) {
-						solrHostArry = conf.getProperty(Constants.TARGET_SOLR_ADDR_HTTP_PREFIX_PARAM + Constants.TARGET_SOLR_ADDR_SUFFIX_PARAM + "_" + userDomain).split("\\s*\\,\\s*");;	
-					}
-					else {
-						solrHostArry = conf.getProperty(Constants.TARGET_SOLR_ADDR_HTTP_PREFIX_PARAM + Constants.TARGET_SOLR_ADDR_SUFFIX_PARAM).split("\\s*\\,\\s*");;
-					}
-					for(String solrHost : solrHostArry) {
-						solrHostList.add(solrHost);
-					}
-				}
-				else {
-					isZkUse = true;
-				}
-
-				collectionNameNewsbank = (String) conf.get(Constants.TARGET_SOLR_COLLECTION_PREFIX_PARAM + Constants.TARGET_SOLR_COLLECTION_SUFFIX_PARAM);
-				
-				solrClients = new ArrayList<SolrClient>();
-				int poolSize = Integer.parseInt(conf.getProperty("SOLR_POOL"));
-				int solrHostIdx = 0;
-				
-				CloudSolrClient.Builder cloudBuilder = null;
-				if(isZkUse) {
-					cloudBuilder = 
-					// 6.6.x
-//					new CloudSolrClient.Builder().withZkHost(zkHostList)
-					// 7.x
-					new CloudSolrClient.Builder(zkHostList, Optional.empty()).withParallelUpdates(true);
-					
-					cloudBuilder.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId, solrPw));
-				}
-				
-				while(solrClients.size() < poolSize) {
-					if(isZkUse) {
-						CloudSolrClient solr = cloudBuilder.build();
-						solr.setZkClientTimeout(60000);
-						solr.setZkConnectTimeout(60000);
-						solr.setDefaultCollection(collectionNameNewsbank);
-						// 6.x
-//						solr.setParallelUpdates(true);
-						solr.connect();
-						solrClients.add(solr);
-					}
-					else if(solrHostList.size() > 0) {
-						String addr = solrHostList.get(solrHostIdx++);
-						if(addr == null) {
-							addr = "";
-						}
-						addr = addr.trim();
-						if(!addr.endsWith("/")) {
-							addr += "/";
-						}
-						
-						HttpSolrClient.Builder httpSolrBuilder = new HttpSolrClient.Builder()
-								.withBaseSolrUrl(addr + collectionNameNewsbank)
-								.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId, solrPw));
-						@SuppressWarnings("serial")
-						HttpSolrClient solr =
-								// 6.x
-//								httpSolrBuilder.build();
-								// 7.x
-								new HttpSolrClient(httpSolrBuilder) {
-									public QueryResponse query(SolrParams params) throws SolrServerException, IOException {
-										return super.query(params, METHOD.POST);
-									}
-								};
-								
-						solrClients.add(solr);
-						if(solrHostIdx >= solrHostList.size()) {
-							solrHostIdx = 0;
-						}
-					}
-					else {
-						break;
-					}
+	public static void destroy() {
+		if(spMgr != null && spMgr.isAlive()) {
+			spMgr.exitF = true;
+			while(spMgr.isAlive()) {
+				synchronized (spMgr) {
+					try{spMgr.notifyAll();}catch(Exception e){}
+					try{Thread.sleep(100);}catch(Exception e){}
 				}
 			}
-			initialized = true;
+			logger.info("SolrPoolManagerT Finished");
 		}
-	}
-
-	private void loadProperties() {
-		InputStream confStream = null;
-		conf = new Properties();
-		try {
-			confStream = getClass().getClassLoader().getResource("com/dahami/newsbank/web/dao/conf/solr.properties").openStream();
-			conf.load(confStream);
-		} catch (IOException e) {
-			logger.error("Fail to Load properties File", e);
-			System.exit(-1);
-		}finally {
-			try{confStream.close();}catch(Exception e){}
+		if(scvChk != null && scvChk.isAlive()) {
+			scvChk.exitF = true;
+			while(scvChk.isAlive()) {
+				synchronized(scvChk) {
+					try{scvChk.notifyAll();}catch(Exception e){}
+					try{Thread.sleep(100);}catch(Exception e){}
+				}
+			}
+			logger.info("SolrConCheckT Finished");
+		}
+    }
+	
+	public static void init() {
+		if(spMgr == null) {
+			synchronized(monitor) {
+				if(spMgr == null) {
+					spMgr = new SolrPoolManager();
+					spMgr.start();
+				}
+			}
+		}
+		if(scvChk == null) {
+			synchronized (monitor) {
+				if(scvChk == null) {
+					scvChk = new SolrConnectionValidCheck();
+					scvChk.start();
+				}
+			}
 		}
 	}
 	
-	private SolrClient getClient() {
+	private static SolrClient getClient() {
 		while(true) {
 			synchronized(solrClients) {
-				if(solrClients.size() > 0) {
+				if(!usingBlockF && solrClients.size() > 0) {
+					currentUsingSolrCnt++;
 					return solrClients.remove(0);
 				}
-				try{solrClients.wait(50);}catch(Exception e){}
+				else {
+					if(currentUsingSolrCnt == scvChk.illigalSolrList.size()) {
+						logger.warn("No Available Connection(ALL Error!)");
+						solrClients.notifyAll();
+						try{solrClients.wait(60000);}catch(Exception e){}	
+					}
+					else {
+						solrClients.notifyAll();
+						try{solrClients.wait(100);}catch(Exception e){}	
+					}
+				}
 			}
 		}
 	}
-	private void releaseClient(SolrClient client) {
+	
+	private static void releaseClient(SolrClient client) {
 		if(client == null) {
 			return;
 		}
 		synchronized(solrClients) {
+			currentUsingSolrCnt--;
 			solrClients.add(client);
 			solrClients.notifyAll();
 		}
+	}
+	
+	private SolrClient checkConnectionValid(SolrClient client) {
+		try{Thread.sleep(1000);}catch(Exception e) {}
+		SolrQuery query = makeDummyQuery();
+		QueryRequest req = makeSolrRequest(query);
+		@SuppressWarnings("unused")
+		QueryResponse res = null;
+		try {
+			res = req.process(client);
+			System.out.println();
+		}catch(Exception e){
+			if(e.getMessage().startsWith("Server refused connection")) {
+				if(client instanceof HttpSolrClient) {
+					scvChk.addCheckTarget((HttpSolrClient)client);
+					client = null;
+				}
+			}
+		}
+		return client;
+	}
+	
+	private static SolrQuery makeDummyQuery() {
+		SolrQuery query = new SolrQuery();
+		if(isZkUse) {
+			// 7.x 부터 주키퍼 사용시만 세팅 / 아닌경우 세팅하면 post 요청시 오류발생함
+			query.set("collection", collectionNameNewsbank);
+		}
+		query.setQuery("*:*");
+		query.setRows(1);
+		return query;
 	}
 	
 	/**
@@ -299,7 +261,16 @@ public class SearchDAO extends DAOBase {
 			ret.put("count", resultCount);
 			ret.put("totalPage", ((resultCount / pageVol) + 1));
 		} catch (Exception e) {
-			logger.warn("", e);
+			if(!isZkUse && e instanceof SolrServerException) {
+				client = checkConnectionValid(client);
+			}
+			if(client != null) {
+				logger.warn("", e);
+			}
+			else {
+				logger.warn("Search Error / RETRY");
+				return search(param);
+			}
 		}finally {
 			releaseClient(client);
 		}
@@ -587,9 +558,248 @@ public class SearchDAO extends DAOBase {
 		}
 	}
 	
-	protected QueryRequest makeSolrRequest(SolrQuery query) {
+	protected static QueryRequest makeSolrRequest(SolrQuery query) {
 		QueryRequest req = new QueryRequest(query, METHOD.POST);
 		req.setBasicAuthCredentials(solrId, solrPw);
 		return req;
+	}
+	
+	/**
+	 * 사용 대상 검색엔진 정보 테이블(searchEngine)을 모니터링하여 커넥션을 관리(재생성) 하는 쓰레드 
+	 */
+	private static class SolrPoolManager extends Thread {
+		private String befSolrStr;
+		private boolean exitF;
+		
+		private Properties conf;
+		private int poolSize;
+		
+		public SolrPoolManager() {
+			super("SolrPoolManager");
+		}
+		
+		public void run() {
+			befSolrStr = "";
+			
+			loadProperties();
+			solrId = conf.getProperty("AUTH_SOLR_ID");
+			solrPw = conf.getProperty("AUTH_SOLR_PW");
+			collectionNameNewsbank = (String) conf.get(Constants.TARGET_SOLR_COLLECTION_PREFIX_PARAM + Constants.TARGET_SOLR_COLLECTION_SUFFIX_PARAM);
+			poolSize = Integer.parseInt(conf.getProperty("SOLR_POOL"));
+			
+			while(!exitF) {
+				// 30초마다 엔진 리스트 읽어서 갱신된 경우 클라이언트 리스트 재생성
+				List<String> engineList = getEngineListIfModified();
+				if(engineList != null && engineList.size() > 0) {
+					// 연결 사용중단 세팅 후 모두 반납될 때 까지 대기
+					usingBlockF = true;
+					while(true) {
+						synchronized(solrClients) {
+							int solrPoolSize = scvChk.illigalSolrList.size() + solrClients.size();
+							if(solrPoolSize == 0 || solrPoolSize >= poolSize) {
+								break;
+							}
+							try{solrClients.wait(100);}catch(Exception e){}
+						}
+					}
+					
+					List<String> zkHostList = new ArrayList<String>();
+					List<String> solrHostList = new ArrayList<String>();
+					for(String url : engineList) {
+						if(url.startsWith("http")) {
+							solrHostList.add(url);
+						}
+						else if(url.startsWith("zk")) {
+							zkHostList.add(url);
+						}
+					}
+					
+					synchronized(solrClients) {
+						// 모두 반납됨 / 기존 연결 모두 제거
+						for(SolrClient client : solrClients) {
+							try{client.close();}catch(Exception e){}
+						}
+						solrClients.clear();
+						for(SolrClient client : scvChk.illigalSolrList) {
+							try{client.close();}catch(Exception e){}
+						}
+						scvChk.illigalSolrList.clear();
+						
+						logger.info("(Re)Make SOLR connection: " + befSolrStr);
+						// 연결 새로 생성
+						CloudSolrClient.Builder cloudBuilder = null;
+						if(zkHostList.size() > 0) {
+							cloudBuilder = 
+							// 6.6.x
+//								new CloudSolrClient.Builder().withZkHost(zkHostList)
+							// 7.x
+							new CloudSolrClient.Builder(zkHostList, Optional.empty()).withParallelUpdates(true);
+							
+							cloudBuilder.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId, solrPw));
+						}
+							
+						int solrHostIdx = 0;
+						while(solrClients.size() < poolSize) {
+							if(cloudBuilder != null) {
+								CloudSolrClient solr = cloudBuilder.build();
+								solr.setZkClientTimeout(60000);
+								solr.setZkConnectTimeout(60000);
+								solr.setDefaultCollection(collectionNameNewsbank);
+								// 6.x
+//									solr.setParallelUpdates(true);
+								solr.connect();
+								solrClients.add(solr);
+							}
+							else if(solrHostList.size() > 0) {
+								String addr = solrHostList.get(solrHostIdx++);
+								if(addr == null) {
+									addr = "";
+								}
+								addr = addr.trim();
+								if(!addr.endsWith("/")) {
+									addr += "/";
+								}
+								
+								HttpSolrClient.Builder httpSolrBuilder = new HttpSolrClient.Builder()
+										.withBaseSolrUrl(addr + collectionNameNewsbank)
+										.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId, solrPw));
+								@SuppressWarnings("serial")
+								HttpSolrClient solr =
+										// 6.x
+//											httpSolrBuilder.build();
+										// 7.x
+										new HttpSolrClient(httpSolrBuilder) {
+											public QueryResponse query(SolrParams params) throws SolrServerException, IOException {
+												return super.query(params, METHOD.POST);
+											}
+										};
+										
+								solrClients.add(solr);
+								if(solrHostIdx >= solrHostList.size()) {
+									solrHostIdx = 0;
+								}
+							}
+							else {
+								break;
+							}
+						}
+						
+						// 사용중단 리셋
+						usingBlockF = false;
+						solrClients.notifyAll();
+					}
+				}
+				else {
+					synchronized(this) {
+						try{this.wait(30000);}catch(Exception e){}
+					}
+				}
+			}
+			logger.info("Finish");
+		}
+		
+		private List<String> getEngineListIfModified() {
+			List<String> ret = new ArrayList<String>();
+			SqlSession session = null;
+			Set<String> retSet = new TreeSet<String>();
+			try {
+				session = sf.getSession();
+				List<Map<String, Object>> engineList = session.selectList("searchEngine.listActiveEngine");
+				
+				for(Map<String, Object> engine : engineList) {
+					String url = (String) engine.get("url");
+					
+					if(url.startsWith("http") || url.startsWith("zk")) {
+						retSet.add(url);	
+					}
+					else {
+						logger.warn("Illigal Solr Host: " + url);
+					}
+				}
+				ret.addAll(retSet);
+				String newSolrStr = "";
+				for(String url : ret) {
+					newSolrStr += ";" + url;
+				}
+				if(newSolrStr.equals(befSolrStr)) {
+					ret.clear();
+				}
+				befSolrStr = newSolrStr;
+			}catch(Exception e) {
+				logger.warn("", e);
+			}finally {
+				try {session.close();}catch(Exception e){}
+			}
+			return ret;
+		}
+		
+		private void loadProperties() {
+			InputStream confStream = null;
+			conf = new Properties();
+			try {
+				confStream = MethodHandles.lookup().lookupClass().getClassLoader().getResource("com/dahami/newsbank/web/dao/conf/solr.properties").openStream();
+				conf.load(confStream);
+			} catch (IOException e) {
+				logger.error("Fail to Load properties File", e);
+				System.exit(-1);
+			}finally {
+				try{confStream.close();}catch(Exception e){}
+			}
+		}
+	}
+
+	private static class SolrConnectionValidCheck extends Thread {
+		private boolean exitF;
+		private List<HttpSolrClient> illigalSolrList;
+		
+		public SolrConnectionValidCheck() {
+			super("SolrConnectionValidCheck");
+			illigalSolrList = new ArrayList<HttpSolrClient>();
+		}
+		
+		private void addCheckTarget(HttpSolrClient client) {
+		logger.warn("isolate Error Connection: " + client.getBaseURL());
+			synchronized(illigalSolrList) {
+				illigalSolrList.add(client);
+				illigalSolrList.notifyAll();
+			}
+		}
+		
+		public void run() {
+			@SuppressWarnings("unused")
+			QueryResponse res = null;
+			while(!exitF) {
+				boolean modifyF = false;
+				synchronized(solrClients) {
+					if(illigalSolrList.size() > 0) {
+						for(int i = 0; !usingBlockF && i < illigalSolrList.size(); i++) {
+							HttpSolrClient client = illigalSolrList.get(i);
+							SolrQuery query = makeDummyQuery();
+							QueryRequest req = makeSolrRequest(query);
+							try {
+								res = req.process(client);
+								// 성공 / 제거하기
+								illigalSolrList.remove(i--);
+								releaseClient(client);
+								logger.info("Connection recovered: " + client.getBaseURL());
+								modifyF = true;
+								solrClients.notifyAll();
+							}catch(Exception e){
+								// 오류시 그대로 유지
+							}
+						}
+					}
+				}
+				
+				if(!modifyF) {
+					synchronized(this) {
+						try{this.wait(10000);}catch(Exception e){}
+					}	
+				}
+			}
+			logger.info("Finish");
+		}
+		
+
 	}
 }

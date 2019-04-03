@@ -33,8 +33,6 @@
 <!--  				<property name="poolPingConnectionsNotUsedFor" value="15000"/> -->
 			</dataSource>
 		</environment>
-		
-		
 	</environments> 
 	 
 	 <mappers>
@@ -51,5 +49,6 @@
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/CollectionMapper.xml" />
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/CalculationMapper.xml" />
 		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/ReportMapper.xml" />
+		<mapper resource="com/dahami/newsbank/web/dao/mybatis/conf/SearchEngineMapper.xml" />
 	</mappers>
 </configuration>

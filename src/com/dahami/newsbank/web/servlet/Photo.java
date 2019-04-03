@@ -28,9 +28,15 @@ public class Photo extends NewsbankServletBase {
         super();
     }
 
+    @Override
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
-    	new SearchDAO().init();
+    	SearchDAO.init();
+    }
+    
+    @Override
+    public void destroy() {
+    	SearchDAO.destroy();
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

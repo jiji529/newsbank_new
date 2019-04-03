@@ -1,17 +1,13 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -19,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.zookeeper.server.ServerConfig;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
@@ -44,46 +39,71 @@ public class Login extends NewsbankServletBase {
 	// 로그인 백도어 / 관리자 계정
 	private static final String BACKDOOR_LOGIN_ID_ADMIN = "dahami";
 	
+	private static final Object monitor;
+	
 	private static OldMemberMailDaemon oldMemberMailDaemon;
 	
 	static {
-		oldMemberMailDaemon = new Login().new OldMemberMailDaemon();
-		oldMemberMailDaemon.start();
+		monitor = new Object();
 	}
 	
 	public Login() {
 		super();
-		
+	}
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		synchronized(monitor) {
+			if(oldMemberMailDaemon == null) {
+				oldMemberMailDaemon = new OldMemberMailDaemon();
+				oldMemberMailDaemon.start();
+			}
+		}
 	}
 	
 	@Override
 	public void destroy() {
 		super.destroy();
-		try{oldMemberMailDaemon.interrupt();}catch(Exception e){}
+		oldMemberMailDaemon.exit();
 	}
 
-	private static boolean destroyF;
+	
 	private class OldMemberMailDaemon extends Thread {
+		private boolean exitF;
+		
 		public OldMemberMailDaemon() {
 			super("OldMemberMailDaemon");
 		}
 		
+		private void exit() {
+			this.exitF = true;
+			synchronized(this) {
+				try{this.notifyAll();}catch(Exception e){}
+			}
+			while(this.isAlive()) {
+				try{Thread.sleep(100);}catch(Exception e){}
+			}
+		}
+		
 		public void run() {
-			while(!destroyF) {
+			while(!exitF) {
 				MemberDAO mDao = new MemberDAO();
 				List<MemberDTO> oldMemberList = mDao.listOldMembert();
 				if(oldMemberList.size() > 0) {
 					for(MemberDTO old : oldMemberList) {
-						
 						mDao.setOldMailSend(old.getSeq());
 					}
 				}
-				try {this.sleep(60 * 60 * 1000);}catch(Exception e) {}
+				synchronized(this) {
+					try {this.wait(60 * 60 * 1000);}catch(Exception e) {}	
+				}
 			}
 			logger.info("Finish");
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
 		if(response.isCommitted()) {

@@ -32,8 +32,16 @@ public abstract class NewsbankServletBase extends HttpServlet {
         super();
     }
 
+    @Override
 	public void init(ServletConfig config) throws ServletException {
-		if(!loggerConfInitF) {
+    	super.init(config);
+		this.init();
+	}
+	
+    @Override
+	public void init() throws ServletException {
+    	super.init();
+    	if(!loggerConfInitF) {
 			DOMConfigurator.configure(MethodHandles.lookup().lookupClass().getClassLoader().getResource("com/dahami/newsbank/web/conf/log4j.xml"));
 			loggerConfInitF = true;
 		}
