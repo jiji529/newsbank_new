@@ -799,7 +799,5 @@ public class SearchDAO extends DAOBase {
 			}
 			logger.info("Finish");
 		}
-		
-
 	}
 }
