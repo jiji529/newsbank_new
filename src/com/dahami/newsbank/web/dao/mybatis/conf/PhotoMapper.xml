@@ -7,9 +7,10 @@
 		UPDATE photo SET
 		titleKr = #{titleKor},
 		descriptionKr = #{descriptionKor},
-		uciStat = '-1',
-		idxStat1 = '-1',
-		idxStat2 = '-1'
+		uciStat = '-1'
+		, idxStat1 = '-1'
+		, idxStat2 = '-1'
+		, idxStat3 = '-1'
 		WHERE uciCode = #{uciCode}
 	</update>
 	
@@ -24,27 +25,30 @@
 				, dpi = #{dpi}
 				, fileSize = #{fileSize}
 				, exif = #{exif}
-				, uciStat = '-1',
-				idxStat1 = '-1',
-				idxStat2 = '-1'
+				, uciStat = '-1'
+				, idxStat1 = '-1'
+				, idxStat2 = '-1'
+				, idxStat3 = '-1'
 			WHERE uciCode = #{uciCode}
 	</update>
     
     <update id="updateSaleState" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 	    UPDATE photo SET
-	    	saleStat = #{saleState},
-	    	uciStat = '-1',
-	    	idxStat1 = '-1',
-			idxStat2 = '-1'
+	    	saleStat = #{saleState}
+	    	, uciStat = '-1'
+	    	, idxStat1 = '-1'
+			, idxStat2 = '-1'
+			, idxStat3 = '-1'
 	    WHERE uciCode = #{uciCode} 
 	</update>
 	
 	<update id="updateRightYN" parameterType="com.dahami.newsbank.dto.PhotoDTO">
 	    UPDATE photo SET
-	    	rightYN = #{portraitRightState},
-	    	uciStat = '-1',
-	    	idxStat1 = '-1',
-			idxStat2 = '-1'
+	    	rightYN = #{portraitRightState}
+	    	, uciStat = '-1'
+	    	, idxStat1 = '-1'
+			, idxStat2 = '-1'
+			, idxStat3 = '-1'
 	    WHERE uciCode = #{uciCode} 
 	</update>
 	
