@@ -79,8 +79,8 @@ public class SearchDAO extends DAOBase {
 			while(spMgr.isAlive()) {
 				synchronized (spMgr) {
 					try{spMgr.notifyAll();}catch(Exception e){}
-					try{Thread.sleep(100);}catch(Exception e){}
 				}
+				try{Thread.sleep(100);}catch(Exception e){}
 			}
 			logger.info("SolrPoolManagerT Finished");
 		}
@@ -89,8 +89,8 @@ public class SearchDAO extends DAOBase {
 			while(scvChk.isAlive()) {
 				synchronized(scvChk) {
 					try{scvChk.notifyAll();}catch(Exception e){}
-					try{Thread.sleep(100);}catch(Exception e){}
 				}
+				try{Thread.sleep(100);}catch(Exception e){}
 			}
 			logger.info("SolrConCheckT Finished");
 		}
