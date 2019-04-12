@@ -53,9 +53,9 @@ if(errMsg != null && errMsg.length() > 0) {
 }
 %>
 <script>
-        $(document).ready(function() {           
+        /* $(document).ready(function() {           
             $("#pageLoad").animateNumbers(6573063, true, 4000);
-        });
+        }); */
     </script>
     <script>
 	$(document).ready(function() {
@@ -190,6 +190,7 @@ if(errMsg != null && errMsg.length() > 0) {
 				var count = data.count; // 만 단위로 표현
 				var totalNumber = Math.floor(count / 10000);
 				$(".totalNumberPhoto").text(totalNumber + "만");
+				$("#pageLoad").animateNumbers(count, true, 4000); // 메인 상단 총 사진 갯수 애니메이션 효과
 			},
 			error : function(request, status, error) {
 				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);

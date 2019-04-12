@@ -118,7 +118,7 @@ if(errMsg != null && errMsg.length() > 0) {
 				</div>
 				<div class="foot_banner">
 					<ul>
-						<li class="uci"><a href="http://www.uci.or.kr/kor/file/main/main.jsp" target="_blank">국가표준 디지털콘텐츠<br />
+						<li class="uci"><a href="http://www.uci.or.kr" target="_blank">국가표준 디지털콘텐츠<br />
 							식별체계 등록기관 지정</a></li>
 						<li class="cleansite"><a href="http://www.cleansite.org/" target="_blank">클린사이트<br />
 							한국저작권보호원</a></li>
