@@ -251,8 +251,9 @@ public class CalculationAction extends NewsbankServletBase {
 							double totalSalesAccount = billingAmount - billingTax; // 총매출액
 							double salesAccount = (double) Math.round(totalSalesAccount * dto.getRate() / 100); // 회원사 매출액
 							
-							int valueOfSupply = (int) Math.round(salesAccount * 90 / 100); // 공급가액
-							int addedTaxOfSupply = (int) Math.round(salesAccount * 10 / 100); // 공급부가세
+							int valueOfSupply = (int) Math.round(salesAccount / 1.1); // 공급가액 (회원사 매출액 / 1.1)
+							int addedTaxOfSupply = (int) Math.round(valueOfSupply * 0.1); // 공급부가세 (공급가액 * 0.1)
+							
 							double dahamiAccount = totalSalesAccount - salesAccount; // 다하미 매출액
 							
 							object.put("regDate", dto.getRegDate());
@@ -322,8 +323,8 @@ public class CalculationAction extends NewsbankServletBase {
 							double totalSalesAccount = billingAmount - billingTax; // 총매출액
 							double salesAccount = (double) Math.round(totalSalesAccount * dto.getRate() / 100); // 회원사 매출액
 							
-							int valueOfSupply = (int) Math.round(salesAccount * 90 / 100); // 공급가액
-							int addedTaxOfSupply = (int) Math.round(salesAccount * 10 / 100); // 공급부가세
+							int valueOfSupply = (int) Math.round(salesAccount / 1.1); // 공급가액 (회원사 매출액 / 1.1)
+							int addedTaxOfSupply = (int) Math.round(valueOfSupply * 0.1); // 공급부가세 (공급가액 * 0.1)
 							double dahamiAccount = totalSalesAccount - salesAccount; // 다하미 매출액
 							
 							obj.put("id", dto.getId());
