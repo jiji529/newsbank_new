@@ -420,14 +420,14 @@
 		M.`LGD_PAYSTATUS`,
 		M.`LGD_TID`,
 		D.`photo_uciCode`, D.`price`, D.`status`, D.`usageList_seq`,
-		U.`usage`,
+		U.`usage`, U.`individual`, mm.compName,
 		U.`division1`, U.`division2`,
 		U.`division3`, U.`division4`,
 		U.`usageDate`,
 		P.`copyright`, P.`compCode`,
 		mp.`preRate`,
 		mp.`postRate`,
-		mp.`compName`,
+		mp.`compName` AS media,
 		mm.`name`,
 		mm.`id`
 		FROM

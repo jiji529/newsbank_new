@@ -1004,21 +1004,25 @@ $(document).ready(function() {
 
 						} else {
 							tb_online_account += "<tr>";
-							tb_online_account += "<td>" + value.LGD_PAYDATE.substr(0, 4) + '-' + value.LGD_PAYDATE.substr(4, 2) + '-' + value.LGD_PAYDATE.substr(6, 2) + "</td>";
-							tb_online_account += "<td>" + value.LGD_BUYER + "</td>";
+							tb_online_account += "<td rowspan='2'>" + value.LGD_PAYDATE.substr(0, 4) + '-' + value.LGD_PAYDATE.substr(4, 2) + '-' + value.LGD_PAYDATE.substr(6, 2) + "</td>";
+							tb_online_account += "<td rowspan='2'>" + value.LGD_BUYER + "</td>";
 							tb_online_account += "<td>" + value.photo_uciCode + "</td>";
-							tb_online_account += "<td>" + value.usageName + "</td>";
 							tb_online_account += "<td>" + value.copyright + "</td>";
 							tb_online_account += "<td>" + PAYTYPE.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + customs_value.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + added_tax.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + billing_amount.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + billing_tax.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + total_sales_account.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + sales_account.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + value_of_supply.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + added_tax_of_supply.toLocaleString() + "</td>";
-							tb_online_account += "<td>" + dahami_account.toLocaleString() + "</td>";
+							
+							tb_online_account += "<td rowspan='2'>" + customs_value.toLocaleString() + "</td>";
+							tb_online_account += "<td rowspan='2'>" + added_tax.toLocaleString() + "</td>";
+							tb_online_account += "<td rowspan='2'>" + billing_amount.toLocaleString() + "</td>";
+							tb_online_account += "<td rowspan='2'>" + billing_tax.toLocaleString() + "</td>";
+							tb_online_account += "<td rowspan='2'>" + total_sales_account.toLocaleString() + "</td>";
+							tb_online_account += "<td rowspan='2'>" + sales_account.toLocaleString() + "</td>";
+							tb_online_account += "<td rowspan='2'>" + value_of_supply.toLocaleString() + "</td>";
+							tb_online_account += "<td rowspan='2'>" + added_tax_of_supply.toLocaleString() + "</td>";
+							tb_online_account += "<td rowspan='2'>" + dahami_account.toLocaleString() + "</td>";
+							tb_online_account += "</tr>";
+							
+							tb_online_account += "<tr>";
+							tb_online_account += "<td colspan='3' class='tb_line'>" + value.usageName + "</td>";
 							tb_online_account += "</tr>";
 							tb_online_total_ba += billing_amount;
 							tb_online_total_at += added_tax;
@@ -1046,7 +1050,7 @@ $(document).ready(function() {
 					$('.calculate_info_area').html(calculate_info_area);
 
 					var total_online_area = "<tr>";
-					total_online_area += "<td colspan=\"6\">온라인 매출액 합계</td>";
+					total_online_area += "<td colspan=\"5\">온라인 매출액 합계</td>";
 					total_online_area += "<td>" + tb_online_total_cv.toLocaleString() + "</td>";
 					total_online_area += "<td>" + tb_online_total_at.toLocaleString() + "</td>";
 					total_online_area += "<td>" + tb_online_total_ba.toLocaleString() + "</td>";

@@ -83,7 +83,8 @@
 						);
 						var LGD_PAYSTATUS = val.LGD_PAYSTATUS;
 						var status = val.status;
-						var copyright = val.copyright;						
+						var copyright = val.copyright;
+						var media = val.media;
 						var uciCode = val.photo_uciCode;
 						var compCode = val.compCode;
 						var usage = val.usage;
@@ -121,7 +122,7 @@
 						//html += '<td>' + LGD_OID + '</td>';
 						html += '<td>' + paydate + '</td>';
 						html += '<td>' + status + '</td>';
-						html += '<td>' + copyright + '</td>';
+						html += '<td>' + media + '</td>';
 						html += '<td><a href="/view.photo?uciCode=' + uciCode + '" target="_blank">' + uciCode + '</a></td>';
 						html += '<td>' + compCode + '</td>';
 						html += '<td seq="' + usageList_seq + '">' + usage + '</td>';

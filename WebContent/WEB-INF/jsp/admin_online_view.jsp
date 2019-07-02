@@ -181,14 +181,15 @@
 				<div class="ad_result">
 					<table cellpadding="0" cellspacing="0" class="tb04">
 						<colgroup>
-						<col width="50" />
-						<col width="60" />
-						<col width="80" />
-						<col width="120" />
-						<col width="110" />
-						<col width="200" />
-						<col width="80" />
-						<col width="70" />
+							<col width="50">
+							<col width="60">
+							<col width="80">
+							<col width="100">
+							<col width="100">
+							<col width="200">
+							<col width="80">
+							<col width="80">
+							<col width="100">
 						</colgroup>
 						<thead>
 							<tr>

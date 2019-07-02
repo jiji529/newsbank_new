@@ -28,13 +28,13 @@
 <link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css">
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
-<link rel="stylesheet" href="css/mypage.css" />
+<link rel="stylesheet" href="css/mypage.css?v=20190702" />
 
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20180311"></script>
+<script src="js/mypage.js?v=20190703"></script>
 
 <script>
 	$(document).on("keypress", "#subKeyword", function(e) {
@@ -222,129 +222,59 @@
 			<span class="color">0</span>
 			원
 		</div>
-		<div class="account_list">
-			<div class="tb_total_account" style="display: block">
-				<table cellpadding="0" cellspacing="0" class="tb03 minitb">
-						<colgroup>
-							<col width="30" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="40" />
-							<col width="80" />
-						</colgroup>
-					<thead>
-						<tr>
-							<th>-</th>
-							<th>1월</th>
-							<th>2월</th>
-							<th>3월</th>
-							<th>4월</th>
-							<th>5월</th>
-							<th>6월</th>
-							<th>7월</th>
-							<th>8월</th>
-							<th>9월</th>
-							<th>10월</th>
-							<th>11월</th>
-							<th>12월</th>
-							<th>합계</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>온라인 결제</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td>오프라인 결제</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<td>총 합계</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-					</tfoot>
-				</table>
-			</div>
+		<div class="account_list mypage">			
 			<div class="tb_online_account" style="display: none">
 				<div class="table_head">
 					<h3>온라인 판매대금 정산내역</h3>
 				</div>
 				<table cellpadding="0" cellspacing="0" class="tb02 ">
+					<colgroup>
+	                    <col width="90">
+	                    <col width="90">
+	                    <col width="140">
+	                    <col width="120">
+	                    <col width="100">
+	                    <col width="60">
+	                    <col width="50">
+	                    <col width="60">
+	                    <col width="50">
+	                    <col width="60">
+	                    <col width="60">
+	                    <col width="60">
+	                    <col width="50">
+	                    <col width="60">
+	                </colgroup>					
 					<thead>
-						<tr>
-							<th>구매일자</th>
-							<th>주문자</th>
-							<th>사진ID</th>
-							<th>사용용도</th>
-							<th>판매자</th>
-							<th>결제종류</th>
-							<th>과세금액</th>
-							<th>과세부가세</th>
-							<th>결제금액</th>
-							<th>빌링수수료</th>
-							<th>총매출액</th>
-							<th>
-								<p>회원사</p>
-								<p>매출액</p>
-							</th>
-							<th>공급가액</th>
-							<th>공급부가세</th>
-							<th>
-								<p>다하미</p>
-								<p>매출액</p>
-							</th>
-						</tr>
-					</thead>
+	                    <tr>
+	                        <th rowspan="2">구매일자</th>
+	                        <th rowspan="2">주문자</th>
+	                        <th>사진ID</th>
+	                        <th>판매자</th>
+	                        <th>결제종류</th>
+	                        <th rowspan="2">과세금액</th>
+	                        <th rowspan="2">과세부가세</th>
+	                        <th rowspan="2">결제금액</th>
+	                        <th rowspan="2">빌링수수료</th>
+	                        <th rowspan="2">총매출액</th>
+	                        <th rowspan="2">
+	                            <p>회원사</p>
+	                            <p>매출액</p>
+	                        </th>
+	                        <th rowspan="2">공급가액</th>
+	                        <th rowspan="2">공급부가세</th>
+	                        <th rowspan="2">
+	                            <p>다하미</p>
+	                            <p>매출액</p>
+	                        </th>
+	                    </tr>
+	                    <tr>
+	                        <th colspan="3" class="th_line">사용용도</th>
+	                    </tr>
+	                </thead>
 					<tbody>
 					</tbody>
 					<tfoot>
-						<td colspan="6">온라인 매출액 합계</td>
+						<td colspan="5">온라인 매출액 합계</td>
 						<td>0</td>
 						<td>0</td>
 						<td>0</td>

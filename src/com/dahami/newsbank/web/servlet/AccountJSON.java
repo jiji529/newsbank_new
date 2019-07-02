@@ -179,6 +179,11 @@ public class AccountJSON extends NewsbankServletBase {
 
 
 			if (searchList != null) {
+				for(int idx=0; idx<searchList.size(); idx++) {
+					String usageName = searchList.get(idx).get("usageName").toString();
+					usageName = usageName.substring(0, usageName.length()-2); // 마지막 '-' 구분자 제거
+					searchList.get(idx).put("usageName", usageName);
+				}
 				success = true;
 			} else {
 				message = "데이터가 없습니다.";
@@ -342,7 +347,7 @@ public class AccountJSON extends NewsbankServletBase {
 					if(onlineList.size() > 0) {
 						// 온라인 판매대금 추가
 						List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-						List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+						List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 50, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
 						List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usageName", "copyright", 
 								 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
 								 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명

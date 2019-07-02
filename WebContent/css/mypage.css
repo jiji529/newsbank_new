@@ -41,7 +41,8 @@
 .mypage .tb02 th { padding: 8px 0; border-left: 1px solid #4d4941; background: #665947; color:#fff; font-size: 13px; text-align: center; }
 .mypage .tb02 td { padding: 10px; border-left: 1px solid #e6e6e6; border-top: 1px solid #dce0e9; font-size:13px; text-align: center; line-height: 18px; }
 .mypage .tb02 tfoot td { background:#f5f4f0; font-weight:600; border-bottom: 1px solid #d7d7d7; }
-
+.mypage .tb02 .th_line{ border-left: 1px solid #4d4941; border-top: 1px solid #4d4941; }
+.mypage .tb02 .tb_line{ border-left: 1px solid #e6e6e6;  }
 .mypage .tb_online_account .tb02 tr:hover, .mypage .tb_offline_account .tb02 tr:hover { background:#fef4e8; }
 .mypage .tb_online_account .tb02 tb, .mypage .tb_offline_account .tb02 tb{padding:5px;}
 
@@ -501,7 +502,7 @@
 .admin .ad_result .ad_result_btn_area a{ float:left; padding:6px 15px; font-size:13px; border-radius:2px;color: #666; border: 1px solid #aaa; margin-left:8px;}
 .admin .ad_result .ad_result_btn_area a:hover{border:1px #f79320 solid; color:#f79320;}
 .admin .ad_result .ad_result_btn_area a.bk{ color: #000; border: 1px solid #333;}
-
+.admin .ad_result table img{max-width: 200px; max-height: 200px;}
 .admin .tb01 .btn_input1{ padding: 5px 20px; color: #666; border: 1px solid #aaa; background:#fff; }
 .admin .tb01 .btn_input2{ padding: 5px 20px; color: #fff; border: 1px solid #f79320; background:#f79320; }
 .admin .bar{margin:7px 5px;}

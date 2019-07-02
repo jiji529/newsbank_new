@@ -759,7 +759,7 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			if(adjSlave == " ") { // 없음 or 선택안함
 				seqArr = adjMaster;
 			}else if(adjSlave == "all") { // 전체 선택
-				seqArr = $("#adjSlave_arr").val() + "," + adjMaster;
+				seqArr = null;
 			}else { // 개별선택
 				seqArr = adjSlave;
 			}

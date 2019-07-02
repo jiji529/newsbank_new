@@ -203,7 +203,7 @@ public class CalculationAction extends NewsbankServletBase {
 		
 		String[] member_seqArr = {};
 		if(seqArr != null) {
-			member_seqArr = seqArr.split(","); // 피정산 매체 seq
+			member_seqArr = removeNull(seqArr.split(",")); // 피정산 매체 seq
 		}
 		
 		PaymentDAO paymentDAO = new PaymentDAO();
@@ -567,6 +567,21 @@ public class CalculationAction extends NewsbankServletBase {
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(json);
 	}
+	
+	private String[] removeNull(String[] array) {
+		List<String> list = new ArrayList<String>();
+		
+		for(String s : array) {
+			if(s != null && s.length() > 0) {
+				list.add(s);
+			}
+		}
+		array = list.toArray(new String[list.size()]);
+		
+		return array;
+	}
+	
+	
 	
 	// 온라인 | 오프라인 구분
 	private String strType(String type) {

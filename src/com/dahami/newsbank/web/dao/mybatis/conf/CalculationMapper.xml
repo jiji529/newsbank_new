@@ -96,7 +96,9 @@
 		<where>
 		    <if test="member_seqArr != null and member_seqArr.length != 0">
 		        <foreach item="slaveSeq" collection="member_seqArr" index="idx" open="(" separator="OR" close=")">
-		            P.member_seq = #{slaveSeq} 
+		            <if test="slaveSeq != null and slaveSeq != 'all'"> 
+		            	P.member_seq = #{slaveSeq} 
+		            </if>
 		        </foreach>
 		    </if>
 		    <if test="payType != null and payType != 'all'">
@@ -106,7 +108,7 @@
 		    	AND date_format(C.`regDate`, '%Y-%m-%d') BETWEEN #{start_date} AND #{end_date}     
 		    </if>
 		    <if test="keyword != null and keyword != ''">
-		    	<if test="keywordType == 'member2'"> <!-- 회사/기관명, 아이디, 이름 -->
+		    	<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
 				 AND M.id LIKE CONCAT('%', #{keyword}, '%')
 				     OR M.name LIKE CONCAT('%', #{keyword}, '%')
 				     OR M.compName LIKE CONCAT('%', #{keyword}, '%')
@@ -223,7 +225,8 @@
    	<select id="statsList" resultMap="calculationDetailResult" parameterType="java.util.HashMap"> 
    	   SELECT C.seq, C.id AS LGD_BUYERID, M.name AS LGD_BUYER, M.compName AS LGD_BUYER_COMPNAME, SM.name as copyright, P.member_seq, C.`payType` AS LGD_PAYTYPE,  
    	   C.`uciCode` AS photo_uciCode, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, DATE_FORMAT(C.`regDate`, '%Y%m%d') AS LGD_PAYDATE,
-   	   U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, U.price,
+   	   CONCAT_WS(' - ', U.`usage`, U.division1, U.division2, U.division3, U.division4) AS usageName, U.price,
+   	   <!-- U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, U.price, -->
    	   SM.seq, SM.`type`, SM.id, SM.admission, SM.withdraw, SM.activate, SM.compName
 		FROM calculations C
 		LEFT JOIN member M ON C.id = M.id
