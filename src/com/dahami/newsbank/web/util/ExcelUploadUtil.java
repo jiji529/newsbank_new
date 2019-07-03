@@ -161,7 +161,8 @@ public class ExcelUploadUtil {
 									case 7:
 										paramName = "price";
 										value = value.replace(",", "");
-										param.put(paramName, value.trim());
+										value = value.trim().replaceAll(" ", ""); // 공백 모두 제거
+										param.put(paramName, value); 
 										break;
 									default:
 										break;

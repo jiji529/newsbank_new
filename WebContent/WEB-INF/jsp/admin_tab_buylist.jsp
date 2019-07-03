@@ -389,7 +389,6 @@
 			<option value="100">100개</option>
 		</select> 
 		<a href="javascript:void(0)" onclick="saveExcel('/excel.buy.api', 'buylist')">엑셀저장</a>
-		<!-- <a href="javascript:void(0)" onclick="uploadExcel('/calculations.upload.excel')">엑셀 업로드</a> -->
 		<div class="upload-btn-wrapper">
 			<a href="#" class="btn_input1">엑셀 업로드</a>
 			<input type="file" name="calculations" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
