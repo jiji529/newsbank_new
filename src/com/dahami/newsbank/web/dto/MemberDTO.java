@@ -36,6 +36,10 @@ public class MemberDTO implements Serializable {
 	public static final String TYPE_ADMIN = "A";
 	/** 회원타입: 매체 */
 	public static final String TYPE_MEDIA = "M";
+	/** 회원타입: 사진관리자 */
+	public static final String TYPE_PHTOTO_ADMIN = "Q";
+	/** 회원타입: 정산관리자 */
+	public static final String TYPE_CALCULATE_ADMIN = "W";
 	/** 회원타입: 개인 */
 	public static final String TYPE_PERSON = "P";
 	/** 회원타입: 기업 */
@@ -192,20 +196,20 @@ public class MemberDTO implements Serializable {
 	public String getStrType() {
 		String strType = "";
 		switch(type) {
-			case "A":
+			case TYPE_ADMIN:
 				strType = "관리자";
 			break;
 			
-			case "M":
+			case TYPE_MEDIA:
 				strType = "매체";
 			break;
 			
 			
-			case "P":
+			case TYPE_PERSON:
 				strType = "개인";
 			break;
 			
-			case "C":
+			case TYPE_COOP:
 				strType = "기업";
 			break;
 		}

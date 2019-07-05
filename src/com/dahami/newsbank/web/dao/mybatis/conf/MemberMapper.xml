@@ -11,7 +11,7 @@
 	-->
 	<select id="listActiveMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
-		where type = 'M'
+		where type = 'M' OR type = 'Q'
 		and activate != 2
 		and withdraw != 1
 		and admission != 'N'
@@ -227,6 +227,7 @@
 	</select>
 
 	<!-- 활성 매체사 리스트 읽기 -->
+	<!-- 로그인 회원 type을 전달하도록 변경 -->
 	<select id="listAdjustMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		SELECT
 		`seq`, `id`, `email`, `name`, `phone`, `type`,
@@ -243,7 +244,7 @@
 		`taxPhone`, `taxEmail`, `taxExtTell`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
 		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
-		WHERE `type` = 'M'
+		WHERE `type` = #{type} 
 		AND `activate` = 1
 		AND `withdraw` = 0
 		AND `compName`!=''
@@ -391,7 +392,7 @@
 	    id, email, name, phone, compNum, compName, preRate, postRate, activate, logo 
 	    FROM member 
 		LEFT JOIN adjustment ON member.seq = adjustment.adjSlave
-		WHERE member.type='M' AND member.admission = 'Y' AND member.withdraw = 0
+		WHERE (member.type='M' OR member.type = 'Q') AND member.admission = 'Y' AND member.withdraw = 0
 	        
         <if test="keyword != null"> 
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )

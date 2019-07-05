@@ -66,7 +66,7 @@ public class MypageAccountList extends NewsbankServletBase {
 				// 이전에 my page 비밀번호 입력했는지 체크
 				response.sendRedirect("/auth.mypage");
 			} else {				
-				if(!(MemberInfo.getType().equalsIgnoreCase("M") || MemberInfo.getType().equalsIgnoreCase("W"))) {
+				if(!(MemberInfo.getType().equalsIgnoreCase(MemberDTO.TYPE_MEDIA) || MemberInfo.getType().equalsIgnoreCase(MemberDTO.TYPE_CALCULATE_ADMIN))) {
 					// 회원 종류가 해당 옵션(M: 매체사, W: 정산 관리자)이 아닌 경우는, 회원정보 페이지로 이동
 					response.sendRedirect("/info.mypage");
 					return;

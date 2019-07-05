@@ -160,19 +160,19 @@ public class ListMemberJSON extends NewsbankServletBase {
 	private String strType(String type) {
 		String strType = "";
 		switch(type) {
-			case "M":
+			case MemberDTO.TYPE_MEDIA:
 				strType = "언론사";
 				break;
 			
-			case "P":
+			case MemberDTO.TYPE_PERSON:
 				strType = "개인";
 				break;
 				
-			case "C":
+			case MemberDTO.TYPE_COOP:
 				strType = "법인";
 				break;
 				
-			case "A":
+			case MemberDTO.TYPE_ADMIN:
 				strType = "관리자";
 				break;
 		}
