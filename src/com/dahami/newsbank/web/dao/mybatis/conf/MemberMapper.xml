@@ -143,7 +143,7 @@
 		<if test="taxPhone != null">, taxPhone</if>
 		<if test="taxExtTell != null">, taxExtTell</if>
 		<if test="taxEmail != null">, taxEmail</if>
-		<if test="activeEx != null">, activeEx</if>
+		<if test="activate != null">, activate</if>
 		) values (
 		#{id},#{pw},#{email},#{name},#{phone},#{type}
 		<if test="compNum != null">, #{compNum}</if>

@@ -79,6 +79,7 @@ public class MemberDTO implements Serializable {
 	private String loginDate; // 마지막 로그인시간
 	private String logo; // 로고
 	private int withdraw; // 회원 상태(0: 정상, 1: 탈퇴)
+	private int activeEx; // 외부연계여부(0: 기본값)
 	private String admission; // 승인(N: 비승인, Y: 승인)
 	
 	public static final int ACTIVATE_TRUE = 1;
@@ -546,6 +547,20 @@ public class MemberDTO implements Serializable {
 	 */	
 	public void setWithdraw(int withdraw) {
 		this.withdraw = withdraw;
+	}
+	
+	/**
+	 * @return
+	 */
+	public int getActiveEx() {
+		return activeEx;
+	}
+
+	/**
+	 * @param activeEx
+	 */
+	public void setActiveEx(int activeEx) {
+		this.activeEx = activeEx;
 	}
 
 	/**
