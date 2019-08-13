@@ -16,7 +16,10 @@ import com.dahami.newsbank.web.servlet.bean.CmdClass;
 /**
  * Servlet implementation class PrivateIntro
  */
-@WebServlet("/privacy.intro")
+//@WebServlet("/privacy.intro")
+@WebServlet(
+		urlPatterns = {"/privacy.intro", "/past.privacy.intro"}
+		)
 public class PrivacyIntro extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
@@ -48,7 +51,16 @@ public class PrivacyIntro extends NewsbankServletBase {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/privacy_intro.jsp");
-		dispatcher.forward(request, response);
+		
+		if(cmd.is3("past")) { // 이전 개인정보처리 방침
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/past_privacy_intro.jsp");
+			dispatcher.forward(request, response);
+			
+		}else{
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/privacy_intro.jsp");
+			dispatcher.forward(request, response);
+		}
+		
+		
 	}
 }
