@@ -62,7 +62,6 @@ $(document).ready(function() {
 		}else if(action == "U") {
 			if($("#frmJoin").find("[name=pw]").val().length > 0) {
 				check = check && validPw();
-				console.log("비밀번호 수정");
 			}
 			message = "회원정보를 수정하시겠습니까?";
 		}
@@ -296,7 +295,6 @@ $(document).ready(function() {
 					contentType : false,
 					type : 'POST',
 					success : function(data) {
-						console.log(data);
 						if (data.success) {
 							
 							if($('#frmJoin').find("[name=compDocPath]").length>0){
@@ -350,9 +348,9 @@ $(document).ready(function() {
 			}).appendTo('#frmJoin');
 		}
 		
-		console.log("telRegex : " + telRegex.test(taxPhone));
+		//console.log("telRegex : " + telRegex.test(taxPhone));
 		//console.log("phoneRegex : " + phoneRegex.test(taxPhone));
-		console.log("length : " + taxPhone.length);
+		//console.log("length : " + taxPhone.length);
 		
 		if (telRegex.test(taxPhone) && taxPhone.length > 0) { // 숫자 정규식과 값의 존재여부 확인
 			return true;
@@ -658,7 +656,6 @@ function excel() { // 엑셀저장
 
 function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 	var keyword = $("#keyword").val(); keyword = $.trim(keyword); // 아이디/이름/회사명
-	console.log(keyword);
 	switch(pathName){
 		case "member":
 			// 회원현황
@@ -728,13 +725,21 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			var action = "S";
 			var adjMaster = $("#adjMaster").val(); // 정산매체
 			var adjSlave = $("#adjSlave option:selected").val(); // 피정산매체
-			// 피정산 매체 선택여부 확인
-			if(adjSlave == " ") { // 없음 or 선택안함
-				seqArr = adjMaster;
-			}else if(adjSlave == "all") { // 전체 선택
-				seqArr = $("#adjSlave_arr").val() + "," + adjMaster;
-			}else { // 개별선택
-				seqArr = adjSlave;
+
+			if(adjMaster == "all") { // 정산매체 전체
+				seqArr = '';
+			}else {
+				// 피정산 매체 선택여부 확인
+				if(adjSlave == " ") { // 없음 or 선택안함
+					seqArr = adjMaster;
+				}else if(adjSlave == "all") { // 전체 선택 (주정산 + 피정산 매체 모두 포함)
+					var adjSlave_arr = $("#adjSlave_arr").val();
+					var split_arr = adjSlave_arr.split(",");
+					split_arr.push(adjMaster);
+					seqArr = split_arr.join(",");
+				}else { // 개별선택
+					seqArr = adjSlave;
+				}
 			}
 			
 			$("#currentKeywordType").val(keywordType);
@@ -857,7 +862,7 @@ $(function() {
 			formData.append("seq", seq); // 회원현황, 정산매체사(member_seq) / 공지사항(notice_seq)
 			formData.append("page", page); // 접근페이지: 회원현황(member), 정산매체사(media), 공지사항(board)
 			
-			console.log(formData);
+			//console.log(formData);
 	
 			$.ajax({
 				url : '/'+uType+'.upload',
@@ -867,7 +872,6 @@ $(function() {
 				contentType : false,
 				type : 'POST',
 				success : function(data) {
-					console.log(data);
 					if (data.success) {
 						alert(data.message);
 					} else {

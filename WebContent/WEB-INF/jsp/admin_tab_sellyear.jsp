@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<script src="js/admin.js?v=20180418"></script>
+<script src="js/admin.js?v=20180419"></script>
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -112,7 +112,7 @@
 				"payType" : paytype
 		};		
 		
-		console.log(param);
+		//console.log(param);
 		
 		// 초기화
 		$("#sell_thead").empty();

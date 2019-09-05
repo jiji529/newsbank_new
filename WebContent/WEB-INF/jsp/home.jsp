@@ -282,6 +282,8 @@ if(errMsg != null && errMsg.length() > 0) {
 				<li><span>Image 07</span></li>
 				<li><span>Image 08</span></li>   
 				<li><span>Image 09</span></li>
+				<li><span>Image 10</span></li>
+				<li><span>Image 11</span></li>
 			</ul>
 			<div class="main_tit">
 				<h2>뉴스뱅크</h2>

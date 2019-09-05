@@ -76,11 +76,13 @@ section.popular{background:#f6f6f6;}
     background-repeat: no-repeat;
     opacity: 0;
     z-index: 0;    
-    animation: imageAnimation 27s backwards infinite 0s;  
-    -webkit-animation: imageAnimation 27s backwards infinite 0s; 
-    -moz-animation: imageAnimation 27s backwards infinite 0s; 
-    -o-animation: imageAnimation 27s backwards infinite 0s;
+    animation: imageAnimation 34s backwards infinite 0s;  
+    -webkit-animation: imageAnimation 34s backwards infinite 0s; 
+    -moz-animation: imageAnimation 34s backwards infinite 0s; 
+    -o-animation: imageAnimation 34s backwards infinite 0s;
 }
+
+/* 이전 
 .main_bg li:nth-child(1) span {background-image:url('../images/bg_main01.jpg'); animation-delay:}
 .main_bg li:nth-child(2) span {background-image:url('../images/bg_main02.jpg'); animation-delay: 3s;}
 .main_bg li:nth-child(3) span {background-image:url('../images/bg_main03.jpg'); animation-delay: 6s;}
@@ -89,7 +91,20 @@ section.popular{background:#f6f6f6;}
 .main_bg li:nth-child(6) span {background-image:url('../images/bg_main06.jpg'); animation-delay: 15s;}
 .main_bg li:nth-child(7) span {background-image:url('../images/bg_main07.jpg'); animation-delay: 18s;}
 .main_bg li:nth-child(8) span {background-image:url('../images/bg_main08.jpg');background-position-y: -140px; animation-delay: 21s; }
-.main_bg li:nth-child(9) span {background-image:url('../images/bg_main09.jpg'); animation-delay: 24s;}
+.main_bg li:nth-child(9) span {background-image:url('../images/bg_main09.jpg'); animation-delay: 24s;} */
+
+/* 사업부(강소라 사원 요청으로 상단 이미지 변경) - 2019.09.04 */
+.main_bg li:nth-child(1) span {background-image:url('../images/bg_main10.jpg'); animation-delay:}
+.main_bg li:nth-child(2) span {background-image:url('../images/bg_main11.jpg'); animation-delay: 3s;}
+.main_bg li:nth-child(3) span {background-image:url('../images/bg_main12.jpg'); animation-delay: 6s;}
+.main_bg li:nth-child(4) span {background-image:url('../images/bg_main13.jpg'); animation-delay: 9s;}
+.main_bg li:nth-child(5) span {background-image:url('../images/bg_main14.jpg'); animation-delay: 12s;}
+.main_bg li:nth-child(6) span {background-image:url('../images/bg_main15.jpg'); animation-delay: 15s;}
+.main_bg li:nth-child(7) span {background-image:url('../images/bg_main16.jpg'); animation-delay: 18s;}
+.main_bg li:nth-child(8) span {background-image:url('../images/bg_main17.jpg'); animation-delay: 21s;}
+.main_bg li:nth-child(9) span {background-image:url('../images/bg_main18.jpg'); animation-delay: 24s;}
+.main_bg li:nth-child(10) span {background-image:url('../images/bg_main19.jpg'); animation-delay: 27s;}
+.main_bg li:nth-child(11) span {background-image:url('../images/bg_main20.jpg'); animation-delay: 30s;}
 
 @keyframes imageAnimation {     
     0% { opacity: 0; animation-timing-function: ease-in; }
