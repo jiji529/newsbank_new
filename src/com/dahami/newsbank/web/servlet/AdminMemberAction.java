@@ -473,26 +473,6 @@ public class AdminMemberAction extends NewsbankServletBase {
 			memberDTO.setMaster_seq(master_seq);
 			memberDTO.setGroup_seq(group_seq);
 			
-			// 후불회원만 사용 용도 갯수만큼 생성 (deferred = 2)
-			if(deferred != 0 && deferred == 2) {
-				for(int i = 0; i<usage.length; i++) {
-					if(usage[i].length() != 0){
-						UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
-						usageDTO.setUsage(usage[i]);
-						usageDTO.setPrice(Integer.parseInt(price[i]));
-						//System.out.println("["+i+"] : "+usageList_seq[i]);
-						
-						if(usageList_seq[i] != null && usageList_seq[i] != "") {
-							usageDTO.setUsageList_seq(Integer.parseInt(usageList_seq[i]));
-						}			
-						
-						usageList.add(i, usageDTO);
-					}
-				}
-				
-				saveUsageList(seq, usageList); // 사용용도 저장
-			}
-			
 			switch (action) {
 			case "C":
 				memberDTO = memberDAO.insertMember(memberDTO); // 회원정보 요청
@@ -532,6 +512,26 @@ public class AdminMemberAction extends NewsbankServletBase {
 				result = true;
 				message = "정산정보가 수정되었습니다.";
 				break;
+			}
+			
+			// 후불회원만 사용 용도 갯수만큼 생성 (deferred = 2), 회원추가 이후에 실행
+			if(memberDTO.getSeq() > 0 && deferred != 0 && deferred == 2) {
+				for(int i = 0; i<usage.length; i++) {
+					if(usage[i].length() != 0){
+						UsageDTO usageDTO = new UsageDTO(); // 사용용도 객체 생성
+						usageDTO.setUsage(usage[i]);
+						usageDTO.setPrice(Integer.parseInt(price[i]));
+						//System.out.println("["+i+"] : "+usageList_seq[i]);
+						
+						if(usageList_seq[i] != null && usageList_seq[i] != "") {
+							usageDTO.setUsageList_seq(Integer.parseInt(usageList_seq[i]));
+						}			
+						
+						usageList.add(i, usageDTO);
+					}
+				}
+				
+				saveUsageList(memberDTO.getSeq(), usageList); // 사용용도 저장
 			}
 
 		}
@@ -672,26 +672,28 @@ public class AdminMemberAction extends NewsbankServletBase {
 		ArrayList<UsageDTO> dbsameList = new ArrayList<>(); // 공통항목(DB)
 		ArrayList<UsageDTO> usageSameList = new ArrayList<>(); // 공통항목(수정항목)
 		
-		for(int ix=0; ix<dbUsageList.size(); ix++) {
-			for(int idx=0; idx<usageList.size(); idx++) {
-				
-				if(dbUsageList.get(ix).getUsageList_seq() == usageList.get(idx).getUsageList_seq()) {
-					usageDAO.updateUsage(usageList, seq); // 사용용도 수정
-					dbsameList.add(dbUsageList.get(ix));
-					usageSameList.add(usageList.get(idx));
-				}				
+		if(dbUsageList.size() > 0) {
+			for(int ix=0; ix<dbUsageList.size(); ix++) {
+				for(int idx=0; idx<usageList.size(); idx++) {
+					
+					if(dbUsageList.get(ix).getUsageList_seq() == usageList.get(idx).getUsageList_seq()) {
+						usageDAO.updateUsage(usageList, seq); // 사용용도 수정
+						dbsameList.add(dbUsageList.get(ix));
+						usageSameList.add(usageList.get(idx));
+					}				
+				}
 			}
 		}
 		
 		usageList.removeAll(usageSameList); // 공통항목 제거
 		dbUsageList.removeAll(dbsameList); // 공통항목 제거		
 		
-		if(dbUsageList.size() != 0) { 
-			usageDAO.disableUsage(dbUsageList, seq); // 사용용도 비활성화
+		if(dbUsageList.size() > 0) { 
+			usageDAO.disableUsage(dbUsageList, seq); // 사용용도 비활성화(기존 용도)
 		}
 		
-		if(usageList.size() != 0) {
-			usageDAO.insertUsage(usageList, seq); // 사용용도 추가
+		if(usageList.size() > 0) {
+			usageDAO.insertUsage(usageList, seq); // 사용용도 추가(신규 추가)
 		}
 	}
 }

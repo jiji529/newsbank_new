@@ -271,9 +271,11 @@
 								</tr>
 								<tr class="offline_area photoUsage" style="display: none;">
 									<th>사진 용도</th>
-									<td><input type="text" class="inp_txt" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />
+									<td>
+										<input type="hidden" name="usageList_seq" value="">
+										<input type="text" class="inp_txt" name="usage" size="43" placeholder="교과서, 전단지, 뭐 기타등등 여기 직접 입력하는 칸" />
 										<b class=" bar" style="margin-left:50px;">사진단가 (VAT 포함)</b>
-										<input type="text" class="inp_txt" size="10" value="" />
+										<input type="text" name="price" class="inp_txt" size="10" value="" />
 										<span class=" bar">원</span> <a class="file_add">파일 추가</a><a class="file_del">파일 삭제</a></td>
 								</tr>
 								<tr class="offline_area">
