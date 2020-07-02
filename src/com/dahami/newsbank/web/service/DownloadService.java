@@ -491,19 +491,22 @@ public class DownloadService extends ServiceBase {
 							// UCI 코드 임베딩
 							APIHandler.attach(new File(orgPath), new File(uciEmbedTmp), uciCode);
 						} catch (Exception e) {
-							logger.warn("UCI 임베드 실패", e);
+							logger.warn("UCI 임베드 실패: " + orgPath, e);
 							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(1)가 발생했습니다.\n관리자에게 문의해 주세요");
-							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
-							return;
+//							forward(request, response, URL_PHOTO_ERROR_SERVICE);
+//							return;
+// 실패시 복사처리(I011-M006824863 파일 처리가 안되어서 임시 대응)
+							FileUtil.copyFile(orgPath, uciEmbedTmp);
 						}
 
 						// 다운로드 정보 메타정보에 추가
 						if (!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downLog.getSeq(), photo.isOwnerGroup(), false)) {
 							// 생성 실패
 							logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downLog.getSeq());
-							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
-							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
-							return;
+//							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
+//							forward(request, response, URL_PHOTO_ERROR_SERVICE);
+//							return;
+// 위에꺼 하면서 넘어가도록 처리
 						}
 					}
 					String zipFileName = "newsbank_" + System.currentTimeMillis() + ".zip";
@@ -602,7 +605,7 @@ public class DownloadService extends ServiceBase {
 						if (!new File(orgPath).exists()) {
 							logger.warn("원본이미지 없음: " + orgPath);
 							request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
-							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
+							forward(request, response, URL_PHOTO_ERROR_SERVICE);
 							return;
 						}
 						String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
@@ -621,10 +624,12 @@ public class DownloadService extends ServiceBase {
 							// UCI 코드 임베딩
 							APIHandler.attach(new File(orgPath), new File(uciEmbedTmp), uciCode);
 						} catch (Exception e) {
-							logger.warn("UCI 임베드 실패", e);
+							logger.warn("UCI 임베드 실패: " + orgPath, e);
 							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(1)가 발생했습니다.\n관리자에게 문의해 주세요");
-							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
-							return;
+//							forward(request, response, URL_PHOTO_ERROR_SERVICE);
+//							return;
+// 실패시 복사처리(I011-M006824863 파일 처리가 안되어서 임시 대응)
+							FileUtil.copyFile(orgPath, uciEmbedTmp);
 						}
 
 						// 다운로드 정보 메타정보에 추가
@@ -632,13 +637,16 @@ public class DownloadService extends ServiceBase {
 							// 생성 실패
 							logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downLog.getSeq());
 							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
-							response.sendRedirect(URL_PHOTO_ERROR_SERVICE);
-							return;
+//							forward(request, response, URL_PHOTO_ERROR_SERVICE);
+//							return;
+							// 위에꺼 하면서 넘어가도록 처리
 						}
 
 						// 원본파일 전송
 //						logger.warn("TODO 주석제거 원본파일 전송");
 						sendImageFile(response, uciEmbedTmp, photo.getUciCode() + ".jpg");
+					}catch(Exception e) {
+						logger.warn("", e);
 					} finally {
 						if(request.getAttribute("ErrorMSG") == null) {
 							if (photo.isOwnerGroup()) {

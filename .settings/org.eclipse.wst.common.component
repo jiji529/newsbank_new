@@ -27,6 +27,9 @@
         <dependent-module archiveName="com.dahami.common.util.image-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.common.util.image/com.dahami.common.util.image">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="com.dahami.api.solrCommon.query-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon_Query/API_SolrCommon_Query">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="com.dahami.common.mybatis-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.common.mybatis/com.dahami.common.mybatis">
             <dependency-type>uses</dependency-type>
         </dependent-module>
