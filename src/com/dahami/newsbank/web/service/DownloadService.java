@@ -637,8 +637,8 @@ public class DownloadService extends ServiceBase {
 							// 생성 실패
 							logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downLog.getSeq());
 							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
-//							forward(request, response, URL_PHOTO_ERROR_SERVICE);
-//							return;
+//								forward(request, response, URL_PHOTO_ERROR_SERVICE);
+//								return;
 							// 위에꺼 하면서 넘어가도록 처리
 						}
 
@@ -848,6 +848,8 @@ public class DownloadService extends ServiceBase {
 			FileUtil.delete(fd);
 			return true;
 		} catch (ImageWriteException | ImageReadException | IOException e) {
+			logger.warn("", e);
+		} catch(Exception e) {
 			logger.warn("", e);
 		}
 		return false;
