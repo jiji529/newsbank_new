@@ -496,7 +496,7 @@ public class DownloadService extends ServiceBase {
 //							forward(request, response, URL_PHOTO_ERROR_SERVICE);
 //							return;
 // 실패시 복사처리(I011-M006824863 파일 처리가 안되어서 임시 대응)
-							FileUtil.copyFile(orgPath, uciEmbedTmp);
+							logger.warn("Copy Force: " + uciEmbedTmp + " / " + FileUtil.copyFile(orgPath, uciEmbedTmp));
 						}
 
 						// 다운로드 정보 메타정보에 추가
@@ -507,6 +507,10 @@ public class DownloadService extends ServiceBase {
 //							forward(request, response, URL_PHOTO_ERROR_SERVICE);
 //							return;
 // 위에꺼 하면서 넘어가도록 처리
+							// 위 작업하면서 파일명이 변경된 채로 실패하는 경우가 있어 처리함.
+							if(!new File(uciEmbedTmp).exists()) {
+								logger.warn("Copy Force: " + uciEmbedTmp + " / " + FileUtil.copyFile(orgPath, uciEmbedTmp));	
+							}
 						}
 					}
 					String zipFileName = "newsbank_" + System.currentTimeMillis() + ".zip";
@@ -625,7 +629,7 @@ public class DownloadService extends ServiceBase {
 							APIHandler.attach(new File(orgPath), new File(uciEmbedTmp), uciCode);
 						} catch (Exception e) {
 							logger.warn("UCI 임베드 실패: " + orgPath, e);
-							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(1)가 발생했습니다.\n관리자에게 문의해 주세요");
+//							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(1)가 발생했습니다.\n관리자에게 문의해 주세요");
 //							forward(request, response, URL_PHOTO_ERROR_SERVICE);
 //							return;
 // 실패시 복사처리(I011-M006824863 파일 처리가 안되어서 임시 대응)
@@ -636,10 +640,14 @@ public class DownloadService extends ServiceBase {
 						if (!embedMetaTags(uciEmbedTmp, uciCode, serviceName, serviceCode, downLog.getSeq(), photo.isOwnerGroup(), targetSize.equals(DOWN_TYPE_OUTLINE))) {
 							// 생성 실패
 							logger.warn("다운로드 정보 임베드 실패: " + uciCode + "." + downLog.getSeq());
-							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
+//							request.setAttribute("ErrorMSG", "원본(" + photo.getUciCode() + ")  다운로드 중 오류(2)가 발생했습니다.\n관리자에게 문의해 주세요");
 //								forward(request, response, URL_PHOTO_ERROR_SERVICE);
 //								return;
 							// 위에꺼 하면서 넘어가도록 처리
+							// 위 작업하면서 파일명이 변경된 채로 실패하는 경우가 있어 처리함.
+							if(!new File(uciEmbedTmp).exists()) {
+								logger.warn("Copy Force: " + uciEmbedTmp + " / " + FileUtil.copyFile(orgPath, uciEmbedTmp));	
+							}
 						}
 
 						// 원본파일 전송
