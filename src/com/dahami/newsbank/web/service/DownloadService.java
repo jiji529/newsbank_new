@@ -629,7 +629,7 @@ public class DownloadService extends ServiceBase {
 //							forward(request, response, URL_PHOTO_ERROR_SERVICE);
 //							return;
 // 실패시 복사처리(I011-M006824863 파일 처리가 안되어서 임시 대응)
-							FileUtil.copyFile(orgPath, uciEmbedTmp);
+							logger.warn("Copy Force: " + uciEmbedTmp + " / " + FileUtil.copyFile(orgPath, uciEmbedTmp));
 						}
 
 						// 다운로드 정보 메타정보에 추가
