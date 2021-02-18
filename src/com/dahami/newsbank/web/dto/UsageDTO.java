@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.sun.xml.internal.ws.wsdl.writer.UsingAddressing;
+//import com.sun.xml.internal.ws.wsdl.writer.UsingAddressing;
 
 public class UsageDTO {
 

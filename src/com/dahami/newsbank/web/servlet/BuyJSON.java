@@ -91,11 +91,17 @@ public class BuyJSON extends NewsbankServletBase {
 			params.put("member_seq", MemberInfo.getSeq());
 			if (start_date != null && start_date.length() > 0) {
 				start_date = start_date.replaceAll("-", "");
+				if(start_date.length() == 8) {
+					start_date = start_date + "000000";
+				}
 				params.put("start_date", start_date);
 				totalParams.put("start_date", start_date);
 			}
 			if (end_date != null && end_date.length() > 0) {
 				end_date = end_date.replaceAll("-", "");
+				if(end_date.length() == 8) {
+					end_date = end_date + "240000";
+				}
 				params.put("end_date", end_date);
 				totalParams.put("end_date", end_date);
 			}
