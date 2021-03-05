@@ -16,6 +16,7 @@ public class CalculationDTO {
 	private int member_seq; // 매체사(회원고유번호)
 	private String payType; // 결제종류
 	private String uciCode; // UCI코드
+	private String shotDate; // 촬영일
 	private int usage; // 사용용도 고유번호
 	private int type; // 정산타입(0: 온라인, 1: 오프라인)
 	private int price; // 가격
@@ -173,6 +174,12 @@ public class CalculationDTO {
 		this.memberDTO = memberDTO;
 	}
 	
+	public String getShotDate() {
+		return shotDate;
+	}
+	public void setShotDate(String shotDate) {
+		this.shotDate = shotDate;
+	}
 	/**
 	 * @methodName  : convertToMap
 	 * @author      : LEE, GWAGNHO

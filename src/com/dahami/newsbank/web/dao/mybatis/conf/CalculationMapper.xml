@@ -45,6 +45,7 @@
 		<result property="member_seq" column="member_seq" />
 		<result property="payType" column="payType" />
 		<result property="uciCode" column="uciCode" />
+		<result property="shotDate" column="shotDate" />
 		<result property="usage" column="usage" />
 		<result property="type" column="type" />
 		<result property="price" column="price" />
@@ -84,7 +85,7 @@
 	<select id="selectCalculation" resultMap="calculationResult" 
    	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 
    	   SELECT C.seq, C.id, M.name, M.compName, SM.compName as copyright, P.member_seq, C.`payType`,  
-   	   C.`uciCode`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, C.`regDate`,
+   	   C.`uciCode`, P.`shotDate`, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, C.`regDate`,
    	   U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, U.price,
    	   SM.seq, SM.`type`, SM.id, SM.admission, SM.withdraw, SM.activate, SM.compName
 		FROM calculations C

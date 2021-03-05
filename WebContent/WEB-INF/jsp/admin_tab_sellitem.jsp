@@ -148,12 +148,18 @@
 					html += '<td>' + val.regDate + '</td>';
 					html += '<td>' + val.name + '\n(' + val.id + ')</td>';
 					html += '<td>' + val.compName + '</td>';
+					//html += '<td><img src="https://www.newsbank.co.kr/list.down.photo?uciCode=' + val.uciCode + '" style="max-width: 100px;"></td>';
 					// 매체사의 승인, 탈퇴여부에 따른 uciCode 하이퍼링크 활성/비활성 표시
 					if(val.withdraw == 0 && val.admission == "Y") { 
-						html += '<td><a href="/view.photo?uciCode=' + val.uciCode + '" target="_blank">' + val.uciCode + '</a></td>';	
+						html += '<td><img src="https://www.newsbank.co.kr/list.down.photo?uciCode=' + val.uciCode + '" style="max-width: 70px;">'; // 썸네일 이미지
+						html += '<br/><a href="/view.photo?uciCode=' + val.uciCode + '" target="_blank">' + val.uciCode + '</a></td>'; // uciCode
+						
+						//html += '<td><a href="/view.photo?uciCode=' + val.uciCode + '" target="_blank">' + val.uciCode + '</a></td>';	
 					}else {
 						html += '<td>' + val.uciCode + '</td>';
 					}
+					var shotDate = (val.shotDate == null) ? '' : val.shotDate;
+					html += '<td>' + shotDate + '</td>';
 					html += '<td>' + val.copyright + '</td>';
 					html += '<td>' + val.payType + '</td>';
 					
@@ -189,7 +195,7 @@
 			complete: function(){
 				
 				foot_html += '<tr>';
-				foot_html += '<td colspan="8"> 월 매출액 합계</td>';
+				foot_html += '<td colspan="9"> 월 매출액 합계</td>';
 				foot_html += '<td>' + comma(sum_customValue) + "</td>";
 				foot_html += '<td>' + comma(sum_customTax) + "</td>";
 				foot_html += '<td>' + comma(sum_billingAmount) + "</td>";
@@ -433,11 +439,12 @@
 					<th>No.</th>
 					<th>구매일자</th>
 					<th>이름 (아이디)</th>
-					<th>기관/회사</th>
+					<th style="min-width: 80px;">기관/회사</th>
 					<th>사진ID</th>
-					<th>판매자</th>
-					<th>결제종류</th>
-					<th>용도</th>
+					<th>촬영일</th>
+					<th style="min-width: 80px;">판매자</th>
+					<th style="min-width: 80px;">결제종류</th>
+					<th style="min-width: 100px;">용도</th>
 					<th>과세금액</th>
 					<th>과세부가세</th>
 					<th>결제금액</th>

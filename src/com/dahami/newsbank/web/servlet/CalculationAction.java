@@ -73,6 +73,7 @@ public class CalculationAction extends NewsbankServletBase {
 		String compName = null;
 		String payType = null;
 		String uciCode = null;
+		String shotDate = null;
 		int member_seq = 0; // 판매자 회원 고유번호
 		int usage = 0;
 		int type = 0;
@@ -122,6 +123,11 @@ public class CalculationAction extends NewsbankServletBase {
 			uciCode = request.getParameter("uciCode");
 		}
 		System.out.println("uciCode => " + uciCode);
+		
+		if (request.getParameter("shotDate") != null) { // 촬영일자
+			uciCode = request.getParameter("shotDate");
+		}
+		System.out.println("shotDate => " + shotDate);
 		
 		if (request.getParameter("member_seq") != null) { // 판매자 고유회원번호
 			member_seq = Integer.parseInt(request.getParameter("member_seq"));
@@ -187,6 +193,7 @@ public class CalculationAction extends NewsbankServletBase {
 		calculationDTO.setId(id);
 		calculationDTO.setSeq(seq);
 		calculationDTO.setUciCode(uciCode);
+		calculationDTO.setShotDate(shotDate);
 		calculationDTO.setMember_seq(member_seq);
 		calculationDTO.setUsage(usage);
 		calculationDTO.setType(type);
@@ -260,6 +267,7 @@ public class CalculationAction extends NewsbankServletBase {
 							object.put("nameId", dto.getName() + "\n" + dto.getId());
 							object.put("compName", dto.getCompName());
 							object.put("uciCode", dto.getUciCode());
+							object.put("shotDate", dto.getShotDate());
 							object.put("copyright", dto.getCopyright());
 							object.put("payType", dto.getPayType_Str());
 							
@@ -292,9 +300,9 @@ public class CalculationAction extends NewsbankServletBase {
 							e.printStackTrace();
 						}
 					}
-					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "판매자", "결제종류", "용도", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-					List<Integer> columnSize = Arrays.asList(20, 15, 15, 25, 10, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
-					List<String> columnList = Arrays.asList("regDate", "nameId", "compName", "uciCode", "copyright", "payType", "usageName", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "촬영일", "판매자", "결제종류", "용도", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+					List<Integer> columnSize = Arrays.asList(20, 15, 15, 25, 20, 10, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
+					List<String> columnList = Arrays.asList("regDate", "nameId", "compName", "uciCode", "shotDate", "copyright", "payType", "usageName", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
 					
 					Date today = new Date();
 				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
@@ -332,6 +340,7 @@ public class CalculationAction extends NewsbankServletBase {
 							obj.put("name", dto.getName());
 							obj.put("compName", dto.getCompName());
 							obj.put("uciCode", dto.getUciCode());
+							obj.put("shotDate", dto.getShotDate());
 							obj.put("copyright", dto.getCopyright());
 							obj.put("member_seq", dto.getMember_seq());
 							obj.put("payType", dto.getPayType_Str());
