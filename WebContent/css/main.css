@@ -20,7 +20,7 @@ section .center p{font-size: 16px; color: #666; margin: 15px auto 0; line-height
 section .tab{margin:40px 0 30px;}
 section .tab .tabs{text-align: center; white-space: nowrap; }
 section .tab .tabs li{display: inline; margin: 0 30px; font-family:"nsb"; font-size:17px;}
-section .tab .tabs li a{color:#999; padding:0 3px 7px; text-decoration:}
+section .tab .tabs li a{color:#999; padding:0 3px 7px; }
 section .tab .tabs li a.active{color:#f79320; border-bottom:2px #f79320 solid;}
 
 /* clearfix because of floats */
@@ -94,7 +94,7 @@ section.popular{background:#f6f6f6;}
 .main_bg li:nth-child(9) span {background-image:url('../images/bg_main09.jpg'); animation-delay: 24s;} */
 
 /* 사업부(강소라 사원 요청으로 상단 이미지 변경) - 2019.09.04 */
-.main_bg li:nth-child(1) span {background-image:url('../images/bg_main10.jpg'); animation-delay:}
+.main_bg li:nth-child(1) span {background-image:url('../images/bg_main10.jpg');}
 .main_bg li:nth-child(2) span {background-image:url('../images/bg_main11.jpg'); animation-delay: 3s;}
 .main_bg li:nth-child(3) span {background-image:url('../images/bg_main12.jpg'); animation-delay: 6s;}
 .main_bg li:nth-child(4) span {background-image:url('../images/bg_main13.jpg'); animation-delay: 9s;}

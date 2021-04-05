@@ -137,7 +137,6 @@ public class AccountJSON extends NewsbankServletBase {
 					int type = (int) tempList.get(idx).get("type");
 					double rate = (double) tempList.get(idx).get("rate");
 					int fees = (int) tempList.get(idx).get("fees");
-					
 					int total_sales_account = price - fees; // 총매출액 
 					int sales_account = (int) Math.round(total_sales_account * rate / 100); // 회원사
 					
@@ -179,11 +178,6 @@ public class AccountJSON extends NewsbankServletBase {
 
 
 			if (searchList != null) {
-				for(int idx=0; idx<searchList.size(); idx++) {
-					String usageName = searchList.get(idx).get("usageName").toString();
-					usageName = usageName.substring(0, usageName.length()-2); // 마지막 '-' 구분자 제거
-					searchList.get(idx).put("usageName", usageName);
-				}
 				success = true;
 			} else {
 				message = "데이터가 없습니다.";
@@ -324,6 +318,27 @@ public class AccountJSON extends NewsbankServletBase {
 						searchList.get(idx).put("addedTaxOfSupply", df.format(addedTaxOfSupply)); // 공급부가세
 						searchList.get(idx).put("dahamiAccount", df.format(dahamiAccount)); // 다하미 매출액
 						
+						String photo_uciCode = searchList.get(idx).get("photo_uciCode").toString(); // UCI코드
+						String uciCode_compCode = photo_uciCode;
+						if(searchList.get(idx).get("compCode") != null) {
+							String compCode = searchList.get(idx).get("compCode").toString(); // 매체사 별도사진코드
+							
+							if(!compCode.isEmpty())
+								uciCode_compCode = photo_uciCode + "\n(" + compCode + ")";
+						}
+						 
+						String shotDate = ""; // 촬영일
+						if(searchList.get(idx).get("shotDate") != null)
+							shotDate = searchList.get(idx).get("shotDate").toString(); // 촬영일
+						
+						String descriptionKr = ""; // 사진내용
+						if(searchList.get(idx).get("descriptionKr") != null)
+							descriptionKr = searchList.get(idx).get("descriptionKr").toString(); // 사진내용
+						
+						searchList.get(idx).put("uciCode_compCode", uciCode_compCode);
+						searchList.get(idx).put("shotDate", shotDate);
+						searchList.get(idx).put("descriptionKr", descriptionKr);
+						
 						
 						if(object.get("LGD_PAYTYPE").equals("SC9999")) {
 							// 오프라인 판매목록
@@ -346,9 +361,9 @@ public class AccountJSON extends NewsbankServletBase {
 					
 					if(onlineList.size() > 0) {
 						// 온라인 판매대금 추가
-						List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-						List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 50, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
-						List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "photo_uciCode", "usageName", "copyright", 
+						List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "촬영일", "사진내용", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+						List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 50, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+						List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "uciCode_compCode", "usageName", "shotDate", "descriptionKr", "copyright", 
 								 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
 								 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
 						titleList.add("온라인 판매대금 정산내역");
@@ -370,9 +385,9 @@ public class AccountJSON extends NewsbankServletBase {
 					
 					if(offlineList.size() > 0) {
 						// 오프라인 판매대금 추가
-						List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "ID", "회사명", "사진ID", "사진용도", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-						List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 30, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
-						List<String> offlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "id", "compName", "photo_uciCode", "usageName", "copyright", 
+						List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "ID", "회사명", "사진ID", "사진용도", "촬영일", "사진내용", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+						List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 30, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+						List<String> offlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "LGD_BUYERID", "LGD_BUYER_COMPNAME", "photo_uciCode", "usageName", "shotDate", "descriptionKr", "copyright", 
 								 "PAYTYPE_STR", "customValue", "customTax", "billingAmount",  
 								 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
 						titleList.add("오프라인 판매대금 정산내역");

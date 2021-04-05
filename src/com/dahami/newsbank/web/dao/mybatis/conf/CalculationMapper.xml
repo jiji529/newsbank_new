@@ -191,7 +191,10 @@
 		<result javaType="java.lang.Integer" column="rate" property="rate"></result>
 		<result javaType="java.lang.String" column="LGD_PAYDATE" property="LGD_PAYDATE"></result>
 		<result javaType="java.lang.String" column="LGD_BUYER" property="LGD_BUYER"></result>
-		<result javaType="java.lang.String" column="usageName" property="usageName"></result>
+		<result javaType="java.lang.String" column="usageName" property="usageName"></result>		
+		<result javaType="java.lang.String" column="compCode" property="compCode"></result>
+		<result javaType="java.lang.String" column="shotDate" property="shotDate"></result>
+		<result javaType="java.lang.String" column="descriptionKr" property="descriptionKr"></result>
 	</resultMap>
    	
    	<select id="monthlyStats" resultMap="calculationMonthResult" parameterType="java.util.HashMap">
@@ -226,7 +229,7 @@
    	<select id="statsList" resultMap="calculationDetailResult" parameterType="java.util.HashMap"> 
    	   SELECT C.seq, C.id AS LGD_BUYERID, M.name AS LGD_BUYER, M.compName AS LGD_BUYER_COMPNAME, SM.name as copyright, P.member_seq, C.`payType` AS LGD_PAYTYPE,  
    	   C.`uciCode` AS photo_uciCode, C.`usage`, C.`type`, C.`price`, C.`status`, C.`fees`, C.`rate`, DATE_FORMAT(C.`regDate`, '%Y%m%d') AS LGD_PAYDATE,
-   	   CONCAT_WS(' - ', U.`usage`, U.division1, U.division2, U.division3, U.division4) AS usageName, U.price,
+   	   CONCAT_WS(' - ', U.`usage`, U.division1, U.division2, U.division3, U.division4) AS usageName, U.price, P.compCode, P.shotDate, P.descriptionKr,
    	   <!-- U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, U.price, -->
    	   SM.seq, SM.`type`, SM.id, SM.admission, SM.withdraw, SM.activate, SM.compName
 		FROM calculations C

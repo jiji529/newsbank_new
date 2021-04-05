@@ -1,6 +1,8 @@
 @charset "utf-8"; /* CSS Document */  
 
-.mypage{width:1240px; margin:0 auto; padding-bottom:100px;}
+@media screen and (max-width:1460px){ .mypage{width:1240px;}}
+@media screen and (min-width:1460px){ .mypage{width:1440px;}}
+.mypage{margin:0 auto; padding-bottom:100px;}
 .head{float:left; width:100%; padding-top:80px;}
 .head h2{width:100%; float:left; color:#000; font-size:28px; font-weight:400;}
 .head p{float: left; width:100%; color:#666; font-size:16px; margin-top:20px; display:none;}
@@ -420,9 +422,9 @@
 /*UCI*/
 .uci_info{ width:100%; float:left;}
 .uci_info section{width:100%;padding:80px 0; display:block;}
-.uci_info section.uci_sec1{ width:1240px; margin:0 auto;}
+.uci_info section.uci_sec1{ width:1440px; margin:0 auto;}
 .uci_info section.uci_sec2{ background:#f2f2f2; padding-bottom:0; }
-.uci_info section.uci_sec3{width:1240px; margin:0 auto; padding-right:300px; padding-bottom:200px; position:relative;}
+.uci_info section.uci_sec3{width:1440px; margin:0 auto; padding-right:300px; padding-bottom:200px; position:relative;}
 .uci_info section.uci_sec4{ background:url(../images/uci/bg_sec4.png) center no-repeat; }
 .uci_info section h4{ font-size:20px; color:#333; float:left; text-align:center; margin-bottom:60px; width:100%; text-align:center;}
 .uci_info section h4:after{ content:' ';width:50px; height:1px; background:#f79320; position:absolute; left:50%; margin:50px 0 0 -25px;}

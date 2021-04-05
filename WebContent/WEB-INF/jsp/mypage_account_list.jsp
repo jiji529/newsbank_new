@@ -28,13 +28,13 @@
 <link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css">
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
-<link rel="stylesheet" href="css/mypage.css?v=20190702" />
+<link rel="stylesheet" href="css/mypage.css?v=20190732" />
 
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/footer.js"></script>
-<script src="js/mypage.js?v=20190703"></script>
+<script src="js/mypage.js?v=20190704"></script>
 
 <script>
 	$(document).on("keypress", "#subKeyword", function(e) {
@@ -231,8 +231,10 @@
 					<colgroup>
 	                    <col width="90">
 	                    <col width="90">
+	                    <col width="90">
 	                    <col width="140">
 	                    <col width="120">
+	                    <col width="100">
 	                    <col width="100">
 	                    <col width="60">
 	                    <col width="50">
@@ -248,8 +250,10 @@
 	                    <tr>
 	                        <th rowspan="2">구매일자</th>
 	                        <th rowspan="2">주문자</th>
+	                        <th rowspan="2">썸네일</th>
 	                        <th>사진ID</th>
 	                        <th>판매자</th>
+	                        <th>촬영일</th>
 	                        <th>결제종류</th>
 	                        <th rowspan="2">과세금액</th>
 	                        <th rowspan="2">과세부가세</th>
@@ -268,13 +272,13 @@
 	                        </th>
 	                    </tr>
 	                    <tr>
-	                        <th colspan="3" class="th_line">사용용도</th>
+	                        <th colspan="5" class="th_line">사용용도</th>
 	                    </tr>
 	                </thead>
 					<tbody>
 					</tbody>
 					<tfoot>
-						<td colspan="5">온라인 매출액 합계</td>
+						<td colspan="7">온라인 매출액 합계</td>
 						<td>0</td>
 						<td>0</td>
 						<td>0</td>
@@ -297,7 +301,9 @@
 							<th>구매일자</th>
 							<th>주문자</th>
 							<th>ID/회사명</th>
+							<th>썸네일</th>
 							<th>사진ID</th>
+							<th>촬영일</th>
 							<th>사용용도</th>
 							<th>판매자</th>
 							<th>결제종류</th>
@@ -320,7 +326,7 @@
 					<tbody>
 					</tbody>
 					<tfoot>
-						<td colspan="7">오프라인 매출액 합계</td>
+						<td colspan="9">오프라인 매출액 합계</td>
 						<td>0</td>
 						<td>0</td>
 						<td>0</td>
