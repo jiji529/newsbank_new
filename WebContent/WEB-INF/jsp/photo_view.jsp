@@ -28,8 +28,14 @@ if(photoDto == null
 <script src="js/footer.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(key, val){
+		var ownerName = "<%=photoDto.getOwnerName()%>";
+		if(ownerName == '뉴시스')
+			usageList_newsis();
+		else
+			usageList();
+			
 		relation_photo();
-		usageList();
+		
 		// 오류 신고하기 팝업
 		$("#popup_open").click(function(){ 
 			var login_stats = login_chk();
@@ -152,6 +158,62 @@ if(photoDto == null
 					
 				});
 				$(html).appendTo("#usage");
+			}
+		});
+	}
+	
+	// #선택옵션 용도옵션 불러오기 (뉴시스: 출판용만 제한)
+	function usageList_newsis() {
+		var result = new Array();
+		var html = "<option>선택</option>";
+		
+		$.ajax({
+			url: "/UsageJSON",
+			type: "GET",
+			dataType: "json",
+			success: function(data) {
+				$.each(data.result, function(key, val) {
+					
+					if($.inArray(val.usage, result) == -1 && val.usage === '출판용') {
+						result.push(val.usage);
+						html += "<option>"+val.usage+"</option>";
+					}							
+					
+				});
+				$(html).appendTo("#usage");
+			}
+		});
+	}
+	
+	// #뉴시스 선택옵션(용도: 출판용만 제한)
+	function usageChange_newsis(choice) {
+		var value = $(choice).val();
+		var id = $(choice).attr("id");
+		var nextId = $("#"+id).parent("li").next().children("select").attr("id");
+		var result = new Array();
+		var divisioinArr = new Array("출판,간행물", "교육용");
+		var html = "<option>선택</option>";
+		$("#"+id).parent("li").nextAll().children("select").empty();
+		
+		$("#division4").parent("li").css("display", "none");
+		$("#division1").empty();
+		
+		$.ajax({
+			url: "/UsageJSON",
+			type: "GET",
+			dataType: "json",
+			success: function(data) {
+				$.each(data.result, function(key, val) {
+					
+					if(val.usage == value) {
+						if($.inArray(val.division1, result) == -1 && divisioinArr.includes(val.division1)) {
+							result.push(val.division1);
+							html += "<option>"+val.division1+"</option>";
+						}
+					}
+					
+				});
+				$(html).appendTo("#division1");
 			}
 		});
 	}
@@ -714,13 +776,11 @@ if(!contentBlidF) {
 				<div class="restriction">
 	 				<div class="view_rt_top">
 	 					<h3>제약사항 안내</h3>
-	 				</div>
-	 				<div class="restriction_cont">TV, 인터넷뉴스, 신문 등 <b class="color">언론 보도용으로는 판매가 불가</b>합니다. <br />
-	 					언론 보도 목적으로 사용해야 하는 경우는 <br />
-	 					<a href="https://www.newsbank.co.kr/contact" target="_blank">뉴스뱅크 고객센터</a>로 문의해주시기 바랍니다.</div>
+	 				</div>	 				
+	 				<div class="restriction_cont">뉴시스 보도사진의 경우 <b class="color">출판용(일반출판, 간행물, 교육용)</b> 목적으로만 구입이 가능하며, 상업용 목적으로는 구입이 불가합니다.<br />
+ 					기타 문의사항은 <a href="https://www.newsbank.co.kr/contact" target="_blank">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다. </div>
 	 			</div>
 			</c:if>
-			
  			
 			<div class="view_rt_top">
 				<h3>이미지 구매하기</h3>
@@ -729,12 +789,25 @@ if(!contentBlidF) {
 			<c:if test="${loginInfo == null || loginInfo.deferred == 0}">
 				<div class="option_choice">
 					<ul>
-						<li><span>용도</span> <select id="usage"
-							onchange="usageChange(this)">
-						</select></li>
+					
+					<!-- 뉴시스 용도 제한(출판용) -->
+					<c:choose>
+						<c:when test="${photoDTO.ownerName eq '뉴시스'}">
+							<li><span>용도</span> <select id="usage"
+								onchange="usageChange_newsis(this)">
+							</select></li>
+						</c:when>
+						
+						<c:otherwise>
+							<li><span>용도</span> <select id="usage"
+								onchange="usageChange(this)">
+							</select></li>
+						</c:otherwise>
+					</c:choose>
+						
 						<li><span>옵션1</span> <select id="division1"
-							onchange="division1Change(this)">
-						</select></li>
+								onchange="division1Change(this)">
+							</select></li>
 						<li><span>옵션2</span> <select id="division2"
 							onchange="division2Change(this)">
 						</select></li>
