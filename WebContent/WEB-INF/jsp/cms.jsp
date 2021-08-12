@@ -45,7 +45,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <script type="text/javascript">
 	var searchTarget = "cms.search";
 
-	$(document).ready(function() {
+	$(window).load(function() {
 		search();
 	});
 	

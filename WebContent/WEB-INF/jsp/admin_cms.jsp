@@ -49,7 +49,8 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 			}
 		});
 	});
-	$(document).ready(function() {
+	
+	$(window).load(function() {
 		search();
 		setDatepicker();
 	});

@@ -79,7 +79,7 @@
 						var LGD_PAYDATE = val.LGD_PAYDATE;
 						var paydate = LGD_PAYDATE.replace(
 						    /^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
-						    '$1-$2-$3 $4:$5:$6'
+						    '$1-$2-$3'
 						);
 						var LGD_PAYSTATUS = val.LGD_PAYSTATUS;
 						var status = val.status;
@@ -87,7 +87,8 @@
 						var media = val.media;
 						var uciCode = val.photo_uciCode;
 						var compCode = val.compCode;
-						var usage = val.usage;
+						var usage = separateUsage(val.usage);
+						
 						var usageList_seq = val.usageList_seq;
 						var price = val.price;
 						var postRate = val.postRate;
@@ -148,6 +149,19 @@
 			
 		});
 		
+	}
+	
+	// 용도만 추츨 (2021.08.11 - 강소라 요청사항)
+	function separateUsage(usage) {
+		var findStr = "]"; // [기관명] 부분을 제외
+		var findIndex = usage.indexOf(findStr); 
+		var length = usage.length;
+		
+		if(findIndex != -1) {
+			usage = usage.substr(findIndex + 1, length);
+		}
+		
+		return usage;
 	}
 	
 	// 종류별 건수, 합계금액

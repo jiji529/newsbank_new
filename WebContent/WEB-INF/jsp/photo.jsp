@@ -39,8 +39,8 @@
 <script type="text/javascript">
 	var loginInfo = "${loginInfo}";
 	var searchTarget = "search";
-	
-	$(document).ready(function() {
+
+	$(window).load(function() {
 		initSearchParam();
 		search();
 	});
