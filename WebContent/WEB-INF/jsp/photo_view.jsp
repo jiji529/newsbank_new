@@ -747,7 +747,15 @@ if(!contentBlidF) {
 					<c:forEach items="${split_exif}" var="split_exif">
 						<c:set var="name" value="${fn:substringBefore(split_exif, ':')}" />
 						<c:set var="value" value="${fn:substringAfter(split_exif, ':')}" />
-						<dt>${name}</dt>
+						<c:choose>
+							<c:when test="${fn:trim(name) eq '촬영날짜'}">
+								<dt>${name}(생성날짜)</dt>
+							</c:when>
+							
+							<c:otherwise>
+								<dt>${name}</dt>
+							</c:otherwise>
+						</c:choose>
 						<dd>${value}</dd>
 					</c:forEach>
 				</dl>
