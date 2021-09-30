@@ -361,8 +361,8 @@ public class AccountJSON extends NewsbankServletBase {
 					
 					if(onlineList.size() > 0) {
 						// 온라인 판매대금 추가
-						List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "촬영일", "사진내용", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-						List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 50, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+						List<String> onlineHeadList = Arrays.asList("구매일자", "주문자", "사진ID", "사진용도", "촬영일(이미지생성일)", "사진내용", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+						List<Integer> onlineColumnSize = Arrays.asList(30, 15, 30, 50, 20, 20, 30, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
 						List<String> onlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "uciCode_compCode", "usageName", "shotDate", "descriptionKr", "copyright", 
 								 "PAYTYPE_STR", "customValue", "customTax", "billingAmount", "billingTax", 
 								 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
@@ -385,8 +385,8 @@ public class AccountJSON extends NewsbankServletBase {
 					
 					if(offlineList.size() > 0) {
 						// 오프라인 판매대금 추가
-						List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "ID", "회사명", "사진ID", "사진용도", "촬영일", "사진내용", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-						List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 30, 30, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
+						List<String> offlineHeadList = Arrays.asList("구매일자", "주문자", "ID", "회사명", "사진ID", "사진용도", "촬영일(이미지생성일)", "사진내용", "판매자", "결제종류", "과세금액", "과세부가세", "결제금액", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+						List<Integer> offlineColumnSize = Arrays.asList(30, 15, 30, 30, 30, 10, 30, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20); //  컬럼별 길이정보
 						List<String> offlineColumnList = Arrays.asList("PAYDATE", "LGD_BUYER", "LGD_BUYERID", "LGD_BUYER_COMPNAME", "photo_uciCode", "usageName", "shotDate", "descriptionKr", "copyright", 
 								 "PAYTYPE_STR", "customValue", "customTax", "billingAmount",  
 								 "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명

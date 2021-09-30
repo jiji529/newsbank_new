@@ -253,7 +253,7 @@
 	                        <th rowspan="2">썸네일</th>
 	                        <th>사진ID</th>
 	                        <th>판매자</th>
-	                        <th>촬영일</th>
+	                        <th>촬영일<br/>(이미지생성일)</th>
 	                        <th>결제종류</th>
 	                        <th rowspan="2">과세금액</th>
 	                        <th rowspan="2">과세부가세</th>
@@ -303,7 +303,7 @@
 							<th>ID/회사명</th>
 							<th>썸네일</th>
 							<th>사진ID</th>
-							<th>촬영일</th>
+							<th>촬영일<br/>(이미지생성일)</th>
 							<th>사용용도</th>
 							<th>판매자</th>
 							<th>결제종류</th>

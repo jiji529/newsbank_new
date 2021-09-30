@@ -116,7 +116,7 @@ if(!contentBlidF) {
 					<dl>
 						<dt>업로드일</dt>
 						<dd><fmt:formatDate value="${photoDTO.regDate}" pattern="yyyy년 MM월 dd일  HH시 mm분 ss초"/></dd>
-						<dt>촬영일</dt>
+						<dt>촬영일(이미지생성일)</dt>
 						<dd><fmt:formatDate value="${photoDTO.shotDate}" pattern="yyyy년 MM월 dd일  HH시 mm분 ss초"/></dd>
 						<dt>픽셀수</dt>
 						<dd>${photoDTO.widthPx} X ${photoDTO.heightPx}(pixel)</dd>

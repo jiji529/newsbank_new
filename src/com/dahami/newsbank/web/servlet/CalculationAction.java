@@ -300,7 +300,7 @@ public class CalculationAction extends NewsbankServletBase {
 							e.printStackTrace();
 						}
 					}
-					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "촬영일", "판매자", "결제종류", "용도", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "촬영일\n(이미지생성일)", "판매자", "결제종류", "용도", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
 					List<Integer> columnSize = Arrays.asList(20, 15, 15, 25, 20, 10, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
 					List<String> columnList = Arrays.asList("regDate", "nameId", "compName", "uciCode", "shotDate", "copyright", "payType", "usageName", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
 					

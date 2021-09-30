@@ -183,7 +183,7 @@ $(document).on("click", ".btn_cal", function() {
 				</ul>
 			</li>
 			<li class="filter_title filter_durationTake">
-				<span><font>촬영일</font><%=headerSplitChar%>전체</span>
+				<span><font>촬영일(이미지생성일)</font><%=headerSplitChar%>전체</span>
 				<ul class="filter_list">
 					<li value="1" selected="selected">전체</li>
 					<li value="1d">1일</li>

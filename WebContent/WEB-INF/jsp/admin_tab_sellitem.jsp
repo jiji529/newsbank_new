@@ -441,7 +441,7 @@
 					<th>이름 (아이디)</th>
 					<th style="min-width: 80px;">기관/회사</th>
 					<th>사진ID</th>
-					<th>촬영일</th>
+					<th style="min-width: 100px;">촬영일<br/>(이미지생성일)</th>
 					<th style="min-width: 80px;">판매자</th>
 					<th style="min-width: 80px;">결제종류</th>
 					<th style="min-width: 100px;">용도</th>
