@@ -128,16 +128,15 @@
     </select>
 	
 	<!-- 인기사진 : 찜 -->
-	<select id="selectBasketRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT A.widthCm, A.heightCm, A.uciCode, M.compName AS ownerName, COUNT(*) AS zzimCount FROM photo A
-		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode
-		INNER JOIN member M ON A.member_seq = M.seq
-		WHERE A.saleStat = 1 AND 
-		M.activate = 1 AND
+    <select id="selectBasketRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
+    	SELECT A.widthCm, A.heightCm, A.uciCode, COUNT(*) AS zzimCount FROM photo A
+		INNER JOIN bookmarkPhoto B ON A.uciCode = B.photo_uciCode		
+		WHERE A.saleStat = 1 AND
 		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND 
-		member_seq IN 
+		A.member_seq IN 
+		
 		<!-- 활성 매체사 SEQ 리스트 (조건 : type = 'M', activate = 1, withdraw = 0, admission = 'Y') -->
-		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
+    	<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
 		    #{seq}
 		</foreach>
 		GROUP BY B.photo_uciCode
@@ -145,6 +144,7 @@
 		ORDER BY zzimCount DESC, uciCode ASC
 		LIMIT #{start}, #{count}
     </select>
+    
     
 	<!-- 인기사진 : 상세보기(조회 수) -->
 	<select id="selectHitsRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
