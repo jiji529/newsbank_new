@@ -31,6 +31,12 @@ $(document).on("click", ".popup_close", function() {
 	$(".pop_history .pop_cont tbody").html(""); 
 });
 
+<%-- 수정이력 관리 팝업 띄우기 --%>
+$(document).on("click", "#history_popup", function() {
+	$("#popup_wrap").css("display", "block"); 
+	$(".mask").css("display", "block");
+});
+
 function excel() { // form, iframe을 이용한 엑셀저장
 	var url = "modLog.cms" + $("#manage").val();
 	var uciCode = $("#uciCode").val();
@@ -42,6 +48,67 @@ function excel() { // form, iframe을 이용한 엑셀저장
 	$("#downFile").val("excel");
 	$("#excelDownForm").attr("action", url);
 	$("#excelDownForm").submit();
+}
+
+function popupModLog(uciCode) {
+	var url = "modLog.cms" + $("#manage").val();
+	$("#uciCode").val(uciCode);
+	
+	$.ajax({
+		type: "POST",
+		url: url,
+		async: false,
+		data: {
+			"uciCode" : uciCode
+		},
+		dataType: "json",
+		success: function(data){
+			var html = "";
+			$(data.result).each(function(key, val) {
+				html += "<tr>"
+					+ "<td>" + val.no + "</td>"
+					+ "<td>" + val.regDateStr + "</td>"
+					+ "<td>" + val.memberId + "</td>"
+					+ "<td>" + val.memberName + "</td>"
+					+ "<td>" + val.actionTypeStr + "</td>"
+					+ "</tr>";
+			});
+			$(".pop_history .pop_cont tbody").html(html); 
+			$("#popup_wrap").css("display", "block"); 
+			$(".mask").css("display", "block");
+			
+		}, error:function(request,status,error){
+        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       	}
+	});
+}
+
+function setModLog() {
+	var url = "modLog.cms" + $("#manage").val();
+	$.ajax({
+		type: "POST",
+		url: url,
+		async: false,
+		data: {
+			"uciCode" : $("#uciCode").val()
+		},
+		dataType: "json",
+		success: function(data){
+			var html = "";
+			$(data.result).each(function(key, val) {
+				html += "<tr>"
+					+ "<td>" + val.no + "</td>"
+					+ "<td>" + val.regDateStr + "</td>"
+					+ "<td>" + val.memberId + "</td>"
+					+ "<td>" + val.memberName + "</td>"
+					+ "<td>" + val.actionTypeStr + "</td>"
+					+ "</tr>";
+			});
+			$(".pop_history .pop_cont tbody").html(html); 
+		}, error:function(request,status,error){
+        	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       	}
+	});
 }
 </script>
 

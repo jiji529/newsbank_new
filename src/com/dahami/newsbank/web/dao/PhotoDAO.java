@@ -561,6 +561,58 @@ public class PhotoDAO extends DAOBase {
 		return new ArrayList<ActionLogDTO>();
 	}
 	
+	/**
+	 * @methodName  : searchActionLog
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2021. 11. 10. 오후 16:30:35
+	 * @methodCommet: 수정이력관리 검색
+	 * @param param
+	 * @return 
+	 */
+	public List<ActionLogDTO> searchActionLog(Map<String, Object> params) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			return session.selectList("Photo.searchActionLog", params);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return new ArrayList<ActionLogDTO>();
+	}
+	
+	/**
+	 * @methodName  : getActionLogCount
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2021. 11. 10. 오후 16:30:35
+	 * @methodCommet: 수정이력관리 갯수
+	 * @param param
+	 * @return 
+	 */
+	public int getActionLogCount(Map<String, Object> params) {
+		SqlSession session = null;
+		int count = 0;
+		try {
+			session = sf.getSession();
+			count = session.selectOne("Photo.countActionLog", params);
+			return count;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
+	
+	
+	
 	// uciCode 가장 최근 수정내역
 	public ActionLogDTO lastActionLog(String uciCode) {
 		SqlSession session = null;

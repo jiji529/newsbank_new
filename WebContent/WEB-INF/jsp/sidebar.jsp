@@ -17,6 +17,7 @@
 				<li><a href="/cms.manage">사진관리</a></li>
 				<li><a href="/board.manage">공지사항</a></li>
 				<li><a href="/popular.manage">인기사진 관리</a></li>
+				<li><a href="/actionlog.manage">수정이력 관리</a></li>
 			</ul>
 		</li>
 		<li> <strong>판매 및 정산관리</strong>

@@ -229,6 +229,38 @@
 			limit 0, 1
 	</select>
 	
+	<select id="searchActionLog" parameterType="java.util.Map" resultType="com.dahami.newsbank.web.dto.ActionLogDTO">
+		SELECT actionLog.uciCode, member.compName AS memberName
+			FROM member INNER JOIN (
+				SELECT DISTINCT uciCode, memberSeq
+				FROM actionLog 
+			<where>
+				<if test="keyword != null">
+					AND actionLog.uciCode LIKE CONCAT('%',#{keyword},'%')
+				</if> 
+				<if test="start_date != null and end_date != null">
+					AND actionLog.regDate BETWEEN #{start_date} AND #{end_date} 
+				</if>
+			</where>
+			) actionLog ON member.seq = actionLog.memberSeq
+			ORDER BY seq DESC
+			LIMIT #{startgo}, #{pageVol}
+	</select>
+	
+	<select id="countActionLog" parameterType="java.util.Map" resultType="integer">
+		select COUNT(uciCode) total
+			from actionLog
+			<where>			
+				<if test="start_date != null and end_date != null">
+					regDate BETWEEN #{start_date} AND #{end_date} 
+				</if>
+				<if test="keyword != null">
+					AND uciCode LIKE CONCAT('%',#{keyword},'%')
+				</if> 
+			</where>
+			order by seq desc
+	</select>
+	
 	<select id="selUciCodeByOld" parameterType="string" resultType="string">
 		select * from codeMap where oriUci = #{value} or dateCmscode = #{value}
 	</select>
