@@ -565,11 +565,11 @@ public class PhotoDAO extends DAOBase {
 	 * @methodName  : searchActionLog
 	 * @author      : LEE. GWANGHO
 	 * @date        : 2021. 11. 10. 오후 16:30:35
-	 * @methodCommet: 수정이력관리 검색
+	 * @methodCommet: 수정이력관리 검색 (페이지 단위 구분)
 	 * @param param
 	 * @return 
 	 */
-	public List<ActionLogDTO> searchActionLog(Map<String, Object> params) {
+	public List<Map<String, Object>> searchActionLog(Map<String, Object> params) {
 		SqlSession session = null;
 		
 		try {
@@ -582,7 +582,31 @@ public class PhotoDAO extends DAOBase {
 			try {session.commit();} catch (Exception e) {}
 			try {session.close();} catch (Exception e) {}
 		}
-		return new ArrayList<ActionLogDTO>();
+		return null;
+	}
+	
+	/**
+	 * @methodName  : searchAllActionLog
+	 * @author      : LEE. GWANGHO
+	 * @date        : 2021. 11. 16. 오전 09:56:12
+	 * @methodCommet: 수정이력관리 검색결과 전체
+	 * @param param
+	 * @return 
+	 */
+	public List<Map<String, Object>> searchAllActionLog(Map<String, Object> params) {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			return session.selectList("Photo.searchAllActionLog", params);
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return null;
 	}
 	
 	/**

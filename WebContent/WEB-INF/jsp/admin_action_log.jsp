@@ -40,7 +40,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
-<script src="js/admin.js"></script>
+<script src="js/admin.js?v=211116"></script>
 <script src="js/paging.js"></script>
 <script>
 
@@ -50,6 +50,9 @@
 		var end_date = $("input[name=end_date]").val(); // 종료일
 		var startgo = $("#startgo").val(); // 페이지 번호
 		var totalPage = 0;
+		var totalCnt = 0;
+		var select_period = start_date + " ~ " + end_date;
+		$("#select_period").text(select_period);
 		
 		var searchParam = {
 			"keyword":keyword
@@ -66,6 +69,8 @@
 			url: "/actionlog.api",
 			success: function(data) {
 				totalPage = data.totalPage;
+				totalCnt = data.totalCnt;
+				$("#totalCnt").text(totalCnt);
 				var coverClass = "";
 				
 				$(data.result).each(function(key, val) {
@@ -134,6 +139,13 @@
 					<div class="btn_area" style="margin-top: 0;">
 						<a href="#" id="actionLog_search" class="btn_input2">검색</a>
 					</div>
+				</div>
+				<div class="calculate_info_area">
+					기간 : <span id="select_period"></span> </span><span class="bar3">l</span> 
+					건수 :<span id="totalCnt" class="color"> </span>건
+				</div>
+				<div class="btn_sort">
+					<a href="javascript:void(0)" class="excel_down" onclick="saveExcel('/excel.actionlog.api', 'actionlog')">엑셀저장</a>
 				</div>
 				
 				<section id="cms_list2">

@@ -2,6 +2,7 @@ package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,15 @@ import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.ActionLogDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
+import com.dahami.newsbank.web.util.ExcelUtil;
 
 /**
  * Servlet implementation class ActionLogJSON
  */
-@WebServlet("/actionlog.api")
+@WebServlet(
+		urlPatterns = {"/actionlog.api", "/excel.actionlog.api"},
+		loadOnStartup = 1
+		)
 public class ActionLogJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 
@@ -90,30 +95,33 @@ public class ActionLogJSON extends NewsbankServletBase {
 			int totalCnt = photoDAO.getActionLogCount(params);
 			double pageD = (double) totalCnt / pageVol;
 			totalPage = (int) Math.ceil(pageD);
-			List<ActionLogDTO> logs = photoDAO.searchActionLog(params);
-			List<Map<String, Object>> searchList = new ArrayList<Map<String, Object>>();
+			List<Map<String, Object>> searchList = photoDAO.searchActionLog(params);
+			List<Map<String, Object>> downlist = photoDAO.searchAllActionLog(params);
+			
+			if(cmd.is3("excel")) {
+				List<String> headList = Arrays.asList("매체사명", "UCI코드");
+				List<Integer> columnSize = Arrays.asList(30, 30);
+				List<String> columnList = Arrays.asList("memberName", "uciCode");
+				
+				String fileName = "수정이력관리(" + start_date + "~" + end_date + ")";
+				ExcelUtil.xlsWiter(request, response, headList, columnSize, columnList, downlist, fileName);
+						
+			}else {
+				
+				if (searchList != null) {
+					success = true;
+				}
 
-			for (ActionLogDTO logDTO : logs) {
-				Map<String, Object> object = new HashMap<String, Object>();
-				object.put("uciCode", logDTO.getUciCode());
-				object.put("memberName", logDTO.getMemberName());
-				object.put("actionType", logDTO.getActionType());
-				object.put("actionTypeStr", logDTO.getActionTypeStr());
-				searchList.add(object);
+				// JSON 데이터
+				JSONObject json = new JSONObject();
+				json.put("success", success);
+				json.put("totalPage", totalPage);
+				json.put("totalCnt", totalCnt);
+				json.put("result", searchList);
+
+				response.setContentType("application/json");
+				response.getWriter().print(json);
 			}
-
-			if (logs != null) {
-				success = true;
-			}
-
-			// JSON 데이터
-			JSONObject json = new JSONObject();
-			json.put("success", success);
-			json.put("totalPage", totalPage);
-			json.put("result", searchList);
-
-			response.setContentType("application/json");
-			response.getWriter().print(json);
 		}
 
 	}

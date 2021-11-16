@@ -777,6 +777,15 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			$("#seqArr").val(seqArr);
 			break;
 			
+		case "actionlog":
+			// 수정이력 관리
+			var keyword = $("#keyword").val();
+			var contractStart = $("#contractStart").val();
+			var contractEnd = $("#contractEnd").val();
+			
+			$("#startDate").val(contractStart);
+			$("#endDate").val(contractEnd);
+			break;
 	}
 	
 	$("#currentKeyword").val(keyword);
