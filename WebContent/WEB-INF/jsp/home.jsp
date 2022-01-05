@@ -25,10 +25,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="보도사진, 스톡사진, 스톡이미지, 사진판매, 역사사진, 근현대사, 인물사진, 사진박물관, korea, press, photo">
 
+<jsp:include page="common/head_meta.jsp"/>
 <title>뉴스뱅크</title>
 
 <script src="js/jquery-1.12.4.min.js"></script>
@@ -407,7 +405,7 @@ if(errMsg != null && errMsg.length() > 0) {
 					<c:forEach items="${mediaList}" var="member">
 						<li>
 							<a href="javascript:void(0)" onclick="media_submit('${member.seq}')">
-								<img src="/logo.down.photo?seq=${member.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+								<img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${member.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
 							</a>
 						</li>
 					</c:forEach>

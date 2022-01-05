@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.newsbank.co.kr/sitemap.xml
+#DaumWebMasterTool:3f2bafe87c9d208fbb331fb0ad05e9abfde31069cdc991bf2dfc7d739ef0b92b:Fl8g65CcW/45h1fBxnFQ2Q==

@@ -18,8 +18,7 @@
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<jsp:include page="common/head_meta.jsp"/>
 <title>뉴스뱅크</title>
 <link rel="stylesheet" href="css/join.css" />
 <link rel="stylesheet" href="css/jquery-ui-1.12.1.min.css">
