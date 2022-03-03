@@ -192,7 +192,9 @@
 						</tr>
 						<tr>
 							<th>이름</th>
-							<td>${MemberDTO.name}</td>
+							<td>
+								<input type="text" name="name" value="${MemberDTO.name}" class="inp_txt" size="40"/>									
+							</td>
 						</tr>
 						<tr>
 							<th>휴대전화번호</th>
