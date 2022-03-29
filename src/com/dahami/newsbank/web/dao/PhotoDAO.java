@@ -437,6 +437,34 @@ public class PhotoDAO extends DAOBase {
 		return false;
 	}
 	
+	public boolean checkPayDownloadable(String uciCode,String paymentDetail_seq, List<Integer> memberList) {
+		SqlSession session = null;
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("uciCode", uciCode);
+		String memberListStr = "";
+		for(int cur : memberList) {
+			if(memberListStr.length() > 0) {
+				memberListStr += ",";
+			}
+			memberListStr += cur;
+		}
+		param.put("memberListStr", memberListStr);
+		param.put("paymentDetail_seq", paymentDetail_seq);
+		try {
+			session = sf.getSession();
+			if(session.selectOne("Download.selOneDownloadable", param) != null) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return false;
+	}
+	
 	/**
 	 * @methodName  : getExhibition
 	 * @author      : LEE. GWANGHO

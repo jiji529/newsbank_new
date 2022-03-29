@@ -175,7 +175,7 @@ public class DownloadService extends ServiceBase {
 	 * @return 
 	 * @returnType  : String downType / 권한 축소해서 다운받아야 하면 축소한 권한값	
 	 */
-	private String getSuitableDownType(PhotoDTO photo, MemberDTO member, String downType, String requestCorp, String ip) {
+	private String getSuitableDownType(PhotoDTO photo, MemberDTO member, String downType, String requestCorp, String ip, HttpServletRequest request) {
 
 		// 1. 연계사 / 허용 IP는 우선 허가
 		if(requestCorp != null) {
@@ -228,7 +228,11 @@ public class DownloadService extends ServiceBase {
 				}
 				// 3-2-3. 구매자 원본 다운로드
 				if(!serviceF) {
-					serviceF = checkPayDownloadable(photo.getUciCode(), member.getDownloadGroupList());
+					if(request.getParameter("paymentDetail_seq")!=null) {
+						serviceF = checkPayDownloadable(photo.getUciCode(),request.getParameter("paymentDetail_seq"), member.getDownloadGroupList());
+					} else {
+						serviceF = checkPayDownloadable(photo.getUciCode(), member.getDownloadGroupList());						
+					}
 				}
 				
 				if(serviceF) {
@@ -294,6 +298,11 @@ public class DownloadService extends ServiceBase {
 	private boolean checkPayDownloadable(String uciCode, List<Integer> memberList) {
 		PhotoDAO dao = new PhotoDAO();
 		return dao.checkPayDownloadable(uciCode, memberList);
+	}
+	
+	private boolean checkPayDownloadable(String uciCode, String paymentDetail_seq, List<Integer> memberList) {
+		PhotoDAO dao = new PhotoDAO();
+		return dao.checkPayDownloadable(uciCode, paymentDetail_seq , memberList);
 	}
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -456,7 +465,7 @@ public class DownloadService extends ServiceBase {
 					String[] uciCodes = request.getParameter("uciCode").split("\\$\\$");
 					for (int i = 0; i < uciCodes.length; i++) {
 						PhotoDTO photo = photoDao.read(uciCodes[i]);
-						String newDownType = getSuitableDownType(photo, memberInfo, DOWN_TYPE_SERVICE, serviceCode, ip);
+						String newDownType = getSuitableDownType(photo, memberInfo, DOWN_TYPE_SERVICE, serviceCode, ip, request);
 						// 원본 다운로드 권한 있을때만 가능
 						if(newDownType != null && newDownType.equals(DOWN_TYPE_SERVICE)) {
 							photoDtoList.add(photo);
@@ -552,7 +561,7 @@ public class DownloadService extends ServiceBase {
 					return;
 				}
 				
-				String newDownType = getSuitableDownType(photo, memberInfo, targetSize, serviceCode, ip);
+				String newDownType = getSuitableDownType(photo, memberInfo, targetSize, serviceCode, ip, request);
 				if(newDownType == null) {
 					if(photo.getSaleState() != PhotoDTO.SALE_STATE_OK) {
 						if (targetSize.equals("list")) {

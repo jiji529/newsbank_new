@@ -23,6 +23,23 @@
 		]]>
 	</select>
 	
+	<select id="selOneDownloadable" parameterType="java.util.Map" resultType="int">
+		<![CDATA[
+		SELECT seq 
+			FROM 
+				paymentDetail
+			WHERE 
+				photo_uciCode = #{uciCode}
+				AND downStart <= NOW() 
+				AND downEnd >= NOW()]]> 
+				AND paymentManage_seq IN 
+					(SELECT seq FROM paymentManage WHERE member_seq IN (${memberListStr}) AND LGD_PAYSTATUS = 1)
+				<if test='paymentDetail_seq!="" and paymentDetail_seq!=null'>
+					AND seq=#{paymentDetail_seq}
+				</if>
+		
+	</select>
+	
 	<!-- 정산 매체사 MediaDTO -->
 	<resultMap id="DelayDownloadDTO" type="java.util.HashMap">
 	    <result javaType="java.lang.Integer" column="seq" property="seq"></result>

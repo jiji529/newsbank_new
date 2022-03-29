@@ -1318,7 +1318,7 @@ $(document).ready(function() {
 			}
 			var uciCode = detail.find('input[name=photo_uciCode]').val();
 			var paymentDetail_seq = detail.find("input[name='paymentDetail_seq']").val(); // 상세내역 SEQ
-			var imgPath = "/service.down.photo?uciCode=" + uciCode + "&type=file";
+			var imgPath = "/service.down.photo?uciCode=" + uciCode + "&type=file" + "&paymentDetail_seq=" + paymentDetail_seq;
 			var param = {
 					"paymentDetail_seq" : paymentDetail_seq,
 					"action" : "D"
