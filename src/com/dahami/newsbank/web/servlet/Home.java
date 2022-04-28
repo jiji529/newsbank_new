@@ -66,9 +66,26 @@ public class Home extends NewsbankServletBase {
 		params.put("count", 7); // 카운트
 		
 		PhotoDAO photoDAO = new PhotoDAO();
-		List<PhotoDTO> photoList = photoDAO.editorPhotoList(); // 보도사진
-		List<PhotoDTO> downloadList = photoDAO.downloadPhotoList(params); // 다운로드
-		List<PhotoDTO> basketList = photoDAO.basketPhotoList(params); // 찜
+		List<PhotoDTO> photoList = photoDAO.editorPhotoList(); // 보도사진		
+		
+		// 다운로드와 찜은 7개가 될때까지 쿼리를 1개월씩 늘려가며 최대 6개월까지 제한하여 찾아준다.	
+		List<PhotoDTO> downloadList = new ArrayList<PhotoDTO>();
+		for(int i=-1; i>=-6; i--) {
+			params.put("monthDate", i);
+			downloadList = photoDAO.downloadPhotoList(params); // 다운로드
+			if(downloadList.size()>=7) {
+				break;
+			}
+		}
+		List<PhotoDTO> basketList = new ArrayList<PhotoDTO>();
+		for(int i=-1; i>=-6; i--) {
+			params.put("monthDate", i);
+			basketList = photoDAO.basketPhotoList(params); // 찜
+			if(downloadList.size()>=7) {
+				break;
+			}
+		}
+		
 		List<PhotoDTO> hitsList = photoDAO.hitsPhotoList(params); // 상세보기
 		
 		MemberDAO memberDAO = new MemberDAO();
