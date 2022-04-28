@@ -130,17 +130,17 @@ if(errMsg != null && errMsg.length() > 0) {
 		switch(index) {
 		
 			case 0:
-				$(".popular_cont").css("display", "block");	
+				$(".hit_cont").css("display", "block");				
 				$(".popular .center .tab .tabs li a:eq("+index+")").addClass("active");
 				break;
 				
 			case 1:
-				$(".zzim_cont").css("display", "block");
+				$(".popular_cont").css("display", "block");					
 				$(".popular .center .tab .tabs li a:eq("+index+")").addClass("active");
 				break;
 				
 			case 2:
-				$(".hit_cont").css("display", "block");
+				$(".zzim_cont").css("display", "block");
 				$(".popular .center .tab .tabs li a:eq("+index+")").addClass("active");
 				break;
 		
@@ -308,19 +308,30 @@ if(errMsg != null && errMsg.length() > 0) {
 				<div class="tab">
 					<ul class="tabs">
 						<li>
-							<a href="javascript:tabControl(0)" class="active">다운로드순</a>
+							<a href="javascript:tabControl(0)" class="active">조회수순</a>
 						</li>
 						<li>
-							<a href="javascript:tabControl(1)">찜하기순</a>
+							<a href="javascript:tabControl(1)">다운로드순</a>
 						</li>
 						<li>
-							<a href="javascript:tabControl(2)">조회수순</a>
+							<a href="javascript:tabControl(2)">찜하기순</a>
 						</li>
 					</ul>
 				</div>
 				
+				<!-- 상세보기 Tab -->
+				<div class="hit_cont">
+					<div id="hit_area"> 
+						<c:forEach items="${hitsList}" var="hit" varStatus="status">
+							<a href='javascript:go_photoView("${hit.uciCode}")' onclick='go_photoView("${hit.uciCode}")'>
+								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+							</a>
+						</c:forEach>					
+					 </div>
+				</div>
+				
 				<!-- 다운로드 Tab -->
-				<div class="popular_cont">
+				<div class="popular_cont"  style="display:none;">
 					<div id="download_area"> 
 						<c:forEach items="${downloadList}" var="down" varStatus="status">
 							<a href='javascript:go_photoView("${down.uciCode}")' onclick='go_photoView("${down.uciCode}")'>
@@ -339,17 +350,6 @@ if(errMsg != null && errMsg.length() > 0) {
 							</a>
 						</c:forEach>					
 					 </div>					
-				</div>
-				
-				<!-- 상세보기 Tab -->
-				<div class="hit_cont" style="display:none;">
-					<div id="hit_area"> 
-						<c:forEach items="${hitsList}" var="hit" varStatus="status">
-							<a href='javascript:go_photoView("${hit.uciCode}")' onclick='go_photoView("${hit.uciCode}")'>
-								<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${hit.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
-							</a>
-						</c:forEach>					
-					 </div>
 				</div>
 				
 			</div>

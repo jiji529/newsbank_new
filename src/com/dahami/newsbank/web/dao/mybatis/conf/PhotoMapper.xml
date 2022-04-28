@@ -122,6 +122,7 @@
 		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
 		    #{seq}
 		</foreach>
+		AND P.regDate BETWEEN DATE_ADD(NOW(),INTERVAL -1 MONTH ) AND NOW()
 		GROUP BY photo_uciCode
 		ORDER BY downCount DESC, uciCode ASC
 		LIMIT #{start}, #{count}
@@ -139,6 +140,7 @@
     	<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
 		    #{seq}
 		</foreach>
+		AND A.regDate BETWEEN DATE_ADD(NOW(),INTERVAL -1 MONTH ) AND NOW()
 		GROUP BY B.photo_uciCode
 		HAVING zzimCount > 0
 		ORDER BY zzimCount DESC, uciCode ASC
@@ -148,8 +150,9 @@
     
 	<!-- 인기사진 : 상세보기(조회 수) -->
 	<select id="selectHitsRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
-	    SELECT P.widthCm, P.heightCm, P.uciCode, P.hitCount, M.compName AS ownerName
+	    SELECT P.regDate, P.widthCm, P.heightCm, P.uciCode, P.hitCount, M.compName AS ownerName
 		FROM photo P
+		USE INDEX (idx_regDate_memberSeq_saleState_hitCount)
 		LEFT JOIN member M ON P.member_seq = M.seq
 		WHERE P.saleStat = 1 AND
 		P.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
@@ -158,8 +161,9 @@
 		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
 		    #{seq}
 		</foreach>
+		AND P.regDate BETWEEN DATE_ADD(NOW(),INTERVAL -1 MONTH ) AND NOW()
 		ORDER BY hitCount DESC
-	    LIMIT #{start}, #{count}
+		LIMIT #{start}, #{count}
     </select>
     
 	<!-- 사진관리 : 통계정보 (찜, 다운로드, 상세보기, 결제, 뮤지엄, 컬렉션) -->
