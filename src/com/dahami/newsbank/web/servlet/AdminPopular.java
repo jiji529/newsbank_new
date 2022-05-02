@@ -75,12 +75,24 @@ public class AdminPopular extends NewsbankServletBase {
 	
 					case "download":
 						// 다운로드
-						photoList = photoDAO.downloadPhotoList(params);
+						for(int i=-1; i>=-6; i--) {
+							params.put("monthDate", i);
+							photoList = photoDAO.downloadPhotoList(params);
+							if(photoList.size()>=7) {
+								break;
+							}
+						}						
 						break;
 						
 					case "zzim":
 						// 찜
-						photoList = photoDAO.basketPhotoList(params);
+						for(int i=-1; i>=-6; i--) {
+							params.put("monthDate", i);
+							photoList = photoDAO.basketPhotoList(params);
+							if(photoList.size()>=7) {
+								break;
+							}
+						}						
 						break;
 						
 					case "detail":
