@@ -34,7 +34,7 @@
 <script src="js/jquery.animateNumbers.min.js"></script>
 
 <link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/main.css?v=20220504" />
 <script src="js/footer.js"></script>
 
 <script src="js/unitegallery.min.js"></script>
@@ -56,6 +56,7 @@ if(errMsg != null && errMsg.length() > 0) {
         }); */
     </script>
     <script>
+    var setTimeoutIndex = 0;
 	$(document).ready(function() {
 		get_totalNumberPhoto();
 		/* Start rowGrid.js */
@@ -96,6 +97,19 @@ if(errMsg != null && errMsg.length() > 0) {
 		
 		// 상세보기
 		$("#hit_area").unitegallery(unite_option);
+				
+		setInterval(function(){			
+			if(setTimeoutIndex==0) {
+				setTimeoutIndex = 1;
+			} else if(setTimeoutIndex==1) {
+				setTimeoutIndex = 2;				
+			} else if(setTimeoutIndex==2) {
+				setTimeoutIndex = 0;
+			}
+			
+			tabControl(setTimeoutIndex);
+ 			
+		}, 10*1000)
 	});
 	
 	$(document).on("click", ".btn_search", function() {
@@ -126,6 +140,7 @@ if(errMsg != null && errMsg.length() > 0) {
 		$(".popular_cont").css("display", "none");
 		$(".zzim_cont").css("display", "none");
 		$(".hit_cont").css("display", "none");
+		setTimeoutIndex = index;
 		
 		switch(index) {
 		
