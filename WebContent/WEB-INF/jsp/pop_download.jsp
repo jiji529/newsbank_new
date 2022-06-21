@@ -18,6 +18,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
+<%
+	String device = (String) request.getAttribute("device");
+%>
+<%
+	request.setCharacterEncoding("UTF-8");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -118,6 +124,12 @@
 		
 		// #구매 페이지 이동
 		function go_pay() {
+			// 모바일 웹 환경에서 결제가 안됨에 따라, 안내창 띄우기 위해 처리한 부분
+			var device = document.getElementById("device").value;
+			if(device=='mobile' || device=='tablet') {
+				alert("모바일웹 환경에서는 결제 진행이 불가합니다.\nPC로 결제를 진행해주세요.");
+				return false;
+			}
 			
 			var jsonArray = new Array();
 			var uciCode_array = ($("#uciCode_arr").val()).split(",");
@@ -195,6 +207,7 @@
 		<div class="sum_sec">
 			<div class="total"><span class="tit">총 금액 (수량)</span><span class="price"></span></span></div>
 			<div class="btn_wrap">
+				<input type="hidden" id="device" name="device" value="<%=device  %>" />
 				<input type="hidden" id="uciCode_arr" value="${uciCode_arr}"/>
 				<div class="btn_cart" onclick="javascript:void(0)"><a href="javascript:go_pay()">구매하기</a></div>
 				<div class="btn_down"><a href="javascript:void(0)" onclick="javascript:self.close()">취소</a></div>

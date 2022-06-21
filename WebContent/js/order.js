@@ -51,6 +51,12 @@ $(document).ready(function() {
 	});
 
 	$("#frmOrder").on("submit", function() {
+		// 모바일 웹 환경에서 결제가 안됨에 따라, 안내창 띄우기 위해 처리한 부분
+		var device = document.getElementById("device").value;
+		if(device=='mobile' || device=='tablet') {
+			alert("모바일웹 환경에서는 결제 진행이 불가합니다.\nPC로 결제를 진행해주세요.");
+			return false;
+		}
 
 		var check = true;
 		check = check && validPlatform();

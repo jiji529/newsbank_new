@@ -18,6 +18,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
+	String device = (String) request.getAttribute("device");
 %>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -37,7 +38,7 @@
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script language="javascript" src="https://xpay.uplus.co.kr/xpay/js/xpay_crossplatform.js" type="text/javascript"></script>
-<script src="js/order.js?v=20180403"></script>
+<script src="js/order.js?v=20220621_v3"></script>
 <script type="text/javascript">
 	
 </script>
@@ -54,6 +55,7 @@
 		</div>
 		<section class="order_list">
 		<form  id="frmOrder" name="frmOrder"  method="post" >
+		<input type="hidden" id="device" name="device" value="<%=device  %>" />
 		<input type="hidden" name="orderType" value="${param.orderType }" />
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb03" style="border-top: 0; margin-bottom: 15px;">
 				<colgroup>

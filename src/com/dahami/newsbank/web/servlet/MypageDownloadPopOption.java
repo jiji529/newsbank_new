@@ -57,8 +57,40 @@ public class MypageDownloadPopOption extends NewsbankServletBase {
 		String uciCode_arr = request.getParameter("uciCode_arr");
 		request.setAttribute("uciCode_arr", uciCode_arr);
 		
+		// 모바일 웹 환경에서 결제가 안됨에 따라, 안내창 띄우기 위해 처리한 부분
+		String device = isDevice(request);
+		if (device.equals(IS_MOBILE)) {
+			request.setAttribute("device","mobile");
+		} else if (device.equals(IS_TABLET)) {
+			request.setAttribute("device","tablet");
+		} else {
+			request.setAttribute("device","desktop");
+		}
+		
 		System.out.println(uciCode_arr.toString());
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pop_download.jsp");
 		dispatcher.forward(request, response);
+	}
+	
+	public static final String IS_MOBILE = "MOBILE";
+	private static final String IS_PHONE = "PHONE";
+	public static final String IS_TABLET = "TABLET";
+	public static final String IS_PC = "PC";
+
+	/**
+	 * 모바일,타블렛,PC구분
+	 * @param req
+	 * @return
+	 */
+	public static String isDevice(HttpServletRequest req) {
+	    String userAgent = req.getHeader("User-Agent").toUpperCase();
+		
+	    if(userAgent.indexOf(IS_MOBILE) > -1) {
+	        if(userAgent.indexOf(IS_PHONE) == -1)
+		    return IS_MOBILE;
+		else
+		    return IS_TABLET;
+	    } else
+	return IS_PC;
 	}
 }
