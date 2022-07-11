@@ -143,7 +143,7 @@
 		AND A.regDate BETWEEN DATE_ADD(NOW(),INTERVAL #{monthDate} MONTH ) AND NOW()
 		GROUP BY B.photo_uciCode
 		HAVING zzimCount > 0
-		ORDER BY zzimCount DESC, uciCode ASC
+		ORDER BY zzimCount DESC, uciCode DESC
 		LIMIT #{start}, #{count}
     </select>
     

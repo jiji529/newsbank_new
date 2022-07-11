@@ -56,7 +56,7 @@ if(errMsg != null && errMsg.length() > 0) {
         }); */
     </script>
     <script>
-    var setTimeoutIndex = 0;
+    /* var setTimeoutIndex = 0; */
 	$(document).ready(function() {
 		get_totalNumberPhoto();
 		/* Start rowGrid.js */
@@ -98,7 +98,7 @@ if(errMsg != null && errMsg.length() > 0) {
 		// 상세보기
 		$("#hit_area").unitegallery(unite_option);
 				
-		setInterval(function(){			
+		/* setInterval(function(){			
 			if(setTimeoutIndex==0) {
 				setTimeoutIndex = 1;
 			} else if(setTimeoutIndex==1) {
@@ -109,7 +109,7 @@ if(errMsg != null && errMsg.length() > 0) {
 			
 			tabControl(setTimeoutIndex);
  			
-		}, 10*1000)
+		}, 10*1000); */
 	});
 	
 	$(document).on("click", ".btn_search", function() {
@@ -140,7 +140,7 @@ if(errMsg != null && errMsg.length() > 0) {
 		$(".popular_cont").css("display", "none");
 		$(".zzim_cont").css("display", "none");
 		$(".hit_cont").css("display", "none");
-		setTimeoutIndex = index;
+		/* setTimeoutIndex = index; */
 		
 		switch(index) {
 		

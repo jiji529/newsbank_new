@@ -81,7 +81,7 @@ public class Home extends NewsbankServletBase {
 		for(int i=-1; i>=-6; i--) {
 			params.put("monthDate", i);
 			basketList = photoDAO.basketPhotoList(params); // 찜
-			if(downloadList.size()>=7) {
+			if(basketList.size()>=7) {
 				break;
 			}
 		}
