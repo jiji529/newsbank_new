@@ -66,10 +66,12 @@ import com.dahami.common.util.ZipUtil;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.util.NBImageUtil;
 import com.dahami.newsbank.web.dao.BoardDAO;
+import com.dahami.newsbank.web.dao.ImportLogDAO;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.dto.DownloadDTO;
+import com.dahami.newsbank.web.dto.ImportLogDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
@@ -616,10 +618,57 @@ public class DownloadService extends ServiceBase {
 //						}
 						
 						if (!new File(orgPath).exists()) {
-							logger.warn("원본이미지 없음: " + orgPath);
-							request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
-							forward(request, response, URL_PHOTO_ERROR_SERVICE);
-							return;
+							logger.warn("원본이미지 없음: " + orgPath);							
+							
+							/**
+							 * 작성일자 : 2022-07-20
+							 * 작성자 : HA.J.S
+							 * 작성이유 : newsbankImporter가 제대로 동작하지 않아, 원본파일이 없어져버리는 경우가 있었음
+							 * 따라서, 원본이 없는 경우 백업 경로에서 파일을 카피해와서 정상적으로 다운로드가 구동되도록 추가처리한 코드
+							 * 
+							 * 참고사항 : 다운로드시에만 작동하는 action이므로, 추후 전체 원본파일이 존재하도록 하기 위해선 배치작업으로 전체 파일 검사를 해야한다. 
+							 * */
+							ImportLogDAO ilDAO = new ImportLogDAO();
+							ImportLogDTO ilDTO = ilDAO.selectImportLog(photo.getUciCode());
+							if(ilDTO!=null) {
+								// importLogDTO가 null이 아닐 경우, backup 경로에 있는 파일을 찾는다.	
+								String datePath = ilDTO.getRegTime().split(" ")[0];								
+								String fileName = ilDTO.getRunTime() + "_" + ilDTO.getSrcImg();
+								
+								String backup_filePath = "/D/FTP/ftpBackup" + "/" + ilDTO.getMember_seq() + "/" + datePath + "/" + fileName;								
+								File ftpImgFd = new File(backup_filePath);
+								
+								if(ftpImgFd.exists()) {
+									// 원본파일이 존재한다면, 서비스하는 경로에서 사용하는 이름으로 변경									
+									String serviceImagePath = PATH_PHOTO_BASE + getServiceImagesPath(photo.getUciCode());
+									File svcOrgFd = new File(serviceImagePath);
+									// 그리고 서비스 경로로 파일을 카피한다.
+									int retry = 0;
+									do {
+										FileUtil.makeDirectory(svcOrgFd.getParent());
+										FileUtil.copyFile(ftpImgFd, svcOrgFd);
+										if(svcOrgFd.exists()) {
+											break;
+										}
+										retry++;
+										try {Thread.sleep(100);}catch(Exception e){}
+									} while(retry > 100);
+									if(!svcOrgFd.exists()) {
+										logger.warn("이미지파일 복사 실패: " + new File(serviceImagePath).getAbsolutePath());
+									} else {
+										logger.warn("백업파일경로 : " + backup_filePath + " -> 서비스 경로 : " + serviceImagePath + " 파일복사 성공");
+									}
+								} else {
+									logger.warn(backup_filePath + "에 원본 백업파일 없음");
+									
+									// 만약 그렇게 찾아도 원본파일이 없다면, 에러 메시지를 띄운다.
+									request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
+									forward(request, response, URL_PHOTO_ERROR_SERVICE);
+									return;
+								}
+							} else {
+								logger.warn("news_bank.importLog DB테이블에 " + photo.getUciCode() + " 관련 내용없음");
+							}
 						}
 						String tmpDir = PATH_PHOTO_DOWN + "/" + ymDf.format(new Date());
 						FileUtil.makeDirectory(tmpDir);
@@ -973,5 +1022,47 @@ public class DownloadService extends ServiceBase {
 	private void sendFile( HttpServletRequest request, HttpServletResponse response, String sendPath ) throws Exception  {
 		File fd = new File(sendPath);
 		HttpUpDownUtil.fileDownload(request, response, fd.getName(), fd.getName(), fd.getParent(), "octet-stream");
+	}
+	
+	private String getServiceImagesPath(String uciCode) {
+		String path = "/";
+		String compCode = "";
+		String code = uciCode;
+		int sIdx = code.indexOf('-');
+		if(sIdx != -1) {
+			compCode = code.substring(0, sIdx);
+			path += compCode + "/";
+			code = code.substring(sIdx+1);
+		}
+		String mediaType = code.substring(0, 1);
+		path += mediaType +"/";
+		long codeNum = Long.parseLong(code.substring(1));
+		
+		long value = codeNum / 100000000;
+		path += value + "/";
+		
+		codeNum %= 100000000;
+		value = codeNum / 1000000;
+		if(value < 10) {
+			path += "0";
+		}
+		path += value + "/";
+		
+		codeNum %= 1000000;
+		value = codeNum / 10000;
+		if(value < 10) {
+			path += "0";
+		}
+		path += value + "/";
+		
+		codeNum %= 10000;
+		value = codeNum / 100;
+		if(value < 10) {
+			path += "0";
+		}
+		path += value + "/";
+		
+		path += uciCode + ".jpg";
+		return path;
 	}
 }
