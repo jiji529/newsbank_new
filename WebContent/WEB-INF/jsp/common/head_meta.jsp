@@ -18,4 +18,4 @@
 
         <meta name="google-site-verification" content="ISt8j978EDEd7T6BGyffD3ZmHinjD8GojKpX74FmRVU" />
         <meta name="naver-site-verification" content="fec92bb31ce9d47a98c8ad565560618e261813d3" />
-        <link rel="SHORTCUT ICON" href="<%=request.getContextPath()%>/images/newsbank_favicon2.ico">          
+        <link rel="SHORTCUT ICON" href="https://www.newsbank.co.kr/images/newsbank_favicon2.ico">          
