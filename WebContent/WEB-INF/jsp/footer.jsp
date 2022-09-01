@@ -82,8 +82,8 @@
 						</a>
 					</li>
 					<li class="cleansite">
-						<a href="https://www.copyrightok.kr/" target="_blank">
-							저작권오케이
+						<a href="https://kcopa.or.kr/" target="_blank">
+							저작권안심
 							<br />
 							한국저작권보호원
 						</a>
