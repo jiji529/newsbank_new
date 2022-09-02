@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<c:set var="URL" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,4 +21,7 @@
 
         <meta name="google-site-verification" content="ISt8j978EDEd7T6BGyffD3ZmHinjD8GojKpX74FmRVU" />
         <meta name="naver-site-verification" content="fec92bb31ce9d47a98c8ad565560618e261813d3" />
+        <c:if test='${URL!="/home"}'>
+        	<meta name="robots" content="noindex">
+        </c:if>
         <link rel="SHORTCUT ICON" href="https://www.newsbank.co.kr/images/newsbank_favicon2.ico">          
