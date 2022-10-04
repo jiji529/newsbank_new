@@ -25,7 +25,7 @@ import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
-@WebServlet(urlPatterns = { "/home", "*.home" }, loadOnStartup = 1)
+@WebServlet(urlPatterns = { "/index.jsp" , "/home", "*.home" }, loadOnStartup = 1)
 public class Home extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
 

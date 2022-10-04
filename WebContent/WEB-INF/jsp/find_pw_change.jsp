@@ -33,7 +33,7 @@ System.out.println(memberDTO);
 	<div class="wrap">
 		<header>
 			<h1>
-				<a href="/home" class="logo">뉴스뱅크</a>
+				<a href="/" class="logo">뉴스뱅크</a>
 			</h1>
 		</header>
 		<section class="join">

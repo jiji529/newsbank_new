@@ -50,7 +50,7 @@ if(errMsg != null && errMsg.length() > 0) {
 <body>
 	<div class="wrap">
 		<header>
-			<a href="/home" class="logo" tabindex="-1">
+			<a href="/" class="logo" tabindex="-1">
 				<h1>뉴스뱅크</h1>
 			</a>
 		</header>

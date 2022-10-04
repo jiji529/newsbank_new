@@ -16,7 +16,7 @@ if(errMsg != null && errMsg.length() > 0) {
 %>
 
 <nav class="gnb_dark">
-	<div class="gnb"><a href="/member.manage" class="logo">관리자페이지</a><a href="/home" target="_blank" class="link">뉴스뱅크 이동</a>
+	<div class="gnb"><a href="/member.manage" class="logo">관리자페이지</a><a href="/" target="_blank" class="link">뉴스뱅크 이동</a>
 		<ul class="gnb_right">
 			<c:choose>
 				<c:when test="${empty MemberInfo}">

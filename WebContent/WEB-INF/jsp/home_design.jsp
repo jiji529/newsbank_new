@@ -202,7 +202,7 @@ if(errMsg != null && errMsg.length() > 0) {
 	<div class="wrap">
 		<nav class="gnb_light">
 		<div class="gnb">
-			<a href="/home" class="logo"></a>
+			<a href="/" class="logo"></a>
 			<ul class="gnb_left">
 				<li>
 					<a href="/photo">보도사진</a>

@@ -668,7 +668,7 @@ if(photoDto == null
 	<section class="view">
 		<div class="view_lt">
 			<div class="navi">
-				<a href="/home" title="뉴스뱅크 홈" class="home">뉴스뱅크 홈</a>
+				<a href="/" title="뉴스뱅크 홈" class="home">뉴스뱅크 홈</a>
 				<div class="navi_wrap">
 					<a href="/photo">보도사진</a><span class="ico_depth"></span>
 				</div>

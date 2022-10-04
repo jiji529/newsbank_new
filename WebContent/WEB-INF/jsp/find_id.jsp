@@ -28,7 +28,7 @@
 <body>
 <div class="wrap">
 	<header>
-		<a href="/home" class="logo">
+		<a href="/" class="logo">
 			<h1>뉴스뱅크</h1>
 		</a>
 	</header>

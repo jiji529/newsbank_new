@@ -50,7 +50,7 @@ if(errMsg != null && errMsg.length() > 0) {
 <body>
 <div class="wrap">
 	<div class="gnb_dark">
-		<div class="gnb"><a href="/home" class="logo"></a>
+		<div class="gnb"><a href="/" class="logo"></a>
 			<ul class="gnb_left">
 				<li><a href="#">보도사진</a></li>
 				<!-- <li><a href="#">뮤지엄</a></li>
