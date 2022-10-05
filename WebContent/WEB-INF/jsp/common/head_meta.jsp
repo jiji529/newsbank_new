@@ -21,7 +21,7 @@
 
         <meta name="google-site-verification" content="ISt8j978EDEd7T6BGyffD3ZmHinjD8GojKpX74FmRVU" />
         <meta name="naver-site-verification" content="fec92bb31ce9d47a98c8ad565560618e261813d3" />
-        <c:if test='${URL!="/home"}'>
+        <c:if test='${URL!="/index.jsp"}'>
         	<meta name="robots" content="noindex">
         </c:if>
         <link rel="SHORTCUT ICON" href="https://www.newsbank.co.kr/images/newsbank_favicon2.ico">          
