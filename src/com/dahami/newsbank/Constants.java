@@ -19,8 +19,8 @@ package com.dahami.newsbank;
 public class Constants {
 
 	/** 개발/서비스 구분 */
-	private static final boolean IS_SERVICE = true;
-//	private static final boolean IS_SERVICE = false;
+//	private static final boolean IS_SERVICE = true;
+	private static final boolean IS_SERVICE = false;
 
 	/** 형태소분석 사용 */
 //	public static final boolean SEARCH_FIELD_MORP = true;

@@ -1,39 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+            
+    
     <wb-module deploy-name="NewsBank_2017-0.0.1-SNAPSHOT">
+                        
+        
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+                        
+        
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+                        
+        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <dependent-module archiveName="newsbankCommon-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Newsbank_2017_Common/Newsbank_2017_Common">
+        <dependent-module archiveName="newsbankCommon-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/newsbank_2017_common/newsbank_2017_common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.dahami.api.solrCommon-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon/API_SolrCommon">
+        <dependent-module archiveName="com.dahami.api.solrCommon-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/api_solrcommon/api_solrcommon">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.dahami.common.util-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.common.util/com.dahami.common.util">
+        <dependent-module archiveName="com.dahami.search.solr.analyzer-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.search.solr.analyzer/com.dahami.search.solr.analyzer">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.dahami.AutomaticWordSpacing-0.9.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/AutomaticWordSpacing/AutomaticWordSpacing">
+        <dependent-module archiveName="com.dahami.common.util.image-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common.util.image/common.util.image">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.argo.dahami.lucene-analyzer-6.2-1.2.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/arirang.lucene-analyzer.aft62/arirang.lucene-analyzer.aft62">
+        <dependent-module archiveName="com.dahami.api.solrCommon.query-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/api_solrcommon_query/api_solrcommon_query">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.dahami.solr.analyzer-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.solr.analyzer/com.dahami.solr.analyzer">
+        <dependent-module archiveName="com.dahami.common.domain-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common.domain/common.domain">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.argo.dahami.morph-1.2.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/arirang.morph.dahami/arirang.morph.dahami">
+        <dependent-module archiveName="com.dahami.common.mybatis-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common.mybatis/common.mybatis">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.dahami.common.util.image-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.common.util.image/com.dahami.common.util.image">
+        <dependent-module archiveName="com.dahami.common.util-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common.util/common.util">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="com.dahami.api.solrCommon.query-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/API_SolrCommon_Query/API_SolrCommon_Query">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="com.dahami.common.mybatis-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.common.mybatis/com.dahami.common.mybatis">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
+                        
+        
         <property name="java-output-path" value="/NewsBank_2017/build/classes"/>
+                
         <property name="context-root" value="NewsBank_2017"/>
+                    
+    
     </wb-module>
+        
+
 </project-modules>
