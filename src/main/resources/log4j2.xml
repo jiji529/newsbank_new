@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="Console">
+			<PatternLayout pattern="[%d] %-5p- %C{1}.%M(%L) | %m%n" />
+			<!-- <PatternLayout pattern="%d{yyyy-MM-dd hh:mm:ss aa} [ %p ] - %C{1}.%M(%L) | %m%n" /> -->
+			<!-- <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level ROOT %logger{36} - %msg%n" /> -->
+		</Console>
+		
+		<RollingFile name="ConsoleLog" createOnDemand="true" fileName="logs/newsbank.log" filePattern="logs/console.%i.log">
+			<PatternLayout pattern="[%d] %-5p- %C{1}.%M(%L) | %m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="100MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" fileIndex="min" />
+		</RollingFile>
+
+	</Appenders>
+
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="ConsoleLog" />
+		</Root>
+		
+		<Logger name="java.sql" level="info" />
+		<Logger name="com.dahami.newsbank.web.dao" level="debug" />
+	</Loggers>
+</Configuration>

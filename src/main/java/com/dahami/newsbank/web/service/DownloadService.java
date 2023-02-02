@@ -973,6 +973,15 @@ public class DownloadService extends ServiceBase {
         	 break;
            }
         }
+        // 개발PC에 위 폰트 부재시 
+        if(font == null) {
+        	for(int i=0; i<fonts.length;i++){
+                if(fonts[i].getFontName().equals("맑은 고딕")){
+             	 font = new Font("맑은 고딕", Font.BOLD, 47);
+             	 break;
+                }
+            }	
+        }
 		
 		FontRenderContext frc = new FontRenderContext(null, true, true);
 		Rectangle2D r2D = font.getStringBounds(mdName, frc);

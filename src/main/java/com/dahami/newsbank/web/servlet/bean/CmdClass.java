@@ -20,7 +20,6 @@ import java.lang.invoke.MethodHandles;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +27,6 @@ public class CmdClass {
 	private static Logger logger;
 	
 	static {
-		DOMConfigurator.configure(MethodHandles.lookup().lookupClass().getClassLoader().getResource("com/dahami/newsbank/web/conf/log4j.xml"));
 		logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	}
 	

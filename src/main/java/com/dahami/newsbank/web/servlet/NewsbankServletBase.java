@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,6 @@ public abstract class NewsbankServletBase extends HttpServlet {
 	
 	private static final long serialVersionUID = 4745659834372195390L;
 	protected Logger logger;
-	private boolean loggerConfInitF;
 	
     public NewsbankServletBase() {
         super();
@@ -41,10 +39,6 @@ public abstract class NewsbankServletBase extends HttpServlet {
     @Override
 	public void init() throws ServletException {
     	super.init();
-    	if(!loggerConfInitF) {
-			DOMConfigurator.configure(MethodHandles.lookup().lookupClass().getClassLoader().getResource("com/dahami/newsbank/web/conf/log4j.xml"));
-			loggerConfInitF = true;
-		}
 		logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	}
 

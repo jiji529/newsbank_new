@@ -17,6 +17,7 @@
 package com.dahami.newsbank.web.service;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,19 +26,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class ServiceBase implements IService {
 	protected Logger logger;
-	private static boolean loggerConfInitF;
 	
 	public ServiceBase() {
-		if(!loggerConfInitF) {
-			DOMConfigurator.configure(this.getClass().getClassLoader().getResource("com/dahami/newsbank/web/conf/log4j.xml"));
-			loggerConfInitF = true;
-		}
 		logger = LoggerFactory.getLogger(this.getClass());
 	}
 	
