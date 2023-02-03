@@ -16,10 +16,6 @@
 
 package com.dahami.newsbank;
 
-import java.lang.invoke.MethodHandles;
-
-import com.dahami.common.util.LoggerUtil;
-
 public class Constants {
 
 	/** 개발/서비스 구분 */
@@ -61,8 +57,6 @@ public class Constants {
 			TARGET_SOLR_ADDR_SUFFIX_PARAM = "_DEV";
 			TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_DEV";
 		}
-		// 로거 초기화를 위해 호출
-		LoggerUtil.Log4j2.initLogger(MethodHandles.lookup().lookupClass());
 	}
 	
 

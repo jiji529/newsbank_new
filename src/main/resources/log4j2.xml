@@ -7,7 +7,7 @@
 			<!-- <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level ROOT %logger{36} - %msg%n" /> -->
 		</Console>
 		
-		<RollingFile name="ConsoleLog" createOnDemand="true" fileName="logs/newsbank.log" filePattern="logs/console.%i.log">
+		<RollingFile name="ConsoleLog" createOnDemand="true" fileName="logs/newsbank.log" filePattern="logs/newsbank.%i.log">
 			<PatternLayout pattern="[%d] %-5p- %C{1}.%M(%L) | %m%n" />
 			<Policies>
 				<SizeBasedTriggeringPolicy size="100MB" />
