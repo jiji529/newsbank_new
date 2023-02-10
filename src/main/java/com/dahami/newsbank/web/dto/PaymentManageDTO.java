@@ -321,7 +321,8 @@ public class PaymentManageDTO implements Serializable {
 		double fees;
 		switch (LGD_PAYTYPE) {
 		case "SC0010":
-			fees = 3.2*1.1/100;  //신용카드 수수료 3.2% (VAT 별도)
+			// 변경일자 2023-02-10 강소라 대리님 요청, (기존) 3.2*1.1/100 = 0.0352 > (변경) 3.2*1.1171875/100 = 0.03575
+			fees = 3.2*1.1171875/100;  //신용카드 수수료 3.2% (VAT 별도)
 			LGD_FEES = (int)(AMOUNT*fees);
 			//PAYTYPE = "신용카드";
 			break;
