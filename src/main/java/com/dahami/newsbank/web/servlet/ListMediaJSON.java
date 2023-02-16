@@ -20,10 +20,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.dahami.newsbank.web.dao.MemberDAO;
-import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.ExcelUtil;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 /**
  * Servlet implementation class ListMediaJSON
