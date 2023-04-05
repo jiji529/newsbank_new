@@ -353,7 +353,7 @@
 .call .call_box h3{ width:100%; float:left; text-align:left; font-weight:500; font-size:18px;}
 .call .call_box dl {float:left; width:100%; margin:10px 0 10px;}
 .call .call_box dt {float:left; width:118px; border-bottom:1px #ddd solid; padding:10px; height:55px; line-height:35px; font-size:14px; text-align:left}
-.call .call_box dd{float:left; width:980px; border-bottom:1px #ddd solid; padding:10px; height:55px; }
+.call .call_box dd{float:left; width:1180px; border-bottom:1px #ddd solid; padding:10px; height:55px; }
 .call .call_box dd input { float:left; height:35px; border:1px #e4e4e4 solid; color:#666; padding:0 15px;}
 .call .call_box dd input#commuTitle{width:670px;}
 .call .call_box dd input.num{width:65px;}

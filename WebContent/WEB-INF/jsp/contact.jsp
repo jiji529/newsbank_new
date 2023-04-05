@@ -25,7 +25,7 @@
 
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/sub.css" />
-<link rel="stylesheet" href="css/mypage.css" />
+<link rel="stylesheet" href="css/mypage.css?v=230405" />
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/footer.js"></script>
