@@ -21,6 +21,15 @@ public class Constants {
 	/** 개발/서비스 구분 */
 	private static final boolean IS_SERVICE = true;
 //	private static final boolean IS_SERVICE = false;
+	
+	/** 연동 검색엔진 타입 (searchEngine.searchType) / 마스터 */
+//	public static final String IS_SERVICE_SOLR_TYPE = "MST";
+	/** 연동 검색엔진 타입 / 슬레이브 */
+//	public static final String IS_SERVICE_SOLR_TYPE = "SLV";
+	/** 연동 검색엔진 타입 / 개발용 */
+//	public static final String IS_SERVICE_SOLR_TYPE = "DEV";
+	/** 연동 검색엔진 타입 / 신규엔진 */
+	public static final String IS_SERVICE_SOLR_TYPE = "NEW";
 
 	/** 형태소분석 사용 */
 //	public static final boolean SEARCH_FIELD_MORP = true;

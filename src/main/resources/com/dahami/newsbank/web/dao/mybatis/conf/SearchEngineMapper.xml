@@ -3,9 +3,18 @@
 
 <mapper namespace="searchEngine">
     
-    <select id="listActiveEngine" resultType="java.util.Map">
+    <select id="listActiveEngine" parameterType="java.util.Map" resultType="java.util.Map">
     	select * from searchEngine
-    		where active = 1
+    	<where>
+	    	<if test="searchType != null">
+	    		<if test="searchType == 'MST'">
+	    			AND active = 1 AND searchType = #{searchType}
+	    		</if>
+	    		<if test="searchType != 'MST'">
+	    			searchType = #{searchType}
+	    		</if>
+	    	</if>
+	    </where>
     </select>
 	
 </mapper>

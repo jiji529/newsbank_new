@@ -5,9 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>NewsBank_2017</groupId>
 	<artifactId>NewsBank_2017</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
-	<name>Newsbank 2017</name>
+	<name>Newsbank2017</name>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,7 +57,6 @@
 			<name>Clojars Repository</name>
 			<url>http://clojars.org/repo</url>
 		</repository>
-		
 	</repositories>
 	<dependencies>
 		<dependency>

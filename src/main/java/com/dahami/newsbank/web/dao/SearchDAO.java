@@ -25,7 +25,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -36,15 +35,13 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
-import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.QueryRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.solr.common.params.SolrParams;
 
-import com.dahami.common.util.HttpUtil;
+import com.dahami.common.util.solr.SolrUtil;
 import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -228,7 +225,10 @@ public class SearchDAO extends DAOBase {
 				}
 				
 				SolrDocumentList docList = null;
-				if(res.getResults() != null) {
+				if(res.getMoreLikeThis() != null) {
+					docList = res.getMoreLikeThis().getVal(0);
+				}
+				else if(res.getResults() != null) {
 					docList = res.getResults();
 				}
 				
@@ -244,12 +244,14 @@ public class SearchDAO extends DAOBase {
 					for(SolrDocument doc : docList) {
 						PhotoDTO cur = new PhotoDTO(doc);
 						int ownerNo = cur.getOwnerNo();
-						MemberDTO curMember = memberMap.get(ownerNo);
-						if(curMember != null) {
-							cur.setOwnerName(curMember.getCompName()); // 회사/기관명
-						}
-						else {
-							logger.warn("멤버정보 없음: seq / " + ownerNo);
+						if(ownerNo > 0) {
+							MemberDTO curMember = memberMap.get(ownerNo);
+							if(curMember != null) {
+								cur.setOwnerName(curMember.getCompName()); // 회사/기관명
+							}
+							else {
+								logger.warn("멤버정보 없음: seq / " + ownerNo);
+							}
 						}
 						photoList.add(cur);
 					}
@@ -360,7 +362,7 @@ public class SearchDAO extends DAOBase {
 			}
 			mltQfBuf.append(" morp_description");
 			
-			query.setRequestHandler("/mlt");
+//			query.setRequestHandler("/mlt");
 			if(uciCode.startsWith(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI)) {
 				uciCode = uciCode.substring(PhotoDTO.UCI_ORGAN_CODEPREFIX_DAHAMI.length());
 			}
@@ -406,10 +408,10 @@ public class SearchDAO extends DAOBase {
 			else {
 				logger.debug("keyword: " + keyword);
 				if(Constants.SEARCH_FIELD_MORP) {
-					qBuf.append("_query_:\"{!edismax q.op=AND qf='morp_title morp_description morp_keyword shotperson copyright exif uciCode compCode oldCode'}");
+					qBuf.append("_query_:\"{!edismax q.op=AND qf='morp_title morp_description morp_keyword shotPerson copyright exif uciCode compCode oldCode'}");
 				}
 				else {
-					qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotperson copyright exif uciCode compCode oldCode'}");
+					qBuf.append("_query_:\"{!edismax q.op=AND qf='title description keyword shotPerson copyright exif uciCode compCode oldCode'}");
 				}
 				qBuf.append(normalizeKeywordStr(keyword))
 					.append("\"");
@@ -617,71 +619,18 @@ public class SearchDAO extends DAOBase {
 					synchronized(solrClients) {
 						// 모두 반납됨 / 기존 연결 모두 제거
 						for(SolrClient client : solrClients) {
-							try{client.close();}catch(Exception e){}
+							SolrUtil.closeSolr(client);
 						}
 						solrClients.clear();
 						for(SolrClient client : scvChk.illigalSolrList) {
-							try{client.close();}catch(Exception e){}
+							SolrUtil.closeSolr(client);
 						}
 						scvChk.illigalSolrList.clear();
 						
 						logger.info("(Re)Make SOLR connection: " + befSolrStr);
-						// 연결 새로 생성
-						CloudSolrClient.Builder cloudBuilder = null;
-						if(zkHostList.size() > 0) {
-							cloudBuilder = 
-							// 6.6.x
-//								new CloudSolrClient.Builder().withZkHost(zkHostList)
-							// 7.x
-							new CloudSolrClient.Builder(zkHostList, Optional.empty()).withParallelUpdates(true);
-							
-							cloudBuilder.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId, solrPw));
-						}
-							
-						int solrHostIdx = 0;
 						while(solrClients.size() < poolSize) {
-							if(cloudBuilder != null) {
-								CloudSolrClient solr = cloudBuilder.build();
-								solr.setZkClientTimeout(60000);
-								solr.setZkConnectTimeout(60000);
-								solr.setDefaultCollection(collectionNameNewsbank);
-								// 6.x
-//									solr.setParallelUpdates(true);
-								solr.connect();
-								solrClients.add(solr);
-							}
-							else if(solrHostList.size() > 0) {
-								String addr = solrHostList.get(solrHostIdx++);
-								if(addr == null) {
-									addr = "";
-								}
-								addr = addr.trim();
-								if(!addr.endsWith("/")) {
-									addr += "/";
-								}
-								
-								HttpSolrClient.Builder httpSolrBuilder = new HttpSolrClient.Builder()
-										.withBaseSolrUrl(addr + collectionNameNewsbank)
-										.withHttpClient(HttpUtil.getBasicAuthHttpClient(solrId, solrPw));
-								@SuppressWarnings("serial")
-								HttpSolrClient solr =
-										// 6.x
-//											httpSolrBuilder.build();
-										// 7.x
-										new HttpSolrClient(httpSolrBuilder) {
-											public QueryResponse query(SolrParams params) throws SolrServerException, IOException {
-												return super.query(params, METHOD.POST);
-											}
-										};
-										
-								solrClients.add(solr);
-								if(solrHostIdx >= solrHostList.size()) {
-									solrHostIdx = 0;
-								}
-							}
-							else {
-								break;
-							}
+							SolrClient solr = SolrUtil.makeSolrClient(collectionNameNewsbank, zkHostList, solrHostList, solrId, solrPw);
+							solrClients.add(solr);
 						}
 						
 						// 사용중단 리셋
@@ -704,7 +653,9 @@ public class SearchDAO extends DAOBase {
 			Set<String> retSet = new TreeSet<String>();
 			try {
 				session = sf.getSession();
-				List<Map<String, Object>> engineList = session.selectList("searchEngine.listActiveEngine");
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("searchType", Constants.IS_SERVICE_SOLR_TYPE);
+				List<Map<String, Object>> engineList = session.selectList("searchEngine.listActiveEngine", param);
 				
 				for(Map<String, Object> engine : engineList) {
 					String url = (String) engine.get("url");

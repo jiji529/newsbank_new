@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.converters.IntegerArrayConverter;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.session.SqlSession;
 
 import com.dahami.newsbank.web.dto.CalculationDTO;

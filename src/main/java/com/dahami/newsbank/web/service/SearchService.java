@@ -166,7 +166,8 @@ public class SearchService extends ServiceBase {
 			if(photoList != null && list != null && list.size() > 0) {
 				for(PhotoDTO dto : list){
 					try {
-						if(dto.getOwnerName() == null && dto.getOwnerType().equals("P")) { // 개인소유 사진은 회원명을 소유자로 전달
+						if(dto.getOwnerName() == null 
+								&& dto.getOwnerType() != null && dto.getOwnerType().equals("P")) { // 개인소유 사진은 회원명을 소유자로 전달
 							MemberDAO memberDAO = new MemberDAO();
 							MemberDTO memberDTO = memberDAO.getMember(dto.getOwnerNo());
 							dto.setOwnerName(memberDTO.getName());
