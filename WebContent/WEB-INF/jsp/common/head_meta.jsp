@@ -24,4 +24,5 @@
         <c:if test='${URL!="/index.jsp"}'>
         	<meta name="robots" content="noindex">
         </c:if>
-        <link rel="SHORTCUT ICON" href="https://www.newsbank.co.kr/images/newsbank_favicon2.ico">          
+        <link rel="SHORTCUT ICON" href="https://www.newsbank.co.kr/images/newsbank_favicon2.ico">  
+        <jsp:include page="./google_analytics.jsp"></jsp:include>        
