@@ -43,7 +43,7 @@
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/jquery-ui-1.12.1.min.js"></script>
 <script src="js/jquery.twbsPagination.js"></script>
-<script src="js/admin.js?v=20180906"></script>
+<script src="js/admin.js?v=20230801"></script>
 
 <script src="js/filter.js"></script>
 <script type="text/javascript">
