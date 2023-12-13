@@ -789,8 +789,9 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 	}
 	
 	$("#currentKeyword").val(keyword);
-	if(pathName=="download") {
-		$("#pageVol").val(parseInt($('#totalCnt').text()));
+	if(pathName=="download" || pathName=="buylist") {
+		var totalCnt = parseInt($('#totalCnt').text().replace(/,/g, ""));
+		$("#pageVol").val(totalCnt);
 	} else {		
 		$("#pageVol").val(1000);		
 	}
