@@ -69,6 +69,12 @@
 						<li>
 							<a href="http://www.t-paper.co.kr/" target="_blank">티페이퍼</a>
 						</li>
+						<li>
+							<a href="http://www.news-plaza.co.kr/" target="_blank">뉴스플라자</a>
+						</li>
+						<li>
+							<a href="http://ndpt.dahami.com/" target="_blank">NDPT</a>
+						</li>
 					</ul>
 				</div>
 			</div>
