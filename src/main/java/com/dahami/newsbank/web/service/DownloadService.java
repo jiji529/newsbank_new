@@ -23,13 +23,10 @@ import java.awt.GraphicsEnvironment;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,16 +41,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.ImageWriteException;
+//import org.apache.commons.imaging.ImageReadException;
+//import org.apache.commons.imaging.ImageWriteException;
 import org.apache.commons.imaging.Imaging;
+import org.apache.commons.imaging.ImagingException;
 import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.exif.ExifRewriter;
 import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
-import org.apache.commons.imaging.formats.tiff.fieldtypes.FieldType;
+import org.apache.commons.imaging.formats.tiff.fieldtypes.AbstractFieldType;
+//import org.apache.commons.imaging.formats.tiff.fieldtypes.FieldType;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputField;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
@@ -866,7 +865,7 @@ public class DownloadService extends ServiceBase {
 				exifDir.removeField(uniqueId.tagInfo);
 			}
 			byte[] idByte = id.getBytes("UTF-8");
-			uniqueId = new TiffOutputField(ExifTagConstants.EXIF_TAG_IMAGE_UNIQUE_ID, FieldType.ASCII, idByte.length, idByte);
+			uniqueId = new TiffOutputField(ExifTagConstants.EXIF_TAG_IMAGE_UNIQUE_ID, AbstractFieldType.ASCII, idByte.length, idByte);
 			exifDir.add(uniqueId);
 
 			String msg = DAHAMI_DIST_HEADER_STRING + serviceName + "(" + id + ")";
@@ -892,7 +891,7 @@ public class DownloadService extends ServiceBase {
 				rootDir.removeField(copyright.tagInfo);
 			}
 			byte[] msgByte = msg.getBytes("UTF-8");
-			copyright = new TiffOutputField(TiffTagConstants.TIFF_TAG_COPYRIGHT, FieldType.ASCII, msgByte.length, msgByte);
+			copyright = new TiffOutputField(TiffTagConstants.TIFF_TAG_COPYRIGHT, AbstractFieldType.ASCII, msgByte.length, msgByte);
 			rootDir.add(copyright);
 			FileInputStream fis = null;
 			FileOutputStream fos = null;
@@ -913,7 +912,7 @@ public class DownloadService extends ServiceBase {
 			}
 			FileUtil.delete(fd);
 			return true;
-		} catch (ImageWriteException | ImageReadException | IOException e) {
+		} catch (ImagingException e) {
 			logger.warn("", e);
 		} catch(Exception e) {
 			logger.warn("", e);

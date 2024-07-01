@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>NewsBank_2017</groupId>
-	<artifactId>NewsBank_2017</artifactId>
+	<groupId>com.dahami.newsbank</groupId>
+	<artifactId>newsbank_web</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
-	<name>Newsbank2017</name>
+	<name>Newsbank_Web</name>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,6 +40,13 @@
 		</plugins>
 	</build>
 	<repositories>
+		<!-- dahami repository Nexus3 -->
+		<repository>
+			<id>dahami-repository</id>
+			<name>dahami-repository</name>
+				<url>https://dev-nexus.scrapmaster.co.kr/repository/dahami-repo-release/</url>
+		</repository>
+		
 		<repository>
 			<id>apache.snapshots</id>
 			<name>Apache Development Snapshot Repository</name>
@@ -52,18 +59,39 @@
 			</snapshots>
 		</repository>  
 		
+		<!-- FOR net.f5 » steganography » 0.5.0 -->
 		<repository>
 			<id>clojars</id>
 			<name>Clojars Repository</name>
-			<url>http://clojars.org/repo</url>
+			<url>https://repo.clojars.org/</url>
 		</repository>
+
 	</repositories>
 	<dependencies>
 		<dependency>
-  			<groupId>com.dahami</groupId>
-  			<artifactId>newsbankCommon</artifactId>
-  			<version>1.0.0</version>
+  			<groupId>com.dahami.newsbank</groupId>
+  			<artifactId>common.newsbank</artifactId>
+  			<version>1.0.1</version>
   		</dependency>
+
+		<dependency>
+			<groupId>com.dahami.newsbank.thirdparty</groupId>
+			<artifactId>lgdacom.xpayclient</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<!-- 결제모듈 참조 라이브러리 -->
+		<dependency>
+		    <groupId>commons-httpclient</groupId>
+		    <artifactId>commons-httpclient</artifactId>
+		    <version>3.1</version>
+		    <exclusions>
+		    	<exclusion>
+		    		<artifactId>commons-codec</artifactId>
+		    		<groupId>commons-codec</groupId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
 
 		<!-- JSTL -->
 		<dependency>
@@ -89,9 +117,6 @@
 <!-- 			<version>0.97-incubator</version> -->
 <!-- 		</dependency> -->
 <!-- 아래껄로 대체 -->
-
-		
-		
 		
 		<!--  이미지 처리 네이티브  jar 추가를 위해 추가함 -->
   		
@@ -119,19 +144,6 @@
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>
 		    <version>2.8.5</version>
-		</dependency>
-
-		<!-- 결제모듈 참조 라이브러리 -->
-		<dependency>
-		    <groupId>commons-httpclient</groupId>
-		    <artifactId>commons-httpclient</artifactId>
-		    <version>3.1</version>
-		    <exclusions>
-		    	<exclusion>
-		    		<artifactId>commons-codec</artifactId>
-		    		<groupId>commons-codec</groupId>
-		    	</exclusion>
-		    </exclusions>
 		</dependency>
 
 		<!-- 엑셀 업로드 관련 라이브러리 -->
