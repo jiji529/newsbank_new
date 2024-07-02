@@ -1,4 +1,4 @@
-FROM tomcat:10.1-jdk17-temurin
+FROM tomcat:9.0.69-jre17-temurin
 
 # 환경변수 설정
 ENV LANG='ko_KR.UTF-8' LANGUAGE='ko_KR.UTF-8' LC_ALL='ko_KR.UTF-8' TZ='Asia/Seoul' DEBIAN_FRONTEND='noninteractive'

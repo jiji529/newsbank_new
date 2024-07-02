@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dahami.newsbank</groupId>
 	<artifactId>newsbank_web</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<packaging>war</packaging>
 	<name>Newsbank_Web</name>
 	
