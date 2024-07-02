@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dahami.newsbank</groupId>
 	<artifactId>newsbank_web</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>war</packaging>
 	<name>Newsbank_Web</name>
 	
@@ -84,6 +84,14 @@
 					</tags>
 				</configuration>
 			</plugin>			
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <warName>${project.artifactId}-${project.version}</warName>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 	<repositories>
