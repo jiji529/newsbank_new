@@ -20,7 +20,7 @@
         <meta name="twitter:description" content="언론사 보도사진 통합 라이브러리 뉴스뱅크 | 스톡사진 스톡이미지 사진판매 역사사진 근현대사 인물사진 사진박물관 press photo" />
 
         <meta name="google-site-verification" content="ISt8j978EDEd7T6BGyffD3ZmHinjD8GojKpX74FmRVU" />
-        <meta name="naver-site-verification" content="fec92bb31ce9d47a98c8ad565560618e261813d3" />
+        <meta name="naver-site-verification" content="4dbebe344ed878162a51f7268781126dad69ced7" />
         <c:if test='${URL!="/index.jsp"}'>
         	<meta name="robots" content="noindex">
         </c:if>
