@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                                                        
+                                                                    
+    
+    
+    
     
     
     
@@ -13,7 +16,10 @@
     
     
     <wb-module deploy-name="/">
-                                                                                                                
+                                                                                                                                        
+        
+        
+        
         
         
         
@@ -27,7 +33,10 @@
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-                                                                                                                
+                                                                                                                                        
+        
+        
+        
         
         
         
@@ -41,40 +50,6 @@
         
         
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-                                                                                        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-                                                                                        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <dependent-module archiveName="com.dahami.api.solrCommon-1.0.18.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/api_solrcommon/api_solrcommon">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="com.dahami.common.util-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/common.util/common.util">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="com.dahami.search.solr.analyzer-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/com.dahami.search.solr.analyzer/com.dahami.search.solr.analyzer">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="com.dahami.api.solrCommon.query-1.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/api_solrcommon_query/api_solrcommon_query">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
                                                                                                                 
         
         
@@ -88,8 +63,45 @@
         
         
         
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+                                                                                                                
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <dependent-module archiveName="common.newsbank-1.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/newsbank_common/newsbank_common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+                                                                                                                                        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <property name="java-output-path" value="/NewsBank_2017/build/classes"/>
-                                                                                        
+                                                                                                                
+        
+        
+        
         
         
         
@@ -100,7 +112,10 @@
         
         
         <property name="context-root" value="/"/>
-                                                                                                            
+                                                                                                                                    
+    
+    
+    
     
     
     
@@ -114,7 +129,10 @@
     
     
     </wb-module>
-                                                    
+                                                                
+
+
+
 
 
 

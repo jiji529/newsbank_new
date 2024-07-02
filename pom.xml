@@ -15,6 +15,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.war.version>3.3.1</maven.war.version>
+		<maven.source.version>3.3.0</maven.source.version>		
+		<maven.javadoc.version>3.6.2</maven.javadoc.version>		
 	</properties>
 	
 	<build>
@@ -37,6 +39,51 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven.source.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+    			<configuration>
+					<locale>ko_kr</locale>
+					<encoding>utf-8</encoding>
+					<doclint>none</doclint>
+<!--					<doclint>all,-missing</doclint>-->
+					<failOnError>false</failOnError>
+					<tags>
+						<tag>
+							<name>date</name>
+							<placement>a</placement>
+							<head>Create Date</head>
+						</tag>
+						<tag>
+							<name>mAuthor</name>
+							<placement>a</placement>
+							<head>Method Creator</head>
+						</tag>
+					</tags>
+				</configuration>
+			</plugin>			
 		</plugins>
 	</build>
 	<repositories>

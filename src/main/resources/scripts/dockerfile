@@ -1,0 +1,23 @@
+FROM tomcat:10.1-jdk17-temurin
+
+# 환경변수 설정
+ENV LANG='ko_KR.UTF-8' LANGUAGE='ko_KR.UTF-8' LC_ALL='ko_KR.UTF-8' TZ='Asia/Seoul' DEBIAN_FRONTEND='noninteractive'
+
+# 추가 설치해야하는 내용
+RUN apt-get update \
+&& apt-get install -y --no-install-recommends tzdata ca-certificates fontconfig locales \
+&& apt-get install -y curl \
+&& apt-get install -y wget \
+&& apt-get install -y procps \
+#&& apt-get install -y vi; \ # 설치 안됨 / 제거 20240408
+&& apt-get install -y vim \
+&& apt-get install -y dnsutils \
+&& apt-get install -y iputils-ping \
+&& apt-get install -y net-tools \
+&& apt-get install -y htop \
+&& echo "ko_KR.UTF-8 UTF-8" >> /etc/locale.gen \
+&& locale-gen ko_KR.UTF-8 \
+&& rm -rf /var/lib/apt/lists/*
+
+ENV TZ=Asia/Seoul
+COPY ./${POM_ARTIFACTID}-${TAG_NAME}.war /usr/local/tomcat/webapps/ROOT.war

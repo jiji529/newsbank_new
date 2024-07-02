@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-newsbank
+  labels:
+    app: web-newsbank
+
+spec:
+  # 업데이트 전략 지정 
+  strategy: 
+    # 업데이트 전략 지정 (종류는 RollingUpdate (지정한 개수만큼의 파드를 죽이고, 새로 만드는 전략) / Recreate (기존파드 모두 삭제후 진행하는 전략) 2가지) 
+    type: RollingUpdate 
+    rollingUpdate: 
+      # 업데이트 완료시까지 이용불가능하게 만들 개수 ( terminating 할 개수를 뜻한다.  /  % 로 비율 지정도 가능)
+      # (0이면 완전 업데이트되기 전까지 다 살아있는다)  
+      maxUnavailable: 0 
+      # 신규 파드를 몇개씩 만들어낼지 개수 ( 신규 파드 생성단위 / %로 비율 지정도 가능 ) 
+      maxSurge: 2
+  # 파드(들 / maxSurge 단위) 시작 후 다음 파드(들) 시작 전까지 대기시간(설정하지 않으면 디폴트는 0초 )
+  # readinessProbe 최초 통과 후 해당 시간 대기 후 다음파드 생성&기존파트 제거 작업 시작함 
+  minReadySeconds: 5
+  
+  # 생성할 레플리카 순서 / 변경시 기존 레플리카셋의 숫자도 맞춘다
+  # EX. 1에서 4 변경시 기존 레플리카셋도 4개의 파드로 구성하고, 신규 파드도 4개를 구성한 뒤 기존 파드 제거함(신규파드 문제 없을 시) 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-newsbank
+  template:
+    metadata:
+      labels:
+        app: web-newsbank
+    spec:
+      # 위치시킬 노드 정의
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              # 쉐프 디스크가 있는 노드
+              - key: ceph
+                operator: Exists
+              # 서비스용 노드
+              - key: purpose
+                operator: In
+                values:
+                  - service
+      containers:
+      - name: web-newsbank
+        image: dev-nexus-docker.scrapmaster.co.kr/${TAG_ARTIFACTID}:${TAG_NAME}
+        imagePullPolicy: Always
+        env:
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: DEPLOY_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['app']
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: POD_SERVICE_ACCOUNT
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.serviceAccountName
+          # JENKINS에서 K8S 배포시마다 현재시간을 타임스템프로 입력하여 kubectl이 yaml 파일이 수정된 것으로 인식하도록 함 
+          - name: APPLY_TIMESTAMP
+            value: "${APPLY_TIMESTAMP}"
+        ports:
+           - containerPort: 8080             
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-newsbank
+spec:
+  type: ClusterIP
+  selector:
+    app: web-newsbank
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
