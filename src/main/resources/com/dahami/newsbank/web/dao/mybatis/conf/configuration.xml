@@ -19,6 +19,21 @@
 			</dataSource>
 		</environment>
 		
+		<environment id="service-nyt">             
+			<transactionManager type="JDBC" />             
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.cj.jdbc.Driver" />                 
+				<property name="url" value="jdbc:mysql://1.255.6.40/newsbank_nyt?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Seoul&amp;useSSL=false" />
+				<property name="username" value="newsDev" />                 
+				<property name="password" value="ekgkal4174@" />
+				<property name="poolMaximumActiveConnections" value="5"/> 
+                <property name="poolMaximumIdleConnections" value="1"/> 
+                <property name="poolPingQuery" value="select 1"/>
+                <property name="poolPingEnabled" value="true"/>
+ 				<property name="poolPingConnectionsNotUsedFor" value="60000"/>
+			</dataSource>
+		</environment>		
+		
 		<environment id="dev">             
 			<transactionManager type="JDBC" />             
 			<dataSource type="POOLED">

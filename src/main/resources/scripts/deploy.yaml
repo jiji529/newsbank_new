@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-newsbank
+  name: ${TAG_ARTIFACTID}
   labels:
-    app: web-newsbank
+    app: ${TAG_ARTIFACTID}
 
 spec:
   # 업데이트 전략 지정 
@@ -25,11 +25,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web-newsbank
+      app: ${TAG_ARTIFACTID}
   template:
     metadata:
       labels:
-        app: web-newsbank
+        app: ${TAG_ARTIFACTID}
     spec:
       # 위치시킬 노드 정의
       affinity:
@@ -46,7 +46,7 @@ spec:
                 values:
                   - service
       containers:
-      - name: web-newsbank
+      - name: ${TAG_ARTIFACTID}
         image: dev-nexus-docker.scrapmaster.co.kr/${TAG_ARTIFACTID}:${TAG_NAME}
         imagePullPolicy: Always
         env:
@@ -83,11 +83,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-newsbank
+  name: ${TAG_ARTIFACTID}
 spec:
   type: ClusterIP
   selector:
-    app: web-newsbank
+    app: ${TAG_ARTIFACTID}
   ports:
   - name: http
     port: 80

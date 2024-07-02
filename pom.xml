@@ -4,10 +4,10 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dahami.newsbank</groupId>
-	<artifactId>newsbank_web</artifactId>
-	<version>1.0.2</version>
+	<artifactId>newsbank-web</artifactId>
+	<version>1.0.3</version>
 	<packaging>war</packaging>
-	<name>Newsbank_Web</name>
+	<name>newsbank-web</name>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

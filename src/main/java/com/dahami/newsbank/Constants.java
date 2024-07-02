@@ -20,6 +20,8 @@ public class Constants {
 
 	/** 개발/서비스 구분 */
 	private static final boolean IS_SERVICE = true;
+	/** 뉴스뱅크/뉴욕타임즈 뉴스뱅크 구분 */
+	private static final boolean IS_NYT = false;
 //	private static final boolean IS_SERVICE = false;
 	
 	/** 연동 검색엔진 타입 (searchEngine.searchType) / 마스터 */
@@ -57,9 +59,15 @@ public class Constants {
 	
 	static {
 		if(IS_SERVICE) {
-			TARGET_DB = "service";
-			TARGET_SOLR_ADDR_SUFFIX_PARAM = "_REAL";
-			TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_REAL";
+			if(IS_NYT) {
+				TARGET_DB = "service-nyt";
+				TARGET_SOLR_ADDR_SUFFIX_PARAM = "_REAL";
+				TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_REAL";
+			} else {
+				TARGET_DB = "service";
+				TARGET_SOLR_ADDR_SUFFIX_PARAM = "_REAL";
+				TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_REAL";				
+			}
 		}
 		else {
 			TARGET_DB = "dev";
