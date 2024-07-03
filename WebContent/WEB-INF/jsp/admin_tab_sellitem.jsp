@@ -148,10 +148,10 @@
 					html += '<td>' + val.regDate + '</td>';
 					html += '<td>' + val.name + '\n(' + val.id + ')</td>';
 					html += '<td>' + val.compName + '</td>';
-					//html += '<td><img src="https://www.newsbank.co.kr/list.down.photo?uciCode=' + val.uciCode + '" style="max-width: 100px;"></td>';
+					//html += '<td><img src="/list.down.photo?uciCode=' + val.uciCode + '" style="max-width: 100px;"></td>';
 					// 매체사의 승인, 탈퇴여부에 따른 uciCode 하이퍼링크 활성/비활성 표시
 					if(val.withdraw == 0 && val.admission == "Y") { 
-						html += '<td><img src="https://www.newsbank.co.kr/list.down.photo?uciCode=' + val.uciCode + '" style="max-width: 70px;">'; // 썸네일 이미지
+						html += '<td><img src="/list.down.photo?uciCode=' + val.uciCode + '" style="max-width: 70px;">'; // 썸네일 이미지
 						html += '<br/><a href="/view.photo?uciCode=' + val.uciCode + '" target="_blank">' + val.uciCode + '</a></td>'; // uciCode
 						
 						//html += '<td><a href="/view.photo?uciCode=' + val.uciCode + '" target="_blank">' + val.uciCode + '</a></td>';	

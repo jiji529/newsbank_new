@@ -945,7 +945,7 @@ $(document).ready(function() {
 						var added_tax = Math.round(billing_amount * 0.1); // 과세부가세
 						var customs_value = Math.round(billing_amount * 0.9); // 과세금액
 						var billing_tax = 0; // 빌링수수료
-						var image_url = "https://www.newsbank.co.kr/list.down.photo?uciCode=" + value.photo_uciCode;
+						var image_url = "/list.down.photo?uciCode=" + value.photo_uciCode;
 
 						var rate = value.rate;
 						var PAYTYPE = "";

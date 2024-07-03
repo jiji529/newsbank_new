@@ -323,14 +323,14 @@ if(errMsg != null && errMsg.length() > 0) {
 					<div id="download_area" class="ug-gallery-wrapper ug-theme-tiles" style="max-width: 1218px; min-width: 150px; overflow: visible; height: auto; width: auto;">
 	<div class="ug-tiles-wrapper ug-tiletype-justified ug-tiles-transit ug-tiles-rest-mode" style="position: relative; height: 502px;">
 	<a class="ug-thumb-wrapper ug-tile ug-tile-clickable" style="background-color: rgb(240, 240, 240); box-shadow: rgb(139, 139, 139) 1px 1px 3px 2px; display: block; opacity: 1; width: 424px; height: 244px; position: absolute; margin: 0px; left: 0px; top: 0px; pointer-events: auto;">
-	<img src="https://www.newsbank.co.kr/list.down.photo?uciCode=I011-M001029428&dummy=dtSxbXplUBjLkmeA3RP53g%3D%3D" alt="image_0" class="ug-thumb-image ug-trans-enabled" style="width: 424px; height: 244px; left: 0px; top: 0px;">
+	<img src="/list.down.photo?uciCode=I011-M001029428&dummy=dtSxbXplUBjLkmeA3RP53g%3D%3D" alt="image_0" class="ug-thumb-image ug-trans-enabled" style="width: 424px; height: 244px; left: 0px; top: 0px;">
 	</a>
 	<a class="ug-thumb-wrapper ug-tile ug-tile-clickable" style="background-color: rgb(240, 240, 240); box-shadow: rgb(139, 139, 139) 1px 1px 3px 2px; display: block; opacity: 1; width: 162px; height: 244px; position: absolute; margin: 0px; left: 434px; top: 0px; pointer-events: auto;">
-	<img src="https://www.newsbank.co.kr/list.down.photo?uciCode=I011-M000347118&dummy=tCQV4ANhTxNqFquf58TyNA%3D%3D" alt="image_1" class="ug-thumb-image ug-trans-enabled" style="width: 163px; height: 244px; left: 0px; top: 0px;"></a>
+	<img src="/list.down.photo?uciCode=I011-M000347118&dummy=tCQV4ANhTxNqFquf58TyNA%3D%3D" alt="image_1" class="ug-thumb-image ug-trans-enabled" style="width: 163px; height: 244px; left: 0px; top: 0px;"></a>
 	<a class="ug-thumb-wrapper ug-tile ug-tile-clickable" style="background-color: rgb(240, 240, 240); box-shadow: rgb(139, 139, 139) 1px 1px 3px 2px; display: block; opacity: 1; width: 203px; height: 244px; position: absolute; margin: 0px; left: 606px; top: 0px; pointer-events: auto;">
-	<img src="https://www.newsbank.co.kr/list.down.photo?uciCode=I011-M006740191&dummy=Vf5bjgASR4Y2OlIoSsTY4g%3D%3D" alt="image_2" class="ug-thumb-image ug-trans-enabled" style="width: 204px; height: 244px; left: 0px; top: 0px;"></a>
+	<img src="/list.down.photo?uciCode=I011-M006740191&dummy=Vf5bjgASR4Y2OlIoSsTY4g%3D%3D" alt="image_2" class="ug-thumb-image ug-trans-enabled" style="width: 204px; height: 244px; left: 0px; top: 0px;"></a>
 	<a class="ug-thumb-wrapper ug-tile ug-tile-clickable" style="background-color: rgb(240, 240, 240); box-shadow: rgb(139, 139, 139) 1px 1px 3px 2px; display: block; opacity: 1; width: 399px; height: 244px; position: absolute; margin: 0px; left: 819px; top: 0px; pointer-events: auto;">
-	<img src="https://www.newsbank.co.kr/list.down.photo?uciCode=I011-M002882209&dummy=nYMoxwhGkAlacS1SFVt4eQ%3D%3D" alt="image_3" class="ug-thumb-image ug-trans-enabled" style="width: 400px; height: 244px; left: 0px; top: 0px;"></a></div>
+	<img src="/list.down.photo?uciCode=I011-M002882209&dummy=nYMoxwhGkAlacS1SFVt4eQ%3D%3D" alt="image_3" class="ug-thumb-image ug-trans-enabled" style="width: 400px; height: 244px; left: 0px; top: 0px;"></a></div>
 </div>
 							
 				</div>

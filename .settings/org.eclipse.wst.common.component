@@ -15,7 +15,7 @@
     
     
     
-    <wb-module deploy-name="/">
+    <wb-module deploy-name="newsbank-web-1.0.3">
                                                                                                                                         
         
         
@@ -98,20 +98,7 @@
         
         
         <property name="java-output-path" value="/NewsBank_2017/build/classes"/>
-                                                                                                                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <property name="context-root" value="/"/>
+        <property name="context-root" value="newsbank-web"/>
                                                                                                                                     
     
     
