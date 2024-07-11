@@ -21,7 +21,7 @@ public class Constants {
 	/** 개발/서비스 구분 */
 	private static final boolean IS_SERVICE = true;
 	/** 뉴스뱅크/뉴욕타임즈 뉴스뱅크 구분 */
-	private static final boolean IS_NYT = false;
+	public static final boolean IS_NYT = Boolean.parseBoolean(System.getProperty("IS_NYT", "true"));
 //	private static final boolean IS_SERVICE = false;
 	
 	/** 연동 검색엔진 타입 (searchEngine.searchType) / 마스터 */

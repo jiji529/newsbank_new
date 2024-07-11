@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
@@ -47,7 +48,12 @@ public class PriceInfo extends NewsbankServletBase {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/price_info.jsp");
-		dispatcher.forward(request, response);
+		if(Constants.IS_NYT == false) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/price_info.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/nyt/price_info.jsp");
+			dispatcher.forward(request, response);			
+		}
 	}
 }

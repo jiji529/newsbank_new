@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${TAG_ARTIFACTID}
+  name: ${TAG_ARTIFACTID}-${IS_NYT_NAME}
   labels:
-    app: ${TAG_ARTIFACTID}
+    app: ${TAG_ARTIFACTID}-${IS_NYT_NAME}
 
 spec:
   # 업데이트 전략 지정 
@@ -25,11 +25,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ${TAG_ARTIFACTID}
+      app: ${TAG_ARTIFACTID}-${IS_NYT_NAME}
   template:
     metadata:
       labels:
-        app: ${TAG_ARTIFACTID}
+        app: ${TAG_ARTIFACTID}-${IS_NYT_NAME}
     spec:
       # 위치시킬 노드 정의
       affinity:
@@ -49,6 +49,8 @@ spec:
       - name: ${TAG_ARTIFACTID}
         image: dev-nexus-docker.scrapmaster.co.kr/${TAG_ARTIFACTID}:${TAG_NAME}
         imagePullPolicy: Always
+        command: ["/bin/sh"]
+        args: ["-c", "catalina.sh run"]        
         env:
           - name: NODE_NAME
             valueFrom:
@@ -77,17 +79,19 @@ spec:
           # JENKINS에서 K8S 배포시마다 현재시간을 타임스템프로 입력하여 kubectl이 yaml 파일이 수정된 것으로 인식하도록 함 
           - name: APPLY_TIMESTAMP
             value: "${APPLY_TIMESTAMP}"
+          - name: CATALINA_OPTS
+            value: "-DIS_NYT=${IS_NYT}"            
         ports:
            - containerPort: 8080             
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ${TAG_ARTIFACTID}
+  name: ${TAG_ARTIFACTID}-${IS_NYT_NAME}
 spec:
   type: ClusterIP
   selector:
-    app: ${TAG_ARTIFACTID}
+    app: ${TAG_ARTIFACTID}-${IS_NYT_NAME}
   ports:
   - name: http
     port: 80

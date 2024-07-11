@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
+import com.dahami.newsbank.Constants;
 
 /**
  * Servlet implementation class Contact
@@ -48,7 +49,12 @@ public class Contact extends NewsbankServletBase {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/contact.jsp");
-		dispatcher.forward(request, response);
+		if(Constants.IS_NYT == false) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/contact.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/nyt/contact.jsp");
+			dispatcher.forward(request, response);			
+		}
 	}
 }

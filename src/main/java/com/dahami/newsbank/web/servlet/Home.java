@@ -24,6 +24,7 @@ import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
+import com.dahami.newsbank.Constants;
 
 @WebServlet(urlPatterns = { "/index.jsp" , "/home", "*.home" }, loadOnStartup = 1)
 public class Home extends NewsbankServletBase {
@@ -61,43 +62,49 @@ public class Home extends NewsbankServletBase {
 		if (MemberInfo != null) {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("start", 0); // 시작 인덱스
-		params.put("count", 7); // 카운트
 		
-		PhotoDAO photoDAO = new PhotoDAO();
-		List<PhotoDTO> photoList = photoDAO.editorPhotoList(); // 보도사진		
-		
-		// 다운로드와 찜은 7개가 될때까지 쿼리를 1개월씩 늘려가며 최대 6개월까지 제한하여 찾아준다.	
-		List<PhotoDTO> downloadList = new ArrayList<PhotoDTO>();
-		for(int i=-1; i>=-6; i--) {
-			params.put("monthDate", i);
-			downloadList = photoDAO.downloadPhotoList(params); // 다운로드
-			if(downloadList.size()>=7) {
-				break;
+		if(Constants.IS_NYT == false) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("start", 0); // 시작 인덱스
+			params.put("count", 7); // 카운트
+			
+			PhotoDAO photoDAO = new PhotoDAO();
+			List<PhotoDTO> photoList = photoDAO.editorPhotoList(); // 보도사진		
+			
+			// 다운로드와 찜은 7개가 될때까지 쿼리를 1개월씩 늘려가며 최대 6개월까지 제한하여 찾아준다.	
+			List<PhotoDTO> downloadList = new ArrayList<PhotoDTO>();
+			for(int i=-1; i>=-6; i--) {
+				params.put("monthDate", i);
+				downloadList = photoDAO.downloadPhotoList(params); // 다운로드
+				if(downloadList.size()>=7) {
+					break;
+				}
 			}
-		}
-		List<PhotoDTO> basketList = new ArrayList<PhotoDTO>();
-		for(int i=-1; i>=-6; i--) {
-			params.put("monthDate", i);
-			basketList = photoDAO.basketPhotoList(params); // 찜
-			if(basketList.size()>=7) {
-				break;
+			List<PhotoDTO> basketList = new ArrayList<PhotoDTO>();
+			for(int i=-1; i>=-6; i--) {
+				params.put("monthDate", i);
+				basketList = photoDAO.basketPhotoList(params); // 찜
+				if(basketList.size()>=7) {
+					break;
+				}
 			}
+			
+			List<PhotoDTO> hitsList = photoDAO.hitsPhotoList(params); // 상세보기
+			
+			MemberDAO memberDAO = new MemberDAO();
+			List<MemberDTO> mediaList = memberDAO.listActiveMedia();
+			
+			request.setAttribute("photoList", photoList);
+			request.setAttribute("downloadList", downloadList);
+			request.setAttribute("basketList", basketList);
+			request.setAttribute("hitsList", hitsList);
+			request.setAttribute("mediaList", mediaList);
+	
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
+			dispatcher.forward(request, response);		
+		} else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/nyt/home.jsp");
+			dispatcher.forward(request, response);
 		}
-		
-		List<PhotoDTO> hitsList = photoDAO.hitsPhotoList(params); // 상세보기
-		
-		MemberDAO memberDAO = new MemberDAO();
-		List<MemberDTO> mediaList = memberDAO.listActiveMedia();
-		
-		request.setAttribute("photoList", photoList);
-		request.setAttribute("downloadList", downloadList);
-		request.setAttribute("basketList", basketList);
-		request.setAttribute("hitsList", hitsList);
-		request.setAttribute("mediaList", mediaList);
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
-		dispatcher.forward(request, response);
 	}
 }

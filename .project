@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>newsbank_web</name>
+	<name>newsbank_web-nyt</name>
 	<comment></comment>
 	<projects>
 		<project>API_SolrCommon</project>
