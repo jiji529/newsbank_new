@@ -69,7 +69,7 @@
 		                <div class="overlay"></div>
 		                <div class="main_bg"></div>
 		                <div class="main_tit">
-		                    <h2>NYT 뉴스뱅크 (Newyorktimes newsbank)</h2>
+		                    <h2>NYT NewsBank (NewYorkTimes NewsBank)</h2>
 		                    <p>미국의 대표일간지 뉴욕타임스의 사진을 뉴스뱅크에서도 만나볼 수 있습니다.</p>
 		                    <div class="search main_search">
 		                        <form class="search_form">
@@ -96,8 +96,8 @@
 		            </section>
 		            <section class="photo">
 		                <div class="center">
-		                    <h2>NYT 뉴스뱅크가 엄선한 사진</h2>
-		                    <p>NYT의 저명한 사진작가들이 전세계 곳곳을 누비며 생생한 현장을 담고 있습니다.</p>
+		                    <h2>뉴욕타임스 뉴스뱅크가 엄선한 사진</h2>
+		                    <p>뉴욕타임스의 저명한 사진작가들이 전세계 곳곳을 누비며 생생한 현장을 담고 있습니다.</p>
 		                    <div class="photo_cont">
 		                        <div class="img_list"><a href="#"><img src="images/nyt/main/ex0.webp" /></a></div>
 		                        <div class="img_list"><a href="#"><img src="images/nyt/main/ex4.webp" /></a></div>
@@ -111,10 +111,10 @@
 		            <section class="service">
 		                <div class="center">
 		                    <div class="serv_txt">
-		                        <h2>NYT 뉴스뱅크 서비스 소개</h2>
-		                        <p>다하미의 NYT 뉴스뱅크는 국내 최초 뉴욕타임스 보도사진 아카이브입니다.<br>
-		                            전세계의 가장 빠르고 현장감 있는 뉴욕타임스의 보도사진을<br>
-		                            NYT 뉴스뱅크에서 만나 볼 수 있습니다.</p>
+		                        <h2>뉴욕타임스 뉴스뱅크 서비스 소개</h2>
+                        <p>다하미의 뉴욕타임스 뉴스뱅크는 국내 최초 뉴욕타임스 보도사진 아카이브입니다.<br>
+                            전세계의 가장 빠르고 현장감 있는 뉴욕타임스의 보도사진을<br>
+                            뉴욕타임스 뉴스뱅크에서 만나 볼 수 있습니다.</p>
 		                    </div>
 		                </div>
 		            </section>
@@ -141,7 +141,7 @@
 		                    </dl>
 		                </div>
 		                <div class="foot_rt">
-		                    <div id="family_site">
+		                    <div id="family_site" data-click-state="0" onclick="family_site_open()">
 		                        <div id="select-title">Family site</div>
 		                        <div id="select-layer" style="display: none;">
 		                            <ul class="site-list">
@@ -170,7 +170,7 @@
 		
 		<head>
 		    <meta charset="UTF-8">
-		    <title>NYT 뉴스뱅크</title>
+		    <title>NYT NewsBank</title>
 		    <link rel="stylesheet" href="css/nyt/reset.css" />
 		    <link rel="stylesheet" href="css/nyt/base.css" />
 		    <link rel="stylesheet" href="css/nyt/main.css" />
@@ -187,17 +187,17 @@
 		                    </svg></a>
 		               <a href="https://www.newsbank.co.kr/" target="_blank" class="logo"></a>
 		                <ul class="gnb_left">
-		                    <li><a href="#">아카이브</a></li>
+		                    <li><a href="#">Archive</a></li>
 		                </ul>
 		                <ul class="gnb_right">
-		                    <li><a href="/price.info">이용안내</a></li>
-		                    <li><a href="#">로그인</a></li>
-		                    <li><a href="#">가입하기</a></li>
+		                    <li><a href="/price.info">Information</a></li>
+		                    <li><a href="#">Log In</a></li>
+		                    <li><a href="#">Join</a></li>
 		                </ul>
 		            </div>
 		
 		            <div class="lang">
-		                <a href="javascript:void(0)">언어</a>
+		                <a href="javascript:void(0)">Language</a>
 		                <ul>
 		                    <li class="" onclick="languageChange('KR')">KR</li>
 		                    <li class="on" onclick="languageChange('EN')">EN</li>
@@ -210,22 +210,22 @@
 		                <div class="overlay"></div>
 		                <div class="main_bg"></div>
 		                <div class="main_tit">
-		                    <h2>NYT 뉴스뱅크 (Newyorktimes newsbank)</h2>
-		                    <p>미국의 대표일간지 뉴욕타임스의 사진을 뉴스뱅크에서도 만나볼 수 있습니다.</p>
-		                    <div class="search main_search">
-		                        <form class="search_form">
-		                            <div class="search_area">
-		                                <input type="text" class="search_bar" placeholder="검색어를 입력해주세요." />
-		                                <a href="#" class="btn_search">검색</a>
-		                            </div>
-		                        </form>
-		                    </div>
+		                    <h2>NYT NewsBank (NewYorkTimes NewsBank)</h2>
+                    <p>Photos from The New York Times, the leading newspaper in the US, can also be found in the NewsBank.</p>
+                    <div class="search main_search">
+                        <form class="search_form">
+                            <div class="search_area">
+                                <input type="text" class="search_bar" placeholder="Please enter a keyword." />
+                                <a href="#" class="btn_search">Search</a>
+                            </div>
+                        </form>
+                    </div>
 		                </div>
 		            </section>
 		            <section class="popular">
 		                <div class="center">
-		                    <h2>최신 사진</h2>
-		                    <p>오늘자 뉴욕타임스 사진을 소개합니다.</p>
+		                    <h2>Latest Photos</h2>
+                    <p> Here are today's photos from The New York Times.</p>
 		                    <div class="photo_cont">
 		                        <div class="img_list"><a href="#"><img src="images/nyt/main/ex7.webp" /></a></div>
 		                        <div class="img_list"><a href="#"><img src="images/nyt/main/ex8.webp" /></a></div>
@@ -237,8 +237,8 @@
 		            </section>
 		            <section class="photo">
 		                <div class="center">
-		                    <h2>NYT 뉴스뱅크가 엄선한 사진</h2>
-		                    <p>NYT의 저명한 사진작가들이 전세계 곳곳을 누비며 생생한 현장을 담고 있습니다.</p>
+		                    <h2>Curated photos from the NYT NewsBank</h2>
+                    <p>Renowned photographers from NYT have traveled around the world to capture vivid scenes.</p>
 		                    <div class="photo_cont">
 		                        <div class="img_list"><a href="#"><img src="images/nyt/main/ex0.webp" /></a></div>
 		                        <div class="img_list"><a href="#"><img src="images/nyt/main/ex4.webp" /></a></div>
@@ -252,10 +252,8 @@
 		            <section class="service">
 		                <div class="center">
 		                    <div class="serv_txt">
-		                        <h2>NYT 뉴스뱅크 서비스 소개</h2>
-		                        <p>다하미의 NYT 뉴스뱅크는 국내 최초 뉴욕타임스 보도사진 아카이브입니다.<br>
-		                            전세계의 가장 빠르고 현장감 있는 뉴욕타임스의 보도사진을<br>
-		                            NYT 뉴스뱅크에서 만나 볼 수 있습니다.</p>
+		                        <h2>About NYT NewsBank Service</h2>
+                        <p>Dahami's NYT NewsBank is the first archive of New York Times press photos in Korea.<br>Discover the world's fastest, and most dynamic news photos from New York Times in the NYT NewsBank.</p>
 		                    </div>
 		                </div>
 		            </section>
@@ -263,34 +261,33 @@
 		        </div>
 		        <footer>
 		            <div class="foot_wrap">
-		                <div class="foot_lt">(주)다하미커뮤니케이션즈 | 대표 박용립<br />
-		                    서울시 중구 마른내로 140 5층 (쌍림동, 인쇄정보센터)<br />
-		                    고객센터 02-593-4174 | 사업자등록번호 112-81-49789 <br />
-		                    저작권대리중개신고번호 제532호<br />
-		                    통신판매업신고번호 제2016-서울중구-0501호 (사업자정보확인)</div>
+		                <div class="foot_lt">Dahami Communications Inc. | CEO : Yong Lip Park<br>
+                5F, 140, Mareunnae-ro, Jung-gu, Seoul, Korea<br>
+               TEL. 02 593 4174 | Business Registration Number : 112-81-49789  <br>
+               Online commerce registration : 2016-서울중구-0501</div>
 		                <div class="foot_ct">
 		                    <dl>
-		                        <dt>이용안내</dt>
-		                        <dd><a href="/price.info">구매안내</a></dd>
+		                        <dt>Information</dt>
+		                        <dd><a href="/price.info">Plans & pricing</a></dd>
 		                        <dd><a href="/FAQ">FAQ</a></dd>
-		                        <dd><a href="/contact">직접 문의하기</a></dd>
+		                        <dd><a href="/contact">Contact Us</a></dd>
 		                    </dl>
 		                    <dl>
-		                        <dt>법적고지</dt>
-		                        <dd><a href="#">이용약관</a></dd>
-		                        <dd><b><a href="#">개인정보처리방침</a></b></dd>
+		                        <dt>Legal Notices</dt>
+		                        <dd><a href="#">Terms</a></dd>
+		                        <dd><b><a href="#">Privacy Policy</a></b></dd>
 		                    </dl>
 		                </div>
 		                <div class="foot_rt">
-		                    <div id="family_site">
+		                    <div id="family_site" data-click-state="0" onclick="family_site_open()">
 		                        <div id="select-title">Family site</div>
 		                        <div id="select-layer" style="display: none;">
 		                            <ul class="site-list">
-		                                <li><a href="http://www.dahami.com/" target="_blank">다하미커뮤니케이션즈</a></li>
-		                                <li><a href="http://scrapmaster.co.kr/" target="_blank">스크랩마스터</a></li>
-		                                <li><a href="http://clippingon.co.kr/" target="_blank">클리핑온</a></li>
-		                                <li><a href="http://www.t-paper.co.kr/" target="_blank">티페이퍼</a></li>
-		                                <li><a href="http://www.news-plaza.co.kr/" target="_blank">뉴스플라자</a></li>
+		                                <li><a href="http://www.dahami.com/" target="_blank">Dahami</a></li>
+		                                <li><a href="http://scrapmaster.co.kr/" target="_blank">ScrapMaster</a></li>
+		                                <li><a href="http://clippingon.co.kr/" target="_blank">Clipping ON</a></li>
+		                                <li><a href="http://www.t-paper.co.kr/" target="_blank">T-Paper</a></li>
+		                                <li><a href="http://www.news-plaza.co.kr/" target="_blank">NewsPlaza</a></li>
 		                                <li><a href="http://ndpt.dahami.com/" target="_blank">NDPT</a></li>
 		                            </ul>
 		                        </div>

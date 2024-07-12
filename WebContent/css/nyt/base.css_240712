@@ -68,7 +68,7 @@ nav.gnb_dark .gnb .gnb_left li.on a{color:#f79320;}
 .lang a{ background: url(../../images/nyt/lang.png) center no-repeat; text-indent: -9999px; width: 20px; height: 20px; background-size: cover;}
 .lang a:hover{background: url(../../images/nyt/lang_on.png) center no-repeat;width: 20px; height: 20px; background-size: cover; }
 .gnb_light .lang a{background: url(../../images/nyt/lang_wh.png) center no-repeat;width: 20px; height: 20px; background-size: cover;}
-.lang ul{display: none; border: 1px #ccc solid; background: #fff;position: absolute; left: -18px; top: 20px;}
+.lang ul{display: none; border: 1px #ccc solid; background: #fff;position: absolute; left: -20px; top: 22px;}
 .lang ul li{padding: 8px 16px; text-align: center; font-size: 1rem; cursor: pointer; font-weight: 700;}
 .lang ul li:hover{color: #f79320; background: #f6f6f6;}
 .lang ul li.on{color: #f79320;  font-weight: 900; }

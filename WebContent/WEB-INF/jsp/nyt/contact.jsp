@@ -177,7 +177,7 @@
 		                    </dl>
 		                </div>
 		                <div class="foot_rt">
-		                    <div id="family_site">
+		                    <div id="family_site" data-click-state="0" onclick="family_site_open()">
 		                        <div id="select-title">Family site</div>
 		                        <div id="select-layer" style="display: none;">
 		                            <ul class="site-list">
@@ -357,7 +357,7 @@
 		                    </dl>
 		                </div>
 		                <div class="foot_rt">
-		                    <div id="family_site">
+		                    <div id="family_site" data-click-state="0" onclick="family_site_open()">
 		                        <div id="select-title">Family site</div>
 		                        <div id="select-layer" style="display: none;">
 		                            <ul class="site-list">

@@ -94,4 +94,28 @@
    	function reloadPage() {
    		location.reload(true);
    	}   	
+	
+   	document.addEventListener('DOMContentLoaded', function() {
+        const langElement = document.querySelector('.lang');
+
+        langElement.addEventListener('mouseover', () => {
+            langElement.classList.add('active');
+        });
+
+        langElement.addEventListener('mouseout', (e) => {
+            if (!e.relatedTarget || !e.relatedTarget.closest('.lang')) {
+                langElement.classList.remove('active');
+            }
+        });
+    });
+    
+    function family_site_open() {
+    	if ($(this).attr('data-click-state') == 1) {
+            $(this).attr('data-click-state', 0);
+            $("#select-layer").css('display', 'none');
+        } else {
+            $(this).attr('data-click-state', 1);
+            $("#select-layer").css('display', 'block');
+        }
+    }
 </script>
