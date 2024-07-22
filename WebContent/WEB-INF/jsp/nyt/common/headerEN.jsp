@@ -10,7 +10,7 @@
 	    <ul class="gnb_right">
 	        <li><a href="/price.info">Information</a></li>
 	        <li><a href="#">Log In</a></li>
-	        <li><a href="#">Join</a></li>
+	        <li><a href="#">create an account</a></li>
 	    </ul>
 	</div>
 	

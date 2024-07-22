@@ -44,7 +44,7 @@
 			                <div class="overlay"></div>
 			                <div class="main_bg"></div>
 			                <div class="main_tit">
-			                    <h2>NYT NewsBank (NewYorkTimes NewsBank)</h2>
+			                    <h2>NYT NewsBank</h2>
 			                    <p>미국의 대표일간지 뉴욕타임스의 사진을 뉴스뱅크에서도 만나볼 수 있습니다.</p>
 			                    <div class="search main_search">
 			                        <form class="search_form">
@@ -122,7 +122,7 @@
 			                <div class="overlay"></div>
 			                <div class="main_bg"></div>
 			                <div class="main_tit">
-			                    <h2>NYT NewsBank (NewYorkTimes NewsBank)</h2>
+			                    <h2>NYT NewsBank</h2>
 	                    <p>Photos from The New York Times, the leading newspaper in the US, can also be found in the NewsBank.</p>
 	                    <div class="search main_search">
 	                        <form class="search_form">
