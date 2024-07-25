@@ -8,9 +8,9 @@
             <li><a href="#">Archive</a></li>
         </ul>
         <ul class="gnb_right">
-            <li><a href="/price.info">Information</a></li>
+            <li><a href="/price.info">User Guide</a></li>
             <li><a href="#">Log In</a></li>
-            <li><a href="#">Join</a></li>
+            <li><a href="#">create an account</a></li>
         </ul>
     </div>
 
@@ -23,7 +23,7 @@
     </div>
     <div class="gnb_srch">
         <form id="searchform" action="/photo" method="post">
-            <input type="text" id="keyword" name="keyword" placeholder="please input searchKeyword">
+            <input type="text" id="keyword" name="keyword" placeholder="Please enter a search term">
             <input type="text" id="keyword_current" style="display: none;">
             <a href="javascript:void(0)" id="btn_search" class="btn_search">Search</a>
         </form>

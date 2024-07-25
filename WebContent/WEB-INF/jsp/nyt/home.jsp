@@ -127,7 +127,7 @@
 	                    <div class="search main_search">
 	                        <form class="search_form">
 	                            <div class="search_area">
-	                                <input type="text" class="search_bar" placeholder="Please enter a keyword." />
+	                                <input type="text" class="search_bar" placeholder="Please enter a search term" />
 	                                <a href="#" class="btn_search">Search</a>
 	                            </div>
 	                        </form>
