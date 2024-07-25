@@ -524,6 +524,10 @@
 			                    </tbody>
 			                </table>
 			            </section>
+			            <div class="price_mess">
+					이용자가 NYT 뉴스뱅크가 제공하는 이미지를 사용할 경우 저작권, 피사체에 대한 초상권, 상표권 등 기타권리는 이용자 자신이 취득하여야 합니다. 
+					<a href="#" class="price_info" target="_blank">이용약관</a>
+				</div>
 			        </section>
 					<jsp:include page="./common/footerKR.jsp"/>
 			    </div>
@@ -579,533 +583,540 @@
 			                <h3>Purchase</h3>
 			            </div>
 			            <div class="tab1">
-			                <!-- 가격테이블 Tap-->
-			                <span class="tapOn" id="popupTap1"><a href="javascript:;" id="Editorial">Editorial</a></span>
-			                <span id="popupTap2"><a href="javascript:;" id="Commercial">for Busines</a></span>
-			            </div>
-			            <section id="tblEditorial" style="display: ;">
-			                <!-- 가격테이블 -->
-			                <table class="tb01" cellpadding="0" cellspacing="0">
-			                    <colgroup>
-			                        <col width="160px">
-			                        <col width="185px">
-			                        <col width="470px">
-			                        <col width="260px">
-			                        <col width="165px">
-			                    </colgroup>
-			                    <thead>
-			                        <tr>
-			                            <th scope="col" colspan="2">Classification</th>
-			                            <th scope="col">Purpose</th>
-			                            <th scope="col">Usage period</th>
-			                            <th scope="col">Price (incl. VAT)</th>
-			                        </tr>
-			                    </thead>
-			                    <tbody>
-			                        <tr id="r1">
-			                            <th rowspan="5">Publishing, Publications</th>
-			                            <td rowspan="3">Print Media</td>
-			                            <td>Book, Magazine inlay</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 88,000</td>
-			                        </tr>
-			                        <tr id="r2">
-			                            <td>Book, Magazine cover</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 165,000</td>
-			                        </tr>
-			                        <tr id="r3">
-			                            <td>Book, Magazine interior and cover (based on the same cut for the same medium)</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 220,000</td>
-			                        </tr>
-			                        <tr id="r4">
-			                            <td>e-Book, Mobile, etc.</td>
-			                            <td>e-Book, CD recordings, other electronic media</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 165,000</td>
-			                        </tr>
-			                        <tr id="r5">
-			                            <td>Package</td>
-			                            <td>Print + e-Book (Based on the same cut for two media)
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 220,000</td>
-			                        </tr>
-			                        <tr id="r6">
-			                            <th rowspan="4">Education
-			                            </th>
-			                            <td rowspan="2">Print Media
-			                            </td>
-			                            <td>Complete works, Encyclopedias, Books, Articles, Presentations, etc.
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 88,000</td>
-			                        </tr>
-			                        <tr id="r7">
-			                            <td>Textbooks, Reference books, Study sheets
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 88,000</td>
-			                        </tr>
-			                        <tr id="r8">
-			                            <td>Online, Mobile
-			                            </td>
-			                            <td>e-Textbooks, Educational websites, Storage media such as CD recordings, Presentation slides, etc.
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 110,000</td>
-			                        </tr>
-			                        <tr id="r9">
-			                            <td>Package</td>
-			                            <td>Print + Online, Mobile, etc. (Based on the same cut for two media)</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 165,000</td>
-			                        </tr>
-			                        <tr id="r10">
-			                            <th rowspan="5">For Press</th>
-			                            <td>Print</td>
-			                            <td>Newspapers - Daily Newspaper, Economic, Sports, Free Paper, Tabloid, Journals, etc.</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 88,000</td>
-			                        </tr>
-			                        <tr id="r11">
-			                            <td>Online</td>
-			                            <td>Internet news, etc.</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 110,000</td>
-			                        </tr>
-			                        <tr id="r12">
-			                            <td>Broadcast
-			                            </td>
-			                            <td>Terrestrial Broadcasting, General wired broadcasting, Satellite broadcasting, IPTV, Internet broadcasting, etc.
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 110,000</td>
-			                        </tr>
-			                        <tr id="r13">
-			                            <td rowspan="2">Package</td>
-			                            <td>Broadcast + Website (Based on the same cut for two media)
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 165,000</td>
-			                        </tr>
-			                        <tr id="r14">
-			                            <td>Print media + Website (Based on the same cut for two media)
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 165,000</td>
-			                        </tr>
-			                        <tr id="r15">
-			                            <th rowspan="8">Exhibitions and Display
-			                            </th>
-			                            <td rowspan="4">Offline
-			                            </td>
-			                            <td rowspan="4">Exhibitions (based on 1 venue) * Please contact us separately if you want to use more than 5 years.
-			                            </td>
-			                            <td>Less than 3 months</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r16">
-			                            <td>Less than 3 months to 6 months</td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r17">
-			                            <td>6 months to less than 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r18">
-			                            <td>More than 1 year
-			                            </td>
-			                            <td>₩ 1,100,000</td>
-			                        </tr>
-			                        <tr id="r19">
-			                            <td rowspan="4">Offline</td>
-			                            <td rowspan="4">Display in stores and workplaces
-			                            </td>
-			                            <td>Less than 3 months</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r20">
-			                            <td>Less than 3 months to 6 months</td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r21">
-			                            <td>6 months to less than 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r22">
-			                            <td>More than 1 year</td>
-			                            <td>₩ 1,100,000</td>
-			                        </tr>
-			                        <tr id="r23">
-			                            <th rowspan="15">Others
-			                            </th>
-			                            <td rowspan="3">Print, Online
-			                            </td>
-			                            <td rowspan="3">Catalogs, Pamphlets, Brochures, Leaflets, Manuals, Sample Books e-Catalogs, e-Brochures
-			                            </td>
-			                            <td>5,000 ~</td>
-			                            <td>₩ 220,000</td>
-			                        </tr>
-			                        <tr id="r24">
-			                            <td>5,000 to less than 10,000 copies
-			                            </td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r25">
-			                            <td>More than 10,000 copies
-			                            </td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r26">
-			                            <td rowspan="3">Package</td>
-			                            <td rowspan="3">Catalog + E-Catalog, Brochure + E-Brochure, Manual + E-Manual
-			                            </td>
-			                            <td>Less than 5,000 copies
-			                            </td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r27">
-			                            <td>5,000 to less than 10,000 copies
-			                            </td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r28">
-			                            <td>More than 10,000 copies
-			                            </td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r29">
-			                            <td rowspan="2">Print</td>
-			                            <td>Company newspapers, Newsletters, Institutional newspapers, etc.
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 110,000</td>
-			                        </tr>
-			                        <tr id="r30">
-			                            <td>State operations reports, Internal boards, etc.
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 110,000</td>
-			                        </tr>
-			                        <tr id="r31">
-			                            <td rowspan="2">Online</td>
-			                            <td>Homepage or blog for businesses and organizations, intranet, etc.
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 110,000</td>
-			                        </tr>
-			                        <tr id="r32">
-			                            <td>Webzines and newsletters for online distribution
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 165,000</td>
-			                        </tr>
-			                        <tr id="r33">
-			                            <td>Broadcast
-			                            </td>
-			                            <td>General broadcast programs (excluding home shopping) other than for reporting purposes
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 120,000</td>
-			                        </tr>
-			                        <tr id="r34">
-			                            <td rowspan="4">Multimedia
-			                            </td>
-			                            <td>Games, software, video backgrounds
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 220,000</td>
-			                        </tr>
-			                        <tr id="r35">
-			                            <td>Promotional slides, multivision
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 220,000</td>
-			                        </tr>
-			                        <tr id="r36">
-			                            <td>Mobile devices, PDAs, etc.</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 220,000</td>
-			                        </tr>
-			                        <tr id="r37">
-			                            <td>Embedded in fixed devices such as kiosks, ticket vending machines, cash machines, monitors, etc.</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                    </tbody>
-			                </table>
-			            </section>
-			            <section id="tblCommercial" style="display: none;">
-			                <!-- 가격테이블 -->
-			                <table class="tb01" cellpadding="0" cellspacing="0">
-			                    <colgroup>
-			                        <col width="140px">
-			                        <col width="160px">
-			                        <col width="400px">
-			                        <col width="200px">
-			                        <col width="180px">
-			                        <col width="160px">
-			                    </colgroup>
-			                    <thead>
-			                        <tr>
-			                            <th scope="col" colspan="2">Classification</th>
-			                            <th scope="col">Purpose</th>
-			                            <th scope="col">Usage terms</th>
-			                            <th scope="col">Usage period</th>
-			                            <th scope="col">Price (incl. VAT)</th>
-			                        </tr>
-			                    </thead>
-			                    <tbody>
-			                        <tr id="r50">
-			                            <th rowspan="19">Advertising
-			                            </th>
-			                            <td rowspan="4">Newspaper ads
-			                            </td>
-			                            <td rowspan="3">Central Newspaper, Sports, Economic, etc.
-			                            </td>
-			                            <td>Paragraph 1 ~ Paragraph 9
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r51">
-			                            <td>Paragraph 10 ~ Paragraph 15
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r52">
-			                            <td>Spreads</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 770,000</td>
-			                        </tr>
-			                        <tr id="r53">
-			                            <td>Local, School, Tabloids, Free Newspapers, Specialized Publications
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r54">
-			                            <td rowspan="2">Magazine ads
-			                            </td>
-			                            <td rowspan="2">Periodicals, Liberal Magazines, Specialized Journals, Academic Journals, Phone Books, etc.
-			                            </td>
-			                            <td>Inlay
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 220,000</td>
-			                        </tr>
-			                        <tr id="r55">
-			                            <td>Cover
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r56">
-			                            <td>TV Commercials
-			                            </td>
-			                            <td>CF (National, Local, Cable, Satellite, Internet, etc.)
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r57">
-			                            <td>Theater Ads
-			                            </td>
-			                            <td>Theater Ads
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r58">
-			                            <td rowspan="2">Online Ads
-			                            </td>
-			                            <td>Banner Ads
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 220,000</td>
-			                        </tr>
-			                        <tr id="r59">
-			                            <td>Screen shapers, wellpapers
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 165,000</td>
-			                        </tr>
-			                        <tr id="r60">
-			                            <td>Home Shopping
-			                            </td>
-			                            <td>Home Shopping Programs
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r61">
-			                            <td rowspan="8">Outdoor and in-store
-			                            </td>
-			                            <td rowspan="3">Banners, Neko wide collars, bus shelters, screen doors, Signage, etc.
-			                            </td>
-			                            <td>-</td>
-			                            <td>Less than 3 months</td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r62">
-			                            <td>-</td>
-			                            <td>Less than 3 months to 6 months</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r63">
-			                            <td>-</td>
-			                            <td>6 months or more
-			                            </td>
-			                            <td>₩ 660,000</td>
-			                        </tr>
-			                        <tr id="r64">
-			                            <td rowspan="2">POP banners based on 1 location
-			                            </td>
-			                            <td>Less than 10
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r65">
-			                            <td>10 or more
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r66">
-			                            <td>Signs
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r67">
-			                            <td rowspan="2">Vehicle advertising - bus, taxi, subway, train, etc.
-			                            </td>
-			                            <td>Inside
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r68">
-			                            <td>Outside
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r69">
-			                            <th rowspan="13">Promotional merchandise
-			                            </th>
-			                            <td>Posters
-			                            </td>
-			                            <td>Commercial
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r70">
-			                            <td>Posters
-			                            </td>
-			                            <td>Non-commercial - non-customer use, internal use, campaigns
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r71">
-			                            <td>Press releases
-			                            </td>
-			                            <td>Newspaper, Online distribution ( limited redistribution )
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r72">
-			                            <td rowspan="8">For calendars
-			                            </td>
-			                            <td rowspan="4">Wall mounted
-			                            </td>
-			                            <td>Less than 10,000 copies
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 495,000</td>
-			                        </tr>
-			                        <tr id="r73">
-			                            <td>10,000 to 50,000 copies
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 605,000</td>
-			                        </tr>
-			                        <tr id="r74">
-			                            <td>50,000 to 100,000 copies
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 715,000</td>
-			                        </tr>
-			                        <tr id="r75">
-			                            <td>More than 100,000 copies
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 825,000</td>
-			                        </tr>
-			                        <tr id="r76">
-			                            <td rowspan="4">Tabletop
-			                            </td>
-			                            <td>Less than 10,000 copies
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r77">
-			                            <td>10,000 to 50,000 copies
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 385,000</td>
-			                        </tr>
-			                        <tr id="r78">
-			                            <td>50,000 to 100,000 copies
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 440,000</td>
-			                        </tr>
-			                        <tr id="r79">
-			                            <td>More than 100,000 copies
-			                            </td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 550,000</td>
-			                        </tr>
-			                        <tr id="r80">
-			                            <td>Others
-			                            </td>
-			                            <td>Merchandise printing - record jackets, boxes, postcards, invitations, cards, diaries, promotional products, etc.
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 330,000</td>
-			                        </tr>
-			                        <tr id="r81">
-			                            <td>Others
-			                            </td>
-			                            <td>Logos, symbols, characters
-			                            </td>
-			                            <td>-</td>
-			                            <td>Within 1 year</td>
-			                            <td>₩ 770,000</td>
-			                        </tr>
-			                    </tbody>
-			                </table>
-			            </section>
+                <!-- 가격테이블 Tap-->
+                <span class="tapOn" id="popupTap1">
+                    <a href="javascript:;" id="Editorial">Editorial</a>
+                </span>
+                <span id="popupTap2">
+                    <a href="javascript:;" id="Commercial">for Busines</a>
+                </span>
+            </div>
+            <section id="tblEditorial" style="display: ;">
+                <!-- 가격테이블 -->
+                <table class="tb01" cellpadding="0" cellspacing="0">
+                    <colgroup>
+                        <col width="160px">
+                        <col width="185px">
+                        <col width="470px">
+                        <col width="260px">
+                        <col width="165px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="col" colspan="2">Classification</th>
+                            <th scope="col">Purpose</th>
+                            <th scope="col">Usage period</th>
+                            <th scope="col">Price (incl. VAT)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="r1">
+                            <th rowspan="5">Publishing, Publications</th>
+                            <td rowspan="3">Print Media</td>
+                            <td>Book, Magazine inlay</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 88,000</td>
+                        </tr>
+                        <tr id="r2">
+                            <td>Book, Magazine cover</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 165,000</td>
+                        </tr>
+                        <tr id="r3">
+                            <td>Book, Magazine interior and cover (based on the same cut for the same medium)</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 220,000</td>
+                        </tr>
+                        <tr id="r4">
+                            <td>e-Book, Mobile, etc.</td>
+                            <td>e-Book, CD recordings, other electronic media</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 165,000</td>
+                        </tr>
+                        <tr id="r5">
+                            <td>Package</td>
+                            <td>Print + e-Book (Based on the same cut for two media)
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 220,000</td>
+                        </tr>
+                        <tr id="r6">
+                            <th rowspan="4">Education
+                            </th>
+                            <td rowspan="2">Print Media
+                            </td>
+                            <td>Complete works, Encyclopedias, Books, Articles, Presentations, etc.
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 88,000</td>
+                        </tr>
+                        <tr id="r7">
+                            <td>Textbooks, Reference books, Study sheets
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 88,000</td>
+                        </tr>
+                        <tr id="r8">
+                            <td>Online, Mobile
+                            </td>
+                            <td>e-Textbooks, Educational websites, Storage media such as CD recordings, Presentation slides, etc.
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 110,000</td>
+                        </tr>
+                        <tr id="r9">
+                            <td>Package</td>
+                            <td>Print + Online, Mobile, etc. (Based on the same cut for two media)</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 165,000</td>
+                        </tr>
+                        <tr id="r10">
+                            <th rowspan="5">For Press</th>
+                            <td>Print</td>
+                            <td>Newspapers - Daily Newspaper, Economic, Sports, Free Paper, Tabloid, Journals, etc.</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 88,000</td>
+                        </tr>
+                        <tr id="r11">
+                            <td>Online</td>
+                            <td>Internet news, etc.</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 110,000</td>
+                        </tr>
+                        <tr id="r12">
+                            <td>Broadcast
+                            </td>
+                            <td>Terrestrial Broadcasting, General wired broadcasting, Satellite broadcasting, IPTV, Internet broadcasting, etc.
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 110,000</td>
+                        </tr>
+                        <tr id="r13">
+                            <td rowspan="2">Package</td>
+                            <td>Broadcast + Website (Based on the same cut for two media)
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 165,000</td>
+                        </tr>
+                        <tr id="r14">
+                            <td>Print media + Website (Based on the same cut for two media)
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 165,000</td>
+                        </tr>
+                        <tr id="r15">
+                            <th rowspan="8">Exhibitions and Display
+                            </th>
+                            <td rowspan="4">Offline
+                            </td>
+                            <td rowspan="4">Exhibitions (based on 1 venue) * Please contact us separately if you want to use more than 5 years.
+                            </td>
+                            <td>Less than 3 months</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r16">
+                            <td>Less than 3 months to 6 months</td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r17">
+                            <td>6 months to less than 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r18">
+                            <td>More than 1 year
+                            </td>
+                            <td>₩ 1,100,000</td>
+                        </tr>
+                        <tr id="r19">
+                            <td rowspan="4">Offline</td>
+                            <td rowspan="4">Display in stores and workplaces
+                            </td>
+                            <td>Less than 3 months</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r20">
+                            <td>Less than 3 months to 6 months</td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r21">
+                            <td>6 months to less than 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r22">
+                            <td>More than 1 year</td>
+                            <td>₩ 1,100,000</td>
+                        </tr>
+                        <tr id="r23">
+                            <th rowspan="15">Others
+                            </th>
+                            <td rowspan="3">Print, Online
+                            </td>
+                            <td rowspan="3">Catalogs, Pamphlets, Brochures, Leaflets, Manuals, Sample Books e-Catalogs, e-Brochures
+                            </td>
+                            <td>5,000 ~</td>
+                            <td>₩ 220,000</td>
+                        </tr>
+                        <tr id="r24">
+                            <td>5,000 to less than 10,000 copies
+                            </td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r25">
+                            <td>More than 10,000 copies
+                            </td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r26">
+                            <td rowspan="3">Package</td>
+                            <td rowspan="3">Catalog + E-Catalog, Brochure + E-Brochure, Manual + E-Manual
+                            </td>
+                            <td>Less than 5,000 copies
+                            </td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r27">
+                            <td>5,000 to less than 10,000 copies
+                            </td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r28">
+                            <td>More than 10,000 copies
+                            </td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r29">
+                            <td rowspan="2">Print</td>
+                            <td>Company newspapers, Newsletters, Institutional newspapers, etc.
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 110,000</td>
+                        </tr>
+                        <tr id="r30">
+                            <td>State operations reports, Internal boards, etc.
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 110,000</td>
+                        </tr>
+                        <tr id="r31">
+                            <td rowspan="2">Online</td>
+                            <td>Homepage or blog for businesses and organizations, intranet, etc.
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 110,000</td>
+                        </tr>
+                        <tr id="r32">
+                            <td>Webzines and newsletters for online distribution
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 165,000</td>
+                        </tr>
+                        <tr id="r33">
+                            <td>Broadcast
+                            </td>
+                            <td>General broadcast programs (excluding home shopping) other than for reporting purposes
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 120,000</td>
+                        </tr>
+                        <tr id="r34">
+                            <td rowspan="4">Multimedia
+                            </td>
+                            <td>Games, software, video backgrounds
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 220,000</td>
+                        </tr>
+                        <tr id="r35">
+                            <td>Promotional slides, multivision
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 220,000</td>
+                        </tr>
+                        <tr id="r36">
+                            <td>Mobile devices, PDAs, etc.</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 220,000</td>
+                        </tr>
+                        <tr id="r37">
+                            <td>Embedded in fixed devices such as kiosks, ticket vending machines, cash machines, monitors, etc.</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section id="tblCommercial" style="display: none;">
+                <!-- 가격테이블 -->
+                <table class="tb01" cellpadding="0" cellspacing="0">
+                    <colgroup>
+                        <col width="140px">
+                        <col width="160px">
+                        <col width="400px">
+                        <col width="200px">
+                        <col width="180px">
+                        <col width="160px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="col" colspan="2">Classification</th>
+                            <th scope="col">Purpose</th>
+                            <th scope="col">Usage terms</th>
+                            <th scope="col">Usage period</th>
+                            <th scope="col">Price (incl. VAT)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="r50">
+                            <th rowspan="19">Advertising
+                            </th>
+                            <td rowspan="4">Newspaper ads
+                            </td>
+                            <td rowspan="3">Central Newspaper, Sports, Economic, etc.
+                            </td>
+                            <td>Paragraph 1 ~ Paragraph 9
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r51">
+                            <td>Paragraph 10 ~ Paragraph 15
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r52">
+                            <td>Spreads</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 770,000</td>
+                        </tr>
+                        <tr id="r53">
+                            <td>Local, School, Tabloids, Free Newspapers, Specialized Publications
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r54">
+                            <td rowspan="2">Magazine ads
+                            </td>
+                            <td rowspan="2">Periodicals, Liberal Magazines, Specialized Journals, Academic Journals, Phone Books, etc.
+                            </td>
+                            <td>Inlay
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 220,000</td>
+                        </tr>
+                        <tr id="r55">
+                            <td>Cover
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r56">
+                            <td>TV Commercials
+                            </td>
+                            <td>CF (National, Local, Cable, Satellite, Internet, etc.)
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r57">
+                            <td>Theater Ads
+                            </td>
+                            <td>Theater Ads
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r58">
+                            <td rowspan="2">Online Ads
+                            </td>
+                            <td>Banner Ads
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 220,000</td>
+                        </tr>
+                        <tr id="r59">
+                            <td>Screen shapers, wellpapers
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 165,000</td>
+                        </tr>
+                        <tr id="r60">
+                            <td>Home Shopping
+                            </td>
+                            <td>Home Shopping Programs
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r61">
+                            <td rowspan="8">Outdoor and in-store
+                            </td>
+                            <td rowspan="3">Banners, Neko wide collars, bus shelters, screen doors, Signage, etc.
+                            </td>
+                            <td>-</td>
+                            <td>Less than 3 months</td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r62">
+                            <td>-</td>
+                            <td>Less than 3 months to 6 months</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r63">
+                            <td>-</td>
+                            <td>6 months or more
+                            </td>
+                            <td>₩ 660,000</td>
+                        </tr>
+                        <tr id="r64">
+                            <td rowspan="2">POP banners based on 1 location
+                            </td>
+                            <td>Less than 10
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r65">
+                            <td>10 or more
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r66">
+                            <td>Signs
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r67">
+                            <td rowspan="2">Vehicle advertising - bus, taxi, subway, train, etc.
+                            </td>
+                            <td>Inside
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r68">
+                            <td>Outside
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r69">
+                            <th rowspan="13">Promotional merchandise
+                            </th>
+                            <td>Posters
+                            </td>
+                            <td>Commercial
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r70">
+                            <td>Posters
+                            </td>
+                            <td>Non-commercial - non-customer use, internal use, campaigns
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r71">
+                            <td>Press releases
+                            </td>
+                            <td>Newspaper, Online distribution ( limited redistribution )
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r72">
+                            <td rowspan="8">For calendars
+                            </td>
+                            <td rowspan="4">Wall mounted
+                            </td>
+                            <td>Less than 10,000 copies
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 495,000</td>
+                        </tr>
+                        <tr id="r73">
+                            <td>10,000 to 50,000 copies
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 605,000</td>
+                        </tr>
+                        <tr id="r74">
+                            <td>50,000 to 100,000 copies
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 715,000</td>
+                        </tr>
+                        <tr id="r75">
+                            <td>More than 100,000 copies
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 825,000</td>
+                        </tr>
+                        <tr id="r76">
+                            <td rowspan="4">Tabletop
+                            </td>
+                            <td>Less than 10,000 copies
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r77">
+                            <td>10,000 to 50,000 copies
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 385,000</td>
+                        </tr>
+                        <tr id="r78">
+                            <td>50,000 to 100,000 copies
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 440,000</td>
+                        </tr>
+                        <tr id="r79">
+                            <td>More than 100,000 copies
+                            </td>
+                            <td>Within 1 year</td>
+                            <td>₩ 550,000</td>
+                        </tr>
+                        <tr id="r80">
+                            <td>Others
+                            </td>
+                            <td>Merchandise printing - record jackets, boxes, postcards, invitations, cards, diaries, promotional products, etc.
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 330,000</td>
+                        </tr>
+                        <tr id="r81">
+                            <td>Others
+                            </td>
+                            <td>Logos, symbols, characters
+                            </td>
+                            <td>-</td>
+                            <td>Within 1 year</td>
+                            <td>₩ 770,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section> <div class="price_mess">
+					If you use images provided by the NYT Newsbank, you must obtain other rights to the subjects, such as portrait rights, trademark rights, etc.
+					<a href="#" class="price_info" target="_blank">Terms</a>
+				</div>
 			        </section>
 					<jsp:include page="./common/footerEN.jsp"/>
 			    </div>
