@@ -588,7 +588,7 @@
                     <a href="javascript:;" id="Editorial">Editorial</a>
                 </span>
                 <span id="popupTap2">
-                    <a href="javascript:;" id="Commercial">for Busines</a>
+                    <a href="javascript:;" id="Commercial">for Business</a>
                 </span>
             </div>
             <section id="tblEditorial" style="display: ;">

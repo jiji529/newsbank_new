@@ -232,8 +232,8 @@
 			                    <button>Search</button>
 			                </div>
 			            </div>
-			            <div class="faq">
-			                <dl>
+<div class="faq">
+                <dl>
                     <dt id="dt1" class="" style="display: none;"><a onclick="evt('1')"><span class="faq_tit">I'd like to contribute photo contents to Newsbank.
                             </span><span class="faq_ico"></span></a></dt>
                     <dd id="1" style="display: none;">
@@ -255,11 +255,11 @@
                             Phone: 02-593-4174 (ext. 224)<br>
                             Fax: 02-593-4174<br>
                             E-Mail : srfliegen29@dahami.com<br>
-                            What to include in your tax invoice<br>
-                            Personal ID of Newsbank<br>
-                            Purchase date and payment<br>
-                            Your name and contact detail<br>
-                            Email address to receive tax invoice
+                            * What to include in your tax invoice<br>
+                            - Personal ID of Newsbank<br>
+                            - Purchase date and payment<br>
+                            - Your name and contact detail<br>
+                            - Email address to receive tax invoice
 
                         </p>
                     </dd>
@@ -349,7 +349,7 @@
                         </p>
                     </dd>
                 </dl>
-			            </div>
+            </div>
 			        </section>
 			        <jsp:include page="./common/footerEN.jsp"/>
 			    </div>

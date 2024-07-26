@@ -176,13 +176,13 @@
 			                    <div class="agree_box"> <strong>[Consent to the collection and use of personal information]</strong><br>
 			                        <br>
 			                        <strong>1. Personal Information Collection : Items and Purpose</strong><br>
-			                        We collect the following information to facilitate communication with customers who inquire about Dahami Communications (NYT) Newsbank.<br>
+			                        We collect the following information to facilitate communication with customers who inquire about Dahami Communications NYT Newsbank.<br>
 			                        : Name, Email, Phone Number<br>
 			                        <br>
 			                        <strong>2. Retention and use period of personal information</strong><br>
 			                        : The collected personal information is destroyed immediately after the purpose of retention and use is completed. In addition, if you request deletion through 'Contact Us', it will be destroyed within 3 days.<br>
 			                        <br>
-			                        	※ You may refuse to agree to this. And if you do not agree, we will not be able to send you emails through Ask a Question.<br>
+			                        ※ You may refuse to agree to this. And if you do not agree, we will not be able to send you emails through Ask a Question.<br>
 			                        <br>
 			                    </div>
 			                    <div class="agree_check">
