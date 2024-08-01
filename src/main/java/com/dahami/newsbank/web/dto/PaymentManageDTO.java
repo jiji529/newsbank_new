@@ -340,9 +340,9 @@ public class PaymentManageDTO implements Serializable {
 		case "SC0040":
 			int payCount = paymentDetailList.size();
 			if(payCount>0) {
-				fees = Math.floor(300*1.1/payCount);	
+				fees = Math.round(450*1.1/payCount);	
 			}else {
-				fees = Math.floor(300*1.1);	
+				fees = Math.round(450*1.1);	
 			}
 			
 			LGD_FEES = (int)fees;
