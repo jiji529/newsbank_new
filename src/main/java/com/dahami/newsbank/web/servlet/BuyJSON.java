@@ -143,7 +143,10 @@ public class BuyJSON extends NewsbankServletBase {
 				int idx = 0;
 				for(Map<String, Object> object : searchList) {
 					String PAYDATE = dateFormat(object.get("LGD_PAYDATE").toString());
-					String strStatus = strStatus(Integer.parseInt(object.get("status").toString()));
+					String strStatus = "";
+					if(object.get("status")!=null) {
+						strStatus = strStatus(Integer.parseInt(object.get("status").toString()));
+					}
 					
 					searchList.get(idx).put("PAYDATE", PAYDATE);
 					searchList.get(idx).put("strStatus", strStatus);

@@ -30,6 +30,38 @@ $(document).ready(function() {
 		change_customDay();
 	});
 	
+	// 검색옵션 월별 선택 함수
+	function change_customDay() {
+		var year = $('#customYear').val();
+		var date = new Date();
+		
+		if($('#customDay').val() == "all") {
+			var thisYear = date.getFullYear();
+			var endDate = "";
+			
+			if(year == thisYear) {
+				// (선택년도 == 올해년도) -> 금일 날짜를 마지막 날로 설정
+				endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, date.getMonth(), date.getDate()));
+			}else {
+				// 아니면 선택년도의 마지막 날짜로 설정
+				var lastDay = (new Date(year, 12, 0)).getDate();
+				endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 11, lastDay));
+			}
+			
+			var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, 0, 1));
+			
+		} else {
+			var mon = $('#customDay').val() - 1;
+			var lastDay = (new Date(year, mon + 1, 0)).getDate();
+			
+			var startDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, 1));
+			var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
+		}
+		
+		$("#contractStart").val(startDate);
+		$("#contractEnd").val(endDate);
+	}	
+	
 	$('#customDayOption a.btn').on('click', function(i) {
 		var year = $(this).attr('value').substring(0,4);
 		var mon = $(this).attr('value').substring(4,6) - 1;

@@ -82,12 +82,12 @@
 						    '$1-$2-$3'
 						);
 						var LGD_PAYSTATUS = val.LGD_PAYSTATUS;
-						var status = val.status;
+						var status = val.status==undefined ? "" : val.status;
 						var copyright = val.copyright;
-						var media = val.media;
-						var uciCode = val.photo_uciCode;
-						var compCode = val.compCode;
-						var usage = separateUsage(val.usage);
+						var media = val.media==undefined ? "" : val.media;
+						var uciCode = val.photo_uciCode==undefined ? "" : val.photo_uciCode;
+						var compCode = val.compCode==undefined ? "" : val.compCode;
+						var usage = val.usage==undefined ? "" :separateUsage(val.usage);
 						
 						var usageList_seq = val.usageList_seq;
 						var price = val.price;
