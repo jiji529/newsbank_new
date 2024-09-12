@@ -61,9 +61,13 @@
 			                    <h2>최신 사진</h2>
 			                    <p>오늘자 뉴욕타임스 사진을 소개합니다.</p>
 			                    <div class="photo_cont">
-			                    	<div class="img_list"><a href="#"><img src="images/nyt/main/img2.jpg" /></a></div>
-					                <div class="img_list"><a href="#"><img src="images/nyt/main/img3.jpg" /></a></div>
-					                <div class="img_list"><a href="#"><img src="images/nyt/main/img4.jpg" /></a></div>
+			                    	<c:forEach var="latestList" items="${latestList}">
+				                    	<div class="img_list">			                    		
+				                    		<a href="javascript:void(0)" onclick="go_View('${latestList.uciCode}')">
+				                    		<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${latestList.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+				                    		</a>
+				                    	</div>
+		                    		</c:forEach>		
 			                    </div>
 			                </div>
 			            </section>
@@ -135,15 +139,19 @@
 			                    <h2>Latest Photos</h2>
 	                    <p> Here are today's photos from The New York Times.</p>
 			                    <div class="photo_cont">
-			                    	<div class="img_list"><a href="#"><img src="images/nyt/main/img2.jpg" /></a></div>
-									<div class="img_list"><a href="#"><img src="images/nyt/main/img3.jpg" /></a></div>
-									<div class="img_list"><a href="#"><img src="images/nyt/main/img4.jpg" /></a></div>
+		                    		<c:forEach var="latestList" items="${latestList}">
+				                    	<div class="img_list">			                    		
+				                    		<a href="javascript:void(0)" onclick="go_View('${latestList.uciCode}')">
+				                    		<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${latestList.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+				                    		</a>
+				                    	</div>
+		                    		</c:forEach>									
 			                    </div>
 			                </div>
 			            </section>
 			            <section class="photo">
 			                <div class="center">
-			                    <h2>Curated photos from the NYT NewsBank</h2>
+			                    <h2>Curated photos from the NewsBank</h2>
 	                    <p>Renowned photographers from NYT have traveled around the world to capture vivid scenes.</p>
 			                    <div class="photo_cont">
 									<div class="img_list"><a href="#"><img src="images/nyt/main/img5.jpg" /></a></div>

@@ -681,4 +681,20 @@ public class PhotoDAO extends DAOBase {
 		}
 		return null;
 	}
+
+	public List<PhotoDTO> latestPhotoList() {
+		SqlSession session = null;
+		
+		try {
+			session = sf.getSession();
+			return session.selectList("Photo.latestPhotoList");
+			
+		} catch (Exception e) {
+			logger.warn("", e);
+		} finally {
+			try {session.commit();} catch (Exception e) {}
+			try {session.close();} catch (Exception e) {}
+		}
+		return null;
+	}
 }

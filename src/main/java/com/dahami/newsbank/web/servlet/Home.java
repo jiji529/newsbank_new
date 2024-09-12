@@ -98,6 +98,11 @@ public class Home extends NewsbankServletBase {
 		request.setAttribute("basketList", basketList);
 		request.setAttribute("hitsList", hitsList);
 		request.setAttribute("mediaList", mediaList);
+		
+		if(Constants.IS_NYT==true) {
+			List<PhotoDTO> latestList = photoDAO.latestPhotoList();
+			request.setAttribute("latestList", latestList);
+		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"home.jsp");
 		dispatcher.forward(request, response);			

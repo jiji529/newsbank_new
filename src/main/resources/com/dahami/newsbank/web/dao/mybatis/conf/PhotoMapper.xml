@@ -307,4 +307,11 @@
 		FROM photo LEFT JOIN member ON photo.member_seq = member.seq
 		WHERE uciCode = #{value};
 	</select>
+	
+	<select id="latestPhotoList" resultType="com.dahami.newsbank.dto.PhotoDTO">
+		SELECT *
+		FROM photo
+		ORDER BY regDate DESC
+		LIMIT 3
+	</select>
 </mapper>
