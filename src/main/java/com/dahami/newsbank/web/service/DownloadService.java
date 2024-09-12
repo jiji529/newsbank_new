@@ -62,6 +62,7 @@ import com.dahami.common.util.HttpUpDownUtil;
 import com.dahami.common.util.HttpUtil;
 import com.dahami.common.util.ImageUtil;
 import com.dahami.common.util.ZipUtil;
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.util.NBImageUtil;
 import com.dahami.newsbank.web.dao.BoardDAO;
@@ -634,7 +635,12 @@ public class DownloadService extends ServiceBase {
 								String datePath = ilDTO.getRegTime().split(" ")[0];								
 								String fileName = ilDTO.getRunTime() + "_" + ilDTO.getSrcImg();
 								
-								String backup_filePath = "/D/FTP/ftpBackup" + "/" + ilDTO.getMember_seq() + "/" + datePath + "/" + fileName;								
+								String backup_filePath = "";
+								if(Constants.IS_NYT==false) {
+									backup_filePath = "/D/FTP/ftpBackup" + "/" + ilDTO.getMember_seq() + "/" + datePath + "/" + fileName;																
+								} else {
+									backup_filePath = "/data/newsbank/serviceImages/ftpBackup" + "/" + ilDTO.getMember_seq() + "/" + datePath + "/" + fileName;
+								}
 								File ftpImgFd = new File(backup_filePath);
 								
 								if(ftpImgFd.exists()) {

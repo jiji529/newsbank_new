@@ -685,7 +685,7 @@ if(photoDto == null
 				</div>
 			</div>
 			<h2 class="media_logo">
-				<img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" />
+				<%-- <img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" /> --%>
 				<div class="btn_edit"> <span id="popup_open"><a href="javascript:void(0)">오류 신고하기</a></span></div>
 			</h2>
 			<div class="img_area"><img src="<%=IMG_SERVER_URL_PREFIX%>/view.down.photo?uciCode=${photoDTO.uciCode}"/>
@@ -695,7 +695,28 @@ if(photoDto == null
 <%
 if(!contentBlidF) {
 %>
-				${photoDTO.titleKor}
+<c:choose>
+	<c:when test="${cookie.language.value eq 'KR'}">
+		<c:choose>
+			<c:when test="${photoDTO.titleKor!=''}">
+					${photoDTO.titleKor}
+			</c:when>
+			<c:otherwise>	
+					${photoDTO.titleEng}
+			</c:otherwise>
+		</c:choose>
+	</c:when>
+	<c:otherwise>
+		<c:choose>
+			<c:when test="${photoDTO.titleEng!=''}">
+					${photoDTO.titleEng}
+			</c:when>
+			<c:otherwise>
+					${photoDTO.titleKor}
+			</c:otherwise>
+		</c:choose>
+	</c:otherwise>
+</c:choose>				
 <%
 }
 %>
@@ -709,7 +730,28 @@ if(!contentBlidF) {
 				<c:if test="${bookmark.seq ne null}">
 					<a href="javascript:;" class="btn_wish on">찜하기 O</a>
 				</c:if>
+<c:choose>
+	<c:when test="${cookie.language.value eq 'KR'}">
+		<c:choose>
+			<c:when test="${photoDTO.titleKor!=''}">
 				<p class="img_cont">${photoDTO.descriptionKor}</p>
+			</c:when>
+			<c:otherwise>
+				<p class="img_cont">${photoDTO.descriptionEng}</p>
+			</c:otherwise>
+		</c:choose>	
+	</c:when>
+	<c:otherwise>
+		<c:choose>
+			<c:when test="${photoDTO.titleEng!=''}">
+				<p class="img_cont">${photoDTO.descriptionEng}</p>
+			</c:when>
+			<c:otherwise>
+				<p class="img_cont">${photoDTO.descriptionKor}</p>
+			</c:otherwise>
+		</c:choose>
+	</c:otherwise>
+</c:choose>							
 <%
 }
 %>

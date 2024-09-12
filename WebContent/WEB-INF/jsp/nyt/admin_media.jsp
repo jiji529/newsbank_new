@@ -391,7 +391,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					html += '<td>' + calc + '</td>';
 					
 					if(logo) {
-						html += '<td><a class="file" href="/logo.down.photo?seq=' + seq + '" download="" target="_blank">제호있으면 다운</a><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" name="logo" class="logo" accept="application/pdf, image/*" required /></a></div></td>';
+						html += '<td><div class="file_edit"><a href="#" class="table_btn">수정<input type="file" name="logo" class="logo" accept="application/pdf, image/*" required /></a></div></td>';
 					}else {
 						html += '<td><div class="upload-btn-wrapper file_edit"><a href="#" class="table_btn btn_input1">추가</a><input type="file" name="logo" class="logo" accept="application/pdf, image/*" required /></div></td>';						
 					}

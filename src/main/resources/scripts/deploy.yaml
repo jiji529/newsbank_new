@@ -49,18 +49,23 @@ spec:
       - name: ${TAG_ARTIFACTID}
         image: dev-nexus-docker.scrapmaster.co.kr/${TAG_ARTIFACTID}:${TAG_NAME}
         imagePullPolicy: Always
+        securityContext: 
+          privileged: true 
+          capabilities:
+            add:
+              - SYS_ADMIN        
         command: ["/bin/sh", "-c"]
         args: 
         - >
           if [ "${IS_NYT}" = "true" ]; then
             rm -rf /usr/local/tomcat/webapps/ROOT/robots.txt;
-            rm -rf /usr/local/tomcat/webapps/ROOT/robots.txt;
+            rm -rf /usr/local/tomcat/webapps/ROOT/sitemap.xml;
             mv /usr/local/tomcat/webapps/ROOT/robots_nyt.txt /usr/local/tomcat/webapps/ROOT/robots.txt;
             mv /usr/local/tomcat/webapps/ROOT/sitemap_nyt.xml /usr/local/tomcat/webapps/ROOT/sitemap.xml;
             catalina.sh run;
           else
             rm -rf /usr/local/tomcat/webapps/ROOT/robots_nyt.txt;
-            rm -rf /usr/local/tomcat/webapps/ROOT/robots_nyt.txt;
+            rm -rf /usr/local/tomcat/webapps/ROOT/sitemap_nyt.txt;
             catalina.sh run;
           fi                
         env:
@@ -98,15 +103,20 @@ spec:
         volumeMounts:
           - name: timezone-config
             mountPath: /etc/localtime
+          - name: pvc-nfs-newsbank-webfiles
+            mountPath: /data/newsbank/            
           - name: pvc-nfs-newsbank-serviceimage
             mountPath: /data/newsbank/serviceImages
       volumes:
        - name: timezone-config
          hostPath:
            path: /usr/share/zoneinfo/Asia/Seoul
+       - name : pvc-nfs-newsbank-webfiles
+         persistentVolumeClaim:
+           claimName: pvc-nfs-newsbank-webfiles           
        - name : pvc-nfs-newsbank-serviceimage
          persistentVolumeClaim:
-           claimName: pvc-nfs-newsbank-serviceimage
+           claimName: pvc-nfs-newsbank-serviceimage           
 ---
 apiVersion: v1
 kind: Service
