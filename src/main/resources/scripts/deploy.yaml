@@ -87,23 +87,29 @@ spec:
           - name: APPLY_TIMESTAMP
             value: "${APPLY_TIMESTAMP}"
           - name: CATALINA_OPTS
-            value: "-DIS_NYT=${IS_NYT}"
+            value: "-DIS_NYT=${IS_NYT}"                                 
         lifecycle:
           postStart:
             exec:
               command:
                 - /bin/sh
                 - -c
-                - |       
+                - |
+                   echo "Waiting for Tomcat to start...";
+                   sleep 10;  # 톰캣이 시작할 시간을 대기
+                   echo "Processing files...";
                    if [ "${IS_NYT}" = "true" ]; then
+                     echo "Deleting and moving files for NYT...";
                      rm -rf /usr/local/tomcat/webapps/ROOT/robots.txt;
                      rm -rf /usr/local/tomcat/webapps/ROOT/sitemap.xml;
                      mv /usr/local/tomcat/webapps/ROOT/robots_nyt.txt /usr/local/tomcat/webapps/ROOT/robots.txt;
                      mv /usr/local/tomcat/webapps/ROOT/sitemap_nyt.xml /usr/local/tomcat/webapps/ROOT/sitemap.xml;
                    else
+                     echo "Deleting other files...";
                      rm -rf /usr/local/tomcat/webapps/ROOT/robots_nyt.txt;
-                     rm -rf /usr/local/tomcat/webapps/ROOT/sitemap_nyt.txt;            
-                   fi                                 
+                     rm -rf /usr/local/tomcat/webapps/ROOT/sitemap_nyt.txt;
+                   fi
+                   echo "PostStart hook completed.";                   
         ports:
            - containerPort: 8080             
         volumeMounts:
