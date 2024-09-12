@@ -31,7 +31,7 @@ function downOutline(uciCode) {
 		downInternal(uciCode, "outline");
 	} else {
 		if(confirm("회원 서비스입니다.\n로그인 하시겠습니까?")) {
-			$(".gnb_right li").first().children("a").click();	
+			$(".gnb_right li").eq(1).children("a").click();	
 		}
 	}
 }

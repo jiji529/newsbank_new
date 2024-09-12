@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
@@ -55,14 +56,16 @@ public class UsageJSON extends NewsbankServletBase {
 		
 		int individual = 0; // 0 : 온라인(기본값)
 		
-		if (MemberInfo != null) {
-			// 로그인 상태
-			if(MemberInfo.getDeferred() == 2) { 
-				// 오프라인 회원은 개인 사용용도를 전달
-				individual = MemberInfo.getSeq();
-			}
-		}else {
-			// 로그아웃(일반회원)
+		if(Constants.IS_NYT==false) {
+			if (MemberInfo != null) {
+				// 로그인 상태
+				if(MemberInfo.getDeferred() == 2) { 
+					// 오프라인 회원은 개인 사용용도를 전달
+					individual = MemberInfo.getSeq();
+				}
+			}else {
+				// 로그아웃(일반회원)
+			}			
 		}
 		
 		List<UsageDTO> usageOption = usageDAO.usageList(individual);

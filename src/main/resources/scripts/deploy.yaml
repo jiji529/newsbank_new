@@ -57,17 +57,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args: 
         - >
-          if [ "${IS_NYT}" = "true" ]; then
-            rm -rf /usr/local/tomcat/webapps/ROOT/robots.txt;
-            rm -rf /usr/local/tomcat/webapps/ROOT/sitemap.xml;
-            mv /usr/local/tomcat/webapps/ROOT/robots_nyt.txt /usr/local/tomcat/webapps/ROOT/robots.txt;
-            mv /usr/local/tomcat/webapps/ROOT/sitemap_nyt.xml /usr/local/tomcat/webapps/ROOT/sitemap.xml;
-            catalina.sh run;
-          else
-            rm -rf /usr/local/tomcat/webapps/ROOT/robots_nyt.txt;
-            rm -rf /usr/local/tomcat/webapps/ROOT/sitemap_nyt.txt;
-            catalina.sh run;
-          fi                
+          catalina.sh run;                          
         env:
           - name: NODE_NAME
             valueFrom:
@@ -97,7 +87,23 @@ spec:
           - name: APPLY_TIMESTAMP
             value: "${APPLY_TIMESTAMP}"
           - name: CATALINA_OPTS
-            value: "-DIS_NYT=${IS_NYT}"            
+            value: "-DIS_NYT=${IS_NYT}"
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - |       
+                   if [ "${IS_NYT}" = "true" ]; then
+                     rm -rf /usr/local/tomcat/webapps/ROOT/robots.txt;
+                     rm -rf /usr/local/tomcat/webapps/ROOT/sitemap.xml;
+                     mv /usr/local/tomcat/webapps/ROOT/robots_nyt.txt /usr/local/tomcat/webapps/ROOT/robots.txt;
+                     mv /usr/local/tomcat/webapps/ROOT/sitemap_nyt.xml /usr/local/tomcat/webapps/ROOT/sitemap.xml;
+                   else
+                     rm -rf /usr/local/tomcat/webapps/ROOT/robots_nyt.txt;
+                     rm -rf /usr/local/tomcat/webapps/ROOT/sitemap_nyt.txt;            
+                   fi                                 
         ports:
            - containerPort: 8080             
         volumeMounts:
