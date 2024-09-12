@@ -49,12 +49,7 @@ public class Contact extends NewsbankServletBase {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
 		
-		if(Constants.IS_NYT == false) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/contact.jsp");
-			dispatcher.forward(request, response);
-		} else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/nyt/contact.jsp");
-			dispatcher.forward(request, response);			
-		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"contact.jsp");
+		dispatcher.forward(request, response);
 	}
 }

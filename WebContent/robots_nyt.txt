@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://providers-nyt.newsbank.co.kr/sitemap.xml
+#DaumWebMasterTool:e175a6009a0d2703f6cedea16663a167caa5d821db9f8eefb960058e2fc6fbfd:z4WS/pG6LL4AalzG6FeFNw==

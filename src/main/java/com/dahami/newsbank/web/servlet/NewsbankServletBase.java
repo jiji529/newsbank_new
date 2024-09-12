@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 
@@ -57,7 +58,7 @@ public abstract class NewsbankServletBase extends HttpServlet {
 			
 			if(Double.parseDouble(version) <= 9.0) { // IE 9.0 이하버전은 안내페이지로 이동
 				request.setAttribute("ErrorMSG", "뉴스뱅크 홈페이지는 Explorer 10 이상의 버전에 최적화되어 있습니다.");
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/browser_exception.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"browser_exception.jsp");
 				dispatcher.forward(request, response);
 			}
 		}

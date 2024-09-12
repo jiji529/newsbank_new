@@ -129,4 +129,28 @@ public class CalculationDAO extends DAOBase {
 			}
 		}
 	}
+
+	/**
+	 * @methodName : selectCalculationReport
+	 * @author : HA.JINSU
+	 * @date : 2024. 09. 09. 오후 18:15:00
+	 * @methodCommet: 판매수금 보고서
+	 * @return
+	 * @returnType : List<CalculationDTO>
+	 */ 
+	public List<CalculationDTO> selectCalculationReport(Map<String, Object> param) {
+		SqlSession session = null;
+		try {
+			session = sf.getSession();
+			return session.selectList("calculation.selectCalculationReport", param);
+		} catch (Exception e) {
+			logger.warn("", e);
+			return null;
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+			}
+		}
+	}
 }

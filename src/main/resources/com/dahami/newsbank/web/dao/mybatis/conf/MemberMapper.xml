@@ -11,7 +11,7 @@
 	-->
 	<select id="listActiveMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
-		where type = 'M'
+		where type IN ('M','F')
 		and activate != 2
 		and withdraw != 1
 		and admission != 'N'
@@ -25,7 +25,7 @@
 	 -->
 	<select id="listManagableMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
-		where type = 'M'
+		where type IN ('M','F')
 		and withdraw != 1
 		and admission != 'N'
 		order by name asc
@@ -44,7 +44,7 @@
 	<select id="listSlaveAdj" parameterType="int" resultType="int">
 		select adjSlave from member A, adjustment B 
 		where A.seq = B.adjSlave 
-			and type = 'M'
+			and type IN ('M','F')
 			and withdraw != 1
 			and admission != 'N' 
 			and adjMaster = #{value}
@@ -243,7 +243,7 @@
 		`taxPhone`, `taxEmail`, `taxExtTell`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
 		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
-		WHERE `type` = 'M' 
+		WHERE `type` IN ('M','F') 
 		AND `activate` = 1
 		AND `withdraw` = 0
 		AND `compName`!=''
@@ -275,7 +275,7 @@
 		`taxPhone`, `taxEmail`, `taxExtTell`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
 		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
-		WHERE `type` = 'M'
+		WHERE `type` IN ('M','F')
 		<!-- AND `compName`!=''
 		AND `compName` -->
 		<if test="seq != 0">
@@ -304,7 +304,7 @@
 		`taxPhone`, `taxEmail`, `taxExtTell`, DATE_FORMAT(`regDate`,'%Y-%m-%d') AS
 		`regDate`,
 		`logo`, `activate`, `withdraw`, `group_seq` FROM `member`
-		WHERE `type` = 'M'		
+		WHERE `type` IN ('M','F')		
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM
@@ -391,7 +391,7 @@
 	    id, email, name, phone, compNum, compName, preRate, postRate, activate, logo 
 	    FROM member 
 		LEFT JOIN adjustment ON member.seq = adjustment.adjSlave
-		WHERE member.type='M' AND member.admission = 'Y' AND member.withdraw = 0
+		WHERE member.type IN ('M','F') AND member.admission = 'Y' AND member.withdraw = 0
 	        
         <if test="keyword != null"> 
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
@@ -412,7 +412,7 @@
 		SELECT COALESCE(SUM(IF(saleStat=2, 1, 0)), 0) AS blindCnt, COUNT(uciCode) AS totalCnt
 		FROM photo A
         LEFT JOIN member B ON A.member_seq = B.seq
-		WHERE member_seq = #{seq} AND B.type='M'
+		WHERE member_seq = #{seq} AND B.type IN ('M','F')
 	</select>
 	
 	<!-- 회원현황(그룹추가) -->
@@ -466,7 +466,7 @@
 	<select id="mediaCnt" resultType="integer" parameterType="java.util.Map">	    
 	    SELECT count(seq) as cnt 
 	    FROM member 
-	    WHERE `type` = 'M' AND admission = 'Y' AND `withdraw` = 0
+	    WHERE `type` IN ('M','F') AND admission = 'Y' AND `withdraw` = 0
 	        
         <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.BoardDAO;
 import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -64,9 +65,8 @@ public class AdminBoardView extends NewsbankServletBase {
 					request.setAttribute("boardDTO", boardDTO);
 				}
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_board_view.jsp");
-				dispatcher.forward(request, response);
-				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_board_view.jsp");
+				dispatcher.forward(request, response);									
 			} else {
 				processNotAdminAccess(request, response);
 				return;

@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
@@ -42,7 +43,7 @@ public class ExcelDownload extends NewsbankServletBase {
 		String excelHtml = request.getParameter("excelHtml");
 		request.setAttribute("excelHtml", excelHtml);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/excelDownload.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"excelDownload.jsp");
 		dispatcher.forward(request, response);
 	}
 }

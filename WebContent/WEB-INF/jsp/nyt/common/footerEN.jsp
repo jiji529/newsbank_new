@@ -14,8 +14,8 @@
             </dl>
             <dl>
                 <dt>Legal Notices</dt>
-                <dd><a href="#">Terms</a></dd>
-                <dd><b><a href="#">Privacy Policy</a></b></dd>
+                <dd><a href="/policy.intro">Terms</a></dd>
+                <dd><b><a href="/privacy.intro">Privacy Policy</a></b></dd>
             </dl>
         </div>
         <div class="foot_rt">

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
@@ -83,8 +84,9 @@ public class PaymentAction extends NewsbankServletBase {
 					: Integer.parseInt(request.getParameter("paymentManage_seq")); // 구매기록 고유번호
 			int paymentDetail_seq = (request.getParameter("paymentDetail_seq") == null) ? 0
 					: Integer.parseInt(request.getParameter("paymentDetail_seq"));// 구매기록 상세 고유번호
-			String LGD_OID = (request.getParameter("LGD_OID") == null) ? "" : request.getParameter("LGD_OID"); // 주문번호
-
+			String PREFIX_LGD_OID = Constants.JSP_BASHPATH.replace("/", "") + "_";
+			String LGD_OID = (request.getParameter("LGD_OID") == null) ? "" : PREFIX_LGD_OID + request.getParameter("LGD_OID"); // 주문번호
+			
 			/*
 			 * if (request.getParameter("paymentManage_seq") != null) { // 구매기록 고유번호
 			 * paymentManage_seq =

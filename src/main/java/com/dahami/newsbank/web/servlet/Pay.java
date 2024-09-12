@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.PayDAO;
 import com.dahami.newsbank.web.dto.CartDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -93,9 +94,8 @@ public class Pay extends NewsbankServletBase {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pay.jsp");
-			dispatcher.forward(request, response);
-
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"pay.jsp");
+			dispatcher.forward(request, response);				
 		} else {
 			response.getWriter().append("<script type=\"text/javascript\">alert('로그인 페이지로 이동합니다.');location.replace('/login');</script>").append(request.getContextPath());
 		}

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.PhotoDAO;
@@ -86,8 +87,8 @@ public class MypageDibs extends NewsbankServletBase {
 				request.setAttribute("totalCount", totalCount);
 				request.setAttribute("totalPage", totalPage);
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_dibs.jsp");
-				dispatcher.forward(request, response);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"mypage_dibs.jsp");
+				dispatcher.forward(request, response);					
 			}
 			
 		}else {

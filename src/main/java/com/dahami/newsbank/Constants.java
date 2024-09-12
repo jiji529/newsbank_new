@@ -21,7 +21,9 @@ public class Constants {
 	/** 개발/서비스 구분 */
 	private static final boolean IS_SERVICE = true;
 	/** 뉴스뱅크/뉴욕타임즈 뉴스뱅크 구분 */
-	public static final boolean IS_NYT = Boolean.parseBoolean(System.getProperty("IS_NYT", "false"));
+	public static final boolean IS_NYT = Boolean.parseBoolean(System.getProperty("IS_NYT", "true"));
+	/** 서비스에 따른 JSP_BASEPATH 구분 */
+	public static final String JSP_BASHPATH;
 //	private static final boolean IS_SERVICE = false;
 	
 	/** 연동 검색엔진 타입 (searchEngine.searchType) / 마스터 */
@@ -61,18 +63,21 @@ public class Constants {
 		if(IS_SERVICE) {
 			if(IS_NYT) {
 				TARGET_DB = "service-nyt";
-				TARGET_SOLR_ADDR_SUFFIX_PARAM = "_REAL";
-				TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_REAL";
+				TARGET_SOLR_ADDR_SUFFIX_PARAM = "_NYT";
+				TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_NYT";
+				JSP_BASHPATH = "/nyt/";
 			} else {
 				TARGET_DB = "service";
 				TARGET_SOLR_ADDR_SUFFIX_PARAM = "_REAL";
-				TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_REAL";				
+				TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_REAL";
+				JSP_BASHPATH = "/";
 			}
 		}
 		else {
 			TARGET_DB = "dev";
 			TARGET_SOLR_ADDR_SUFFIX_PARAM = "_DEV";
 			TARGET_SOLR_COLLECTION_SUFFIX_PARAM = "_DEV";
+			JSP_BASHPATH = "/";
 		}
 	}
 	

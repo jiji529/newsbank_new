@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.CartDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -101,7 +102,7 @@ public class MypageCartPopOption extends NewsbankServletBase {
 			//cartDAO.insertCart(member_seq, uciCode, usageList_seq, price);
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pop_opt.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"pop_opt.jsp");
 		dispatcher.forward(request, response);
 	}	
 	

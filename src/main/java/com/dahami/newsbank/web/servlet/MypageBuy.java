@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
@@ -75,9 +76,9 @@ public class MypageBuy extends NewsbankServletBase {
 				paymentManageDTO = paymentDAO.selectPaymentManage(paymentManageDTO); // 회원정보 요청
 				
 				request.setAttribute("paymentManageDTO", paymentManageDTO);
-
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_buy.jsp");
-				dispatcher.forward(request, response);
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"mypage_buy.jsp");
+				dispatcher.forward(request, response);					
 			}
 
 		} else {

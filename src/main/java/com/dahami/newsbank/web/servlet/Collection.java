@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.CollectionDAO;
 import com.dahami.newsbank.web.dto.CollectionDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -62,7 +63,7 @@ public class Collection extends NewsbankServletBase {
 		}
 		request.setAttribute("collectionList", collectionList);		
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/collection.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"collection.jsp");
 		dispatcher.forward(request, response);
 	}
 }

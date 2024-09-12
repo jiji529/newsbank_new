@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.BoardService;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -52,9 +53,8 @@ public class AdminBoard extends NewsbankServletBase {
 				BoardService boardService = new BoardService();
 				boardService.execute(request, response);
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_board.jsp");
-				dispatcher.forward(request, response);
-				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_board.jsp");
+				dispatcher.forward(request, response);							
 			} else {
 				processNotAdminAccess(request, response);
 				return;

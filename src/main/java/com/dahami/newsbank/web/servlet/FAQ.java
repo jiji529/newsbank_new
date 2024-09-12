@@ -48,12 +48,7 @@ public class FAQ extends NewsbankServletBase {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
 		
-		if(Constants.IS_NYT == false) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/faq.jsp");
-			dispatcher.forward(request, response);
-		} else {			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/nyt/faq.jsp");
-			dispatcher.forward(request, response);
-		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"faq.jsp");
+		dispatcher.forward(request, response);
 	}
 }

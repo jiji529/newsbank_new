@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.DownloadDAO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 import com.dahami.newsbank.web.util.ExcelUtil;
@@ -83,10 +84,20 @@ public class DownloadJSON extends NewsbankServletBase {
 		} 
 		
 		if(cmd.is3("excel")) {
-			// 목록 엑셀다운로드
-			List<String> headList = Arrays.asList("회사/기관명", "아이디", "이름", "매체", "UCI코드", "언론사 사진번호", "다운로드일"); //  테이블 상단 제목
-			List<Integer> columnSize = Arrays.asList(30, 20, 15, 15, 20, 30, 25); //  컬럼별 길이정보
-			List<String> columnList = Arrays.asList("compName", "id", "name", "media", "uciCode", "compCode", "regDate"); // 컬럼명
+			List<String> headList;
+			List<Integer> columnSize;
+			List<String> columnList;
+			if(Constants.IS_NYT == false) {
+				// 목록 엑셀다운로드
+				headList = Arrays.asList("회사/기관명", "아이디", "이름", "매체", "UCI코드", "언론사 사진번호", "다운로드일"); //  테이블 상단 제목
+				columnSize = Arrays.asList(30, 20, 15, 15, 20, 30, 25); //  컬럼별 길이정보
+				columnList = Arrays.asList("compName", "id", "name", "media", "uciCode", "compCode", "regDate"); // 컬럼명				
+			} else {
+				// 목록 엑셀다운로드
+				headList = Arrays.asList("회사/기관명", "아이디", "이름", "사진 코드", "언론사 사진번호", "다운로드일"); //  테이블 상단 제목
+				columnSize = Arrays.asList(30, 20, 15, 20, 30, 25); //  컬럼별 길이정보
+				columnList = Arrays.asList("compName", "id", "name", "uciCode", "compCode", "regDate"); // 컬럼명
+			}
 			
 			Date today = new Date();
 		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");

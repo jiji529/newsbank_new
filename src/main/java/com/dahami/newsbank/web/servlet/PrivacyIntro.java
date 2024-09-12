@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
@@ -53,12 +54,12 @@ public class PrivacyIntro extends NewsbankServletBase {
 		
 		
 		if(cmd.is3("past")) { // 이전 개인정보처리 방침
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/past_privacy_intro.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"past_privacy_intro.jsp");
 			dispatcher.forward(request, response);
 			
 		}else{
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/privacy_intro.jsp");
-			dispatcher.forward(request, response);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"privacy_intro.jsp");
+			dispatcher.forward(request, response);				
 		}
 		
 		

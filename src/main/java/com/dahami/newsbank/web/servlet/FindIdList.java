@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -86,7 +87,7 @@ public class FindIdList extends NewsbankServletBase {
 			listMember = memberDAO.listMember(memberDTO); // 회원정보 요청
 			request.setAttribute("listMember", listMember);
 
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_id_list.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"find_id_list.jsp");
 			dispatcher.forward(request, response);
 		} else {
 			response.getWriter().append("<script type=\"text/javascript\">alert('" + message + "');location='/id.find';</script>").append(request.getContextPath());

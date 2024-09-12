@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 //import com.oreilly.servlet.MultipartRequest;
@@ -58,7 +59,7 @@ public class JoinForm extends NewsbankServletBase {
 		if (type == null) {
 			response.sendRedirect("/kind.join");
 		} else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/join_form.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"join_form.jsp");
 			dispatcher.forward(request, response);
 		}
 	}

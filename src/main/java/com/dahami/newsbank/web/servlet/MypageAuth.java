@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -78,8 +79,8 @@ public class MypageAuth extends NewsbankServletBase {
 				}
 			} else {
 				if (pw == null) {
-					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_auth.jsp");
-					dispatcher.forward(request, response);
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"mypage_auth.jsp");
+					dispatcher.forward(request, response);						
 				} else {
 
 					// 로그인 정보 요청
@@ -112,8 +113,8 @@ public class MypageAuth extends NewsbankServletBase {
 						session.setAttribute("mypageAuth", false);
 
 						request.setAttribute("msg", "0");
-						RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_auth.jsp");
-						dispatcher.forward(request, response);
+						RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"mypage_auth.jsp");
+						dispatcher.forward(request, response);							
 					}
 				}
 			}

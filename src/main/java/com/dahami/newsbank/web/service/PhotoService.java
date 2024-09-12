@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.MemberDAO;
@@ -63,7 +64,7 @@ public class PhotoService extends ServiceBase {
 					request.setAttribute("bookmark", new BookmarkDAO().select(memberInfo.getSeq(), uciCode));
 				}
 			}
-			forward = "/WEB-INF/jsp/photo_view.jsp";
+			forward = "/WEB-INF/jsp"+Constants.JSP_BASHPATH+"photo_view.jsp";
 		}
 		else {
 			// 필터에서 관리자/소유자용 항목 표시 안하기 위해
@@ -80,7 +81,7 @@ public class PhotoService extends ServiceBase {
 				request.setAttribute("compName", memberDTO.getCompName());
 			}
 			
-			forward = "/WEB-INF/jsp/photo.jsp";
+			forward = "/WEB-INF/jsp"+Constants.JSP_BASHPATH+"photo.jsp";
 		}
 		forward(request, response, forward);
 	}

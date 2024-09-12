@@ -27,6 +27,29 @@ public class CalculationDTO {
 	private MemberDTO memberDTO; // UCI코드 소유자의 회원정보
 	private UsageDTO usageDTO; // UCI코드별 용도정보
 	
+	// 판매수금 보고서용으로 추가된 항목
+	private String descriptionKr; // 사진 설명
+	private String descriptionEn; // 사진 설명(영문)
+	private String shotPerson;
+	
+	public String getDescriptionKr() {
+		return descriptionKr;
+	}
+	public void setDescriptionKr(String descriptionKr) {
+		this.descriptionKr = descriptionKr;
+	}
+	public String getDescriptionEn() {
+		return descriptionEn;
+	}
+	public void setDescriptionEn(String descriptionEn) {
+		this.descriptionEn = descriptionEn;
+	}
+	public String getShotPerson() {
+		return shotPerson;
+	}
+	public void setShotPerson(String shotPerson) {
+		this.shotPerson = shotPerson;
+	}
 	public int getSeq() {
 		return seq;
 	}

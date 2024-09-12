@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.CalculationDTO;
@@ -216,6 +217,216 @@ public class CalculationAction extends NewsbankServletBase {
 		PaymentDAO paymentDAO = new PaymentDAO();
 		
 		switch(action) {
+			// 뉴욕타임즈 판매수금 보고서 정산용으로 2024-09-09 추가함
+			case "N":				
+				// 결제건별 상세내역(판매수금 보고서)
+				param.put("keywordType", keywordType);
+				param.put("keyword", keyword);
+				param.put("start_date", start_date);
+				param.put("end_date", end_date);
+				param.put("payType", payType);
+				param.put("member_seqArr", member_seqArr);
+				
+				List<CalculationDTO> calcReportList = calculationDAO.selectCalculationReport(param);
+				result = true;
+				
+				if (cmd.isInvalid()) {
+					response.sendRedirect("/invlidPage.jsp");
+					return;
+				}
+				
+				if(cmd.is3("excel")) {
+					// 엑셀 저장
+					List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+					for(CalculationDTO dto : calcReportList) {
+						try {
+							Map<String, Object> obj = new HashMap<String, Object>();
+							
+							// 고객 이름이 없는 경우가 있음 따라서 있는 것을 사용하도록 처리한다.
+							String clientName = "";
+							if(dto.getName()==null || dto.getName().equals("")) {
+								if(dto.getCompName()==null || dto.getCompName().equals("")) {
+									// 고객명, 회사명이 모두 없는 경우
+									clientName = "(" + dto.getId() + ")";
+								} else {
+									// 회사명은 있는 경우
+									clientName = dto.getCompName() + " (" + dto.getId() + ")";
+								}
+							} else {
+								if(dto.getCompName()==null || dto.getCompName().equals("")) {
+									// 고객명은 있는데 회사명은 없는 경우
+									clientName = dto.getName() + " (" + dto.getId() + ")";
+								} else {
+									// 둘다 있는 경우
+									clientName = dto.getName() + " (" + dto.getId() + ")";
+								}
+							}
+							
+							
+							// 사용목적을 합치는 작업은 여기서 진행한다.
+							String PurposeOfUse = "";
+							if(dto.getUsageDTO().getUsage()!=null && !dto.getUsageDTO().getUsage().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getUsage() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getUsage();								
+							} 
+							if(dto.getUsageDTO().getDivision1()!=null && !dto.getUsageDTO().getDivision1().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getDivision1() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getDivision1();
+							}
+							if(dto.getUsageDTO().getDivision2()!=null && !dto.getUsageDTO().getDivision2().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getDivision2() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getDivision2();
+							}
+							if(dto.getUsageDTO().getDivision3()!=null && !dto.getUsageDTO().getDivision3().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getDivision3() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getDivision3();
+							}
+							if(dto.getUsageDTO().getDivision4()!=null && !dto.getUsageDTO().getDivision4().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getDivision4() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getDivision4();
+							}			
+							
+							// description 둘중 하나 사용하기
+							String description = "";
+							if(dto.getDescriptionKr()!=null && !dto.getDescriptionKr().equals("")) {
+								description = dto.getDescriptionKr();
+							} else if(dto.getDescriptionEn()!=null && !dto.getDescriptionEn().equals("")) {
+								description = dto.getDescriptionEn();
+							}
+							
+							// 날짜 yyyy-mm-dd 형식으로 변환
+							dto.setRegDate(dto.getRegDate().split(" ")[0]);
+							
+							// nyt_royalty는 70% 고정
+							int nyt_royalty = 70;
+							// 판매금액은 67780 이상인 것에 한하여, 70% 비율로 지급한다.
+							int nyt_share = dto.getPrice() * nyt_royalty / 100;
+							
+							obj.put("type", dto.getType());
+							obj.put("clientName", clientName);
+							obj.put("compAddress", dto.getMemberDTO().getCompAddress());
+							obj.put("description", description);
+							obj.put("shotPerson", dto.getShotPerson());
+							obj.put("regDate", dto.getRegDate());
+							obj.put("PurposeOfUse", PurposeOfUse);
+							obj.put("InvoiceNum", dto.getUciCode());
+							obj.put("currency","KRW");
+							obj.put("price", dto.getPrice());
+							obj.put("nyt_royalty", Integer.toString(nyt_royalty) + "%");
+							obj.put("nyt_share", nyt_share);
+							
+							mapList.add(obj);							
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					List<String> headList = Arrays.asList("고객/클라이언트/최종 사용자 이름", "고객/클라이언트/최종 사용자 국가", "항목/사진설명", "사진사", "판매날짜", "사용 형식/목적", "송장/문서 번호", "통화", "총 금액", "로열티 비율 %", "NYT 공유"); //  테이블 상단 제목;
+					List<Integer> columnSize = Arrays.asList(30, 30, 40, 15, 15, 25, 15, 10, 15, 15, 15); //  컬럼별 길이정보;
+					List<String> columnList = Arrays.asList("clientName", "compAddress", "description", "shotPerson", "regDate", "PurposeOfUse", "InvoiceNum", "currency", "price", "nyt_royalty", "nyt_share"); // 컬럼명;					
+					
+					Date today = new Date();
+				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");
+					String orgFileName = "판매수금 보고서_" + dateforamt.format(today); // 파일명
+					ExcelUtil.xlsxWiter(request, response, headList, columnSize, columnList, mapList, orgFileName);
+				} else {
+					// 검색결과 리턴
+					for(CalculationDTO dto : calcReportList) {
+						try {
+							JSONObject obj = new JSONObject();
+							
+							// 고객 이름이 없는 경우가 있음 따라서 있는 것을 사용하도록 처리한다.
+							String clientName = "";
+							if(dto.getName()==null || dto.getName().equals("")) {
+								if(dto.getCompName()==null || dto.getCompName().equals("")) {
+									// 고객명, 회사명이 모두 없는 경우
+									clientName = "(" + dto.getId() + ")";
+								} else {
+									// 회사명은 있는 경우
+									clientName = dto.getCompName() + " (" + dto.getId() + ")";
+								}
+							} else {
+								if(dto.getCompName()==null || dto.getCompName().equals("")) {
+									// 고객명은 있는데 회사명은 없는 경우
+									clientName = dto.getName() + " (" + dto.getId() + ")";
+								} else {
+									// 둘다 있는 경우
+									clientName = dto.getName() + " (" + dto.getId() + ")";
+								}
+							}
+							
+							
+							// 사용목적을 합치는 작업은 여기서 진행한다.
+							String PurposeOfUse = "";
+							if(dto.getUsageDTO().getUsage()!=null && !dto.getUsageDTO().getUsage().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getUsage() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getUsage();								
+							} 
+							if(dto.getUsageDTO().getDivision1()!=null && !dto.getUsageDTO().getDivision1().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getDivision1() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getDivision1();
+							}
+							if(dto.getUsageDTO().getDivision2()!=null && !dto.getUsageDTO().getDivision2().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getDivision2() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getDivision2();
+							}
+							if(dto.getUsageDTO().getDivision3()!=null && !dto.getUsageDTO().getDivision3().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getDivision3() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getDivision3();
+							}
+							if(dto.getUsageDTO().getDivision4()!=null && !dto.getUsageDTO().getDivision4().equals("")) {
+								PurposeOfUse = PurposeOfUse.equals("") 
+										? PurposeOfUse + dto.getUsageDTO().getDivision4() 
+												: PurposeOfUse + " | " + dto.getUsageDTO().getDivision4();
+							}			
+							
+							// description 둘중 하나 사용하기
+							String description = "";
+							if(dto.getDescriptionKr()!=null && !dto.getDescriptionKr().equals("")) {
+								description = dto.getDescriptionKr();
+							} else if(dto.getDescriptionEn()!=null && !dto.getDescriptionEn().equals("")) {
+								description = dto.getDescriptionEn();
+							}
+							
+							// 날짜 yyyy-mm-dd 형식으로 변환
+							dto.setRegDate(dto.getRegDate().split(" ")[0]);
+							
+							// nyt_royalty는 70% 고정
+							int nyt_royalty = 70;
+							// 판매금액은 67780 이상인 것에 한하여, 70% 비율로 지급한다.
+							int nyt_share = dto.getPrice() * nyt_royalty / 100;
+							
+							obj.put("type", dto.getType());
+							obj.put("clientName", clientName);
+							obj.put("compAddress", dto.getMemberDTO().getCompAddress());
+							obj.put("description", description);
+							obj.put("shotPerson", dto.getShotPerson());
+							obj.put("regDate", dto.getRegDate());
+							obj.put("PurposeOfUse", PurposeOfUse);
+							obj.put("InvoiceNum", dto.getUciCode());
+							obj.put("currency","KRW");
+							obj.put("price", dto.getPrice());
+							obj.put("nyt_royalty", Integer.toString(nyt_royalty) + "%");
+							obj.put("nyt_share", nyt_share);
+							
+							jArray.add(obj);		
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+				break;		
 			case "C":
 				// 정산 추가
 				break;
@@ -300,9 +511,18 @@ public class CalculationAction extends NewsbankServletBase {
 							e.printStackTrace();
 						}
 					}
-					List<String> headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "촬영일\n(이미지생성일)", "판매자", "결제종류", "용도", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
-					List<Integer> columnSize = Arrays.asList(20, 15, 15, 25, 20, 10, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
-					List<String> columnList = Arrays.asList("regDate", "nameId", "compName", "uciCode", "shotDate", "copyright", "payType", "usageName", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+					List<String> headList;
+					List<Integer> columnSize;
+					List<String> columnList;
+					if(Constants.IS_NYT == false) {
+						headList = Arrays.asList("구매일자", "이름(아이디)", "기관/회사", "사진ID", "촬영일\n(이미지생성일)", "판매자", "결제종류", "용도", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+						columnSize = Arrays.asList(20, 15, 15, 25, 20, 10, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
+						columnList = Arrays.asList("regDate", "nameId", "compName", "uciCode", "shotDate", "copyright", "payType", "usageName", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명						
+					} else {
+						headList = Arrays.asList("구매일자", "이름(아이디)", "사진ID", "판매자", "결제종류", "용도", "과세금액", "과세부가세", "결제금액", "빌링수수료", "총매출액", "회원사 매출액", "공급가액", "공급부가세", "다하미 매출액"); //  테이블 상단 제목
+						columnSize = Arrays.asList(20, 15, 25, 10, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10); //  컬럼별 길이정보
+						columnList = Arrays.asList("regDate", "nameId", "uciCode", "copyright", "payType", "usageName", "customValue", "customTax", "billingAmount", "billingTax", "totalSalesAccount", "salesAccount", "valueOfSupply", "addedTaxOfSupply", "dahamiAccount"); // 컬럼명
+					}
 					
 					Date today = new Date();
 				    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");

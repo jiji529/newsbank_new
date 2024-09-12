@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
@@ -47,7 +48,7 @@ public class JoinTerms extends NewsbankServletBase {
 		if (type == null) {
 			response.sendRedirect("/kind.join");
 		} else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/join_terms.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"join_terms.jsp");
 			dispatcher.forward(request, response);
 		}
 

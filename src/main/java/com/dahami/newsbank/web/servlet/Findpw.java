@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
@@ -43,7 +44,7 @@ public class Findpw extends NewsbankServletBase {
 		session.removeAttribute("findMemberDTO");
 
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_pw.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"find_pw.jsp");
 		dispatcher.forward(request, response);
 	}
 }

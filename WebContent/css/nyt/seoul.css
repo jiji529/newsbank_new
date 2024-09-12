@@ -1,0 +1,16 @@
+.seoul nav.gnb_dark .gnb a.logo{background: url(../images/seoul/logo.jpg) 0 0 no-repeat; height: 54px; width: 290px; text-indent: 150px; line-height: 58px; font-size: 24px; margin-right: 10px; color:#000; background-size: contain;}
+.seoul nav.gnb_dark .gnb a.link{margin-top: 18px; border-color: #2292e9; color: #2292e9}
+.seoul.admin nav.gnb_dark{height: 80px;}
+.seoul .wide{padding-top: 81px;}
+.seoul .mypage{padding-bottom: 0;}
+td.tr{font-size: 14px; font-weight: bold;}
+.seoul.admin .ad_result{margin-top: 0;}
+.seoul .tb04 td{padding: 12px 10px; color: #666;}
+.seoul .btn_area{margin-bottom: 10px;}
+.seoul.admin .mypage .btn_area .btn_input2{border-color: #2292e9; color: #2292e9; padding: 8px 24px; font-size: 13px;}
+
+.seoul .lnb ul li .lnb_li2 li.on a{color: #2292e9; }
+.seoul .lnb ul li .lnb_li2 li.on:before{background: #2292e9; }
+.seoul.admin .table_head h3:before{background: #2292e9; }
+
+.seoul .pagination ul li.active a{color: #2292e9; }

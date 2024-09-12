@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.CalculationDAO;
 import com.dahami.newsbank.web.dao.PaymentDAO;
@@ -99,7 +100,9 @@ public class XpayNoteurl extends NewsbankServletBase {
 		LGD_RESPCODE = request.getParameter("LGD_RESPCODE");
 		LGD_RESPMSG = request.getParameter("LGD_RESPMSG");
 		LGD_MID = request.getParameter("LGD_MID");
-		LGD_OID = request.getParameter("LGD_OID");
+		
+		String PREFIX_LGD_OID = Constants.JSP_BASHPATH.replace("/", "") + "_";
+		LGD_OID = PREFIX_LGD_OID + request.getParameter("LGD_OID");
 		LGD_AMOUNT = request.getParameter("LGD_AMOUNT");
 		LGD_TID = request.getParameter("LGD_TID");
 		LGD_PAYTYPE = request.getParameter("LGD_PAYTYPE");

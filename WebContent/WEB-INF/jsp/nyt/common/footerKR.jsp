@@ -15,8 +15,8 @@
         </dl>
         <dl>
             <dt>법적고지</dt>
-            <dd><a href="#">이용약관</a></dd>
-            <dd><b><a href="#">개인정보처리방침</a></b></dd>
+            <dd><a href="/policy.intro">이용약관</a></dd>
+            <dd><b><a href="/privacy.intro">개인정보처리방침</a></b></dd>
         </dl>
     </div>
     <div class="foot_rt">

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
@@ -42,7 +43,7 @@ public class XpayReturnurl extends NewsbankServletBase {
 		}
 	
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pay/returnurl.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"pay/returnurl.jsp");
 		dispatcher.forward(request, response);
 	}
 }

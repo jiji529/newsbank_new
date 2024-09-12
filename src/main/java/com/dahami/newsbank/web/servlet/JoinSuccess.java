@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
@@ -39,7 +40,7 @@ public class JoinSuccess extends NewsbankServletBase {
     		return;
     	}
     	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/join_success.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"join_success.jsp");
 		dispatcher.forward(request, response);
 	}
 }

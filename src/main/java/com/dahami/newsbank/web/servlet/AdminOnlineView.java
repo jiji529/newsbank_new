@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
@@ -108,10 +109,8 @@ public class AdminOnlineView extends NewsbankServletBase {
 			request.setAttribute("pagevol", nowPageVol);
 			request.setAttribute("startgo", nowStartGo);
 			
-			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_online_view.jsp");
-			dispatcher.forward(request, response);
-			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_online_view.jsp");
+			dispatcher.forward(request, response);				
 		}else {
 			response.sendRedirect("/login");
 		}

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.service.CMSService;
@@ -111,8 +112,8 @@ public class MypageAccountInfo extends NewsbankServletBase {
 				//매체목록 세팅
 				request.setAttribute("mediaList", new MemberDAO().listAdjustMedia(MemberInfo));
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_account_info.jsp");
-				dispatcher.forward(request, response);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"mypage_account_info.jsp");
+				dispatcher.forward(request, response);					
 			}
 			
 		} else {

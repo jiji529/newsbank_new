@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
 /**
@@ -43,7 +44,7 @@ public class JoinKind extends NewsbankServletBase {
 		session.invalidate(); //세션 삭제
 		
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/join_kind.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"join_kind.jsp");
 		dispatcher.forward(request, response);
     }
 }

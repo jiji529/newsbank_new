@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -71,9 +72,8 @@ public class AdminMember extends NewsbankServletBase {
 					memberDAO.updateMemberGroup(mParam); // 선택한 ID group_seq 수정
 				}
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_member.jsp");
-				dispatcher.forward(request, response);
-				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_member.jsp");
+				dispatcher.forward(request, response);							
 			} else {
 				processNotAdminAccess(request, response);
 				return;

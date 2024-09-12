@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentManageDTO;
@@ -86,8 +87,8 @@ public class MypageBuyList extends NewsbankServletBase {
 				request.setAttribute("listPaymentManage", listPaymentManage);
 				request.setAttribute("returnMap", paramMaps);
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_buy_list.jsp");
-				dispatcher.forward(request, response);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"mypage_buy_list.jsp");
+				dispatcher.forward(request, response);					
 			}
 
 		} else {

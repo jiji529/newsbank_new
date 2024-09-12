@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -152,10 +153,18 @@ public class BuyJSON extends NewsbankServletBase {
 					searchList.get(idx).put("strStatus", strStatus);
 					idx++;
 				}
-				
-				List<String> headList = Arrays.asList("회사/기관명", "아이디", "이름", "구매 신청일", "상태", "매체", "UCI코드", "언론사 사진번호", "용도", "금액"); //  테이블 상단 제목
-				List<Integer> columnSize = Arrays.asList(25, 10, 10, 25, 10, 15, 20, 25, 10, 10); //  컬럼별 길이정보
-				List<String> columnList = Arrays.asList("compName", "id", "name", "PAYDATE", "strStatus", "media", "photo_uciCode", "compCode", "usage", "price"); // 컬럼명
+				List<String> headList;
+				List<Integer> columnSize;
+				List<String> columnList;
+				if(Constants.IS_NYT == false) {
+					headList = Arrays.asList("회사/기관명", "아이디", "이름", "구매 신청일", "상태", "매체", "UCI코드", "언론사 사진번호", "용도", "금액"); //  테이블 상단 제목
+					columnSize = Arrays.asList(25, 10, 10, 25, 10, 15, 20, 25, 10, 10); //  컬럼별 길이정보
+					columnList = Arrays.asList("compName", "id", "name", "PAYDATE", "strStatus", "media", "photo_uciCode", "compCode", "usage", "price"); // 컬럼명					
+				} else {
+					headList = Arrays.asList("회사/기관명", "아이디", "이름", "구매 신청일", "상태", "사진 코드", "언론사 사진번호", "용도", "금액"); //  테이블 상단 제목
+					columnSize = Arrays.asList(25, 10, 10, 25, 10, 20, 25, 10, 10); //  컬럼별 길이정보
+					columnList = Arrays.asList("compName", "id", "name", "PAYDATE", "strStatus", "photo_uciCode", "compCode", "usage", "price"); // 컬럼명
+				}
 				
 				Date today = new Date();
 			    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");

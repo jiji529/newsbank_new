@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -159,7 +160,7 @@ public class Login extends NewsbankServletBase {
 			*/
 			
 			// 초기화면 또는 아이디 패스워드 누락
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"login.jsp");
 			dispatcher.forward(request, response);
 		}
 		else if(cmd.is2("idchange")) {
@@ -183,7 +184,7 @@ public class Login extends NewsbankServletBase {
 				request.setAttribute("nextChangeHide", nextChangeHide);
 				
 
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login_popup.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"login_popup.jsp");
 				dispatcher.forward(request, response);
 			}
 		}

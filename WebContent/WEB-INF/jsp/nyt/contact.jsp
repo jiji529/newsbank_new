@@ -29,7 +29,7 @@
 			    <link rel="stylesheet" href="css/nyt/base.css" />
 			    <link rel="stylesheet" href="css/nyt/mypage.css" />
 			    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-			    <script src="js/footer.js"></script>
+			    <script src="js/nyt/footer.js"></script>
 			</head>
 			
 			<jsp:include page="./common/head_meta.jsp"/>
@@ -135,7 +135,7 @@
 			    <link rel="stylesheet" href="css/nyt/base.css" />
 			    <link rel="stylesheet" href="css/nyt/mypage.css" />
 			    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-			    <script src="js/footer.js"></script>
+			    <script src="js/nyt/footer.js"></script>
 			</head>
 			
 			<jsp:include page="./common/head_meta.jsp"/>

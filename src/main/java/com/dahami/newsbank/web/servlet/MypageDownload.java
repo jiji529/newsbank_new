@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.DownloadDAO;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.DownloadDTO;
@@ -103,7 +104,7 @@ public class MypageDownload extends NewsbankServletBase {
 				request.setAttribute("MemberInfo", MemberInfo);
 				request.setAttribute("returnMap", paramMaps);
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_download.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"mypage_download.jsp");
 				dispatcher.forward(request, response);
 			}
 		} else { 

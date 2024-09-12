@@ -36,6 +36,7 @@ public class SearchParameterBean {
 	public static final String OWNER_SELF = PhotoDTO.OWNER_SELF;
 	public static final String OWNER_COOP = PhotoDTO.OWNER_COOP;
 	public static final String OWNER_MEDIA = PhotoDTO.OWNER_MEDIA;
+	public static final String OWNER_MEDIA_FOREIGN = PhotoDTO.OWNER_MEDIA_FOREIGN;
 	public static final String OWNER_PERSONAL = PhotoDTO.OWNER_PERSONAL;
 	private String[] ownerType;
 	
@@ -125,7 +126,7 @@ public class SearchParameterBean {
 	
 	public SearchParameterBean() {
 		this.ownerType = new String[] {
-			OWNER_MEDIA	
+			OWNER_MEDIA, OWNER_MEDIA_FOREIGN
 		};
 		pageVol = 20;
 		pageNo = 1;

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.BoardDAO;
 import com.dahami.newsbank.web.dto.BoardDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -63,7 +64,7 @@ public class Board extends NewsbankServletBase {
 			
 		}*/
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/board.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"board.jsp");
 		dispatcher.forward(request, response);
 	}
 }

@@ -23,6 +23,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.dahami.common.util.HttpUtil;
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.PaymentDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.BookmarkDTO;
@@ -159,7 +160,8 @@ public class PurchaseJSON extends NewsbankServletBase {
 			String LGD_BUYER = MemberInfo.getName(); // 구매자 명
 			String LGD_BUYEREMAIL = MemberInfo.getEmail(); // 구매자 이메일
 			String LGD_BUYERPHONE = MemberInfo.getPhone(); // 구매자 이메일
-			String LGD_OID = LGD_BUYERID + "_" + LGD_TIMESTAMP; // 주문번호(상점정의 유니크한 주문번호를 입력하세요)
+			String PREFIX_LGD_OID = Constants.JSP_BASHPATH.replace("/", "") + "_";
+			String LGD_OID = PREFIX_LGD_OID + LGD_BUYERID + "_" + LGD_TIMESTAMP; // 주문번호(상점정의 유니크한 주문번호를 입력하세요)
 			String LGD_PRODUCTINFO = LGD_BUYER + "(" + LGD_BUYERID + ")_" + LGD_AMOUNT + "_구매"; // 상품명
 
 			String CST_PLATFORM = "service";// LG유플러스 결제서비스 선택(test:테스트, service:서비스)

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -181,7 +182,7 @@ public class AdminMediaView extends NewsbankServletBase {
 				
 				
 				request.setAttribute("MemberDTO", memberDTO);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_media_view.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_media_view.jsp");
 				dispatcher.forward(request, response);
 				
 			} else {

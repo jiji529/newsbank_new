@@ -68,6 +68,7 @@
 		<result property="withdraw" column="withdraw" />
 		<result property="activate" column="activate" />
 		<result property="compName" column="compName" />
+		<result property="compAddress" column="compAddress" />
 	</resultMap>
 	
    	<resultMap id="usageResult" type="com.dahami.newsbank.web.dto.UsageDTO">
@@ -284,5 +285,68 @@
 			#{regDate}
 			)
 	</insert>
+	
+	<!-- 판매수금 보고서 리턴 타입 -->
+   	<resultMap id="calculationReportResult" type="com.dahami.newsbank.web.dto.CalculationDTO">
+		<id property="seq" column="seq" />
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="compName" column="compName" />
+		<result property="descriptionKr" column="descriptionKr" />
+		<result property="descriptionEn" column="descriptionEn" />
+		<result property="shotPerson" column="shotPerson" />
+		<result property="regDate" column="regDate" />
+		<result property="uciCode" column="uciCode" />
+		<result property="price" column="price" />
+		<result property="type" column="type" />
+		
+		<association property="memberDTO" column="compAddress"
+			javaType="com.dahami.newsbank.web.dto.MemberDTO" resultMap="memberResult" />
+		<association property="usageDTO" column="usage"
+			javaType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageResult" />
+		<association property="usageDTO" column="division1"
+			javaType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageResult" />
+		<association property="usageDTO" column="division2"
+			javaType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageResult" />
+		<association property="usageDTO" column="division3"
+			javaType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageResult" />
+		<association property="usageDTO" column="division4"
+			javaType="com.dahami.newsbank.web.dto.UsageDTO" resultMap="usageResult" />															
+	</resultMap>	
+	
+	<!-- 판매수금 보고서 -->
+	<select id="selectCalculationReport" resultMap="calculationReportResult" 
+   	    parameterType="com.dahami.newsbank.web.dto.CalculationDTO"> 
+   	   	SELECT M.`id`, M.`name`, M.`compName`, M.`compAddress`, P.`descriptionKr`, P.descriptionEn, P.`shotPerson`
+		, C.`regDate`, U.`usage` AS usageName, U.division1, U.division2, U.division3, U.division4, C.uciCode, C.price, C.`type`
+		FROM calculations C
+		LEFT JOIN photo P ON C.`uciCode` = P.`uciCode`
+		LEFT JOIN usageList U ON C.`usage`= U.`seq`
+		LEFT JOIN member M on C.`id` = M.`id`
+		
+		<where>
+		    <if test="payType != null and payType != 'all'">
+		    	AND C.`type` = #{payType}    
+		    </if>		    
+		    <if test="start_date != null and end_date != null">
+		    	AND date_format(C.`regDate`, '%Y-%m-%d') BETWEEN #{start_date} AND #{end_date}     
+		    </if>
+		    <if test="keyword != null and keyword != ''">
+		    	<if test="keywordType == 'member'"> <!-- 회사/기관명, 아이디, 이름 -->
+				 AND M.id LIKE CONCAT('%', #{keyword}, '%')
+				     OR M.name LIKE CONCAT('%', #{keyword}, '%')
+				     OR M.compName LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="keywordType == 'photo'"> <!-- UCI코드, 언론사 사진번호 -->
+				 AND P.uciCode LIKE CONCAT('%', #{keyword}, '%')
+				    OR (SELECT compCode FROM photo WHERE uciCode = C.uciCode) LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+	            <bind name="keyword" value="'%' + keyword + '%'" />
+	            AND (M.`name` LIKE #{keyword} OR M.`compName` LIKE #{keyword} OR M.`id` LIKE #{keyword})
+            </if>
+            AND C.price >= 67780
+	    </where>
+		ORDER BY C.`regDate` DESC
+   	</select>	
 </mapper>
     

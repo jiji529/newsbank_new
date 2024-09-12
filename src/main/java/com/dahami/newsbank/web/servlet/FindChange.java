@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -123,7 +124,7 @@ public class FindChange extends NewsbankServletBase {
 			memberDTO = memberDAO.selectMember(memberDTO); // 회원정보 요청
 			if(memberDTO!=null) {
 				session.setAttribute("findMemberDTO", memberDTO);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/find_pw_change.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"find_pw_change.jsp");
 				dispatcher.forward(request, response);
 			}else {
 				message = id+"의 회원정보를 찾을 수 없습니다.";

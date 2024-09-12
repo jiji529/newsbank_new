@@ -1,0 +1,162 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url("font.css");
+
+*{margin:0; padding:0; box-sizing: border-box; color:#333;font-family:"nsr",Helvetica,AppleSDGothicNeo, AppleGothic,Arial,Dotum,'돋움',sans-serif;}
+body,html{height:100%; text-align:center; background:#f6f6f6;}
+ul,ol,dl{list-style:none;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,form,fieldset,p,button{margin:0;padding:0}
+/*body,h1,h2,h3,h4,input,button{font-family:"nanum",Helvetica,AppleSDGothicNeo, Dotum,'돋움',sans-serif;}*/
+a{text-decoration: none;}
+fieldset, img { border: 0 none;}
+.color{ color:#f79320!important;}
+.block {display:block;}
+.blind{display:none;}
+button{cursor:pointer;}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {    -webkit-appearance: none;}
+#top{position: fixed; bottom:30px; right:30px; z-index: 1000; display: block; width: 50px; height:50px; text-decoration: none; font-size: 13px; opacity: 0.8; cursor: pointer; border-radius:25px; background:#666; line-height:50px;font-family:'Montserrat',sans-serif; }
+#top a{color:#fff; display:block;}
+
+.wrap{ position:relative; width:640px; min-height:100%; margin:0 auto; background:#fff; text-align:left; border-bottom:65px;}
+
+header{ width:100%; border-bottom:1px #ddd solid; height:80px; padding-top:20px;}
+h1{height: 50px; display: block; width: 142px; margin:0 auto; position: relative; background:url(../../images/nyt/logo_b.svg) 0 0 no-repeat; text-indent:-9999px;} 
+.join{ width:100%; padding:20px;} 
+.tit_join{ font-size: 24px; }
+
+.wrap_tit{  width:100%; text-align:center; margin:40px 0;}
+.wrap_tit .tit_join{ font-size:24px; margin-bottom:10px;font-family:"nsr",Helvetica, Dotum,'돋움',"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif;}
+.wrap_tit .txt_desc{ font-size:13px; color:#666; line-height:1.5}
+
+.join fieldset{}
+.join_box {position: relative; border: 1px solid #d5d5d5;float:left; margin-bottom:30px;}	
+.box_tit { height: 50px; padding-left: 18px; border-bottom: 1px solid #e6e6e6; line-height: 52px; font-size: 15px; color:#333;}
+.box_cont {overflow: auto; height: 150px; padding: 20px; font-size: 12px; line-height: 18px; color: #666; }
+.box_cont *{font-family: 돋움, Dotum, Helvetica, sans-serif; }
+.box_cont h3{margin-top:10px; font-size:13px;}
+.box_cont ol{padding-left:15px;}
+.box_cont li {list-style-type: decimal; margin-bottom:5px;}
+.box_cont li ul{padding-left:10px;}
+.box_cont li ul li {list-style-type: upper-roman;}
+.wrap_check { position: absolute; top: 15px; right: 20px; }
+.wrap_check input{width:0; height:0;opacity: 0; outline: 0;}
+.wrap_check label{display: block;width: 20px; height: 20px; text-indent: -9999px; background:url(../../images/nyt/ico_chk1.png) 0 0 no-repeat;cursor:pointer;}
+.wrap_check input:checked+label {  background:url(../../images/nyt/ico_chk2.png) 0 0 no-repeat;}
+.box_cont table{ margin-bottom:15px;}
+.box_cont th, .box_cont td{border-left:1px #ccc solid; padding:10px 20px;}
+.box_cont th:first-child, .box_cont td:first-child{border-left:0;}
+.box_cont li ul li li:before{ display:none;}
+.box_cont .contact{float:left; width:100%; border:1px #ccc solid; background:#f9f9f9; padding:10px; margin:10px 0;}
+.box_cont dt{font-size:14px; font-weight:bold; margin-bottom:5px; margin-top:10px;}
+.box_cont dd{font-size:14px; line-height:22px;}
+.box_cont li span{margin:10px 0 5px; font-size:12px; color:#000; width:100%; float:left;}
+.box_cont .tb03 { border-top:2px #555b62 solid; border-bottom:1px #999 solid; margin:5px 0; }
+.box_cont .tb03 th { padding: 0 10px; color:#333; font-size: 12px; border-top: 1px solid #dce0e9; height:30px; background:#f6f6f6; }
+.box_cont .tb03 td { padding: 5px 10px; border-top: 1px solid #dce0e9; font-size:12px; line-height: 18px; }
+.box_cont .tb03 td a { color:#000;}
+.box_cont .tb03 td a:hover { text-decoration:underline;}
+.box_cont .tb03 tfoot td { font-weight:bold; color:#f79320; font-size:14px; border-top:1px #ccc solid;  }
+.box_cont  dt{font-size:12px; font-weight:bold; margin-bottom:5px; margin-top:10px;}
+.box_cont  dd{font-size:12px; line-height:22px;}
+
+.wrap_btn{ width:100%; text-align:center; margin-top:30px;}
+.wrap_btn button{ height: 50px; line-height: 50px;  font-size: 18px; font-weight: 600; padding:0 50px;}
+.wrap_btn button.btn_cancel{ border:1px #ccc solid; color:#666; background:#fff; margin-right:10px;}
+.wrap_btn button.btn_agree{color:#fff; background:#f79320; border:0;}
+
+.wrap_btn2{ width:100%; text-align:center; margin-top:30px;}
+.wrap_btn2 button, .wrap_btn2 a{ height: 40px; line-height: 40px;  font-size: 14px; padding:0 30px; font-weight:600; display:inline-block;}
+.wrap_btn2 .btn_cancel{ border:1px #ccc solid; color:#666; background:#fff; margin-right:10px;}
+.wrap_btn2 .btn_agree{color:#fff; background:#f79320; border:0;margin-right:10px;}
+
+
+.navi {overflow:hidden; margin:20px 0;}
+.navi li {display:block;float:left;width:25%;color:#acacac;font-size:18px;font-family:"nsr";padding-bottom:10px;text-align:center;border-bottom:7px solid #d7d7d7;}
+.navi li.selected {color:#f79320;border-bottom:7px solid #f79320;}
+
+footer{width:100%; overflow: hidden; height: 80px; padding-top: 18px; border-top: none; font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif; font-size: 12px; text-align: center; margin-top:20px;}
+footer li{  font-size:12px; display:inline-block; margin:0 5px; }
+footer li.bar{width:1px; height:10px; background:#ccc;}
+footer li a{color:#333;}
+footer .foot_bt{width:100%; float:left; margin-top:10px;font-size:11px; color:#999; height:auto; line-height:inherit; border-top:0; }
+
+.join_choice{ width:100%; text-align:center; }
+.join_choice li{border:1px #ddd solid; height:240px; width:240px; display:inline-block; margin:10px; position:relative; }
+.join_choice li:hover{border:1px #2fb1ea solid;}
+.join_choice .join1{ background:url(../../images/nyt/bg_join1.png) center 20px no-repeat;}
+.join_choice .join2{ background:url(../../images/nyt/bg_join2.png) center 20px no-repeat;}
+.join_choice .join3{ background:url(../../images/nyt/bg_join3.png) center 20px no-repeat;}
+.join_choice li a{display:block; width:90%; margin:0 5%; position:absolute; bottom:20px; height:45px; line-height:45px; background:#2fb1ea; color:#fff; font-size:15px; font-weight:500; border-radius:4px;}
+
+.wrap_info {border-top: 1px solid #e6e6e6;}
+.wrap_info .box_info {padding:20px 20px 10px; border-bottom: 1px solid #e6e6e6; float:left;}
+.wrap_info .box_info .item_info{position: relative; padding: 7px 0; float:left;}
+.wrap_info .box_info .item_info dt{float: left; width: 140px;  line-height: 40px; font-size:14px; margin-bottom:10px;}
+.wrap_info .box_info .item_info dd{overflow: hidden; font-weight: bold; text-indent: 15px; line-height: 40px; float:right; margin-bottom:10px;}
+.wrap_info .box_info .item_info dd.inp_num{overflow: hidden; font-weight: bold;  line-height: 40px; float:left; margin-bottom:10px;}
+
+.wrap_info *{font-family:Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif; }
+.txt_message {font-size: 12px; color: #dc321e; font-weight: normal; margin-top:3px; line-height: 1.5; text-indent: 0;}
+.wrap_info .box_info .item_info dd .inp{position: relative; height: 40px; border: 1px solid #d4d4d4; width:420px;}
+.wrap_info .box_info .item_info dd .inp input{position: absolute; top: 0; left: 0; width: 418px; height: 38px; border: 0; background: 0; font-weight: bold; text-indent: 15px; -webkit-appearance: none; z-index: 99;}
+.wrap_info .box_info .item_info dd.btn_inp .inp input{position: absolute; top: 0; left: 0; width: 348px; height: 38px; line-height: 40px; border: 0; background: 0; font-weight: bold; text-indent: 15px; -webkit-appearance: none; z-index: 99;}
+.wrap_info .box_info .item_info dd .inp button{position: absolute; top: 5px; right: 5px; width: 60px; height: 28px; background: #aaa; border:0; color: #fff; text-align: center; line-height: 30px;}
+.wrap_info .box_info .item_info dd .inp select{position: absolute; top: 0; left: 0; width: 418px; height: 38px; line-height: 40px; border: 0; font-weight: bold; text-indent: 15px; -webkit-appearance: none; background:url(../../images/nyt/bg_sel.jpg) 400px 15px no-repeat; color:#666;}
+.wrap_info .box_info .item_info dd .inp option{height:50px; padding:10px;}
+.wrap_info .box_info .item_info dd .inp input[type=file]{ padding:7px; text-indent:0;} 
+
+.wrap_info .box_info .item_info dd .inp.addr{ border:0;}
+.wrap_info .box_info .item_info dd .inp.addr input{width: 85px; border:1px solid #d4d4d4; float:left; position:relative;}
+.wrap_info .box_info .item_info dd .inp.addr button{position:relative; width: 70px;  float:left; margin-left:5px; right:auto;}
+
+
+.wrap_info .box_info .item_info dd .inp.sel_add{ width:370px; position: relative; height: 40px; border: 1px solid #d4d4d4;}
+.wrap_info .box_info .item_info dd .inp select{position: absolute; top: 0; left: 0; width: 368px; height: 38px; line-height: 40px; border: 0; font-weight: bold; text-indent: 15px; -webkit-appearance: none; background:url(../../images/nyt/bg_sel.jpg) 350px 15px no-repeat; color:#666;}
+.wrap_info .box_info .item_info dd button.btn_sel_add{position: absolute; top: 7px; right:-50px; width: 40px; height: 40px; background:url(../../images/nyt/add.png) center no-repeat; border:1px #ddd solid; text-indent:-9999px;}
+
+
+.wrap_info .box_info .item_info dd.inp_num{position: relative;}
+.wrap_info .box_info .item_info dd.inp_num input{ -webkit-appearance: none;}
+.wrap_info .box_info .item_info dd.inp_num input, .wrap_info .box_info .item_info dd.inp_num select{ float:left; position:relative; border: 1px #d4d4d4 solid; background: 0; font-weight: bold;  z-index: 99; height: 40px; padding:0 15px;}
+.wrap_info .box_info .item_info dd.inp_num a{width: 60px; height: 28px; background: #aaa; border:0; color: #fff; text-align: center; line-height: 30px; font-size:12px; float:left; display:block; margin:5px 10px; text-indent:0;}
+.wrap_info .box_info .item_info dd .bar{margin:10px 5px; float:left; text-indent:0; line-height:normal}
+.wrap_info .box_info .item_info dd .bar2{margin:10px 5px 10px 20px; float:left; text-indent:0; line-height:normal; font-size:12px}
+.wrap_info .box_info .item_info dd .inp.num2{border:0;}
+.wrap_info .box_info .item_info dd .inp.num2 input{position: relative; float:left;  height: 38px; border: 1px solid #d4d4d4;  font-weight: bold; text-indent: 15px; -webkit-appearance: none; z-index: 99;}
+
+
+/* 로그인 */
+.login_form{width:400px; margin:40px 100px;}
+.login_form .lbl{font-size: 15px; line-height: 16px; position: absolute; top: 16px; left: 15px; color: #8e8e8e;}
+.login_form .inp_login { position: relative; height: 49px; margin: 0 0 14px; padding: 10px 30px 10px 15px; border: solid 1px #dadada; background: #fff;}
+.login_form .inp_login input{width: 100%; height: 28px; font-size: 15px; line-height: 16px; position: relative;padding: 6px 0; color: #000; border: none; background: #fff; -webkit-appearance: none;}
+.login_form .find_info { font-size: 13px; line-height: 14px; padding-top: 20px; text-align: center; color: #8e8e8e; border-top: 1px solid #e4e4e5;}
+.login_form .btn_login { font-size: 20px; font-weight: 700; line-height: 60px; display: block; width: 100%; height: 60px; margin: 30px 0 12px; cursor: pointer; text-align: center; color: #fff; border: none; background-color: #f79320;}
+
+.login_check { position: relative; display: block; height: 25px; padding-top:3px;}
+.login_check input { width: 0; height:0; display:none; }
+.login_check label { font-size: 13px; line-height: 20px; display: block; background:url(../../images/nyt/ico_chk1.png) 0 0 no-repeat; padding-left:28px;}
+.login_check input:checked+label {  background:url(../../images/nyt/ico_chk2.png) 0 0 no-repeat;}
+
+.find_info{text-align:center; font-size:12px; width:400px; margin:0 100px; border-top:1px #ddd solid; padding-top:10px; margin-bottom:80px; }
+.find_info a{color:#666;}
+.find_info a:hover{text-decoration:underline;}
+.find_info .bar{margin:0 10px; color:#ddd;}
+
+.find_link{ font-size:13px; color:#666; margin:20px auto; width:100%; text-align:center;}
+.find_link a{font-family: Dotum,'돋움',Helvetica,"Apple SD Gothic Neo",AppleGothic,Arial,sans-serif;  text-decoration:underline; color:#333; position:relative;}
+.find_link a:after{content: '';  height: 0; width: 0; border: solid transparent; border-left-color: #555; border-width: 4px 4px; font-size:0; position:absolute; top:2px; margin-left:5px;}
+
+
+.id_box{position: relative; z-index: 100; padding: 40px 40px 30px; border: 1px solid #e5e5e5; text-align:center;}
+.id_box .id_list li{padding-bottom: 8px; text-align: left; display:inline-block; margin-bottom:5px;}
+.id_box .id_list li strong{display: inline-block; min-width: 200px; padding-right: 30px; font-size:15px;}
+.id_box .id_list li input{margin:5px; float:left;}
+.id_box .id_list li span{ font-size:14px;}
+
+.id_area{float:left; width:100%; margin-bottom:20px; font-size:14px; font-weight:bold; text-align:center;}
+/* 로그인 실패*/
+.error{text-align:center; font-size:12px;  padding-top:10px; margin-bottom:10px; }
+.error p{ color:red;}
+

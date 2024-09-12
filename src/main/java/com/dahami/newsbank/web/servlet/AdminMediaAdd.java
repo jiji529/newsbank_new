@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
 
@@ -46,7 +47,7 @@ public class AdminMediaAdd extends NewsbankServletBase {
 		
 		if (MemberInfo != null) {
 			if(MemberInfo.getType().equals("A")) { // 관리자 권한만 접근
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_media_add.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_media_add.jsp");
 				dispatcher.forward(request, response);
 				
 			} else {

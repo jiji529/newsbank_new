@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dao.BookmarkDAO;
 import com.dahami.newsbank.web.dao.CartDAO;
@@ -69,8 +70,8 @@ public class MypageCart extends NewsbankServletBase {
 				List<CartDTO> cartList = cartDAO.cartList(String.valueOf(member_seq));
 				request.setAttribute("cartList", cartList);
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/mypage_cart.jsp");
-				dispatcher.forward(request, response);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"mypage_cart.jsp");
+				dispatcher.forward(request, response);					
 			}
 		}else {
 			response.sendRedirect("/login");

@@ -435,7 +435,7 @@
 .uci_info section .tab{margin:10px 0 30px; display:inline-block;}
 .uci_info section .tab .tabs{text-align: center; white-space: nowrap; }
 .uci_info section .tab .tabs li{display: inline; margin: 0 30px;font-size:17px;}
-.uci_info section .tab .tabs li a{color:#999; padding:0 3px 7px; text-decoration:}
+.uci_info section .tab .tabs li a{color:#999; padding:0 3px 7px; text-decoration:none;}
 .uci_info section .tab .tabs li a.active{color:#f79320; border-bottom:2px #f79320 solid;}
 .uci_info section .uci_pc{background:url(../../images/nyt/uci/uci_pc.png) center 0 no-repeat; padding-top:47px; position:relative; height:510px;}
 .uci_info section .uci_pc ul{width:854px; height:453px; position:absolute; left:50%; margin-left:-427px;}
@@ -530,7 +530,7 @@
 .admin .tab{float:left; width:100%;}
 .admin .tab .tabs{text-align: center; white-space: nowrap; float:left; width:100%; margin:30px 0;}
 .admin .tab .tabs li{display: inline; margin-right:30px; font-size:17px; float:left}
-.admin .tab .tabs li a{color:#999; padding:0 3px 7px; text-decoration:}
+.admin .tab .tabs li a{color:#999; padding:0 3px 7px; text-decoration:none;}
 .admin .tab .tabs li a.active{color:#f79320; border-bottom:2px #f79320 solid;}
 
 .admin #photo_area{ width:100%; padding-left:500px;  margin-top: 155px;}

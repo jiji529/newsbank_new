@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import com.dahami.common.util.FileUtil;
 import com.dahami.common.util.HttpUtil;
 import com.dahami.common.util.ImageUtil;
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.ExifDTO;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.dto.PhotoTagDTO;
@@ -118,10 +119,10 @@ public class CMSService extends ServiceBase {
 						request.setAttribute("photoTagList", photoTagList);
 						
 						if(isAdmin) {
-							forward = "/WEB-INF/jsp/admin_cms_view.jsp";
+							forward = "/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_cms_view.jsp";								
 						}
 						else {
-							forward = "/WEB-INF/jsp/cms_view.jsp";
+							forward = "/WEB-INF/jsp"+Constants.JSP_BASHPATH+"cms_view.jsp";								
 						}
 					}
 					else {
@@ -355,10 +356,10 @@ public class CMSService extends ServiceBase {
 			request.setAttribute("isAdmin", isAdmin);
 			
 			if(isAdmin) {
-				forward = "/WEB-INF/jsp/admin_cms.jsp";
+				forward = "/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_cms.jsp";					
 			}
 			else {
-				forward = "/WEB-INF/jsp/cms.jsp";
+				forward = "/WEB-INF/jsp"+Constants.JSP_BASHPATH+"cms.jsp";					
 			}
 		}
 		

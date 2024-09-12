@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.servlet.bean.CmdClass;
@@ -103,9 +104,18 @@ public class ListMemberJSON extends NewsbankServletBase {
 				}
 			}
 			
-			List<String> headList = Arrays.asList("아이디", "회사명", "회원구분", "이름", "이메일", "연락처", "결제구분", "그룹구분", "계약기간", "가입일자"); //  테이블 상단 제목
-			List<Integer> columnSize = Arrays.asList(10, 20, 8, 10, 30, 20, 20, 15, 25, 20); //  컬럼별 길이정보
-			List<String> columnList = Arrays.asList("id", "compName", "typeStr", "name", "email", "strPhone", "strDeferred", "groupInfo", "contractPeriod", "regDate"); // 컬럼명
+			List<String> headList;
+			List<Integer> columnSize;
+			List<String> columnList;
+			if(Constants.IS_NYT == false) {
+				headList = Arrays.asList("아이디", "회사명", "회원구분", "이름", "이메일", "연락처", "결제구분", "그룹구분", "계약기간", "가입일자"); //  테이블 상단 제목
+				columnSize = Arrays.asList(10, 20, 8, 10, 30, 20, 20, 15, 25, 20); //  컬럼별 길이정보
+				columnList = Arrays.asList("id", "compName", "typeStr", "name", "email", "strPhone", "strDeferred", "groupInfo", "contractPeriod", "regDate"); // 컬럼명				
+			} else {
+				headList = Arrays.asList("아이디", "회사명", "회원구분", "이름", "이메일", "연락처", "결제구분", "가입일자"); //  테이블 상단 제목
+				columnSize = Arrays.asList(10, 20, 8, 10, 30, 20, 20, 20); //  컬럼별 길이정보
+				columnList = Arrays.asList("id", "compName", "typeStr", "name", "email", "strPhone", "strDeferred", "regDate"); // 컬럼명
+			}
 			
 			Date today = new Date();
 		    SimpleDateFormat dateforamt = new SimpleDateFormat("yyyyMMdd");

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dao.MemberDAO;
 import com.dahami.newsbank.web.dao.UsageDAO;
 import com.dahami.newsbank.web.dto.MemberDTO;
@@ -168,9 +169,8 @@ public class AdminMemberView extends NewsbankServletBase {
 				request.setAttribute("MemberDTO", memberDTO);
 				System.out.println("admission : " + memberDTO.getAdmission());
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin_member_view.jsp");
-				dispatcher.forward(request, response);
-				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_member_view.jsp");
+				dispatcher.forward(request, response);					
 			} else {
 				processNotAdminAccess(request, response);
 				return;

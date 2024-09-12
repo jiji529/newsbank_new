@@ -661,7 +661,7 @@ public class DownloadService extends ServiceBase {
 									logger.warn(backup_filePath + "에 원본 백업파일 없음");
 									
 									// 만약 그렇게 찾아도 원본파일이 없다면, 에러 메시지를 띄운다.
-									request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다.\n관리자에게 문의해 주세요");
+									request.setAttribute("ErrorMSG", "다운로드 대상(" + photo.getUciCode() + ") 원본파일이 없습니다. 관리자에게 문의해 주세요");
 									forward(request, response, URL_PHOTO_ERROR_SERVICE);
 									return;
 								}

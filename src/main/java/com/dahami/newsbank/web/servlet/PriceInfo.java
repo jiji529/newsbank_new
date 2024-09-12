@@ -48,12 +48,7 @@ public class PriceInfo extends NewsbankServletBase {
 			request.setAttribute("MemberInfo", MemberInfo);
 		}
 		
-		if(Constants.IS_NYT == false) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/price_info.jsp");
-			dispatcher.forward(request, response);
-		} else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/nyt/price_info.jsp");
-			dispatcher.forward(request, response);			
-		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"price_info.jsp");
+		dispatcher.forward(request, response);
 	}
 }
