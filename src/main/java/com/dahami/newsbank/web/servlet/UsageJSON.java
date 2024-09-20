@@ -24,7 +24,7 @@ import com.dahami.newsbank.web.servlet.bean.CmdClass;
 /**
  * Servlet implementation class UsageJSON
  */
-@WebServlet("/UsageJSON")
+@WebServlet(urlPatterns = { "/UsageJSON" , "/Foreign.UsageJSON" }, loadOnStartup = 1)
 public class UsageJSON extends NewsbankServletBase {
 	private static final long serialVersionUID = 1L;
        
@@ -54,9 +54,12 @@ public class UsageJSON extends NewsbankServletBase {
 		MemberDTO MemberInfo = (MemberDTO) session.getAttribute("MemberInfo"); // 회원정보
 		UsageDAO usageDAO = new UsageDAO();
 		
-		int individual = 0; // 0 : 온라인(기본값)
-		
-		if(Constants.IS_NYT==false) {
+		int individual = 0;
+		if(cmd.is2("Foreign") || Constants.IS_NYT==true) {
+			individual = 999;
+		} else {			
+			individual = 0; // 0 : 온라인(기본값)
+			
 			if (MemberInfo != null) {
 				// 로그인 상태
 				if(MemberInfo.getDeferred() == 2) { 

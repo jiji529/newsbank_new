@@ -47,8 +47,11 @@ SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
 		</div>
 		
 		<section class="view">
-			<div class="view_lt">
-				<h2 class="media_logo"><img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" />
+			<div class="view_lt">				
+				<h2 class="media_logo">
+					<c:if test="${photoDTO.ownerName!='뉴욕타임즈'}">	
+						<img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" />
+					</c:if>
 					<div class="btn_edit">
 						<span id="history_open"><a href="#none">수정 이력 보기</a></span>
 <%

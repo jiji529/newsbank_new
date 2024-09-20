@@ -43,11 +43,22 @@
 		
 		// #사용자 선택옵션 불러오기
 		function userOfusageList() {
+			var uciCode_arr = ($("#uciCode_arr").val()).split(",");
+			// I011-M, I011-F 으로 시작하는 항목이 있는지 확인, mypage_download.jsp 에서 섞인상태로 구매가 안되도록 사전 막는 처리가 있음
+			const hasM = uciCode_arr.some(item => item.startsWith("I011-M"));
+			const hasF = uciCode_arr.some(item => item.startsWith("I011-F"));
+			var reqUrl;
+			if(hasM) {
+				reqUrl = "/UsageJSON";				
+			} else if(hasF) {
+				reqUrl = "/Foreign.UsageJSON";
+			}
+			
 			var result = new Array();
 			var html = "<option value=''>선택</option>";
 			
 			$.ajax({
-				url: "/UsageJSON",
+				url: reqUrl,
 				type: "GET",
 				dataType: "json",
 				success: function(data) { console.log(data);

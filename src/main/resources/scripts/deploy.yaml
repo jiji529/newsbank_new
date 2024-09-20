@@ -107,7 +107,7 @@ spec:
                    else
                      echo "Deleting other files...";
                      rm -rf /usr/local/tomcat/webapps/ROOT/robots_nyt.txt;
-                     rm -rf /usr/local/tomcat/webapps/ROOT/sitemap_nyt.txt;
+                     rm -rf /usr/local/tomcat/webapps/ROOT/sitemap_nyt.xml;
                    fi
                    echo "PostStart hook completed.";                   
         ports:

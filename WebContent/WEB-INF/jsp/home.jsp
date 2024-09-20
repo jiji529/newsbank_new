@@ -418,11 +418,13 @@ if(errMsg != null && errMsg.length() > 0) {
 				<h2>회원사 소개</h2>
 				<ul class="media_list">
 					<c:forEach items="${mediaList}" var="member">
-						<li>
-							<a href="javascript:void(0)" onclick="media_submit('${member.seq}')">
-								<img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${member.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
-							</a>
-						</li>
+						<c:if test="${member.seq!=999}">
+							<li>
+								<a href="javascript:void(0)" onclick="media_submit('${member.seq}')">
+									<img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${member.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+								</a>
+							</li>
+						</c:if>
 					</c:forEach>
 				</ul>
 			</div>

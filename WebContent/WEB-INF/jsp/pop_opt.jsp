@@ -55,11 +55,18 @@
 		
 		// #선택옵션 용도옵션 불러오기
 		function usageList() {
+			var uciCode = "${uciCode}";
+			var reqUrl;
+			if(uciCode.startsWith("I011-F")==false) {
+				reqUrl = "/UsageJSON";
+			} else {
+				reqUrl = "/Foreign.UsageJSON";
+			}
 			var result = new Array();
 			var html = "<option>선택</option>";
 			
 			$.ajax({
-				url: "/UsageJSON",
+				url: reqUrl,
 				type: "GET",
 				dataType: "json",
 				success: function(data) {
@@ -78,6 +85,13 @@
 		
 		// #선택옵션 변경(용도)
 		function usageChange(choice) {
+			var uciCode = "${uciCode}";
+			var reqUrl;
+			if(uciCode.startsWith("I011-F")==false) {
+				reqUrl = "/UsageJSON";
+			} else {
+				reqUrl = "/Foreign.UsageJSON";
+			}
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
 			var nextId = $("#"+id).parent("li").next().children("select").attr("id");
@@ -89,7 +103,7 @@
 			$("#division1").empty();
 			
 			$.ajax({
-				url: "/UsageJSON",
+				url: reqUrl,
 				type: "GET",
 				dataType: "json",
 				success: function(data) {
@@ -110,6 +124,13 @@
 		
 		// #선택옵션 변경(옵션1)
 		function division1Change(choice) {
+			var uciCode = "${uciCode}";
+			var reqUrl;
+			if(uciCode.startsWith("I011-F")==false) {
+				reqUrl = "/UsageJSON";
+			} else {
+				reqUrl = "/Foreign.UsageJSON";
+			}
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
 			var usage = $("#usage").val();
@@ -122,7 +143,7 @@
 			$("#division2").empty();
 			
 			$.ajax({
-				url: "/UsageJSON",
+				url: reqUrl,
 				type: "GET",
 				dataType: "json",
 				success: function(data) {
@@ -142,6 +163,13 @@
 		
 		// #선택옵션 변경(옵션2)
 		function division2Change(choice) {
+			var uciCode = "${uciCode}";
+			var reqUrl;
+			if(uciCode.startsWith("I011-F")==false) {
+				reqUrl = "/UsageJSON";
+			} else {
+				reqUrl = "/Foreign.UsageJSON";
+			}
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
 			var usage = $("#usage").val();
@@ -155,7 +183,7 @@
 			$("#division3").empty();
 			
 			$.ajax({
-				url: "/UsageJSON",
+				url: reqUrl,
 				type: "GET",
 				dataType: "json",
 				success: function(data) {
@@ -175,6 +203,13 @@
 		
 		// #선택옵션 변경(옵션3)
 		function division3Change(choice) {
+			var uciCode = "${uciCode}";
+			var reqUrl;
+			if(uciCode.startsWith("I011-F")==false) {
+				reqUrl = "/UsageJSON";
+			} else {
+				reqUrl = "/Foreign.UsageJSON";
+			}
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
 			var usage = $("#usage").val();
@@ -193,7 +228,7 @@
 			addOptions = [];
 			
 			$.ajax({
-				url: "/UsageJSON",
+				url: reqUrl,
 				type: "GET",
 				dataType: "json",
 				success: function(data) {
@@ -227,6 +262,13 @@
 		
 		// #선택옵션 변경(옵션4)
 		function division4Change(choice) {
+			var uciCode = "${uciCode}";
+			var reqUrl;
+			if(uciCode.startsWith("I011-F")==false) {
+				reqUrl = "/UsageJSON";
+			} else {
+				reqUrl = "/Foreign.UsageJSON";
+			}
 			var value = $(choice).val();
 			var id = $(choice).attr("id");
 			var nextId = $("#"+id).parent("li").next().children("select").attr("id");
@@ -237,7 +279,7 @@
 			$("#usageDate").empty();
 			
 			$.ajax({
-				url: "/UsageJSON",
+				url: reqUrl,
 				type: "GET",
 				dataType: "json",
 				success: function(data) {
@@ -257,6 +299,13 @@
 		
 		// #선택옵션 변경(기간)
 		function usageDateChange(choice) {
+			var uciCode = "${uciCode}";
+			var reqUrl;
+			if(uciCode.startsWith("I011-F")==false) {
+				reqUrl = "/UsageJSON";
+			} else {
+				reqUrl = "/Foreign.UsageJSON";
+			}
 			var value = $(choice).val();
 			var usage = $("#usage").val();
 			var usageList_seq;
@@ -268,7 +317,7 @@
 			var price;
 			
 			$.ajax({
-				url: "/UsageJSON",
+				url: reqUrl,
 				type: "GET",
 				dataType: "json",
 				success: function(data) { console.log(data.result);

@@ -61,15 +61,22 @@
 				var uciCode = $(this).val();
 				uciCode_arr.push(uciCode);
 			});
-			$("#uciCode_arr").val(uciCode_arr);
-			
-			// 구매내역 페이지 이동
-			window.open("", "openWin", "toolbar=no, resizable=no, width=420, height=600, directories=no, status=no, scrollbars=no");
-			var frm = document.download_popOption;
-			//frm.action = "/postBuylist.mypage";
-			frm.method = "post";
-			frm.target = "openWin";
-			frm.submit();
+			// I011-M, I011-F 으로 시작하는 항목이 있는지 확인
+			const hasM = uciCode_arr.some(item => item.startsWith("I011-M"));
+			const hasF = uciCode_arr.some(item => item.startsWith("I011-F"));
+			if(hasM && hasF) {
+				alert("가격 테이블이 다른 사진은 한번에 구매할 수 없습니다.");
+			} else {
+				$("#uciCode_arr").val(uciCode_arr);
+				
+				// 구매내역 페이지 이동
+				window.open("", "openWin", "toolbar=no, resizable=no, width=420, height=600, directories=no, status=no, scrollbars=no");
+				var frm = document.download_popOption;
+				//frm.action = "/postBuylist.mypage";
+				frm.method = "post";
+				frm.target = "openWin";
+				frm.submit();
+			}
 		}
 	}
 	
