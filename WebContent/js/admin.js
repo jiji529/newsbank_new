@@ -58,6 +58,7 @@ $(document).ready(function() {
 			var endDate = $.datepicker.formatDate("yy-mm-dd", new Date(year, mon, lastDay));
 		}
 		
+		$('#customDayOption a').removeClass("on");
 		$("#contractStart").val(startDate);
 		$("#contractEnd").val(endDate);
 	}	
@@ -818,6 +819,39 @@ function saveExcel(apiUrl, pathName) { // form, iframe을 이용한 엑셀저장
 			$("#startDate").val(contractStart);
 			$("#endDate").val(contractEnd);
 			break;
+			
+			case "sellReport":
+				// 판매수금 보고서
+				var keywordType = $("select[name='keywordType'] option:selected").val(); // 선택 옵션
+				var payType = $("#paytype").val(); // 결제방법
+				var contractStart = $("#contractStart").val();
+				var contractEnd = $("#contractEnd").val();
+				var action = "N";
+				var adjMaster = $("#adjMaster").val(); // 정산매체
+				var adjSlave = $("#adjSlave option:selected").val(); // 피정산매체
+	
+				if(adjMaster == "all") { // 정산매체 전체
+					seqArr = '';
+				}else {
+					// 피정산 매체 선택여부 확인
+					if(adjSlave == " ") { // 없음 or 선택안함
+						seqArr = adjMaster;
+					}else if(adjSlave == "all") { // 전체 선택 (주정산 + 피정산 매체 모두 포함)
+						var adjSlave_arr = $("#adjSlave_arr").val();
+						var split_arr = adjSlave_arr.split(",");
+						split_arr.push(adjMaster);
+						seqArr = split_arr.join(",");
+					}else { // 개별선택
+						seqArr = adjSlave;
+					}
+				}
+				
+				$("#currentKeywordType").val(keywordType);
+				$("#currentPayType").val(payType);
+				$("#startDate").val(contractStart);
+				$("#endDate").val(contractEnd);
+				$("#action").val(action);
+				$("#seqArr").val(seqArr);			
 	}
 	
 	$("#currentKeyword").val(keyword);

@@ -78,6 +78,7 @@
 					<ul class="tabs">
 						<li><a href="javascript:tabSwitch('byYear')" <c:if test="${tabName eq 'byYear'}">class="active"</c:if>>년도별 총 판매금액</a></li>
 						<li><a href="javascript:tabSwitch('byItem')" <c:if test="${tabName eq 'byItem'}">class="active"</c:if>>결제건별 상세내역</a></li>
+						<li><a href="javascript:tabSwitch('byReport')" <c:if test="${tabName eq 'byReport'}">class="active"</c:if>>판매수금 보고서</a></li>
 					</ul>
 				</div>
 				
@@ -90,6 +91,10 @@
 					<c:if test="${tabName eq 'byItem'}">
 						<%@include file="admin_tab_sellitem.jsp"%>
 					</c:if>				
+					
+					<c:if test="${tabName eq 'byReport'}">
+						<%@include file="admin_tab_sellReport.jsp"%>
+					</c:if>
 				</div>
 				
 			</div>

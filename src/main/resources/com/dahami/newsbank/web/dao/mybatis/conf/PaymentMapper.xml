@@ -24,8 +24,11 @@
 		(P.`member_seq` = #{member_seq} OR P.`member_seq` IN (SELECT
 		`adjSlave` FROM `adjustment` A
 		INNER JOIN member M ON A.adjSlave = M.seq
-		WHERE M.admission = 'Y' AND
-		`adjMaster`=
+		WHERE M.admission NOT IN 
+		<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+        	#{admissionType}
+    	</foreach>  
+	    AND `adjMaster`=
 		#{member_seq} ))
 		AND M.LGD_PAYDATE BETWEEN #{start_date}
 		AND
@@ -72,8 +75,11 @@
 		(SELECT `adjSlave`
 		FROM `adjustment` A 
 		INNER JOIN member M ON A.adjSlave = M.seq
-		WHERE M.admission = 'Y' AND
-		`adjMaster` =#{member_seq}))
+		WHERE M.admission NOT IN 
+		<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+        	#{admissionType}
+    	</foreach>   
+    	AND `adjMaster` =#{member_seq}))
 		<if test="start_date !=null and end_date !=null">
 		    <bind name="start_date" value="start_date + '000000'" />
 		    <bind name="end_date" value="end_date + '235959'" />

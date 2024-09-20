@@ -48,7 +48,10 @@
 			<if test="member_seq != null and member_seq != 0">
 			AND (B.member_seq = #{member_seq}
 			OR B.member_seq IN (SELECT `adjSlave` FROM
-			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission`='Y'
+			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission` NOT IN 
+			<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+	        	#{admissionType}
+	    	</foreach> 
 			AND A.`adjMaster` = #{member_seq}))
 			</if>
 			<if test="media != null and media != 0" >
@@ -81,7 +84,10 @@
 			<if test="member_seq != null and member_seq != 0">
 			AND (B.member_seq = #{member_seq}
 			OR B.member_seq IN (SELECT `adjSlave` FROM
-			`adjustment` C INNER JOIN `member` M ON C.adjMaster = M.seq WHERE M.`admission`='Y'
+			`adjustment` C INNER JOIN `member` M ON C.adjMaster = M.seq WHERE M.`admission` NOT IN 
+			<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+	        	#{admissionType}
+	    	</foreach> 
 			AND C.`adjMaster` = #{member_seq}))
 			</if>
 			<if test="media != null and media != 0">

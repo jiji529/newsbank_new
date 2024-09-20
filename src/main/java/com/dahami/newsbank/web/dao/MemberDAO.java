@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.web.dto.MemberDTO;
 
 public class MemberDAO extends DAOBase {
@@ -41,7 +42,10 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-			return session.selectList("Member.listActiveMedia");
+						
+			Map<Object,Object> param = new HashMap<Object,Object>();
+			param = settingXmlParam(param);
+			return session.selectList("Member.listActiveMedia",param);
 		} catch (Exception e) {
 			logger.warn("", e);
 			return null;
@@ -62,7 +66,10 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-			return session.selectList("Member.listManagableMedia");
+			
+			Map<Object,Object> param = new HashMap<Object,Object>();
+			param = settingXmlParam(param);
+			return session.selectList("Member.listManagableMedia",param);
 		} catch (Exception e) {
 			logger.warn("", e);
 			return null;
@@ -116,7 +123,11 @@ public class MemberDAO extends DAOBase {
 			MemberDTO member = session.selectOne("Member.selMamberBySeq", memberSeq);
 			if(member != null) {
 				member.setLastModifiedTime(System.currentTimeMillis());
-				List<Integer> subAdj = session.selectList("Member.listSlaveAdj", memberSeq);
+				
+				Map<Object,Object> param = new HashMap<Object,Object>();
+				param = settingXmlParam(param);
+				param.put("memberSeq", memberSeq);
+				List<Integer> subAdj = session.selectList("Member.listSlaveAdj", param);
 				member.getSubAdjSet().addAll(subAdj);
 				
 				List<Integer> subRep = session.selectList("Member.listSlaveRep", memberSeq);
@@ -281,6 +292,7 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
+			memberDTO = settingAdmissionDTO(memberDTO);
 			return session.selectList("Member.listAdjustMedia", memberDTO);
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -302,6 +314,7 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
+			memberDTO = settingAdmissionDTO(memberDTO);
 			return session.selectList("Member.adminAdjustMedia", memberDTO);
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -326,6 +339,7 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
+			memberDTO = settingAdmissionDTO(memberDTO);
 			return session.selectOne("Member.adjustMediaInfo", memberDTO);
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -473,6 +487,7 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
+			searchOpt = settingXmlParam(searchOpt);
 			return session.selectList("Member.selMediaList", searchOpt);
 		} catch (Exception e) {
 			logger.warn("", e);
@@ -497,7 +512,8 @@ public class MemberDAO extends DAOBase {
 		SqlSession session = null;
 		int count = 0;
 		try {
-			session = sf.getSession();
+			session = sf.getSession();		
+			param = settingXmlParam(param);
 			count = session.selectOne("Member.mediaCnt", param);
 			return count;
 		} catch (Exception e) {
@@ -620,5 +636,60 @@ public class MemberDAO extends DAOBase {
 		}
 		return result;
 	}
-
+	
+	/**
+	 * @methodName  : settingXmlParam
+	 * @author      : HA.J.S
+	 * @date        : 2024. 09. 19. 오후 5:03:00
+	 * @methodCommet: xml에서 param을 사용할 수 있게 세팅해주는 메소드
+	 * @param 
+	 * @return 
+	 * @returnType  : Map<Object,Object>
+	 */
+	public Map<Object,Object> settingXmlParam(Map<Object,Object> param) {
+		try {			
+			// 미디어 타입과 admission 타입을 지정해주는 부분		
+			List<String> admissionType = new ArrayList<>();
+			
+			for(int i = 0; i < Constants.ADMISSION_TYPE.length; i++) {
+				admissionType.add(Constants.ADMISSION_TYPE[i]);
+				if(i==Constants.ADMISSION_TYPE.length-1) {
+					if (Constants.MEDIA_INCLUDE_TEST==false) {				
+						admissionType.add("T");
+					}					
+				}
+			}
+			
+			param.put("admissionType", admissionType);
+		} catch (Exception e) {
+			logger.warn("", e);
+		}
+		return param;
+	}
+	
+	/**
+	 * @methodName  : MemberDTO
+	 * @author      : HA.J.S
+	 * @date        : 2024. 09. 20. 오후 09:43:00
+	 * @methodCommet: xml에서 param을 사용할 수 있게 세팅해주는 메소드
+	 * @param 
+	 * @return 
+	 * @returnType  : MemberDTO
+	 */	
+	public MemberDTO settingAdmissionDTO(MemberDTO memberDTO) {		
+		try {
+			for(int i = 0; i < Constants.ADMISSION_TYPE.length; i++) {
+				memberDTO.getAdmissionType().add(Constants.ADMISSION_TYPE[i]);
+				if(i==Constants.ADMISSION_TYPE.length-1) {
+					if (Constants.MEDIA_INCLUDE_TEST==false) {				
+						memberDTO.getAdmissionType().add("T");
+					}					
+				}
+			}			
+		}catch (Exception e) {
+			logger.warn("", e);
+		}
+		
+		return memberDTO;
+	}		
 }

@@ -22,51 +22,12 @@
 <%
  String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBase.IMG_SERVER_URL_PREFIX;
 %>
-<%
-// CMS / 관리자 페이지에 따라 뷰화면 타겟을 달리 함
-String manage = "";
-String cms = ".cms";
-String reqUri = request.getRequestURI();
-if(reqUri.startsWith("/WEB-INF/jsp/admin_")) {
-	manage += ".manage";
-}
-	cms = ".photo";
-%>
-
 <script>
-function go_View(uciCode, action, target) {
-	if(action == null) {
-		view_form.action = "/view<%=cms %><%=manage %>";
-	}
-	else {
-		view_form.action = action
-	}
-	
-	if(target == null) {
-		view_form.target = "";
-	}
-	else {
-		view_form.target = target;	
-	}
-	view_form.uciCode.value = uciCode;
+function go_photoView(uciCode) {
+	$("#uciCode").val(uciCode);
 	view_form.submit();
 }
 </script>
-
-<form class="view_form" method="post" action="/view<%=cms %><%=manage %>" name="view_form" >
-	<input type="hidden" name="uciCode"  />
-	<input type="hidden" id="manage" value="<%=manage%>" />
-	<input type="hidden" name="keyword" value="${sParam.keyword}"/>
-	<input type="hidden" name="pageNo"  value="${sParam.pageNo}"/>
-	<input type="hidden" name="pageVol" value="${sParam.pageVol}"/>
-	<input type="hidden" name="media"  value="${sParam.media}"/>
-	<input type="hidden" name="durationReg"  value="${sParam.durationReg}"/>
-	<input type="hidden" name="durationTake"  value="${sParam.durationTake}"/>
-	<input type="hidden" name="horiVertChoice"  value="${sParam.horiVertChoice}"/>
-	<input type="hidden" name="size"  value="${sParam.size}"/>
-	<input type="hidden" name="colorMode"  value="${sParam.colorMode}"/>
-	<input type="hidden" name="saleState"  value="${sParam.saleState}"/>
-</form>
 <c:choose>
 	<c:when test="${cookie.language.value eq 'KR'}">
 		<!DOCTYPE html>
@@ -98,6 +59,9 @@ function go_View(uciCode, action, target) {
 			                                <a href="#" class="btn_search">검색</a>
 			                            </div>
 			                        </form>
+			                        <form class="view_form" method="post" action="/view.photo" name="view_form" >
+										<input type="hidden" name="uciCode" id="uciCode"/>
+									</form>
 			                    </div>
 			                </div>
 			            </section>
@@ -108,7 +72,7 @@ function go_View(uciCode, action, target) {
 			                    <div class="photo_cont">
 			                    	<c:forEach var="latestList" items="${latestList}">
 				                    	<div class="img_list">			                    		
-				                    		<a href="javascript:void(0)" onclick="go_View('${latestList.uciCode}')">
+				                    		<a href='javascript:go_photoView("${latestList.uciCode}")' onclick='go_photoView("${latestList.uciCode}")'>
 				                    		<img src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${latestList.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
 				                    		</a>
 				                    	</div>
@@ -120,10 +84,21 @@ function go_View(uciCode, action, target) {
 			                <div class="center">
 			                    <h2>뉴욕타임스 뉴스뱅크가 엄선한 사진</h2>
 			                    <p>뉴욕타임스의 저명한 사진작가들이 전세계 곳곳을 누비며 생생한 현장을 담고 있습니다.</p>
-			                    <div class="photo_cont">
-			                    	<div class="img_list"><a href="#"><img src="images/nyt/main/img5.jpg" /></a></div>
-					                <div class="img_list"><a href="#"><img src="images/nyt/main/img6.jpg" /></a></div>
-					                <div class="img_list"><a href="#"><img src="images/nyt/main/img7.jpg" /></a></div>
+			                    <div class="photo_cont">	
+			                    	<c:choose>
+			                    		<c:when test="${fn:length(photoList)!=0}">
+			                    			<c:forEach items="${photoList}" var="photo">						
+												<a href='javascript:go_photoView("${photo.uciCode}")' onclick='go_photoView("${photo.uciCode}")'>
+													<img alt="image_${status.index}" src="<%=IMG_SERVER_URL_PREFIX%>/list.down.photo?uciCode=${photo.uciCode}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>">
+												</a>
+											</c:forEach>
+			                    		</c:when>
+			                    		<c:otherwise>
+			                    			<div class="img_list"><a href="#"><img src="images/nyt/main/img5.jpg" /></a></div>
+							                <div class="img_list"><a href="#"><img src="images/nyt/main/img6.jpg" /></a></div>
+							                <div class="img_list"><a href="#"><img src="images/nyt/main/img7.jpg" /></a></div>
+			                    		</c:otherwise>
+			                    	</c:choose>
 			                    </div>
 			                </div>
 			            </section>

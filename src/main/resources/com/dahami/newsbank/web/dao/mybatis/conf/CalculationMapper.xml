@@ -325,6 +325,7 @@
 		LEFT JOIN member M on C.`id` = M.`id`
 		
 		<where>
+			AND P.member_seq IN ('999')
 		    <if test="payType != null and payType != 'all'">
 		    	AND C.`type` = #{payType}    
 		    </if>		    

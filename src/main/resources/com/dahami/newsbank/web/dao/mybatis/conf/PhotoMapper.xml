@@ -91,23 +91,26 @@
 	</update>
 	
 	<!-- 홈 : 보도사진 -->	
-	<select id="selectPhotoExh" parameterType="string" resultType="com.dahami.newsbank.dto.PhotoDTO">
+	<select id="selectPhotoExh" resultType="com.dahami.newsbank.dto.PhotoDTO">
 	    SELECT A.widthCm, A.heightCm, A.uciCode, A.hitCount, M.name AS ownerName, B.seq AS mediaExActive FROM photo A
 		INNER JOIN photoExhibition B ON A.uciCode = B.photo_uciCode
 		INNER JOIN exhibitionList C ON B.exhibitionList_seq = C.seq 
 		INNER JOIN member M ON A.member_seq = M.seq 
-		WHERE C.exhName = #{exhName} AND
-		M.activate = 1 AND 
-		M.withdraw = 0 AND
-		M.admission = 'Y' AND
-		M.`type` IN ('M','F') AND
-		A.`saleStat` = 1 AND
-		A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
-		member_seq IN 
-		<!-- 활성 매체사 SEQ 리스트 -->
+		WHERE 
+		A.uciCode IN (SELECT photo_uciCode FROM photoExhibition PE, exhibitionList EL WHERE PE.exhibitionList_seq = EL.seq AND EL.exhName = #{exhName})
+		AND A.`saleStat` = 1
+		AND A.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) 
+		AND member_seq IN 
+		(
+		SELECT seq FROM member WHERE activate = 1 AND withdraw = 0 AND admission NOT IN 
+		<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+        	#{admissionType}
+    	</foreach>  
+    	AND type IN ('M','F') AND seq IN 
 		<foreach item="seq" index="index" collection="mediaSeq" open="(" separator="," close=")">
 		    #{seq}
 		</foreach>
+		)
 	</select>
 	
 	<!-- 인기사진 : 다운로드 -->
@@ -311,6 +314,7 @@
 	<select id="latestPhotoList" resultType="com.dahami.newsbank.dto.PhotoDTO">
 		SELECT *
 		FROM photo
+		WHERE idxStat1 > 0 OR idxStat2 > 0 OR idxStat3 > 0
 		ORDER BY regDate DESC
 		LIMIT 3
 	</select>

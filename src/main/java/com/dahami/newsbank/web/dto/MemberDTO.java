@@ -89,6 +89,16 @@ public class MemberDTO implements Serializable {
 	private int group_seq; // 그룹 시퀀스
 	private String groupName; // 그룹명
 	
+	private List<String> admissionType; // Constant 설정에 따라 분기시키기 위해 세팅하는 변수
+	
+	public List<String> getAdmissionType() {
+		return admissionType;
+	}
+
+	public void setAdmissionType(List<String> admissionType) {
+		this.admissionType = admissionType;
+	}
+
 	public long getLastModifiedTime() {
 		return lastModifiedTime;
 	}

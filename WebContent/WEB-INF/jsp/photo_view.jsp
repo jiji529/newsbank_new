@@ -30,6 +30,8 @@ if(photoDto == null
 		var ownerName = "<%=photoDto.getOwnerName()%>";
 		if(ownerName == '뉴시스')
 			usageList_newsis();
+		/* else if(ownerName == '뉴욕타임즈')
+			usageList_newyorkTimes(); */
 		else
 			usageList();
 			

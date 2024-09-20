@@ -87,7 +87,7 @@ spec:
           - name: APPLY_TIMESTAMP
             value: "${APPLY_TIMESTAMP}"
           - name: CATALINA_OPTS
-            value: "-DIS_NYT=${IS_NYT}"                                 
+            value: "-DIS_NYT=${IS_NYT} -DMEDIA_INCLUDE_TEST=${MEDIA_INCLUDE_TEST}"                                 
         lifecycle:
           postStart:
             exec:
@@ -117,18 +117,23 @@ spec:
             mountPath: /etc/localtime
           - name: pvc-nfs-newsbank-webfiles
             mountPath: /data/newsbank/            
-          - name: pvc-nfs-newsbank-serviceimage
+          - name: pvc-nfs-newsbank-serviceimage-old
             mountPath: /data/newsbank/serviceImages
+          - name: pvc-nfs-newsbank-serviceimage-f
+            mountPath: /data/newsbank/serviceImages/I011/F            
       volumes:
        - name: timezone-config
          hostPath:
            path: /usr/share/zoneinfo/Asia/Seoul
        - name : pvc-nfs-newsbank-webfiles
          persistentVolumeClaim:
-           claimName: pvc-nfs-newsbank-webfiles           
-       - name : pvc-nfs-newsbank-serviceimage
+           claimName: pvc-nfs-newsbank-webfiles                 
+       - name : pvc-nfs-newsbank-serviceimage-old
          persistentVolumeClaim:
-           claimName: pvc-nfs-newsbank-serviceimage           
+           claimName: pvc-nfs-newsbank-serviceimage-old
+       - name : pvc-nfs-newsbank-serviceimage-f
+         persistentVolumeClaim:
+           claimName: pvc-nfs-newsbank-serviceimage-f                
 ---
 apiVersion: v1
 kind: Service

@@ -11,10 +11,13 @@
 	-->
 	<select id="listActiveMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
-		where type IN ('M','F')
+		where type IN ('M','F')		
 		and activate != 2
 		and withdraw != 1
-		and admission != 'N'
+		and admission NOT IN 
+		<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+        	#{admissionType}
+    	</foreach>
 		order by name asc
 	</select>
 	
@@ -27,7 +30,10 @@
 		select * from member
 		where type IN ('M','F')
 		and withdraw != 1
-		and admission != 'N'
+		and admission NOT IN 
+		<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+        	#{admissionType}
+    	</foreach>
 		order by name asc
 	</select>
 
@@ -41,12 +47,15 @@
 	- 승인 못 받은 경우(admission = N) 불러오지 않음
 	- 탈퇴 회원(withdraw = 1) 불러오지 않음
 	-->
-	<select id="listSlaveAdj" parameterType="int" resultType="int">
+	<select id="listSlaveAdj" resultType="int">
 		select adjSlave from member A, adjustment B 
 		where A.seq = B.adjSlave 
 			and type IN ('M','F')
 			and withdraw != 1
-			and admission != 'N' 
+			and admission NOT IN 
+			<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+	        	#{admissionType}
+	    	</foreach>
 			and adjMaster = #{value}
 	</select>
 	
@@ -252,7 +261,10 @@
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM
-			`adjustment` A INNER JOIN `member` M ON A.adjSlave = M.seq WHERE M.`admission`='Y'
+			`adjustment` A INNER JOIN `member` M ON A.adjSlave = M.seq WHERE M.`admission` NOT IN 
+			<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+	        	#{admissionType}
+	    	</foreach>
 			AND `adjMaster` = #{seq})
 		</if>
 		ORDER BY `compName` ASC
@@ -281,7 +293,10 @@
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM
-			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission`='Y'
+			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission` NOT IN 
+			<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+	        	#{admissionType}
+	    	</foreach>
 			AND `adjMaster` = #{seq})
 		</if>
 		ORDER BY `compName` ASC
@@ -308,7 +323,10 @@
 		<if test="seq != 0">
 			AND `seq` = #{seq}
 			OR `seq` IN (SELECT `adjSlave` FROM
-			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission`='Y'
+			`adjustment` A INNER JOIN `member` M ON A.adjMaster = M.seq WHERE M.`admission` NOT IN 
+			<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+	        	#{admissionType}
+	    	</foreach>
 			AND `adjMaster` = #{seq})
 		</if>
 		ORDER BY `compName` ASC
@@ -391,7 +409,11 @@
 	    id, email, name, phone, compNum, compName, preRate, postRate, activate, logo 
 	    FROM member 
 		LEFT JOIN adjustment ON member.seq = adjustment.adjSlave
-		WHERE member.type IN ('M','F') AND member.admission = 'Y' AND member.withdraw = 0
+		WHERE member.type IN ('M','F') AND member.admission NOT IN 
+		<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+        	#{admissionType}
+    	</foreach> 
+	    AND member.withdraw = 0
 	        
         <if test="keyword != null"> 
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )
@@ -466,7 +488,11 @@
 	<select id="mediaCnt" resultType="integer" parameterType="java.util.Map">	    
 	    SELECT count(seq) as cnt 
 	    FROM member 
-	    WHERE `type` IN ('M','F') AND admission = 'Y' AND `withdraw` = 0
+	    WHERE `type` IN ('M','F') AND admission NOT IN 
+		<foreach item="admissionType" collection="admissionType" open="(" separator="," close=")">
+        	#{admissionType}
+    	</foreach> 
+	    AND `withdraw` = 0
 	        
         <if test="keyword != null and keyword != ''"> <!-- 키워드 -->
          AND ( `id` LIKE CONCAT('%',#{keyword},'%') OR `name` LIKE CONCAT('%',#{keyword},'%') OR `compName` LIKE CONCAT('%',#{keyword},'%') )

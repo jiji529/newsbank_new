@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.dahami.newsbank.Constants;
 import com.dahami.newsbank.dto.PhotoDTO;
 import com.dahami.newsbank.web.dto.MemberDTO;
 import com.dahami.newsbank.web.dto.PaymentDetailDTO;
@@ -305,6 +306,7 @@ public class PaymentDAO extends DAOBase {
 		try {
 
 			session = sf.getSession();
+			param = settingXmlParam(param);
 			return session.selectList("payment.selectToTalAccountList", param);
 
 		} catch (Exception e) {
@@ -326,6 +328,7 @@ public class PaymentDAO extends DAOBase {
 		try {
 
 			session = sf.getSession();
+			param = settingXmlParam(param);
 			return session.selectList("payment.selectTotalPrice", param);
 
 		} catch (Exception e) {
@@ -753,5 +756,33 @@ public class PaymentDAO extends DAOBase {
 
 	}
 	
-
+	/**
+	 * @methodName  : settingXmlParam
+	 * @author      : HA.J.S
+	 * @date        : 2024. 09. 19. 오후 5:03:00
+	 * @methodCommet: xml에서 param을 사용할 수 있게 세팅해주는 메소드
+	 * @param 
+	 * @return 
+	 * @returnType  : Map<String,Object>
+	 */
+	public Map<String,Object> settingXmlParam(Map<String,Object> param) {
+		try {			
+			// 미디어 타입과 admission 타입을 지정해주는 부분		
+			List<String> admissionType = new ArrayList<>();
+			
+			for(int i = 0; i < Constants.ADMISSION_TYPE.length; i++) {
+				admissionType.add(Constants.ADMISSION_TYPE[i]);
+				if(i==Constants.ADMISSION_TYPE.length-1) {
+					if (Constants.MEDIA_INCLUDE_TEST==false) {				
+						admissionType.add("T");
+					}					
+				}
+			}
+			
+			param.put("admissionType", admissionType);
+		} catch (Exception e) {
+			logger.warn("", e);
+		}
+		return param;
+	}	
 }

@@ -16,14 +16,21 @@
 
 package com.dahami.newsbank;
 
+import com.dahami.newsbank.dto.PhotoDTO;
+
 public class Constants {
 
 	/** 개발/서비스 구분 */
 	private static final boolean IS_SERVICE = true;
 	/** 뉴스뱅크/뉴욕타임즈 뉴스뱅크 구분 */
-	public static final boolean IS_NYT = Boolean.parseBoolean(System.getProperty("IS_NYT", "true"));
+	public static final boolean IS_NYT = Boolean.parseBoolean(System.getProperty("IS_NYT", "false"));
 	/** 서비스에 따른 JSP_BASEPATH 구분 */
 	public static final String JSP_BASHPATH;
+	/** 테스트를 위해서 세팅하는 값 */
+	public static final boolean MEDIA_INCLUDE_TEST = Boolean.parseBoolean(System.getProperty("MEDIA_INCLUDE_TEST", "false"));
+	public static final String[] ADMISSION_TYPE = new String[] {
+		"N"
+	};
 //	private static final boolean IS_SERVICE = false;
 	
 	/** 연동 검색엔진 타입 (searchEngine.searchType) / 마스터 */
