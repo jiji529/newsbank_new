@@ -17,6 +17,7 @@
 package com.dahami.newsbank.web.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -33,15 +34,26 @@ import com.dahami.newsbank.web.dto.MemberDTO;
 
 public class PhotoService extends ServiceBase {
 	private boolean isViewMode;
+	private String mediaRange;
 	
-	public PhotoService(boolean isViewMode) {
+	public PhotoService(boolean isViewMode, String mediaRange) {
 		this.isViewMode = isViewMode;
+		this.mediaRange = mediaRange;
 	}
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 활성 매체사 세팅
 		MemberDAO mDao = new MemberDAO();
-		List<MemberDTO> mediaList = mDao.listActiveMedia();
+		List<MemberDTO> mediaList = new ArrayList<MemberDTO>();
+		if(this.mediaRange.equals("all")) {
+			mediaList = mDao.listActiveMedia();			
+		} else if(this.mediaRange.equals("Domestic")) {
+			mediaList = mDao.listActiveMedia();
+			mediaList.removeIf(data -> data.getSeq() == 999);
+		} else if(this.mediaRange.equals("Foreign")) {
+			mediaList = mDao.listActiveMedia();
+			mediaList.removeIf(data -> data.getSeq() != 999);
+		}
 		request.setAttribute("mediaList", mediaList);
 		
 		// 넘어온 파라메터 세팅

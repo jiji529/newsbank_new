@@ -56,10 +56,16 @@ public class Photo extends NewsbankServletBase {
 			service = new DownloadService();
 		} else {
 			if(cmd.is2("view")) {
-				service = new PhotoService(true);
+				service = new PhotoService(true, "all");
 			}
 			else {
-				service = new PhotoService(false);
+				if(cmd.is2("Domestic")) {
+					service = new PhotoService(false, "Domestic");
+				} else if(cmd.is2("Foreign")) {
+					service = new PhotoService(false, "Foreign");
+				} else {
+					service = new PhotoService(false, "all");					
+				}
 			}
 		}
 		service.execute(request, response);

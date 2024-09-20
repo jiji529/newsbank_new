@@ -221,7 +221,13 @@ if(errMsg != null && errMsg.length() > 0) {
 			<a href="/" class="logo"></a>
 			<ul class="gnb_left">
 				<li>
-					<a href="/photo">보도사진</a>
+					<a href="/photo">전체사진</a>
+				</li>
+				<li>
+					<a href="/Domestic.photo">국내사진</a>
+				</li>
+				<li>
+					<a href="/Foreign.photo">해외사진</a>
 				</li>
 				<!-- <li>
 					<a href="/collection">컬렉션</a>
