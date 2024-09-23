@@ -6,15 +6,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <meta name="keywords" content="보도사진, 스톡사진, 스톡이미지, 사진판매, 역사사진, 근현대사, 인물사진, 사진박물관,  photo, 다하미, 다하미커뮤니케이션즈, 사진 라이브러리, 사진구매, 교과서사진, 뉴욕타임스, 뉴욕타임즈, newyorktimes, newyork times, nyt, 뉴스뱅크, news bank, newsbank, 해외언론사 보도사진, 미국언론사, 미국신문">
-        <meta name="description" content="언전 세계 각국의 현장을 그대로 담아 생동감 있게 전달해주는 뉴욕타임스 보도사진 라이브러리 뉴욕타임스 뉴스뱅크 | 스톡사진 스톡이미지 사진판매 역사사진 근현대사 인물사진 사진박물관 press photo">
+        <meta name="description" content="전 세계 각국의 현장을 그대로 담아 생동감 있게 전달해주는 뉴욕타임스 보도사진 라이브러리 뉴욕타임스 뉴스뱅크 | 스톡사진 스톡이미지 사진판매 역사사진 근현대사 인물사진 사진박물관 press photo">
 
-        <meta property="og:title" content="뉴욕타임즈 X 뉴스뱅크">
+        <meta property="og:title" content="뉴욕타임스 X 뉴스뱅크">
         <meta property="og:url" content="https://nyt.newsbank.co.kr/">
         <meta property="og:description" content="전 세계 각국의 현장을 그대로 담아 생동감 있게 전달해주는 뉴욕타임스 보도사진 라이브러리 뉴욕타임스 뉴스뱅크 | 스톡사진 스톡이미지 사진판매 역사사진 근현대사 인물사진 사진박물관 press photo">
 
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:url" content="https://nyt.newsbank.co.kr/">
-        <meta name="twitter:title" content="뉴욕타임즈 X 뉴스뱅크" />
+        <meta name="twitter:title" content="뉴욕타임스 X 뉴스뱅크" />
         <meta name="twitter:description" content="전 세계 각국의 현장을 그대로 담아 생동감 있게 전달해주는 뉴욕타임스 보도사진 라이브러리 뉴욕타임스 뉴스뱅크 | 스톡사진 스톡이미지 사진판매 역사사진 근현대사 인물사진 사진박물관 press photo" />
 		
         <meta name="google-site-verification" content="ISt8j978EDEd7T6BGyffD3ZmHinjD8GojKpX74FmRVU" />

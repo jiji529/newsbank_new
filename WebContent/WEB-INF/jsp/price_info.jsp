@@ -93,7 +93,7 @@
 					<a href="javascript:;" id="Commercial">Commercial (상업용)</a>
 				</span>
 				<span id="popupTap3">
-					<a href="javascript:;" id="EditorialNYT">Editorial (뉴욕타임즈/출판용)</a>
+					<a href="javascript:;" id="EditorialNYT">Editorial (뉴욕타임스/출판용)</a>
 				</span>
 			</div>
 			<section id="tblEditorial" style="display:;">

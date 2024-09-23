@@ -142,7 +142,7 @@ if(photoDto == null
 	function usageList() {
 		var ownerName = "<%=photoDto.getOwnerName()%>";
 		var reqUrl;
-		if(ownerName!='뉴욕타임즈') {
+		if(ownerName!='뉴욕타임스') {
 			reqUrl = "/UsageJSON";
 		} else {
 			reqUrl = "/Foreign.UsageJSON";
@@ -228,7 +228,7 @@ if(photoDto == null
 	function usageChange(choice) {
 		var ownerName = "<%=photoDto.getOwnerName()%>";
 		var reqUrl;
-		if(ownerName!='뉴욕타임즈') {
+		if(ownerName!='뉴욕타임스') {
 			reqUrl = "/UsageJSON";
 		} else {
 			reqUrl = "/Foreign.UsageJSON";
@@ -267,7 +267,7 @@ if(photoDto == null
 	function division1Change(choice) {
 		var ownerName = "<%=photoDto.getOwnerName()%>";
 		var reqUrl;
-		if(ownerName!='뉴욕타임즈') {
+		if(ownerName!='뉴욕타임스') {
 			reqUrl = "/UsageJSON";
 		} else {
 			reqUrl = "/Foreign.UsageJSON";
@@ -306,7 +306,7 @@ if(photoDto == null
 	function division2Change(choice) {
 		var ownerName = "<%=photoDto.getOwnerName()%>";
 		var reqUrl;
-		if(ownerName!='뉴욕타임즈') {
+		if(ownerName!='뉴욕타임스') {
 			reqUrl = "/UsageJSON";
 		} else {
 			reqUrl = "/Foreign.UsageJSON";
@@ -346,7 +346,7 @@ if(photoDto == null
 	function division3Change(choice) {
 		var ownerName = "<%=photoDto.getOwnerName()%>";
 		var reqUrl;
-		if(ownerName!='뉴욕타임즈') {
+		if(ownerName!='뉴욕타임스') {
 			reqUrl = "/UsageJSON";
 		} else {
 			reqUrl = "/Foreign.UsageJSON";
@@ -405,7 +405,7 @@ if(photoDto == null
 	function division4Change(choice) {
 		var ownerName = "<%=photoDto.getOwnerName()%>";
 		var reqUrl;
-		if(ownerName!='뉴욕타임즈') {
+		if(ownerName!='뉴욕타임스') {
 			reqUrl = "/UsageJSON";
 		} else {
 			reqUrl = "/Foreign.UsageJSON";
@@ -442,7 +442,7 @@ if(photoDto == null
 	function usageDateChange(choice) {
 		var ownerName = "<%=photoDto.getOwnerName()%>";
 		var reqUrl;
-		if(ownerName!='뉴욕타임즈') {
+		if(ownerName!='뉴욕타임스') {
 			reqUrl = "/UsageJSON";
 		} else {
 			reqUrl = "/Foreign.UsageJSON";
@@ -744,7 +744,7 @@ if(photoDto == null
 				</div>
 			</div>
 			<h2 class="media_logo">
-				<c:if test="${photoDTO.ownerName!='뉴욕타임즈'}">				
+				<c:if test="${photoDTO.ownerName!='뉴욕타임스'}">				
 					<img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" />
 				</c:if>
 				<div class="btn_edit"> <span id="popup_open"><a href="javascript:void(0)">오류 신고하기</a></span></div>
@@ -757,7 +757,7 @@ if(photoDto == null
 if(!contentBlidF) {
 %>
 <c:choose>
-	<c:when test="${photoDTO.ownerName=='뉴욕타임즈'}">
+	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
 		<c:choose>
 			<c:when test="${photoDTO.titleKor!=''}">
 					${photoDTO.titleKor}
@@ -788,7 +788,7 @@ if(!contentBlidF) {
 					<a href="javascript:;" class="btn_wish on">찜하기 O</a>
 				</c:if>
 <c:choose>
-	<c:when test="${photoDTO.ownerName=='뉴욕타임즈'}">
+	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
 		<c:choose>
 			<c:when test="${photoDTO.titleKor!=''}">
 				<p class="img_cont">${photoDTO.descriptionKor}</p>

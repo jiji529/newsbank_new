@@ -49,7 +49,7 @@ SimpleDateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
 		<section class="view">
 			<div class="view_lt">				
 				<h2 class="media_logo">
-					<c:if test="${photoDTO.ownerName!='뉴욕타임즈'}">	
+					<c:if test="${photoDTO.ownerName!='뉴욕타임스'}">	
 						<img src="/logo.down.photo?seq=${photoDTO.ownerNo}" alt="${photoDTO.ownerName}" />
 					</c:if>
 					<div class="btn_edit">

@@ -489,7 +489,7 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 									<input type="file" name="logo" accept="application/pdf, image/*" required />
 								</div>
 								<c:if test="${!empty media.logo}">
-									<c:if test="${media.compName!='뉴욕타임즈'}">
+									<c:if test="${media.compName!='뉴욕타임스'}">
 										<a class="btn_input1" target="_blank" href="/logo.down.photo?seq=${media.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" class="btn_input1">다운로드</a>
 									</c:if>
 								</c:if>
