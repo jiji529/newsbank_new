@@ -29,7 +29,7 @@
 		}
 	}catch(Exception e){}
 %>
-
+<script src="js/cookie.js"></script>
 <script>
 $(document).ready(function() {
 	setDatepicker();

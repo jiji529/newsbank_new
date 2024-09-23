@@ -28,15 +28,31 @@
 		$("#popupTap1").on('click', function() {
 			$("#popupTap1").addClass('tapOn');
 			$("#popupTap2").removeClass('tapOn');
+			$("#popupTap3").removeClass('tapOn');
+			
 			$("#tblEditorial").css('display',"block");
 			$("#tblCommercial").css('display',"none");
+			$("#tblEditorialNYT").css('display',"none");
 		});
 		
 		$("#popupTap2").on('click', function() {
 			$("#popupTap2").addClass('tapOn');
 			$("#popupTap1").removeClass('tapOn');
+			$("#popupTap3").removeClass('tapOn');
+			
 			$("#tblEditorial").css('display',"none");
 			$("#tblCommercial").css('display',"block");
+			$("#tblEditorialNYT").css('display',"none");
+		});
+		
+		$("#popupTap3").on('click', function() {
+			$("#popupTap3").addClass('tapOn');
+			$("#popupTap1").removeClass('tapOn');
+			$("#popupTap2").removeClass('tapOn');
+			
+			$("#tblEditorial").css('display',"none");
+			$("#tblCommercial").css('display',"none");
+			$("#tblEditorialNYT").css('display',"block");
 		});
 	});
 </script>
@@ -75,6 +91,9 @@
 				</span>
 				<span id="popupTap2">
 					<a href="javascript:;" id="Commercial">Commercial (상업용)</a>
+				</span>
+				<span id="popupTap3">
+					<a href="javascript:;" id="EditorialNYT">Editorial (뉴욕타임즈/출판용)</a>
 				</span>
 			</div>
 			<section id="tblEditorial" style="display:;">
@@ -520,11 +539,160 @@
 						</tr>
 					</tbody>
 				</table>
-				<div class="view_rt_top">
+				<div class="price_mess">
 					이용자가 뉴스뱅크가 제공하는 이미지를 사용할 경우 저작권, 피사체에 대한 초상권, 상표권 등 기타권리는 이용자 자신이 취득하여야 합니다.
 					<a href="/policy.intro" class="price_info" target="_blank">이용약관</a> 
 				</div>
 			</section>
+            <section id="tblEditorialNYT" style="display: none;">
+	             <!-- 가격테이블 -->
+	             <table class="tb01" cellpadding="0" cellspacing="0">
+	                 <colgroup>
+	                     <col width="160px">
+	                     <col width="180px">
+	                     <col width="460px">
+	                     <col width="240px">
+	                     <col width="200px">
+	                 </colgroup>
+	                 <thead>
+	                     <tr>
+	                         <th scope="col" colspan="2">구분</th>
+	                         <th scope="col">용도</th>
+	                         <th scope="col">사용기간</th>
+	                         <th scope="col">가격
+	                             (VAT포함)</th>
+	                     </tr>
+	                 </thead>
+	                 <tbody>
+	                     <tr id="r1">
+	                         <th rowspan="5">출판, 간행물</th>
+	                         <td rowspan="3">인쇄매체</td>
+	                         <td>단행본, 잡지-내지</td>
+	                         <td>1년 이내</td>
+	                         <td>99,000</td>
+	                     </tr>
+	                     <tr id="r2">
+	                         <td>단행본, 잡지표지</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>
+	                     <tr id="r3">
+	                         <td>단행본, 잡지 내지+표지
+	                             (동일한 컷을 같은 매체에 이용시 기준)</td>
+	                         <td>1년 이내</td>
+	                         <td>242,000</td>
+	                     </tr>
+	                     <tr id="r4">
+	                         <td>e북, 모바일등</td>
+	                         <td>e-book, CD수록, 기타 전자매체</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>
+	                     <tr id="r5">
+	                         <td>패키지</td>
+	                         <td>인쇄매체 + e-book
+	                             (동일한 컷을 2개 매체에 이용시 기준)</td>
+	                         <td>1년 이내</td>
+	                         <td>242,000</td>
+	                     </tr>
+	                     <tr id="r6">
+	                         <th rowspan="4">교육용</th>
+	                         <td rowspan="2">인쇄매체</td>
+	                         <td>전집, 백과사전, 도감, 학술논문, 발표자료 등</td>
+	                         <td>1년 이내</td>
+	                         <td>99,000</td>
+	                     </tr>
+	                     <tr id="r7">
+	                         <td>교과서, 참고서, 학습지</td>
+	                         <td>1년 이내</td>
+	                         <td>99,000</td>
+	                     </tr>
+	                     <tr id="r8">
+	                         <td>온라인, 모바일 등</td>
+	                         <td>전자교과서, 교육용 웹사이트, CD수록 등
+	                             저장매체, 발표용 슬라이드</td>
+	                         <td>1년 이내</td>
+	                         <td>121,000</td>
+	                     </tr>
+	                     <tr id="r9">
+	                         <td>패키지</td>
+	                         <td>인쇄매체 + 온라인, 모바일 등
+	                             (동일한 컷을 2개 매체에 이용시 기준)</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>
+	                     <tr id="r10">
+	                         <th rowspan="5">언론 보도용</th>
+	                         <td>인쇄매체</td>
+	                         <td>신문-종합일간지, 경제지, 스포츠지, 무가지, 타블로이드, 학술지 등</td>
+	                         <td>1년 이내</td>
+	                         <td>99,000</td>
+	                     </tr>
+	                     <tr id="r11">
+	                         <td>온라인</td>
+	                         <td>인터넷뉴스 등</td>
+	                         <td>1년 이내</td>
+	                         <td>121,000</td>
+	                     </tr>
+	                     <tr id="r12">
+	                         <td>방송</td>
+	                         <td>지상파, 종합유선방송, 위성방송, IPTV, 인터넷방송 등</td>
+	                         <td>1년 이내</td>
+	                         <td>121,000</td>
+	                     </tr>
+	                     <tr id="r13">
+	                         <td rowspan="2">패키지</td>
+	                         <td>방송 + 웹사이트
+	                             (동일한 컷을 2개 매체에 이용시 기준)</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>
+	                     <tr id="r14">
+	                         <td>인쇄매체 + 웹사이트
+	                             (동일한 컷을 2개 매체에 이용시 기준)</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>			                        
+	                     <tr id="r23">
+	                         <th rowspan="15">기타</th>			                            
+	                     </tr>			                        
+	                     <tr id="r29">
+	                         <td rowspan="2">인쇄매체</td>
+	                         <td>사보, 뉴스레터, 기관지 등</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>
+	                     <tr id="r30">
+	                         <td>의정보고서, 내부게시판 등</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>
+	                     <tr id="r31">
+	                         <td rowspan="2">온라인</td>
+	                         <td>기업 및 단체 운영의 홈페이지 또는
+	                             블로그, 인트라넷 등</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>
+	                     <tr id="r32">
+	                         <td>웹진, 뉴스레터 온라인배포용</td>
+	                         <td>1년 이내</td>
+	                         <td>187,000</td>
+	                     </tr>
+	                     <tr id="r33">
+	                         <td>방송</td>
+	                         <td>보도용 이외 일반 방송 프로그램
+	                             (홈쇼핑 제외)</td>
+	                         <td>1년 이내</td>
+	                         <td>142,000</td>
+	                     </tr>			                        
+	                 </tbody>
+	             </table>
+	          <div class="price_mess">
+				이용자가 NYT 뉴스뱅크가 제공하는 이미지를 사용할 경우 저작권, 피사체에 대한 초상권, 상표권 등 기타권리는 이용자 자신이 취득하여야 합니다. 
+				<a href="#" class="price_info" target="_blank">이용약관</a>
+			  </div>
+         </section>			            
 		</section>
 		<%@include file="footer.jsp"%>
 	</div>
