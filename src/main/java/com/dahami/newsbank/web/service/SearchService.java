@@ -82,12 +82,20 @@ public class SearchService extends ServiceBase {
 		Set<Integer> ownedMdSet = new HashSet<Integer>();			//	소유한 (현재 회원인 승인받은) 매체 리스트 (매체 CMS)
 		
 		Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
-		if(sParam.getContextPath().equals("Domestic.photo")) {
-			mediaRangeParam.put("mediaRange", "Domestic");
-		} else if(sParam.getContextPath().equals("Foreign.photo")) {
-			mediaRangeParam.put("mediaRange", "Foreign");
-		} else {
-			mediaRangeParam.put("mediaRange", "all");								
+		try {
+			if(sParam.getContextPath()==null) {
+				mediaRangeParam.put("mediaRange", "all");
+			} else {				
+				if(sParam.getContextPath().equals("Domestic.photo")) {
+					mediaRangeParam.put("mediaRange", "Domestic");
+				} else if(sParam.getContextPath().equals("Foreign.photo")) {
+					mediaRangeParam.put("mediaRange", "Foreign");
+				} else {
+					mediaRangeParam.put("mediaRange", "all");								
+				}			
+			}
+		} catch (Exception e) {
+			logger.warn("",e);
 		}
 		List<MemberDTO> activeMemberList = memberDao.listActiveMedia(mediaRangeParam);
 		for(MemberDTO mbr : activeMemberList) {
