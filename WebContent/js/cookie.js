@@ -4,14 +4,6 @@
  * Description : 쿠키 사용 관련 메소드 모음
  */
 
-function checkRefresh() {
-	if (performance.navigation.type === 1) {
-	    return true;
-	} else {
-	    return false;
-	}
-}
-
 // 쿠키 세팅
 function setCookie(name, value, expiredays) {
 	var today = new Date();
