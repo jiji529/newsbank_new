@@ -16,8 +16,6 @@
 
 package com.dahami.newsbank;
 
-import com.dahami.newsbank.dto.PhotoDTO;
-
 public class Constants {
 
 	/** 개발/서비스 구분 */
@@ -27,7 +25,7 @@ public class Constants {
 	/** 서비스에 따른 JSP_BASEPATH 구분 */
 	public static final String JSP_BASHPATH;
 	/** 테스트를 위해서 세팅하는 값 */
-	public static final boolean MEDIA_INCLUDE_TEST = Boolean.parseBoolean(System.getProperty("MEDIA_INCLUDE_TEST", "false"));
+	public static final boolean MEDIA_INCLUDE_TEST = Boolean.parseBoolean(System.getProperty("MEDIA_INCLUDE_TEST", "true"));
 	public static final String[] ADMISSION_TYPE = new String[] {
 		"N"
 	};

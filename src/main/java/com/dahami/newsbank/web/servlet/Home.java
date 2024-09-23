@@ -91,7 +91,9 @@ public class Home extends NewsbankServletBase {
 		List<PhotoDTO> hitsList = photoDAO.hitsPhotoList(params); // 상세보기
 		
 		MemberDAO memberDAO = new MemberDAO();
-		List<MemberDTO> mediaList = memberDAO.listActiveMedia();
+		Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
+		mediaRangeParam.put("mediaRange", "all");
+		List<MemberDTO> mediaList = memberDAO.listActiveMedia(mediaRangeParam);
 		
 		request.setAttribute("photoList", photoList);
 		request.setAttribute("downloadList", downloadList);

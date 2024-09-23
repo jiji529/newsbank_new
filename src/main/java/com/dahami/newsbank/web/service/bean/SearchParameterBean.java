@@ -26,6 +26,7 @@ import com.dahami.newsbank.dto.PhotoDTO;
 
 public class SearchParameterBean {
 	private static final int ALL = 0;
+	private String contextPath;
 	private String photoId;;
 	private String keyword;
 	private String uciCode;
@@ -134,6 +135,7 @@ public class SearchParameterBean {
 	
 	public SearchParameterBean(Map<String, String[]> params) {
 		this();
+		try{this.contextPath = params.get("contextPath")[0];}catch(Exception e){}
 		try{this.photoId = params.get("photoId")[0];}catch(Exception e){}
 		try{this.keyword = params.get("keyword")[0];}catch(Exception e){}
 		try{this.uciCode = params.get("uciCode")[0];}catch(Exception e){}
@@ -220,6 +222,14 @@ public class SearchParameterBean {
 		this.pageNo++;
 		return this;
 	}
+	
+	public String getContextPath() {
+		return contextPath;
+	}
+
+	public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
+	}	
 	
 	public String getPhotoId() {
 		if(photoId == null || photoId.trim().length() == 0) {

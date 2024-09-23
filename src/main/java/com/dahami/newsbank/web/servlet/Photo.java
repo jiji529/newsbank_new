@@ -50,13 +50,22 @@ public class Photo extends NewsbankServletBase {
 			response.sendRedirect("/invlidPage.jsp");
 			return;
 		}
+		// Referer 헤더 가져오기
+		String referer = request.getHeader("Referer");		
 		
 		IService service = null;
 		if(cmd.is2("down")) {
 			service = new DownloadService();
 		} else {
 			if(cmd.is2("view")) {
-				service = new PhotoService(true, "all");
+				if(referer.indexOf("Domestic.photo")!=-1) {
+					service = new PhotoService(true, "Domestic");
+				} else if(referer.indexOf("Foreign.photo")!=-1) {
+					service = new PhotoService(true, "Foreign");
+				} else {
+					service = new PhotoService(true, "all");					
+				}
+				request.setAttribute("referer",referer);
 			}
 			else {
 				if(cmd.is2("Domestic")) {

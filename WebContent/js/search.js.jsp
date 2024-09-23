@@ -248,9 +248,10 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <%
 	}
 %>
-		
+		var contextPath = window.location.pathname.split("/")[1];
 		var searchParam = {
-				"keyword":keyword
+				"contextPath":contextPath
+				,"keyword":keyword
 				, "pageNo":pageNo
 				, "pageVol":pageVol
 				, "contentType":contentType

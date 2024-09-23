@@ -34,7 +34,9 @@ public class MediaService extends ServiceBase {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<MemberDTO> activeMemberList = new MemberDAO().listActiveMedia();
+		Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
+		mediaRangeParam.put("mediaRange", "all");
+		List<MemberDTO> activeMemberList = new MemberDAO().listActiveMedia(mediaRangeParam);
 		
 		Map<String, Object> root = new HashMap<String, Object>();
 		Map<String, Object> mediaMap = new HashMap<String, Object>();

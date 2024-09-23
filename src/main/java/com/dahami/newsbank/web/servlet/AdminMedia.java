@@ -1,7 +1,9 @@
 package com.dahami.newsbank.web.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -52,7 +54,9 @@ public class AdminMedia extends NewsbankServletBase {
 			
 			if(MemberInfo.getType().equals("A")) { // 관리자 권한만 접근
 				MemberDAO memberDAO = new MemberDAO();
-				List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+				Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
+				mediaRangeParam.put("mediaRange", "all");
+				List<MemberDTO> mediaList = memberDAO.listActiveMedia(mediaRangeParam); // 활성 매체사 불러오기
 				request.setAttribute("mediaList", mediaList); // 활성 매체사
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp"+Constants.JSP_BASHPATH+"admin_media.jsp");

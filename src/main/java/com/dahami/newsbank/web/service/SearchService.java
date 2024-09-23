@@ -81,7 +81,15 @@ public class SearchService extends ServiceBase {
 		Set<Integer> mngableMdSet = new HashSet<Integer>();		// 관리 가능한 전체 매체 리스트 (관리자 CMS)
 		Set<Integer> ownedMdSet = new HashSet<Integer>();			//	소유한 (현재 회원인 승인받은) 매체 리스트 (매체 CMS)
 		
-		List<MemberDTO> activeMemberList = memberDao.listActiveMedia();
+		Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
+		if(sParam.getContextPath().equals("Domestic.photo")) {
+			mediaRangeParam.put("mediaRange", "Domestic");
+		} else if(sParam.getContextPath().equals("Foreign.photo")) {
+			mediaRangeParam.put("mediaRange", "Foreign");
+		} else {
+			mediaRangeParam.put("mediaRange", "all");								
+		}
+		List<MemberDTO> activeMemberList = memberDao.listActiveMedia(mediaRangeParam);
 		for(MemberDTO mbr : activeMemberList) {
 			searchableMdSet.add(mbr.getSeq());
 		}

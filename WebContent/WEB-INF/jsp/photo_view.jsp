@@ -719,7 +719,17 @@ if(photoDto == null
 			<div class="navi">
 				<a href="/" title="뉴스뱅크 홈" class="home">뉴스뱅크 홈</a>
 				<div class="navi_wrap">
-					<a href="/photo">보도사진</a><span class="ico_depth"></span>
+					<c:choose>
+						<c:when test="${fn:contains(referer,'/Domestic.photo')}">
+							<a href="/Domestic.photo">국내사진</a><span class="ico_depth"></span>						
+						</c:when>
+						<c:when test="${fn:contains(referer,'/Foreign.photo')}">
+							<a href="/Foreign.photo">해외사진</a><span class="ico_depth"></span>
+						</c:when>
+						<c:otherwise>
+							<a href="/photo">전체사진</a><span class="ico_depth"></span>						
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div class="navi_wrap">
 					<span class="ico_depth"></span>

@@ -38,12 +38,11 @@ public class MemberDAO extends DAOBase {
 	 * @return
 	 * @returnType : List<MemberDTO>
 	 */
-	public List<MemberDTO> listActiveMedia() {
+	public List<MemberDTO> listActiveMedia(Map<Object,Object> param) {
 		SqlSession session = null;
 		try {
 			session = sf.getSession();
-						
-			Map<Object,Object> param = new HashMap<Object,Object>();
+									
 			param = settingXmlParam(param);
 			return session.selectList("Member.listActiveMedia",param);
 		} catch (Exception e) {

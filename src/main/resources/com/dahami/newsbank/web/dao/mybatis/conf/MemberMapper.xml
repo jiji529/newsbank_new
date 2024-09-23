@@ -11,7 +11,18 @@
 	-->
 	<select id="listActiveMedia" resultType="com.dahami.newsbank.web.dto.MemberDTO">
 		select * from member
-		where type IN ('M','F')		
+		where
+		<choose>
+			<when test="mediaRange == 'Domestic'">
+				type IN ('M')
+			</when>
+			<when test="mediaRange == 'Foreign'">
+				type IN ('F')
+			</when>
+			<otherwise>
+				type IN ('M','F')
+			</otherwise>
+		</choose> 			
 		and activate != 2
 		and withdraw != 1
 		and admission NOT IN 

@@ -227,7 +227,9 @@ public class PhotoDAO extends DAOBase {
 			param.put("exhName", "에디터");
 			
 			MemberDAO memberDAO = new MemberDAO();
-			List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+			Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
+			mediaRangeParam.put("mediaRange", "all");
+			List<MemberDTO> mediaList = memberDAO.listActiveMedia(mediaRangeParam); // 활성 매체사 불러오기
 			int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
 			
 			for(int idx=0; idx<mediaList.size(); idx++) {
@@ -261,7 +263,9 @@ public class PhotoDAO extends DAOBase {
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 				
 		MemberDAO memberDAO = new MemberDAO();
-		List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+		Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
+		mediaRangeParam.put("mediaRange", "all");
+		List<MemberDTO> mediaList = memberDAO.listActiveMedia(mediaRangeParam); // 활성 매체사 불러오기
 		int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
 		
 		for(int idx=0; idx<mediaList.size(); idx++) {
@@ -297,7 +301,9 @@ public class PhotoDAO extends DAOBase {
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 		
 		MemberDAO memberDAO = new MemberDAO();
-		List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+		Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
+		mediaRangeParam.put("mediaRange", "all");
+		List<MemberDTO> mediaList = memberDAO.listActiveMedia(mediaRangeParam); // 활성 매체사 불러오기
 		int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
 		
 		for(int idx=0; idx<mediaList.size(); idx++) {
@@ -333,7 +339,9 @@ public class PhotoDAO extends DAOBase {
 		List<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
 		
 		MemberDAO memberDAO = new MemberDAO();
-		List<MemberDTO> mediaList = memberDAO.listActiveMedia(); // 활성 매체사 불러오기
+		Map<Object,Object> mediaRangeParam = new HashMap<Object,Object>();
+		mediaRangeParam.put("mediaRange", "all");
+		List<MemberDTO> mediaList = memberDAO.listActiveMedia(mediaRangeParam); // 활성 매체사 불러오기
 		int[] mediaSeq = new int[mediaList.size()]; // 활성 매체사 SEQ 배열
 		
 		for(int idx=0; idx<mediaList.size(); idx++) {
