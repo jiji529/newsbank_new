@@ -880,7 +880,7 @@ if(!contentBlidF) {
 	 					<h3>제약사항 안내</h3>
 	 				</div>	 				
 	 				<div class="restriction_cont">뉴시스 보도사진의 경우 <b class="color">출판용(일반출판, 간행물, 교육용)</b> 목적으로만 구입이 가능하며, 상업용 목적으로는 구입이 불가합니다.<br />
- 					기타 문의사항은 <a href="https://www.newsbank.co.kr/contact" target="_blank">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다. </div>
+ 					기타 문의사항은 <a href="/contact" target="_blank">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다. </div>
 	 			</div>
 			</c:if>
 			<!-- 제약사항 안내 (뉴시스 회원만) -->
@@ -959,7 +959,7 @@ if(!contentBlidF) {
 							<c:when test="${photoDTO.ownerName eq '뉴욕타임스'}">
 								<div class="restriction">
 									<div class="restriction_cont">
-										※ <b class="color">대량 구매, 장기 계약을 희망</b>하는 기업, 기관, 출판사 등은 뉴욕타임스와 가격 조정이 필요하므로 <br/> <a href="/contact" target="_blank" style="float:none; display:contents; height:0px; line-height:0px;">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다.										
+										※ <b class="color">대량 구매, 장기 계약을 희망</b>하는 기업, 기관, 출판사 등은 뉴욕타임스와 가격 조정이 필요하므로 <br/> <a href="/contact" target="_blank" style="height: auto;line-height: unset">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다.										
 									</div>
 								</div>
 							</c:when>
