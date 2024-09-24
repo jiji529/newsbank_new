@@ -24,6 +24,14 @@
 <link rel="stylesheet" href="css/mypage.css" />
 <script src="js/footer.js"></script>
 <script>
+	$(window).on("load", function() {
+	    // 페이지가 완전히 로드된 후 버튼 클릭 이벤트 발생
+		const params = new URLSearchParams(window.location.search);
+		if (params.get('media') == 'NYT') {
+			$("#popupTap3").click();
+		}    
+	});
+
 	$(document).ready(function() {
 		$("#popupTap1").on('click', function() {
 			$("#popupTap1").addClass('tapOn');
@@ -84,7 +92,7 @@
 			<div class="table_head">
 				<h3>구매안내</h3>
 			</div>
-			<div class="tab1">
+			<div class="tab1" style="padding:0px 0px 30px;">
 				<!-- 가격테이블 Tap-->
 				<span class="tapOn" id="popupTap1">
 					<a href="javascript:;" id="Editorial">Editorial (출판용)</a>
@@ -544,7 +552,10 @@
 					<a href="/policy.intro" class="price_info" target="_blank">이용약관</a> 
 				</div>
 			</section>
-            <section id="tblEditorialNYT" style="display: none;">
+            <section id="tblEditorialNYT" style="display: none;">            	
+            	<div class="price_mess">
+				  ※ <b class="color">대량 구매, 장기 계약을 희망</b>하는 기업, 기관, 출판사 등은 뉴욕타임스와 가격 조정이 필요하므로 <a href="/contact" target="_blank" style="float:none; display:contents; height:0px; line-height:0px;">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다.
+			    </div>
 	             <!-- 가격테이블 -->
 	             <table class="tb01" cellpadding="0" cellspacing="0">
 	                 <colgroup>

@@ -248,7 +248,13 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 <%
 	}
 %>
+		// 쿠키값 여부에 따라, 변수 세팅
 		var contextPath = window.location.pathname.split("/")[1];
+		// if(searchFilterClick==false) {
+		//	keyword = initSearchParamByCookie('keyword',keyword, contextPath);
+		//	media = initSearchParamByCookie('media',media, contextPath);		
+		// }
+
 		var searchParam = {
 				"contextPath":contextPath
 				,"keyword":keyword
@@ -307,6 +313,11 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				}else{
 					$(".more").show();
 				}	
+				
+				// 클릭이벤트 체크용 변수 초기화 && 특정 값을 쿠키에 저장				
+				// searchFilterClick = false;
+				// setCookie('keyword', keyword);
+				// setCookie('media', media);
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);

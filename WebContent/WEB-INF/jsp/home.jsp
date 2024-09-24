@@ -118,6 +118,7 @@ if(errMsg != null && errMsg.length() > 0) {
 	
 	$(document).on("keypress", "#keyword", function(e) {
 		if(e.keyCode == 13) {	// 엔터
+			e.preventDefault();
 			search();
 		}
 	});
@@ -126,7 +127,7 @@ if(errMsg != null && errMsg.length() > 0) {
 		var keyword = $.trim($("#keyword").val());
 		if(keyword.length == 0) {
 			alert("검색어를 입력하세요.");
-			$("#keyword").val("");
+ 			$("#keyword").val("");
 			$("#keyword").focus();
 		}
 		else {
@@ -224,10 +225,10 @@ if(errMsg != null && errMsg.length() > 0) {
 					<a href="/photo">전체사진</a>
 				</li>
 				<li>
-					<a href="/Domestic.photo">국내사진</a>
+					<a href="/Domestic.photo">국내언론사</a>
 				</li>
 				<li>
-					<a href="/Foreign.photo">해외사진</a>
+					<a href="/Foreign.photo">국외언론사</a>
 				</li>
 				<!-- <li>
 					<a href="/collection">컬렉션</a>
@@ -424,13 +425,11 @@ if(errMsg != null && errMsg.length() > 0) {
 				<h2>회원사 소개</h2>
 				<ul class="media_list">
 					<c:forEach items="${mediaList}" var="member">
-						<c:if test="${member.seq!=999}">
-							<li>
-								<a href="javascript:void(0)" onclick="media_submit('${member.seq}')">
-									<img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${member.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
-								</a>
-							</li>
-						</c:if>
+						<li>
+							<a href="javascript:void(0)" onclick="media_submit('${member.seq}')">
+								<img src="<%=IMG_SERVER_URL_PREFIX%>/logo.down.photo?seq=${member.seq}&dummy=<%=com.dahami.common.util.RandomStringGenerator.next()%>" />
+							</a>
+						</li>						
 					</c:forEach>
 				</ul>
 			</div>

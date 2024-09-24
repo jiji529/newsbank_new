@@ -27,6 +27,7 @@ if(errMsg != null && errMsg.length() > 0) {
 	});
 
 	function searchTop() {
+		searchFilterClick = true;
 		var oldKw = $("#keyword_current").val();
 		var newKw = $("#keyword").val();
 		if(oldKw == newKw) {
@@ -100,10 +101,10 @@ if(errMsg != null && errMsg.length() > 0) {
 			<a href="/photo">전체사진</a>
 		</li>
 		<li>
-			<a href="/Domestic.photo">국내사진</a>
+			<a href="/Domestic.photo">국내언론사</a>
 		</li>
 		<li>
-			<a href="/Foreign.photo">해외사진</a>
+			<a href="/Foreign.photo">국외언론사</a>
 		</li>
 		<!--li>
 			<a href="javascript:void(0)">뮤지엄</a>

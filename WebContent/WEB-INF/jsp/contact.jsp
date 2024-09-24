@@ -155,17 +155,17 @@
 					</tr>
 					<tr>
 						<td>고객문의</td>
-						<td>02-593-4174 (224)</td>
+						<td>02-593-4174 (211)</td>
 						<td>newsbank@dahami.com</td>
 					</tr>
 					<tr>
 						<td>매체 제휴</td>
-						<td>02-593-4174 (218)</td>
-						<td>seoski@dahami.com</td>
+						<td>02-593-4174 (102)</td>
+						<td>daekong@dahami.com</td>
 					</tr>
 					<tr>
 						<td>기술지원</td>
-						<td>02-593-4174 (414)</td>
+						<td>02-593-4174 (415)</td>
 						<td>helpdesk@dahami.com</td>
 					</tr>
 				</tbody>

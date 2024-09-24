@@ -721,10 +721,10 @@ if(photoDto == null
 				<div class="navi_wrap">
 					<c:choose>
 						<c:when test="${fn:contains(referer,'/Domestic.photo')}">
-							<a href="/Domestic.photo">국내사진</a><span class="ico_depth"></span>						
+							<a href="/Domestic.photo">국내언론사</a><span class="ico_depth"></span>						
 						</c:when>
 						<c:when test="${fn:contains(referer,'/Foreign.photo')}">
-							<a href="/Foreign.photo">해외사진</a><span class="ico_depth"></span>
+							<a href="/Foreign.photo">국외언론사</a><span class="ico_depth"></span>
 						</c:when>
 						<c:otherwise>
 							<a href="/photo">전체사진</a><span class="ico_depth"></span>						
@@ -883,10 +883,29 @@ if(!contentBlidF) {
  					기타 문의사항은 <a href="https://www.newsbank.co.kr/contact" target="_blank">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다. </div>
 	 			</div>
 			</c:if>
+			<!-- 제약사항 안내 (뉴시스 회원만) -->
+			<c:if test="${photoDTO.ownerName eq '뉴욕타임스'}">
+				<div class="restriction">
+	 				<div class="view_rt_top">
+	 					<h3>제약사항 안내</h3>
+	 				</div>	 				
+	 				<div class="restriction_cont">NYT 보도사진의 저작권은 뉴욕타임스에 있으며, <br/> 광고, 판촉 용도로는 사용하실 수 없습니다.<br />
+ 					사용요금은 1회 인쇄, 1용도, 1매체에 한해 적용되며, <br/> 온라인 디지털 미디어에 한해 6개월 계약 2번으로 최대 1년 사용 가능합니다.<br/>
+ 					사용범위 외 목적으로 이미지를 사용할 수 없습니다. 
+ 					</div>
+	 			</div>
+			</c:if>
  			
 			<div class="view_rt_top">
 				<h3>이미지 구매하기</h3>
-				<a href="/price.info" class="price_info" target="_blank">가격확인</a>
+				<c:choose>
+					<c:when test="${photoDTO.ownerName eq '뉴욕타임스'}">
+						<a href="/price.info?media=NYT" class="price_info" target="_blank">가격확인</a>
+					</c:when>
+					<c:otherwise>
+						<a href="/price.info" class="price_info" target="_blank">가격확인</a>
+					</c:otherwise>
+				</c:choose>				
 			</div>
 			<c:if test="${loginInfo == null || loginInfo.deferred == 0}">
 				<div class="option_choice">
@@ -936,12 +955,23 @@ if(!contentBlidF) {
 						<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
 						<div class="btn_down" id="btnDownTentative"><a href="javascript:void(0)" value="${photoDTO.uciCode}">시안 다운로드</a></div>
 						<div class="btn_buy"><a href="javascript:;" onclick="go_pay()">구매하기</a></div>
-						<div class="restriction">
-							<div class="restriction_cont">
-								뉴스뱅크는 본 이미지의 피사체에 대한 초상권, 상표권, 특허권 등 제반권리를 가지고 있지 않습니다. <br/>
-								<b class="color">광고·홍보·홍보상품 판촉 용도에는 사용허가가 필요</b>합니다.
-							</div>
-						</div>
+						<c:choose>
+							<c:when test="${photoDTO.ownerName eq '뉴욕타임스'}">
+								<div class="restriction">
+									<div class="restriction_cont">
+										※ <b class="color">대량 구매, 장기 계약을 희망</b>하는 기업, 기관, 출판사 등은 뉴욕타임스와 가격 조정이 필요하므로 <br/> <a href="/contact" target="_blank" style="float:none; display:contents; height:0px; line-height:0px;">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다.										
+									</div>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="restriction">
+									<div class="restriction_cont">
+										뉴스뱅크는 본 이미지의 피사체에 대한 초상권, 상표권, 특허권 등 제반권리를 가지고 있지 않습니다. <br/>
+										<b class="color">광고·홍보·홍보상품 판촉 용도에는 사용허가가 필요</b>합니다.
+									</div>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</c:if>
 				<c:if test="${loginInfo != null && loginInfo.deferred != 0}">
