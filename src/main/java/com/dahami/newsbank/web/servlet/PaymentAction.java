@@ -84,7 +84,8 @@ public class PaymentAction extends NewsbankServletBase {
 					: Integer.parseInt(request.getParameter("paymentManage_seq")); // 구매기록 고유번호
 			int paymentDetail_seq = (request.getParameter("paymentDetail_seq") == null) ? 0
 					: Integer.parseInt(request.getParameter("paymentDetail_seq"));// 구매기록 상세 고유번호
-			String PREFIX_LGD_OID = Constants.JSP_BASHPATH.replace("/", "") + "_";
+			String PREFIX_LGD_OID = Constants.JSP_BASHPATH.equals("/")==true 
+					? Constants.JSP_BASHPATH.replace("/", "") : Constants.JSP_BASHPATH.replace("/", "") + "_";
 			String LGD_OID = (request.getParameter("LGD_OID") == null) ? "" : PREFIX_LGD_OID + request.getParameter("LGD_OID"); // 주문번호
 			
 			/*

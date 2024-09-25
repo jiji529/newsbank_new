@@ -101,7 +101,8 @@ public class XpayNoteurl extends NewsbankServletBase {
 		LGD_RESPMSG = request.getParameter("LGD_RESPMSG");
 		LGD_MID = request.getParameter("LGD_MID");
 		
-		String PREFIX_LGD_OID = Constants.JSP_BASHPATH.replace("/", "") + "_";
+		String PREFIX_LGD_OID = Constants.JSP_BASHPATH.equals("/")==true 
+				? Constants.JSP_BASHPATH.replace("/", "") : Constants.JSP_BASHPATH.replace("/", "") + "_";
 		LGD_OID = PREFIX_LGD_OID + request.getParameter("LGD_OID");
 		LGD_AMOUNT = request.getParameter("LGD_AMOUNT");
 		LGD_TID = request.getParameter("LGD_TID");
