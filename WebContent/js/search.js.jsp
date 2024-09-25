@@ -94,6 +94,15 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 					if($(this).hasClass("choice")) {
 						$(this).attr("selected", "selected");
 						$(this).attr("value", "C"+value);
+						
+						// 날짜를 직접 설정한 경우, split 해서 startDate endDate 세팅하기
+						var settingDate = value.split('~');
+						var startDate = settingDate[0];
+						var endDate = settingDate[1];
+						
+						// this의 자식 중 input[name=startDate], input[name=endDate] 요소를 찾음
+				        $(this).find('input[name="startDate"]').val(startDate);
+				        $(this).find('input[name="endDate"]').val(endDate);
 					}
 					else {
 						$(this).removeAttr("selected");
@@ -250,10 +259,6 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 %>
 		// 쿠키값 여부에 따라, 변수 세팅
 		var contextPath = window.location.pathname.split("/")[1];
-		// if(searchFilterClick==false) {
-		//	keyword = initSearchParamByCookie('keyword',keyword, contextPath);
-		//	media = initSearchParamByCookie('media',media, contextPath);		
-		// }
 
 		var searchParam = {
 				"contextPath":contextPath
@@ -313,11 +318,26 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				}else{
 					$(".more").show();
 				}	
-				
-				// 클릭이벤트 체크용 변수 초기화 && 특정 값을 쿠키에 저장				
-				// searchFilterClick = false;
-				// setCookie('keyword', keyword);
-				// setCookie('media', media);
+	
+	            // 새로고침했을때, 기존 검색옵션이 존재한다면 유지시키기 기능 추가 (2024-09-25 HA.J.S)
+	            var URLParam = "?";
+	            if(keyword!='') { URLParam = keepingSearchParam(URLParam, 'keyword', keyword); }	            	
+				if(media!=0) { URLParam = keepingSearchParam(URLParam, 'media', media); }	            		            	
+				if(durationReg!=1) { URLParam = keepingSearchParam(URLParam, 'durationReg', durationReg); }
+				if(durationTake!=1) { URLParam = keepingSearchParam(URLParam, 'durationTake', durationTake); }	            	
+				if(horiVertChoice!=0) { URLParam = keepingSearchParam(URLParam, 'horiVertChoice', horiVertChoice); }	            	
+				if(size!=0) { URLParam = keepingSearchParam(URLParam, 'size', size); }		            		            	
+				if(pageNo > 0 && pageNo < data.totalPage) {	URLParam = keepingSearchParam(URLParam, 'pageNo', pageNo); }
+				if(saleState!=undefined && saleState!=6) { URLParam = keepingSearchParam(URLParam, 'saleState', saleState);}
+				$('select[name="pageVol"] option').each(function() {
+				    var optionValue = $(this).val(); 				
+				    if(pageVol==optionValue) { URLParam = keepingSearchParam(URLParam, 'pageVol', pageVol); }
+				});				
+	            
+	            if(URLParam!="?") {
+		            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + URLParam;
+					history.pushState(null, '', newUrl);					            
+	            }
 			},
 			error : function(request, status, error) {
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -490,4 +510,12 @@ String IMG_SERVER_URL_PREFIX = com.dahami.newsbank.web.servlet.NewsbankServletBa
 				alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 			}
 		});
+	}
+	
+	function keepingSearchParam(URLParam, paramName, paramValue) {
+		URLParam = URLParam=="?" 
+			? URLParam + paramName + '=' + encodeURIComponent(paramValue) 
+			: URLParam + '&' + paramName + '=' + encodeURIComponent(paramValue);
+	
+		return URLParam;
 	}

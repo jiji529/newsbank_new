@@ -554,7 +554,7 @@
 			</section>
             <section id="tblEditorialNYT" style="display: none;">            	
             	<div class="price_mess">
-				  ※ <b class="color">대량 구매, 장기 계약을 희망</b>하는 기업, 기관, 출판사 등은 뉴욕타임스와 가격 조정이 필요하므로 <a href="/contact" target="_blank" style="float:none; display:contents; height:0px; line-height:0px;">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다.
+				  ※ 기업, 기관, 출판사 등<b class="color">(대량 구매, 장기 계약 등)</b>은 뉴욕타임스와 가격 조정이 필요하므로 <a href="/contact" target="_blank" style="height: auto;line-height: unset">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다.
 			    </div>
 	             <!-- 가격테이블 -->
 	             <table class="tb01" cellpadding="0" cellspacing="0">

@@ -27,7 +27,6 @@ if(errMsg != null && errMsg.length() > 0) {
 	});
 
 	function searchTop() {
-		searchFilterClick = true;
 		var oldKw = $("#keyword_current").val();
 		var newKw = $("#keyword").val();
 		if(oldKw == newKw) {

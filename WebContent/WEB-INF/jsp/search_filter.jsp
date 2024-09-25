@@ -29,10 +29,7 @@
 		}
 	}catch(Exception e){}
 %>
-<script src="js/cookie.js"></script>
 <script>
-
-var searchFilterClick = false;
 
 $(document).ready(function() {
 	setDatepicker();
@@ -58,7 +55,6 @@ $(document).on("click", ".ico_cal", function() { // 달력 아이콘 클릭에 �
 });
 
 $(document).on("click", ".filter_list li", function() { // 검색 옵션 선택
-	searchFilterClick = true;
 	var choice = $(this).text();
 	$(this).siblings().removeAttr("selected");
 	$(this).attr("selected", "selected");

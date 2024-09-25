@@ -20,13 +20,11 @@
 
 	$(document).on("keypress", "#cms_keyword", function(e) {
 		if(e.keyCode == 13) {	// 엔터
-			searchFilterClick = true;
 			$("#cms_searchBtn").click();
 		}
 	});
 	
 	$(document).on("click", "#cms_searchBtn", function() {
-		searchFilterClick = true;
 		$("#cms_keyword_current").val($("#cms_keyword").val());
 		$("input[name=pageNo]").val("1");
 		search();
