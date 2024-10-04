@@ -173,8 +173,9 @@
 .sum_sec .btn_wrap a{display:block;text-align:center;height:50px; line-height:50px; font-weight:600; float:left; }
 .sum_sec .btn_wrap .btn_cart a{ width:175px; border:1px #f79320 solid; font-size:14px;margin-right:9px; color:#f79320;}
 .sum_sec .btn_wrap .btn_down a{ width:175px; border:1px #ccc solid; font-size:14px;color:#666;}
-.sum_sec .btn_wrap .btn_buy{ margin-bottom: 30px; width: 100%; float: left;}
 .sum_sec .btn_wrap .btn_buy a{ width:100%; font-size:16px; color:#fff; background:#f79320; margin-top:10px;}
+
+.sum_sec2{float:left;width:100%; padding: 10px; border: 1px #f79320 solid;font-size: 15px; text-align: center; margin: 10px 0; line-height: 1.5;}
 
 .wrap_pop {width:420px; overflow:auto; padding:10px; height:600px;}
 .wrap_pop .view_rt_top{margin-top:10px;}

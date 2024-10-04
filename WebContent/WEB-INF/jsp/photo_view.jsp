@@ -250,15 +250,28 @@ if(photoDto == null
 			success: function(data) {
 				$.each(data.result, function(key, val) {
 					
-					if(val.usage == value) {
-						if($.inArray(val.division1, result) == -1) {
-							result.push(val.division1);
-							html += "<option>"+val.division1+"</option>";
-						}
+					if(ownerName!='뉴욕타임스') {
+						if(val.usage == value) {
+							if($.inArray(val.division1, result) == -1) {
+								result.push(val.division1);
+								html += "<option>"+val.division1+"</option>";
+							}
+						}						
+					} else {				
+						if(val.usage == value) {
+							if($.inArray(val.usageDate, result) == -1) {
+								result.push(val.usageDate);								
+								html += "<option>"+val.usageDate+"</option>";
+							}							
+						}						
 					}
-					
 				});
-				$(html).appendTo("#division1");
+				
+				if(ownerName!='뉴욕타임스') {
+					$(html).appendTo("#division1");
+				} else {
+					$(html).appendTo("#usageDate");
+				}
 			}
 		});
 	}
@@ -461,24 +474,50 @@ if(photoDto == null
 			url: reqUrl,
 			type: "GET",
 			dataType: "json",
-			success: function(data) { 
-				$.each(data.result, function(key, val) {
-					if(val.usage == usage && val.division1 == division1 && val.division2 == division2 && val.division3 == division3 && val.division4 == division4 && val.usageDate == value) {							
-						price = val.price;
-						usageList_seq = val.usageList_seq;
+			success: function(data) {
+				if(ownerName!='뉴욕타임스') {
+					$.each(data.result, function(key, val) {
+						if(val.usage == usage && val.division1 == division1 && val.division2 == division2 && val.division3 == division3 && val.division4 == division4 && val.usageDate == value) {							
+							price = val.price;
+							usageList_seq = val.usageList_seq;
+						}
+					});
+					
+					if(division4 != "") {
+						var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + division4 + " / " + usageDate;	
+					}else {
+						var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + usageDate;
 					}
-				});
-				
-				if(division4 != "") {
-					var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + division4 + " / " + usageDate;	
-				}else {
-					var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + usageDate;
-				}
-				
-				var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+numberWithCommas(price)+'원</span><span class="op_del">x</span></li>';
-				
-				$(html).appendTo($(".option_result > ul"));
-				setTotalCount();
+					
+					var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+numberWithCommas(price)+'원</span><span class="op_del">x</span></li>';
+					
+					$(html).appendTo($(".option_result > ul"));
+					setTotalCount();	
+				} else {
+					$.each(data.result, function(key, val) {
+						if(val.usage == usage && val.usageDate == value) {							
+							price = val.price;							
+							usageList_seq = val.usageList_seq;
+						}
+					});
+					
+					if(usageDate!='그 외') {
+						$('.sum_sec').css('display','block');
+						$('.option_result').css('display','block');
+						$('.sum_sec2').css('display','none');
+						
+						var options = usage + " / " + usageDate;				
+						
+						var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+numberWithCommas(price)+'원</span><span class="op_del">x</span></li>';
+						
+						$(html).appendTo($(".option_result > ul"));
+						setTotalCount();
+					} else {
+						$('.sum_sec').css('display','none');
+						$('.option_result').css('display','none');
+						$('.sum_sec2').css('display','block');
+					}					
+				}							
 			}
 		});
 	}	
@@ -925,10 +964,11 @@ if(!contentBlidF) {
 							</select></li>
 						</c:otherwise>
 					</c:choose>
-						
+					
+					<c:if test="${photoDTO.ownerName ne '뉴욕타임스'}">
 						<li><span>옵션1</span> <select id="division1"
-								onchange="division1Change(this)">
-							</select></li>
+							onchange="division1Change(this)">
+						</select></li>
 						<li><span>옵션2</span> <select id="division2"
 							onchange="division2Change(this)">
 						</select></li>
@@ -937,7 +977,9 @@ if(!contentBlidF) {
 						</select></li>
 						<li style="display: none;"><span>옵션4</span> <select
 							id="division4" onchange="division4Change(this)">
-						</select></li>
+						</select></li>	
+					</c:if>
+						
 						<li><span>기간</span> <select id="usageDate"
 							onchange="usageDateChange(this)">
 						</select></li>
@@ -955,23 +997,14 @@ if(!contentBlidF) {
 						<div class="btn_cart"><a href="javascript:insertUsageOption();">장바구니</a></div>
 						<div class="btn_down" id="btnDownTentative"><a href="javascript:void(0)" value="${photoDTO.uciCode}">시안 다운로드</a></div>
 						<div class="btn_buy"><a href="javascript:;" onclick="go_pay()">구매하기</a></div>
-						<c:choose>
-							<c:when test="${photoDTO.ownerName eq '뉴욕타임스'}">
-								<div class="restriction">
-									<div class="restriction_cont">
-										※ 기업, 기관, 출판사 등<b class="color">(대량 구매, 장기 계약 등)</b>은 뉴욕타임스와 가격 조정이 필요하므로 <br/> <a href="/contact" target="_blank" style="height: auto;line-height: unset">뉴스뱅크 고객센터</a>로 문의 주시기 바랍니다.										
-									</div>
+						<c:if test="${photoDTO.ownerName ne '뉴욕타임스'}">
+							<div class="restriction">
+								<div class="restriction_cont">
+									뉴스뱅크는 본 이미지의 피사체에 대한 초상권, 상표권, 특허권 등 제반권리를 가지고 있지 않습니다. <br/>
+									<b class="color">광고·홍보·홍보상품 판촉 용도에는 사용허가가 필요</b>합니다.
 								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="restriction">
-									<div class="restriction_cont">
-										뉴스뱅크는 본 이미지의 피사체에 대한 초상권, 상표권, 특허권 등 제반권리를 가지고 있지 않습니다. <br/>
-										<b class="color">광고·홍보·홍보상품 판촉 용도에는 사용허가가 필요</b>합니다.
-									</div>
-								</div>
-							</c:otherwise>
-						</c:choose>
+							</div>
+						</c:if>
 					</div>
 				</c:if>
 				<c:if test="${loginInfo != null && loginInfo.deferred != 0}">
@@ -982,6 +1015,22 @@ if(!contentBlidF) {
 					</div>
 				</c:if>
 			</div>
+			<c:if test="${photoDTO.ownerName eq '뉴욕타임스'}">
+				<div class="sum_sec2" style="display: none;">
+	                해당 계약 건은 뉴스뱅크 고객센터로 문의해주세요. <br>
+	                
+	                <b>email : hskim@dahami.com<br>
+	                phone : 02-593-4174 (231)</b>
+	            </div>
+				<div class="restriction">
+	                <div class="restriction_cont">
+	                    <b class="color">모든 계약 건</b>은 뉴욕타임스와 직접적인 <b class="color">가격 협상</b>이 필요하므로
+	                    <a href="/contact" target="_blank" style="height: auto;line-height: unset; font-weight: bold;">뉴스뱅크 고객 센터</a>로 문의해주세요.<br>
+	(온라인) 사용기간 만료 시 <b class="color">플랫폼에서 삭제</b>하거나
+	<b class="color">페이지에 접근 불가능</b>하도록 제한합니다.
+	                </div>
+	            </div>
+			</c:if>			
 		</div>
 <%
 }
