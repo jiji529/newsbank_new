@@ -22,7 +22,7 @@ if(photoDto == null
 <title>뉴스뱅크</title>
 <script src="js/jquery-1.12.4.min.js"></script>
 <link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/sub.css" />
+<link rel="stylesheet" href="css/sub.css?v=241004" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script type="text/javascript">
