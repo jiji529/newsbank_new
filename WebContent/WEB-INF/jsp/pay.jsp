@@ -97,9 +97,15 @@
 										<input type="hidden" name="order[${idx}][usage.usage]" value ="${UsageDTO.usage}"  />
 											<ul class="opt_li">
 												<li>${UsageDTO.usage}</li>
-												<li>${UsageDTO.division1}</li>
-												<li>${UsageDTO.division2}</li>
-												<li>${UsageDTO.division3}</li>
+												<c:if test="${not empty UsageDTO.division1}">												
+													<li>${UsageDTO.division1}</li>
+												</c:if>
+												<c:if test="${not empty UsageDTO.division2}">												
+													<li>${UsageDTO.division2}</li>
+												</c:if>
+												<c:if test="${not empty UsageDTO.division3}">												
+													<li>${UsageDTO.division3}</li>
+												</c:if>
 												<li>${UsageDTO.usageDate}</li>
 											</ul>
 											<c:set var="idx" value="${idx+1}" />

@@ -109,15 +109,28 @@
 				success: function(data) {
 					$.each(data.result, function(key, val) {
 						
-						if(val.usage == value) {
-							if($.inArray(val.division1, result) == -1) {
-								result.push(val.division1);
-								html += "<option>"+val.division1+"</option>";
+						if(uciCode.startsWith("I011-F")==false) {
+							if(val.usage == value) {
+								if($.inArray(val.division1, result) == -1) {
+									result.push(val.division1);
+									html += "<option>"+val.division1+"</option>";
+								}
+							}							
+						} else {
+							if(val.usage == value) {
+								if($.inArray(val.usageDate, result) == -1) {
+									result.push(val.usageDate);
+									html += "<option>"+val.usageDate+"</option>";
+								}
 							}
 						}
 						
 					});
-					$(html).appendTo("#division1");
+					if(uciCode.startsWith("I011-F")==false) {
+						$(html).appendTo("#division1");
+					} else {
+						$(html).appendTo("#usageDate");
+					}
 				}
 			});
 		}
@@ -321,23 +334,49 @@
 				type: "GET",
 				dataType: "json",
 				success: function(data) { console.log(data.result);
-					$.each(data.result, function(key, val) {
-						if(val.usage == usage && val.division1 == division1 && val.division2 == division2 && val.division3 == division3 && val.division4 == division4 && val.usageDate == value) {							
-							price = val.price;
-							usageList_seq = val.usageList_seq;
+					if(uciCode.startsWith("I011-F")==false) {
+						$.each(data.result, function(key, val) {
+							if(val.usage == usage && val.division1 == division1 && val.division2 == division2 && val.division3 == division3 && val.division4 == division4 && val.usageDate == value) {							
+								price = val.price;
+								usageList_seq = val.usageList_seq;
+							}
+						});
+						
+						if(division4 != "") {
+							var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + division4 + " / " + usageDate;	
+						}else {
+							var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + usageDate;
 						}
-					});
-					
-					if(division4 != "") {
-						var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + division4 + " / " + usageDate;	
-					}else {
-						var options = usage + " / " + division1 + " / " + division2 + " / " + division3 + " / " + usageDate;
-					}
-					
-					var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+numberWithCommas(price)+'원</span><span class="op_del">x</span></li>';
-					
-					$(html).appendTo($(".option_result > ul"));
-					setTotalCount();
+						
+						var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+numberWithCommas(price)+'원</span><span class="op_del">x</span></li>';
+						
+						$(html).appendTo($(".option_result > ul"));
+						setTotalCount();
+					} else {
+						$.each(data.result, function(key, val) {
+							if(val.usage == usage && val.usageDate == value) {							
+								price = val.price;
+								usageList_seq = val.usageList_seq;
+							}
+						});
+						
+						if(usageDate!='그 외') {
+							$('.sum_sec').css('display','block');
+							$('.option_result').css('display','block');
+							$('.sum_sec2').css('display','none');
+							
+							var options = usage + " / " + usageDate;						
+							
+							var html = '<li><span class="op_cont" value="'+usageList_seq+'">' + options + '</span><span class="op_price" value="'+price+'">'+numberWithCommas(price)+'원</span><span class="op_del">x</span></li>';
+							
+							$(html).appendTo($(".option_result > ul"));
+							setTotalCount();
+						} else {
+							$('.sum_sec').css('display','none');
+							$('.option_result').css('display','none');
+							$('.sum_sec2').css('display','block');
+						}
+					}					
 				}
 			});
 		}		
@@ -480,22 +519,24 @@
 					<select id="usage" onchange="usageChange(this)">
 					</select>
 				</li>
-				<li><span>옵션1</span>
-					<select id="division1" onchange="division1Change(this)">
-					</select>
-				</li>
-				<li><span>옵션2</span>
-					<select id="division2" onchange="division2Change(this)">
-					</select>
-				</li>
-				<li><span>옵션3</span>
-					<select id="division3" onchange="division3Change(this)">
-					</select>
-				</li>
-				<li style="display: none;"><span>옵션4</span>
-					<select id="division4" onchange="division4Change(this)">
-					</select>
-				</li>
+				<c:if test="${fn:startsWith(uciCode,'I011-F')==false}">
+					<li><span>옵션1</span>
+						<select id="division1" onchange="division1Change(this)">
+						</select>
+					</li>
+					<li><span>옵션2</span>
+						<select id="division2" onchange="division2Change(this)">
+						</select>
+					</li>
+					<li><span>옵션3</span>
+						<select id="division3" onchange="division3Change(this)">
+						</select>
+					</li>
+					<li style="display: none;"><span>옵션4</span>
+						<select id="division4" onchange="division4Change(this)">
+						</select>
+					</li>
+				</c:if>
 				<li><span>기간</span>
 					<select id="usageDate" onchange="usageDateChange(this)">
 					</select>
@@ -525,6 +566,12 @@
 				<div class="btn_down"><a href="javascript:void(0)" onclick="javascript:self.close()">취소</a></div>
 			</div>
 		</div>
+		<div class="sum_sec2" style="display: none;">
+	                해당 계약 건은 뉴스뱅크 고객센터로 문의해주세요. <br>
+	                
+	                <b>email : hskim@dahami.com<br>
+	                phone : 02-593-4174 (231)</b>
+	            </div>
 	</div>
 </body>
 </html>

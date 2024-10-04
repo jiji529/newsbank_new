@@ -219,9 +219,15 @@
 									<div class="option_area">
 										<ul class="opt_li">
 											<li>${paymentDetailList.usageDTO.usage }</li>
-											<li>${paymentDetailList.usageDTO.division1 }</li>
-											<li>${paymentDetailList.usageDTO.division2 }</li>
-											<li>${paymentDetailList.usageDTO.division3 }</li>
+											<c:if test="${not empty paymentDetailList.usageDTO.division1 }">
+												<li>${paymentDetailList.usageDTO.division1 }</li>
+											</c:if>
+											<c:if test="${not empty paymentDetailList.usageDTO.division2 }">
+												<li>${paymentDetailList.usageDTO.division2 }</li>
+											</c:if>
+											<c:if test="${not empty paymentDetailList.usageDTO.division3 }">
+												<li>${paymentDetailList.usageDTO.division3 }</li>
+											</c:if>
 											<c:if test="${!empty paymentDetailList.usageDTO.division4}">
 												<li>${paymentDetailList.usageDTO.division4 }</li>
 											</c:if>
