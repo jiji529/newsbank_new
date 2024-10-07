@@ -31,12 +31,27 @@
 <script src="js/footer.js"></script>
 <script type="text/javascript">
 
+	$(window).on("load", function() {
+	    // 페이지가 완전히 로드된 후 버튼 클릭 이벤트 발생
+		const params = new URLSearchParams(window.location.search);
+		if (params.get('media') == 'NYT') {
+			$("#popupTap2").click();
+		}    
+	});
+
 	$(document).on("keyup", ".num", function() { // 숫자만 입력
 		this.value = this.value.replace(/[^0-9]/g,'');
 	});
 	
 	// 이메일 보내기
 	$(document).on("click", ".call_send", function() {
+		var reqPage = "";
+		if($('#domestic').css('display')=='block') {
+			reqPage = "domestic";
+		} else {
+			reqPage = "foreign";
+		}
+		
 		var name = "";
 		var phone = "";
 		var email = "";
@@ -46,38 +61,38 @@
 		var tempEmail = "";
 		var chkflag = false;
 		
-		name = $('#commuName').val();
-		phone = $('#firNum').val()+"-"+$('#midNum').val()+"-"+$('#lastNum').val();
-		email = $('#firEmail').val()+"@"+$('#lastEmail').val();
-		title = $('#commuTitle').val();
-		contents = $('#commuContents').val();
+		name = $('#'+reqPage+':visible').find('#commuName').val();
+		phone = $('#'+reqPage+':visible').find('#firNum').val()+"-"+$('#'+reqPage+':visible').find('#midNum').val()+"-"+$('#'+reqPage+':visible').find('#lastNum').val();
+		email = $('#'+reqPage+':visible').find('#firEmail').val()+"@"+$('#'+reqPage+':visible').find('#lastEmail').val();
+		title = $('#'+reqPage+':visible').find('#commuTitle').val();
+		contents = $('#'+reqPage+':visible').find('#commuContents').val();
 		
-		tempPhone = $('#firNum').val()+$('#midNum').val()+$('#lastNum').val();
-		tempEmail = $('#firEmail').val()+$('#lastEmail').val();
-		chkflag = $('#chk').prop('checked');
+		tempPhone = $('#'+reqPage+':visible').find('#firNum').val()+$('#'+reqPage+':visible').find('#midNum').val()+$('#'+reqPage+':visible').find('#lastNum').val();
+		tempEmail = $('#'+reqPage+':visible').find('#firEmail').val()+$('#'+reqPage+':visible').find('#lastEmail').val();
+		chkflag = $('#'+reqPage+':visible').find('#chk').prop('checked');
 		
 		if(chkflag  == false){
 			alert("개인정보 수집에 동의 하여 주십시오");
-			$('#chk').focus();
+			$('#'+reqPage+':visible').find('#chk').focus();
 		}else if(name == ""){
 			alert("성명을 기입하여 주십시오");
-			$('#commuName').focus();
+			$('#'+reqPage+':visible').find('#commuName').focus();
 			return false;
 		}else if(tempPhone == ""){
 			alert("연락처를 기입하여 주십시오");
-			$('#firNum').focus();
+			$('#'+reqPage+':visible').find('#firNum').focus();
 			return false;
 		}else if(tempEmail == ""){
 			alert("이메일을 기입하여 주십시오");
-			$('#firEmail').focus();
+			$('#'+reqPage+':visible').find('#firEmail').focus();
 			return false;
 		}else if(title == ""){
 			alert("제목을 기입하여 주십시오");
-			$('#commuTitle').focus();
+			$('#'+reqPage+':visible').find('#commuTitle').focus();
 			return false;
 		}else if(contents == ""){
 			alert("내용을 기입하여 주십시오");
-			$('#commuContents').focus();
+			$('#'+reqPage+':visible').find('#commuContents').focus();
 			return false;
 		}else{
 			
@@ -87,6 +102,7 @@
 			    dataType: 'json',
 			    contentType: 'application/json; charset=utf-8',
 				data: {
+					reqPage: reqPage,
 					name: name,
 					phone: phone,
 					email: email,
@@ -100,28 +116,56 @@
 	
 	// success성공시 성공 여부 확인 창
 	function response_jsonlst(data){
+		var reqPage = "";
+		if($('#domestic').css('display')=='block') {
+			reqPage = "domestic";
+		} else {
+			reqPage = "foreign";
+		}
+		
 		var success = data.success;
 		
 		if(success) {
 			alert("관리자에게 문의사항이 전달 되었습니다.");
 			
-			$('#commuName').val("");
-			$('#firNum').val("");
-			$('#midNum').val("");
-			$('#lastNum').val("");
-			$('#firEmail').val("")
-			$('#lastEmail').val("");
-			$('#commuTitle').val("");
-			$('#commuContents').val("");
+			if($('#'+reqPage+':visible').find('#chk').is(":checked")) {
+				$('#'+reqPage+':visible').find('#chk').prop("checked",false);
+			}
 			
-			tempPhone = $('#firNum').val()+$('#midNum').val()+$('#lastNum').val();
-			tempEmail = $('#firEmail').val()+$('#lastEmail').val();
+			$('#'+reqPage+':visible').find('#commuName').val("");
+			$('#'+reqPage+':visible').find('#firNum').val("");
+			$('#'+reqPage+':visible').find('#midNum').val("");
+			$('#'+reqPage+':visible').find('#lastNum').val("");
+			$('#'+reqPage+':visible').find('#firEmail').val("")
+			$('#'+reqPage+':visible').find('#lastEmail').val("");
+			$('#'+reqPage+':visible').find('#commuTitle').val("");
+			$('#'+reqPage+':visible').find('#commuContents').val("");
+			
+			tempPhone = $('#'+reqPage+':visible').find('#firNum').val()+$('#'+reqPage+':visible').find('#midNum').val()+$('#'+reqPage+':visible').find('#lastNum').val();
+			tempEmail = $('#'+reqPage+':visible').find('#firEmail').val()+$('#'+reqPage+':visible').find('#lastEmail').val();
 		} else {
 			alert("전송과정에서 오류가 발생했습니다.\n 관리자에게 문의바랍니다.");
 		}
 		
 	}
 	
+	$(document).ready(function() {
+		$("#popupTap1").on('click', function() {
+			$("#popupTap1").addClass('tapOn');
+			$("#popupTap2").removeClass('tapOn');
+			
+			$("#domestic").css('display',"block");
+			$("#foreign").css('display',"none");
+		});
+		
+		$("#popupTap2").on('click', function() {
+			$("#popupTap2").addClass('tapOn');
+			$("#popupTap1").removeClass('tapOn');
+			
+			$("#domestic").css('display',"none");
+			$("#foreign").css('display',"block");
+		});
+	});	
 </script>
 </head>
 <body>
@@ -141,10 +185,19 @@
 				<!-- <li><a href="sitemap.html">사이트맵</a></li> -->
 			</ul>
 		</div>
+			<div class="tab1" style="padding:0px 0px 30px;">
+				<!-- 가격테이블 Tap-->
+				<span class="tapOn" id="popupTap1">
+					<a href="javascript:;">국내언론사</a>
+				</span>
+				<span id="popupTap2">
+					<a href="javascript:;">국외언론사</a>
+				</span>
+			</div>		
 		<div class="table_head">
 			<h3>직접 문의하기</h3>
 		</div>
-		<div class="call">
+		<div class="call" id="domestic">
 		<!-- 여기 내용들은 바뀔거에요 지금 다하미홈페이지에서 끌어온내용이라 내용 바뀝니다 -->
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tbody>
@@ -162,6 +215,79 @@
 						<td>매체 제휴</td>
 						<td>02-593-4174 (102)</td>
 						<td>daekong@dahami.com</td>
+					</tr>
+					<tr>
+						<td>기술지원</td>
+						<td>02-593-4174 (415)</td>
+						<td>helpdesk@dahami.com</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="call_box">
+				<h3>개인정보 수집 및 이용동의</h3>
+				<div class="agree_box"> <strong>[개인정보 수집 등에 대한 동의]</strong><br>
+					<br>
+					<strong>1. 개인정보 수집 항목 및 목적</strong><br>
+					다하미커뮤니케이션즈는 뉴스뱅크 사이트 내 직접 문의하기를 통해 문의주신 내용에 대해 문의자와 원활히 의사소통 하기 위한 목적으로 아래와 같은 항목을 수집합니다.<br>
+					: 성명, 연락처, 이메일 주소<br>
+					<br>
+					<strong>2. 개인정보의 보유 및 이용기간</strong><br>
+					: 수집된 개인정보는 보유 및 이용 목적이 완료된 후 즉시 파기됩니다. 또한 ‘문의하기’를 통해 삭제 요청을 하는 경우 3일 이내 파기됩니다.<br>
+					<br>
+					※ 귀하는 이에 대한 동의를 거부할 수 있으며, 동의하지 않으실 경우 직접 문의하기를 통한 이메일 발송은 불가능함을 알려드립니다.<br>
+					<br>
+				</div>
+				<div class="agree_check">
+					<p>
+						<input type="checkbox" id="chk">
+						<label for="agree">개인정보 수집 및 이용에 동의합니다.</label>
+					</p>
+				</div>
+				<h3>문의하기</h3>
+				<dl>
+					<dt>성명</dt>
+					<dd>
+						<input type="text" id="commuName" maxlength="10"/>
+					</dd>
+					<dt>연락처</dt>
+					<dd>
+						<input type="text" class="num" id="firNum" maxlength="3"/>
+						<span>-</span>
+						<input type="text" class="num" id="midNum" maxlength="4"/>
+						<span>-</span>
+						<input type="text" class="num" id="lastNum" maxlength="4"/>
+					</dd>
+					<dt>이메일</dt>
+					<dd>
+						<input type="text" class="mail" id="firEmail"/>
+						<span>@</span>
+						<input type="text" class="mail" id="lastEmail"/>
+					</dd>
+					<dt>제목</dt>
+					<dd>
+						<input type="text" style="width:950px" id="commuTitle"/>
+					</dd>
+					<dt class="main_cont">질문내용</dt>
+					<dd class="main_cont">
+						<textarea id="commuContents"></textarea>
+					</dd>
+				</dl>
+				<div class="call_send"><a href="javascript:void(0)">등록</a></div>
+			</div>
+		</div>
+		<div class="call" id="foreign" style="display:none">
+			<!-- 여기 내용들은 바뀔거에요 지금 다하미홈페이지에서 끌어온내용이라 내용 바뀝니다 -->
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr>
+						<th scope="col">문의사항</th>
+						<th scope="col">연락처</th>
+						<th scope="col">메일</th>
+					</tr>
+					<tr>
+						<td>계약 및 제휴 문의</td>
+						<td>02-593-4174 (231)</td>
+						<td>hskim@dahami.com</td>
 					</tr>
 					<tr>
 						<td>기술지원</td>

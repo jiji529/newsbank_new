@@ -63,6 +63,21 @@ public class SendEmail extends NewsbankServletBase {
 		String TmpEmail = request.getParameter("email");
 		String TmpTitle = "[뉴스뱅크]" + request.getParameter("title");
 		String TmpContents = request.getParameter("contents");
+		String targetMail = "";
+		if(request.getParameter("reqPage")==null) {
+			targetMail = "helpdesk@dahami.com";
+		} else {			
+			if(request.getParameter("reqPage").equals("domestic")) {
+				targetMail = "helpdesk@dahami.com";
+			} else if(request.getParameter("reqPage").equals("foreign")) {
+				// 뉴욕타임즈 메일은 김형석 대리가 전담하도록 세팅하도록 함
+				targetMail = "hskim@dahami.com";
+			}
+		}
+		
+		if(targetMail.equals("")) {
+			targetMail = "helpdesk@dahami.com";
+		}
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -82,7 +97,7 @@ public class SendEmail extends NewsbankServletBase {
 			message.setFrom(new InternetAddress(TmpEmail));
 			message.setRecipients(Message.RecipientType.TO,
 				//InternetAddress.parse("hoyadev@dahami.com"));
-				InternetAddress.parse("helpdesk@dahami.com"));
+				InternetAddress.parse(targetMail));
 			message.setSubject(TmpTitle);
 			message.setText("작성자 : "+tmpName+"\n\n "+"연락처 : "+TmpPhone+"\n\n "+TmpContents);
 			Transport.send(message);

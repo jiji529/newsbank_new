@@ -1025,7 +1025,7 @@ if(!contentBlidF) {
 				<div class="restriction">
 	                <div class="restriction_cont">
 	                    <b class="color">모든 계약 건</b>은 뉴욕타임스와 직접적인 <b class="color">가격 협상</b>이 필요하므로
-	                    <a href="/contact" target="_blank" style="height: auto;line-height: unset; font-weight: bold;">뉴스뱅크 고객 센터</a>로 문의해주세요.<br>
+	                    <a href="/contact?media=NYT" target="_blank" style="height: auto;line-height: unset; font-weight: bold;">뉴스뱅크 고객 센터</a>로 문의해주세요.<br>
 	(온라인) 사용기간 만료 시 <b class="color">플랫폼에서 삭제</b>하거나
 	<b class="color">페이지에 접근 불가능</b>하도록 제한합니다.
 	                </div>
