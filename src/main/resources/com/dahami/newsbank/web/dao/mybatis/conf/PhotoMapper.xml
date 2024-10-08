@@ -155,7 +155,7 @@
 	<select id="selectHitsRank" parameterType="java.util.HashMap" resultType="com.dahami.newsbank.dto.PhotoDTO">
 	    SELECT P.regDate, P.widthCm, P.heightCm, P.uciCode, P.hitCount, M.compName AS ownerName
 		FROM photo P
-		USE INDEX (idx_regDate_memberSeq_saleState_hitCount)
+<!-- 		USE INDEX (idx_regDate_memberSeq_saleState_hitCount) -->
 		LEFT JOIN member M ON P.member_seq = M.seq
 		WHERE P.saleStat = 1 AND
 		P.uciCode NOT IN (SELECT photo_uciCode FROM photoBlock) AND
