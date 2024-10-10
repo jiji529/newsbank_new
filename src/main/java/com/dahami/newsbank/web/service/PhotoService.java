@@ -73,6 +73,7 @@ public class PhotoService extends ServiceBase {
 					request.setAttribute("bookmark", new BookmarkDAO().select(memberInfo.getSeq(), uciCode));
 				}
 			}
+			request.setAttribute("DEPLOY_TEST", Constants.DEPLOY_TEST);
 			forward = "/WEB-INF/jsp"+Constants.JSP_BASHPATH+"photo_view.jsp";
 		}
 		else {

@@ -29,6 +29,7 @@ public class Constants {
 	public static final String[] ADMISSION_TYPE = new String[] {
 		"N"
 	};
+	public static final boolean DEPLOY_TEST = Boolean.parseBoolean(System.getProperty("DEPLOY_TEST", "false"));
 //	private static final boolean IS_SERVICE = false;
 	
 	/** 연동 검색엔진 타입 (searchEngine.searchType) / 마스터 */

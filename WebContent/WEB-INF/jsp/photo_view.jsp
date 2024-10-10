@@ -798,16 +798,29 @@ if(!contentBlidF) {
 <c:choose>
 	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
 		<c:choose>
-			<c:when test="${photoDTO.titleKor!=''}">
-					${photoDTO.titleKor}
+			<c:when test="${DEPLOY_TEST!=true}">
+				<c:choose>
+					<c:when test="${photoDTO.titleKor!=''}">
+							${photoDTO.titleKor}
+					</c:when>
+					<c:when test="${photoDTO.titleEng!=''}">
+							${photoDTO.titleEng}
+					</c:when>
+					<c:otherwise>	
+							${photoDTO.titleEng}
+					</c:otherwise>
+				</c:choose>
 			</c:when>
-			<c:when test="${photoDTO.titleEng!=''}">
-					${photoDTO.titleEng}
-			</c:when>
-			<c:otherwise>	
-					${photoDTO.titleEng}
+			<c:otherwise>
+				<c:if test="${photoDTO.titleKor!=''}">
+						${photoDTO.titleKor}			
+						<br/>			
+				</c:if>
+				<c:if test="${photoDTO.titleEng!=''}">
+						${photoDTO.titleEng}
+				</c:if>					
 			</c:otherwise>
-		</c:choose>	
+		</c:choose>			
 	</c:when>
 	<c:otherwise>
 		${photoDTO.titleKor}
@@ -829,16 +842,28 @@ if(!contentBlidF) {
 <c:choose>
 	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
 		<c:choose>
-			<c:when test="${photoDTO.descriptionKor!=''}">
-				<p class="img_cont">${photoDTO.descriptionKor}</p>
-			</c:when>
-			<c:when test="${photoDTO.descriptionEng!=''}">
-				<p class="img_cont">${photoDTO.descriptionEng}</p>
+			<c:when test="${DEPLOY_TEST!=true}">
+				<c:choose>
+					<c:when test="${photoDTO.descriptionKor!=''}">
+						<p class="img_cont">${photoDTO.descriptionKor}</p>
+					</c:when>
+					<c:when test="${photoDTO.descriptionEng!=''}">
+						<p class="img_cont">${photoDTO.descriptionEng}</p>
+					</c:when>
+					<c:otherwise>
+						<p class="img_cont">${photoDTO.descriptionEng}</p>
+					</c:otherwise>
+				</c:choose>			
 			</c:when>
 			<c:otherwise>
-				<p class="img_cont">${photoDTO.descriptionEng}</p>
+				<c:if test="${photoDTO.descriptionKor!=''}">
+					<p class="img_cont">${photoDTO.descriptionKor}</p>
+				</c:if>
+				<c:if test="${photoDTO.descriptionEng!=''}">
+					<p class="img_cont">${photoDTO.descriptionEng}</p>
+				</c:if>
 			</c:otherwise>
-		</c:choose>	
+		</c:choose>					
 	</c:when>
 	<c:otherwise>
 		<p class="img_cont">${photoDTO.descriptionKor}</p>
