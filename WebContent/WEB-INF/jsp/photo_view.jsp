@@ -829,10 +829,10 @@ if(!contentBlidF) {
 <c:choose>
 	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
 		<c:choose>
-			<c:when test="${photoDTO.titleKor!=''}">
+			<c:when test="${photoDTO.descriptionKor!=''}">
 				<p class="img_cont">${photoDTO.descriptionKor}</p>
 			</c:when>
-			<c:when test="${photoDTO.titleEng!=''}">
+			<c:when test="${photoDTO.descriptionEng!=''}">
 				<p class="img_cont">${photoDTO.descriptionEng}</p>
 			</c:when>
 			<c:otherwise>
