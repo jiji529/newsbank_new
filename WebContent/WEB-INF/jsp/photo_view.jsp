@@ -22,7 +22,7 @@ if(photoDto == null
 <title>뉴스뱅크</title>
 <script src="js/jquery-1.12.4.min.js"></script>
 <link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/sub.css?v=241004" />
+<link rel="stylesheet" href="css/sub.css?v=241011" />
 <script src="js/filter.js"></script>
 <script src="js/footer.js"></script>
 <script type="text/javascript">
@@ -738,6 +738,13 @@ if(photoDto == null
  		}
 	}
 	
+ 	function toggleContent(button) {
+        const content = button.closest('.en_area').querySelector('.en_cont');
+        const isVisible = content.style.display !== 'none';
+    
+        content.style.display = isVisible ? 'none' : 'block';
+        button.querySelector('.txt_unfold').textContent = isVisible ? '펼치기' : '접기';
+    }
 </script>
 </head>
 <body> 
@@ -795,32 +802,27 @@ if(photoDto == null
 <%
 if(!contentBlidF) {
 %>
+<c:set var="title" value="" />
+<c:set var="titleAnother" value="" />
 <c:choose>
 	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
 		<c:choose>
-			<c:when test="${DEPLOY_TEST!=true}">
-				<c:choose>
-					<c:when test="${photoDTO.titleKor!=''}">
-							${photoDTO.titleKor}
-					</c:when>
-					<c:when test="${photoDTO.titleEng!=''}">
-							${photoDTO.titleEng}
-					</c:when>
-					<c:otherwise>	
-							${photoDTO.titleEng}
-					</c:otherwise>
-				</c:choose>
+			<c:when test="${photoDTO.titleKor!=''}">
+					${photoDTO.titleKor}
+					<c:set var="title" value="titleKor" />		
+					<c:set var="titleAnother" value="titleEng" />			
 			</c:when>
-			<c:otherwise>
-				<c:if test="${photoDTO.titleKor!=''}">
-						${photoDTO.titleKor}			
-						<br/>			
-				</c:if>
-				<c:if test="${photoDTO.titleEng!=''}">
-						${photoDTO.titleEng}
-				</c:if>					
+			<c:when test="${photoDTO.titleEng!=''}">
+					${photoDTO.titleEng}
+					<c:set var="title" value="titleEng" />
+					<c:set var="titleAnother" value="titleKor" />
+			</c:when>
+			<c:otherwise>	
+					${photoDTO.titleEng}
+					<c:set var="title" value="titleEng" />
+					<c:set var="titleAnother" value="titleKor" />
 			</c:otherwise>
-		</c:choose>			
+		</c:choose>				
 	</c:when>
 	<c:otherwise>
 		${photoDTO.titleKor}
@@ -839,31 +841,27 @@ if(!contentBlidF) {
 				<c:if test="${bookmark.seq ne null}">
 					<a href="javascript:;" class="btn_wish on">찜하기 O</a>
 				</c:if>
+<c:set var="description" value="" />
+<c:set var="descriptionAnother" value="" />				
 <c:choose>
 	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
 		<c:choose>
-			<c:when test="${DEPLOY_TEST!=true}">
-				<c:choose>
-					<c:when test="${photoDTO.descriptionKor!=''}">
-						<p class="img_cont">${photoDTO.descriptionKor}</p>
-					</c:when>
-					<c:when test="${photoDTO.descriptionEng!=''}">
-						<p class="img_cont">${photoDTO.descriptionEng}</p>
-					</c:when>
-					<c:otherwise>
-						<p class="img_cont">${photoDTO.descriptionEng}</p>
-					</c:otherwise>
-				</c:choose>			
+			<c:when test="${photoDTO.descriptionKor!=''}">
+				<p class="img_cont">${photoDTO.descriptionKor}</p>
+				<c:set var="description" value="descriptionKor" />
+				<c:set var="descriptionAnother" value="descriptionEng" />
+			</c:when>
+			<c:when test="${photoDTO.descriptionEng!=''}">
+				<p class="img_cont">${photoDTO.descriptionEng}</p>
+				<c:set var="description" value="descriptionEng" />
+				<c:set var="descriptionAnother" value="descriptionKor" />
 			</c:when>
 			<c:otherwise>
-				<c:if test="${photoDTO.descriptionKor!=''}">
-					<p class="img_cont">${photoDTO.descriptionKor}</p>
-				</c:if>
-				<c:if test="${photoDTO.descriptionEng!=''}">
-					<p class="img_cont">${photoDTO.descriptionEng}</p>
-				</c:if>
+				<p class="img_cont">${photoDTO.descriptionEng}</p>
+				<c:set var="description" value="descriptionEng" />
+				<c:set var="descriptionAnother" value="descriptionKor" />
 			</c:otherwise>
-		</c:choose>					
+		</c:choose>						
 	</c:when>
 	<c:otherwise>
 		<p class="img_cont">${photoDTO.descriptionKor}</p>
@@ -872,7 +870,53 @@ if(!contentBlidF) {
 <%
 }
 %>
-			</div>
+	<c:if test="${photoDTO.ownerName=='뉴욕타임스'}">
+		<c:if test="${photoDTO[titleAnother]!='' || photoDTO[descriptionAnother]!=''}">
+			<div class="en_area">
+				<div class="en_top">
+				    <h2>AI 자동번역</h2><!-- AI 추가 수진-->
+				    <button type="button" class="btn_origin" onclick="toggleContent(this)">
+				        <span class="txt_unfold">접기</span>
+				    </button>
+				</div>
+			    <div class="en_cont">
+			    	<c:choose>
+			    		<c:when test="${title=='titleKor'}">
+			    			<h3 class="img_tit">
+				    			<c:if test="${photoDTO.titleEng!=''}">
+						    		${photoDTO.titleEng}			    			
+				    			</c:if>		    		
+			    			</h3>			    		
+			    		</c:when>
+			    		<c:when test="${title=='titleEng'}">
+			    			<h3 class="img_tit">
+				    			<c:if test="${photoDTO.titleKor!=''}">
+				    				${photoDTO.titleKor}
+				    			</c:if>
+			    			</h3>
+			    		</c:when>
+			    	</c:choose>
+			        <c:choose>
+			        	<c:when test="${description=='descriptionKor'}">
+			        		<p class="img_cont">
+				        		<c:if test="${photoDTO.descriptionEng!=''}">
+				        			${photoDTO.descriptionEng}
+				        		</c:if>
+			        		</p>
+			        	</c:when>
+			        	<c:when test="${description=='descriptionEng'}">
+			        		 <p class="img_cont">
+			        		 	<c:if test="${photoDTO.descriptionKor!=''}">
+			        		 		${photoDTO.descriptionKor}
+			        		 	</c:if>
+			        		 </p>
+			        	</c:when>
+			        </c:choose>		       
+			    </div>
+			</div>		
+		</c:if>
+	</c:if>					
+			</div>	
 <%
 if(!contentBlidF) {
 %>
@@ -1052,7 +1096,7 @@ if(!contentBlidF) {
 	                    <b class="color">모든 계약 건</b>은 뉴욕타임스와 직접적인 <b class="color">가격 협상</b>이 필요하므로
 	                    <a href="/contact?media=NYT" target="_blank" style="height: auto;line-height: unset; font-weight: bold;">뉴스뱅크 고객 센터</a>로 문의해주세요.<br>
 	(온라인) 사용기간 만료 시 <b class="color">플랫폼에서 삭제</b>하거나
-	<b class="color">페이지에 접근 불가능</b>하도록 제한합니다.
+	<b class="color">페이지에 접근 불가능</b>하도록 제한해야 합니다.
 	                </div>
 	            </div>
 			</c:if>			

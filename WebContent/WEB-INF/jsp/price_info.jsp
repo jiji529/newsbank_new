@@ -585,7 +585,7 @@
 	          <div class="price_mess">
 				① <b class="color">모든 계약 건</b>은 뉴욕타임스와 직접적인 <b class="color">가격 협상</b>이 필요하므로 <a href="/contact?media=NYT" target="_blank" style="text-decoration: underline; font-weight: bold; color: #111;">뉴스뱅크 고객센터</a>로 문의해주세요.<br>
 "Any contracts for use of NYT photos would be negotiated directly with The New York Times."<br><br>
-② (온라인) 사용 기간 만료 시 <b class="color">플랫폼에서 삭제</b>하거나 <b class="color">페이지에 접근 불가능</b>하도록 제한합니다.		
+② (온라인) 사용 기간 만료 시 <b class="color">플랫폼에서 삭제</b>하거나 <b class="color">페이지에 접근 불가능</b>하도록 제한해야 합니다.		
 
 				<a href="#" class="price_info" target="_blank">이용약관</a>
 			  </div>
