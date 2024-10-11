@@ -805,24 +805,10 @@ if(!contentBlidF) {
 <c:set var="title" value="" />
 <c:set var="titleAnother" value="" />
 <c:choose>
-	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
-		<c:choose>
-			<c:when test="${photoDTO.titleKor!=''}">
-					${photoDTO.titleKor}
-					<c:set var="title" value="titleKor" />		
-					<c:set var="titleAnother" value="titleEng" />			
-			</c:when>
-			<c:when test="${photoDTO.titleEng!=''}">
-					${photoDTO.titleEng}
-					<c:set var="title" value="titleEng" />
-					<c:set var="titleAnother" value="titleKor" />
-			</c:when>
-			<c:otherwise>	
-					${photoDTO.titleEng}
-					<c:set var="title" value="titleEng" />
-					<c:set var="titleAnother" value="titleKor" />
-			</c:otherwise>
-		</c:choose>				
+	<c:when test="${fn:startsWith(photoDTO.uciCode, 'I011-F')}">
+		${photoDTO.titleEng}
+		<c:set var="title" value="titleEng" />
+		<c:set var="titleAnother" value="titleKor" />					
 	</c:when>
 	<c:otherwise>
 		${photoDTO.titleKor}
@@ -844,24 +830,10 @@ if(!contentBlidF) {
 <c:set var="description" value="" />
 <c:set var="descriptionAnother" value="" />				
 <c:choose>
-	<c:when test="${photoDTO.ownerName=='뉴욕타임스'}">
-		<c:choose>
-			<c:when test="${photoDTO.descriptionKor!=''}">
-				<p class="img_cont">${photoDTO.descriptionKor}</p>
-				<c:set var="description" value="descriptionKor" />
-				<c:set var="descriptionAnother" value="descriptionEng" />
-			</c:when>
-			<c:when test="${photoDTO.descriptionEng!=''}">
-				<p class="img_cont">${photoDTO.descriptionEng}</p>
-				<c:set var="description" value="descriptionEng" />
-				<c:set var="descriptionAnother" value="descriptionKor" />
-			</c:when>
-			<c:otherwise>
-				<p class="img_cont">${photoDTO.descriptionEng}</p>
-				<c:set var="description" value="descriptionEng" />
-				<c:set var="descriptionAnother" value="descriptionKor" />
-			</c:otherwise>
-		</c:choose>						
+	<c:when test="${fn:startsWith(photoDTO.uciCode, 'I011-F')}">
+		<p class="img_cont">${photoDTO.descriptionEng}</p>
+		<c:set var="description" value="descriptionEng" />
+		<c:set var="descriptionAnother" value="descriptionKor" />								
 	</c:when>
 	<c:otherwise>
 		<p class="img_cont">${photoDTO.descriptionKor}</p>
@@ -870,7 +842,7 @@ if(!contentBlidF) {
 <%
 }
 %>
-	<c:if test="${photoDTO.ownerName=='뉴욕타임스'}">
+	<c:if test="${fn:startsWith(photoDTO.uciCode, 'I011-F')}">
 		<c:if test="${photoDTO[titleAnother]!='' || photoDTO[descriptionAnother]!=''}">
 			<div class="en_area">
 				<div class="en_top">
@@ -880,38 +852,20 @@ if(!contentBlidF) {
 				    </button>
 				</div>
 			    <div class="en_cont">
-			    	<c:choose>
-			    		<c:when test="${title=='titleKor'}">
-			    			<h3 class="img_tit">
-				    			<c:if test="${photoDTO.titleEng!=''}">
-						    		${photoDTO.titleEng}			    			
-				    			</c:if>		    		
-			    			</h3>			    		
-			    		</c:when>
-			    		<c:when test="${title=='titleEng'}">
-			    			<h3 class="img_tit">
-				    			<c:if test="${photoDTO.titleKor!=''}">
-				    				${photoDTO.titleKor}
-				    			</c:if>
-			    			</h3>
-			    		</c:when>
-			    	</c:choose>
-			        <c:choose>
-			        	<c:when test="${description=='descriptionKor'}">
-			        		<p class="img_cont">
-				        		<c:if test="${photoDTO.descriptionEng!=''}">
-				        			${photoDTO.descriptionEng}
-				        		</c:if>
-			        		</p>
-			        	</c:when>
-			        	<c:when test="${description=='descriptionEng'}">
-			        		 <p class="img_cont">
-			        		 	<c:if test="${photoDTO.descriptionKor!=''}">
-			        		 		${photoDTO.descriptionKor}
-			        		 	</c:if>
-			        		 </p>
-			        	</c:when>
-			        </c:choose>		       
+					<c:if test="${title=='titleEng'}">
+		    			<h3 class="img_tit">
+			    			<c:if test="${photoDTO.titleKor!=''}">
+			    				${photoDTO.titleKor}
+			    			</c:if>
+		    			</h3>
+		    		</c:if>
+		    		<c:if test="${description=='descriptionEng'}">
+		        		 <p class="img_cont">
+		        		 	<c:if test="${photoDTO.descriptionKor!=''}">
+		        		 		${photoDTO.descriptionKor}
+		        		 	</c:if>
+		        		 </p>
+		        	</c:if>			    			    				        	      
 			    </div>
 			</div>		
 		</c:if>
